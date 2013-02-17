@@ -1,0 +1,36 @@
+---
+issues_statuses_001:
+  id: 1
+  is_closed: 0
+  default_done_ratio: 0
+  enumeration_id: 1
+issues_statuses_002:
+  id: 2
+  is_closed: 0
+  default_done_ratio: 0
+  enumeration_id: 2
+issues_statuses_003:
+  id: 3
+  is_closed: 1
+  default_done_ratio: 100
+  enumeration_id: 3
+issues_statuses_004:
+  id: 4
+  is_closed: 0
+  default_done_ratio: 100
+  enumeration_id: 4
+issues_statuses_005:
+  id: 5
+  is_closed: 0
+  default_done_ratio: 100
+  enumeration_id: 5
+issues_statuses_006:
+  id: 6
+  is_closed: 0
+  default_done_ratio: 50
+  enumeration_id: 6
+issues_statuses_007:
+  id: 7
+  is_closed: 0
+  default_done_ratio: 0
+  enumeration_id: 7

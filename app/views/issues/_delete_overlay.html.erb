@@ -1,0 +1,24 @@
+<%#
+# Author: Nicolas Meylan
+# Date: 23 sept. 2012
+# Encoding: UTF-8
+# File: _delete_overlay.html.erb
+%>
+<div class="overlayOuter" id="delete_overlay">
+  <div class="overlayInner">
+    <% if issues %>
+      <%= form_tag({},:remote => true, :methode => :delete) do -%>
+        <% issues.each do |issue| %>
+          <%= "##{issue.id} -" %><%= link_to issue.subject, {:action => 'show', :id => issue.id} %>
+          <%= hidden_field_tag 'delete_ids[]', issue.id%>
+          <br/>
+        <% end %>
+          <div class="overlayButtons">
+            <%= submit_tag 'Ok', {:onclick => "jQuery('#delete_overlay').overlay().close()"} %>
+            <input type="button" class="close" value="<%= t(:button_close) %>">
+          </div>
+      <% end %>
+    <% end %>
+  </div>
+</div>
+

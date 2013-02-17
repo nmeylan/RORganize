@@ -1,0 +1,33 @@
+<%#
+# Author: Nicolas Meylan
+# Date: 23 déc. 2012
+# Encoding: UTF-8
+# File: _scenario.html.erb
+%>
+
+<div class="box">
+  <script type="text/template" id="scenario-template">
+
+  </script>
+  <div id="scenario">
+    <%= form_for @scenario, :url => {:controller => 'scenarios'}, :html => {:class => 'form',:multipart => true, :id => "scenario"} do |f|%>
+      <div class="autocomplete-combobox cbb-medium nosearch">
+        <label for="scenario_actor"><%=t(:field_actor)%><span class ="required"> *</span></label>
+        <%= f.select :actor_id, @actors.collect{|actor| [actor.name, actor.id]}, { :include_blank => false }, {:class => 'chzn-select cbb-medium'} %>
+      </div>
+      <p>
+        <label for="scenario_name"><%=t(:field_name)%><span class ="required"> *</span></label>
+        <%= f.text_field :name, :size => 80 %>
+      </p>
+      <p>
+        <%= f.label :description, t(:field_description) %>
+        <%= f.text_area :description, :rows => 12 %>
+      </p>
+      <div class="autocomplete-combobox cbb-medium nosearch">
+        <label for="scenario_version"><%=t(:field_version)%></label>
+        <%= raw select_tag_versions("scenario_version_id", "scenario[version_id]", @scenario.version_id) %>
+      </div>
+      <%= submit_tag t(:button_save), :class => "submit" %>
+    <% end %>
+  </div>
+</div>

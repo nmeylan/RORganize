@@ -1,0 +1,20 @@
+<%#
+# Author: Nicolas Meylan
+# Date: 8 juil. 2012
+# Encoding: UTF-8
+# File: index.html.erb
+%>
+
+<div class="contextual">
+  <h1><%= t(:label_issue_plural) %></h1>
+  <div class="splitcontentright">
+    <%= link_to t(:link_new_issue), {:action => 'new', :project_id => @project.identifier}, {:class => 'icon icon-add'} if current_user.allowed_to?('new','Issues',@project) %>
+  </div>
+
+</div>
+
+  <%= render :partial => 'issues/filter' %>
+  <%= render :partial => 'issues/list' %>
+  <%= render :partial => 'issues/sidebar' %>
+
+

@@ -1,0 +1,75 @@
+<%#
+# Author: Nicolas Meylan
+# Date: 15 août 2012
+# Encoding: UTF-8
+# File: _versions_list.html.erb
+%>
+
+<div id="versions_content">
+  <table class="version list">
+    <tr class="header">
+      <th>Name</th>
+      <th>Target date</th>
+      <th></th>
+      <th></th>
+    </tr>
+    <% @versions.each do |version| %>
+      <tr class="odd_even" id="<%= version.id %>">
+        <%url = versions_path.to_s+'/'+version.id.to_s %>
+
+        <td class="list_left name"><% if current_user.allowed_to?('edit','Versions',@project) %>
+            <%= link_to version.name, :controller => 'versions', :action => 'edit', :id => version.id %>
+          <% else %>
+            <%= version.name %>
+          <% end %>
+        </td>
+        <td class="list_center version"><%= version.target_date ? version.target_date : '-' %></td>
+        <td class="action">
+          <% if current_user.allowed_to?('change_position','Versions',@project) %>
+            <% if version.position > 1 %>
+              <%= link_to "", "#",  {:class => 'icon icon-up_arrow change_position dec'} %>
+            <% else %>
+              <%= link_to "", "#",  {:class => 'icon icon-disabled_up_arrow'} %>
+            <% end %>
+            <% if version.position < @max %>
+              <%= link_to "", "#",  {:class => 'icon icon-down_arrow change_position inc'}  %>
+            <% else %>
+              <%= link_to "", "#",  {:class => 'icon icon-disabled_down_arrow'} %>
+            <% end %>
+          <% end %>
+        </td>
+
+          <td class="action">
+            <% if current_user.allowed_to?('destroy','Versions',@project) %>
+              <%= link_to t(:link_delete), '#', {:class => 'icon icon-del',
+              :onclick => "button_delete('#{url}')"}  %>
+             <% end %>
+          </td>
+
+      </tr>
+    <%end%>
+  </table>
+</div>
+
+<script type="text/javascript">
+  jQuery(".change_position").click(function(){
+    var vid = jQuery(this).parents("tr").attr("id");
+    var ope = jQuery(this).attr("class").split(" ");
+    ope = ope[3];
+    if(ope == "inc" || ope == "dec"){
+      var vurl = "<%= url_for({:action => "change_position",
+    :controller => "versions",
+    :project_id => @project.identifier}) %>";
+      jQuery.ajax({
+        url : vurl,
+        type : "post",
+        dataType : "script",
+        data : {
+          id : vid,
+          operator : ope
+        }
+      });
+    }
+
+  });
+</script>

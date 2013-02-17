@@ -1,0 +1,10 @@
+<%#
+# Author: Nicolas Meylan
+# Date: 15 déc. 2012
+# Encoding: UTF-8
+# File: _flash_overlay.erb
+%>
+
+<%= raw error_messages(@issue.errors.full_messages) if @issue %>
+<%= render :partial => 'flashs/flash' %>
+<%= hidden_field_tag "issue_id", @issue.id if @issue%>

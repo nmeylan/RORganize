@@ -1,0 +1,33 @@
+<%#
+# Author: Nicolas Meylan
+# Date: 12 oct. 2012
+# Encoding: UTF-8
+# File: list.html.erb
+%>
+
+<div class="contextual">
+  <h1><%= t(:link_permissions) %> - <%= params[:role_name].gsub("_"," ") %></h1>
+</div>
+<%= form_tag({:action => 'update_permissions', :controller => 'permissions'}) %>
+<div class="box">
+  <% @permission_hash.each do |k,v| %>
+    <fieldset>
+      <legend><%= link_to '', '#', {:class => 'icon icon-checked', :id => 'check_all_'+k.to_s, 'cb_checked' => "b"} %>
+              <%= link_to k, '#', {:class => 'icon icon-expanded toggle', :id => k} %></legend>
+      <div class="content <%=k%>">
+        <% v.each do |key,value| %>
+          <label><%= link_to key, {:action => 'edit', :controller => 'permissions', :id => value} %></label><%= check_box_tag  "[permissions][#{key}]", value, @selected_permissions.include?(value)%>
+        <% end %>
+      </div>
+    </fieldset>
+  <% end %>
+</div>
+<%= submit_tag "save" %>
+
+<script type="text/javascript">
+  multi_toogle();
+  jQuery(".content").each(function(){
+    var id = jQuery(this).attr("class").split(' ')[1];
+    checkAllBox("#check_all_"+id, jQuery(this));
+  });
+</script>

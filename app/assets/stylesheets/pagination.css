@@ -1,0 +1,54 @@
+/*
+    Document   : pagination
+    Created on : 2 août 2012, 21:11:32
+    Author     : nicolas
+    Description:
+        Purpose of the stylesheet follows.
+*/
+.pagination {
+   background: white;
+   cursor: default;
+   /* self-clearing method: */ }
+.pagination a, .pagination span, .pagination em {
+   padding: 0.2em 0.5em;
+   display: block;
+   float: left;
+   margin-right: 1px; }
+.pagination .disabled {
+   color: #999999;
+   border: 1px solid #dddddd; }
+.pagination .current {
+   font-style: normal;
+   font-weight: bold;
+   background: #E5E3DE;
+   color: white;
+   border: 1px solid #E5E3DE; }
+.pagination a {
+   text-decoration: none;
+   color: #E5E3DE;
+   border: 1px solid #E5E3DE; }
+.pagination a:hover, .pagination a:focus {
+   color: #E5E3DE;
+   border-color: #E5E3DE; }
+.pagination .page_info {
+   background: #E5E3DE;
+   color: white;
+   padding: 0.4em 0.6em;
+   width: 22em;
+   margin-bottom: 0.3em;
+   text-align: center; }
+.pagination .page_info b {
+   color: #E5E3DE;
+   background: #E5E3DE;
+   padding: 0.1em 0.25em; }
+.pagination:after {
+   content: ".";
+   display: block;
+   height: 0;
+   clear: both;
+   visibility: hidden; }
+* html .pagination {
+   height: 1%; }
+*:first-child + html .pagination {
+   overflow: hidden; }
+

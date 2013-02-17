@@ -1,0 +1,54 @@
+<%#
+# Author: Nicolas Meylan
+# Date: 30 sept. 2012
+# Encoding: UTF-8
+# File: _list.html.erb
+%>
+<div id="members_content">
+  <table class="member list">
+    <tr class="header">
+      <th>Name</th>
+      <th class="list_left">Role</th>
+      <th></th>
+    </tr>
+    <% @members.each do |member| %>
+      <tr class="odd_even" id="<%=member.id%>">
+        <%url = members_path.to_s+'/'+member.id.to_s %>
+
+        <td class="list_center name"><%= member.user.name %></td>
+        <td class="list role">
+          <div class="autocomplete-combobox cbb-medium nosearch">
+            <% if current_user.allowed_to?('change_role','Members',@project) %>
+              <%= select_tag('roles_'+member.id.to_s,
+                options_from_collection_for_select(@roles, "id", "name",member.role ? member.role.id.to_s : ""),
+                {:class => 'chzn-select cbb-medium',
+                  :include_blank => true
+                } )%>
+            <% else %>
+              <%= member.role.name %>
+            <% end %>
+          </div>
+        </td>
+        <td class="action">
+          <% if current_user.allowed_to?('destroy','Members',@project) %>
+            <%= link_to t(:link_remove), '#', {:class => 'icon icon-del', :onclick => "button_delete('#{url}')"}  %>
+          <% end %>
+        </td>
+      </tr>
+    <%end%>
+  </table>
+
+  <%= render :partial => 'members/add_overlay' %>
+</div>
+
+<script type="text/javascript">
+  (function($){
+    $(".list select").change(function(e){
+      $.ajax({
+        url: "<%=url_for({:action => 'change_role', :controller => 'members'})%>",
+        dataType: "script",
+        data: {role_id:$(this).val(), member_id: $(this).parents("tr").attr("id")}
+      });
+    });
+  })(jQuery)
+</script>

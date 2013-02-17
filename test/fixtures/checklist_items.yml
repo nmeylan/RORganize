@@ -1,0 +1,109 @@
+---
+checklist_items_001:
+  id: 28
+  enumeration_id: 17
+  issue_id: 37
+  position: 1
+  name: Ajax
+checklist_items_002:
+  id: 30
+  enumeration_id: 17
+  issue_id: 37
+  position: 2
+  name: Trouver le plugin
+checklist_items_003:
+  id: 36
+  enumeration_id: 17
+  issue_id: 37
+  position: 3
+  name: Intégrer le plugin
+checklist_items_004:
+  id: 39
+  enumeration_id: 17
+  issue_id: 41
+  position: 3
+  name: Project informations update
+checklist_items_005:
+  id: 40
+  enumeration_id: 17
+  issue_id: 41
+  position: 2
+  name: Categories menu
+checklist_items_006:
+  id: 41
+  enumeration_id: 17
+  issue_id: 41
+  position: 4
+  name: Versions menu
+checklist_items_007:
+  id: 42
+  enumeration_id: 17
+  issue_id: 41
+  position: 1
+  name: Members menu
+checklist_items_008:
+  id: 44
+  enumeration_id: 15
+  issue_id: 36
+  position: 1
+  name: i
+checklist_items_009:
+  id: 45
+  enumeration_id: 17
+  issue_id: 39
+  position: 1
+  name: Corriger bug création journal
+checklist_items_010:
+  id: 46
+  enumeration_id: 17
+  issue_id: 39
+  position: 2
+  name: Corriger bug list activity
+checklist_items_011:
+  id: 47
+  enumeration_id: 17
+  issue_id: 39
+  position: 3
+  name: Corriger bug date time
+checklist_items_012:
+  id: 49
+  enumeration_id: 17
+  issue_id: 45
+  position: 1
+  name: Tracker edit
+checklist_items_013:
+  id: 50
+  enumeration_id: 15
+  issue_id: 45
+  position: 2
+  name: Issues status edit
+checklist_items_014:
+  id: 51
+  enumeration_id: 17
+  issue_id: 45
+  position: 3
+  name: Roles
+checklist_items_015:
+  id: 52
+  enumeration_id: 17
+  issue_id: 45
+  position: 4
+  name: Permissions
+checklist_items_016:
+  id: 53
+  enumeration_id: 15
+  issue_id: 98
+  position: 1
+  name: Permission
+checklist_items_017:
+  id: 54
+  enumeration_id: 15
+  issue_id: 98
+  position: 2
+  name: Role
+checklist_items_018:
+  id: 55
+  enumeration_id: 17
+  issue_id: 98
+  position: 3
+  name: User

@@ -1,0 +1,17 @@
+<%#
+# Author: Nicolas Meylan
+# Date: 10 oct. 2012
+# Encoding: UTF-8
+# File: _sidebar.html.erb
+%>
+
+<%= content_for :sidebar do %>
+  <h2><%= @user.name %></h2>
+  <ul>
+    <li><%= link_to t(:link_change_password), {:action => "change_password", :controller => "my", :id => current_user.slug} %></li>
+    <li><%= link_to t(:link_change_email), '#'%></li>
+    <li><%= link_to t(:link_my_options), '#'%></li>
+    <li><%= link_to t(:link_custom_queries), {:action => "custom_queries", :controller => "my", :id => current_user.slug}%></li>
+  </ul>
+
+<% end %>

@@ -1,0 +1,19 @@
+<%#
+# Author: Nicolas Meylan
+# Date: 26 sept. 2012
+# Encoding: UTF-8
+# File: index.html.erb
+%>
+
+<div class="contextual">
+  <h1><%= t(:label_administration) %></h1>
+  <div class="splitcontentright">
+
+  </div>
+</div>
+
+<ul>
+  <li><%= link_to t(:link_permissions), '#'%></li>
+  <li><%= link_to t(:link_roles), '#'%></li>
+  <li><%= link_to t(:link_users), {:controller => 'users', :action => 'index'}, {:class => 'icon icon-group'} %></li>
+</ul>

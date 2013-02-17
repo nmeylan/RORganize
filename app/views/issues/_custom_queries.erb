@@ -1,0 +1,20 @@
+<%#
+# Author: Nicolas Meylan
+# Date: 5 févr. 2013
+# Encoding: UTF-8
+# File: _custom_queries.erb
+%>
+
+<% if @custom_queries && @custom_queries.any? && current_user.allowed_to?('apply_custom_query','Issues',@project)  %>
+  <h2><%= t(:label_queries) %></h2>
+  <ul>
+    <% @custom_queries.each do |query| %>
+      <li>
+        <%= link_to query.name, {:action => "apply_custom_query",
+          :query_id => query.slug,
+          :controller => "issues",
+          :project_id => @project.identifier} %>
+      </li>
+    <% end %>
+  </ul>
+<% end %>

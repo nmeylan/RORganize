@@ -1,0 +1,144 @@
+# Sample localization file for English. Add more files in this directory for other locales.
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+en:
+  #LABEL
+  home: Home
+  label_project: Project
+  label_project_plural: Projects
+  label_about: About
+  label_contact_plural: Contacts
+  label_log_in: Log in
+  label_log_out: Log out
+  label_overview: Overview
+  following_versions_text: For following versions
+  label_changelog: Changelog
+  label_last_request_plural: Last requests
+  label_activity: Activity
+  label_roadmap: Roadmap
+  label_todo_list: Todo List
+  label_wiki: Wiki
+  label_test_plural: Tests
+  label_setting_plural: Settings
+  label_member_plural: Members
+  label_request_plural: Requests
+  label_member_one_or_more: Member(s)
+  label_request_one_or_more: Request(s)
+  label_issue_plural: Issues
+  label_author: Auhor
+  label_added: Added
+  label_updated: Updated
+  label_created_at: Created at
+  label_updated_lower_case: updated
+  label_created_lower_case: created
+  label_by: by
+  label_ago: ago
+  label_edit_issue: Edit issue
+  label_history: History
+  label_per_page: Per page
+  label_tool_plural: Tools
+  label_administration: Administration
+  label_users: Users
+  label_user: User
+  label_current_sign_in: Current sign in
+  label_last_sign_in: Last sign in
+  label_my_page: My page
+  label_my_latest_assigned_request: My latest assigned requests
+  label_my_projects: My projects
+  label_all: All
+  label_equal: Equal
+  label_different: Different
+  label_scenarios: Scenarios
+  label_closed: Closed
+  label_opened: Opened
+  label_queries: Queries
+  label_query: Query
+# LINK
+  link_new_project: New project
+  link_new_issue: New issue
+  link_edit: Edit
+  link_delete: Delete
+  link_update: Update
+  link_checklist: Checklist
+  link_update_informations: Update informations
+  link_members: Members
+  link_categories: Categories
+  link_repository: Repository
+  link_versions: Versions
+  link_new_version: New version
+  link_new_category: new category
+  link_sign_in: Sign in
+  link_view_all: View all
+  link_administration: Administration
+  link_users: Users
+  link_roles: Roles
+  link_permissions: Permissions
+  link_new_user: New user
+  link_edit_user: Edit user
+  link_add_member: Add member
+  link_remove: Remove
+  link_change_password: Change password
+  link_change_email: Change email
+  link_my_options: My options
+  link_new_permission: New permission
+  link_edit_permission: Edit permission
+  link_new_role: New role
+  link_edit_role: Edit role
+  link_new_tracker: New tracker
+  link_edit_tracker: Edit tracker
+  link_trackers: Trackers
+  link_filter: Filter
+  link_add: Add
+  link_related_request: Related requests
+  link_custom_queries: Custom queries
+  link_edit_query: Edit query
+  link_all: All
+  link_queries: Queries
+ #FORM
+  field_name: Name
+  field_description: Description
+  field_identifier: Identifier
+  field_subject: Subject
+  field_tracker: Tracker
+  field_version: Target phase
+  field_status: Status
+  field_target_date: Target date
+  field_due_date: Due date
+  field_done: Done
+  field_notes: Notes
+  field_estimated_time: Estimated time
+  field_assigned_to: Assigned to
+  field_category: Category
+  field_password: Password
+  field_login: Login
+  field_email: Email
+  field_administrator: Administrator
+  field_user: User
+  field_role: Role
+  field_controller_name: Controller name
+  field_action_name: Action name
+  field_permission_name: Permission name
+  field_attachments: Attachments
+  button_create: Create
+  button_save: Save
+  button_submit: Submit
+  button_close: Close
+  button_apply: Apply
+  field_retype_password: Retype password
+  field_is_public: Is public
+  field_is_for_all: Is for all
+
+
+  #FLASH
+  successful_creation: Successful creation
+  successful_update: Successful update
+  successful_deletion: Successful deletion
+  failure_deletion: Deletion failed
+  #TEXT
+  text_changed: changed
+  text_from: from
+  text_to: to
+  text_set_at: set at
+  text_deleted: deleted
+  text_no_data: No data to display
+  text_choose_role: Define permissions for following roles

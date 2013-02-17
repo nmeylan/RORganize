@@ -1,0 +1,39 @@
+<%#
+# Author: Nicolas Meylan
+# Date: 30 sept. 2012
+# Encoding: UTF-8
+# File: show.html.erb
+%>
+
+<div class="contextual">
+  <h1><%= t(:label_user)+': '+@user.name%></h1>
+  <div class="splitcontentright">
+    <%= link_to t(:link_edit), {:action => 'edit', :id => @user.id}, {:class => 'icon icon-edit'} if current_user.allowed_to?('edit','users') %>
+    <%= link_to t(:link_delete), '#', {:class => 'icon icon-del', :onclick => "button_delete('#{user_path}')"} if current_user.allowed_to?('destroy','users')%>
+  </div>
+</div>
+
+<table class="detail" style="width:100%">
+  <tr>
+    <th style="width:15%"><%= t(:field_login) %> :</th><td style="width:30%"><%= @user.login%></td>
+    <th style="width:15%"><%= t(:label_created_at) %> :</th><td style="width:30%"><%= @user.created_at.to_formatted_s(:short) %></td>
+  </tr>
+  <tr>
+    <th style="width:15%"><%= t(:field_name) %> :</th><td style="width:30%"><%= @user.name %></td>
+    <th style="width:15%"><%= t(:label_current_sign_in) %> :</th><td style="width:30%"><%= @user.current_sign_in_at ? @user.current_sign_in_at.time.to_formatted_s(:short) : '-' %></td>
+  </tr>
+  <tr>
+    <th style="width:15%"><%= t(:field_email) %> :</th><td style="width:30%"><%= @user.email %></td>
+    <th style="width:15%"><%= t(:label_last_sign_in) %> :</th><td style="width:30%"><%= @user.last_sign_in_at ? @user.last_sign_in_at.time.to_formatted_s(:short) : '-' %></td>
+  </tr>
+  <tr>
+    <th style="width:15%"><%= t(:field_administrator) %> :</th><td style="width:30%"><%= @user.admin.to_s %></td>
+  </tr>
+</table>
+<% if @journals.any? %>
+  <div class="separator"></div>
+  <div id="history">
+    <h2><%= t(:label_history) %></h2>
+    <%= raw history_render(@journals) %>
+  </div>
+<% end %>

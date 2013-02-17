@@ -1,0 +1,1 @@
+.overlayInner #issues_content{max-height:400px;overflow:auto}.overlayInner #issues_content .list{margin-bottom:0px;margin-top:0px}#steps ul{list-style-type:none}

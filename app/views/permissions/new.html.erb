@@ -1,0 +1,15 @@
+<%#
+# Author: Nicolas Meylan
+# Date: 13 oct. 2012
+# Encoding: UTF-8
+# File: new.html.erb
+%>
+
+<div class="contextual">
+  <h1><%= t(:link_new_permission) %></h1>
+</div>
+
+<%= form_for @permission, :url => {:controller => 'permissions'}, :html => {:class => 'form'} do |f|%>
+  <%= render :partial => 'permissions/form', :locals => {:f => f} %>
+  <%= submit_tag t(:button_create) %>
+<% end %>

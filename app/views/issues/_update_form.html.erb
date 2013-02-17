@@ -1,0 +1,38 @@
+<%#
+# Author: Nicolas Meylan
+# Date: 29 juil. 2012
+# Encoding: UTF-8
+# File: _update_form.html.erb
+%>
+<%= form_for(@issue, :url => issue_path, :method => :put, :html => {:class => 'form'}) do |f|%>
+  <div class="splitcontentleft">
+    <% if current_user.allowed_to?('change_status','Issues',@project) %>
+      <div class="autocomplete-combobox cbb-medium nosearch">
+        <label for="issue_status"><%=t(:field_status)%><span class ="required"> *</span></label>
+        <%= f.select :status_id, @allowed_statuses.collect{|status| [status.enumeration.name, status.id]}, { :include_blank => false }, {:class => 'chzn-select cbb-medium'} %>
+      </div>
+    <% end %>
+    <% if current_user.allowed_to?('change_assigned','Issues',@project) %>
+      <div class="autocomplete-combobox cbb-medium nosearch">
+        <label for="issue_assigned_to"><%=t(:field_assigned_to)%><span class ="required"> *</span></label>
+        <%= f.select :assigned_to_id, @project.members.collect{|member| [member.user.name, member.user.id]}, { :include_blank => false }, {:class => 'chzn-select cbb-medium'} %>
+      </div>
+    <% end %>
+  </div>
+  <div class="splitcontentright">
+    <% if current_user.allowed_to?('change_progress','Issues',@project) %>
+    <div class="autocomplete-combobox cbb-small nosearch">
+      <label for="issue_done"><%=t(:field_done)%></label>
+      <%= f.select :done, @done_ratio.collect{|done| [done]}, { :include_blank => false }, {:class => 'chzn-select cbb-small'} %>
+    </div>
+    <% end %>
+  </div>
+  <div style="clear:both"></div>
+  <div style="clear:both"></div>
+  <p>
+    <%= label 'notes', t(:field_notes) %>
+    <%= text_area_tag 'notes', '', :rows => 12, :id => 'notes' %>
+  </p>
+  <%= submit_tag t(:button_submit) %>
+<% end %>
+<%= raw set_toolbar('notes') %>

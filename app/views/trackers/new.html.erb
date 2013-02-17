@@ -1,0 +1,15 @@
+<%#
+# Author: Nicolas Meylan
+# Date: 23 oct. 2012
+# Encoding: UTF-8
+# File: new.html.erb
+%>
+
+<div class="contextual">
+  <h1><%= t(:link_new_tracker)%></h1>
+</div>
+
+<%= form_for @tracker, :url => {:controller => 'trackers'}, :html => {:class => 'form'} do |f|%>
+  <%= render :partial => 'trackers/form', :locals => {:f => f} %>
+  <%= submit_tag t(:button_create) %>
+<% end %>

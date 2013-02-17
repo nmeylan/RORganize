@@ -1,0 +1,101 @@
+<%#
+# Author: Nicolas Meylan
+# Date: 15 juil. 2012
+# Encoding: UTF-8
+# File: show.html.erb
+%>
+
+<div class="contextual">
+  <h1><%= (@issue.tracker ? @issue.tracker.name : "-")+' : #'+@issue.id.to_s%></h1>
+  <div class="splitcontentright">
+    <%= link_to t(:link_new_issue), {:action => 'new', :project_id => @project.identifier}, {:class => 'icon icon-add'} if current_user.allowed_to?('new','Issues',@project) %>
+    <% if current_user.allowed_to?('edit','Issues',@project) &&
+        (@issue.author_id.eql?(current_user.id) || current_user.allowed_to?('edit not owner','Issues',@project)) %>
+      <%= link_to t(:link_edit), {:action => 'edit', :project_id => @project.identifier, :id => @issue.id}, {:class => 'icon icon-edit'}  %>
+    <% end %>
+    <%= link_to t(:link_update), '#update_issue', {:class => 'icon icon-update_issue', :id => 'update_issue_link'} %>
+    <%= link_to t(:link_checklist), '#', {:class => 'icon icon-checklist', :onclick => "jQuery('#checklist_overlay').overlay().load();"} if current_user.allowed_to?('checklist','Issues',@project) %>
+    <% if current_user.allowed_to?('destroy','Issues',@project) &&
+        (@issue.author_id.eql?(current_user.id) || current_user.allowed_to?('destroy not owner','Issues',@project)) %>
+    <%= link_to t(:link_delete), '#', {:class => 'icon icon-del', :onclick => "button_delete('#{issue_path}')"}  %>
+    <% end %>
+
+  </div>
+</div>
+
+<h2><%=@issue.subject%></h2>
+<%# TODO: link to user_name%>
+<p>
+  <em><%= t(:label_added)+' '+distance_of_time_in_words(@issue.created_at,Time.now)+' '+t(:label_ago)+', '+t(:label_by)+' '+@issue.author.name+'. '+(@issue.created_at.eql?(@issue.updated_at) ? '' : t(:label_updated)+' '+distance_of_time_in_words(@issue.updated_at,Time.now)+' '+t(:label_ago)+'. ').to_s%>
+  </em>
+</p>
+<table class="detail" style="width:100%">
+  <tr>
+    <th style="width:15%"><%= t(:field_status) %> :</th><td style="width:30%"><%= @issue.status ? @issue.status.enumeration.name : '-' %></td>
+    <th style="width:15%"><%= t(:field_due_date) %> :</th><td style="width:30%"><%= @issue.due_date ? @issue.due_date : '-' %></td>
+  </tr>
+  <tr>
+    <th style="width:15%"><%= t(:field_assigned_to) %> :</th><td style="width:30%"><%= @issue.assigned_to ? @issue.assigned_to.name : '-' %></td>
+    <th style="width:15%"><%= t(:field_estimated_time) %> :</th><td style="width:30%"><%= @issue.estimated_time ? @issue.estimated_time.to_s+'h' : '-' %></td>
+  </tr>
+  <tr>
+    <th style="width:15%"><%= t(:field_version) %> :</th><td style="width:30%"><%= @issue.version ? @issue.version.name : '-' %></td>
+    <th style="width:15%"><%= t(:field_done) %> :</th><td style="width:30%"><%= @issue.done ? @issue.done.to_s+'%' : '-' %></td>
+  </tr>
+  <tr>
+    <th style="width:15%"><%= t(:field_category) %> :</th><td style="width:30%"><%= @issue.category ? @issue.category.name : '-' %></td>
+  </tr>
+</table>
+<br/><hr /><br/>
+<h2><%= t(:field_description) %> :</h2>
+<%= raw !@issue.description.eql?('') ? textile_to_html(@issue.description) : '-' %>
+<%# if @checklist_items.any? %>
+<div class="separator"></div>
+<h2>Checklist :</h2>
+<ul class="checklist" id="ck_refresh">
+  <%= render :partial => 'issues/show_checklist' %>
+</ul>
+<span><h3><%= t(:link_edit) %> <%= link_to t(:link_checklist), '#', {:class => 'icon icon-checklist', :onclick => "jQuery('#checklist_overlay').overlay().load();"} %></h3>
+<%# end %>
+
+
+<%#= ATTACHMENT %>
+  <div id="attachments">
+    <%= render :partial => 'issues/show_attachments', :locals => {:attachments => @issue.attachments} %>
+  </div>
+
+  <% if @journals.any? %>
+    <div class="separator"></div>
+    <div id="history">
+      <h2><%= t(:label_history) %></h2>
+      <%= raw history_render(@journals) %>
+    </div>
+  <% end %>
+<%#*#TODO Ajouter controle permission%>
+  <div id="update_issue">
+    <div class="separator"></div>
+    <h2><%= t(:link_update) %></h2>
+    <div class="box">
+      <%= render :partial => 'issues/update_form' %>
+    </div>
+  </div>
+  <%= render :partial => 'issues/checklist_overlay' %>
+  <script type="text/javascript">
+
+    jQuery(document).ready(function() {
+      jQuery('a.lightbox').lightBox({
+        fixedNavigation:true,
+        imageLoading: "<%= asset_path 'lightbox-ico-loading.gif' %>",
+        imageBtnClose: "<%= asset_path 'lightbox-btn-close.gif' %>",
+        imageBtnPrev: "<%= asset_path 'lightbox-btn-prev.gif' %>",
+        imageBtnNext: "<%= asset_path 'lightbox-btn-next.gif' %>",
+        imageBlank: "<%= asset_path 'lightbox-blank.gif' %>",
+        containerResizeSpeed: 350
+      });
+      jQuery('#update_issue').hide();
+      createOverlay("#checklist_overlay", 150);
+    });
+    jQuery("#update_issue_link").click(function(){
+      jQuery('#update_issue').show();
+    });
+  </script>

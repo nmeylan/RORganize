@@ -1,0 +1,34 @@
+<%#
+# Author: Nicolas Meylan
+# Date: 14 déc. 2012
+# Encoding: UTF-8
+# File: _create_step_overlay.erb
+%>
+
+<div class="overlayOuter " id="create_issue_overlay_<%=step_id%>">
+  <div class="overlayInner form"  style="">
+    <form id="create_issue_form_<%=step_id%>">
+      <div class="box">
+        <p>
+          <label for="issue_subject"><%=t(:field_subject)%><span class ="required"> *</span></label>
+          <%= text_field_tag "issue[subject]", '',{:size => 80, :id => "#{step_id}_subject"} %>
+        </p>
+        <p>
+          <%= label_tag :description, t(:field_description) %>
+          <%= text_area_tag "issue[description]",'',{:rows => 12, :id => "#{step_id}_description"} %>
+        </p>
+        <div class="autocomplete-combobox cbb-medium nosearch">
+          <label for="issue_version"><%=t(:field_version)%></label>
+          <%= raw select_tag_versions("#{step_id}_issue_version_id", "issue[version_id]", "") %>
+        </div>
+        <div class="autocomplete-combobox cbb-medium nosearch">
+          <label for="issue_assigned_to"><%=t(:field_assigned_to)%><span class ="required"> *</span></label>
+          <%= select_tag "issue[assigned_to_id]", options_from_collection_for_select(@users,"id","name"), { :include_blank => false,:class => 'chzn-select cbb-medium', :id => "#{step_id}_select"} %>
+        </div>
+      </div>
+      <%= submit_tag t(:button_create), :class =>"save_new_issue" %>
+      <input type="button" id="" class="close" value="<%= t(:button_close)  %>">
+    </form>
+  </div>
+</div>
+<%= raw set_toolbar("#{step_id}_description") %>

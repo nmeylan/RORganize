@@ -1,0 +1,27 @@
+<%#
+# Author: Nicolas Meylan
+# Date: 23 oct. 2012
+# Encoding: UTF-8
+# File: _list.html.erb
+%>
+
+<div id="trackers_content">
+  <table class="tracker list">
+    <tr class="header">
+      <th></th>
+      <th>Name</th>
+    </tr>
+    <% @trackers.each do |tracker| %>
+      <tr class="odd_even">
+        <%url = trackers_path.to_s+'/'+tracker.id.to_s %>
+        <td><%= link_to t(:link_delete), '#', {:class => 'icon icon-del', :onclick => "button_delete('#{url}')"} if current_user.allowed_to?('destroy','Trackers') %></td>
+        <td class="list_center name"><% if current_user.allowed_to?('edit','Trackers') %>
+                              <%= link_to tracker.name, :controller => 'trackers', :action => 'edit', :id => tracker.id %>
+                              <% else %>
+                                <%= tracker.name %>
+                              <% end %>
+        </td>
+      </tr>
+    <%end%>
+  </table>
+</div>

@@ -1,0 +1,28 @@
+<%#
+# Author: Nicolas Meylan
+# Date: 12 oct. 2012
+# Encoding: UTF-8
+# File: index.html.erb
+%>
+
+<div class="contextual">
+  <h1><%= t(:link_permissions) %></h1>
+  <div class="splitcontentright">
+    <%= link_to t(:link_new_permission), {:action => 'new'}, {:class => 'icon icon-add'} if current_user.allowed_to?('new','Permissions') %>
+  </div>
+</div>
+
+<%= t(:text_choose_role) %>:
+
+<ul>
+  <% @roles.each do |role| %>
+    <li>
+      <% if current_user.allowed_to?('list','Permissions') %>
+        <%= link_to role.name, {:action => 'list', :role_name => role.name.gsub(" ", "_")} %>
+      <% else %>
+        <%= role.name %>
+      <% end %>
+    </li>
+  <% end %>
+
+</ul>

@@ -1,0 +1,27 @@
+<%#
+# Author: Nicolas Meylan
+# Date: 23 oct. 2012
+# Encoding: UTF-8
+# File: _list.html.erb
+%>
+
+<div id="roles_content">
+  <table class="role list">
+    <tr class="header">
+      <th></th>
+      <th>Name</th>
+    </tr>
+    <% @roles.each do |role| %>
+      <tr class="odd_even">
+        <%url = roles_path.to_s+'/'+role.id.to_s %>
+        <td><%= link_to t(:link_delete), '#', {:class => 'icon icon-del', :onclick => "button_delete('#{url}')"} if current_user.allowed_to?('destroy','Roles') %></td>
+        <td class="list_center name"><% if current_user.allowed_to?('edit','Roles') %>
+            <%= link_to role.name, :controller => 'roles', :action => 'edit', :id => role.id %>
+          <% else %>
+            <%= role.name %>
+          <% end %>
+        </td>
+      </tr>
+    <%end%>
+  </table>
+</div>

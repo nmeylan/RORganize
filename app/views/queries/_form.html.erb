@@ -1,0 +1,35 @@
+<%#
+# Author: Nicolas Meylan
+# Date: 5 févr. 2013
+# Encoding: UTF-8
+# File: _form.html.erb
+%>
+
+<%= form_for @query, :url => {:controller => "queries", :project_id => @project.identifier} , :html => {:class => 'form', :remote => true} do |f|%>
+  <div class="box">
+    <p style="padding-right: 3px;">
+      <label for="query_name"><%=t(:field_name)%><span class ="required"> *</span></label>
+      <%= f.text_field :name, :size => 80 %>
+    </p>
+    <p style="padding-right: 3px;">
+      <%= f.label :description %>
+      <%= f.text_area :description, :rows => 12 %>
+    </p>
+    <% if current_user.allowed_to?('public_queries','Queries',@project) %>
+      <p>
+        <%= f.label :is_public %>
+        <%= f.check_box :is_public%>
+      </p>
+    <% else %>
+      <%= hidden_field :query, :is_public, {:value => false} %>
+    <% end %>
+    <p>
+      <%= f.label :is_for_all %>
+      <%= f.check_box :is_for_all%>
+    </p>
+    <%= hidden_field :query, :object_type%>
+  </div>
+  <%= submit_tag t(:button_save), {:onclick => "jQuery('#create_query_overlay').overlay().close()"} %>
+  <input type="button" onclick ="jQuery('#create_query_overlay').overlay().close()" class="close" value="<%= t(:button_close)  %>">
+<% end %>
+<%= raw set_toolbar("query_description") %>

@@ -1,0 +1,29 @@
+<%#
+# Author: Nicolas Meylan
+# Date: 31 déc. 2012
+# Encoding: UTF-8
+# File: _list.html.erb
+%>
+<div id="scenarios_content">
+  <% if @scenarios.any?  %>
+    <table class="scenario list">
+      <tr class="header">
+        <th><%= sortable 'scenarios.id', '#'%></th>
+        <th><%= sortable 'enumerations.name', 'Actor'%></th>
+        <th><%= sortable 'scenarios.name', 'Name'%></th>
+        <th><%= sortable 'versions.name', 'Target phase' %></th>
+      </tr>
+      <% @scenarios.each do |scenario| %>
+        <tr class="odd_even issue_tr">
+
+          <td class="list_center id"><%= scenario.id %></td>
+          <td class="list_center actor"><%= scenario.actor ? scenario.actor.name : '-' %></td>
+          <td class="name"><%= link_to scenario.name,  scenarios_route.scenario_path(@project.identifier,scenario.id)%></td>
+          <td class="list_center version"><%= scenario.version ? scenario.version.name : '-' %></td>
+        </tr>
+      <%end%>
+    </table>
+  <% else %>
+    <h2><%= t(:text_no_data) %></h2>
+  <% end %>
+</div>

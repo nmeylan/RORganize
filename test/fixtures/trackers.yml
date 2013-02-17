@@ -1,0 +1,13 @@
+---
+trackers_001:
+  id: 1
+  is_in_chlog: 1
+  is_in_roadmap: 1
+  name: Task
+  position: 1
+trackers_002:
+  id: 2
+  is_in_chlog: 1
+  is_in_roadmap: 1
+  name: Bug
+  position: 2

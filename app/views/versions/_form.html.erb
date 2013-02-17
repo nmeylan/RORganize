@@ -1,0 +1,30 @@
+<%#
+# Author: Nicolas Meylan
+# Date: 15 août 2012
+# Encoding: UTF-8
+# File: _version_form.html.erb
+%>
+
+<%= raw error_messages(@version.errors.full_messages) %>
+<div class="box">
+  <p>
+    <label for="version_name"><%=t(:field_name)%><span class ="required"> *</span></label>
+    <%= f.text_field :name, :size => 80 %>
+  </p>
+  <p>
+    <%= f.label :description, t(:field_description) %>
+    <%= f.text_area :description, :rows => 12 %>
+  </p>
+  <div class="splitcontentleft">
+    <p>
+    <label for="version_target_date"><%=t(:field_target_date)%></label>
+      <%= f.text_field :target_date, :size => 6, :id => 'calendar' %>
+    </p>
+  </div>
+  <div style="clear:both"></div>
+</div>
+
+<%= raw set_toolbar('version_description') %>
+<script type="text/javascript">
+  jQuery('#calendar').datepicker({dateFormat: 'dd/mm/yy'});
+</script>

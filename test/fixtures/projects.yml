@@ -1,0 +1,62 @@
+---
+projects_001:
+  id: 1
+  name: RORganize
+  description: ! "_Started on June 20 2012_\r\n\r\nh2. Overview\r\n\r\nRORganize is
+    a web application based on Ruby on Rails framework.\r\nRORganize was inspired
+    by the project manager application: Redmine.\r\n\r\nRORganize is a bugs and issue-tracking
+    app, which integrate additional tools such as:\r\n\r\n* Testing tool (test your
+    developpment and update your issues with test's result)\r\n* Scenario creation
+    (create your scenario will help you to generate issues)\r\n* Issues' checklist
+    (detail the step of your issues)\r\n* Wiki pages for each project (add some informations
+    about the project to help your team mates)\r\n* Projects’ activities tracking
+    (follow projects' progress)\r\n* Simply roles and permissions management (each
+    roles' permissions can be customized)\r\n* Time tracking (look where you waste
+    your time)\r\n* Repository integration (integrate your repository to update your
+    issues' progress)\r\n* Activities notifications (follow in real time each project's
+    activities)\r\n* Internal chat (your team mate is working, ask him anything!)\r\n*
+    Personnal permission(you can customise permissions for each users independent
+    of the project where they work)\r\n* And more …"
+  identifier: RORganize
+  created_at: 2012-07-01 14:25:02.000000000 Z
+  updated_at: 2012-10-19 20:08:17.000000000 Z
+projects_002:
+  id: 3
+  name: Project test
+  description: ''
+  identifier: Project-Test
+  created_at: 2012-07-06 20:18:54.000000000 Z
+  updated_at: 2012-07-06 20:18:54.000000000 Z
+projects_003:
+  id: 4
+  name: Project description
+  description: ! "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed mattis
+    ante at leo iaculis malesuada. In non quam orci. Fusce eu risus mi, eu imperdiet
+    quam. In hac habitasse platea dictumst. Suspendisse ut nisi eros. Sed facilisis
+    adipiscing ligula, quis molestie sapien pretium vitae. Pellentesque varius sollicitudin
+    pulvinar. Aliquam diam nisi, ultrices at porttitor vitae, imperdiet vitae ligula.
+    Vivamus volutpat porta augue, vel malesuada velit posuere a. Pellentesque consequat
+    tincidunt hendrerit.\r\n\r\nVestibulum ante ipsum primis in faucibus orci luctus
+    et ultrices posuere cubilia Curae; Integer fringilla laoreet tincidunt. In at
+    sem id nisi ornare placerat sed et tellus. Vestibulum non risus faucibus massa
+    dapibus feugiat in nec enim. Mauris sit amet quam nibh. Donec ullamcorper mattis
+    tincidunt. Etiam varius porttitor mauris quis dapibus. Donec vehicula ultrices
+    arcu, id condimentum velit bibendum ut. Aenean tincidunt quam ut elit aliquet
+    a eleifend orci adipiscing. Cras purus nibh, euismod et ornare quis, aliquam vel
+    tellus.\r\n\r\nMaecenas id risus id augue egestas aliquet. Sed adipiscing rhoncus
+    dolor, sed tincidunt odio tincidunt vulputate. Vestibulum vel consectetur nulla.
+    Ut scelerisque libero sed nibh posuere at mollis elit fermentum. Praesent cursus,
+    lorem a imperdiet accumsan, dui lorem volutpat mauris, vitae adipiscing felis
+    metus a diam. Donec vitae est magna. Nam rutrum placerat sapien sed bibendum.
+    Aliquam volutpat, orci vitae faucibus blandit, nibh nisi dictum eros, quis blandit
+    eros dolor eu arcu.\r\n\r\nProin arcu massa, semper at dapibus pharetra, pellentesque
+    sit amet urna. Proin tristique justo nec nulla vulputate vitae rutrum felis ultrices.
+    Aliquam erat volutpat. Praesent aliquam facilisis mauris, ac eleifend tortor iaculis
+    id. Fusce commodo laoreet semper. Morbi accumsan lorem id massa mattis eget bibendum
+    nisl lobortis. Suspendisse potenti. Vestibulum nec ante risus, ac blandit ligula.
+    Morbi ultrices, massa in semper suscipit, nunc diam commodo mi, eu consectetur
+    metus augue at ligula. Fusce eu magna nec purus porta volutpat eu tristique sapien.
+    In aliquam faucibus pulvinar. Suspendisse potenti."
+  identifier: ProDesc
+  created_at: 2012-07-06 20:37:31.000000000 Z
+  updated_at: 2012-07-06 20:37:31.000000000 Z

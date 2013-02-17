@@ -1,0 +1,53 @@
+<%#
+# Author: Nicolas Meylan
+# Date: 8 déc. 2012
+# Encoding: UTF-8
+# File: _issue_overlay.erb
+%>
+<div class="overlayOuter " id="step_issue_overlay_<%=step_id%>">
+  <div class="overlayInner" style="">
+    <div id="issues_content">
+
+      [%if(_.isArray(options)){%]
+      <table class="issue_overlay list">
+        <tr class="header">
+          <th><%= link_to '', '#', {:class => 'icon icon-checked', :id => 'check_all', 'cb_checked' => "b"} %></th>
+          <th>#</th>
+          <th>Subject</th>
+        </tr>
+        [% _.each(options, function(issue){ %]
+        <tr class="odd_even issue_tr">
+          <td><%= check_box_tag 'issue-'+"[%= issue.id %]", "[%= issue.id %]" %></td>
+          <td class="list_center id">[% issue.id %]</td>
+          <td class="subject">
+            <%= link_to "[%= issue.subject %]", {:action => 'show', :controller => 'issues', :id => "[%= issue.id %]"}, {:id => "[%= issue.id %]"} %>
+          </td>
+        </tr>
+
+        [% }); %]
+      </table>
+      [%}else{%]
+      <% if @issues.any?  %>
+        <table class="issue_overlay list">
+          <tr class="header">
+            <th><%= link_to '', '#', {:class => 'icon icon-checked', :id => 'check_all', 'cb_checked' => "b"} %></th>
+            <th>#</th>
+            <th>Subject</th>
+          </tr>
+          <% @issues.each do |issue| %>
+            <tr class="odd_even issue_tr">
+              <td><%= check_box_tag 'issue-'+issue.id.to_s, issue.id %></td>
+              <td class="list_center id"><%= issue.id %></td>
+              <td class="subject"><%= link_to issue.subject, {:action => 'show', :controller => 'issues', :id => issue.id}, {:id => issue.id} %></td>
+            </tr>
+          <%end%>
+        </table>
+      <% else %>
+        <h2><%= t(:text_no_data) %></h2>
+      <% end %>
+      [%}%]
+
+    </div>
+    <input type="button" id="" class="close save_issues" value="<%= t(:link_add)  %>">
+  </div>
+</div>

@@ -1,0 +1,16 @@
+<%#
+# Author: Nicolas Meylan
+# Date: 30 sept. 2012
+# Encoding: UTF-8
+# File: index.html.erb
+%>
+
+<div class="contextual">
+  <h1><%= t(:label_setting_plural) %> - <%= t(:link_members) %></h1>
+  <div class="splitcontentright">
+    <%= link_to t(:link_add_member), '#', {:class => 'icon icon-add', :onclick => "jQuery('#add_member_overlay').overlay().load();"} if current_user.allowed_to?('add_member','Members',@project)%>
+  </div>
+</div>
+<%= render :partial => 'settings/sidebar' %>
+<%= render :partial => 'members/list' %>
+

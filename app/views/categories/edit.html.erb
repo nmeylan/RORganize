@@ -1,0 +1,15 @@
+<%#
+# Author: Nicolas Meylan
+# Date: 16 août 2012
+# Encoding: UTF-8
+# File: version_edit.html.erb
+%>
+
+<div class="contextual">
+  <h1><%= t(:label_setting_plural) %> - <%= t(:link_categories) %></h1>
+</div>
+<%= form_for @category, :url => category_path, :method => :put, :html => {:class => 'form'} do |f|%>
+<%= render :partial => 'categories/form', :locals => {:f => f} %>
+<%= submit_tag t(:button_save) %>
+<% end %>
+<%= render :partial => 'settings/sidebar' %>

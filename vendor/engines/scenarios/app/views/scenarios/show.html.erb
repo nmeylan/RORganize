@@ -1,0 +1,49 @@
+<%#
+# Author: Nicolas Meylan
+# Date: 23 déc. 2012
+# Encoding: UTF-8
+# File: show.html.erb
+%>
+
+<div class="contextual">
+  <h1><%= t(:label_scenarios) %> : <%= @scenario.id.to_s %></h1>
+  <div class="splitcontentright">
+    <%= link_to t(:link_edit_scenario), scenarios_route.edit_scenario_path(@project.identifier, @scenario.id), {:class => 'icon icon-add'} if current_user.allowed_to?('edit','Scenarios',@project) %>
+  </div>
+
+</div>
+
+<h2><%=@scenario.name%></h2>
+<p>
+  <em><%= t(:label_added)+' '+distance_of_time_in_words(@scenario.created_at,Time.now)+' '+t(:label_ago)+'. '+(@scenario.created_at.eql?(@scenario.updated_at) ? '' : t(:label_updated)+' '+distance_of_time_in_words(@scenario.updated_at,Time.now)+' '+t(:label_ago)+'. ').to_s%>
+  </em>
+</p>
+<table class="detail" style="width:100%">
+  <tr>
+    <th style="width:10%"><%= t(:field_actor) %> :</th><td style="width:90%"><%= @scenario.actor ? @scenario.actor.name : '-' %></td>
+  </tr>
+  <tr>
+    <th style="width:10%"><%= t(:text_number_of_step) %> :</th><td style="width:90%"><%= @scenario.steps.size %></td>
+  </tr>
+  <tr>
+    <th style="width:10%"><%= t(:field_version) %> :</th><td style="width:90%"><%= @scenario.version ? @scenario.version.name : '-' %></td>
+  </tr>
+</table>
+<br/><hr /><br/>
+<h2><%= t(:field_description) %> :</h2>
+<%= raw !@scenario.description.eql?('') ? textile_to_html(@scenario.description) : '-' %>
+<br/><hr /><br/>
+<h2><%= t(:field_steps) %> :</h2>
+<ul>
+  <% @scenario.steps.each do |step| %>
+    <li><%= step.name %></li>
+    <ul>
+      <% step.issues.each do |issue| %>
+        <li>
+          <%= issue.id %> : <%= link_to issue.subject, issue_path(issue.id) %>
+        </li>
+      <% end %>
+    </ul>
+    <br/>
+  <% end %>
+</ul>

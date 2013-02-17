@@ -1,0 +1,19 @@
+<%#
+# Author: Nicolas Meylan
+# Date: 7 juil. 2012
+# Encoding: UTF-8
+# File: activity.erb
+%>
+
+<div class="contextual">
+  <h1><%= t(:label_activity) %></h1>
+</div>
+<%= raw  activities_ary(@issues_activity) %>
+
+<%= render :partial => 'project/activity_overlay' %>
+<script type="text/javascript">
+  activities_overlay("<%=url_for(:action => 'load_journal_activity', :controller => 'project', :project_id => @project.identifier)%>");
+  jQuery(document).ready(function(e) {
+    createOverlay("#activity_overlay", 150);
+  });
+</script>

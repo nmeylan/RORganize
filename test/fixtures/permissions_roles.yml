@@ -1,0 +1,217 @@
+---
+permissions_roles_001:
+  permission_id: 73
+  role_id: 1
+permissions_roles_002:
+  permission_id: 74
+  role_id: 1
+permissions_roles_003:
+  permission_id: 75
+  role_id: 1
+permissions_roles_004:
+  permission_id: 76
+  role_id: 1
+permissions_roles_005:
+  permission_id: 77
+  role_id: 1
+permissions_roles_006:
+  permission_id: 78
+  role_id: 1
+permissions_roles_007:
+  permission_id: 79
+  role_id: 1
+permissions_roles_008:
+  permission_id: 80
+  role_id: 1
+permissions_roles_009:
+  permission_id: 92
+  role_id: 1
+permissions_roles_010:
+  permission_id: 93
+  role_id: 1
+permissions_roles_011:
+  permission_id: 94
+  role_id: 1
+permissions_roles_012:
+  permission_id: 95
+  role_id: 1
+permissions_roles_013:
+  permission_id: 96
+  role_id: 1
+permissions_roles_014:
+  permission_id: 87
+  role_id: 1
+permissions_roles_015:
+  permission_id: 88
+  role_id: 1
+permissions_roles_016:
+  permission_id: 89
+  role_id: 1
+permissions_roles_017:
+  permission_id: 90
+  role_id: 1
+permissions_roles_018:
+  permission_id: 91
+  role_id: 1
+permissions_roles_019:
+  permission_id: 83
+  role_id: 1
+permissions_roles_020:
+  permission_id: 84
+  role_id: 1
+permissions_roles_021:
+  permission_id: 85
+  role_id: 1
+permissions_roles_022:
+  permission_id: 86
+  role_id: 1
+permissions_roles_023:
+  permission_id: 108
+  role_id: 1
+permissions_roles_024:
+  permission_id: 109
+  role_id: 1
+permissions_roles_025:
+  permission_id: 110
+  role_id: 1
+permissions_roles_026:
+  permission_id: 112
+  role_id: 1
+permissions_roles_027:
+  permission_id: 81
+  role_id: 1
+permissions_roles_028:
+  permission_id: 82
+  role_id: 1
+permissions_roles_029:
+  permission_id: 73
+  role_id: 2
+permissions_roles_030:
+  permission_id: 74
+  role_id: 2
+permissions_roles_031:
+  permission_id: 158
+  role_id: 1
+permissions_roles_032:
+  permission_id: 159
+  role_id: 1
+permissions_roles_033:
+  permission_id: 160
+  role_id: 1
+permissions_roles_034:
+  permission_id: 161
+  role_id: 1
+permissions_roles_035:
+  permission_id: 162
+  role_id: 1
+permissions_roles_036:
+  permission_id: 163
+  role_id: 1
+permissions_roles_037:
+  permission_id: 164
+  role_id: 1
+permissions_roles_038:
+  permission_id: 165
+  role_id: 1
+permissions_roles_039:
+  permission_id: 166
+  role_id: 1
+permissions_roles_040:
+  permission_id: 167
+  role_id: 1
+permissions_roles_041:
+  permission_id: 168
+  role_id: 1
+permissions_roles_042:
+  permission_id: 180
+  role_id: 1
+permissions_roles_043:
+  permission_id: 181
+  role_id: 1
+permissions_roles_044:
+  permission_id: 182
+  role_id: 1
+permissions_roles_045:
+  permission_id: 183
+  role_id: 1
+permissions_roles_046:
+  permission_id: 184
+  role_id: 1
+permissions_roles_047:
+  permission_id: 175
+  role_id: 1
+permissions_roles_048:
+  permission_id: 176
+  role_id: 1
+permissions_roles_049:
+  permission_id: 177
+  role_id: 1
+permissions_roles_050:
+  permission_id: 178
+  role_id: 1
+permissions_roles_051:
+  permission_id: 179
+  role_id: 1
+permissions_roles_052:
+  permission_id: 171
+  role_id: 1
+permissions_roles_053:
+  permission_id: 172
+  role_id: 1
+permissions_roles_054:
+  permission_id: 173
+  role_id: 1
+permissions_roles_055:
+  permission_id: 174
+  role_id: 1
+permissions_roles_056:
+  permission_id: 197
+  role_id: 1
+permissions_roles_057:
+  permission_id: 198
+  role_id: 1
+permissions_roles_058:
+  permission_id: 199
+  role_id: 1
+permissions_roles_059:
+  permission_id: 201
+  role_id: 1
+permissions_roles_060:
+  permission_id: 169
+  role_id: 1
+permissions_roles_061:
+  permission_id: 170
+  role_id: 1
+permissions_roles_062:
+  permission_id: 158
+  role_id: 2
+permissions_roles_063:
+  permission_id: 159
+  role_id: 2
+permissions_roles_064:
+  permission_id: 160
+  role_id: 2
+permissions_roles_065:
+  permission_id: 161
+  role_id: 2
+permissions_roles_066:
+  permission_id: 162
+  role_id: 2
+permissions_roles_067:
+  permission_id: 163
+  role_id: 2
+permissions_roles_068:
+  permission_id: 164
+  role_id: 2
+permissions_roles_069:
+  permission_id: 165
+  role_id: 2
+permissions_roles_070:
+  permission_id: 166
+  role_id: 2
+permissions_roles_071:
+  permission_id: 167
+  role_id: 2
+permissions_roles_072:
+  permission_id: 168
+  role_id: 2

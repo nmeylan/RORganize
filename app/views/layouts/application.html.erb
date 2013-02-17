@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>RORganize</title>
+<%#= JS Files %>
+    <%= javascript_include_tag "application" %>
+    <%= javascript_include_tag "underscore-min"%>
+    <%= javascript_include_tag "chosen.jquery.min" %>
+    <%= javascript_include_tag "jquery-ui-1.8.21.custom.min" %>
+    <%= javascript_include_tag "jquery.livequery" %>
+    <%= javascript_include_tag "markitup.min" %>
+    <%= javascript_include_tag "textile_toolbar" %>
+    <%= javascript_include_tag "jquery.tools.min" %>
+    <%= javascript_include_tag "jquery.jeegoocontext.min" %>
+    <%= javascript_include_tag "apprise-1.5.min"%>
+    <%= javascript_include_tag "jquery.lightbox-0.5.min"%>
+    <%= javascript_include_tag "prototype.js" %>
+
+    <%= javascript_include_tag "backbone-min"%>
+    <%= javascript_include_tag "jquery.jgrowl_minimized"%>
+
+<%#= Engines files %>
+
+<%#= CSS Files %>
+    <%= stylesheet_link_tag    "textile_toolbar_style" %>
+    <%= stylesheet_link_tag    "toolbar_style" %>
+    <%= stylesheet_link_tag    "jquery.lightbox-0.5" %>
+    <%= stylesheet_link_tag    "impress" %>
+    <%= stylesheet_link_tag    "toolbox" %>
+    <%= stylesheet_link_tag    "application" %>
+    <%= stylesheet_link_tag    "pagination" %>
+    <%= stylesheet_link_tag    "apprise.min" %>
+    <%= stylesheet_link_tag    "jquery.jgrowl" %>
+<%#= Engines files %>
+    <%= stylesheet_link_tag    "scenarios/application"  %>
+
+    <%= csrf_meta_tags %>
+  </head>
+  <body>
+<%# HACK quick and dirty =( %>
+
+    <%session["act_as"] ||= "User" %>
+    <% current_user.act_as_admin(session["act_as"]) if current_user && session["act_as"] != current_user.act_as_admin_session%>
+    <div id="top_menu"><%= render :partial => 'layouts/top_menu' %></div>
+    <div id="header"><h1><%= @project ? @project.name : 'RORganize' %></h1></div>
+    <% if display_menu?(@project) %>
+      <%= render :partial => 'layouts/main_menu' %>
+    <% end %>
+    <%= tag('div', {:id => 'main', :class => (sidebar_content? ? '' : 'nosidebar')}, true) %>
+    <%= render :partial => 'flashs/flash' %>
+    <div id="sidebar">
+      <%= yield :sidebar %>
+    </div>
+    <div id="content">
+      <%= yield %>
+    </div>
+  </div>
+  <div id="loading"><p>Loading...<img src="/assets/loading.gif"/></p></div>
+  <div id="debug">
+  </div>
+  <div id="footer">Project manager 2012 by Nicolas Meylan</div>
+</body>
+
+<script type="text/javascript">
+  (function($){
+    $(document).ready(function(){
+      // hide flash messages
+      display_flash();
+
+    });
+    $(".chzn-select").chosen();
+    $(".chzn-select-deselect").chosen({allow_single_deselect:true});
+    $(document).ajaxComplete(function(e, xhr, options) {
+      $(".chzn-select").chosen();
+      $("#loading").hide();
+      if(xhr.getResponseHeader('flash-message')){
+        $.jGrowl(xhr.getResponseHeader('flash-message'), {
+          theme: 'success'
+        });
+      }
+      if(xhr.getResponseHeader('flash-error-message')){
+        $.jGrowl(xhr.getResponseHeader('flash-error-message'), {
+          theme: 'failure'
+        });
+      }
+    });
+    $(document).ajaxSend(function(e, xhr, options) {
+      $("#loading").show();
+      var token = $("meta[name='csrf-token']").attr("content");
+      xhr.setRequestHeader("X-CSRF-Token", token);
+    });
+  })(jQuery);
+
+</script>
+</html>

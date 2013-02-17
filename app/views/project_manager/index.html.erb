@@ -1,0 +1,17 @@
+<%#
+ Author: Nicolas Meylan
+%>
+
+<%# Overview%>
+<h1><%=t (:label_overview)%></h1>
+ <%= raw textile_to_html(@project_m.description) %>
+
+<%# Changelog%>
+<h1><%=t (:label_changelog)%></h1>
+
+  <% @changelogs.each do |changelog| %>
+    <h2 style="margin-left: 20px"><%= changelog.version.name %></h2>
+      <ul>
+        <li><%= changelog.enumeration.name %> : <%= changelog.description %></li>
+      </ul>
+  <%end%>

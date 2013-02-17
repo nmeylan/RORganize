@@ -1,0 +1,15 @@
+<%#
+# Author: Nicolas Meylan
+# Date: 7 déc. 2012
+# Encoding: UTF-8
+# File: index.html.erb
+%>
+
+<div class="contextual">
+  <h1><%= t(:label_scenarios) %></h1>
+  <div class="splitcontentright">
+    <%= link_to t(:link_new_scenario), {:action => 'new', :project_id => @project.identifier}, {:class => 'icon icon-add'} if current_user.allowed_to?('new','Scenarios',@project) %>
+  </div>
+
+</div>
+<%= render :partial => "scenarios/list" %>

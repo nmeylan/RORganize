@@ -1,0 +1,19 @@
+<%#
+# Author: Nicolas Meylan
+# Date: 15 août 2012
+# Encoding: UTF-8
+# File: sidebar.html.erb
+%>
+
+<%= content_for :sidebar do %>
+  <h2><%= t(:label_request_plural) %></h2>
+  <ul>
+    <li><%= link_to t(:link_view_all)+' '+t(:label_request_plural), :url => {:action => 'index', :controller => 'issues'}  %></li>
+    <li><%= link_to 'Report', '#'%></li>
+  </ul>
+  <div id="custom_queries">
+    <%= render :partial => "issues/custom_queries" if current_user.allowed_to?('apply_custom_query','Issues',@project)%>
+  </div>
+
+<% end %>
+

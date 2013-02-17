@@ -1,0 +1,25 @@
+<%#
+# Author: Nicolas Meylan
+# Date: 8 déc. 2012
+# Encoding: UTF-8
+# File: _form.html.erb
+%>
+
+<%= raw error_messages(@scenario.errors.full_messages) %>
+
+
+<%= render :partial => "scenarios/scenario_form" %>
+<%= render :partial => "scenarios/steps_form" %>
+<%= hidden_field_tag "project_id", @project.identifier, :id => "project_id" %>
+
+<%= hidden_field_tag "source_step", "", :id => "source_step" %>
+<%= raw set_toolbar('scenario_description') %>
+
+
+
+<script type="text/javascript">
+  //overlay behaviours
+
+  
+
+</script>

@@ -1,0 +1,15 @@
+<%#
+# Author: Nicolas Meylan
+# Date: 2 févr. 2013
+# Encoding: UTF-8
+# File: _sidebar.html.erb
+%>
+<%= content_for :sidebar do %>
+  <h2><%= t(:link_versions) %></h2>
+  <ul>
+    <% @versions.each do |version| %>
+    <li><%= link_to version.name, "#v-#{version.id ? version.id : "unplanned"}" %></li>
+    <% end %>
+  </ul>
+
+<% end %>

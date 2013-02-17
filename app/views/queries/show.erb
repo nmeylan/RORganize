@@ -1,0 +1,27 @@
+<%#
+# Author: Nicolas Meylan
+# Date: 8 févr. 2013
+# Encoding: UTF-8
+# File: show.erb
+%>
+<div class="contextual">
+  <h1><%= t(:label_query) %>: #<%= @query.id %></h1>
+  <div class="splitcontentright">
+    <%= link_to t(:link_edit), edit_query_path(@query.id), {:class => "icon icon-edit"} if current_user.allowed_to?('edit','Queries') %>
+  </div>
+</div>
+<table class="detail" style="width:100%">
+  <tr>
+    <th style="width:10%"><%= t(:field_name) %> :</th><td style="width:90%"><%= @query.name %></td>
+  </tr>
+  <tr>
+    <th style="width:10%"><%= t(:field_is_public) %> :</th><td style="width:90%"><%= @query.is_public %></td>
+  </tr>
+  <tr>
+    <th style="width:10%"><%= t(:field_is_for_all) %> :</th><td style="width:90%"><%= @query.is_for_all %></td>
+  </tr>
+</table>
+
+<br/><hr /><br/>
+<h2><%= t(:field_description) %> :</h2>
+<%= raw !@query.description.eql?('') ? textile_to_html(@query.description) : '-' %>

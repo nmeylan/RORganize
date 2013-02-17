@@ -1,0 +1,53 @@
+<%#
+# Author: Nicolas Meylan
+# Date: 15 août 2012
+# Encoding: UTF-8
+# File: sidebar.html.erb
+%>
+
+<%=  content_for :sidebar do %>
+  <ul class="tabs">
+    <li controller="settings" action="index"><%= link_to t(:link_update_informations),:controller => 'settings', :action => 'index', :project_id => @project.identifier %></li>
+    <% if current_user.allowed_to?('index','Versions',@project) %>
+      <li controller="versions">
+        <%= link_to t(:link_versions),
+          :controller => 'versions',
+          :action => 'index',
+          :project_id => @project.identifier %>
+      </li>
+    <% end %>
+    <% if current_user.allowed_to?('index','Categories',@project) %>
+      <li controller="categories">
+        <%= link_to t(:link_categories),
+          :controller => 'categories',
+          :action => 'index',
+          :project_id => @project.identifier %>
+      </li>
+    <% end %>
+    <% if current_user.allowed_to?('index','Members',@project)%>
+      <li controller="members">
+        <%= link_to t(:link_members),
+          :controller => 'members',
+          :action => 'index',
+          :project_id => @project.identifier %>
+      </li>
+    <% end %>
+    <% if current_user.allowed_to?('public_queries', 'Queries', @project) %>
+      <li controller="settings" action="view_queries">
+          <%= link_to t(:link_queries),
+            {:action => "public_queries",
+            :controller => "settings",
+            :project_id => @project.identifier} %>
+      </li>
+    <% end %>
+    <li controller="settings" action="repository"><%= link_to t(:link_repository),'#' %></li>
+  </ul>
+<% end %>
+
+<script type="text/javascript">
+<% if controller.controller_name.eql?("settings") %>
+    jQuery("#sidebar li[controller='<%=controller.controller_name%>'][action='<%=controller.action_name%>']").toggleClass("selected");
+<% else %>
+    jQuery("#sidebar li[controller='<%=controller.controller_name%>']").toggleClass("selected");
+<%  end %>
+</script>

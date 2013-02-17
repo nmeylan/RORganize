@@ -1,0 +1,33 @@
+<%#
+# Author: Nicolas Meylan
+# Date: 15 août 2012
+# Encoding: UTF-8
+# File: _categories_list.html.erb
+%>
+
+<div id="categories_content">
+  <table class="category list">
+    <tr class="header">
+      <th>Name</th>
+      <th></th>
+    </tr>
+    <% @categories.each do |category| %>
+      <tr class="odd_even">
+        <%url = categories_path.to_s+'/'+category.id.to_s %>
+
+        <td class="list_center name">
+          <% if current_user.allowed_to?('edit','Categories',@project) %>
+            <%= link_to category.name, :controller => 'categories', :action => 'edit', :id => category.id %>
+          <% else %>
+            <%= category.name %>
+          <% end %>
+        </td>
+        <td class="action">
+          <% if current_user.allowed_to?('destroy','Categories',@project) %>
+            <%= link_to t(:link_delete), '#', {:class => 'icon icon-del', :onclick => "button_delete('#{url}')"} %>
+          <% end %>
+        </td>
+      </tr>
+    <%end%>
+  </table>
+</div>

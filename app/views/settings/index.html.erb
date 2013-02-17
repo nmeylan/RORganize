@@ -1,0 +1,12 @@
+<%#
+# Author: Nicolas Meylan
+# Date: 13 août 2012
+# Encoding: UTF-8
+# File: index.html.erb
+%>
+
+<div class="contextual">
+  <h1><%= t(:label_setting_plural) %> - <%= t(:link_update_informations) %></h1>
+</div>
+<%= render :partial => 'settings/project_informations_form' %>
+<%= render :partial => 'settings/sidebar' %>

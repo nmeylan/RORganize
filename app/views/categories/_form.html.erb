@@ -1,0 +1,15 @@
+<%#
+# Author: Nicolas Meylan
+# Date: 15 août 2012
+# Encoding: UTF-8
+# File: _version_form.html.erb
+%>
+
+<%= raw error_messages(@category.errors.full_messages) %>
+<div class="box">
+  <p>
+    <label for="version_name"><%=t(:field_name)%><span class ="required"> *</span></label>
+    <%= f.text_field :name, :size => 80 %>
+  </p>
+</div>
+

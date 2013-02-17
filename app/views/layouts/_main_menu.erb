@@ -1,0 +1,13 @@
+<%#
+# Author: Nicolas Meylan
+# Date: 9 févr. 2013
+# Encoding: UTF-8
+# File: _main_menu.erb
+%>
+
+<div id="horizontal_menu">
+  <ul id="main_menu" class="tabs">
+    <% render_menu(@project) %>
+      <%= yield :main_menu %>
+  </ul>
+</div>

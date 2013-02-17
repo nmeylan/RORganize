@@ -1,0 +1,35 @@
+---
+users_001:
+  id: 1
+  name: Nicolas Meylan
+  login: nmeylan
+  admin: 1
+  email: nmeylan@gmail.com
+  encrypted_password: $2a$10$EHm0F6r2qrvZXSJ8bmsnzuD3/BMkmj1K4YLOBmjhHm0s9FgoCvT32
+  reset_password_token: 
+  reset_password_sent_at: 
+  remember_created_at: 2012-11-09 20:26:03.000000000 Z
+  sign_in_count: 73
+  current_sign_in_at: 2012-11-09 20:26:03.000000000 Z
+  last_sign_in_at: 2012-10-31 13:28:59.000000000 Z
+  current_sign_in_ip: 127.0.0.1
+  last_sign_in_ip: 127.0.0.1
+  created_at: 2012-07-01 12:22:35.000000000 Z
+  updated_at: 2012-11-09 20:26:03.000000000 Z
+users_002:
+  id: 4
+  name: James Bond
+  login: sean
+  admin: 0
+  email: jb@atz.com
+  encrypted_password: $2a$10$sH/XDDbp0n8X8Avxud/YfOjXfdyvF9f5W7Qe0zbBmwfMBLdsfFXk6
+  reset_password_token: 
+  reset_password_sent_at: 
+  remember_created_at: 
+  sign_in_count: 6
+  current_sign_in_at: 2012-11-09 20:36:37.000000000 Z
+  last_sign_in_at: 2012-10-28 16:52:33.000000000 Z
+  current_sign_in_ip: 127.0.0.1
+  last_sign_in_ip: 127.0.0.1
+  created_at: 2012-09-30 12:57:00.000000000 Z
+  updated_at: 2012-11-09 20:36:37.000000000 Z

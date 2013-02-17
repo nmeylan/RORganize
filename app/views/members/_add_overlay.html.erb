@@ -1,0 +1,37 @@
+<%#
+# Author: Nicolas Meylan
+# Date: 6 oct. 2012
+# Encoding: UTF-8
+# File: _add_member_overlay.html.erb
+%>
+
+<div class="overlayOuter" id="add_member_overlay">
+  <div class="overlayInner">
+    <%if @users.any? %>
+      <%= form_tag(members_path,:remote => true) do -%>
+        <p>
+          <label for="users"><%=t(:field_user)%></label>
+          <%= select_tag('user', options_from_collection_for_select(@users, "id", "name"), {:class => 'chzn-select cbb-medium'} )%>
+        </p>
+        <p>
+          <!--<div class="autocomplete-combobox cbb-medium nosearch">-->
+          <label for="roles"><%=t(:field_role)%></label>
+          <%= select_tag('role', options_from_collection_for_select(@roles, "id", "name"), {:class => 'chzn-select cbb-medium nosearch'} )%>
+          <!--</div>-->
+        </p>
+        <div class="overlayButtons">
+          <%= submit_tag 'Ok', {:onclick => "jQuery('#add_member_overlay').overlay().close()"} %>
+          <input type="button" class="close" value="<%= t(:button_close) %>">
+        </div>
+      <% end %>
+    <% else %>
+      <%= t(:text_no_data) %>
+    <% end %>
+
+  </div>
+</div>
+<script type="text/javascript">
+  jQuery(document).ready(function() {
+    createOverlay("#add_member_overlay", 150);
+  });
+</script>

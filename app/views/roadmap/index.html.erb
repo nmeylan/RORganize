@@ -1,0 +1,21 @@
+<%#
+# Author: Nicolas Meylan
+# Date: 7 juil. 2012
+# Encoding: UTF-8
+# File: roadmap.html.erb
+%>
+
+<div class="contextual">
+  <h1><%= t(:label_roadmap) %></h1>
+</div>
+
+<% @versions.each do |version| %>
+  <%= render :partial => "roadmap/version_detail", :locals => {:version => version} %>
+  <br />
+  <hr />
+  <br />
+<% end %>
+  <%= render :partial => 'roadmap/sidebar' %>
+<script type="text/javascript">
+  multi_toogle();
+</script>

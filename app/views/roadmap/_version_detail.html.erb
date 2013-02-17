@@ -1,0 +1,44 @@
+<%#
+# Author: Nicolas Meylan
+# Date: 2 févr. 2013
+# Encoding: UTF-8
+# File: _version_detail.html.erb
+%>
+
+<h1 id="v-<%=version.id ? version.id : "unplanned"%>"><%= version.name %></h1>
+<p><%= version.target_date %></p>
+<p><b><%= @related_requests[version.id].count %></b>
+  <%= t(:label_request_plural) %>,
+  <b><%= @request_statements[version.id][0] %></b> <%= t(:label_closed) %>
+  <b><%= @request_statements[version.id][1] %></b> <%= t(:label_opened) %>
+</p>
+
+<table class="progress_bar">
+  <tr>
+    <td class="done_percent" style="width:<%=@request_done_percent[version.id].to_s+"%"%>"></td>
+    <% unless @request_done_percent[version.id].eql?(100) %>
+      <td class="todo_percent" style="width:<%=(100 - @request_done_percent[version.id]).to_s+"%"%>"></td>
+    <% end %>
+  </tr>
+</table>
+<p>
+  <%=@request_done_percent[version.id].to_s+"%"%>
+</p>
+<% if !version.description.eql?('') && version.description %>
+  <div class="box">
+    <%= raw textile_to_html(version.description) %>
+  </div>
+<% end %>
+<fieldset class="margin_fielset">
+  <legend>
+    <%= link_to t(:link_related_request), '#', {:class => 'icon icon-expanded toggle',
+                 :id => version.id ? "version-#{version.id}" : "version-unplanned"} %>
+  </legend>
+  <div class="content version-<%=version.id ? version.id : "unplanned"%>">
+    <ul>
+      <% @related_requests[version.id].each do |issue| %>
+        <li class="<%="close" if issue.status.is_closed? %>"><%= issue.tracker.name %> #<%= issue.id %> : <%= issue.subject %></li>
+      <% end %>
+    </ul>
+  </div>
+</fieldset>

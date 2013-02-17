@@ -1,0 +1,20 @@
+<%#
+# Author: Nicolas Meylan
+# Date: 13 nov. 2012
+# Encoding: UTF-8
+# File: _show_attachments.erb
+%>
+<% if @issue.attachments .any? %>
+  <div class="separator"></div>
+  <h2><%= t(:field_attachments) %> :</h2>
+  <% for attachment in attachments %>
+    <p>
+      <% if attachment.file_content_type.include?('image')  %>
+        <a href="<%=attachment.file.url(:large)%>" class="lightbox"><%= image_tag attachment.file.url(:thumb) %></a>
+      <% else %>
+        <%= link_to attachment.file_file_name,{:action => 'download_attachment', :controller => 'issues', :path => attachment.file.path}, {:class => "icon-file #{attachment.file_content_type.gsub(/\//,'-')}"} %>
+      <% end %>
+      <%= link_to t(:link_delete), '#', {:class => 'icon icon-del', :onclick => "button_delete('#{url_for(:action => 'delete_attachment', :controller => 'issues', :id => @issue.id,:attachment_id => attachment.id)}')"} if current_user.allowed_to?('delete_attachment','Issues',@project)%>
+    </p>
+  <% end %>
+<% end %>
