@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130214202103) do
+ActiveRecord::Schema.define(:version => 20130519140012) do
 
   create_table "attachments", :force => true do |t|
     t.integer  "object_id"
@@ -23,10 +23,14 @@ ActiveRecord::Schema.define(:version => 20130214202103) do
     t.string   "object_type"
   end
 
+  add_index "attachments", ["object_id"], :name => "index_attachments_on_object_id"
+
   create_table "categories", :force => true do |t|
     t.integer "project_id"
     t.string  "name"
   end
+
+  add_index "categories", ["project_id"], :name => "index_categories_on_project_id"
 
   create_table "changelogs", :force => true do |t|
     t.integer "version_id"
@@ -42,6 +46,32 @@ ActiveRecord::Schema.define(:version => 20130214202103) do
     t.string  "name",           :limit => 50
   end
 
+  add_index "checklist_items", ["enumeration_id"], :name => "index_checklist_items_on_enumeration_id"
+  add_index "checklist_items", ["issue_id"], :name => "index_checklist_items_on_issue_id"
+
+  create_table "documents", :force => true do |t|
+    t.string   "name"
+    t.text     "description", :limit => 16777215
+    t.integer  "version_id"
+    t.integer  "category_id"
+    t.integer  "project_id"
+    t.datetime "created_at",                      :null => false
+    t.datetime "updated_at",                      :null => false
+  end
+
+  add_index "documents", ["category_id"], :name => "index_documents_on_category_id"
+  add_index "documents", ["project_id"], :name => "index_documents_on_project_id"
+  add_index "documents", ["version_id"], :name => "index_documents_on_version_id"
+
+  create_table "enabled_modules", :force => true do |t|
+    t.string  "name",       :limit => 128
+    t.string  "action"
+    t.string  "controller"
+    t.integer "project_id"
+  end
+
+  add_index "enabled_modules", ["project_id"], :name => "index_enabled_modules_on_project_id"
+
   create_table "enumerations", :force => true do |t|
     t.string  "opt",      :limit => 4
     t.string  "name"
@@ -51,8 +81,8 @@ ActiveRecord::Schema.define(:version => 20130214202103) do
   create_table "issues", :force => true do |t|
     t.string   "subject"
     t.text     "description",    :limit => 16777215
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                                                        :null => false
+    t.datetime "updated_at",                                                        :null => false
     t.date     "due_date"
     t.integer  "done"
     t.integer  "author_id"
@@ -63,7 +93,17 @@ ActiveRecord::Schema.define(:version => 20130214202103) do
     t.integer  "version_id"
     t.integer  "category_id"
     t.decimal  "estimated_time",                     :precision => 10, :scale => 1
+    t.date     "start_date"
+    t.integer  "predecessor_id"
   end
+
+  add_index "issues", ["assigned_to_id"], :name => "index_issues_on_assigned_to_id"
+  add_index "issues", ["author_id"], :name => "index_issues_on_author_id"
+  add_index "issues", ["category_id"], :name => "index_issues_on_category_id"
+  add_index "issues", ["predecessor_id"], :name => "index_issues_on_predecessor_id"
+  add_index "issues", ["project_id"], :name => "index_issues_on_project_id"
+  add_index "issues", ["tracker_id"], :name => "index_issues_on_tracker_id"
+  add_index "issues", ["version_id"], :name => "index_issues_on_version_id"
 
   create_table "issues_statuses", :force => true do |t|
     t.boolean "is_closed"
@@ -71,15 +111,23 @@ ActiveRecord::Schema.define(:version => 20130214202103) do
     t.integer "enumeration_id"
   end
 
+  add_index "issues_statuses", ["enumeration_id"], :name => "index_issues_statuses_on_enumeration_id"
+
   create_table "issues_statuses_roles", :id => false, :force => true do |t|
     t.integer "role_id"
     t.integer "issues_status_id"
   end
 
+  add_index "issues_statuses_roles", ["issues_status_id"], :name => "index_issues_statuses_roles_on_issues_status_id"
+  add_index "issues_statuses_roles", ["role_id"], :name => "index_issues_statuses_roles_on_role_id"
+
   create_table "issues_steps", :id => false, :force => true do |t|
     t.integer "issue_id"
     t.integer "step_id"
   end
+
+  add_index "issues_steps", ["issue_id"], :name => "index_issues_steps_on_issue_id"
+  add_index "issues_steps", ["step_id"], :name => "index_issues_steps_on_step_id"
 
   create_table "journal_details", :force => true do |t|
     t.integer "journal_id"
@@ -94,24 +142,35 @@ ActiveRecord::Schema.define(:version => 20130214202103) do
   create_table "journals", :force => true do |t|
     t.string   "journalized_type", :limit => 30
     t.text     "notes",            :limit => 16777215
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                           :null => false
+    t.datetime "updated_at",                           :null => false
     t.integer  "journalized_id"
     t.integer  "user_id"
+    t.string   "action_type"
+    t.integer  "project_id"
   end
 
   add_index "journals", ["journalized_id"], :name => "journalized_id"
+  add_index "journals", ["project_id"], :name => "index_journals_on_project_id"
+  add_index "journals", ["user_id"], :name => "index_journals_on_user_id"
 
   create_table "members", :force => true do |t|
     t.integer "project_id"
     t.integer "user_id"
     t.integer "role_id"
+    t.boolean "is_project_starred", :default => false
+    t.integer "project_position"
   end
 
+  add_index "members", ["project_id"], :name => "index_members_on_project_id"
+  add_index "members", ["role_id"], :name => "index_members_on_role_id"
+  add_index "members", ["user_id"], :name => "index_members_on_user_id"
+
   create_table "permissions", :force => true do |t|
-    t.string "name"
-    t.string "action"
-    t.string "controller"
+    t.string  "name"
+    t.string  "action"
+    t.string  "controller"
+    t.boolean "is_locked"
   end
 
   create_table "permissions_roles", :id => false, :force => true do |t|
@@ -119,12 +178,17 @@ ActiveRecord::Schema.define(:version => 20130214202103) do
     t.integer "role_id"
   end
 
+  add_index "permissions_roles", ["permission_id"], :name => "index_permissions_roles_on_permission_id"
+  add_index "permissions_roles", ["role_id"], :name => "index_permissions_roles_on_role_id"
+
   create_table "projects", :force => true do |t|
     t.string   "name"
     t.text     "description", :limit => 16777215
     t.string   "identifier",  :limit => 20
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                                         :null => false
+    t.datetime "updated_at",                                         :null => false
+    t.integer  "created_by"
+    t.boolean  "is_archived",                     :default => false
   end
 
   create_table "projects_trackers", :id => false, :force => true do |t|
@@ -132,10 +196,16 @@ ActiveRecord::Schema.define(:version => 20130214202103) do
     t.integer "project_id"
   end
 
+  add_index "projects_trackers", ["project_id"], :name => "index_projects_trackers_on_project_id"
+  add_index "projects_trackers", ["tracker_id"], :name => "index_projects_trackers_on_tracker_id"
+
   create_table "projects_versions", :id => false, :force => true do |t|
     t.integer "version_id"
     t.integer "project_id"
   end
+
+  add_index "projects_versions", ["project_id"], :name => "index_projects_versions_on_project_id"
+  add_index "projects_versions", ["version_id"], :name => "index_projects_versions_on_version_id"
 
   create_table "queries", :force => true do |t|
     t.integer "author_id"
@@ -150,6 +220,8 @@ ActiveRecord::Schema.define(:version => 20130214202103) do
     t.string  "slug"
   end
 
+  add_index "queries", ["author_id"], :name => "index_queries_on_author_id"
+  add_index "queries", ["project_id"], :name => "index_queries_on_project_id"
   add_index "queries", ["slug"], :name => "index_queries_on_slug"
 
   create_table "roles", :force => true do |t|
@@ -167,10 +239,16 @@ ActiveRecord::Schema.define(:version => 20130214202103) do
     t.datetime "updated_at",                      :null => false
   end
 
+  add_index "scenarios", ["actor_id"], :name => "index_scenarios_on_actor_id"
+  add_index "scenarios", ["project_id"], :name => "index_scenarios_on_project_id"
+  add_index "scenarios", ["version_id"], :name => "index_scenarios_on_version_id"
+
   create_table "steps", :force => true do |t|
     t.string  "name"
     t.integer "scenario_id"
   end
+
+  add_index "steps", ["scenario_id"], :name => "index_steps_on_scenario_id"
 
   create_table "tasks", :force => true do |t|
     t.integer  "enumeration_id"
@@ -179,8 +257,8 @@ ActiveRecord::Schema.define(:version => 20130214202103) do
     t.string   "name"
     t.text     "description",    :limit => 16777215
     t.integer  "position"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                         :null => false
+    t.datetime "updated_at",                         :null => false
   end
 
   create_table "tasks_todo_lists", :id => false, :force => true do |t|
@@ -193,8 +271,8 @@ ActiveRecord::Schema.define(:version => 20130214202103) do
     t.integer  "project_id"
     t.string   "name"
     t.text     "description", :limit => 16777215
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                      :null => false
+    t.datetime "updated_at",                      :null => false
   end
 
   create_table "trackers", :force => true do |t|
@@ -218,8 +296,8 @@ ActiveRecord::Schema.define(:version => 20130214202103) do
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                                           :null => false
+    t.datetime "updated_at",                                           :null => false
     t.string   "slug"
   end
 
@@ -232,6 +310,7 @@ ActiveRecord::Schema.define(:version => 20130214202103) do
     t.date    "target_date"
     t.text    "description", :limit => 16777215
     t.integer "position"
+    t.date    "start_date"
   end
 
 end

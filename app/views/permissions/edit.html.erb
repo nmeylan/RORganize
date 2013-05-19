@@ -8,7 +8,13 @@
 <div class="contextual">
   <h1><%= t(:link_edit_permission) %></h1>
   <div class="splitcontentright">
-    <%= link_to t(:link_delete), '#', {:class => 'icon icon-del', :onclick => "button_delete('#{permission_path}')"} if current_user.allowed_to?('destroy','Permissions')%>
+    <% if current_user.allowed_to?('destroy','Permissions')%>
+      <% unless @permission.is_locked %>
+        <%= link_to t(:link_delete), '#', {:class => 'icon icon-del', :onclick => "button_delete('#{permission_path}')"} %>
+      <% else %>
+        <span class="icon icon-lock"><%= t(:link_delete) %></span>
+      <% end %>
+    <% end %>
   </div>
 </div>
 <%= form_for @permission, :url => permission_path, :method => :put, :html => {:class => 'form'} do |f|%>

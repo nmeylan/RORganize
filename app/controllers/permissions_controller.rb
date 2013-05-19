@@ -4,11 +4,14 @@
 # File: permissions_controller.rb
 
 class PermissionsController < ApplicationController
-  before_filter :authenticate_user!
   before_filter :check_permission, :except => [:update_permissions]
   include ApplicationHelper
+  include PermissionsHelper
+  include Rorganize::PermissionManager::PermissionManagerHelper
   before_filter { |c| c.menu_context :admin_menu }
   before_filter { |c| c.menu_item(params[:controller])}
+  before_filter {|c| c.top_menu_item("administration")}
+
   #GET administration/permissions
   def index
     @roles = Role.find(:all)
@@ -113,6 +116,7 @@ class PermissionsController < ApplicationController
       end
     end
     if @role.save
+      reload_permission(@role.id)
       @roles = Role.find(:all)
       respond_to do |format|
         flash[:notice] = t(:successful_update)
@@ -125,7 +129,7 @@ class PermissionsController < ApplicationController
   private
   def controller_list
     @controllers =  Rails.application.routes.routes.collect{|route| route.defaults[:controller]}
-    unused_controller = ["ProjectManager", "project_manager", "my"]
+    unused_controller = ["ProjectManager", "rorganize", "my"]
     @controllers = @controllers.uniq!.select{|controller_name| controller_name && !controller_name.match(/.*\/.*/) && !unused_controller.include?(controller_name)}
     @controllers.collect! do |controller|
       controller = controller.capitalize

@@ -1,7 +1,7 @@
 ProjectManager::Application.routes.draw do
   devise_for :users
 
-  match "project_manager/:action", :controller => 'project_manager'
+  match "rorganize/:action", :controller => 'rorganize'
   match 'projects', :to => 'projects#index', :via => :get
 
   scope "administration/" do
@@ -14,6 +14,11 @@ ProjectManager::Application.routes.draw do
     end
     resources :roles
     resources :trackers
+    resources :issues_statuses do
+      collection do
+        post "change_position"
+      end
+    end
   end
   scope "project/:project_id/" do
     resources :issues do
@@ -25,17 +30,37 @@ ProjectManager::Application.routes.draw do
         delete 'delete_attachment'
         get 'download_attachment'
         post 'save_checklist'
+        post 'edit_note', :path => ":id/edit_note"
+        post 'start_today'
+        delete 'delete_note'
         get 'apply_custom_query', :path => "filter/:query_id"
+        post 'add_predecessor', :path => ":id/add_predecessor"
+        delete 'del_predecessor', :path => ":id/del_predecessor"
+      end
+    end
+    resources :documents do
+      collection do
+        delete 'delete_attachment'
+        get 'download_attachment'
+        get 'toolbox'
+        post 'toolbox'
       end
     end
     resources :roadmap do
-
+      collection do
+        get 'calendar'
+        get 'version_description'
+        get 'gantt'
+      end
     end
 
     resources :settings, :except => "show" do
       collection do
         post "update_project_informations"
         get "public_queries", :path => "queries"
+        delete 'delete_attachment'
+        get "modules"
+        post "modules"
       end
     end
   end
@@ -53,6 +78,7 @@ ProjectManager::Application.routes.draw do
       collection do
         get "change_role"
         post "change_role"
+
       end
     end
   end
@@ -62,6 +88,8 @@ ProjectManager::Application.routes.draw do
       get "overview", :path => ":project_id/overview"
       get "activity", :path => ":project_id/activity"
       get "load_journal_activity"
+      post "archive", :path => "archive/:id"
+      post "filter", :path => ":project_id/acitivity_filter"
     end
   end
 
@@ -76,6 +104,15 @@ ProjectManager::Application.routes.draw do
       post 'change_password', :path => ':id/change_password'
       get 'change_password', :path => ':id/change_password'
       get 'custom_queries', :path => ':id/custom_queries'
+      get 'my_projects', :path => ':id/my_projects'
+      post "star_project"
+      post "save_project_position"
+    end
+  end
+
+  resources :coworkers do
+    collection do
+      get 'display_activities'
     end
   end
   #MOUNT PLUGINS
@@ -83,5 +120,5 @@ ProjectManager::Application.routes.draw do
 
   match 'project/:project_id/scenarios/:action', :controller => 'scenarios'
 
-  root :to => 'ProjectManager#index'
+  root :to => 'Rorganize#index'
 end

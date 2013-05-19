@@ -4,11 +4,11 @@
 # File: administration_controller.rb
 
 class AdministrationController < ApplicationController
-  before_filter :authenticate_user!
   before_filter :check_queries_permission, :only => [:public_queries]
   before_filter :check_permission, :except => [:public_queries]
   before_filter { |c| c.menu_context :admin_menu }
   before_filter { |c| c.menu_item(params[:controller], params[:action]) }
+  before_filter {|c| c.top_menu_item("administration")}
   include ApplicationHelper
 
   def index

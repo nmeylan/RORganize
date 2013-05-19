@@ -8,19 +8,20 @@
 <div id="trackers_content">
   <table class="tracker list">
     <tr class="header">
-      <th></th>
       <th>Name</th>
+      <th></th>
     </tr>
     <% @trackers.each do |tracker| %>
       <tr class="odd_even">
         <%url = trackers_path.to_s+'/'+tracker.id.to_s %>
-        <td><%= link_to t(:link_delete), '#', {:class => 'icon icon-del', :onclick => "button_delete('#{url}')"} if current_user.allowed_to?('destroy','Trackers') %></td>
-        <td class="list_center name"><% if current_user.allowed_to?('edit','Trackers') %>
-                              <%= link_to tracker.name, :controller => 'trackers', :action => 'edit', :id => tracker.id %>
-                              <% else %>
-                                <%= tracker.name %>
-                              <% end %>
+
+        <td class="list_left name"><% if current_user.allowed_to?('edit','Trackers') %>
+            <%= link_to tracker.name, :controller => 'trackers', :action => 'edit', :id => tracker.id %>
+          <% else %>
+            <%= tracker.name %>
+          <% end %>
         </td>
+        <td class="action"><%= link_to t(:link_delete), '#', {:class => 'icon icon-del', :onclick => "button_delete('#{url}')"} if current_user.allowed_to?('destroy','Trackers') %></td>
       </tr>
     <%end%>
   </table>

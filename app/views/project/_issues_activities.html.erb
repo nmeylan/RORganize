@@ -1,0 +1,33 @@
+<%#
+# Author: Nicolas Meylan
+# Date: 9 mars 2013
+# Encoding: UTF-8
+# File: _issues_activities.html.erb
+%>
+
+<% if @issue_activities.any?%>
+<%= link_to t(:link_this_month), "#",
+    {:class => "activities_filter #{session['project_activities_filter'][1].eql?('tm') ? 'selected' : ''}",
+    :id => "tm" } %> |
+  <%= link_to t(:link_last_three_month), "#",
+    {:class => "activities_filter #{session['project_activities_filter'][1].eql?('ltm') ? 'selected' : ''}",
+    :id => "ltm"} %> |
+  <%= link_to t(:link_last_six_month), "#",
+    {:class => "activities_filter #{session['project_activities_filter'][1].eql?('lsm') ? 'selected' : ''}",
+    :id => "lsm"} %> |
+  <%= link_to t(:link_this_year), "#",
+    {:class => "activities_filter #{session['project_activities_filter'][1].eql?('ty') ? 'selected' : ''}",
+    :id => "ty"} %> |
+  <%= link_to t(:link_all), "#",
+    {:class => "activities_filter #{session['project_activities_filter'][1].eql?('all') ? 'selected' : ''}",
+    :id => "all"} %>
+  <hr/>
+  <%= raw  activities_ary(@issue_activities) %>
+<% else %>
+  <h2><%= t(:text_no_data) %></h2>
+<% end %>
+<script type="text/javascript">
+  createOverlay("#activity_overlay", 150);
+  activities_overlay("<%=url_for(:action => 'load_journal_activity', :controller => 'project', :project_id => @project.identifier)%>");
+  activities_filter("<%=url_for({:action => "filter", :controller => "project", :project_id => @project.identifier})%>");
+</script>

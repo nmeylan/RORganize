@@ -1,0 +1,19 @@
+<%#
+# Author: Nicolas Meylan
+# Date: 8 mai 2013
+# Encoding: UTF-8
+# File: index.html.erb
+%>
+
+<div class="contextual">
+  <h1><%= t(:link_coworkers) %></h1>
+</div>
+
+<div class="splitcontentleft">
+  <%= render :partial => "coworkers/list" %>
+</div>
+<div class="splitcontentright">
+  <h2><%= t(:label_activities) %></h2>
+  <%= render :partial => "coworkers/activities" %>
+</div>
+<div style="clear:both"></div>

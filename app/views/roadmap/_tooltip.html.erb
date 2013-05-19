@@ -1,0 +1,12 @@
+<%#
+# Author: Nicolas Meylan
+# Date: 23 sept. 2012
+# Encoding: UTF-8
+# File: _tooltip.html.erb
+%>
+
+
+<div id="tooltip_content">
+  <%= (raw !description.eql?('') ? textile_to_html(description) : '-') if description%>
+</div>
+

@@ -1,0 +1,32 @@
+<%#
+# Author: Nicolas Meylan
+# Date: 26 avr. 2013
+# Encoding: UTF-8
+# File: _predecessor.html.erb
+%>
+
+<h2><%= t(:label_predecessor) %> :</h2>
+<% if current_user.allowed_to?('edit','Issues',@project) &&
+    (@issue.author_id.eql?(current_user.id) || current_user.allowed_to?('edit not owner','Issues',@project)) %>
+  <% if @issue.parent.nil? %>
+    <%= form_for(@issue, :url => add_predecessor_issues_path(@project.identifier), :method => 'post',:html => {:remote => true,:class => 'form'}) do |f|%>
+      <p>
+        <label><%= t(:label_predecessor) %> : #</label>
+        <%= f.text_field :predecessor_id, :size => 10%>
+        <%= submit_tag t(:button_save) %>
+      </p>
+    <% end %>
+  <% else %>
+    <p>
+      #<%= @issue.predecessor_id %> :
+      <%= link_to @issue.parent.subject, {:action => 'show', :controller => 'issues', :id => @issue.predecessor_id}%>
+      <%= link_to t(:link_delete), '#', {:class => 'icon icon-del', :onclick => "button_delete('#{del_predecessor_issues_path(@project.identifier, @issue.id)}')"}  %>
+    </p>
+  <% end %>
+<% else %>
+  <% if @issue.parent.nil? %>
+    <p>-</p>
+  <% else %>
+    <p>#<%= @issue.predecessor_id %> : <%= link_to @issue.parent.subject, {:action => 'show', :controller => 'issues', :id => @issue.predecessor_id}%></p>
+  <% end %>
+<% end %>

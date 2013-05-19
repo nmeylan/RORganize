@@ -4,10 +4,10 @@
 # File: trackers_controller.rb
 
 class TrackersController < ApplicationController
-  before_filter :authenticate_user!
   before_filter :check_permission
   before_filter { |c| c.menu_context :admin_menu }
   before_filter { |c| c.menu_item(params[:controller])}
+  before_filter {|c| c.top_menu_item("administration")}
   include ApplicationHelper
 
   #Get /administration/trackers

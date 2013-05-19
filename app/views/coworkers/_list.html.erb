@@ -1,0 +1,52 @@
+<%#
+# Author: Nicolas Meylan
+# Date: 8 mai 2013
+# Encoding: UTF-8
+# File: _list.html.erb
+%>
+<div id="coworkers_content">
+  <% if @coworkers.any?  %>
+    <div class="box">
+      <label>
+        <%= radio_button_tag "project", "All", true, {:class => "radio_filter"} %>
+        <%= t(:label_all) %>
+      </label>
+      <% @coworkers.keys.each do |project| %>
+        <% if @coworkers[project].any?%>
+          <label>
+            <%= radio_button_tag "project", project, false, {:class => "radio_filter"} %>
+            <%= project %>
+          </label>
+        <% end %>
+      <% end %>
+    </div>
+    <table class="coworker list">
+      <tr class="header">
+        <th></th>
+        <th>#</th>
+        <th>Name</th>
+        <th>Project</th>
+        <th>Role</th>
+      </tr>
+      <% @coworkers.each do |project, coworkers| %>
+        <% coworkers.each do |coworker|  %>
+          <tr class="odd_even member_tr <%= project.gsub(" ", "_") %>" id="<%=coworker.id%>">
+            <td><%= check_box_tag 'user-'+coworker.user.id.to_s, coworker.user.id %></td>
+            <td class="list_center name"><%= coworker.id %></td>
+            <td class="list_center name"><%= coworker.name %></td>
+            <td class="list_center name"><%= project %></td>
+            <td class="list_center name"><%= coworker.role.name %></td>
+          </tr>
+        <% end %>
+      <%end%>
+    </table>
+  <%else%>
+    <h2><%= t(:text_no_data) %></h2>
+  <%end%>
+</div>
+<script type="text/javascript">
+  listUniqTrClick(".list .member_tr");
+  checkboxToolbox(".list");
+  bind_tr_ajax(".member_tr", "<%= display_activities_coworkers_path %>", "");
+  bind_coworker_radio_filter(".radio_filter", ".list")
+</script>

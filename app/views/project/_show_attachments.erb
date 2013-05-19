@@ -1,0 +1,28 @@
+<%#
+# Author: Nicolas Meylan
+# Date: 13 nov. 2012
+# Encoding: UTF-8
+# File: _show_attachments.erb
+%>
+<% if @project.attachments.any? %>
+  <p>
+    <label><%= t(:field_project_logo) %></label>
+  </p>
+  <% for attachment in attachments %>
+    <p>
+      <% if !attachment.file_content_type.nil? %>
+        <% if attachment.file_content_type.include?('image') %>
+          <%= image_tag attachment.file.url(:thumb) %>
+        <% end %>
+        <%= link_to t(:link_delete), '#',
+          {:class => 'icon icon-del',
+          :onclick => "button_delete('#{url_for(:action => 'delete_attachment',
+          :controller => 'settings',
+          :project_id => @project.identifier,
+          :attachment_id => attachment.id)}')"} %>
+      <% else %>
+        <%= render :partial => 'project/attachments', :collection => @project.attachments %>
+      <% end %>
+    </p>
+  <% end %>
+<% end %>

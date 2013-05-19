@@ -1,11 +1,11 @@
 class ProjectController < ApplicationController
   helper :application
   include ApplicationHelper
-  before_filter :authenticate_user!
-  before_filter :find_project ,:except => [:new, :create]
-  before_filter :check_permission,:except => [:create,:load_journal_activity]
+  before_filter :find_project ,:except => [:new, :create, :destroy, :archive]
+  before_filter :check_permission,:except => [:create,:load_journal_activity, :filter]
   before_filter { |c| c.menu_context :project_menu }
   before_filter { |c| c.menu_item(params[:controller], params[:action]) }
+  before_filter {|c| c.top_menu_item("projects")}
   #GET /project/:project_id
   #Project overview
   def overview
@@ -25,45 +25,45 @@ class ProjectController < ApplicationController
   end
   #GET/project/:project_id/activity
   def activity
-    #Structure of the hash is
-    # {:date => {:created => [issue, issue...], :updated => [...]}, :date => ...}
-    @issues_activity = Hash.new{|hash, key| hash[key] = Hash.new{|h,k| h[k] = []}}
-    issues = Issue.find_all_by_project_id(@project,
-      :include => [:tracker,:author],
-      :order => "created_at DESC")
-    issue_ids = issues.collect{|issue| issue.id}
-    journals = Journal.find_all_by_journalized_type_and_journalized_id('Issue',
-      issue_ids,
-      :include => [:details],
-      :order => "created_at DESC")
-    #for each issues
-    issues.each do |issue|
-      i = 0
-      deleted_journal = []
-      #for each journals
-      journals.each do |journal|
-        #If journalized item id == issue id. Means that issue were updated
-        if(issue.id.eql?(journal.journalized_id))
-          #Collect journal for this issue
-          @issues_activity[journal.created_at.to_date.to_s]["updated"] << issue
-          deleted_journal << journal
-        end
-        i += 1
-      end
-      #Remove previous issue's journals in the array
-      journals -= deleted_journal
-      @issues_activity[issue.created_at.to_date.to_s]["created"] << issue
+    if session['project_activities_filter'].nil?
+      session['project_activities_filter'] = [Time.now.to_date.months_ago(1), "tm"]
     end
-    
+    #Structure of the hash is
+    # {:date => [journal]}
+    @issue_activities = Hash.new{|hash, key| hash[key] = []}
+    journals =(
+      session['project_activities_filter'][0].eql?("all") ?
+        Journal.find_all_by_project_id(@project.id,
+        :include => [:details, :user, :journalized],
+        :order => "created_at DESC") :
+        Journal.find_all_by_project_id(@project.id,
+        :include => [:details, :user, :journalized],
+        :conditions => ["created_at > ?",session['project_activities_filter'][0]],
+        :order => "created_at DESC")
+    )
+    @activities = Hash.new{|hash, key| hash[key] = []}
+    journals.each do |journal|
+      if journal.journalized_type.eql?("Issue")
+        @issue_activities[journal.created_at.to_formatted_s(:db).to_date.to_s] << journal
+      else
+        @activities[journal.created_at.to_date.to_s] << journal
+      end
+    end
+    @issue_activities.values.each{|ary| ary.uniq!{|act| act.journalized_id}}
     respond_to do |format|
       format.html
+      format.js do
+        render :update do |page|
+          page.replace_html "issues_activities", :partial => 'project/issues_activities'
+        end
+      end
     end
   end
 
   def load_journal_activity
     @issue = Issue.find(params[:issue_id], :include => [:tracker,:version,:status,:assigned_to,:category])
     @journals = Journal.find_all_by_journalized_type_and_journalized_id(@issue.class.to_s, @issue, :include => [:details])
-    @journals.select!{|journal| journal.created_at.to_date.to_s == params[:activity_date]}
+    @journals.select!{|journal| journal.created_at.to_formatted_s(:db).to_date.to_s == params[:activity_date]}
     respond_to do |format|
       format.html
       format.js do
@@ -78,6 +78,7 @@ class ProjectController < ApplicationController
   #GET /project/new
   def new
     @project = Project.new
+    @project.attachments.build
     respond_to do |format|
       format.html
     end
@@ -86,12 +87,18 @@ class ProjectController < ApplicationController
   #POST /project/new
   def create
     @project = Project.new(params[:project])
+    @project.created_by = current_user.id
     respond_to do |format|
       if @project.save
         flash[:notice] = t(:successful_creation)
         format.html { redirect_to :action => 'index', :controller => 'projects'}
         format.json  { render :json => @project,
           :status => :created, :location => @project }
+        @journal = Journal.create(:user_id => @project.created_by,
+          :journalized_id => @project.id,
+          :journalized_type => @project.class.to_s,
+          :created_at => @project.created_at,
+          :action_type => "created")
       else
         format.html  { render :action => "new" }
         format.json  { render :json => @project.errors,
@@ -100,6 +107,64 @@ class ProjectController < ApplicationController
     end
   end
 
+  def destroy
+    @project = Project.find(params[:id])
+
+    respond_to do |format|
+      if @project.destroy && Query.destroy_all(:project_id => @project.id, :is_for_all => false)
+        flash[:notice] = t(:successful_deletion)
+        format.html {redirect_to :root}
+        format.js do
+          render :update do |page|
+            page.redirect_to :root
+          end
+        end
+      else
+        format.js do
+          render :update do |page|
+            response.headers['flash-error-message'] = t(:failure_deletion)
+          end
+        end
+      end
+    end
+  end
+
+
+
+  def archive
+    @project = Project.find(params[:id])
+    respond_to do |format|
+      if @project.update_column(:is_archived, eval(params[:is_archived]))
+        flash[:notice] = t(:successful_update)
+        format.html {redirect_to :root}
+        format.js do
+          render :update do |page|
+            page.redirect_to :root
+          end
+        end
+      else
+        format.js do
+          render :update do |page|
+            response.headers['flash-error-message'] = t(:failure_update)
+          end
+        end
+      end
+    end
+  end
+
+  def filter
+    date = Time.now.to_date
+    filter_type = {
+      "tm" => date.months_ago(1),
+      "lsm" => date.months_ago(6),
+      "ltm" => date.months_ago(3),
+      "ty" => date.prev_year(),
+      "all" => "all"
+    }
+    #    session stock conditions and filter_code
+    session['project_activities_filter'] = [filter_type[params[:type]],params[:type]]
+    activity
+  end
   private
 
 end

@@ -1,5 +1,5 @@
 module ApplicationHelper
-#  require 'Date'
+  #  require 'Date'
   def sidebar_content?
     content_for?(:sidebar)
   end
@@ -78,19 +78,6 @@ module ApplicationHelper
     return attr_updated
   end
 
-  def journal_creation_on_delete(object, value, property,property_key = nil)
-    property_key ||= property.downcase
-    journal = Journal.create(:user_id => current_user.id,
-      :journalized_id => object.id,
-      :journalized_type => object.class.to_s,
-      :created_at => Time.now.to_formatted_s(:db),
-      :notes => '')
-    JournalDetail.create(:journal_id => journal.id,
-      :property => property,
-      :property_key => property_key,
-      :old_value => value,
-      :value => 'Deleted')
-  end
   def decimal_zero_removing(decimal)
     removed_zero = decimal.gsub(/^*[.][0]$/,'')
     return removed_zero ? removed_zero : decimal
@@ -132,29 +119,55 @@ EOD
     end
   end
 
-  #generic journal renderer
-  def history_render(journals)
+  def history_detail_render(detail)
     history_str = ""
-    #    puts journals.inspect
-    journals.each do |journal|
-      if journal.details.any? || (!journal.notes.eql?("") && !journal.nil?)
-        history_str += "<h3>#{t(:label_updated)} #{distance_of_time_in_words(journal.created_at,Time.now)} #{t(:label_ago)}, #{t(:label_by)} #{journal.user.name }</h3>"
-        history_str += "<ul>"
-        journal.details.each do |detail|
-          if detail.old_value && (detail.value.nil? || detail.value.eql?(''))
-            history_str += "<li><b>#{detail.property}</b> <b>#{detail.old_value.to_s}</b> #{t(:text_deleted)}</li>"
-          elsif detail.old_value && detail.value
-            history_str += "<li><b>#{detail.property}</b> #{t(:text_changed)} #{t(:text_from)} <b>#{detail.old_value.to_s}</b> #{t(:text_to)} <b>#{detail.value.to_s}</b></li>"
-          else
-            history_str += "<li><b>#{detail.property}</b> #{t(:text_set_at)} <b>#{detail.value.to_s}</b></li>"
-          end
-        end
-        history_str += "</ul>"
-        history_str += "<div class='box'> #{textile_to_html(journal.notes)}</div>" unless journal.notes.eql?('')
-        history_str += "<br/><hr /><br/>" unless journal.eql?(journals.last)
-      end
+    if detail.old_value && (detail.value.nil? || detail.value.eql?(''))
+      history_str += "<li><b>#{detail.property}</b> <b>#{detail.old_value.to_s}</b> #{t(:text_deleted)}</li>"
+    elsif detail.old_value && detail.value
+      history_str += "<li><b>#{detail.property}</b> #{t(:text_changed)} #{t(:text_from)} <b>#{detail.old_value.to_s}</b> #{t(:text_to)} <b>#{detail.value.to_s}</b></li>"
+    else
+      history_str += "<li><b>#{detail.property}</b> #{t(:text_set_at)} <b>#{detail.value.to_s}</b></li>"
     end
     return history_str
+  end
+  #generic journal renderer
+  def history_render(journals, show = true)#If come from show action
+    history_str = ""
+    count_journal = 0
+    #    puts journals.inspect
+    journals.each do |journal|
+      user = (journal.user ? journal.user.name : t(:label_unknown))
+      if !journal.nil? &&journal.details.any? || (!journal.notes.eql?("") &&  journal.action_type.eql?("updated"))
+        history_str += "<h3>#{t(:label_updated)} #{distance_of_time_in_words(journal.created_at,Time.now)} #{t(:label_ago)}, #{t(:label_by)} #{user}</h3>"
+        history_str += "<ul>"
+        journal.details.each do |detail|
+          history_str += history_detail_render(detail)
+        end
+        history_str += "</ul>"
+        unless journal.notes.eql?('')
+          if journal.user_id.eql?(current_user.id) && show
+            history_str += link_to(t(:link_delete), '#',
+              {:class => 'icon icon-del right',
+                :onclick => "button_delete('#{url_for(:action => 'delete_note',
+                :controller => 'issues',
+                :project_id => @project.identifier,
+                :journal_id => journal.id,
+                :journalized_id => journal.journalized_id)}')"})
+            history_str += link_to(t(:link_edit), "#", {:id => "link_edit_note_#{journal.id}", :class => "icon icon-edit right edit_notes"})
+          end
+          history_str += "<div class='box_notes' id ='note_#{journal.id}'><p>#{textile_to_html(journal.notes)}</p>"
+          history_str += "</div>"
+        end
+        history_str += "<br/><hr /><br/>" unless journal.eql?(journals.last)
+        count_journal +=1
+      end
+    end
+    if count_journal > 0
+      s = ""
+      s += "<div class='separator'></div>" if show
+      history_str.insert(0,"#{s}<h2>#{t(:label_history)}</h2>")
+    end
+    return history_str.html_safe
   end
 
   def add_attachments_link(name)
@@ -178,4 +191,184 @@ EOD
   #  def act_as_admin?
   #    return session["act_as"].eql?("Admin")
   #  end
+
+  #For following filter: e.g: Assigned with 3 radio button (All, equal, different) and 1 combo
+  def generics_filter_simple_select(name, options_for_radio, options_for_select, multiple = true, size = nil,label = nil)
+    label ||= name.capitalize
+    size ||= "cbb-large"
+    tr = ""
+    radio_str = generics_filter_radio_button(name,options_for_radio)
+    select_str = ""
+    select_str += "<div class='autocomplete-combobox nosearch no-padding_left no-height'>"
+    select_str += select_tag("filter[#{name}][value][]",options_for_select(options_for_select), :class => 'chzn-select '+size, :id => name+'_list', :multiple => multiple)
+    select_str += "</div>"
+    tr += "<tr class='#{name}'>"
+    tr += "<td class='label'>#{label}</td>"
+    tr += "<td class='radio'>#{radio_str}</td>"
+    tr += "<td id='td-#{name}' class='value'>#{select_str}</td>"
+  end
+  #For filters that require data from text field: e.g subject
+  def generics_filter_text_field(name,options_for_radio, label = nil)
+    label ||= name.capitalize
+    tr = ""
+    radio_str = generics_filter_radio_button(name,options_for_radio)
+    field_str = text_field_tag("filter[#{name}][value]",'',{:size => 80})
+    tr += "<tr class='#{name}'>"
+    tr += "<td class='label'>#{label}</td>"
+    tr += "<td class='radio'>#{radio_str}</td>"
+    tr += "<td id='td-#{name}' class='value'>#{field_str}</td>"
+  end
+  #For filters that require data from date field: e.g created_at
+  def generics_filter_date_field(name,options_for_radio, label = nil)
+    label ||= name.capitalize
+    tr = ""
+    radio_str = generics_filter_radio_button(name,options_for_radio)
+    field_str = text_field_tag("filter[#{name}][value]",'',{:size => 6, :id => 'calendar_'+name, :class => 'calendar'})
+    tr += "<tr class='#{name}'>"
+    tr += "<td class='label'>#{label}</td>"
+    tr += "<td class='radio'>#{radio_str}</td>"
+    tr += "<td id='td-#{name}' class='value'>#{field_str}</td>"
+    # tr += javascript_tag("jQuery('#calendar_#{name}').datepicker({dateFormat: 'yy-mm-dd'});")
+  end
+  #Filters' operator
+  def generics_filter_radio_button(name,ary)
+    radio_str = ""
+    ary.each do |v|
+      if v.eql?('all')
+        radio_str += "<input align='center' class='#{name}' id='#{name}_#{v}' checked='checked' name='filter[#{name}][operator]' type='radio' value='#{v}'>#{v.capitalize}"
+      else
+        radio_str += "<input align='center' class='#{name}' id='#{name}_#{v}' name='filter[#{name}][operator]' type='radio' value='#{v}'>#{v.capitalize}"
+      end
+    end
+    return radio_str
+  end
+
+  def generics_filter(hash, attr)
+    query_str = ""
+    #attributes from db: get real attribute name to build query
+    attributes = attr
+    operators = {'equal' => '<=>', 'different' => '<>', 'superior' => '>=', 'inferior' => '<=', 'contains' => 'LIKE', 'not contains' => 'NOT LIKE','today' => '<=>', 'open' => '<=>', 'close' => '<=>'}
+    null_operators = {'different' => "IS NOT", 'equal' => "IS"}
+    #Specific link between query if there different velu for a same attributes: e.g status_id <> 4 AND status_id <> 3
+    #but status_id = 4 OR status_id = 3
+    link_between_query = {['equal','open','close'] => 'OR', ['different', 'superior', 'inferior', 'contains', 'not contains'] => 'AND'}
+
+    #operators that are not remove even if value is nil or empty
+    operators_without_value = ['open','close', 'today']
+    hash.delete_if{|k,v| v["operator"].eql?('all') ||(!operators_without_value.include?(v["operator"]) && (v["value"].nil? || v["value"].eql?('')))}
+
+    date_attributes = ['created_at','updated_at','due_date']
+    link = ""
+    inc_condition_item_ary = 0 #
+    inc_condition_items = 0 #
+    hash.each do |k,v|
+      link_between_query.each_key{|key| link = link_between_query[key] if key.include?(v['operator'])}
+      if date_attributes.include?(k) #if attribute is a date, apply a specific mysql function to convert a datetime format to date format.
+        inc_condition_items += 1
+        if v["operator"].eql?('today') #if user use "today" radio button we use the current date.
+          # Add an "AND" at the end of the string if there any other conditions for the query
+          query_str += "DATE_FORMAT(#{attributes[k]},'%Y-%m-%d') #{operators[v["operator"]]} '#{Date.today.to_s}' #{'AND' if inc_condition_items != hash.size} "
+        else
+          # Add an "AND" at the end of the string if there any other conditions for the query
+          query_str += "DATE_FORMAT(#{attributes[k]},'%Y-%m-%d') #{operators[v["operator"]]} '#{v['value']}' #{'AND' if inc_condition_items != hash.size} "
+        end
+      elsif v['value'].class.eql?(Array) #if values are contains in an ary
+        if v['value'].size > 1 #if ary contains more than 1 value
+          inc_condition_items += 1
+          v['value'].each do |value|
+            inc_condition_item_ary += 1
+            #If it's  the first item from the ary we add (.
+            #If it's the last item from the ary we don't put a link and we add ).
+            #If we use "different" operator we add an OR condition to get items which value is NULL.
+            #Certains operators needs specific link.
+            if value.eql?('NULL')
+              operator = null_operators[v["operator"]]
+            else
+              operator = operators[v["operator"]]
+            end
+            query_str += "#{'(' if inc_condition_item_ary == 1}"
+            query_str += "#{attributes[k]} #{operator} #{value} "
+            query_str += "#{link if inc_condition_item_ary != v['value'].size} "
+            query_str += "#{'OR '+attributes[k].to_s+' IS NULL' if inc_condition_item_ary == v['value'].size && v["operator"].eql?('different') && !value.eql?('NULL')}"
+            query_str += "#{')' if inc_condition_item_ary == v['value'].size} "
+            query_str += "#{'AND' if inc_condition_item_ary == v['value'].size && inc_condition_items != hash.size} "
+          end
+        else #if ary contains less than 1 value
+          if v['value'].first.eql?('NULL')
+            operator = null_operators[v["operator"]]
+          else
+            operator = operators[v["operator"]]
+          end
+          inc_condition_items += 1
+          query_str += "(#{attributes[k]} #{operator} #{v['value'].first} "
+          query_str += "#{'OR '+attributes[k].to_s+' IS NULL' if v["operator"].eql?('different') && !v['value'].first.eql?('NULL')}) "
+          query_str += "#{'AND' if inc_condition_items != hash.size} "
+        end
+      else #if attribute has an uniq value
+        inc_condition_items += 1
+        query_str += "#{attributes[k]} #{operators[v["operator"]]} '%#{v['value']}%' #{'AND' if inc_condition_items != hash.size} "
+      end
+      inc_condition_item_ary = 0
+    end
+    #    query_str += "#{'AND' if hash.size != 0} issues.project_id = #{project_id}"
+    query_str += "#{'AND' if hash.size != 0}"
+    return query_str
+  end
+
+  def generics_activities_text_builder(journal, activity_icon, is_not_in_project = true)
+    text = ""
+    user = (journal.user ? journal.user.name : t(:label_unknown))
+    if journal.action_type.eql?("updated")
+      text += "<p class='icon'>"
+      text += "#{image_tag(activity_icon)} #{user} #{t(:label_updated_lower_case)} "
+      if journal.journalized
+        text += "<b>#{journal.journalized_type} #{journal.journalized.name}</b>"
+      else
+        text += "<b>#{journal.journalized_type} unknown</b>"
+      end
+      if journal.project_id && is_not_in_project
+        text += " #{t(:label_at)} <b>#{link_to journal.project.identifier, url_for({:action => 'overview', :controller => 'project', :project_id => journal.project.identifier})}</b>"
+      end
+      text += "</p>"
+    elsif journal.action_type.eql?("created")
+      text += "<p class='icon'>"
+      text += "#{image_tag(activity_icon)} #{user} #{t(:label_created_lower_case)} "
+      if journal.journalized
+        text += "<b>#{journal.journalized_type} #{journal.journalized.name}</b>"
+      else
+        text += "<b>#{journal.journalized_type} unknown</b>"
+      end
+      if journal.project_id && is_not_in_project
+        text += " #{t(:label_at)} <b>#{link_to journal.project.identifier, url_for({:action => 'overview', :controller => 'project', :project_id => journal.project.identifier})}</b>"
+      end
+      text += "</p>"
+    elsif journal.action_type.eql?("deleted")
+      text += "<p class='icon'>"
+      text += "#{image_tag('/assets/activity_deleted.png')} #{user} #{t(:label_deleted_lower_case)} "
+      text += "<b>#{journal.journalized_type} ##{journal.journalized_id}</b>"
+      if journal.project_id && is_not_in_project
+        text += " #{t(:label_at)} <b>#{link_to journal.project.identifier, url_for({:action => 'overview', :controller => 'project', :project_id => journal.project.identifier})}</b>"
+      end
+      text += "</p>"
+    end
+  end
+  def activities_text_builder(journal, specified_project = true)
+    text = ""
+    case journal.journalized_type
+    when "Issue"
+      text += issues_activities_text_builder(journal, specified_project)
+    when "Version"
+      text += generics_activities_text_builder(journal, '/assets/activity_ticket_go.png', specified_project)
+    when "User"
+      text += generics_activities_text_builder(journal, '/assets/activity_group.png', specified_project)
+    when "Member"
+      text += generics_activities_text_builder(journal, '/assets/activity_group.png', specified_project)
+    when "Category"
+      text += generics_activities_text_builder(journal, '/assets/activity_package.png', specified_project)
+    when "Document"
+      text += generics_activities_text_builder(journal, '/assets/document.png', specified_project)
+    else
+    end
+    return text.html_safe
+  end
 end

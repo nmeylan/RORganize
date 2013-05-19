@@ -1,0 +1,30 @@
+<%#
+# Author: Nicolas Meylan
+# Date: 22 avr. 2013
+# Encoding: UTF-8
+# File: gantt.html.erb
+%>
+<%= javascript_include_tag "dhtmlxgantt" %>
+<%= javascript_include_tag "dhtmlxcommon" %>
+<%= stylesheet_link_tag "dhtmlxgantt" %>
+
+<div class="contextual">
+  <h1><%= t(:label_gantt_chart) %></h1>
+</div>
+
+<div id="gantt_chart" style="height: 400px">
+
+</div>
+<p>
+  Only task with a start date are displayed.
+</p>
+<script type="text/javascript" language="JavaScript">
+
+  var gantt = new GanttChart();
+  gantt.setImagePath("/assets/gantt/");
+  gantt.showTreePanel(true);
+  gantt.showDescTask(true, 'n,e,d');
+  gantt.create("gantt_chart");
+
+</script>
+<%= javascript_tag("gantt.loadData(new String(\""+@data+"\"), false, true);") %>

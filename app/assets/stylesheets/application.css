@@ -19,15 +19,15 @@ body{
 #top_menu{
    background-color: #EEF0F3;
    color: #505153;
-   padding:7px 10px 2px 20px;
-   height: 1.8em;
+   padding: 7px 10px 2px 20px;
+   height: 2.8em;
    font-size: 11px;
    font-weight: bold;
    border-bottom: 1px solid #1B1B1B;
 }
 #top_menu ul{
    padding: 0px;
-   margin: 0px;
+   margin: 5px 0px;
 }
 #top_menu li{
    float: left;
@@ -36,16 +36,46 @@ body{
    margin: 0px;
 }
 #top_menu a{
-   margin-right: 8px;
    color: #39424A;
    text-decoration: none;
    padding: 10px 0px 10px 0px;
 }
 #top_menu a:hover{
-   color: white;
+   color: #FFC773;
+}
+#top_menu a.selected{
+   color: #FFC773;
+}
+
+#top_menu a.square{
+   border: 1px solid #bbb;
+   text-shadow: 0 1px 0 #fff;
+   cursor: pointer;
+   box-shadow: 0 1px 2px #ccc;
+   -moz-box-shadow: 0 1px 2px #ccc;
+   -webkit-box-shadow: 0 1px 2px #ccc;
+   margin-bottom: 0px;
+   border: 1px solid #bbb;
+   margin-right: 8px;
+   color: #888;
+   background-color: #EEF0F3;
+   text-decoration: none;
+   padding: 4px 5px 7px 5px;
+}
+#top_menu a.square:hover{
+   color: #FFC773;
+   background-color: white;
+}
+#top_menu a.square.selected{
+   color: #FFC773;
+   background-color: white;
 }
 #account{
    float: right;
+}
+
+#project_logo{
+   margin-right: 10px;
 }
 /*
 *  HEADER CONTENT
@@ -174,10 +204,9 @@ pre{
 #horizontal_menu{
    margin: -1px 15px 15px 15px;
    /* Progressive background */
-   background: #FAFAFA;
-   background: -moz-linear-gradient(#FAFAFA,#EAEAEA);
-   background: -webkit-linear-gradient(#FAFAFA,#EAEAEA);
-   -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#fafafa',endColorstr='#eaeaea')";
+   background: -moz-linear-gradient(#FAFAFA,#E5E3DE);
+   background: -webkit-linear-gradient(#FAFAFA,#E5E3DE);
+   -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#fafafa',endColorstr='#E5E3DE')";
    border: 1px solid #CACACA;
    height: 47px;
 }
@@ -185,20 +214,29 @@ pre{
    text-align: center;
    display: table-cell;
    width: 1%;
-   height: 47px;
    vertical-align: middle;
    border-right: 1px solid #CACACA;
+}
+#horizontal_menu li a{
+   display: block;
+   line-height: 47px;
 }
 #horizontal_menu ul{
    margin: 0 -1px 0 0;
    height: 47px;
 }
 #horizontal_menu .selected{
-   background-color: #E5E3DE;
+   background-color: #DEDCD5;
+   background: -moz-linear-gradient(#E6E6E6,#DEDCD5);
+   background: -webkit-linear-gradient(#E6E6E6,#DEDCD5);
+   -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#E6E6E6',endColorstr='#DEDCD5')";
    font-weight: bold;
 }
-#horizontal_menu li:hover{
-   background-color: #E5E3DE;
+#horizontal_menu li a:hover{
+   background-color: #DEDCD5;
+   background: -moz-linear-gradient(#E6E6E6,#DEDCD5);
+   background: -webkit-linear-gradient(#E6E6E6,#DEDCD5);
+   -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#E6E6E6',endColorstr='#DEDCD5')";
 }
 /*
 *  FLASH MESSAGE
@@ -252,12 +290,16 @@ pre{
 /*
 *  ICON AND LINK
 */
+.alert{
+   color: #800 !important;
+}
 .icon,.icon-file{
    background-position: 0% 50%;
    background-repeat: no-repeat;
    padding-left: 20px;
    padding-bottom: 3px;
 }
+.icon-alert{background-image: url("/assets/alert.png");}
 .icon-update_issue{ background-image: url("/assets/update_issue.png"); }
 .icon-add{ background-image: url("/assets/add_icon.png"); }
 .icon-tool{ background-image: url("/assets/tool_small.png"); }
@@ -327,6 +369,8 @@ pre{
 .icon-down_arrow { background-image: url(../assets/down_arrow.png); }
 .icon-disabled_up_arrow { background-image: url(../assets/disabled_up_arrow.png); }
 .icon-disabled_down_arrow { background-image: url(../assets/disabled_down_arrow.png); }
+.icon-calendar { background-image: url(../assets/calendar.png); }
+
 #content a, #content a:link, #content a:visited {color: #888;text-decoration: none;}
 
 #content a:hover, #content a:visited:hover {color: #FFC773;}
@@ -395,18 +439,40 @@ html>body .form p {overflow:hidden;}
    color:#505050;
    line-height:1.5em;
    border: 1px solid #e4e4e4;
-   /*   -webkit-border-radius: 5px;*/
-   /*   border-radius: 5px;*/
 }
-.box .header{
+.box_notes{
+   color:#505050;
+   border: 1px solid #e4e4e4;
+}
+.right{
+   float: right;
+   margin-right: 5px;
+   margin-top: 5px;
+}
+.box > .header{
    /*   -webkit-border-top-left-radius: 5px;*/
    /*   -webkit-border-top-right-radius: 5px;*/
-   background: #F1F5FA;
-   padding-top: 10px;
-   padding-bottom: 10px;
+   background-image: -moz-linear-gradient(#7f95a5, #6c8393);
+   background-image: -webkit-linear-gradient(#7f95a5, #6c8393);
+   background-image: linear-gradient(#7f95a5, #6c8393);
+   /*background: #F1F5FA;*/
+   padding-top: 5px;
    text-align: center;
    margin: -6px -6px 10px;
    border-bottom: 1px solid #DADEE5;
+}
+
+.box .header h2,.box .header h1{
+   color:white !important;
+}
+.edit_note{
+   padding:6px;
+   margin: 10px;
+}
+
+.slim{
+   line-height: normal;
+   font-size: 12px;
 }
 input{
    height: 25px;
@@ -542,7 +608,7 @@ li.close{
 
 .issue_tr:hover{background-color:#8DBBF1 !important;color: white !important;}
 .issue_tr:hover a{color: white !important;font-style: italic;}
-.issue.list .id{width:3%}
+.list .id{width:3%}
 .issue.list .tracker{width:7%}
 .issue.list .subject{width:25%}
 .issue.list .assigned_to{width:13%}
@@ -556,18 +622,32 @@ li.close{
 .issue_overlay.list .subject{width:95%}
 
 .user.list .id{width:3%}
-.user.list .login{width:10%}
-.user.list .name{width:20%}
-.user.list .email{width:20%}
+.user.list .login{width:15%}
+.user.list .name{width:25%}
+.user.list .email{width:30%}
 .user.list .admin{width:10%}
-.user.list .last_sign_in{width:37%}
+.user.list .last_sign_in{width:17%}
 
 .version.list .name{width:20%}
-.version.list .version{width:50%}
+.version.list .version{width:25%}
+.version.list .start_date{width:25%}
 
 .member.list .name{width:20%}
 .member.list .role{width:75%}
-.list .action{width:5%}
+.list .action{width:3%}
+
+.role.list .name{width:95%}
+.tracker.list .name{width:95%}
+.queries.list .name{width:95%}
+
+.splitcontentright .issue.list .project{width:20%}
+.splitcontentright .issue.list .subject{width:30%}
+.splitcontentright .issue.list .due_date{width:10%}
+.splitcontentright .issue.list .status{width:15%}
+
+.document.list .name{width:61%}
+.document.list .category{width:15%}
+.document.list .version{width:20%}
 /*
 *  PAGINATION
 */
@@ -673,9 +753,12 @@ button:hover, input[type=button]:hover
 }
 #activity_overlay .overlayInner{
    max-height: 400px;
+
    overflow-y: auto;
 }
-
+.overlayInner #issue_history{
+   width: 600px;
+}
 /*
 * CHECKLIST
 */
@@ -700,9 +783,9 @@ ul#items{list-style: none;margin-left: -35px;min-width: 400px;}
 
 #sidebar .tabs li{
    background: #FAFAFA;
-   background: -moz-linear-gradient(#FAFAFA,#EAEAEA);
-   background: -webkit-linear-gradient(#FAFAFA,#EAEAEA);
-   -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#fafafa',endColorstr='#eaeaea')";
+   background: -moz-linear-gradient(#FAFAFA,#E5E3DE);
+   background: -webkit-linear-gradient(#FAFAFA,#E5E3DE);
+   -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#fafafa',endColorstr='#E5E3DE')";
    padding: 10px;
    border: 1px solid #D7D7D7;
    /*   -webkit-border-radius: 5px;*/
@@ -716,16 +799,23 @@ ul#items{list-style: none;margin-left: -35px;min-width: 400px;}
 #sidebar ul{
    list-style: none;
 }
-#sidebar a, #sidebar a:link, #sidebar a:visited {color: #888;text-decoration: none;}
+#sidebar a, #sidebar a:link, #sidebar a:visited {
+   display: block;
+   color: #888;
+   text-decoration: none;}
 
 #sidebar .tabs a:hover, #sidebar a:visited:hover {}
 
 #sidebar .tabs .selected{
-   background: #E5E3DE;
+   background: -moz-linear-gradient(#E6E6E6,#DEDCD5);
+   background: -webkit-linear-gradient(#E6E6E6,#DEDCD5);
+   -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#E6E6E6',endColorstr='#DEDCD5')";
    font-weight: bold;
 }
 #sidebar .tabs li:hover{
-   background: #E5E3DE;
+   background: -moz-linear-gradient(#E6E6E6,#DEDCD5);
+   background: -webkit-linear-gradient(#E6E6E6,#DEDCD5);
+   -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#E6E6E6',endColorstr='#DEDCD5')";
 }
 
 
@@ -815,6 +905,9 @@ table.progress_bar td.todo_percent{
    border: 1px solid #DADEE5;
 }
 
+.project li.archived{
+   background: #D7D7D7;
+}
 .icon img{
    padding-bottom: 0px;
 }
@@ -828,4 +921,111 @@ table.progress_bar td.todo_percent{
    -webkit-box-shadow: 0 0px 6px rgba(0, 0, 0, 0.3);
    -moz-box-shadow: 0 0 3px #ccc;
    z-index: 10;
+}
+
+/*
+      TABS
+*/
+.tabs .alert{
+   background: url("/assets/alert.png") 8px 50% no-repeat !important;
+   background-color: #FFE3E3 !important;
+
+}
+.tabs .alert a{
+   margin-left: 20px;
+   color: #800 !important;
+}
+
+.tabs .alert:hover{
+   background-color: #E6B7B7 !important;
+}
+
+.tabs .alert:hover a{
+   color: white !important;
+}
+
+.tabs .warning{
+   background: url("/assets/warning.png") 8px 50% no-repeat !important;
+   background-color: #FCECAD !important;
+
+}
+.tabs .warning a{
+   margin-left: 20px;
+   color: #BA9E00 !important;
+}
+
+.tabs .warning:hover{
+   background-color: #FFE47D !important;
+}
+
+.tabs .warning:hover a{
+   color: white !important;
+}
+a.selected{
+   font-weight: bold;
+}
+
+/*
+   CALENDAR
+*/
+#calendar ul{
+   padding:  0;
+   width: 100%
+}
+#calendar_header{
+   border: 1px solid #CACACA;
+   text-align: center;
+   background-color: whitesmoke;
+}
+#calendar_body{
+
+}
+#calendar li{
+   list-style-type: none;
+   float: left;
+   display: inline-block;
+   padding:  0;
+   width: 10%;
+   height: 131px;
+}
+.calendar_item{
+   height: 130px;
+   margin-right: -1px;
+   border: 1px solid #CACACA;
+}
+.calendar_item .calendar_item_header{
+   background-color: whitesmoke;
+   /*   width: 100%;*/
+   height: 20px;
+   border-bottom: 1px solid #CACACA;
+   margin: 0;
+
+}
+.calendar_item .calendar_item_body{
+   /*   width: 100%;*/
+   height: 110px;
+   margin: 0;
+}
+#calendar .odd_even:nth-child(odd){
+   background: #F1F5FA;
+}
+.calendar_item .calendar_item_body p{
+   margin: 0px 5px 0px 5px !important;
+   padding-top: 10px;
+}
+
+.calendar_item .calendar_item_body.target{
+   background-color: #E1E0DC;
+   cursor : pointer;
+}
+.calendar_item .calendar_item_body.today{
+   background-color: #D7D7D7;
+}
+
+/*
+   ISSUES
+*/
+.toggle.right{
+   float: right;
+   height: 15px;
 }

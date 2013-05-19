@@ -1,0 +1,17 @@
+<%#
+# Author: Nicolas Meylan
+# Date: 26 avr. 2013
+# Encoding: UTF-8
+# File: _children.html.erb
+%>
+
+<h2><%= t(:label_children) %> :</h2>
+<% if @issue.children.any?  %>
+  <ul>
+    <% @issue.children.each do |child| %>
+      <li>#<%= child.id %> : <%= link_to child.subject, {:action => 'show', :controller => 'issues', :id => child.id}%></li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>-</p>
+<% end %>

@@ -7,9 +7,9 @@
 
 <%=  content_for :sidebar do %>
   <ul class="tabs">
-    <li controller="settings" action="index"><%= link_to t(:link_update_informations),:controller => 'settings', :action => 'index', :project_id => @project.identifier %></li>
+    <li class="settings_index"><%= link_to t(:link_update_informations),:controller => 'settings', :action => 'index', :project_id => @project.identifier %></li>
     <% if current_user.allowed_to?('index','Versions',@project) %>
-      <li controller="versions">
+      <li class="versions">
         <%= link_to t(:link_versions),
           :controller => 'versions',
           :action => 'index',
@@ -17,7 +17,7 @@
       </li>
     <% end %>
     <% if current_user.allowed_to?('index','Categories',@project) %>
-      <li controller="categories">
+      <li class="categories">
         <%= link_to t(:link_categories),
           :controller => 'categories',
           :action => 'index',
@@ -25,7 +25,7 @@
       </li>
     <% end %>
     <% if current_user.allowed_to?('index','Members',@project)%>
-      <li controller="members">
+      <li class="members">
         <%= link_to t(:link_members),
           :controller => 'members',
           :action => 'index',
@@ -33,21 +33,50 @@
       </li>
     <% end %>
     <% if current_user.allowed_to?('public_queries', 'Queries', @project) %>
-      <li controller="settings" action="view_queries">
-          <%= link_to t(:link_queries),
-            {:action => "public_queries",
-            :controller => "settings",
-            :project_id => @project.identifier} %>
+      <li class="settings_public_queries">
+        <%= link_to t(:link_queries),
+          {:action => "public_queries",
+          :controller => "settings",
+          :project_id => @project.identifier} %>
       </li>
     <% end %>
-    <li controller="settings" action="repository"><%= link_to t(:link_repository),'#' %></li>
+    <% if current_user.allowed_to?('modules', 'Settings', @project) %>
+      <li class="settings_modules">
+        <%= link_to t(:link_modules),
+          {:action => "modules",
+          :controller => "settings",
+          :project_id => @project.identifier} %>
+      </li>
+    <% end %>
+    <li class="settings_repository"><%= link_to t(:link_repository),'#' %></li>
+    <% if current_user.allowed_to?('archive', 'Project', @project) %>
+      <li class="project_delete warning">
+        <% if !@project.is_archived %>
+          <%= link_to t(:text_close_this_project),'#',
+            {:onclick => "button_post_with_message('#{archive_project_index_path(@project.id)}',
+        '#{t(:text_archive_project)}',
+        {is_archived: true})"} %>
+        <% else %>
+          <%= link_to t(:text_open_this_project),'#',
+            {:onclick => "button_post_with_message('#{archive_project_index_path(@project.id)}',
+        '#{t(:text_open_project)}',
+        {is_archived: false})"} %>
+        <% end %>
+      </li>
+    <% end %>
+    <% if current_user.allowed_to?('destroy', 'Project', @project) %>
+      <li class="project_delete alert">
+        <%= link_to t(:text_delete_this_project),'#',
+          {:onclick => "button_delete_with_message('#{project_path(@project.id)}','#{t(:text_delete_project)}')"} %>
+      </li>
+    <% end %>
   </ul>
 <% end %>
 
 <script type="text/javascript">
 <% if controller.controller_name.eql?("settings") %>
-    jQuery("#sidebar li[controller='<%=controller.controller_name%>'][action='<%=controller.action_name%>']").toggleClass("selected");
+    jQuery("#sidebar li[class='<%=controller.controller_name%>_<%=controller.action_name%>']").toggleClass("selected");
 <% else %>
-    jQuery("#sidebar li[controller='<%=controller.controller_name%>']").toggleClass("selected");
+    jQuery("#sidebar li[class='<%=controller.controller_name%>']").toggleClass("selected");
 <%  end %>
 </script>

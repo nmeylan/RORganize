@@ -31,6 +31,10 @@ en:
   label_created_at: Created at
   label_updated_lower_case: updated
   label_created_lower_case: created
+  label_deleted_lower_case: deleted
+  label_commented_lower_case: commented
+  label_added_lower_case: added
+  label_removed_lower_case: removed
   label_by: by
   label_ago: ago
   label_edit_issue: Edit issue
@@ -53,6 +57,17 @@ en:
   label_opened: Opened
   label_queries: Queries
   label_query: Query
+  label_at: at
+  label_report_plural: Reports
+  label_calendar: Calendar
+  label_documents: Documents
+  label_document: Document
+  label_unknown: Unknown
+  label_issues_statuses: Issues statuses
+  label_gantt_chart: Gantt chart
+  label_predecessor: Predecessor
+  label_children: Children
+  label_activities: Activities
 # LINK
   link_new_project: New project
   link_new_issue: New issue
@@ -94,6 +109,21 @@ en:
   link_edit_query: Edit query
   link_all: All
   link_queries: Queries
+  link_my_projects: My projects
+  link_this_year: This year
+  link_this_month: This month
+  link_last_three_month: Last three month
+  link_last_six_month: Last six month
+  link_next_month: Next month
+  link_prev_month: Previous month
+  link_modules: Modules
+  link_new_document: New document
+  link_edit_document: Edit document
+  link_issues_statuses : Issues statuses
+  link_new_status: New status
+  link_edit_status: Edit status
+  link_start_today: Start today
+  link_coworkers : Coworkers
  #FORM
   field_name: Name
   field_description: Description
@@ -127,13 +157,15 @@ en:
   field_retype_password: Retype password
   field_is_public: Is public
   field_is_for_all: Is for all
-
-
+  field_project_logo: Project logo
+  field_default_done_ratio: Default done ratio
+  field_start_date: Start date
   #FLASH
   successful_creation: Successful creation
   successful_update: Successful update
   successful_deletion: Successful deletion
   failure_deletion: Deletion failed
+  failure_update: Update failed
   #TEXT
   text_changed: changed
   text_from: from
@@ -142,3 +174,13 @@ en:
   text_deleted: deleted
   text_no_data: No data to display
   text_choose_role: Define permissions for following roles
+  text_delete_this_project: Delete this project
+  text_close_this_project: Close this project
+  text_open_this_project: Open this project
+  text_delete_project: Are you sure you want to delete this project? All issues and all project data will be definitly deleted.
+  text_archive_project: Are you sure you want to archive this project? This project will only be accessible by members and only read action will be able. It will not be visible in projects list anymore.
+  text_open_project: This project will be open. It will be visible in the project list.
+  text_my_favorites_projects: My favorites projects
+  text_my_latest_activities: My latest activities
+  text_other_activities: Other activities
+  text_set_start_date_today: Are you sure you want to set issue start date at today?

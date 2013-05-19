@@ -1,28 +1,51 @@
 module ProjectHelper
 
+  def project_archive_permissions(action, controller)
+    permissions = Hash.new{|h,k| h[k] = []}
+    permissions["action"] = ["new","edit","create","update","destroy","delete","checklist", "change"]
+    permissions["controller"] = ["Categories","Versions"]
+    if permissions["controller"].include?(controller)
+      return false
+    end
+    permissions["action"].each do |a|
+      if action.include?(a)
+        return false
+      end
+    end
+    return true
+  end
   def activities_ary(issues_activity)
     activity_hash = Hash.new{|h,k| h[k] = []}
-    issues_activity = sort_hash_by_keys(issues_activity, "desc")
     issues_activity.each do |k,v|
-      v["updated"].each do |issue|
-        activity_hash[k] << "#{issue.tracker.name} ##{issue.id}
-                             #{link_to issue.subject,
-                                  {:action => 'show',
-                                    :controller => 'issues',
-                                    :id => issue.id} }
-                             <b>#{link_to t(:label_updated_lower_case),
-                                  '#',
-                                  {:class => 'open_overlay',
-                                   :id => issue.id.to_s+'.'+k.to_s}}</b>"
-      end
-      v["created"].each do |issue|
-        activity_hash[k] << "#{issue.tracker.name} ##{issue.id}
-                             #{link_to issue.subject,
-                                  {:action => 'show',
-                                   :controller => 'issues',
-                                   :id => issue.id} }
+      v.each do |journal|
+        user = (journal.user ? journal.user.name : t(:label_unknown))
+        #UPDATED
+        if journal.action_type.eql?("updated")
+          activity_hash[k] << "#{journal.journalized.tracker.name} ##{journal.journalized.id}
+                             #{link_to journal.journalized.subject,
+          {:action => 'show',
+          :controller => 'issues',
+          :id => journal.journalized.id} }
+                             <b>#{journal.details.any? ? (link_to t(:label_updated_lower_case),
+          '#',
+          {:class => 'open_overlay',
+          :id => journal.journalized.id.to_s+'.'+k.to_s}) : t(:label_updated_lower_case)}</b>
+          #{t(:label_by)} #{user}"
+          #CREATED
+        elsif journal.action_type.eql?("created")
+          activity_hash[k] << "#{journal.journalized.tracker.name} ##{journal.journalized.id}
+                             #{link_to journal.journalized.subject,
+          {:action => 'show',
+          :controller => 'issues',
+          :id => journal.journalized.id} }
                               <b>#{t(:label_created_lower_case)}</b>
-                              #{t(:label_by)} #{issue.author.name}"
+                              #{t(:label_by)} #{user}"
+          #DELETED
+        elsif journal.action_type.eql?("deleted")
+          activity_hash[k] << "Issue ##{journal.journalized_id}
+                              <b>#{t(:label_deleted_lower_case)}</b>
+                              #{t(:label_by)} #{user}"
+        end
       end
     end
     activity_str = ""

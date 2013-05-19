@@ -9,6 +9,7 @@
   <table class="version list">
     <tr class="header">
       <th>Name</th>
+      <th>Start date</th>
       <th>Target date</th>
       <th></th>
       <th></th>
@@ -23,6 +24,7 @@
             <%= version.name %>
           <% end %>
         </td>
+        <td class="list_center start_date"><%= version.start_date ? version.start_date : '-' %></td>
         <td class="list_center version"><%= version.target_date ? version.target_date : '-' %></td>
         <td class="action">
           <% if current_user.allowed_to?('change_position','Versions',@project) %>
@@ -39,12 +41,12 @@
           <% end %>
         </td>
 
-          <td class="action">
-            <% if current_user.allowed_to?('destroy','Versions',@project) %>
-              <%= link_to t(:link_delete), '#', {:class => 'icon icon-del',
+        <td class="action">
+          <% if current_user.allowed_to?('destroy','Versions',@project) %>
+            <%= link_to t(:link_delete), '#', {:class => 'icon icon-del',
               :onclick => "button_delete('#{url}')"}  %>
-             <% end %>
-          </td>
+          <% end %>
+        </td>
 
       </tr>
     <%end%>
@@ -52,24 +54,7 @@
 </div>
 
 <script type="text/javascript">
-  jQuery(".change_position").click(function(){
-    var vid = jQuery(this).parents("tr").attr("id");
-    var ope = jQuery(this).attr("class").split(" ");
-    ope = ope[3];
-    if(ope == "inc" || ope == "dec"){
-      var vurl = "<%= url_for({:action => "change_position",
+  bind_version_change_positions("<%= url_for({:action => "change_position",
     :controller => "versions",
-    :project_id => @project.identifier}) %>";
-      jQuery.ajax({
-        url : vurl,
-        type : "post",
-        dataType : "script",
-        data : {
-          id : vid,
-          operator : ope
-        }
-      });
-    }
-
-  });
+    :project_id => @project.identifier}) %>");
 </script>

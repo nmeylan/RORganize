@@ -1,0 +1,16 @@
+<%= raw error_messages(@status.errors.full_messages) %>
+<div class="box">
+  <p>
+    <label for="enumeration_name"><%=t(:field_name)%><span class ="required"> *</span></label>
+    <%= text_field_tag :enumeration,@status.enumeration ? @status.enumeration.name : "", :size => 80 %>
+  </p>
+  <div class="autocomplete-combobox cbb-medium nosearch">
+    <label for="issues_status_default_done_ratio"><%=t(:field_default_done_ratio)%></label>
+    <%= f.select :default_done_ratio, @done_ratio, { :include_blank => false }, {:class => 'chzn-select cbb-medium'} %>
+  </div>
+  <p>
+    <%= f.label :is_closed, "Is closed" %>
+    <%= f.check_box(:is_closed) %>
+  </p>
+</div>
+

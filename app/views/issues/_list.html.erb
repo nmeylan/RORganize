@@ -66,19 +66,19 @@
   <%= render :partial => 'issues/tooltip', :locals => {:description => nil} %>
 </div>
 <script type="text/javascript">
-  (function($){
-    $(document).ready(function(){
+  (function($) {
+    $(document).ready(function() {
       createOverlay("#checklist_overlay", 150);
       createOverlay("#create_query_overlay", 150);
       init_tooltip(".subject a", "<%=url_for(:action => 'issue_description', :project_id => @project.identifier)%>");
       $(".chzn-select").chosen();
     });
     show_checklist_overlay("<%=url_for(:action => 'show_checklist_items', :controller => 'issues', :project_id => @project.identifier)%>");
-    per_page_issues("<%=url_for(:action => 'index', :controller => 'issues', :project_id => @project.identifier)%>");
+    per_page("<%=url_for(:action => 'index', :controller => 'issues', :project_id => @project.identifier)%>");
     checkAll("#check_all", ".list");
-    listTrClick(".list");
+    listTrClick(".list .issue_tr");
     checkboxToolbox(".list");
-    init_toolbox('.issue.list .issue_tr', 'issues_toolbox', {list : '.issue.list',url: "<%= url_for(:controller => 'issues', :action => 'toolbox', :project_id => @project.identifier) %>"});
+    init_toolbox('.issue.list .issue_tr', 'issues_toolbox', {list: '.issue.list', url: "<%= url_for(:controller => 'issues', :action => 'toolbox', :project_id => @project.identifier) %>"});
   })(jQuery);
 
 </script>

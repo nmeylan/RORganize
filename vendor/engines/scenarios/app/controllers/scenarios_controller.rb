@@ -12,12 +12,13 @@ class ScenariosController < ApplicationController
   require 'will_paginate'
   before_filter { |c| c.menu_context :project_menu }
   before_filter { |c| c.menu_item(params[:controller]) }
-
+  before_filter {|c| c.top_menu_item("projects")}
   def index
+
     @scenarios = Scenario.find_all_by_project_id(@project.id)
     params[:per_page] ? session['controller_scenarios_per_page'] = params[:per_page] : session['controller_scenarios_per_page'] = (session['controller_scenarios_per_page'] ? session['controller_scenarios_per_page'] : 25)
     @scenarios = Scenario.paginated_scenarios(params[:page], session['controller_scenarios_per_page'],
-                                     sort_column + " " + sort_direction, "",@project.id)
+      sort_column + " " + sort_direction, "",@project.id)
     respond_to do |format|
       format.html
       format.js do
@@ -33,7 +34,7 @@ class ScenariosController < ApplicationController
     @scenario.steps = [Step.new]
     @scenario.attachments.build
     @actors = Enumeration.find_all_by_opt('SCAC')
-    @issues = Issue.find_all_by_project_id(@project.id);
+    @issues = Issue.find_all_by_project_id(@project.id, :order => "id DESC");
     @users = @project.members.collect{|member| member.user}
     respond_to do |format|
       format.html
@@ -57,7 +58,7 @@ class ScenariosController < ApplicationController
   def edit
     @scenario = Scenario.find(params[:id], :include => [:steps])
     @actors = Enumeration.find_all_by_opt('SCAC')
-    @issues = Issue.find_all_by_project_id(@project.id);
+    @issues = Issue.find_all_by_project_id(@project.id, :order => "id DESC");
     @users = @project.members.collect{|member| member.user}
     respond_to do |format|
       format.html
@@ -69,7 +70,6 @@ class ScenariosController < ApplicationController
   end
   def update
     @scenario = Scenario.find(params[:id])
-
     respond_to do |format|
       if @scenario.update_attributes(params[:scenario])
         format.html { redirect_to(@scenario, :notice => t(:successfull_update)) }
@@ -77,6 +77,20 @@ class ScenariosController < ApplicationController
       else
         format.html { render :action => "edit" }
         format.json  { render :json => @scenario.errors.full_messages , :status => :unprocessable_entity }
+      end
+    end
+  end
+
+  def destroy
+    @scenario = Scenario.find_by_id(params[:id])
+    @scenario.destroy
+    flash[:notice] = t(:successful_deletion)
+    respond_to do |format|
+      format.html { redirect_to issues_path}
+      format.js do
+        render :update do |page|
+          page.redirect_to scenarios_route.scenarios_path
+        end
       end
     end
   end

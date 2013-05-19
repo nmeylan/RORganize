@@ -7,10 +7,10 @@
   <ul>
     <% if user_signed_in? %>
       <li>Welcome
-          <%= link_to current_user.name, {:controller => 'my', :action => "show",:id => current_user.slug}, {:style => 'margin-right:0px'} %>,
-          <%= link_to t(:label_log_out), destroy_user_session_path, {:method => :delete, :style => 'margin-right:0px'} %>
-          <%= '|'  if current_user.is_admin? %>
-          <%= link_to session["act_as"], {:controller => 'my', :id => current_user.id, :action => 'act_as'} if current_user.is_admin?%>
+        <%= link_to current_user.name, {:controller => 'my', :action => "show",:id => current_user.slug}, {:class => params[:controller].eql?("my") ? "selected" : ''} %>,
+        <%= link_to t(:label_log_out), destroy_user_session_path, {:method => :delete} %>
+        <%= '|'  if current_user.is_admin? %>
+        <%= link_to session["act_as"], {:controller => 'my', :id => current_user.id, :action => 'act_as'} if current_user.is_admin?%>
       </li>
     <%else%>
       <li><%= link_to t(:label_log_in), new_user_session_path %></li>
@@ -20,6 +20,6 @@
 
 <ul id="top_menu_items">
   <% render_top_menu %>
-      <%= yield :top_menu_items %>
+  <%= yield :top_menu_items %>
 </ul>
 

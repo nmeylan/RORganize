@@ -50,6 +50,41 @@ class MyController < ApplicationController
     end
   end
 
+  def my_projects
+    @members= current_user.members
+    respond_to do |format|
+      format.html
+    end
+  end
+
+  def star_project
+    @members= current_user.members
+    member = @members.select{|member| member.project_id.eql?(params[:star_project_id].to_i)}.first
+    member.is_project_starred = !member.is_project_starred
+    member.save
+    respond_to do |format|
+      format.js{
+        render :update do |page|
+          page.replace 'projects', :partial => 'projects/list', :locals => {:allow_to_star => true}
+        end}
+    end
+  end
+
+  def save_project_position
+    @members= current_user.members
+    project_ids = params[:ids]
+    @members.each do |member|
+      member.project_position = project_ids.index(member.project_id.to_s)
+      member.save
+    end
+    respond_to do |format|
+      format.js{
+        render :update do |page|
+          page.replace 'projects', :partial => 'projects/list', :locals => {:allow_to_star => true}
+        end}
+    end
+  end
+
   #OTHER METHODS
   def act_as
     session["act_as"].eql?("User") ? session["act_as"] = "Admin" : session["act_as"] = "User"

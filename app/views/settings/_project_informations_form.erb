@@ -6,7 +6,7 @@
 %>
 
 <%= form_for(@project, :url => {:controller => 'settings', :action => 'update_project_informations', :project_id => @project.identifier},
-  :html => {:class => 'form'}, :method => :put) do |f|%>
+  :html => {:class => 'form', :multipart => true}, :method => :put) do |f|%>
   <%= raw error_messages(@project.errors.full_messages) %>
   <div class="box">
     <p>
@@ -21,7 +21,9 @@
       <%= f.label :description, t(:field_description) %>
       <%= f.text_area :description %>
     </p>
-
+    <div id="attachments">
+      <%= render :partial => 'project/show_attachments', :locals => {:attachments => @project.attachments} %>
+    </div>
   </div>
   <p>
   <fieldset class="settings" >

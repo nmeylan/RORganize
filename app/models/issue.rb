@@ -14,27 +14,52 @@ class Issue < ActiveRecord::Base
   belongs_to :tracker, :class_name => 'Tracker'
   belongs_to :status, :class_name => 'IssuesStatus', :include => [:enumeration]
   belongs_to :category, :class_name => 'Category'
+  has_many :children, :foreign_key => 'predecessor_id', :class_name => 'Issue'
+  belongs_to :parent, :foreign_key => 'predecessor_id', :class_name => 'Issue'
   has_many :checklist_items, :class_name => 'ChecklistItem', :dependent => :destroy
   has_many :attachments, :foreign_key => 'object_id', :conditions => {:object_type => self.to_s},:dependent => :destroy
-  has_many :journals, :foreign_key => 'journalized_id',:class_name => 'Journal', :conditions => {:journalized_type => self.to_s}, :dependent => :destroy
+  has_many :journals, :as => :journalized,:conditions => {:journalized_type => self.to_s}, :dependent => :destroy
   #  has_many :scenarios, :class_name => 'Scenario', :dependent => :destroy
 
   validates_associated :attachments
 
-  validates :subject, :tracker_id, :status_id, :assigned_to_id, :presence => true
-  validates :due_date, :format =>
+  validates :subject, :tracker_id, :status_id,:presence => true
+  validate :validate_start_date, :validate_predecessor
+  #  validates :due_date, :format =>
   def self.paginated_issues(page, per_page, order, filter, project_id)
     paginate(:page => page,
-      :include => [:tracker,:version,:status,:assigned_to,:category,:checklist_items, :attachments],
+      :include => [:tracker,:version,:assigned_to,:category,:checklist_items, :attachments, :status => [:enumeration]],
       :conditions => filter+" issues.project_id = #{project_id}",
       :per_page => per_page,
       :order => order)
+
   end
   #Attributes name without id
   def self.attributes_formalized_names
     names = []
     Issue.attribute_names.each{|attribute| !attribute.eql?('id') ? names << attribute.gsub(/_id/,'').gsub(/id/,'').gsub(/_/,' ').capitalize : ''}
     return names
+  end
+  #  Custom validator
+  def validate_start_date
+    if !((self.due_date && self.start_date) ? self.start_date <= self.due_date : true)
+      errors.add(:start_date,"must be inferior than due date")
+    end
+  end
+
+  def validate_predecessor
+    if !self.predecessor_id.nil?
+      issue = Issue.find(self.predecessor_id)
+      if !issue.nil? && !issue.project_id.eql?(self.project_id) || issue.nil?
+        errors.add(:predecessor,"not exist in this project")
+      elsif !issue.nil? && issue.id.eql?(self.id)
+        errors.add(:predecessor,"can't be self")
+      elsif !issue.nil? && self.children.include?(issue)
+        errors.add(:predecessor,"is already a child")
+      end
+    end
+  rescue
+    errors.add(:predecessor,"not found")
   end
 
   def self.filter(hash)
@@ -69,7 +94,7 @@ class Issue < ActiveRecord::Base
   private
   def set_done_ratio
     done_ratio = self.status.default_done_ratio
-    if done_ratio != 0
+    if done_ratio != 0 && !self.done_changed?
       self.done = done_ratio
     end
   end

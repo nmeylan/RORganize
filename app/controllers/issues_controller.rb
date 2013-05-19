@@ -4,12 +4,12 @@
 # File: issues_controller.rb
 
 class IssuesController < ApplicationController
-  before_filter :authenticate_user!
   before_filter :find_project
-  before_filter :check_permission, :except => [:save_checklist, :issue_description,:show_checklist_items,:toolbox, :download_attachment]
+  before_filter :check_permission, :except => [:save_checklist, :issue_description,:show_checklist_items,:toolbox, :download_attachment, :edit_note, :delete_note, :start_today, :add_predecessor,:del_predecessor]
   before_filter :check_not_owner_permission, :only => [:edit,:update, :destroy]
   before_filter { |c| c.menu_context :project_menu }
   before_filter { |c| c.menu_item(params[:controller]) }
+  before_filter {|c| c.top_menu_item("projects")}
   include ApplicationHelper
   include IssuesHelper
   helper_method :sort_column, :sort_direction
@@ -45,9 +45,9 @@ class IssuesController < ApplicationController
   end
 
   def show
-    @issue = Issue.find(params[:id], :include => [:tracker,:version,:status,:assigned_to,:category,:attachments])
+    @issue = Issue.find(params[:id], :include => [:tracker,:version,:status,:assigned_to,:category,:attachments, :parent])
     @journals = Journal.find_all_by_journalized_type_and_journalized_id(@issue.class.to_s, @issue, :include => [:details])
-    @allowed_statuses = current_user.members.select{|member| member.project_id == @project.id}.first.role.issues_statuses
+    @allowed_statuses = current_user.members.select{|member| member.project_id == @project.id}.first.role.issues_statuses.sort{|x,y| x.enumeration.position <=> y.enumeration.position}
     @done_ratio = [0,10,20,30,40,50,60,70,80,90,100]
     @checklist_statuses = Enumeration.find_all_by_opt("CLIS")
     @checklist_items = ChecklistItem.find_all_by_issue_id(@issue, :include => [:enumeration])
@@ -60,7 +60,7 @@ class IssuesController < ApplicationController
     @issue = Issue.new
     @issue.attachments.build
     #TODO: admin allowed_statuses
-    @allowed_statuses = current_user.members.select{|member| member.project_id == @project.id}.first.role.issues_statuses
+    @allowed_statuses = current_user.members.select{|member| member.project_id == @project.id}.first.role.issues_statuses.sort{|x,y| x.enumeration.position <=> y.enumeration.position}
     @done_ratio = [0,10,20,30,40,50,60,70,80,90,100]
     respond_to do |format|
       format.html
@@ -76,12 +76,19 @@ class IssuesController < ApplicationController
     respond_to do |format|
       if date_valid?(params[:issue][:due_date]) && @issue.save
         flash[:notice] = t(:successful_creation)
+        @journal = Journal.create(:user_id => @issue.author_id,
+          :journalized_id => @issue.id,
+          :journalized_type => @issue.class.to_s,
+          :created_at => @issue.created_at,
+          :notes => "",
+          :action_type => "created",
+          :project_id => @project.id)
         format.html { redirect_to :action => 'show', :controller => 'issues', :id => @issue}
         format.json  { render :json => @issue,
           :status => :created, :location => @issue}
       else
         @issue.errors.add(:due_date, 'format is invalid') unless date_valid?(params[:issue][:due_date])
-        @allowed_statuses = current_user.members.select{|member| member.project_id == @project.id}.first.role.issues_statuses
+        @allowed_statuses = current_user.members.select{|member| member.project_id == @project.id}.first.role.issues_statuses.sort{|x,y| x.enumeration.position <=> y.enumeration.position}
         @done_ratio = [0,10,20,30,40,50,60,70,80,90,100]
         format.html  { render :action => "new" }
         format.json  { render :json => @issue.errors,
@@ -93,7 +100,7 @@ class IssuesController < ApplicationController
   #GET /project/:project_identifier/issues/:id/edit
   def edit
     #TODO: admin allowed_statuses
-    @allowed_statuses = current_user.members.select{|member| member.project_id == @project.id}.first.role.issues_statuses
+    @allowed_statuses = current_user.members.select{|member| member.project_id == @project.id}.first.role.issues_statuses.sort{|x,y| x.enumeration.position <=> y.enumeration.position}
     @done_ratio = [0,10,20,30,40,50,60,70,80,90,100]
     respond_to do |format|
       format.html
@@ -110,10 +117,12 @@ class IssuesController < ApplicationController
       'assigned_to_id' => t(:field_assigned_to),
       'tracker_id' => t(:field_tracker),
       'due_date' => t(:field_due_date),
+      'start_date' => "Start date",
       'done' => t(:field_done),
       'estimated_time' => t(:field_estimated_time),
       'version_id' => t(:field_version)}
     updated_attributes = updated_attributes(@issue,params[:issue])
+    issue = Issue.new(@issue.attributes.clone)
     #Foreign key values
     fk_values = {'status_id' => IssuesStatus,
       'category_id' => Category,
@@ -122,44 +131,40 @@ class IssuesController < ApplicationController
       'version_id' => Version}
     params[:issue][:updated_at] = Time.now.to_formatted_s(:db)
     respond_to do |format|
-      #If 0 attributes were updated
+      #If 0 attributes were updated && 0 notes were added to the issue
       if updated_attributes.empty? &&
           (params[:notes].nil? || params[:notes].eql?('')) &&
           (params[:issue][:existing_attachment_attributes].nil? &&
             params[:issue][:new_attachment_attributes].nil?)
-        format.html { redirect_to :action => 'show', :controller => 'issues', :id => @issue}
+        format.html { redirect_to :action => 'show', :controller => 'issues', :id => @issue.id}
         format.json  { render :json => @issue,
           :status => :created, :location => @issue}
         #If attributes were updated
-      elsif @issue.update_attributes(params[:issue]) &&
-          (params[:issue][:existing_attachment_attributes].nil? &&
-            params[:issue][:new_attachment_attributes].nil?)
+      elsif @issue.update_attributes(params[:issue]) && @issue.save_attachments
+        updated_by_trigger = updated_attributes(issue, @issue.attributes)
+        updated_attributes.merge!(updated_by_trigger)
         updated_attrs = updated_attributes.delete_if{|attr, val| unused_attributes.include?(attr)}
-        if updated_attrs.any?
+
+        if updated_attrs.any? || !params[:notes].eql?('')
           #Create journal
           @journal = Journal.create(:user_id => current_user.id,
             :journalized_id => @issue.id,
             :journalized_type => @issue.class.to_s,
             :created_at => params[:issue][:updated_at],
-            :notes => params[:notes] ? params[:notes] : '')
+            :notes => params[:notes] ? params[:notes] : '',
+            :action_type => "updated",
+            :project_id => @project.id)
           #Create an entry for the journal
           issues_journal_insertion(updated_attrs, @journal, journalized_property, fk_values)
         end
         flash[:notice] = t(:successful_update)
-        format.html { redirect_to :action => 'show', :controller => 'issues', :id => @issue}
-        format.json  { render :json => @issue,
-          :status => :created, :location => @issue}
-        #If attachment exist (updated or created)
-      elsif params[:issue][:existing_attachment_attributes] || params[:issue][:new_attachment_attributes]
-        @issue.save
-        flash[:notice] = t(:successful_update)
-        format.html { redirect_to :action => 'show', :controller => 'issues', :id => @issue}
+        format.html { redirect_to :action => 'show', :controller => 'issues', :id => @issue.id}
         format.json  { render :json => @issue,
           :status => :created, :location => @issue}
       else
-        @allowed_statuses = current_user.members.select{|member| member.project_id == @project.id}.first.role.issues_statuses
+        @allowed_statuses = current_user.members.select{|member| member.project_id == @project.id}.first.role.issues_statuses.sort{|x,y| x.enumeration.position <=> y.enumeration.position}
         @done_ratio = [0,10,20,30,40,50,60,70,80,90,100]
-        format.html  { render :action => "new" }
+        format.html  { render :action => "edit" }
         format.json  { render :json => @issue.errors,
           :status => :unprocessable_entity }
       end
@@ -169,7 +174,12 @@ class IssuesController < ApplicationController
   #DELETE /project/:project_identifier/issues/:id
   def destroy
     @issue.destroy
-    journal_creation_on_delete(@issue, @issue.subject, 'Delete',property_key = nil)
+    @journal = Journal.create(:user_id => current_user.id,
+      :journalized_id => @issue.id,
+      :journalized_type => @issue.class.to_s,
+      :notes => "",
+      :action_type => "deleted",
+      :project_id => @project.id)
     flash[:notice] = t(:successful_deletion)
     respond_to do |format|
       format.html { redirect_to issues_path}
@@ -182,7 +192,6 @@ class IssuesController < ApplicationController
   end
 
   #OTHERS PUBLIC METHODS
-  #filling the tooltip
   def delete_attachment
     attachment = Attachment.find(params[:attachment_id])
     @issue = Issue.find(params[:id], :include => [:tracker,:version,:status,:assigned_to,:category,:attachments])
@@ -203,6 +212,49 @@ class IssuesController < ApplicationController
   def download_attachment
     filename = params[:path]
     send_file(filename)
+  end
+
+  def start_today
+    @issues = Issue.find(params[:ids])
+    fail = 0
+    journalized_property = {'start_date' => "Start date"}
+    @issues.each do |issue|
+      old_start_date = issue.start_date ? issue.start_date.clone : nil
+      issue.start_date = Date.current
+      if issue.save
+        #Create journal
+        @journal = Journal.create(:user_id => current_user.id,
+          :journalized_id => issue.id,
+          :journalized_type => issue.class.to_s,
+          :created_at => Time.now.to_formatted_s(:db),
+          :notes => '',
+          :action_type => "updated",
+          :project_id => @project.id)
+        #Create an entry for the journal
+        issues_journal_insertion({'start_date' => [old_start_date, issue.start_date]}, @journal, journalized_property, {})
+      else
+        fail +=1
+        @issue = issue
+      end
+    end
+    respond_to do |format|
+      format.html { redirect_to :action => 'show'}
+      format.js do
+        render :update do |page|
+          if params[:context] && params[:context].eql?("toolbox")
+            flash[:notice] = t(:successful_update)
+            page.redirect_to :action => 'index'
+          else
+            if fail == 0
+              flash[:notice] = t(:successful_update)
+              page.redirect_to :action => 'show', :id => params[:ids]
+            else
+              response.headers['flash-error-message'] = @issue.errors.full_messages
+            end
+          end
+        end
+      end
+    end
   end
 
   def issue_description
@@ -251,18 +303,19 @@ class IssuesController < ApplicationController
   end
   #GET /project/:project_identifier/issues/toolbox
   def toolbox
+    #Displaying toolbox with GET request
     if !request.post?
       #loading toolbox
       @issues_toolbox = Issue.find_all_by_id(params[:ids])
       #    Toolbox informations
-      @allowed_statuses = current_user.members.select{|member| member.project_id == @project.id}.first.role.issues_statuses.collect{|status| status.enumeration.name}
+      @allowed_statuses = current_user.members.select{|member| member.project_id == @project.id}.first.role.issues_statuses.sort{|x,y| x.enumeration.position <=> y.enumeration.position}.collect{|status| status.enumeration.name}
       @done_ratio = [0,10,20,30,40,50,60,70,80,90,100]
       @versions = @project.versions.collect{|version| version.name} << 'None' #field that can include blank
-      @members = @project.members.collect{|member|member.user.name}
+      @members = @project.members.collect{|member|member.user.name} << 'None'
       @categories = @project.categories.collect{|category| category.name} << 'None'
       #collecting informations from selected issues
       @actual_states = Hash.new{}
-      @actual_states["member"] = @issues_toolbox.collect{|issue| issue.assigned_to.name if !issue.assigned_to.nil?}.uniq
+      @actual_states["member"] = @issues_toolbox.collect{|issue| issue.assigned_to.nil? ? 'None' : issue.assigned_to.name }.uniq
       @actual_states["version"] = @issues_toolbox.collect{|issue| issue.version.nil? ? 'None' : issue.version.name}.uniq
       @actual_states["status"] = @issues_toolbox.collect{|issue| issue.status.enumeration.name}.uniq
       @actual_states["done"] = @issues_toolbox.collect{|issue| issue.done}.uniq
@@ -281,6 +334,12 @@ class IssuesController < ApplicationController
       issues.each do |issue|
         if(issue.author_id.eql?(current_user.id) || current_user.allowed_to?("delete not owner",params[:controller],@project))
           issue.destroy
+          Journal.create(:user_id => current_user.id,
+            :journalized_id => issue.id,
+            :journalized_type => issue.class.to_s,
+            :notes => "",
+            :action_type => "deleted",
+            :project_id => @project.id)
         end
       end
       render_index_js(t(:successful_deletion))
@@ -321,9 +380,15 @@ class IssuesController < ApplicationController
       #      Issues update
       params[:value][attribute_name] = params[:value].values.first.id unless (params[:value].values.first.class.eql?(String))
       @issues_toolbox.each do |issue|
+        #Requiere to insert into journal if trigger change default values
+        i = Issue.new(issue.attributes.clone)
         updated_attributes = updated_attributes(issue,params[:value].clone)
         #If value is an object, get id
         if updated_attributes.any? && issue.update_attributes(params[:value].clone) && issue.update_column('updated_at', Time.current().to_formatted_s(:db))
+          #Attributes can be changed by default value on before_update
+          #Changed will appear in journal
+          updated_by_trigger = updated_attributes(i, issue.attributes)
+          updated_attributes.merge!(updated_by_trigger)
           updated_attrs = updated_attributes.delete_if{|attr, val| unused_attributes.include?(attr)}
           if updated_attrs.any?
             #Create journal
@@ -331,7 +396,9 @@ class IssuesController < ApplicationController
               :journalized_id => issue.id,
               :journalized_type => issue.class.to_s,
               :created_at => Time.now.to_formatted_s(:db),
-              :notes => params[:notes] ? params[:notes] : '')
+              :notes => params[:notes] ? params[:notes] : '',
+              :action_type => "updated",
+              :project_id => @project.id)
             issues_journal_insertion(updated_attrs, @journal, journalized_property, fk_values)
           end
         end
@@ -349,6 +416,114 @@ class IssuesController < ApplicationController
     index
   end
 
+  def edit_note
+    journal = Journal.find_by_id(params[:journal_id])
+    @issue = Issue.find(params[:id])
+    if journal && journal.user_id.eql?(current_user.id)
+      respond_to do |format|
+        if journal.update_column(:notes, params[:notes])
+          format.js do
+            render :update do |page|
+              @journals = Journal.find_all_by_journalized_type_and_journalized_id("Issue", params[:id], :include => [:details])
+              page.replace_html 'history', :partial => "issues/history"
+              response.headers['flash-message'] = t(:successful_update)
+            end
+          end
+        else
+          format.js do
+            render :update do |page|
+              response.headers['flash-error_message'] = t(:failure_update)
+            end
+          end
+        end
+      end
+    end
+  end
+
+  def delete_note
+    journal = Journal.find_by_id(params[:journal_id])
+    @issue = Issue.find(params[:journalized_id])
+    if journal && journal.user_id.eql?(current_user.id)
+      respond_to do |format|
+        if journal.details.empty?
+          journal.destroy
+        else
+          journal.update_column(:notes, "")
+        end
+        format.js do
+          render :update do |page|
+            @journals = Journal.find_all_by_journalized_type_and_journalized_id("Issue", params[:journalized_id], :include => [:details])
+            page.replace_html 'history', :partial => "issues/history"
+            response.headers['flash-message'] = t(:successful_deletion)
+          end
+        end
+        format.js do
+          render :update do |page|
+            response.headers['flash-error_message'] = t(:failure_deletion)
+          end
+        end
+      end
+    end
+  end
+
+  def add_predecessor
+    @issue = Issue.find(params[:id])
+    @issue.predecessor_id = params[:issue][:predecessor_id]
+    respond_to do |format|
+      format.js do
+        render :update do |page|
+          if @issue.save
+            @journal = Journal.create(:user_id => current_user.id,
+              :journalized_id => @issue.id,
+              :journalized_type => @issue.class.to_s,
+              :created_at => Time.now.to_formatted_s(:db),
+              :notes => '',
+              :action_type => "updated",
+              :project_id => @project.id)
+            #Create an entry for the journal
+            issues_journal_insertion({'predecessor_id' => [nil, @issue.predecessor_id]}, @journal, {'predecessor_id' => "Predecessor"}, {})
+            @journals = Journal.find_all_by_journalized_type_and_journalized_id(@issue.class.to_s, @issue, :include => [:details])
+            page.replace_html 'predecessor', :partial => 'issues/predecessor'
+            page.replace 'history', :partial => "issues/history"
+            response.headers['flash-message'] = t(:successful_update)
+          else
+            response.headers['flash-error-message'] = @issue.errors.full_messages
+          end
+
+        end
+      end
+    end
+  end
+
+  def del_predecessor
+    @issue = Issue.find(params[:id])
+    old_predecessor = @issue.predecessor_id
+    @issue.predecessor_id = nil
+    respond_to do |format|
+      format.js do
+        render :update do |page|
+          if @issue.save
+            @journal = Journal.create(:user_id => current_user.id,
+              :journalized_id => @issue.id,
+              :journalized_type => @issue.class.to_s,
+              :created_at => Time.now.to_formatted_s(:db),
+              :notes => '',
+              :action_type => "updated",
+              :project_id => @project.id)
+            #Create an entry for the journal
+            issues_journal_insertion({'predecessor_id' => [old_predecessor,nil]}, @journal, {'predecessor_id' => "Predecessor"}, {})
+            @journals = Journal.find_all_by_journalized_type_and_journalized_id(@issue.class.to_s, @issue, :include => [:details])
+            page.replace_html 'predecessor', :partial => 'issues/predecessor'
+            page.replace 'history', :partial => "issues/history"
+            response.headers['flash-message'] = t(:successful_deletion)
+          else
+            response.headers['flash-error-message'] = @issue.errors.full_messages
+          end
+        end
+      end
+    end
+  end
+
   #Private methods
   private
 
@@ -362,7 +537,7 @@ class IssuesController < ApplicationController
     if check_issue_owner
       return true
     else
-      action = params[:action].to_s+" not owner"
+      action = find_action(params[:action].to_s)+" not owner"
       unless current_user.allowed_to?(action,params[:controller],@project)
         render_403
       else

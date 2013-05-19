@@ -25,7 +25,6 @@
     <%= stylesheet_link_tag    "textile_toolbar_style" %>
     <%= stylesheet_link_tag    "toolbar_style" %>
     <%= stylesheet_link_tag    "jquery.lightbox-0.5" %>
-    <%= stylesheet_link_tag    "impress" %>
     <%= stylesheet_link_tag    "toolbox" %>
     <%= stylesheet_link_tag    "application" %>
     <%= stylesheet_link_tag    "pagination" %>
@@ -38,11 +37,19 @@
   </head>
   <body>
 <%# HACK quick and dirty =( %>
-
     <%session["act_as"] ||= "User" %>
     <% current_user.act_as_admin(session["act_as"]) if current_user && session["act_as"] != current_user.act_as_admin_session%>
     <div id="top_menu"><%= render :partial => 'layouts/top_menu' %></div>
-    <div id="header"><h1><%= @project ? @project.name : 'RORganize' %></h1></div>
+    <div id="header">
+      <h1>
+        <% if @project && @project.attachments.any? %>
+          <% for attachment in @project.attachments %>
+            <%= image_tag attachment.file.url(:logo), {:align => :left, :id => "project_logo"} if attachment.id %>
+          <% end %>
+        <% end %>
+        <%= @project ? @project.name : 'RORganize' %><%# Here your team's name %>
+      </h1>
+    </div>
     <% if display_menu?(@project) %>
       <%= render :partial => 'layouts/main_menu' %>
     <% end %>
@@ -58,27 +65,27 @@
   <div id="loading"><p>Loading...<img src="/assets/loading.gif"/></p></div>
   <div id="debug">
   </div>
-  <div id="footer">Project manager 2012 by Nicolas Meylan</div>
+  <div id="footer">RORganize 2012 by Nicolas Meylan</div>
 </body>
 
 <script type="text/javascript">
-  (function($){
-    $(document).ready(function(){
+  (function($) {
+    $(document).ready(function() {
       // hide flash messages
       display_flash();
 
     });
     $(".chzn-select").chosen();
-    $(".chzn-select-deselect").chosen({allow_single_deselect:true});
+    $(".chzn-select-deselect").chosen({allow_single_deselect: true});
     $(document).ajaxComplete(function(e, xhr, options) {
       $(".chzn-select").chosen();
       $("#loading").hide();
-      if(xhr.getResponseHeader('flash-message')){
+      if (xhr.getResponseHeader('flash-message')) {
         $.jGrowl(xhr.getResponseHeader('flash-message'), {
           theme: 'success'
         });
       }
-      if(xhr.getResponseHeader('flash-error-message')){
+      if (xhr.getResponseHeader('flash-error-message')) {
         $.jGrowl(xhr.getResponseHeader('flash-error-message'), {
           theme: 'failure'
         });

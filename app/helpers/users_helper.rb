@@ -4,5 +4,5 @@
 # File: users_helper.rb
 
 module UsersHelper
- 
+
 end

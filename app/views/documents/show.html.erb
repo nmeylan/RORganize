@@ -1,0 +1,69 @@
+<%#
+# Author: Nicolas Meylan
+# Date: 6 avr. 2013
+# Encoding: UTF-8
+# File: show.html.erb
+%>
+
+<div class="contextual">
+  <h1><%= "#{t(:label_document)} ##{@document.id}"%></h1>
+  <div class="splitcontentright">
+    <%= link_to t(:link_new_document), {:action => 'new', :project_id => @project.identifier}, {:class => 'icon icon-add'} if current_user.allowed_to?('new','Documents',@project) %>
+    <% if current_user.allowed_to?('edit','Documents',@project) %>
+      <%= link_to t(:link_edit), {:action => 'edit', :project_id => @project.identifier, :id => @document.id}, {:class => 'icon icon-edit'}  %>
+    <% end %>
+    <% if current_user.allowed_to?('destroy','Documents',@project)%>
+      <%= link_to t(:link_delete), '#', {:class => 'icon icon-del', :onclick => "button_delete('#{document_path}')"}  %>
+    <% end %>
+
+  </div>
+</div>
+
+<h2><%=@document.name%></h2>
+<p>
+  <em>
+    <%= "#{t(:label_added)}
+#{distance_of_time_in_words(@document.created_at,Time.now)}
+#{t(:label_ago)},
+#{t(:label_by)}
+#{@journal_created.user.name}.
+#{(@document.created_at.eql?(@document.updated_at) ? '' :
+    "#{t(:label_updated)} #{distance_of_time_in_words(@document.updated_at,Time.now)}
+    #{t(:label_ago)}.").to_s}"%>
+  </em>
+</p>
+<table class="detail" style="width:100%">
+  <th style="width:15%"><%= t(:field_version) %> :</th><td style="width:30%"><%= @document.version ? @document.version.name : '-' %></td>
+</tr>
+<tr>
+  <th style="width:15%"><%= t(:field_category) %> :</th><td style="width:30%"><%= @document.category ? @document.category.name : '-' %></td>
+</tr>
+</table>
+<br/><hr /><br/>
+<h2><%= t(:field_description) %> :</h2>
+<%= raw !@document.description.eql?('') ? textile_to_html(@document.description) : '-' %>
+
+<%#= ATTACHMENT %>
+<div id="attachments">
+  <%= render :partial => 'documents/show_attachments', :locals => {:attachments => @document.attachments} %>
+</div>
+
+<% if @journals.any? %>
+  <div id="history">
+    <%= raw history_render(@journals) %>
+  </div>
+<% end %>
+<script type="text/javascript">
+  jQuery(document).ready(function() {
+    jQuery('a.lightbox').lightBox({
+      fixedNavigation: true,
+      imageLoading: "<%= asset_path 'lightbox-ico-loading.gif' %>",
+      imageBtnClose: "<%= asset_path 'lightbox-btn-close.gif' %>",
+      imageBtnPrev: "<%= asset_path 'lightbox-btn-prev.gif' %>",
+      imageBtnNext: "<%= asset_path 'lightbox-btn-next.gif' %>",
+      imageBlank: "<%= asset_path 'lightbox-blank.gif' %>",
+      containerResizeSpeed: 350
+    });
+  });
+
+</script>

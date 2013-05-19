@@ -64,11 +64,13 @@ module Rorganize
         menu = Rorganize::MenuManager.items(:top_menu)
         content = ""
         content += content += content_tag(:li,
-             link_to(t(:home), :root))
+          link_to(t(:home), :root, { :class => @current_top_menu_item.eql?("menu_home") ? "selected square" :"square"}))
         menu.menu_items.each do |item|
           if current_user && current_user.allowed_to?(item.url[:action], item.url[:controller])
             content += content_tag(:li,
-              link_to(item.label, item.url, {:id => item.params[:id]}))
+              link_to(item.label, item.url, {:id => item.params[:id],
+                  :class => item.params[:id].eql?(@current_top_menu_item) ? "selected square" :"square"}
+              ))
           end
         end
         content_for :top_menu_items, content.html_safe
@@ -128,10 +130,12 @@ module Rorganize
     end
     #Menu item class
     class MenuItem
-      attr_reader :name, :label, :url, :params
+      attr_reader :name, :label, :url, :params, :controller, :action
       def initialize(name, label, url={}, options={})
         @name = name
         @label = label
+        @controller = url[:controller]
+        @action = url[:action]
         @url = url
         @params = options
         if(url[:action] && url[:controller])

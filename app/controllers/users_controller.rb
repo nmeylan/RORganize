@@ -5,12 +5,12 @@
 # Comment: For administrator panel
 
 class UsersController < ApplicationController
-  before_filter :authenticate_user!
   helper_method :sort_column, :sort_direction
   before_filter :check_permission, :except => [:update_permissions]
   before_filter { |c| c.menu_context :admin_menu }
   before_filter { |c| c.menu_item(params[:controller])}
-  
+  before_filter {|c| c.top_menu_item("administration")}
+
   include ApplicationHelper
   require 'will_paginate'
   #GET /administration/users
@@ -44,6 +44,11 @@ class UsersController < ApplicationController
     respond_to do |format|
       if @user.save
         flash[:notice] = t(:successful_creation)
+        @journal = Journal.create(:user_id => current_user.id,
+          :journalized_id => @user.id,
+          :journalized_type => @user.class.to_s,
+          :notes => '',
+          :action_type => "created")
         format.html { redirect_to :action => 'show', :controller => 'users', :id => @user}
         format.json  { render :json => @user,
           :status => :created, :location => @user}
@@ -67,27 +72,29 @@ class UsersController < ApplicationController
   def update
     @user = User.find(params[:id])
     #Attributes that won't be considarate in journal update
-    unused_attributes = ['id','created_at', 'updated_at', 'encrypted_password']
     journalized_property = {'name' => t(:field_name),
       'admin' => t(:field_administrator),
       'email' => t(:field_email),
       'login' => t(:field_login)}
-    updated_attributes = updated_attributes(@user,params[:user],unused_attributes)
+    params[:user][:admin] = (params[:user][:admin] == "1")
+    updated_attributes = updated_attributes(@user,params[:user])
     params[:user][:updated_at] = Time.now.to_formatted_s(:db)
     respond_to do |format|
       #If 0 attributes were updated
       unused_attributes = ['id','created_at', 'updated_at', 'encrypted_password']
-      if updated_attributes(@user,params[:user], unused_attributes).empty?
+      updated_attrs = updated_attributes.delete_if{|attr, val| unused_attributes.include?(attr)}
+      if updated_attrs.empty?
         format.html { redirect_to :action => 'show', :controller => 'users', :id => @user }
         format.json  { render :json => @user,
           :status => :created, :location => @user}
-      elsif @user.update_attributes(params[:user]) && @user.update_column(:admin, params[:user][:admin])
+      elsif updated_attrs.any? && @user.update_attributes(params[:user]) && @user.update_column(:admin, params[:user][:admin])
         #Create journal
         @journal = Journal.create(:user_id => current_user.id,
           :journalized_id => @user.id,
           :journalized_type => @user.class.to_s,
           :created_at => params[:user][:updated_at],
-          :notes => params[:notes] ? params[:notes] : '')
+          :notes => params[:notes] ? params[:notes] : '',
+          :action_type => "updated")
         journal_insertion(updated_attributes, @journal, journalized_property)
         flash[:notice] = t(:successful_update)
         format.html { redirect_to :action => 'show', :controller => 'users', :id => @user}
@@ -114,6 +121,11 @@ class UsersController < ApplicationController
   def destroy
     @user = User.find(params[:id])
     @user.destroy
+    @journal = Journal.create(:user_id => current_user.id,
+      :journalized_id => @user.id,
+      :journalized_type => @user.class.to_s,
+      :notes => '',
+      :action_type => "deleted")
     flash[:notice] = t(:successful_deletion)
     respond_to do |format|
       format.html { redirect_to users_path}

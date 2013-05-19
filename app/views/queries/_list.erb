@@ -15,22 +15,22 @@
         <th></th>
       </tr>
       <% query_ids = @queries.collect{|query| query.id}.to_json %>
-        <% @queries.each do |query| %>
+      <% @queries.each do |query| %>
 
         <%url = queries_path.to_s+'/'+query.id.to_s %>
         <tr class="odd_even query_tr">
-          <td style="width:90%"><%= link_to query.name, query_path(:id => query.id)  %></td>
-          <td style="width:5%"><%= link_to t(:link_edit),
+          <td class="list_left name"><%= link_to query.name, query_path(:id => query.id)  %></td>
+          <td class="action"><%= link_to t(:link_edit),
               edit_query_path(query.id),
               {:class => "icon icon-edit"} if current_user.allowed_to?('edit','Queries') %></td>
-          <td style="width:5%"><%= link_to t(:link_delete), '#',
+          <td class="action"><%= link_to t(:link_delete), '#',
               {:class => 'icon icon-del',
               :onclick => "button_delete_with_data('#{url}', {queries:#{query_ids}})"} if current_user.allowed_to?('destroy','queries') %></td>
-          </tr>
-        <%end%>
-      </table>
-    <% else %>
-      <h2><%= t(:text_no_data) %></h2>
-    <% end %>
+        </tr>
+      <%end%>
+    </table>
+  <% else %>
+    <h2><%= t(:text_no_data) %></h2>
+  <% end %>
 
-  </div>
+</div>

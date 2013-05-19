@@ -66,6 +66,8 @@
       </ul>
     </li>
   <% end %>
+  <li><%= link_to t(:link_start_today), '#', {:class => 'icon icon-calendar', :id => 'start_today',
+      :onclick => "button_post_with_message('#{start_today_issues_path(@project.identifier)}','#{t(:text_set_start_date_today)}',{ids : #{@issues_toolbox.collect{|issue| issue.id}}, context : 'toolbox' })"}%></li>
   <% if current_user.allowed_to?('edit','Issues',@project) %>
     <li><%= link_to t(:link_edit), {:action => 'edit', :project_id => @project.identifier, :id => ids[0]}, {:class => 'icon icon-edit'} if @issues_toolbox.size == 1%></li>
   <% end %>
@@ -79,12 +81,12 @@
 
 <script type="text/javascript">
   createOverlay("#delete_overlay", 150);
-  jQuery(".submenu a").click(function(e){
+  jQuery(".submenu a").click(function(e) {
     e.preventDefault();
     // find the context of the selected options: e.g: "category" for update categories of the selected issues
     var context = _.without(jQuery(this).parents(".submenu").attr('class').split(' '), 'submenu', 'hover');
     //put new value into hidden field which name is matching with context
-    jQuery("input#value_"+context).val(jQuery(this).text());
+    jQuery("input#value_" + context).val(jQuery(this).text());
     jQuery('#issues_toolbox form').submit();
   });
 </script>

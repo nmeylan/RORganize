@@ -12,11 +12,28 @@
 <div class="box">
   <% @permission_hash.each do |k,v| %>
     <fieldset>
-      <legend><%= link_to '', '#', {:class => 'icon icon-checked', :id => 'check_all_'+k.to_s, 'cb_checked' => "b"} %>
-              <%= link_to k, '#', {:class => 'icon icon-expanded toggle', :id => k} %></legend>
+      <legend>
+        <%= link_to '', '#',
+          {:class => 'icon icon-checked',
+          :id => 'check_all_'+k.to_s, 'cb_checked' => "b",
+          :title => "check all"} %>
+
+        <% if critical_controllers(k) %>
+          <span class="icon icon-warning">
+          <% end %>
+          <%= link_to k, '#', {:class => 'icon icon-expanded toggle', :id => k} %>
+          <% if critical_controllers(k) %>
+          </span>
+        <% end %>
+      </legend>
       <div class="content <%=k%>">
         <% v.each do |key,value| %>
-          <label><%= link_to key, {:action => 'edit', :controller => 'permissions', :id => value} %></label><%= check_box_tag  "[permissions][#{key}]", value, @selected_permissions.include?(value)%>
+          <%= check_box_tag  "[permissions][#{key}]", value, @selected_permissions.include?(value)%>
+          <label>
+            <%= link_to key, {:action => 'edit', :controller => 'permissions', :id => value},
+              {:class => (critical_permissions(key) ? "alert icon icon-alert" : "")}%>
+          </label>
+
         <% end %>
       </div>
     </fieldset>

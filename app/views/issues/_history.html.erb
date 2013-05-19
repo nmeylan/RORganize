@@ -1,0 +1,13 @@
+<%#
+# Author: Nicolas Meylan
+# Date: 3 mars 2013
+# Encoding: UTF-8
+# File: _history.html.erb
+%>
+
+<div id="history">
+  <%= raw history_render(@journals) %>
+</div>
+<script type="text/javascript">
+  edit_notes("<%=url_for(edit_note_issues_path(@project.identifier, @issue.id))%>");
+</script>

@@ -1,0 +1,15 @@
+<%#
+# Author: Nicolas Meylan
+# Date: 6 avr. 2013
+# Encoding: UTF-8
+# File: new.html.erb
+%>
+
+<div class="contextual">
+  <h1><%= t(:link_new_document) %></h1>
+</div>
+
+<%= form_for @document, :html => {:class => 'form',:multipart => true} do |f| %>
+  <%= render :partial => "documents/form", :locals => {:f => f}%>
+  <%= submit_tag t(:button_save) %>
+<% end %>

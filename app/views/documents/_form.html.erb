@@ -1,0 +1,41 @@
+<%#
+# Author: Nicolas Meylan
+# Date: 6 avr. 2013
+# Encoding: UTF-8
+# File: _form.html.erb
+%>
+
+<%= raw error_messages(@document.errors.full_messages) %>
+<div class="box">
+  <p>
+    <label for="issue_name"><%=t(:field_name)%><span class ="required"> *</span></label>
+    <%= f.text_field :name, :size => 80 %>
+  </p>
+  <p>
+    <%= f.label :description, t(:field_description) %>
+    <%= f.text_area :description, :rows => 12 %>
+  </p>
+  <div class="splitcontentleft">
+    <div class="autocomplete-combobox cbb-medium nosearch">
+      <label for="document_version"><%=t(:field_version)%></label>
+      <%= raw select_tag_versions("document_version_id", "document[version_id]", @document.version_id) %>
+    </div>
+    <div class="autocomplete-combobox cbb-medium nosearch">
+      <label for="document_category"><%=t(:field_category)%></label>
+      <%= f.select :category_id, @project.categories.collect{|category| [category.name, category.id]}, { :include_blank => true }, {:class => 'chzn-select-deselect cbb-medium'} %>
+    </div>
+  </div>
+  <div style="clear:both"></div>
+  <div id="attachments">
+    <p>
+      <label><%= t(:field_attachments) %></label>
+    </p>
+    <%= render :partial => 'documents/attachments', :collection => @document.attachments %>
+
+  </div>
+  <p>
+    <%= add_attachments_link "Add a file" %>
+  </p>
+</div>
+
+<%= raw set_toolbar('document_description') %>

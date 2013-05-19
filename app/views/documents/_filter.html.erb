@@ -1,0 +1,49 @@
+<%#
+# Author: Nicolas Meylan
+# Date: 31 oct. 2012
+# Encoding: UTF-8
+# File: _filter.html.erb
+%>
+
+<fieldset>
+  <legend><%= link_to t(:link_filter), '#', {:class => 'icon icon-collapsed toggle'} %></legend>
+  <div class="content">
+    <%= form_tag url_for(:controller => 'documents', :action => 'index'),:method => :get, :html => {:class => 'filter_form'}, :remote => true do -%>
+  <%#= Start of the form %>
+      <%= radio_button_tag "type", "all", true, {:align => "center"} %><%= t(:label_all) %>
+      <%= radio_button_tag "type", "filter", false %><%= t(:link_filter) %>
+      <div class="autocomplete-combobox nosearch no-padding_left no-height">
+        <%= select_tag 'filters_list', options_for_select(@filters_list),:class => 'chzn-select cbb-verylarge', :id => 'filters_list', :multiple => true%>
+      </div>
+  <%#= Options for query, element will pop here %>
+      <table id="filter_content">
+
+      </table>
+      <%= submit_tag t(:button_apply), {:style => 'margin-left:0px'} %>
+    <% end -%>
+  </div>
+</fieldset>
+<script type="text/javascript">
+  (function($) {
+    $(document).ready(function() {
+
+      load_filter(<%= raw documents_generics_form_to_json.to_s%>,
+<%= raw session[@project.identifier+'_controller_documents_filter_params'].to_json%>);
+    });
+    $("#type_filter").click(function(e) {
+      $("#filters_list_chzn").show();
+      $("#filter_content").show();
+    });
+    $("#type_all").click(function(e) {
+      $("#filters_list_chzn").hide();
+      $("#filter_content").hide();
+    });
+
+    //display select box
+
+    //Display or hide filter's conditions
+    add_filters(<%= raw  documents_generics_form_to_json.to_s%>);
+  })(jQuery);
+
+  uniq_toogle(".content");
+</script>

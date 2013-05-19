@@ -8,12 +8,24 @@
 <div class="contextual">
   <h1><%= t(:label_activity) %></h1>
 </div>
-<%= raw  activities_ary(@issues_activity) %>
+<div class="splitcontentleft">
 
+  <div id="issues_activities">
+    <%= render :partial => "project/issues_activities" %>
+  </div>
+</div>
+<% if @activities.any? %>
+  <div class="splitcontentright">
+    <div class="box slim">
+      <div class="header"><h2><%=t(:text_other_activities)%></h2></div>
+      <%= render :partial => "project/activities" %>
+    </div>
+  </div>
+<% end %>
+<div style="clear:both">
+</div>
 <%= render :partial => 'project/activity_overlay' %>
 <script type="text/javascript">
-  activities_overlay("<%=url_for(:action => 'load_journal_activity', :controller => 'project', :project_id => @project.identifier)%>");
-  jQuery(document).ready(function(e) {
-    createOverlay("#activity_overlay", 150);
-  });
+  createOverlay("#activity_overlay", 150);
+  
 </script>

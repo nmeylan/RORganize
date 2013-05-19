@@ -1,0 +1,17 @@
+<%#
+# Author: Nicolas Meylan
+# Date: 16 mars 2013
+# Encoding: UTF-8
+# File: calendar.html.erb
+%>
+<div class="contextual">
+  <h1><%= t(:label_calendar) %> </h1>
+</div>
+<div id="calendar">
+  <%= render :partial => "roadmap/calendar" %>
+</div>
+
+<div class="tooltip" id="tooltip" style="">
+  <%= render :partial => 'roadmap/tooltip', :locals => {:description => nil} %>
+</div>
+

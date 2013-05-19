@@ -31,9 +31,7 @@
   </tr>
 </table>
 <% if @journals.any? %>
-  <div class="separator"></div>
   <div id="history">
-    <h2><%= t(:label_history) %></h2>
     <%= raw history_render(@journals) %>
   </div>
 <% end %>

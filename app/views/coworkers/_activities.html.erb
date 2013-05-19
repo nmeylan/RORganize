@@ -1,0 +1,13 @@
+<%#
+# Author: Nicolas Meylan
+# Date: 8 mai 2013
+# Encoding: UTF-8
+# File: _activities.html.erb
+%>
+<div id="coworker_activities">
+  <% if @activities && @activities.any? %>
+    <%= render :partial => "my/my_activities" %>
+  <% else %>
+    <h2 align="center"><%= t(:text_no_data) %></h2>
+  <% end %>
+</div>

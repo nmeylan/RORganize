@@ -27,19 +27,25 @@
   </div>
 </fieldset>
 <script type="text/javascript">
-  (function($){
-    $(document).ready(function(){
+  (function($) {
+    $(document).ready(function() {
 
-      load_filter(<%= raw  generics_form_to_json.to_s%>,
+      load_filter(<%= raw  issues_generics_form_to_json.to_s%>,
 <%= raw session[@project.identifier+'_controller_issues_filter_params'].to_json%>);
     });
-    $("#type_filter").click(function(e){$("#filters_list_chzn").show();$("#filter_content").show();});
-    $("#type_all").click(function(e){$("#filters_list_chzn").hide();$("#filter_content").hide();});
+    $("#type_filter").click(function(e) {
+      $("#filters_list_chzn").show();
+      $("#filter_content").show();
+    });
+    $("#type_all").click(function(e) {
+      $("#filters_list_chzn").hide();
+      $("#filter_content").hide();
+    });
 
     //display select box
 
     //Display or hide filter's conditions
-    add_filters(<%= raw  generics_form_to_json.to_s%>);
+    add_filters(<%= raw  issues_generics_form_to_json.to_s%>);
   })(jQuery);
 
   uniq_toogle(".content");
