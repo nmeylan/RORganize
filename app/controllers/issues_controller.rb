@@ -5,7 +5,6 @@
 
 class IssuesController < ApplicationController
   before_filter :find_project
-  before_filter :load_issues, :only => [:index]
   before_filter :check_permission, :except => [:save_checklist, :issue_description,:show_checklist_items,:toolbox, :download_attachment, :edit_note, :delete_note, :start_today]
   before_filter :check_not_owner_permission, :only => [:edit,:update, :destroy]
   before_filter { |c| c.menu_context :project_menu }
@@ -20,6 +19,7 @@ class IssuesController < ApplicationController
   #GET /project/:project_identifier/issues
   def index
     filter
+    load_issues
     find_custom_queries
     respond_to do |format|
       format.html { render "issues/index"}
