@@ -15,31 +15,31 @@
    float: left;
    margin-right: 1px; }
 .pagination .disabled {
-   color: #999999;
-   border: 1px solid #dddddd; }
+   color: #6F8696;
+   border: 1px solid #6F8696; }
 .pagination .current {
    font-style: normal;
    font-weight: bold;
-   background: #E5E3DE;
+   background: #6F8696;
    color: white;
-   border: 1px solid #E5E3DE; }
+   border: 1px solid #6F8696; }
 .pagination a {
    text-decoration: none;
-   color: #E5E3DE;
-   border: 1px solid #E5E3DE; }
+   color: #6F8696 !important;
+   border: 1px solid #6F8696; }
 .pagination a:hover, .pagination a:focus {
-   color: #E5E3DE;
-   border-color: #E5E3DE; }
+   color: #FFC773 !important;
+   border-color: #6F8696; }
 .pagination .page_info {
-   background: #E5E3DE;
+   background: #6F8696;
    color: white;
    padding: 0.4em 0.6em;
    width: 22em;
    margin-bottom: 0.3em;
    text-align: center; }
 .pagination .page_info b {
-   color: #E5E3DE;
-   background: #E5E3DE;
+   color: #6F8696;
+   background: #6F8696;
    padding: 0.1em 0.25em; }
 .pagination:after {
    content: ".";
