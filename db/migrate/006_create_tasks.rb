@@ -2,7 +2,7 @@ class CreateTasks < ActiveRecord::Migration
   def up
     create_table :tasks do |t|
       t.integer :enumeration_id
-      t.integer :project_id
+      t.integer :project_slug
       t.integer :issue_id
       t.string :name, :limit => 255
       t.string :description, :limit => 65555

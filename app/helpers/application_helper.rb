@@ -89,6 +89,7 @@ module ApplicationHelper
 EOD
     return t.to_html
   end
+  
 
   def set_toolbar(id)
     javascript_tag(
@@ -150,7 +151,7 @@ EOD
               {:class => 'icon icon-del right',
                 :onclick => "button_delete('#{url_for(:action => 'delete_note',
                 :controller => 'issues',
-                :project_id => @project.identifier,
+                :project_id => @project.slug,
                 :journal_id => journal.id,
                 :journalized_id => journal.journalized_id)}')"})
             history_str += link_to(t(:link_edit), "#", {:id => "link_edit_note_#{journal.id}", :class => "icon icon-edit right edit_notes"})
@@ -249,7 +250,7 @@ EOD
     attributes = attr
     operators = {'equal' => '<=>', 'different' => '<>', 'superior' => '>=', 'inferior' => '<=', 'contains' => 'LIKE', 'not contains' => 'NOT LIKE','today' => '<=>', 'open' => '<=>', 'close' => '<=>'}
     null_operators = {'different' => "IS NOT", 'equal' => "IS"}
-    #Specific link between query if there different velu for a same attributes: e.g status_id <> 4 AND status_id <> 3
+    #Specific link between query if there different value for a same attributes: e.g status_id <> 4 AND status_id <> 3
     #but status_id = 4 OR status_id = 3
     link_between_query = {['equal','open','close'] => 'OR', ['different', 'superior', 'inferior', 'contains', 'not contains'] => 'AND'}
 
@@ -257,7 +258,7 @@ EOD
     operators_without_value = ['open','close', 'today']
     hash.delete_if{|k,v| v["operator"].eql?('all') ||(!operators_without_value.include?(v["operator"]) && (v["value"].nil? || v["value"].eql?('')))}
 
-    date_attributes = ['created_at','updated_at','due_date']
+    date_attributes = ['created_at','updated_at','due_date','start_date']
     link = ""
     inc_condition_item_ary = 0 #
     inc_condition_items = 0 #
@@ -314,61 +315,80 @@ EOD
     query_str += "#{'AND' if hash.size != 0}"
     return query_str
   end
-
+ #Build text from a specific journal
   def generics_activities_text_builder(journal, activity_icon, is_not_in_project = true)
     text = ""
     user = (journal.user ? journal.user.name : t(:label_unknown))
+    #
     if journal.action_type.eql?("updated")
       text += "<p class='icon'>"
       text += "#{image_tag(activity_icon)} #{user} #{t(:label_updated_lower_case)} "
       if journal.journalized
-        text += "<b>#{journal.journalized_type} #{journal.journalized.name}</b>"
+        text += "<b>#{journal.journalized_type} : #{journal.identifier_value}</b>"
       else
-        text += "<b>#{journal.journalized_type} unknown</b>"
+        text += "<b>#{journal.journalized_type} : unknown</b>"
       end
       if journal.project_id && is_not_in_project
-        text += " #{t(:label_at)} <b>#{link_to journal.project.identifier, url_for({:action => 'overview', :controller => 'project', :project_id => journal.project.identifier})}</b>"
+        text += " #{t(:label_at)} <b>#{link_to journal.project.slug, url_for({:action => 'overview', :controller => 'project', :project_id => journal.project.slug})}</b>"
       end
       text += "</p>"
     elsif journal.action_type.eql?("created")
       text += "<p class='icon'>"
       text += "#{image_tag(activity_icon)} #{user} #{t(:label_created_lower_case)} "
       if journal.journalized
-        text += "<b>#{journal.journalized_type} #{journal.journalized.name}</b>"
+        text += "<b>#{journal.journalized_type} : #{journal.identifier_value}</b>"
       else
-        text += "<b>#{journal.journalized_type} unknown</b>"
+        text += "<b>#{journal.journalized_type} : unknown</b>"
       end
       if journal.project_id && is_not_in_project
-        text += " #{t(:label_at)} <b>#{link_to journal.project.identifier, url_for({:action => 'overview', :controller => 'project', :project_id => journal.project.identifier})}</b>"
+        text += " #{t(:label_at)} <b>#{link_to journal.project.slug, url_for({:action => 'overview', :controller => 'project', :project_id => journal.project.slug})}</b>"
       end
       text += "</p>"
     elsif journal.action_type.eql?("deleted")
       text += "<p class='icon'>"
       text += "#{image_tag('/assets/activity_deleted.png')} #{user} #{t(:label_deleted_lower_case)} "
-      text += "<b>#{journal.journalized_type} ##{journal.journalized_id}</b>"
+      text += "<b>#{journal.journalized_type} : #{journal.identifier_value}</b>"
       if journal.project_id && is_not_in_project
-        text += " #{t(:label_at)} <b>#{link_to journal.project.identifier, url_for({:action => 'overview', :controller => 'project', :project_id => journal.project.identifier})}</b>"
+        text += " #{t(:label_at)} <b>#{link_to journal.project.slug, url_for({:action => 'overview', :controller => 'project', :project_id => journal.project.slug})}</b>"
       end
       text += "</p>"
     end
+    return text
   end
   def activities_text_builder(journal, specified_project = true)
     text = ""
-    case journal.journalized_type
-    when "Issue"
-      text += issues_activities_text_builder(journal, specified_project)
-    when "Version"
-      text += generics_activities_text_builder(journal, '/assets/activity_ticket_go.png', specified_project)
-    when "User"
-      text += generics_activities_text_builder(journal, '/assets/activity_group.png', specified_project)
-    when "Member"
-      text += generics_activities_text_builder(journal, '/assets/activity_group.png', specified_project)
-    when "Category"
-      text += generics_activities_text_builder(journal, '/assets/activity_package.png', specified_project)
-    when "Document"
-      text += generics_activities_text_builder(journal, '/assets/document.png', specified_project)
+    if journal.journalized_type.eql?("Issue")
+       text += issues_activities_text_builder(journal, specified_project)
     else
+      text += generics_activities_text_builder(journal, eval(journal.journalized_type).journalized_icon.to_s, specified_project)
     end
     return text.html_safe
+  end
+  #Params hash content:
+  #method : possible values :post, :get , :put, :delete
+  #target : possible values "nil" or "self", if self url will be '#' else will be path
+  #html = {}
+  def link_to_with_permissions(label, path, project, params = {})
+    routes = Rails.application.routes
+    hash_path = routes.recognize_path(path, :method => params[:method])
+    if(current_user.allowed_to?(hash_path[:action],hash_path[:controller],project))
+      if params[:target] && params[:target].eql?("self")
+        link_to(label, "#", params[:html])
+      else
+        link_to(label, path, params[:html])
+      end
+    end
+  end
+  def link_to_with_not_owner_permissions(label, path, project, owner_id, params = {})
+    routes = Rails.application.routes
+    hash_path = routes.recognize_path(path, :method => params[:method])
+    if(current_user.allowed_to?(hash_path[:action],hash_path[:controller],project) && owner_id.eql?(current_user.id) || 
+          current_user.allowed_to?("#{hash_path[:action]}_not_owner",hash_path[:controller],project))
+      if params[:target] && params[:target].eql?("self")
+        link_to(label, "#", params[:html])
+      else
+        link_to(label, path, params[:html])
+      end
+    end
   end
 end

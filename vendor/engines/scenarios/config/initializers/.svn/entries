@@ -1,15 +1,15 @@
 10
 
 dir
-4
-svn+ssh://91.121.197.171/var/www/svn/rorganize/trunk/vendor/engines/scenarios/config/initializers
-svn+ssh://91.121.197.171/var/www/svn
+66
+svn+ssh://91.121.197.171/home/svn/svn/rorganize/trunk/vendor/engines/scenarios/config/initializers
+svn+ssh://91.121.197.171/home/svn/svn
 
 
 
-2013-01-17T16:53:38.057799Z
-1
-root
+2013-02-10T15:45:52.349404Z
+30
+nmeylan
 
 
 
@@ -62,7 +62,7 @@ root
 
 scenario_initializer.rb
 file
-30
+
 
 
 

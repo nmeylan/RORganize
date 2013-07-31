@@ -47,11 +47,11 @@
     $(document).ready(function() {
       $(".chzn-select").chosen();
     });
-    per_page("<%=url_for(:action => 'index', :controller => 'documents', :project_id => @project.identifier)%>");
+    per_page("<%=url_for(:action => 'index', :controller => 'documents', :project_id => @project.slug)%>");
     checkAll("#check_all", ".list");
     listTrClick(".list .document_tr");
     checkboxToolbox(".list");
-    init_toolbox('.document.list .document_tr', 'documents_toolbox', {list: '.document.list', url: "<%= url_for(:controller => 'documents', :action => 'toolbox', :project_id => @project.identifier) %>"});
+    init_toolbox('.document.list .document_tr', 'documents_toolbox', {list: '.document.list', url: "<%= url_for(:controller => 'documents', :action => 'toolbox', :project_id => @project.slug) %>"});
   })(jQuery);
 
 </script>

@@ -4,11 +4,11 @@
 # Encoding: UTF-8
 # File: _save_query_button.erb
 %>
-<% if !session[@project.identifier+'_controller_issues_filter'].eql?("") && current_user.allowed_to?('new','Queries',@project)%>
+<% if !session[@project.slug+'_controller_issues_filter'].eql?("") && current_user.allowed_to?('new','Queries',@project)%>
   <button id="open_create_query_overlay" class=""><%= t(:button_save) %></button>
   <script type="text/javascript">
       jQuery("#open_create_query_overlay").click(function(e){
-      var url = "<%=new_query_path(:object_type => "Issue",:project_id => @project.identifier)%>";
+      var url = "<%=new_query_path(:object_type => "Issue",:project_id => @project.slug)%>";
       create_query_overlay(e, url);
     });
     </script>

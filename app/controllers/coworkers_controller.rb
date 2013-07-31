@@ -11,7 +11,7 @@ class CoworkersController < ApplicationController
 
   def index
     @coworkers = Hash.new{|h,k| h[k] = []}
-    current_user.members.includes(:project,:role).each do |member|
+    current_user.members.includes(:role, :project => [:members => [:user, :role]]).each do |member|
       if current_user.allowed_to?('display_activities', "Coworkers", member.project)
         @coworkers[member.project.name] = member.project.members.delete_if{|member| member.user_id.eql?(current_user.id)}
       end

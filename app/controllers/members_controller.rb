@@ -12,12 +12,12 @@ class MembersController < ApplicationController
   include ApplicationHelper
   #GET /projects/
   def index
-    @members = Member.find_all_by_project_id(@project)
-    @roles = Role.find(:all)
-    @users = User.find(:all)
-    @users = @users.select{|user| !@members.collect{|member| member.user.id}.include?(user.id)}
+    @members = Member.where(:project_id => @project.id).includes(:role, :user)
+    roles = Role.find(:all)
+    users = User.find(:all)
+    users =users.select{|user| !@members.collect{|member| member.user.id}.include?(user.id)}
     respond_to do |format|
-      format.html
+      format.html{render :action => "index", :locals => {:roles => roles, :users => users}}
     end
   end
 
@@ -25,68 +25,33 @@ class MembersController < ApplicationController
   def destroy
     @member = Member.find(params[:id])
     @member.destroy
-    @journal = Journal.create(:user_id => current_user.id,
-      :journalized_id => @member.id,
-      :journalized_type => @member.class.to_s,
-      :notes => '',
-      :action_type => "deleted",
-      :project_id => @project.id)
-    render_index_js(t(:successful_deletion))
+    render_index_js(true,t(:successful_deletion))
   end
 
   def create
-    member = Member.create(:project_id => @project.id, :role_id => params[:role], :user_id => params[:user])
-    role = Role.find_by_id(params[:role])
-    @journal = Journal.create(:user_id => current_user.id,
-      :journalized_id => member.id,
-      :journalized_type => member.class.to_s,
-      :notes => '',
-      :action_type => "created",
-      :project_id => @project.id)
-    JournalDetail.create(:journal_id => @journal.id,
-      :property => "Role",
-      :property_key => "role_id",
-      :old_value => nil,
-      :value => role.name
-    )
-    render_index_js(t(:successful_creation))
+    success = Member.create(:project_id => @project.id, :role_id => params[:role], :user_id => params[:user])
+    render_index_js(success, t(:successful_creation))
   end
   #Others method
   def change_role
     member = Member.find_by_id(params[:member_id])
-    role = Role.find_all_by_id([member.role_id,params[:role_id]])
-    member.update_column(:role_id, params[:role_id])
-    @journal = Journal.create(:user_id => current_user.id,
-      :journalized_id => member.id,
-      :journalized_type => member.class.to_s,
-      :notes => '',
-      :action_type => "updated",
-      :project_id => @project.id)
-    JournalDetail.create(:journal_id => @journal.id,
-      :property => "Role",
-      :property_key => "role_id",
-      :old_value => role[0].name,
-      :value => role[1].name
-    )
-    render_index_js
+    success = member.update_attribute(:role_id, params[:role_id])
+    render_index_js(success)
   end
-
-
-
 
   #Private methods
   private
 
-  def render_index_js(message = t(:successful_update))
-    @members = Member.find_all_by_project_id(@project)
-    @roles = Role.find(:all)
-    @users = User.find(:all)
-    @users = @users.select{|user| !@members.collect{|member| member.user.id}.include?(user.id)}
+  def render_index_js(success = true, message = t(:successful_update))
+    @members = Member.where(:project_id => @project.id).includes(:role, :user)
+    roles = Role.find(:all)
+    users = User.find(:all)
+    users = users.select{|user| !@members.collect{|member| member.user.id}.include?(user.id)}
     respond_to do |format|
       format.js{
         render :update do |page|
-          page.replace 'members_content', :partial => 'members/list'
-          response.headers['flash-message'] = message
+          page.replace 'members_content', :partial => 'members/list', :locals => {:roles => roles, :users => users}
+          success ? (response.headers['flash-message'] = message) : (response.headers['flash-error-message'] = t(:failure_operation))
         end}
     end
   end

@@ -68,11 +68,11 @@ class TrackersController < ApplicationController
     @tracker.destroy
     @trackers = Tracker.find(:all)
     respond_to do |format|
-      flash[:notice] = t(:successful_deletion)
       format.html {redirect_to :action => 'index'}
       format.js do
         render :update do |page|
           page.replace 'trackers_content', :partial => 'trackers/list'
+          response.headers['flash-message'] = t(:successful_deletion)
         end
       end
     end

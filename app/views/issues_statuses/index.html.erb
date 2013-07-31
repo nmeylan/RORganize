@@ -1,8 +1,8 @@
 <div class="contextual">
   <h1><%= t(:label_issues_statuses) %></h1>
   <div class="splitcontentright">
-    <%= link_to t(:link_new_status), {:action => 'new'}, {:class => 'icon icon-add'} if current_user.allowed_to?('new','Issues_statuses') %>
-  </div>
+    <%= link_to_with_permissions(t(:link_new_issue), new_issues_status_path, nil, {:method => :get, :html => {:class => 'icon icon-add'}}) %>
+   </div>
 </div>
 
 <%= render :partial => 'issues_statuses/list' %>

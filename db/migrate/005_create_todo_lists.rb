@@ -2,7 +2,7 @@ class CreateTodoLists < ActiveRecord::Migration
   def up
     create_table :todo_lists do |t|
       t.integer :user_id
-      t.integer :project_id
+      t.integer :project_slug
       t.string :name, :limit => 255
       t.string :description, :limit => 65555
       t.timestamps :created_on

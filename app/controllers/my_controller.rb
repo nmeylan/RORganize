@@ -7,15 +7,8 @@ class MyController < ApplicationController
   before_filter :authenticate_user!
   before_filter :find_user
   include ApplicationHelper
-
-
-  def index
-
-  end
   def show
-    @issues = Issue.find_all_by_assigned_to_id(@user, :include => [:tracker,:version,:status,:assigned_to,:category,:checklist_items],
-      :limit => 5,
-      :order => 'id DESC')
+    @issues = Issue.where(:assigned_to_id => @user.id).includes([:tracker,:version,:assigned_to,:category, :status => [:enumeration]]).limit(5).order('id DESC')
     respond_to do |format|
       format.html
     end
@@ -43,15 +36,14 @@ class MyController < ApplicationController
   end
 
   def custom_queries
-    @queries = Query.find(:all,
-      :conditions => ["author_id = ? AND is_public = ?", current_user.id, false])
+    @queries = Query.where(["author_id = ? AND is_public = ?", current_user.id, false])
     respond_to do |format|
       format.html {}
     end
   end
 
   def my_projects
-    @members= current_user.members
+    @members= current_user.members.includes(:project => [:attachments])
     respond_to do |format|
       format.html
     end
@@ -59,9 +51,9 @@ class MyController < ApplicationController
 
   def star_project
     @members= current_user.members
-    member = @members.select{|member| member.project_id.eql?(params[:star_project_id].to_i)}.first
-    member.is_project_starred = !member.is_project_starred
-    member.save
+    @member = @members.select{|member| member.project_id.eql?(params[:star_project_id].to_i)}.first
+    @member.is_project_starred = !@member.is_project_starred
+    @member.save
     respond_to do |format|
       format.js{
         render :update do |page|

@@ -5,7 +5,7 @@ class CreateDocuments < ActiveRecord::Migration
       t.string :description,:limit => 65555
       t.integer :version_id
       t.integer :category_id
-      t.integer :project_id
+      t.integer :project_slug
       t.timestamps :created_on
       t.timestamps :updated_on
     end

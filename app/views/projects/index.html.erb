@@ -8,11 +8,10 @@
 <div class="contextual">
   <h1><%= t(:label_project_plural) %></h1>
   <div class="splitcontentright">
-    <% if current_user.allowed_to?('new','Project') %>
-      <%= link_to t(:link_new_project), {:action => 'new', :controller => 'project'}, {:class => 'icon icon-add'} %>
-    <% end %>
+    <%= link_to_with_permissions(
+      t(:link_new_permission), new_project_path, nil, {:method => :get, :html => {:class => 'icon icon-add'}}) %>
   </div>
   <div style="clear:both;"></div>
 </div>
 
-<%= render :partial => "projects/list", :locals => {:allow_to_star => false}  %>
+<%= render :partial => "projects/list", :locals => {:allow_to_star => false, :members => @members}  %>

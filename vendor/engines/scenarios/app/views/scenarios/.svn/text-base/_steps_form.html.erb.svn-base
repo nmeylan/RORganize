@@ -45,4 +45,5 @@
       <%= render :partial => 'scenarios/issue_overlay', :locals => {:step_id => "[%=step.id%]"} %>
       <%= render :partial => 'scenarios/create_issue_overlay', :locals => {:step_id => "[%=step.id%]"} %>
     </div>
+    
   </script>

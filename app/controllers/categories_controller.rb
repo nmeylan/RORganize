@@ -27,16 +27,9 @@ class CategoriesController < ApplicationController
 
   def create
     @category = Category.new(params[:category])
+    @category.project_id = @project.id
     respond_to do |format|
       if @category.save
-        @project.categories << @category
-        @project.save
-        @journal = Journal.create(:user_id => current_user.id,
-          :journalized_id => @category.id,
-          :journalized_type => @category.class.to_s,
-          :notes => '',
-          :action_type => "created",
-          :project_id => @project.id)
         flash[:notice] = t(:successful_creation)
         format.html { redirect_to :action => 'index', :controller => 'categories'}
         format.json  { render :json => @category,
@@ -58,19 +51,11 @@ class CategoriesController < ApplicationController
 
   def update
     @category = Category.find(params[:id])
-    journalized_property = {'name' => "name"}
-    updated_attributes = updated_attributes(@category,params[:category])
+    @category.attributes = (params[:category])
     respond_to do |format|
-      if updated_attributes.empty?
+      if !@category.changed?
         format.html { redirect_to :action => 'index', :controller => 'categories'}
-      elsif updated_attributes.any? && @category.update_attributes(params[:category])
-        @journal = Journal.create(:user_id => current_user.id,
-          :journalized_id => @category.id,
-          :journalized_type => @category.class.to_s,
-          :notes => '',
-          :action_type => "updated",
-          :project_id => @project.id)
-        journal_insertion(updated_attributes, @journal, journalized_property)
+      elsif @category.changed? && @category.save
         flash[:notice] = t(:successful_update)
         format.html { redirect_to :action => 'index', :controller => 'categories'}
         format.json  { render :json => @category,
@@ -84,15 +69,9 @@ class CategoriesController < ApplicationController
   end
 
   def destroy
+    category = Category.find(params[:id])
+    category.destroy
     @categories = @project.categories
-    @category = Category.find(params[:id])
-    @category.destroy
-    @journal = Journal.create(:user_id => current_user.id,
-      :journalized_id => @category.id,
-      :journalized_type => @category.class.to_s,
-      :notes => '',
-      :action_type => "deleted",
-      :project_id => @project.id)
     respond_to do |format|
       format.html do
         flash[:notice] = t(:successful_deletion)
@@ -106,10 +85,4 @@ class CategoriesController < ApplicationController
       end
     end
   end
-
-  def show
-
-  end
-
-
 end

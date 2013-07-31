@@ -4,30 +4,30 @@
 # Encoding: UTF-8
 # File: _toolbox.html.erb
 %>
-<%= form_tag({},:remote => true) do -%>
+<%= form_tag(toolbox_documents_path(@project.slug),:remote => true, :id => "toolbox_form") do %>
   <% ids = @documents_toolbox.collect{|document| document.id} %>
   <% if current_user.allowed_to?('edit','Documents',@project) %>
     <li><%= link_to t(:field_version), '#', {:class => 'icon icon-target', :id => 'version'} %>
       <ul class="submenu version_id">
-        <% if !@versions.nil? && @versions.any? %>
+        <% if !menu["versions"].nil? && menu["versions"].any? %>
           <%= hidden_field_tag 'value[version_id]' %>
-          <% @versions.each do |version| %>
-            <li><%= link_to version, '#', {:class => @actual_states['version'].include?(version) ? 'icon icon-toggle_check' : 'no-icon'} %></li>
+          <% menu["versions"].each do |version| %>
+            <li><%= link_to version, '#', {:class => menu["current_states"]['version'].include?(version) ? 'icon icon-toggle_check' : 'no-icon'} %></li>
           <% end %>
         <%  end %>
       </ul>
     </li>
     <li><%= link_to t(:field_category), '#', {:class => 'icon icon-package'}%>
       <ul class="submenu category_id">
-        <% if !@categories.nil? && @categories.any? %>
+        <% if !menu["categories"].nil? && menu["categories"].any? %>
           <%= hidden_field_tag 'value[category_id]' %>
-          <% @categories.each do |category| %>
-            <li><%= link_to category, '#', {:class => @actual_states['category'].include?(category) ? 'icon icon-toggle_check' : 'no-icon'} %></li>
+          <% menu["categories"].each do |category| %>
+            <li><%= link_to category, '#', {:class => menu["current_states"]['category'].include?(category) ? 'icon icon-toggle_check' : 'no-icon'} %></li>
           <% end %>
         <%  end %>
       </ul>
     </li>
-    <li><%= link_to t(:link_edit), {:action => 'edit', :project_id => @project.identifier, :id => ids[0]}, {:class => 'icon icon-edit'} if @documents_toolbox.size == 1%></li>
+    <li><%= link_to t(:link_edit), {:action => 'edit', :project_id => @project.slug, :id => ids[0]}, {:class => 'icon icon-edit'} if @documents_toolbox.size == 1%></li>
   <% end %>
   <% if current_user.allowed_to?('destroy','Documents',@project) %>
     <li><%= link_to t(:link_delete), '#', {:class => 'icon icon-del', :onclick => "jQuery('#delete_overlay').overlay().load();"}%></li>
@@ -35,7 +35,7 @@
   <% ids.each do |id| %>
     <%= hidden_field_tag 'ids[]', id %>
   <% end %>
-<% end -%>
+<% end %>
 
 <script type="text/javascript">
   createOverlay("#delete_overlay", 150);
@@ -45,6 +45,11 @@
     var context = _.without(jQuery(this).parents(".submenu").attr('class').split(' '), 'submenu', 'hover');
     //put new value into hidden field which name is matching with context
     jQuery("input#value_" + context).val(jQuery(this).text());
-    jQuery('#documents_toolbox form').submit();
+    jQuery.ajax({
+      url : '<%=toolbox_documents_path(@project.slug)%>',
+      dataType : 'script',
+      type :'POST',
+      data : jQuery("#toolbox_form").serializeArray()
+    });
   });
 </script>

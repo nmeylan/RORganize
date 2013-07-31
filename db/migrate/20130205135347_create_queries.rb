@@ -2,7 +2,7 @@ class CreateQueries < ActiveRecord::Migration
   def up
     create_table :queries do |t|
       t.integer :author_id
-      t.integer :project_id
+      t.integer :project_slug
       t.boolean :is_for_all
       t.boolean :is_public
       t.string :name, :limit => 50

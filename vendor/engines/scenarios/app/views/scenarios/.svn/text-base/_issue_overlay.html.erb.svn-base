@@ -6,6 +6,10 @@
 %>
 <div class="overlayOuter " id="step_issue_overlay_<%=step_id%>">
   <div class="overlayInner" style="">
+    <div id="search_bar">
+      <%= image_tag ('/assets/magnifier.png') %>
+      <%= text_field_tag "search#{step_id}", "", :size => 80, :class => "search" %>
+    </div>
     <div id="issues_content">
 
       [%if(_.isArray(options)){%]
@@ -18,7 +22,7 @@
         [% _.each(options, function(issue){ %]
         <tr class="odd_even issue_tr">
           <td><%= check_box_tag 'issue-'+"[%= issue.id %]", "[%= issue.id %]" %></td>
-          <td class="list_center id">[% issue.id %]</td>
+          <td class="list_center id">[%= issue.id %]</td>
           <td class="subject">
             <%= link_to "[%= issue.subject %]", {:action => 'show', :controller => 'issues', :id => "[%= issue.id %]"}, {:id => "[%= issue.id %]"} %>
           </td>
@@ -31,8 +35,8 @@
         <table class="issue_overlay list">
           <tr class="header">
             <th><%= link_to '', '#', {:class => 'icon icon-checked', :id => 'check_all', 'cb_checked' => "b"} %></th>
-            <th>#</th>
-            <th>Subject</th>
+            <th class="id">#</th>
+            <th class="subject">Subject</th>
           </tr>
           <% @issues.each do |issue| %>
             <tr class="odd_even issue_tr">

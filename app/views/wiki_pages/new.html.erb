@@ -1,0 +1,17 @@
+<%#
+# Author: Nicolas Meylan
+# Date: 20 mai 2013
+# Encoding: UTF-8
+# File: new.html.erb
+%>
+<div class="contextual">
+  <h1><%= t(:label_new_wiki_page) %></h1>
+  <div class="splitcontentright">
+
+  </div>
+</div>
+<%= render :partial => 'wiki/sidebar' %>
+<%= form_for @wiki_page, {:html => {:class => "form"}} do |f| %>
+  <%= render :partial => "wiki_pages/form", :locals => {:f => f} %>
+  <%= submit_tag t(:button_create) %>
+<% end %>

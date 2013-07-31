@@ -7,6 +7,7 @@ en:
   link_add_issue: Add issue
   link_edit_scenario: Edit scenario
   link_create_issue: Create issue
+  link_delete_scenario: Delete scenario
   link_add_step: Add step
   #field
   field_actor: Actor

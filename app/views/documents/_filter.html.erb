@@ -13,7 +13,7 @@
       <%= radio_button_tag "type", "all", true, {:align => "center"} %><%= t(:label_all) %>
       <%= radio_button_tag "type", "filter", false %><%= t(:link_filter) %>
       <div class="autocomplete-combobox nosearch no-padding_left no-height">
-        <%= select_tag 'filters_list', options_for_select(@filters_list),:class => 'chzn-select cbb-verylarge', :id => 'filters_list', :multiple => true%>
+        <%= select_tag 'filters_list', options_for_select(Document.filtered_attributes),:class => 'chzn-select cbb-verylarge', :id => 'filters_list', :multiple => true%>
       </div>
   <%#= Options for query, element will pop here %>
       <table id="filter_content">
@@ -28,7 +28,7 @@
     $(document).ready(function() {
 
       load_filter(<%= raw documents_generics_form_to_json.to_s%>,
-<%= raw session[@project.identifier+'_controller_documents_filter_params'].to_json%>);
+<%= raw session[@project.slug+'_controller_documents_filter_params'].to_json%>);
     });
     $("#type_filter").click(function(e) {
       $("#filters_list_chzn").show();

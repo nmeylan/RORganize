@@ -1,15 +1,15 @@
 10
 
 dir
-4
-svn+ssh://91.121.197.171/var/www/svn/rorganize/trunk/vendor/engines/scenarios/db/migrate
-svn+ssh://91.121.197.171/var/www/svn
+66
+svn+ssh://91.121.197.171/home/svn/svn/rorganize/trunk/vendor/engines/scenarios/db/migrate
+svn+ssh://91.121.197.171/home/svn/svn
 
 
 
-2013-01-17T16:53:38.057799Z
-1
-root
+2013-03-09T06:28:50.309620Z
+54
+nmeylan
 
 
 
@@ -26,14 +26,14 @@ root
 
 b610ed60-9b2b-4e8f-8d98-021b969b75a1
 
-004_create_steps_issues.rb
+001_create_scenarios.rb
 file
 
 
 
 
-2013-01-17T17:12:42.790987Z
-1db6271962eeff340abe38c7a32b1711
+2013-01-17T17:12:42.796988Z
+857da50eeb41ec7f1fd90b5990320bd2
 2013-01-17T16:53:38.057799Z
 1
 root
@@ -58,7 +58,7 @@ root
 
 
 
-321
+377
 
 002_create_steps.rb
 file
@@ -128,14 +128,14 @@ root
 
 404
 
-001_create_scenarios.rb
+004_create_steps_issues.rb
 file
 
 
 
 
-2013-01-17T17:12:42.796988Z
-857da50eeb41ec7f1fd90b5990320bd2
+2013-01-17T17:12:42.790987Z
+1db6271962eeff340abe38c7a32b1711
 2013-01-17T16:53:38.057799Z
 1
 root
@@ -160,5 +160,39 @@ root
 
 
 
-377
+321
+
+20130309055606_add_scenarios_permissions.rb
+file
+
+
+
+
+2013-03-09T06:22:19.962000Z
+f56d393bc40bda161f836e9912ee5a66
+2013-03-09T06:28:50.309620Z
+54
+nmeylan
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+299
 

@@ -18,6 +18,6 @@
   </div>
 </div>
 <%= form_for @permission, :url => permission_path, :method => :put, :html => {:class => 'form'} do |f|%>
-  <%= render :partial => 'permissions/form', :locals => {:f => f} %>
+  <%= render :partial => 'permissions/form', :locals => {:f => f, :controllers => controllers} %>
   <%= submit_tag t(:button_save) %>
 <% end %>

@@ -40,6 +40,6 @@
 <div style="clear:both"></div>
 
 <script type="text/javascript">
-  init_tooltip(".calendar_item_body.target", "<%=url_for(:action => 'version_description', :project_id => @project.identifier)%>");
-  bind_calendar_button( "<%= url_for({:controller => "roadmap", :action => "calendar", :project_id => @project.identifier}) %>");
+  init_tooltip(".calendar_item_body.target", "<%=url_for(:action => 'version_description', :project_id => @project.slug)%>");
+  bind_calendar_button( "<%= url_for({:controller => "roadmap", :action => "calendar", :project_id => @project.slug}) %>");
 </script>

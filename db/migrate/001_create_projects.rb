@@ -3,7 +3,7 @@ class CreateProjects < ActiveRecord::Migration
     create_table :projects do |t|
       t.string :name, :limit => 255
       t.string :description,:limit => 65555
-      t.string :identifier,:limit => 20
+      t.string :slug,:limit => 20
       t.timestamps :created_on
       t.timestamps :updated_on
     end

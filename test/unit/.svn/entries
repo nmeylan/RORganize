@@ -1,9 +1,9 @@
 10
 
 dir
-4
-svn+ssh://91.121.197.171/var/www/svn/rorganize/trunk/test/unit
-svn+ssh://91.121.197.171/var/www/svn
+66
+svn+ssh://91.121.197.171/home/svn/svn/rorganize/trunk/test/unit
+svn+ssh://91.121.197.171/home/svn/svn
 
 
 
@@ -25,9 +25,6 @@ root
 
 
 b610ed60-9b2b-4e8f-8d98-021b969b75a1
-
-helpers
-dir
 
 .gitkeep
 file
@@ -62,6 +59,9 @@ root
 
 
 0
+
+helpers
+dir
 
 issue_test.rb
 file

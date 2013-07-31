@@ -10,7 +10,7 @@
 
 <%= render :partial => "scenarios/scenario_form" %>
 <%= render :partial => "scenarios/steps_form" %>
-<%= hidden_field_tag "project_id", @project.identifier, :id => "project_id" %>
+<%= hidden_field_tag "project_id", @project.slug, :id => "project_id" %>
 
 <%= hidden_field_tag "source_step", "", :id => "source_step" %>
 <%= raw set_toolbar('scenario_description') %>

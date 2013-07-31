@@ -1,0 +1,22 @@
+<%#
+Author : Nicolas
+Date: 23 juin 2013 
+Encoding: UTF-8
+File: _page_content
+%>
+
+
+<h1><%= page.title %></h1>
+<p>
+  <em>
+    <%= "#{t(:label_created)}
+#{distance_of_time_in_words(page.created_at,Time.now)}
+#{t(:label_ago)},
+#{t(:label_by)}
+#{page.author ? page.author.name : t(:label_unknown)}.
+#{(page.created_at.eql?(page.updated_at) ? '' :
+    "#{t(:label_updated)} #{distance_of_time_in_words(page.updated_at,Time.now)}
+    #{t(:label_ago)}.").to_s}"%>
+  </em>
+</p>
+<%= raw textile_to_html(page.content)%>

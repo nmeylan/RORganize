@@ -8,14 +8,15 @@
 <div class="contextual">
   <h1><%= "#{t(:label_document)} ##{@document.id}"%></h1>
   <div class="splitcontentright">
-    <%= link_to t(:link_new_document), {:action => 'new', :project_id => @project.identifier}, {:class => 'icon icon-add'} if current_user.allowed_to?('new','Documents',@project) %>
-    <% if current_user.allowed_to?('edit','Documents',@project) %>
-      <%= link_to t(:link_edit), {:action => 'edit', :project_id => @project.identifier, :id => @document.id}, {:class => 'icon icon-edit'}  %>
-    <% end %>
-    <% if current_user.allowed_to?('destroy','Documents',@project)%>
-      <%= link_to t(:link_delete), '#', {:class => 'icon icon-del', :onclick => "button_delete('#{document_path}')"}  %>
-    <% end %>
-
+    <%= link_to_with_permissions(t(:link_new_document), new_document_path(@project.slug), @project, {:html => {:class => 'icon icon-add'}}) %>
+    <%= link_to_with_permissions(t(:link_edit), edit_document_path(@project.slug), @project, {:html => {:class => 'icon icon-edit'}}) %>
+    <%= link_to_with_permissions(t(:link_delete), 
+      document_path(@project.slug, @document.id), 
+      @project, 
+      {:method => :delete, 
+        :target => "self",
+        :html => {:class => 'icon icon-del', 
+          :onclick => "button_delete('#{document_path}')"}}) %>
   </div>
 </div>
 
@@ -26,7 +27,7 @@
 #{distance_of_time_in_words(@document.created_at,Time.now)}
 #{t(:label_ago)},
 #{t(:label_by)}
-#{@journal_created.user.name}.
+#{journal_created.user.name}.
 #{(@document.created_at.eql?(@document.updated_at) ? '' :
     "#{t(:label_updated)} #{distance_of_time_in_words(@document.updated_at,Time.now)}
     #{t(:label_ago)}.").to_s}"%>
@@ -48,9 +49,9 @@
   <%= render :partial => 'documents/show_attachments', :locals => {:attachments => @document.attachments} %>
 </div>
 
-<% if @journals.any? %>
+<% if journals.any? %>
   <div id="history">
-    <%= raw history_render(@journals) %>
+    <%= raw history_render(journals) %>
   </div>
 <% end %>
 <script type="text/javascript">

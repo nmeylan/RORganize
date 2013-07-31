@@ -14,7 +14,7 @@ class PermissionsController < ApplicationController
 
   #GET administration/permissions
   def index
-    @roles = Role.find(:all)
+    @roles = Role.all
     respond_to do |format|
       format.html
     end
@@ -50,7 +50,10 @@ class PermissionsController < ApplicationController
   #GET administration/permission/edit/:id
   def edit
     @permission = Permission.find(params[:id])
-    controller_list
+    controllers = controller_list
+    respond_to do |format|
+      format.html {render :action => "edit", :locals =>{:controllers => controllers}}
+    end
   end
 
   #PUT administration/permission/:id
@@ -87,20 +90,23 @@ class PermissionsController < ApplicationController
   end
   #Other methods
   def list
-    controller_list
-    @permission_hash = Hash.new{|h,k| h[k] = {}}
+    controllers = controller_list
+    permission_hash = Hash.new{|h,k| h[k] = {}}
     role = Role.find_by_name(params[:role_name].gsub("_"," "))
-    @selected_permissions = role.permissions.collect{|permission| permission.id}
+    selected_permissions = role.permissions.collect{|permission| permission.id}
     permissions = Permission.find(:all)
     tmp_ary = []
     tmp_hash = {}
-    @controllers.each do |controller|
+    controllers.each do |controller|
       tmp_ary = permissions.select{ |permission| permission.controller.eql?(controller)}
       tmp_ary.each do |permission|
         tmp_hash[permission.name] = permission.id
       end
-      @permission_hash[controller] = tmp_hash
+     permission_hash[controller] = tmp_hash
       tmp_hash = {}
+    end
+    respond_to do |format|
+      format.html {render :action => "list", :locals => {:permissions => permission_hash, :selected_permissions => selected_permissions}}
     end
   end
 
@@ -128,12 +134,13 @@ class PermissionsController < ApplicationController
   end
   private
   def controller_list
-    @controllers =  Rails.application.routes.routes.collect{|route| route.defaults[:controller]}
-    unused_controller = ["ProjectManager", "rorganize", "my"]
-    @controllers = @controllers.uniq!.select{|controller_name| controller_name && !controller_name.match(/.*\/.*/) && !unused_controller.include?(controller_name)}
-    @controllers.collect! do |controller|
+    controllers =  Rails.application.routes.routes.collect{|route| route.defaults[:controller]}
+    unused_controller = ["rorganize", "my"]
+    controllers = controllers.uniq!.select{|controller_name| controller_name && !controller_name.match(/.*\/.*/) && !unused_controller.include?(controller_name)}
+    controllers.collect! do |controller|
       controller = controller.capitalize
     end
+    return controllers
   end
 end
 

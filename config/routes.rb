@@ -3,7 +3,6 @@ ProjectManager::Application.routes.draw do
 
   match "rorganize/:action", :controller => 'rorganize'
   match 'projects', :to => 'projects#index', :via => :get
-
   scope "administration/" do
     resources :users
     resources :permissions do
@@ -30,6 +29,7 @@ ProjectManager::Application.routes.draw do
         delete 'delete_attachment'
         get 'download_attachment'
         post 'save_checklist'
+        get 'checklist'
         post 'edit_note', :path => ":id/edit_note"
         post 'start_today'
         delete 'delete_note'
@@ -53,7 +53,19 @@ ProjectManager::Application.routes.draw do
         get 'gantt'
       end
     end
-
+    resources :wiki do
+      collection do
+        get 'pages'
+        get 'organize_pages'
+        put 'set_organization'
+      end
+    end
+    resources :wiki_pages do
+      collection do
+        get 'new_home_page'
+        get 'new_sub_page', :path => ":id/new_sub_page"
+      end
+    end
     resources :settings, :except => "show" do
       collection do
         post "update_project_informations"

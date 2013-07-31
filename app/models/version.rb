@@ -1,12 +1,21 @@
-class Version < ActiveRecord::Base
-  #  after_update :update_issues_due_date
-  has_and_belongs_to_many :projects, :class_name => 'Project'
-  has_many :issues, :class_name => 'Issue', :include => [:status,:tracker, :parent, :children], :dependent => :nullify
+class Version < RorganizeActiveRecord
+  #Class variables
+  assign_journalized_properties({'name' => "Name",
+      "target_date" => "Due date", "start_date" => "Start date"})
+  assign_foreign_keys({})
+  assign_journalized_icon('/assets/activity_ticket_go.png')
+  #Relations
+  belongs_to :project, :class_name => 'Project'
+  has_many :issues, :class_name => 'Issue', :dependent => :nullify
   has_many :journals, :as => :journalized, :conditions => {:journalized_type => self.to_s}, :dependent => :destroy
   validates :name, :presence => true, :length => 2..20
   validates :start_date, :presence => true
+  validate :validate_start_date
   include IssuesHelper
-
+  #Triggers
+  after_create :create_journal 
+  after_update :update_journal,:update_issues_due_date
+  after_destroy :destroy_journal, :dec_position_on_destroy
   def update_issues_due_date
     issues = Issue.find_all_by_version_id(self.id)
     issues.each do |issue|
@@ -23,5 +32,16 @@ class Version < ActiveRecord::Base
         issue.update_column('due_date', self.target_date)
       end
     end
+  end
+  #  Custom validator
+  def validate_start_date
+    if !((self.target_date && self.start_date) ? self.start_date <= self.target_date : true)
+      errors.add(:start_date,"must be inferior than due date")
+    end
+  end
+  
+  def dec_position_on_destroy
+    position = self.position
+    Version.update_all "position = position - 1", "position > #{position}"
   end
 end

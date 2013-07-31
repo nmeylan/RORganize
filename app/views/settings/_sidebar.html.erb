@@ -7,45 +7,35 @@
 
 <%=  content_for :sidebar do %>
   <ul class="tabs">
-    <li class="settings_index"><%= link_to t(:link_update_informations),:controller => 'settings', :action => 'index', :project_id => @project.identifier %></li>
+    <li class="settings_index"><%= link_to t(:link_update_informations),settings_path(@project.slug)%></li>
     <% if current_user.allowed_to?('index','Versions',@project) %>
       <li class="versions">
         <%= link_to t(:link_versions),
-          :controller => 'versions',
-          :action => 'index',
-          :project_id => @project.identifier %>
+         versions_path(@project.slug)%>
       </li>
     <% end %>
     <% if current_user.allowed_to?('index','Categories',@project) %>
       <li class="categories">
         <%= link_to t(:link_categories),
-          :controller => 'categories',
-          :action => 'index',
-          :project_id => @project.identifier %>
+          categories_path(@project.slug)%>
       </li>
     <% end %>
     <% if current_user.allowed_to?('index','Members',@project)%>
       <li class="members">
         <%= link_to t(:link_members),
-          :controller => 'members',
-          :action => 'index',
-          :project_id => @project.identifier %>
+          members_path(@project.slug)%>
       </li>
     <% end %>
     <% if current_user.allowed_to?('public_queries', 'Queries', @project) %>
       <li class="settings_public_queries">
         <%= link_to t(:link_queries),
-          {:action => "public_queries",
-          :controller => "settings",
-          :project_id => @project.identifier} %>
+          public_queries_settings_path(@project.slug) %>
       </li>
     <% end %>
     <% if current_user.allowed_to?('modules', 'Settings', @project) %>
       <li class="settings_modules">
         <%= link_to t(:link_modules),
-          {:action => "modules",
-          :controller => "settings",
-          :project_id => @project.identifier} %>
+          modules_settings_path(@project.slug) %>
       </li>
     <% end %>
     <li class="settings_repository"><%= link_to t(:link_repository),'#' %></li>

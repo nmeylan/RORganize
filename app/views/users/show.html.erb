@@ -8,8 +8,19 @@
 <div class="contextual">
   <h1><%= t(:label_user)+': '+@user.name%></h1>
   <div class="splitcontentright">
-    <%= link_to t(:link_edit), {:action => 'edit', :id => @user.id}, {:class => 'icon icon-edit'} if current_user.allowed_to?('edit','users') %>
-    <%= link_to t(:link_delete), '#', {:class => 'icon icon-del', :onclick => "button_delete('#{user_path}')"} if current_user.allowed_to?('destroy','users')%>
+    <%= link_to_with_permissions(
+      t(:link_edit), 
+      edit_user_path(@user.id), 
+      nil, 
+      {:html => {:class => 'icon icon-edit'}}) %>
+     <%= link_to_with_permissions(t(:link_delete), 
+      user_path(@user.id), 
+      nil, 
+      {:method => :delete, 
+        :target => "self",
+        :html => {:class => 'icon icon-del', 
+          :onclick => "button_delete('#{user_path(@user.id)}')"}}) %>
+
   </div>
 </div>
 

@@ -8,12 +8,16 @@
 <div class="contextual">
   <h1><%= t(:label_users) %></h1>
   <div class="splitcontentright">
-    <%= link_to t(:link_new_user), {:controller => 'users', :action => 'new'}, {:class => 'icon icon-add'} if current_user.allowed_to?('new','users') %>
+    <%= link_to_with_permissions(
+      t(:link_new_user), 
+      new_user_path, 
+      nil, 
+      {:html => {:class => 'icon icon-add'}}) %>
   </div>
 </div>
 
 <% if @users.any? %>
-<%= render :partial => 'users/list' %>
+  <%= render :partial => 'users/list' %>
 <% else %>
-<h2><%= t(:text_no_data) %></h2>
+  <h2><%= t(:text_no_data) %></h2>
 <% end %>

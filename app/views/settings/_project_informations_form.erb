@@ -5,7 +5,7 @@
 # File: _project_informations_form.erb
 %>
 
-<%= form_for(@project, :url => {:controller => 'settings', :action => 'update_project_informations', :project_id => @project.identifier},
+<%= form_for(@project, :url => {:controller => 'settings', :action => 'update_project_informations', :project_id => @project.slug},
   :html => {:class => 'form', :multipart => true}, :method => :put) do |f|%>
   <%= raw error_messages(@project.errors.full_messages) %>
   <div class="box">

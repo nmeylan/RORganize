@@ -3,24 +3,46 @@
 # Encoding: UTF-8
 # File: issue.rb
 
-class Issue < ActiveRecord::Base
-  before_save :set_done_ratio
-  before_update :set_done_ratio, :set_due_date
-  after_update :save_attachments
+class Issue < RorganizeActiveRecord
+  #Class variables
+  assign_journalized_properties({'status_id' => "Status",
+      'category_id' => "Category",
+      'assigned_to_id' => "Assigned to",
+      'tracker_id' => "Tracker",
+      'due_date' => "Due date",
+      'start_date' => "Start date",
+      'done' => "Done",
+      'estimated_time' => "Estimated time",
+      'version_id' => "Version",
+      'predecessor_id' => "Predecessor"})
+  assign_foreign_keys({'status_id' => IssuesStatus,
+      'category_id' => Category,
+      'assigned_to_id' => User,
+      'tracker_id' => Tracker,
+      'version_id' => Version})
+  assign_journalized_icon('')
+  attr_accessor :notes
+  #Relations
   belongs_to :project, :class_name => 'Project'
   belongs_to :author, :class_name => 'User', :foreign_key => 'author_id'
   belongs_to :assigned_to, :class_name => 'User', :foreign_key => 'assigned_to_id'
   belongs_to :version, :class_name => 'Version', :foreign_key => 'version_id'
   belongs_to :tracker, :class_name => 'Tracker'
-  belongs_to :status, :class_name => 'IssuesStatus', :include => [:enumeration]
+  belongs_to :status, :class_name => 'IssuesStatus'
   belongs_to :category, :class_name => 'Category'
   has_many :children, :foreign_key => 'predecessor_id', :class_name => 'Issue'
   belongs_to :parent, :foreign_key => 'predecessor_id', :class_name => 'Issue'
   has_many :checklist_items, :class_name => 'ChecklistItem', :dependent => :destroy
   has_many :attachments, :foreign_key => 'object_id', :conditions => {:object_type => self.to_s},:dependent => :destroy
   has_many :journals, :as => :journalized,:conditions => {:journalized_type => self.to_s}, :dependent => :destroy
-  #  has_many :scenarios, :class_name => 'Scenario', :dependent => :destroy
-
+  
+  #triggers
+  before_save :set_done_ratio
+  before_update :set_done_ratio, :set_due_date
+  after_update :save_attachments, :update_journal
+  after_create :create_journal
+  after_destroy :destroy_journal
+  #Validators
   validates_associated :attachments
 
   validates :subject, :tracker_id, :status_id,:presence => true
@@ -28,7 +50,7 @@ class Issue < ActiveRecord::Base
   #  validates :due_date, :format =>
   def self.paginated_issues(page, per_page, order, filter, project_id)
     paginate(:page => page,
-      :include => [:tracker,:version,:assigned_to,:category,:checklist_items, :attachments, :status => [:enumeration]],
+      :include => [:tracker,:version,:assigned_to,:category,:status => [:enumeration]],
       :conditions => filter+" issues.project_id = #{project_id}",
       :per_page => per_page,
       :order => order)
@@ -89,6 +111,46 @@ class Issue < ActiveRecord::Base
     attachments.each do |attachment|
       attachment.save(:validation => false)
     end
+  end
+  #Return a hash with the content requiered for the filter's construction
+  #Can define 2 type of filters:
+  #Radio : with values : all - equal/contains - different/not contains
+  #Select : for attributes which only defined values : e.g : version => [1,2,3]
+  def self.filter_content_hash(project)
+    content_hash = {}
+    members = project.members.includes(:user)
+    content_hash["hash_for_select"] = {}
+    content_hash["hash_for_radio"] = Hash.new{|k,v| k[v] = []}
+    content_hash["hash_for_select"]["assigned"] = members.collect{|member| [member.user.name, member.user.id]}
+    content_hash["hash_for_radio"]["assigned"] = ["all","equal","different"]
+    content_hash["hash_for_select"]["assigned"] << ["Nobody", "NULL"]
+    content_hash["hash_for_select"]["author"] = members.collect{|member| [member.user.name, member.user.id]}
+    content_hash["hash_for_radio"]["author"] = ["all","equal","different"]
+    content_hash["hash_for_select"]["category"] = project.categories.collect{|category| [category.name, category.id]}
+    content_hash["hash_for_radio"]["category"] = ["all","equal","different"]
+    content_hash["hash_for_radio"]["created"] = ["all","equal","superior","inferior","today"]
+    content_hash["hash_for_radio"]["done"] = ["all","equal","superior","inferior"]
+    content_hash["hash_for_select"]["done"] = [[0,0],[10,10],[20,20],[30,30],[40,40],[50,50],[60,60],[70,70],[80,80],[90,90],[100,100]]
+    content_hash["hash_for_radio"]["due_date"] = ["all","equal","superior","inferior","today"]
+    content_hash["hash_for_select"]["status"] = IssuesStatus.find(:all, :include => [:enumeration]).collect{|status| [status.enumeration.name, status.id]}
+    content_hash["hash_for_radio"]["status"] = ["all","equal","different","open","close"]
+    content_hash["hash_for_radio"]["start"] = ["all","equal","superior","inferior","today"]
+    content_hash["hash_for_radio"]["subject"] = ["all","contains","not contains"]
+    content_hash["hash_for_select"]["tracker"] = project.trackers.collect{|tracker| [tracker.name, tracker.id]}
+    content_hash["hash_for_radio"]["tracker"] = ["all","equal","different"]
+    content_hash["hash_for_select"]["version"] = project.versions.collect{|version| [version.name, version.id]}
+    content_hash["hash_for_select"]["version"] << ["Unplanned", "NULL"]
+    content_hash["hash_for_radio"]["version"] = ["all","equal","different"]
+    content_hash["hash_for_radio"]["updated"] = ["all","equal","superior","inferior","today"]
+    return content_hash
+  end
+  #Return an array with all attribute that can be filtered
+  def self.filtered_attributes
+    filtered_attributes = []
+    unused_attributes = ['Project','Description','Estimated time', 'Predecessor', 'Checklist items count', 'Attachments count']
+    attrs = Issue.attributes_formalized_names.delete_if {|attribute| unused_attributes.include?(attribute)}
+    attrs.each{|attribute| filtered_attributes << [attribute,attribute.gsub(/\s/,'_').downcase]}
+    return filtered_attributes
   end
 
   private

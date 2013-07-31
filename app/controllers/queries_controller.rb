@@ -34,8 +34,8 @@ class QueriesController < ApplicationController
     @query = Query.new(params[:query])
     @query.author_id = current_user.id
     @query.project_id = @project.id
-    @query.stringify_query = session[@project.identifier+'_controller_issues_filter']
-    @query.stringify_params = session[@project.identifier+'_controller_issues_filter_params'].inspect
+    @query.stringify_query = session[@project.slug+'_controller_issues_filter']
+    @query.stringify_params = session[@project.slug+'_controller_issues_filter_params'].inspect
     if @query.save
       find_custom_queries
       respond_to do |format|

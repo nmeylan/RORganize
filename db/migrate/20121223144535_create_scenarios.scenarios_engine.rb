@@ -6,7 +6,7 @@ class CreateScenarios < ActiveRecord::Migration
       t.string :description,:limit => 65555
       t.integer :actor_id
       t.integer :version_id
-      t.integer :project_id
+      t.integer :project_slug
       t.timestamps :created_on
       t.timestamps :updated_on
     end

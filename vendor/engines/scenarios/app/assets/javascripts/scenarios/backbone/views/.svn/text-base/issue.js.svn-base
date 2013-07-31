@@ -19,14 +19,7 @@
          };
          this.template = _.template($('#issue-template').html(), "", _.templateSettings);
          this.model.project_id = jQuery("#project_id").val();
-         //         if(this.model.id){ //if model already exist, fetch to get data from server
-         //            this.model.setUrl("fetch");
-         //            this.model.fetch();
-         //         }
-         //         _.bindAll(this, 'render');
-         //         this.listenTo(this.model, 'change', this.render);
-         //         this.listenTo(this.model, 'destroy', this.remove);
-//         this.render();
+      
       },
       events : {
       },

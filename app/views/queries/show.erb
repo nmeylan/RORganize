@@ -7,8 +7,12 @@
 <div class="contextual">
   <h1><%= t(:label_query) %>: #<%= @query.id %></h1>
   <div class="splitcontentright">
-    <%= link_to t(:link_edit), edit_query_path(@query.id), {:class => "icon icon-edit"} if current_user.allowed_to?('edit','Queries') %>
-  </div>
+    <%= link_to_with_permissions(
+      t(:link_edit), 
+      edit_query_path(@query.id),
+      nil,
+      {:html => {:class => "icon icon-edit"}}) %>
+      </div>
 </div>
 <table class="detail" style="width:100%">
   <tr>

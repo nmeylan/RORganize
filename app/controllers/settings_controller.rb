@@ -6,7 +6,7 @@
 class SettingsController < ApplicationController
   before_filter :find_project
   before_filter :check_queries_permission, :only => [:public_queries]
-  before_filter :check_permission, :except => [:public_queries]
+  before_filter :check_permission, :except => [:public_queries, :delete_attachment, :update]
   before_filter { |c| c.menu_context :project_menu }
   before_filter { |c| c.menu_item(params[:controller]) }
   before_filter {|c| c.top_menu_item("projects")}
@@ -30,7 +30,7 @@ class SettingsController < ApplicationController
     @project.update_attributes(params[:project])
 
     tracker_ids = params[:trackers].values
-    trackers = Tracker.find_all_by_id(tracker_ids)
+    trackers = Tracker.where(:id => tracker_ids)
     @project.trackers.clear
     tracker_ids.each do |id|
       tracker = trackers.select{|track| track.id == id.to_i }
@@ -38,7 +38,7 @@ class SettingsController < ApplicationController
     end
     respond_to do |format|
       flash[:notice] = t(:successful_update)
-      format.html { redirect_to :controller => 'settings', :action => 'index', :project_id => @project.identifier }
+      format.html { redirect_to :controller => 'settings', :action => 'index', :project_id => @project.slug }
     end
   end
 

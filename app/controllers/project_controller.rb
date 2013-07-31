@@ -9,14 +9,14 @@ class ProjectController < ApplicationController
   #GET /project/:project_id
   #Project overview
   def overview
-    members = Member.find_all_by_project_id(@project, :include => [:role, :user])
+    members = Member.where(:project_id => @project.id).includes([:role, :user])
     roles = Role.find(:all)
-    @members_hash = Hash.new{|h,k| h[k] = []}
+    members_hash = Hash.new{|h,k| h[k] = []}
 
-    roles.each{|role| @members_hash[role.name] = members.select{|member| member.role_id == role.id}}
-    @last_request = Issue.find(:all, :conditions => {:project_id => @project}, :order => 'id desc', :limit => 5)
+    roles.each{|role| members_hash[role.name] = members.select{|member| member.role_id == role.id}}
+    last_requests = Issue.where(:project_id => @project).order('id desc').limit(5)
     respond_to do |format|
-      format.html
+      format.html {render :action => 'overview', :locals => {:members => members_hash, :last_requests => last_requests}}
     end
   end
 
@@ -33,14 +33,14 @@ class ProjectController < ApplicationController
     @issue_activities = Hash.new{|hash, key| hash[key] = []}
     journals =(
       session['project_activities_filter'][0].eql?("all") ?
-        Journal.find_all_by_project_id(@project.id,
-        :include => [:details, :user, :journalized],
-        :order => "created_at DESC") :
-        Journal.find_all_by_project_id(@project.id,
-        :include => [:details, :user, :journalized],
-        :conditions => ["created_at > ?",session['project_activities_filter'][0]],
-        :order => "created_at DESC")
+        Journal.where(:project_id => @project.id)
+      .includes([:details, :user, :journalized])
+      .order("created_at DESC") :
+        Journal.where(["project_id = ? AND created_at > ?",@project.id, session['project_activities_filter'][0]])
+      .includes([:details, :user, :journalized])
+      .order("created_at DESC") 
     )
+    
     @activities = Hash.new{|hash, key| hash[key] = []}
     journals.each do |journal|
       if journal.journalized_type.eql?("Issue")
@@ -55,6 +55,7 @@ class ProjectController < ApplicationController
       format.js do
         render :update do |page|
           page.replace_html "issues_activities", :partial => 'project/issues_activities'
+          page.replace_html "others_activities", :partial => 'project/activities'
         end
       end
     end
@@ -94,11 +95,6 @@ class ProjectController < ApplicationController
         format.html { redirect_to :action => 'index', :controller => 'projects'}
         format.json  { render :json => @project,
           :status => :created, :location => @project }
-        @journal = Journal.create(:user_id => @project.created_by,
-          :journalized_id => @project.id,
-          :journalized_type => @project.class.to_s,
-          :created_at => @project.created_at,
-          :action_type => "created")
       else
         format.html  { render :action => "new" }
         format.json  { render :json => @project.errors,

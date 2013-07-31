@@ -18,7 +18,7 @@ Rorganize::MenuManager.map :project_menu do |menu|
   menu.add(:activity, I18n.t(:label_activity), {:controller => 'project', :action => 'activity'}, {:id => "menu_project_activity"})
   menu.add(:roadmap, I18n.t(:label_roadmap), {:controller => 'roadmap', :action => 'index'}, {:id => "menu_roadmap"})
   menu.add(:requests, I18n.t(:label_request_plural), {:controller => 'issues', :action => 'index'}, {:id => "menu_issues"})
-  #  menu.add(t(:label_wiki), "#")
+  menu.add(:wiki, I18n.t(:label_wiki),  {:controller => 'wiki', :action => 'index'}, {:id => "menu_wiki"})
   #  menu.add(t(:label_test_plural), "#")
   menu.add(:documents, I18n.t(:label_documents), {:controller => 'documents', :action => 'index'}, {:id => "menu_documents"})
   menu.add(:settings, I18n.t(:label_setting_plural), {:controller => 'settings', :action => 'index'}, {:id => "menu_settings"})

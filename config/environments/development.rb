@@ -27,7 +27,17 @@ ProjectManager::Application.configure do
   # Expands the lines which load the assets
   config.assets.debug = false
   #ImageMagick
-  Paperclip.options[:command_path] = "C:\Ruby193\ImageMagick-6.0.2-Q16\\"
+  Paperclip.options[:command_path] = "C:\Program%20Files\ImageMagick-6.8.6-Q16"
 #  Paperclip.options[:swallow_stderr] = false
 
+  #Bullet sql eager loading optimization
+  config.after_initialize do
+  Bullet.enable = true
+  Bullet.alert = true
+  Bullet.bullet_logger = true
+  Bullet.console = true
+#  Bullet.growl = true
+  Bullet.rails_logger = true
+#  Bullet.airbrake = true
+end
 end

@@ -18,7 +18,7 @@
 
           <td class="list_center id"><%= scenario.id %></td>
           <td class="list_center actor"><%= scenario.actor ? scenario.actor.name : '-' %></td>
-          <td class="name"><%= link_to scenario.name,  scenarios_route.scenario_path(@project.identifier,scenario.id)%></td>
+          <td class="name"><%= link_to scenario.name,  scenarios_route.scenario_path(@project.slug,scenario.id)%></td>
           <td class="list_center version"><%= scenario.version ? scenario.version.name : '-' %></td>
         </tr>
       <%end%>
@@ -34,5 +34,5 @@
   </div>
 </div>
 <script type="text/javascript">
-  per_page("<%=url_for(:action => 'index', :controller => 'scenarios', :project_id => @project.identifier)%>");
+  per_page("<%=url_for(:action => 'index', :controller => 'scenarios', :project_id => @project.slug)%>");
 </script>

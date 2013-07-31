@@ -10,7 +10,7 @@
 </div>
 <%= form_tag({:action => 'update_permissions', :controller => 'permissions'}) %>
 <div class="box">
-  <% @permission_hash.each do |k,v| %>
+  <% permissions.sort{|x,y| x <=> y}.each do |k,v| %>
     <fieldset>
       <legend>
         <%= link_to '', '#',
@@ -28,9 +28,9 @@
       </legend>
       <div class="content <%=k%>">
         <% v.each do |key,value| %>
-          <%= check_box_tag  "[permissions][#{key}]", value, @selected_permissions.include?(value)%>
+          <%= check_box_tag  "[permissions][#{key}]", value, selected_permissions.include?(value)%>
           <label>
-            <%= link_to key, {:action => 'edit', :controller => 'permissions', :id => value},
+            <%= link_to key, edit_permission_path(value),
               {:class => (critical_permissions(key) ? "alert icon icon-alert" : "")}%>
           </label>
 

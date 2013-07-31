@@ -19,7 +19,7 @@ module Rorganize
 
       def display_project_menu?(project)
         if project
-          unless project.identifier.nil?
+          unless project.slug.nil?
             return true
           end
         end
@@ -39,7 +39,7 @@ module Rorganize
         content = ""
         menu.menu_items.each do |item|
           if current_user.allowed_to?(item.url[:action], item.url[:controller],project)
-            item.url[:project_id] = project.identifier
+            item.url[:project_id] = project.slug
             content += content_tag(:li,
               link_to(item.label, item.url, {:id => item.params[:id]}),
               :class => item.params[:id].eql?(@current_menu_item) ? "selected" :"" )

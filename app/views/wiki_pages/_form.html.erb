@@ -1,0 +1,18 @@
+<%#
+# Author: Nicolas Meylan
+# Date: 20 mai 2013
+# Encoding: UTF-8
+# File: _form.html.erb
+%>
+<%= raw error_messages(@wiki_page.errors.full_messages) %>
+<div class="box">
+<p>
+  <label for="wiki_page_title"><%=t(:field_title)%><span class ="required"> *</span></label>
+  <%= f.text_field :title, :size => 80 %>
+</p>
+<p>
+  <label for="wiki_page_content"><%=t(:field_content)%></label>
+  <%= f.text_area :content, :rows => 30 %>
+</p>
+</div>
+<%= raw set_toolbar('wiki_page_content') %>

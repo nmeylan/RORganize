@@ -16,10 +16,8 @@
     </tr>
     <% @versions.each do |version| %>
       <tr class="odd_even" id="<%= version.id %>">
-        <%url = versions_path.to_s+'/'+version.id.to_s %>
-
         <td class="list_left name"><% if current_user.allowed_to?('edit','Versions',@project) %>
-            <%= link_to version.name, :controller => 'versions', :action => 'edit', :id => version.id %>
+            <%= link_to version.name, edit_version_path(@project.slug, version.id)%>
           <% else %>
             <%= version.name %>
           <% end %>
@@ -42,10 +40,13 @@
         </td>
 
         <td class="action">
-          <% if current_user.allowed_to?('destroy','Versions',@project) %>
-            <%= link_to t(:link_delete), '#', {:class => 'icon icon-del',
-              :onclick => "button_delete('#{url}')"}  %>
-          <% end %>
+         <%= link_to_with_permissions(t(:link_delete), 
+            version_path(@project.slug, version.id), 
+            @project, 
+            {:method => :delete, 
+              :target => "self",
+              :html => {:class => 'icon icon-del', 
+                :onclick => "button_delete('#{version_path(@project.slug, version.id)}')"}}) %>
         </td>
 
       </tr>
@@ -54,7 +55,5 @@
 </div>
 
 <script type="text/javascript">
-  bind_version_change_positions("<%= url_for({:action => "change_position",
-    :controller => "versions",
-    :project_id => @project.identifier}) %>");
+  bind_version_change_positions("<%=change_position_versions_path(@project.slug) %>");
 </script>

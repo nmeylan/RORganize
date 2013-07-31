@@ -18,7 +18,7 @@
 
           <td class="list_center id"><%= scenario.id %></td>
           <td class="list_center actor"><%= scenario.actor ? scenario.actor.name : '-' %></td>
-          <td class="name"><%= link_to scenario.name,  scenarios_route.scenario_path(@project.identifier,scenario.id)%></td>
+          <td class="name"><%= link_to scenario.name,  scenarios_route.scenario_path(@project.slug,scenario.id)%></td>
           <td class="list_center version"><%= scenario.version ? scenario.version.name : '-' %></td>
         </tr>
       <%end%>
@@ -26,4 +26,13 @@
   <% else %>
     <h2><%= t(:text_no_data) %></h2>
   <% end %>
+
+  <%= will_paginate(@scenarios, :renderer => 'RemoteLinkRenderer')%>
+  <div class="autocomplete-combobox nosearch per_page">
+    <label for="per_page"><%=t(:label_per_page)%></label>
+    <%= select_tag 'per_page', options_for_select([['25','25'],['50','50'],['100','100']], session[:controller_scenarios_per_page]),:class => 'chzn-select cbb-small', :id => 'per_page'%>
+  </div>
 </div>
+<script type="text/javascript">
+  per_page("<%=url_for(:action => 'index', :controller => 'scenarios', :project_id => @project.slug)%>");
+</script>

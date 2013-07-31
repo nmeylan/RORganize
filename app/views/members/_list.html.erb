@@ -13,14 +13,12 @@
     </tr>
     <% @members.each do |member| %>
       <tr class="odd_even" id="<%=member.id%>">
-        <%url = members_path.to_s+'/'+member.id.to_s %>
-
         <td class="list_center name"><%= member.user.name %></td>
         <td class="list role">
           <div class="autocomplete-combobox cbb-medium nosearch">
             <% if current_user.allowed_to?('change_role','Members',@project) %>
               <%= select_tag('roles_'+member.id.to_s,
-                options_from_collection_for_select(@roles, "id", "name",member.role ? member.role.id.to_s : ""),
+                options_from_collection_for_select(roles, "id", "name",member.role ? member.role.id.to_s : ""),
                 {:class => 'chzn-select cbb-medium',
                   :include_blank => true
                 } )%>
@@ -30,22 +28,26 @@
           </div>
         </td>
         <td class="action">
-          <% if current_user.allowed_to?('destroy','Members',@project) %>
-            <%= link_to t(:link_remove), '#', {:class => 'icon icon-del', :onclick => "button_delete('#{url}')"}  %>
-          <% end %>
+          <%= link_to_with_permissions(t(:link_delete), 
+            member_path(@project.slug, member.id), 
+            @project, 
+            {:method => :delete, 
+              :target => "self",
+              :html => {:class => 'icon icon-del', 
+                :onclick => "button_delete('#{member_path(@project.slug, member.id)}')"}}) %>
         </td>
       </tr>
     <%end%>
   </table>
 
-  <%= render :partial => 'members/add_overlay' %>
+  <%= render :partial => 'members/add_overlay', :locals => {:roles => roles, :users => users} %>
 </div>
 
 <script type="text/javascript">
   (function($){
     $(".list select").change(function(e){
       $.ajax({
-        url: "<%=url_for({:action => 'change_role', :controller => 'members'})%>",
+        url: "<%=change_role_members_path(@project.slug)%>",
         dataType: "script",
         data: {role_id:$(this).val(), member_id: $(this).parents("tr").attr("id")}
       });

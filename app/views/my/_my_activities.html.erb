@@ -4,7 +4,7 @@
 # Encoding: UTF-8
 # File: _my_activities.erb
 %>
-<% @activities.each do |activity| %>
+<% activities.each do |activity| %>
   <b><%= "#{distance_of_time_in_words(activity.created_at, Time.now).capitalize} #{t(:label_ago)}" %></b>
   <%= raw activities_text_builder(activity) %>
   <ul style="margin-left:30px">
@@ -18,7 +18,7 @@
     </div>
   <% end %>
 
-  <% unless activity.eql?(@activities.last) %>
+  <% unless activity.eql?(activities.last) %>
     <hr/>
   <% end %>
   <%# end %>

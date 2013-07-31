@@ -4,7 +4,7 @@ class CreateEnabledModules < ActiveRecord::Migration
       t.string :name, :limit => 128
       t.string :action,:limit => 255
       t.string :controller,:limit => 255
-      t.integer :project_id
+      t.integer :project_slug
     end
   end
 

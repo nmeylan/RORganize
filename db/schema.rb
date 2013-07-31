@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130519140012) do
+ActiveRecord::Schema.define(:version => 20130730165902) do
 
   create_table "attachments", :force => true do |t|
     t.integer  "object_id"
@@ -80,9 +80,9 @@ ActiveRecord::Schema.define(:version => 20130519140012) do
 
   create_table "issues", :force => true do |t|
     t.string   "subject"
-    t.text     "description",    :limit => 16777215
-    t.datetime "created_at",                                                        :null => false
-    t.datetime "updated_at",                                                        :null => false
+    t.text     "description",           :limit => 16777215
+    t.datetime "created_at",                                                                              :null => false
+    t.datetime "updated_at",                                                                              :null => false
     t.date     "due_date"
     t.integer  "done"
     t.integer  "author_id"
@@ -92,9 +92,11 @@ ActiveRecord::Schema.define(:version => 20130519140012) do
     t.integer  "status_id"
     t.integer  "version_id"
     t.integer  "category_id"
-    t.decimal  "estimated_time",                     :precision => 10, :scale => 1
+    t.decimal  "estimated_time",                            :precision => 10, :scale => 1
     t.date     "start_date"
     t.integer  "predecessor_id"
+    t.integer  "checklist_items_count",                                                    :default => 0
+    t.integer  "attachments_count",                                                        :default => 0
   end
 
   add_index "issues", ["assigned_to_id"], :name => "index_issues_on_assigned_to_id"
@@ -137,20 +139,18 @@ ActiveRecord::Schema.define(:version => 20130519140012) do
     t.string  "value"
   end
 
-  add_index "journal_details", ["journal_id"], :name => "journal_id"
-
   create_table "journals", :force => true do |t|
-    t.string   "journalized_type", :limit => 30
-    t.text     "notes",            :limit => 16777215
-    t.datetime "created_at",                           :null => false
-    t.datetime "updated_at",                           :null => false
+    t.string   "journalized_type",       :limit => 30
+    t.text     "notes",                  :limit => 16777215
+    t.datetime "created_at",                                 :null => false
+    t.datetime "updated_at",                                 :null => false
     t.integer  "journalized_id"
     t.integer  "user_id"
     t.string   "action_type"
     t.integer  "project_id"
+    t.string   "journalized_identifier", :limit => 128
   end
 
-  add_index "journals", ["journalized_id"], :name => "journalized_id"
   add_index "journals", ["project_id"], :name => "index_journals_on_project_id"
   add_index "journals", ["user_id"], :name => "index_journals_on_user_id"
 
@@ -183,13 +183,19 @@ ActiveRecord::Schema.define(:version => 20130519140012) do
 
   create_table "projects", :force => true do |t|
     t.string   "name"
-    t.text     "description", :limit => 16777215
-    t.string   "identifier",  :limit => 20
-    t.datetime "created_at",                                         :null => false
-    t.datetime "updated_at",                                         :null => false
+    t.text     "description",       :limit => 16777215
+    t.string   "identifier",        :limit => 20
+    t.datetime "created_at",                                               :null => false
+    t.datetime "updated_at",                                               :null => false
     t.integer  "created_by"
-    t.boolean  "is_archived",                     :default => false
+    t.boolean  "is_archived",                           :default => false
+    t.string   "slug"
+    t.integer  "members_count",                         :default => 0
+    t.integer  "issues_count",                          :default => 0
+    t.integer  "attachments_count",                     :default => 0
   end
+
+  add_index "projects", ["slug"], :name => "index_projects_on_slug"
 
   create_table "projects_trackers", :id => false, :force => true do |t|
     t.integer "tracker_id"
@@ -198,14 +204,6 @@ ActiveRecord::Schema.define(:version => 20130519140012) do
 
   add_index "projects_trackers", ["project_id"], :name => "index_projects_trackers_on_project_id"
   add_index "projects_trackers", ["tracker_id"], :name => "index_projects_trackers_on_tracker_id"
-
-  create_table "projects_versions", :id => false, :force => true do |t|
-    t.integer "version_id"
-    t.integer "project_id"
-  end
-
-  add_index "projects_versions", ["project_id"], :name => "index_projects_versions_on_project_id"
-  add_index "projects_versions", ["version_id"], :name => "index_projects_versions_on_version_id"
 
   create_table "queries", :force => true do |t|
     t.integer "author_id"
@@ -311,6 +309,32 @@ ActiveRecord::Schema.define(:version => 20130519140012) do
     t.text    "description", :limit => 16777215
     t.integer "position"
     t.date    "start_date"
+    t.integer "project_id"
   end
+
+  create_table "wiki_pages", :force => true do |t|
+    t.integer  "parent_id"
+    t.integer  "author_id"
+    t.integer  "wiki_id"
+    t.integer  "position"
+    t.string   "title"
+    t.text     "content",    :limit => 16777215
+    t.datetime "created_at",                     :null => false
+    t.datetime "updated_at",                     :null => false
+    t.string   "slug"
+  end
+
+  add_index "wiki_pages", ["author_id"], :name => "index_wiki_pages_on_author_id"
+  add_index "wiki_pages", ["parent_id"], :name => "index_wiki_pages_on_parent_id"
+  add_index "wiki_pages", ["slug"], :name => "index_wiki_pages_on_slug"
+  add_index "wiki_pages", ["wiki_id"], :name => "index_wiki_pages_on_wiki_id"
+
+  create_table "wikis", :force => true do |t|
+    t.integer "home_page_id"
+    t.integer "project_id"
+  end
+
+  add_index "wikis", ["home_page_id"], :name => "index_wikis_on_home_page_id"
+  add_index "wikis", ["project_id"], :name => "index_wikis_on_project_id"
 
 end

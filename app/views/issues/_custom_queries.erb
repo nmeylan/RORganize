@@ -13,7 +13,7 @@
         <%= link_to query.name, {:action => "apply_custom_query",
           :query_id => query.slug,
           :controller => "issues",
-          :project_id => @project.identifier} %>
+          :project_id => @project.slug} %>
       </li>
     <% end %>
   </ul>

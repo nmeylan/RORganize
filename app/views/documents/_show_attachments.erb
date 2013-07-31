@@ -14,7 +14,7 @@
       <% else %>
         <%= link_to attachment.file_file_name,{:action => 'download_attachment', :controller => 'documents', :path => attachment.file.path}, {:class => "icon-file #{attachment.file_content_type.gsub(/\//,'-')}"} %>
       <% end %>
-      <%= link_to t(:link_delete), '#', {:class => 'icon icon-del', :onclick => "button_delete('#{url_for(:action => 'delete_attachment', :controller => 'documents', :id => @document.id,:attachment_id => attachment.id, :project_id => @project.identifier)}')"} if current_user.allowed_to?('delete_attachment','Documents',@project)%>
+      <%= link_to t(:link_delete), '#', {:class => 'icon icon-del', :onclick => "button_delete('#{url_for(:action => 'delete_attachment', :controller => 'documents', :id => @document.id,:attachment_id => attachment.id, :project_id => @project.slug)}')"} if current_user.allowed_to?('delete_attachment','Documents',@project)%>
     </p>
   <% end %>
 <% end %>

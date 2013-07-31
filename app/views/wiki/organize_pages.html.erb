@@ -1,0 +1,28 @@
+<%#
+Author : Nicolas Meylan
+Date: 27 juin 2013 
+Encoding: UTF-8
+File: organize_pages
+%>
+<div class="contextual">
+  <h1><%= t(:link_pages) %></h1>
+</div>
+<%= render :partial => 'wiki/sidebar' %>
+<% if @wiki_pages.any? %>
+  <div id="organize_pages">
+    <%= display_pages(@wiki_pages, nil) %>
+    <p>Drag an empty element out to remove it!</p>
+
+  </div>
+<% else %>
+  <h2><%= t(:text_no_data) %></h2>
+<% end %>
+<%= button_tag t(:button_save),:id => "serialize", :type => "button" %>
+
+<script type="text/javascript">
+  bind_organization_behaviour(".connectedSortable");
+  jQuery(".connectedSortable li.item").prepend("<a href='#' class='add_sub_item icon icon-add'></a>");
+  add_sub_item(".add_sub_item");
+  bind_set_organization_button("#organize_pages li.item", "#serialize", "<%=set_organization_wiki_index_path(@project.slug)%>");
+
+</script>

@@ -13,19 +13,23 @@
     </tr>
     <% @categories.each do |category| %>
       <tr class="odd_even">
-        <%url = categories_path.to_s+'/'+category.id.to_s %>
 
         <td class="list_center name">
           <% if current_user.allowed_to?('edit','Categories',@project) %>
-            <%= link_to category.name, :controller => 'categories', :action => 'edit', :id => category.id %>
+            <%= link_to_with_permissions(category.name, edit_category_path(@project.slug, category.id), @project) %>
           <% else %>
             <%= category.name %>
           <% end %>
         </td>
         <td class="action">
-          <% if current_user.allowed_to?('destroy','Categories',@project) %>
-            <%= link_to t(:link_delete), '#', {:class => 'icon icon-del', :onclick => "button_delete('#{url}')"} %>
-          <% end %>
+          <%= link_to_with_permissions(t(:link_delete), 
+            category_path(@project.slug, category.id), 
+            @project, 
+            {:method => :delete, 
+              :target => "self",
+              :html => {:class => 'icon icon-del', 
+                :onclick => "button_delete('#{ category_path(@project.slug, category.id)}')"}}) %>
+
         </td>
       </tr>
     <%end%>

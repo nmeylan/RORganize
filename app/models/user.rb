@@ -1,8 +1,11 @@
-class User < ActiveRecord::Base
-
+class User < RorganizeActiveRecord
   include ProjectHelper
   include Rorganize::PermissionManager::PermissionManagerHelper
   include Rorganize::ModuleManager::ModuleManagerHelper
+  #Class variables
+  assign_journalized_properties({'name' => "Name", 'admin'  => 'Administrator', "email" => "Email", "login" => "Login"})
+  assign_foreign_keys({})
+  assign_journalized_icon('/assets/activity_group.png')
   #SLug
   extend FriendlyId
   friendly_id :name, use: :slugged
@@ -13,15 +16,19 @@ class User < ActiveRecord::Base
     :recoverable, :rememberable, :trackable, :validatable
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :login, :email, :name, :password, :password_confirmation, :remember_me
-
+  attr_accessible :id, :login, :email, :name, :password, :password_confirmation, :remember_me
+  #Relations
   has_many :members, :class_name => 'Member', :dependent => :destroy
   has_many :issues, :class_name => 'Issue', :foreign_key => :author_id, :dependent => :nullify
   has_many :issues, :class_name => 'Issue', :foreign_key => :assigned_to_id, :dependent => :nullify
   has_many :journals, :as => :journalized,  :conditions => {:journalized_type => self.to_s}, :dependent => :nullify
   validates :login, :presence => true, :length => 4..50, :uniqueness => true
   validates :name, :presence => true, :length => 4..50
-
+  #Triggers
+  after_create :create_journal 
+  after_update :update_journal
+  after_destroy :destroy_journal
+  
   def is_admin?
     return self.admin
   end
@@ -42,9 +49,14 @@ class User < ActiveRecord::Base
     @@session ||= 'User'
     return @@session
   end
+  
+  def allowed_statuses(project)
+    return self.members.select{|member| member.project_id == project.id}.first.role.issues_statuses.sort{|x,y| x.enumeration.position <=> y.enumeration.position}
+  end
+  
   def allowed_to?(action, controller, project = nil)
     return true if self.is_admin? && act_as_admin?
-    m = self.members.includes(:project,:role)
+    m = self.members.includes(:role)
     if project
       member = m.select{|mb| mb.project_id == project.id}.first
       return (member &&
@@ -71,4 +83,6 @@ class User < ActiveRecord::Base
       :per_page => per_page,
       :order => order)
   end
+  
+  
 end

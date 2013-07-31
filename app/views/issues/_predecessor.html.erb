@@ -6,10 +6,10 @@
 %>
 
 <h2><%= t(:label_predecessor) %> :</h2>
-<% if current_user.allowed_to?('edit','Issues',@project) &&
-    (@issue.author_id.eql?(current_user.id) || current_user.allowed_to?('edit not owner','Issues',@project)) %>
-  <% if @issue.parent.nil? %>
-    <%= form_for(@issue, :url => add_predecessor_issues_path(@project.identifier), :method => 'post',:html => {:remote => true,:class => 'form'}) do |f|%>
+
+<% if @issue.parent.nil? %>
+  <% if current_user.allowed_to?('add_predecessor','Issues',@project) %>
+    <%= form_for(@issue, :url => add_predecessor_issues_path(@project.slug), :method => 'post',:html => {:remote => true,:class => 'form'}) do |f|%>
       <p>
         <label><%= t(:label_predecessor) %> : #</label>
         <%= f.text_field :predecessor_id, :size => 10%>
@@ -17,16 +17,24 @@
       </p>
     <% end %>
   <% else %>
+    <% if @issue.parent.nil? %>
+      <p>-</p>
+    <% else %>
+      <p>#<%= @issue.predecessor_id %> : <%= link_to @issue.parent.subject, {:action => 'show', :controller => 'issues', :id => @issue.predecessor_id}%></p>
+    <% end %>
+  <% end %>
+<% else %>
+  <% if current_user.allowed_to?('delete_predecessor','Issues',@project) %>
     <p>
       #<%= @issue.predecessor_id %> :
       <%= link_to @issue.parent.subject, {:action => 'show', :controller => 'issues', :id => @issue.predecessor_id}%>
-      <%= link_to t(:link_delete), '#', {:class => 'icon icon-del', :onclick => "button_delete('#{del_predecessor_issues_path(@project.identifier, @issue.id)}')"}  %>
+      <%= link_to t(:link_delete), '#', {:class => 'icon icon-del', :onclick => "button_delete('#{del_predecessor_issues_path(@project.slug, @issue.id)}')"}  %>
     </p>
-  <% end %>
-<% else %>
-  <% if @issue.parent.nil? %>
-    <p>-</p>
   <% else %>
-    <p>#<%= @issue.predecessor_id %> : <%= link_to @issue.parent.subject, {:action => 'show', :controller => 'issues', :id => @issue.predecessor_id}%></p>
+    <% if @issue.parent.nil? %>
+      <p>-</p>
+    <% else %>
+      <p>#<%= @issue.predecessor_id %> : <%= link_to @issue.parent.subject, {:action => 'show', :controller => 'issues', :id => @issue.predecessor_id}%></p>
+    <% end %>
   <% end %>
 <% end %>

@@ -2,7 +2,6 @@ module IssuesHelper
   #Insert updated attributes in journal detail
   def issues_journal_insertion(updated_attrs, journal, journalized_property, foreign_key_value = {})
     #Remove attributes that won't be considarate in journal update
-    #    updated_attrs = updated_attributes.delete_if{|attr, val| unused_attributes.include?(attr)}
     updated_attrs.each do |attribute, old_new_value|
       if foreign_key_value[attribute]
         if foreign_key_value[attribute].eql?(IssuesStatus)
@@ -27,17 +26,21 @@ module IssuesHelper
 
   def issues_generics_form_to_json
     form_hash = {}
-    form_hash['assigned_to'] = generics_filter_simple_select("assigned_to",@hash_for_radio["assigned"],@hash_for_select["assigned"],true,nil,"Assigned to")
-    form_hash['author'] = generics_filter_simple_select("author",@hash_for_radio["author"],@hash_for_select["author"], "Author")
-    form_hash['category'] = generics_filter_simple_select("category",@hash_for_radio["category"],@hash_for_select["category"])
-    form_hash['created_at'] = generics_filter_date_field("created_at",@hash_for_radio["created"])
-    form_hash['done'] = generics_filter_simple_select("done",@hash_for_radio["done"],@hash_for_select["done"],false,"cbb-small")
-    form_hash['due_date'] = generics_filter_date_field("due_date",@hash_for_radio["due_date"],"Due date")
-    form_hash['status'] = generics_filter_simple_select("status",@hash_for_radio["status"],@hash_for_select["status"], "Status")
-    form_hash['subject'] = generics_filter_text_field("subject",@hash_for_radio["subject"],"Subject")
-    form_hash['tracker'] = generics_filter_simple_select("tracker",@hash_for_radio["tracker"],@hash_for_select["tracker"], "Tracker")
-    form_hash['version'] = generics_filter_simple_select("version",@hash_for_radio["version"],@hash_for_select["version"], "Version")
-    form_hash['updated_at'] = generics_filter_date_field("updated_at",@hash_for_radio["updated"],"Updated")
+    filter_content_hash = Issue.filter_content_hash(@project)
+    hash_for_radio = filter_content_hash["hash_for_radio"]
+    hash_for_select = filter_content_hash["hash_for_select"]
+    form_hash['assigned_to'] = generics_filter_simple_select("assigned_to",hash_for_radio["assigned"],hash_for_select["assigned"],true,nil,"Assigned to")
+    form_hash['author'] = generics_filter_simple_select("author",hash_for_radio["author"],hash_for_select["author"], "Author")
+    form_hash['category'] = generics_filter_simple_select("category",hash_for_radio["category"],hash_for_select["category"])
+    form_hash['created_at'] = generics_filter_date_field("created_at",hash_for_radio["created"])
+    form_hash['done'] = generics_filter_simple_select("done",hash_for_radio["done"],hash_for_select["done"],false,"cbb-small")
+    form_hash['due_date'] = generics_filter_date_field("due_date",hash_for_radio["due_date"],"Due date")
+    form_hash['start_date'] = generics_filter_date_field("start_date",hash_for_radio["start"])
+    form_hash['status'] = generics_filter_simple_select("status",hash_for_radio["status"],hash_for_select["status"], "Status")
+    form_hash['subject'] = generics_filter_text_field("subject",hash_for_radio["subject"],"Subject")
+    form_hash['tracker'] = generics_filter_simple_select("tracker",hash_for_radio["tracker"],hash_for_select["tracker"], "Tracker")
+    form_hash['version'] = generics_filter_simple_select("version",hash_for_radio["version"],hash_for_select["version"], "Version")
+    form_hash['updated_at'] = generics_filter_date_field("updated_at",hash_for_radio["updated"],"Updated")
     form_hash.each{|k,v| v.gsub(/"/,"'").gsub(/\n/,"")}
     return form_hash.to_json
   end
@@ -50,6 +53,7 @@ module IssuesHelper
       'created_at' => 'created_at',
       'done' => 'done',
       'due_date' => 'due_date',
+      'start_date' => 'start_date',
       'status' => 'status_id',
       'subject' => 'subject',
       'tracker' => 'tracker_id',
@@ -75,17 +79,17 @@ module IssuesHelper
       else
         text += "#{image_tag('/assets/activity_edit.png')} #{journal.user.name} #{t(:label_updated_lower_case)} "
       end
-      text += "<b>#{journal.journalized_type} ##{link_to journal.journalized_id, issue_path(journal.project.identifier, journal.journalized_id)}</b>"
+      text += "<b>#{journal.journalized_type} ##{link_to journal.journalized_id, issue_path(journal.project.slug, journal.journalized_id)}</b>"
       if journal.project_id && specified_project
-        text += " #{t(:label_at)} <b>#{link_to journal.project.identifier, url_for({:action => 'overview', :controller => 'project', :project_id => journal.project.identifier})}</b>"
+        text += " #{t(:label_at)} <b>#{link_to journal.project.slug, url_for({:action => 'overview', :controller => 'project', :project_id => journal.project.slug})}</b>"
       end
       text += "</p>"
     elsif journal.action_type.eql?("created")
       text += "<p class='icon'>"
       text += "#{image_tag('/assets/activity_add.png')} #{journal.user.name} #{t(:label_created_lower_case)} "
-      text += "<b>#{journal.journalized_type} ##{link_to journal.journalized_id, issue_path(journal.project.identifier, journal.journalized_id)}</b>"
+      text += "<b>#{journal.journalized_type} ##{link_to journal.journalized_id, issue_path(journal.project.slug, journal.journalized_id)}</b>"
       if journal.project_id && specified_project
-        text += " #{t(:label_at)} <b>#{link_to journal.project.identifier, url_for({:action => 'overview', :controller => 'project', :project_id => journal.project.identifier})}</b>"
+        text += " #{t(:label_at)} <b>#{link_to journal.project.slug, url_for({:action => 'overview', :controller => 'project', :project_id => journal.project.slug})}</b>"
       end
       text += "</p>"
     elsif journal.action_type.eql?("deleted")
@@ -93,7 +97,7 @@ module IssuesHelper
       text += "#{image_tag('/assets/activity_deleted.png')} #{journal.user.name} #{t(:label_deleted_lower_case)} "
       text += "<b>#{journal.journalized_type} ##{journal.journalized_id}</b>"
       if journal.project_id && specified_project
-        text += " #{t(:label_at)} <b>#{link_to journal.project.identifier, url_for({:action => 'overview', :controller => 'project', :project_id => journal.project.identifier})}</b>"
+        text += " #{t(:label_at)} <b>#{link_to journal.project.slug, url_for({:action => 'overview', :controller => 'project', :project_id => journal.project.slug})}</b>"
       end
       text += "</p>"
     end

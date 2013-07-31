@@ -68,9 +68,9 @@ module ProjectHelper
     return link_str
   end
 
-  def project_members
+  def project_members(members_hash)
     project_members = ""
-    @members_hash.each do |role, members|
+    members_hash.each do |role, members|
       members_list = ""
       if members.any?
         members_list += "<ul>"
@@ -81,7 +81,7 @@ module ProjectHelper
         project_members += role.to_s+": "+members_list
       end
     end
-    return project_members
+    return project_members.html_safe
   end
 
   def select_tag_versions(id,name,select_key)

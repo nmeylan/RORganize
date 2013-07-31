@@ -9,7 +9,7 @@
 <div class="box">
   <div class="autocomplete-combobox cbb-medium nosearch">
     <label for="controller_name"><%=t(:field_controller_name)%><span class ="required"> *</span></label>
-    <%= f.select :controller, @controllers.collect{|controller| [controller, controller]},
+    <%= f.select :controller, controllers.collect{|controller| [controller, controller]},
       { :include_blank => false },
       {:class => 'chzn-select cbb-medium',
       :disabled => @permission.is_locked} %>

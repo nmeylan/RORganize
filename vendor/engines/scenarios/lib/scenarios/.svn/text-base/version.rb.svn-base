@@ -1,3 +1,4 @@
 module Scenarios
-  VERSION = "0.0.1"
+  VERSION = "1"
+  AUTHOR = "Nicolas Meylan"
 end

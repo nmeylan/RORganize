@@ -68,6 +68,11 @@ en:
   label_predecessor: Predecessor
   label_children: Children
   label_activities: Activities
+  label_new_wiki: New Wiki
+  label_new_wiki_page: New Wiki Page
+  label_new_home_page: New Home page
+  label_created: Created
+  label_sub_pages: Sub pages
 # LINK
   link_new_project: New project
   link_new_issue: New issue
@@ -124,6 +129,12 @@ en:
   link_edit_status: Edit status
   link_start_today: Start today
   link_coworkers : Coworkers
+  link_pages: Pages
+  link_new_page: New page
+  link_new_sub_page: New sub page
+  link_edit_page: Edit page
+  link_organize_pages: Organize pages
+  link_edit_checklist: Edit checklist
  #FORM
   field_name: Name
   field_description: Description
@@ -160,12 +171,16 @@ en:
   field_project_logo: Project logo
   field_default_done_ratio: Default done ratio
   field_start_date: Start date
+  field_title: Title
+  field_content: Content
+  field_new_sub_section: New sub section
   #FLASH
   successful_creation: Successful creation
   successful_update: Successful update
   successful_deletion: Successful deletion
   failure_deletion: Deletion failed
   failure_update: Update failed
+  failure_operation: Operation failed
   #TEXT
   text_changed: changed
   text_from: from
@@ -184,3 +199,5 @@ en:
   text_my_latest_activities: My latest activities
   text_other_activities: Other activities
   text_set_start_date_today: Are you sure you want to set issue start date at today?
+  text_no_wiki: This project doesn't have wiki yet.
+  text_welcome: Welcome

@@ -1,9 +1,9 @@
 10
 
 dir
-4
-svn+ssh://91.121.197.171/var/www/svn/rorganize/trunk/app/views/devise/mailer
-svn+ssh://91.121.197.171/var/www/svn
+66
+svn+ssh://91.121.197.171/home/svn/svn/rorganize/trunk/app/views/devise/mailer
+svn+ssh://91.121.197.171/home/svn/svn
 
 
 
@@ -26,47 +26,13 @@ root
 
 b610ed60-9b2b-4e8f-8d98-021b969b75a1
 
-reset_password_instructions.html.erb
-file
-
-
-
-
-2013-01-17T17:12:39.432795Z
-d514f924ef472e689451ff085bc6a1b9
-2013-01-17T16:53:38.057799Z
-1
-root
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-424
-
 confirmation_instructions.html.erb
 file
 
 
 
 
-2013-01-17T17:12:39.434795Z
+2013-07-04T15:16:26.861000Z
 e1ce9f05a9ba11f316de8a6f5536723c
 2013-01-17T16:53:38.057799Z
 1
@@ -94,13 +60,47 @@ root
 
 232
 
+reset_password_instructions.html.erb
+file
+
+
+
+
+2013-07-04T15:18:09.349000Z
+d514f924ef472e689451ff085bc6a1b9
+2013-01-17T16:53:38.057799Z
+1
+root
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+424
+
 unlock_instructions.html.erb
 file
 
 
 
 
-2013-01-17T17:12:39.499799Z
+2013-07-04T15:16:28.428000Z
 f69c979610b6b1b64bcd59ac4e268c96
 2013-01-17T16:53:38.057799Z
 1

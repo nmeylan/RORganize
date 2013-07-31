@@ -370,6 +370,9 @@ pre{
 .icon-disabled_up_arrow { background-image: url(../assets/disabled_up_arrow.png); }
 .icon-disabled_down_arrow { background-image: url(../assets/disabled_down_arrow.png); }
 .icon-calendar { background-image: url(../assets/calendar.png); }
+.icon-document { background-image: url(../assets/document.png); }
+.icon-calendar { background-image: url(../assets/calendar.png); }
+.icon-hierarchy { background-image: url(../assets/hierarchy.png); }
 
 #content a, #content a:link, #content a:visited {color: #888;text-decoration: none;}
 
@@ -1028,4 +1031,22 @@ a.selected{
 .toggle.right{
    float: right;
    height: 15px;
+}
+
+/*
+    WIKI
+*/
+
+#organize_pages li{
+    padding: 5px;
+    margin: 5px;
+}
+#organize_pages ul{
+    min-height: 40px;
+    border: 1px dashed #D7D7D7;
+    margin: 10px;
+}
+#organize_pages ul.trash{
+    margin: 0px;
+    padding: 0px;
 }

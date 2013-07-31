@@ -18,7 +18,7 @@
           {:class => 'icon icon-del',
           :onclick => "button_delete('#{url_for(:action => 'delete_attachment',
           :controller => 'settings',
-          :project_id => @project.identifier,
+          :project_id => @project.slug,
           :attachment_id => attachment.id)}')"} %>
       <% else %>
         <%= render :partial => 'project/attachments', :collection => @project.attachments %>

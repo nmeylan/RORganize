@@ -28,6 +28,6 @@
 <% end %>
 <script type="text/javascript">
   createOverlay("#activity_overlay", 150);
-  activities_overlay("<%=url_for(:action => 'load_journal_activity', :controller => 'project', :project_id => @project.identifier)%>");
-  activities_filter("<%=url_for({:action => "filter", :controller => "project", :project_id => @project.identifier})%>");
+  activities_overlay("<%=url_for(:action => 'load_journal_activity', :controller => 'project', :project_id => @project.slug)%>");
+  activities_filter("<%=url_for({:action => "filter", :controller => "project", :project_id => @project.slug})%>");
 </script>

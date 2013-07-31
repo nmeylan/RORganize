@@ -90,13 +90,20 @@ class StepsController < ApplicationController
     @issue.tracker_id = Tracker.find_by_name("Task").id
     @issue.status_id = IssuesStatus.find_by_enumeration_id(Enumeration.find_by_name_and_opt("New", "ISTS")).id
     @issue.project_id = @project.id
+    @issue.done = 0
     @issue.author_id = current_user.id
     @step.issues << @issue
     scenario = Scenario.find(@step.scenario_id)
     scenario.update_attribute("updated_at", Time.now)
     respond_to do |format|
       if @issue.save
-        @issues = Issue.find_all_by_project_id(@project.id)
+        @journal = Journal.create(:user_id => @issue.author_id,
+          :journalized_id => @issue.id,
+          :journalized_type => @issue.class.to_s,
+          :created_at => @issue.created_at,
+          :notes => "",
+          :action_type => "created",
+          :project_id => @project.id)
         format.json { render :json => @issue, :status => :ok, :xhr => "success" }
       else
         format.json { render :json => @issue.errors.full_messages, :status => :unprocessable_entity }
@@ -105,7 +112,7 @@ class StepsController < ApplicationController
   end
 
   def load_all_issues
-    @issues = Issue.find_all_by_project_id(@project.id)
+    @issues = Issue.find_all_by_project_id(@project.id, :order => "id DESC")
     respond_to do |format|
       format.json { render :json => @issues, :status => :ok, :xhr => "success" }
     end

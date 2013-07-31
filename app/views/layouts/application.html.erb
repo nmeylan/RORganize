@@ -4,6 +4,7 @@
     <title>RORganize</title>
 <%#= JS Files %>
     <%= javascript_include_tag "application" %>
+    <%= javascript_include_tag "jquery-1.7.2.min" %>
     <%= javascript_include_tag "underscore-min"%>
     <%= javascript_include_tag "chosen.jquery.min" %>
     <%= javascript_include_tag "jquery-ui-1.8.21.custom.min" %>
@@ -93,6 +94,7 @@
     });
     $(document).ajaxSend(function(e, xhr, options) {
       $("#loading").show();
+      console.log(options);
       var token = $("meta[name='csrf-token']").attr("content");
       xhr.setRequestHeader("X-CSRF-Token", token);
     });

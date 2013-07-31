@@ -8,7 +8,8 @@
 <div class="contextual">
   <h1><%= t(:link_permissions) %></h1>
   <div class="splitcontentright">
-    <%= link_to t(:link_new_permission), {:action => 'new'}, {:class => 'icon icon-add'} if current_user.allowed_to?('new','Permissions') %>
+    <%= link_to_with_permissions(
+      t(:link_new_permission), new_permission_path, nil, {:method => :get, :html => {:class => 'icon icon-add'}}) %>
   </div>
 </div>
 
@@ -18,7 +19,7 @@
   <% @roles.each do |role| %>
     <li>
       <% if current_user.allowed_to?('list','Permissions') %>
-        <%= link_to role.name, {:action => 'list', :role_name => role.name.gsub(" ", "_")} %>
+        <%= link_to role.name, list_permissions_path(role.name.gsub(" ", "_")) %>
       <% else %>
         <%= role.name %>
       <% end %>
@@ -34,7 +35,7 @@
   The majority of them were build during the building of the application.<br/>
   So that why you neither can delete them neither edit their properties, except their name.<br/>
   <br/>
-  In addition, certain permissions are considered as more or less critical.<br/>
+  In addition, several permissions are considered as more or less critical.<br/>
   Indeed take a look of the following rules:
 <ul>
   <li>

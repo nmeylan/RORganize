@@ -8,7 +8,11 @@
 <div class="contextual">
   <h1><%= t(:label_setting_plural) %> - <%= t(:link_categories) %></h1>
   <div class="splitcontentright">
-    <%= link_to t(:link_new_category), {:action => 'new', :project_id => @project.identifier}, {:class => 'icon icon-add'} if current_user.allowed_to?('new','Categories',@project) %>
+    <%= link_to_with_permissions(
+      t(:link_new_category), 
+      new_category_path(@project.slug), 
+      @project, 
+      {:html => {:class => 'icon icon-add'}}) %>
   </div>
 </div>
 <%= render :partial => 'categories/list' %>

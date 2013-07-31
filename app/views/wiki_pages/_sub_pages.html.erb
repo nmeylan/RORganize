@@ -1,0 +1,14 @@
+<%#
+Author : Nicolas Meylan
+Date: 27 juin 2013 
+Encoding: UTF-8
+File: sub_pages.html
+%>
+
+<div class="separator">
+  
+</div>
+<h2><%= t(:label_sub_pages) %></h2>
+<div id="wiki_pages">
+  <%= display_sub_pages(page.id, page.sub_pages, nil).html_safe %>
+</div>

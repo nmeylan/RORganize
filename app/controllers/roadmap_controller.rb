@@ -13,60 +13,59 @@ class RoadmapController < ApplicationController
   #GET/project/:project_id/roadmap
   def index
     @versions = @project.versions.sort{|x,y| y.position <=> x.position}
-
-
-    set_roadmap_content(@versions)
+    data = set_roadmap_content(@versions)
 
     respond_to do |format|
-      format.html
+      format.html {render :action => "index", :locals => {:versions_details => data}}
     end
   end
 
 
   def set_roadmap_content(versions)
+    data = {}
     #related requests for each versions
-    @related_requests = Hash.new{|h,k| h[k] = []}
+    data["related_requests"] = Hash.new{|h,k| h[k] = []}
     #Request statement for each versions
-    @request_statements = Hash.new{|h, k| h[k] = []}
+    data["request_statements"] = Hash.new{|h, k| h[k] = []}
     #Request done percent
-    @request_done_percent = {}
+    data["request_done_percent"] = {}
     tmp_issues_ary = []
     tmp_closed_status = 0
     tmp_opened_status = 0
     tmp_done = 0
     versions.each do |version|
-      version.issues.each do |issue|
+      version.issues.includes(:status, :tracker).each do |issue|
         #add issue
         tmp_issues_ary << issue
         issue.status.is_closed ? tmp_closed_status += 1 : tmp_opened_status += 1
         tmp_done += issue.done
       end
-      @related_requests[version.id] = tmp_issues_ary
-      @request_statements[version.id] = [tmp_closed_status, tmp_opened_status]
-      if @related_requests[version.id].count != 0
-        @request_done_percent[version.id] = (tmp_done / @related_requests[version.id].count).round
+      data["related_requests"][version.id] = tmp_issues_ary
+      data["request_statements"][version.id] = [tmp_closed_status, tmp_opened_status]
+      if data["related_requests"][version.id].count != 0
+        data["request_done_percent"][version.id] = (tmp_done / data["related_requests"][version.id].count).round
       else
-        @request_done_percent[version.id] = 0
+        data["request_done_percent"][version.id] = 0
       end
       tmp_issues_ary = []
       tmp_closed_status = 0
       tmp_opened_status = 0
       tmp_done = 0
     end
-    unplanned_issues = Issue.find_all_by_version_id_and_project_id(nil, @project.id, :include =>[:status, :tracker])
+    unplanned_issues = Issue.where(:version_id => nil, :project_id => @project.id).includes([:status, :tracker])
     unless unplanned_issues.empty?
       @versions << Version.new(:name => "Unplanned")
-      @related_requests[nil] = unplanned_issues
-      @related_requests[nil].each {|issue| issue.status.is_closed ? tmp_closed_status += 1 : tmp_opened_status += 1
+      data["related_requests"][nil] = unplanned_issues
+      data["related_requests"][nil].each {|issue| issue.status.is_closed ? tmp_closed_status += 1 : tmp_opened_status += 1
         tmp_done += issue.done}
-      @request_statements[nil] = [tmp_closed_status, tmp_opened_status]
-      @request_done_percent[nil] = (tmp_done / @related_requests[nil].count).round
+      data["request_statements"][nil] = [tmp_closed_status, tmp_opened_status]
+      data["request_done_percent"][nil] = (tmp_done / data["related_requests"][nil].count).round
     end
+    return data
   end
 
   def calendar
     @versions = @project.versions.sort{|x,y| y.position <=> x.position}
-    set_roadmap_content(@versions)
     if params[:date]
       @date = params[:date].to_date
     else
@@ -93,11 +92,9 @@ class RoadmapController < ApplicationController
     @data = Hash.new{|h,k| h[k] = []}
     versions = @project.versions
     versions.each do |version|
-      @data[version] = version.issues
+      @data[version] = version.issues.includes(:parent,:children)
     end
-    #    @data = "<projects><project id='1' name='project1' startdate='2006,12,14'/></projects>"
     @data = gantt_hash(@data)
-    #    .delete_if{|issue| !issue.predecessor_id.nil?}
   end
 
   def version_description

@@ -9,7 +9,7 @@ class CreateIssues < ActiveRecord::Migration
       t.integer :done
       t.integer :author_id
       t.integer :assigned_to_id
-      t.integer :project_id
+      t.integer :project_slug
       t.integer :tracker_id
       t.integer :status_id
       t.integer :version_id

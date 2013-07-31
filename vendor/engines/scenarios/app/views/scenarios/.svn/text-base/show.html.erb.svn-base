@@ -8,7 +8,12 @@
 <div class="contextual">
   <h1><%= t(:label_scenarios) %> : <%= @scenario.id.to_s %></h1>
   <div class="splitcontentright">
-    <%= link_to t(:link_edit_scenario), scenarios_route.edit_scenario_path(@project.identifier, @scenario.id), {:class => 'icon icon-add'} if current_user.allowed_to?('edit','Scenarios',@project) %>
+    <% if current_user.allowed_to?('edit','Scenarios',@project) %>
+      <%= link_to t(:link_edit_scenario), scenarios_route.edit_scenario_path(@project.slug, @scenario.id), {:class => 'icon icon-add'}  %>
+    <% end %>
+    <% if current_user.allowed_to?('destroy','Scenarios',@project) %>
+      <%= link_to t(:link_delete_scenario), "#", {:onclick => "button_delete('#{scenarios_route.scenario_path}')",:class => 'icon icon-del'}  %>
+    <% end %>
   </div>
 
 </div>
@@ -40,7 +45,7 @@
     <ul>
       <% step.issues.each do |issue| %>
         <li>
-          <%= issue.id %> : <%= link_to issue.subject, issue_path(issue.id) %>
+          <%= issue.id %> : <%= link_to issue.subject, issue_path(@project.slug, issue.id) %>
         </li>
       <% end %>
     </ul>

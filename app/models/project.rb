@@ -1,16 +1,20 @@
 class Project < ActiveRecord::Base
-  
+  #SLug
+  extend FriendlyId
+  friendly_id :identifier, use: :slugged
   after_create :create_member
   after_update :save_attachments
+  
+  belongs_to :author, :class_name => 'User', :foreign_key => "created_by"
   has_many :members, :class_name => 'Member',:dependent => :destroy
   has_and_belongs_to_many :trackers, :class_name => 'Tracker'
-  has_and_belongs_to_many :versions, :class_name => 'Version', :include => [:issues]
+  has_many :versions, :class_name => 'Version'
   has_many :categories, :class_name => 'Category',:dependent => :destroy
   has_many :issues, :class_name => 'Issue',:dependent => :destroy
-  belongs_to :author, :class_name => 'User', :foreign_key => "created_by"
   has_many :attachments, :foreign_key => 'object_id', :conditions => {:object_type => self.to_s},:dependent => :destroy
   has_many :enabled_modules, :dependent => :destroy
   has_many :documents, :dependent => :destroy
+  
   validates_associated :attachments
   validates :name, :identifier, :presence => true, :uniqueness => true
   validates :name, :length => {

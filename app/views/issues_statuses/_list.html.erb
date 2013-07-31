@@ -9,10 +9,9 @@
     </tr>
     <% @issues_statuses.each do |issues_status| %>
       <tr class="odd_even" id="<%= issues_status.id %>">
-        <%url = issues_statuses_path.to_s+'/'+issues_status.id.to_s %>
         <td class="list_left name">
           <% if current_user.allowed_to?('edit','Issues_statuses') %>
-            <%= link_to issues_status.enumeration.name, :controller => 'issues_statuses', :action => 'edit', :id => issues_status.id %>
+            <%= link_to issues_status.enumeration.name, edit_issues_status_path(issues_status.id) %>
           <% else %>
             <%= issues_status.enumeration.name %>
           <% end %>
@@ -36,14 +35,18 @@
           <% end %>
         </td>
         <td class="action">
-          <%= link_to t(:link_delete), '#', {:class => 'icon icon-del', :onclick => "button_delete('#{url}')"} if current_user.allowed_to?('destroy','Issues_statuses') %>
-        </td>
-
+          <%= link_to_with_permissions(t(:link_delete), 
+            issues_status_path(issues_status.id), 
+            @project, 
+            {:method => :delete, 
+              :target => "self",
+              :html => {:class => 'icon icon-del', 
+                :onclick => "button_delete('#{issues_status_path(issues_status.id)}')"}}) %>
+           </td>
       </tr>
     <%end%>
   </table>
 </div>
 <script type="text/javascript">
-  bind_version_change_positions("<%= url_for({:action => "change_position",
-    :controller => "issues_statuses"}) %>");
+  bind_version_change_positions("<%= change_position_issues_statuses_path %>");
 </script>

@@ -93,10 +93,10 @@ test\:integration=
 test\:plugins=
 test\:prepare=
 test\:profile=
-test\:recent=Run tests for {:recent=>"test:prepare"} / Test recent changes
+test\:recent=Run tests for {:recent=>"test:prepare"}\nTest recent changes
 test\:run=
 test\:single=Run tests for {:single=>"test:prepare"}
-test\:uncommitted=Run tests for {:uncommitted=>"test:prepare"} / Test changes since last checkin (only Subversion and Git)
+test\:uncommitted=Run tests for {:uncommitted=>"test:prepare"}\nTest changes since last checkin (only Subversion and Git)
 test\:units=
 time\:zones\:all=Displays all time zones, also available: time:zones:us, time:zones:local -- filter with OFFSET parameter, e.g., OFFSET=-6
 time\:zones\:local=

@@ -1,9 +1,9 @@
 10
 
 dir
-4
-svn+ssh://91.121.197.171/var/www/svn/rorganize/trunk/test/unit/helpers
-svn+ssh://91.121.197.171/var/www/svn
+66
+svn+ssh://91.121.197.171/home/svn/svn/rorganize/trunk/test/unit/helpers
+svn+ssh://91.121.197.171/home/svn/svn
 
 
 

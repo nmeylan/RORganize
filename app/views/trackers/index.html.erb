@@ -8,8 +8,12 @@
 <div class="contextual">
   <h1><%= t(:link_trackers) %></h1>
   <div class="splitcontentright">
-    <%= link_to t(:link_new_tracker), {:action => 'new'}, {:class => 'icon icon-add'} if current_user.allowed_to?('new','Trackers') %>
-  </div>
+     <%= link_to_with_permissions(
+       t(:link_new_tracker), 
+      new_tracker_path, 
+      nil, 
+      {:html => {:class => 'icon icon-add'}}) %>
+   </div>
 </div>
 
 <%= render :partial => 'trackers/list' %>

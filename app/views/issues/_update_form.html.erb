@@ -9,7 +9,7 @@
     <% if current_user.allowed_to?('change_status','Issues',@project) %>
       <div class="autocomplete-combobox cbb-medium nosearch">
         <label for="issue_status"><%=t(:field_status)%><span class ="required"> *</span></label>
-        <%= f.select :status_id, @allowed_statuses.collect{|status| [status.enumeration.name, status.id]}, { :include_blank => false }, {:class => 'chzn-select cbb-medium'} %>
+        <%= f.select :status_id, allowed_statuses.collect{|status| [status.enumeration.name, status.id]}, { :include_blank => false }, {:class => 'chzn-select cbb-medium'} %>
       </div>
     <% end %>
     <% if current_user.allowed_to?('change_assigned','Issues',@project) %>
@@ -23,7 +23,7 @@
     <% if current_user.allowed_to?('change_progress','Issues',@project) %>
       <div class="autocomplete-combobox cbb-small nosearch">
         <label for="issue_done"><%=t(:field_done)%></label>
-        <%= f.select :done, @done_ratio.collect{|done| [done]}, { :include_blank => false }, {:class => 'chzn-select cbb-small'} %>
+        <%= f.select :done, done_ratio.collect{|done| [done]}, { :include_blank => false }, {:class => 'chzn-select cbb-small'} %>
       </div>
     <% end %>
   </div>

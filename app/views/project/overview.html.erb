@@ -16,15 +16,15 @@
 <div class="splitcontentright box">
   <div class="header"><h2><%=t(:label_last_request_plural)%></h2></div>
   <ul>
-    <% @last_request.sort{|x,y| y.id <=> x.id}.each do |issue|%>
-      <li><%= link_to issue.subject, {:action => 'show', :controller => 'issues', :id => issue.id} %></li>
+    <% last_requests.sort{|x,y| y.id <=> x.id}.each do |issue|%>
+      <li><%= link_to issue.subject, issue_path(@project.slug, issue.id) %></li>
     <% end %>
   </ul>
 </div>
 
 <div class="splitcontentright box">
   <div class="header"><h2><%=t(:label_member_plural)%></h2></div>
-  <%= raw project_members %>
+  <%= raw project_members(members) %>
 </div>
 
 <div style="clear:both;"></div>
