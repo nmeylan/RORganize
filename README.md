@@ -1,5 +1,6 @@
 ## Welcome to my personnal project
 ### Started on June 20 2012
+### Last update on October 19 2013
 
 # Overview
 
@@ -8,15 +9,34 @@ RORganize was inspired by the project manager application: Redmine.
 
 RORganize is a bugs and issue-tracking app, which integrate additional tools such as:
 
-+ Testing tool (test your developpment and update your issues with test's result)
-+ Scenario creation (create your scenario will help you to generate issues)
-+ Issues' checklist (detail the step of your issues)
-+ Wiki pages for each project (add some informations about the project to help your team mates)
-+ Projects’ activities tracking (follow projects' progress)
-+ Simply roles and permissions management (each roles' permissions can be customized)
-+ Time tracking (look where you waste your time)
+## Project creation
+	You can easily create your project, add members and their role(PM, dev), versions. You can also set up all you need for your project as plugins activation, or which tracker you need for your project issues.
+	
+## Issue creation
+	You can either create your requests with the minimum of information(title) or with a maximum of detail(starting date, required task..).
+	Your issues are created for a defined project, thus it is really easy to retrieve what you want. 
+	To browse requests, you can create your custom filters and save them (and share them to your team mate).
+	
+## Scenario creation 
+	The scenarios creation allows you to write your use cases story, detail each step and create/associate issues linked with your scenario. 
+	
+## Wiki pages for each project
+	
+## Projects activities tracking
+	In a simple page you can retrieve all activities of your project. 
+	
+## Gantt
+	As issues can be set with precise informations, application can generate an effective gantt for each version of your project.
+	
+## Simply roles and permissions management 
+	Application administrator can define for each role, which actions are allowed or not.
+	
+## Time tracking 
+	All user can log his spent time on issues.
+	
+_All stuff described in previous part is available in version 0.5.1_	
+	
+#In next versions	
 + Repository integration (integrate your repository to update your issues' progress)
 + Activities notifications (follow in real time each project's activities)
-+ Internal chat (your team mate is working, ask him anything!)
-+ Personnal permission(you can customise permissions for each users independent of the project where they work)
-And more …
++ Testing tool (test your developpment and update your issues with test's result)
