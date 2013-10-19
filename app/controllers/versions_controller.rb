@@ -7,8 +7,8 @@ class VersionsController < ApplicationController
   before_filter :find_project
   before_filter :check_permission
   before_filter { |c| c.menu_context :project_menu }
-  before_filter { |c| c.menu_item("settings") }
-  before_filter {|c| c.top_menu_item("projects")}
+  before_filter { |c| c.menu_item('settings') }
+  before_filter {|c| c.top_menu_item('projects')}
   include ApplicationHelper
   def index
     @versions = @project.versions.sort{|x, y| x.position <=> y.position}
@@ -38,7 +38,7 @@ class VersionsController < ApplicationController
         format.json  { render :json => @version,
           :status => :created, :location => @version}
       else
-        format.html  { render :action => "new" }
+        format.html  { render :action => 'new' }
         format.json  { render :json => @version.errors,
           :status => :unprocessable_entity }
       end
@@ -66,7 +66,7 @@ class VersionsController < ApplicationController
         format.json  { render :json => @version,
           :status => :created, :location => @version}
       else
-        format.html  { render :action => "edit" }
+        format.html  { render :action => 'edit' }
         format.json  { render :json => @version.errors,
           :status => :unprocessable_entity }
       end
@@ -105,8 +105,8 @@ def change_position
   @max = @versions.count
   position = @version.position
   respond_to do |format|
-    if @version.position == 1 && params[:operator].eql?("dec") ||
-        @version.position == @max && params[:operator].eql?("inc")
+    if @version.position == 1 && params[:operator].eql?('dec') ||
+        @version.position == @max && params[:operator].eql?('inc')
       @versions = @project.versions.sort{|x, y| x.position <=> y.position}
       format.js do
         render :update do |page|
@@ -115,7 +115,7 @@ def change_position
         end
       end
     else
-      if params[:operator].eql?("inc")
+      if params[:operator].eql?('inc')
         o_version = @versions.select{|version| version.position.eql?(position + 1)}.first
         o_version.update_column(:position, position)
         @version.update_column(:position, position + 1)

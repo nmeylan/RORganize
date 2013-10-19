@@ -6,8 +6,8 @@ class Document < RorganizeActiveRecord
   #Class variables
   assign_journalized_properties({
     'name' => 'Name',
-    'category_id' => "Category",
-    'version_id' => "Version"})
+    'category_id' => 'Category',
+    'version_id' => 'Version'})
   assign_foreign_keys({
     'category_id' => Category,
     'version_id' => Version})
@@ -73,22 +73,22 @@ class Document < RorganizeActiveRecord
   #Select : for attributes which only defined values : e.g : version => [1,2,3]
   def self.filter_content_hash(project)
     content_hash = {}
-    content_hash["hash_for_select"] = {}
-    content_hash["hash_for_radio"] = Hash.new{|k,v| k[v] = []}
-    content_hash["hash_for_radio"]["name"] = ["all","contains","not contains"]
-    content_hash["hash_for_select"]["category"] = project.categories.collect{|category| [category.name, category.id]}
-    content_hash["hash_for_radio"]["category"] = ["all","equal","different"]
-    content_hash["hash_for_radio"]["created"] = ["all","equal","superior","inferior","today"]
-    content_hash["hash_for_select"]["version"] = project.versions.collect{|version| [version.name, version.id]}
-    content_hash["hash_for_select"]["version"] << ["Unplanned", "NULL"]
-    content_hash["hash_for_radio"]["version"] = ["all","equal","different"]
-    content_hash["hash_for_radio"]["updated"] = ["all","equal","superior","inferior","today"]
+    content_hash['hash_for_select'] = {}
+    content_hash['hash_for_radio'] = Hash.new{|k,v| k[v] = []}
+    content_hash['hash_for_radio']['name'] = ['all', 'contains', 'not contains']
+    content_hash['hash_for_select']['category'] = project.categories.collect{|category| [category.name, category.id]}
+    content_hash['hash_for_radio']['category'] = %w(all equal different)
+    content_hash['hash_for_radio']['created'] = %w(all equal superior inferior today)
+    content_hash['hash_for_select']['version'] = project.versions.collect{|version| [version.name, version.id]}
+    content_hash['hash_for_select']['version'] << %w(Unplanned NULL)
+    content_hash['hash_for_radio']['version'] = %w(all equal different)
+    content_hash['hash_for_radio']['updated'] = %w(all equal superior inferior today)
     return content_hash
   end
   #Return an array with all attribute that can be filtered
   def self.filtered_attributes
     filtered_attributes = []
-    unused_attributes = ['Project','Description']
+    unused_attributes = %w(Project Description)
     attrs = Document.attributes_formalized_names.delete_if {|attribute| unused_attributes.include?(attribute)}
     attrs.each{|attribute| filtered_attributes << [attribute,attribute.gsub(/\s/,'_').downcase]}
     return filtered_attributes

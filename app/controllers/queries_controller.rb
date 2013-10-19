@@ -7,7 +7,7 @@ class QueriesController < ApplicationController
   #  before_filter :find_project
   before_filter :check_permission
   before_filter :check_query_permission, :only => [:show, :edit, :destroy, :update]
-  before_filter {|c| c.top_menu_item("administration")}
+  before_filter {|c| c.top_menu_item('administration')}
   include ApplicationHelper
   def index
     respond_to do |format|
@@ -23,7 +23,7 @@ class QueriesController < ApplicationController
       format.html
       format.js do
         render :update do |page|
-          page.replace_html "form_content", :partial => "queries/form"
+          page.replace_html 'form_content', :partial => 'queries/form'
         end
       end
     end
@@ -41,7 +41,7 @@ class QueriesController < ApplicationController
       respond_to do |format|
         format.js do
           render :update do |page|
-            page.replace_html "custom_queries", :partial => "issues/custom_queries"
+            page.replace_html 'custom_queries', :partial => 'issues/custom_queries'
             response.headers['flash-message'] = t(:successful_creation)
           end
         end
@@ -91,7 +91,7 @@ class QueriesController < ApplicationController
     respond_to do |format|
       format.js do
         render :update do |page|
-          page.replace "queries_content", :partial => "queries/list"
+          page.replace 'queries_content', :partial => 'queries/list'
           response.headers['flash-message'] = t(:successful_deletion)
         end
       end
@@ -106,8 +106,8 @@ class QueriesController < ApplicationController
 
   def find_custom_queries
     @custom_queries = Query.find(:all,
-      :conditions => ["(project_id = ? AND (author_id = ? OR is_public = ?))
-        OR (is_for_all = ? AND (author_id = ? OR is_public = ?))",
+      :conditions => ['(project_id = ? AND (author_id = ? OR is_public = ?))
+        OR (is_for_all = ? AND (author_id = ? OR is_public = ?))',
         @project.id,
         current_user.id,
         true,

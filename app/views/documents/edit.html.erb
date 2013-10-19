@@ -10,6 +10,6 @@
 </div>
 
 <%= form_for(@document, :url => document_path, :method => :put, :html => {:class => 'form',:multipart => true}) do |f| %>
-  <%= render :partial => "documents/form", :locals => {:f => f}%>
+  <%= render :partial => 'documents/form', :locals => {:f => f}%>
   <%= submit_tag t(:button_save) %>
 <% end %>

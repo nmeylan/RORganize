@@ -10,8 +10,8 @@
   <div class="content">
     <%= form_tag url_for(:controller => 'issues', :action => 'index'),:method => :get, :html => {:class => 'filter_form'}, :remote => true do -%>
   <%#= Start of the form %>
-      <%= radio_button_tag "type", "all", true, {:align => "center"} %><%= t(:label_all) %>
-      <%= radio_button_tag "type", "filter", false %><%= t(:link_filter) %>
+      <%= radio_button_tag 'type', 'all', true, {:align => 'center'} %><%= t(:label_all) %>
+      <%= radio_button_tag 'type', 'filter', false %><%= t(:link_filter) %>
       <div class="autocomplete-combobox nosearch no-padding_left no-height">
         <%= select_tag 'filters_list', options_for_select(Issue.filtered_attributes),:class => 'chzn-select cbb-verylarge', :id => 'filters_list', :multiple => true%>
       </div>
@@ -21,7 +21,7 @@
       </table>
       <%= submit_tag t(:button_apply), {:style => 'margin-left:0px'} %>
       <span id="save_query_button">
-        <%= render :partial => "issues/save_query_button" %>
+        <%= render :partial => 'issues/save_query_button' %>
       </span>
     <% end -%>
   </div>

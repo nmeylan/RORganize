@@ -14,5 +14,5 @@
     <% end -%>
 
   </div>
-  <div><%= f.submit "Sign in" %></div>
+  <div><%= f.submit 'Sign in' %></div>
 <% end %>

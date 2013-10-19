@@ -117,6 +117,10 @@ ProjectManager::Application.routes.draw do
       get 'change_password', :path => ':id/change_password'
       get 'custom_queries', :path => ':id/custom_queries'
       get 'my_projects', :path => ':id/my_projects'
+      get 'my_assigned_requests', :path => ':id/my_assigned_requests'
+      get 'my_submitted_requests', :path => ':id/my_submitted_requests'
+      get 'my_activities', :path => ':id/my_activities'
+      get 'my_spent_time', :path => ':id/my_spent_time'
       post "star_project"
       post "save_project_position"
     end
@@ -125,6 +129,12 @@ ProjectManager::Application.routes.draw do
   resources :coworkers do
     collection do
       get 'display_activities'
+    end
+  end
+
+  resources :time_entries do
+    collection do
+      get 'fill_overlay'
     end
   end
   #MOUNT PLUGINS

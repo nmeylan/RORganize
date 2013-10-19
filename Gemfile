@@ -23,6 +23,7 @@ gem 'RedCloth'
 gem 'mongrel', '>= 1.2.0.pre2'
 gem 'will_paginate', '~> 3.0.3'
 gem 'prototype-rails', '~> 3.2.1'
+gem 'nokogiri'
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
 
@@ -39,6 +40,12 @@ group :test do
   # Pretty printed test output
   gem 'turn', '~> 0.8.3', :require => false
 end
+group :developpement do
+  
+  gem "bullet", :group => "development"
+  gem "ruby-growl", :group => "development"
+end
+
 
 #RORganize plugins
 gem 'scenarios', :path => 'vendor/engines/scenarios'

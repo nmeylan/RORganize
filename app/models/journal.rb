@@ -33,7 +33,7 @@ class Journal < ActiveRecord::Base
           new_value = foreign_key_value[attribute].find(old_new_value[1]).enumeration.name
         else
           old_value = old_new_value[0] && !foreign_key_value[attribute].nil? ? foreign_key_value[attribute].select(:name).where(:id => old_new_value[0]).first.name : nil
-          new_value = old_new_value[1] && !old_new_value[1].eql?("") ? foreign_key_value[attribute].select(:name).where(:id => old_new_value[1]).first.name : ''
+          new_value = old_new_value[1] && !old_new_value[1].eql?('') ? foreign_key_value[attribute].select(:name).where(:id => old_new_value[1]).first.name : ''
         end
       else
         old_value = old_new_value[0]

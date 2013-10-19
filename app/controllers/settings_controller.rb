@@ -9,7 +9,7 @@ class SettingsController < ApplicationController
   before_filter :check_permission, :except => [:public_queries, :delete_attachment, :update]
   before_filter { |c| c.menu_context :project_menu }
   before_filter { |c| c.menu_item(params[:controller]) }
-  before_filter {|c| c.top_menu_item("projects")}
+  before_filter {|c| c.top_menu_item('projects')}
   include ApplicationHelper
   include Rorganize::ModuleManager::ModuleManagerHelper
   #GET project/:project_identifier/settings/
@@ -44,7 +44,7 @@ class SettingsController < ApplicationController
 
   def public_queries
     @queries = Query.find(:all,
-      :conditions => ["project_id = ? AND is_public = ? AND is_for_all = ?", @project.id, true, false])
+      :conditions => ['project_id = ? AND is_public = ? AND is_for_all = ?', @project.id, true, false])
     respond_to do |format|
       format.html
     end
@@ -56,7 +56,8 @@ class SettingsController < ApplicationController
     if attachment.destroy
       @project.attachments.build
       respond_to do |format|
-        format.html { redirect_to :action => 'index', :controller => "settings"}
+        format.html { redirect_to :action => 'index', :controller => 'settings'
+        }
         format.js do
           render :update do |page|
             page.replace_html('attachments', :partial => 'project/show_attachments', :locals => {:attachments => @project.attachments})
@@ -70,8 +71,8 @@ class SettingsController < ApplicationController
   def modules
     if request.post?
       @project.enabled_modules.clear
-      params["modules"]["name"].each do |mod|
-        ary = mod.split("_")
+      params['modules']['name'].each do |mod|
+        ary = mod.split('_')
         m = EnabledModule.new(:controller => ary[0], :action => ary[1], :name => ary[2])
         @project.enabled_modules << m
       end

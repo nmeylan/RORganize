@@ -8,9 +8,9 @@
 <div id="calendar_header">
   <p>
 
-    <%= link_to "<< #{t(:link_prev_month)}", "#", {:style => "float:left", :class => "change_month ", :id => "#{@date.prev_month}"} %>
-    <%= @date.strftime("%B, %Y") %>
-    <%= link_to "#{t(:link_next_month)} >>", "#", {:style => "float:right", :class => "change_month", :id => "#{@date.next_month}"} %>
+    <%= link_to "<< #{t(:link_prev_month)}", '#', {:style => 'float:left', :class => 'change_month ', :id => "#{@date.prev_month}"} %>
+    <%= @date.strftime('%B, %Y') %>
+    <%= link_to "#{t(:link_next_month)} >>", '#', {:style => 'float:right', :class => 'change_month', :id => "#{@date.next_month}"} %>
   </p>
 
 </div>
@@ -24,8 +24,8 @@
           <%= i %>
         </div>
 
-        <div class="calendar_item_body <%= "target" if @versions_hash["#{date}"]%> <%= "today" if Date.today.eql?(date)%>"
-             id=" <%=@versions_hash["#{date}"] ? @versions_hash["#{date}"].id : "" %>">
+        <div class="calendar_item_body <%= 'target' if @versions_hash["#{date}"]%> <%= 'today' if Date.today.eql?(date)%>"
+             id=" <%=@versions_hash["#{date}"] ? @versions_hash["#{date}"].id : '' %>">
           <p>
             <% if @versions_hash["#{date}"] %>
               <%= @versions_hash["#{date}"].name %>
@@ -41,5 +41,5 @@
 
 <script type="text/javascript">
   init_tooltip(".calendar_item_body.target", "<%=url_for(:action => 'version_description', :project_id => @project.slug)%>");
-  bind_calendar_button( "<%= url_for({:controller => "roadmap", :action => "calendar", :project_id => @project.slug}) %>");
+  bind_calendar_button( "<%= url_for({:controller => 'roadmap', :action => 'calendar', :project_id => @project.slug}) %>");
 </script>

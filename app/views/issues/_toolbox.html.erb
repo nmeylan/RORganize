@@ -4,15 +4,15 @@
 # Encoding: UTF-8
 # File: _toolbox.html.erb
 %>
-<%= form_tag(toolbox_issues_path(@project.slug),:remote => true, :id => "toolbox_form") do -%>
+<%= form_tag(toolbox_issues_path(@project.slug),:remote => true, :id => 'toolbox_form') do -%>
   <% ids = @issues_toolbox.collect{|issue| issue.id} %>
   <% if current_user.allowed_to?('change_assigned','Issues',@project) %>
     <li><%= link_to t(:field_assigned_to), '#', {:class => 'icon icon-group', :id => 'assigned_to'} %>
       <ul class="submenu assigned_to_id">
-        <% if !menu["members"].nil? && menu["members"].any? %>
+        <% if !menu['members'].nil? && menu['members'].any? %>
           <%= hidden_field_tag 'value[assigned_to_id]' %>
-          <% menu["members"].each do |member| %>
-            <li><%= link_to member, '#', {:class => menu["current_states"]['member'].include?(member) ? 'icon icon-toggle_check' : 'no-icon'} %></li>
+          <% menu['members'].each do |member| %>
+            <li><%= link_to member, '#', {:class => menu['current_states']['member'].include?(member) ? 'icon icon-toggle_check' : 'no-icon'} %></li>
           <% end %>
         <%  end %>
       </ul>
@@ -21,10 +21,10 @@
   <% if current_user.allowed_to?('change_version','Issues',@project) %>
     <li><%= link_to t(:field_version), '#', {:class => 'icon icon-target', :id => 'version'} %>
       <ul class="submenu version_id">
-        <% if !menu["versions"].nil? && menu["versions"].any? %>
+        <% if !menu['versions'].nil? && menu['versions'].any? %>
           <%= hidden_field_tag 'value[version_id]' %>
-          <% menu["versions"].each do |version| %>
-            <li><%= link_to version, '#', {:class => menu["current_states"]['version'].include?(version) ? 'icon icon-toggle_check' : 'no-icon'} %></li>
+          <% menu['versions'].each do |version| %>
+            <li><%= link_to version, '#', {:class => menu['current_states']['version'].include?(version) ? 'icon icon-toggle_check' : 'no-icon'} %></li>
           <% end %>
         <%  end %>
       </ul>
@@ -33,10 +33,10 @@
   <% if current_user.allowed_to?('change_status','Issues',@project) %>
     <li><%= link_to t(:field_status), '#', {:class => 'icon icon-status', :id => 'status'}%>
       <ul class="submenu status_id">
-        <% if !menu["allowed_statuses"].nil? && menu["allowed_statuses"].any? %>
+        <% if !menu['allowed_statuses'].nil? && menu['allowed_statuses'].any? %>
           <%= hidden_field_tag 'value[status_id]' %>
-          <% menu["allowed_statuses"].each do |status| %>
-            <li><%= link_to status, '#', {:class => menu["current_states"]['status'].include?(status) ? 'icon icon-toggle_check' : 'no-icon'} %></li>
+          <% menu['allowed_statuses'].each do |status| %>
+            <li><%= link_to status, '#', {:class => menu['current_states']['status'].include?(status) ? 'icon icon-toggle_check' : 'no-icon'} %></li>
           <% end %>
         <%  end %>
       </ul>
@@ -45,10 +45,10 @@
   <% if current_user.allowed_to?('change_category','Issues',@project) %>
     <li><%= link_to t(:field_category), '#', {:class => 'icon icon-package'}%>
       <ul class="submenu category_id">
-        <% if !menu["categories"].nil? && menu["categories"].any? %>
+        <% if !menu['categories'].nil? && menu['categories'].any? %>
           <%= hidden_field_tag 'value[category_id]' %>
-          <% menu["categories"].each do |category| %>
-            <li><%= link_to category, '#', {:class => menu["current_states"]['category'].include?(category) ? 'icon icon-toggle_check' : 'no-icon'} %></li>
+          <% menu['categories'].each do |category| %>
+            <li><%= link_to category, '#', {:class => menu['current_states']['category'].include?(category) ? 'icon icon-toggle_check' : 'no-icon'} %></li>
           <% end %>
         <%  end %>
       </ul>
@@ -57,10 +57,10 @@
   <% if current_user.allowed_to?('change_progress','Issues',@project) %>
     <li><%= link_to t(:field_done), '#', {:class => 'icon icon-done'}%>
       <ul class="submenu done">
-        <% if !menu["done_ratio"].nil? && menu["done_ratio"].any? %>
+        <% if !menu['done_ratio'].nil? && menu['done_ratio'].any? %>
           <%= hidden_field_tag 'value[done]' %>
-          <% menu["done_ratio"].each do |done| %>
-            <li><%= link_to done, '#', {:class => menu["current_states"]['done'].include?(done) ? 'icon icon-toggle_check' : 'no-icon'} %></li>
+          <% menu['done_ratio'].each do |done| %>
+            <li><%= link_to done, '#', {:class => menu['current_states']['done'].include?(done) ? 'icon icon-toggle_check' : 'no-icon'} %></li>
           <% end %>
         <%  end %>
       </ul>

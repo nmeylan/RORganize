@@ -4,25 +4,25 @@
 # Encoding: UTF-8
 # File: _toolbox.html.erb
 %>
-<%= form_tag(toolbox_documents_path(@project.slug),:remote => true, :id => "toolbox_form") do %>
+<%= form_tag(toolbox_documents_path(@project.slug),:remote => true, :id => 'toolbox_form') do %>
   <% ids = @documents_toolbox.collect{|document| document.id} %>
   <% if current_user.allowed_to?('edit','Documents',@project) %>
     <li><%= link_to t(:field_version), '#', {:class => 'icon icon-target', :id => 'version'} %>
       <ul class="submenu version_id">
-        <% if !menu["versions"].nil? && menu["versions"].any? %>
+        <% if !menu['versions'].nil? && menu['versions'].any? %>
           <%= hidden_field_tag 'value[version_id]' %>
-          <% menu["versions"].each do |version| %>
-            <li><%= link_to version, '#', {:class => menu["current_states"]['version'].include?(version) ? 'icon icon-toggle_check' : 'no-icon'} %></li>
+          <% menu['versions'].each do |version| %>
+            <li><%= link_to version, '#', {:class => menu['current_states']['version'].include?(version) ? 'icon icon-toggle_check' : 'no-icon'} %></li>
           <% end %>
         <%  end %>
       </ul>
     </li>
     <li><%= link_to t(:field_category), '#', {:class => 'icon icon-package'}%>
       <ul class="submenu category_id">
-        <% if !menu["categories"].nil? && menu["categories"].any? %>
+        <% if !menu['categories'].nil? && menu['categories'].any? %>
           <%= hidden_field_tag 'value[category_id]' %>
-          <% menu["categories"].each do |category| %>
-            <li><%= link_to category, '#', {:class => menu["current_states"]['category'].include?(category) ? 'icon icon-toggle_check' : 'no-icon'} %></li>
+          <% menu['categories'].each do |category| %>
+            <li><%= link_to category, '#', {:class => menu['current_states']['category'].include?(category) ? 'icon icon-toggle_check' : 'no-icon'} %></li>
           <% end %>
         <%  end %>
       </ul>

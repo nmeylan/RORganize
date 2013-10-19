@@ -8,8 +8,8 @@ class WikiPagesController < ApplicationController
   before_filter :check_new_permission, :only => [:new_home_page, :new_sub_page]
   before_filter :check_not_owner_permission, :only => [:edit,:update, :destroy]
   before_filter { |c| c.menu_context :project_menu }
-  before_filter { |c| c.menu_item("wiki")}
-  before_filter {|c| c.top_menu_item("projects")}
+  before_filter { |c| c.menu_item('wiki')}
+  before_filter {|c| c.top_menu_item('projects')}
   before_filter :find_project
   before_filter :find_wiki
   include ApplicationHelper
@@ -41,16 +41,19 @@ class WikiPagesController < ApplicationController
             flash[:notice] = t(:successful_creation)
             format.html { redirect_to wiki_page_path(@project.slug,@wiki_page.slug)}
           else
-            format.html {render :action => "new_home_page"}
+            format.html {render :action => 'new_home_page'
+            }
           end
         end
         flash[:notice] = t(:successful_creation)
         format.html { redirect_to wiki_page_path(@project.slug,@wiki_page.slug)}
       else
         if params[:wiki] && params[:wiki][:home_page]
-          format.html {render :action => "new_home_page"}
+          format.html {render :action => 'new_home_page'
+          }
         else
-          format.html {render :action => "new"}
+          format.html {render :action => 'new'
+          }
         end
       end
     end
@@ -131,10 +134,10 @@ class WikiPagesController < ApplicationController
       return true
     else
       action = "#{find_action(params[:action].to_s)}_not_owner"
-      unless current_user.allowed_to?(action,params[:controller],@project)
-        render_403
-      else
+      if current_user.allowed_to?(action, params[:controller], @project)
         return true
+      else
+        render_403
       end
     end
   end

@@ -10,9 +10,9 @@
   <ul>
     <% @custom_queries.each do |query| %>
       <li>
-        <%= link_to query.name, {:action => "apply_custom_query",
+        <%= link_to query.name, {:action => 'apply_custom_query',
           :query_id => query.slug,
-          :controller => "issues",
+          :controller => 'issues',
           :project_id => @project.slug} %>
       </li>
     <% end %>

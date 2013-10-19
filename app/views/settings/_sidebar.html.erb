@@ -64,7 +64,7 @@
 <% end %>
 
 <script type="text/javascript">
-<% if controller.controller_name.eql?("settings") %>
+<% if controller.controller_name.eql?('settings') %>
     jQuery("#sidebar li[class='<%=controller.controller_name%>_<%=controller.action_name%>']").toggleClass("selected");
 <% else %>
     jQuery("#sidebar li[class='<%=controller.controller_name%>']").toggleClass("selected");

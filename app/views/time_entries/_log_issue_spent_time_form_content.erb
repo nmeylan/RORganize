@@ -1,0 +1,26 @@
+<h1><%= "##{issue_id}" %></h1>
+<div class="box">
+  <%= raw error_messages(@time_entry.errors.full_messages) %>
+  <p>
+    <label for="spent_on"><%= t(:field_date) %><span class="required"> *</span></label>
+    <%= f.text_field :spent_on, {:size => 6, :id => 'pick_calendar', :onchange => ("fill_log_issue_time_overlay('#{fill_overlay_time_entries_path}',#{issue_id},this)")} %>
+  </p>
+
+  <p>
+    <label for="spent_time"><%= t(:field_spent_time) %><span class="required"> *</span></label>
+    <%= f.text_field :spent_time, {:size => 6} %>
+    <%= t(:field_hours) %>
+  </p>
+
+  <p>
+    <%= label_tag :comment, t(:field_notes) %>
+    <%= f.text_area :comment, {:rows => 8} %>
+  </p>
+  <%= hidden_field_tag :issue_id, issue_id %>
+</div>
+<%#= submit_tag t(:button_save), :onclick=>"" %>
+
+<input type="button" id="" class="save" value="<%= t(:button_save) %>" onclick="ajax_submit_form('#spent_time_form')"/>
+<input type="button" id="" class="close" value="<%= t(:button_close) %>" onclick="jQuery('#spent_time_overlay').overlay().close()"/>
+<%= javascript_tag("jQuery('#pick_calendar').datepicker({dateFormat: 'yy-mm-dd'});") %>
+<%= raw set_toolbar("time_entry_comment") %>

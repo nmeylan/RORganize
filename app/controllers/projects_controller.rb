@@ -1,21 +1,45 @@
 class ProjectsController < ApplicationController
-  before_filter {|c| c.top_menu_item("projects")}
+  before_filter {|c| c.top_menu_item('projects')}
   #GET /projects/
   def index
-    @members = current_user.members.includes(:project => [:attachments])
+    unless params[:filter].nil?
+      session['project_selection_filter'] = params[:filter]
+    end
+    if session['project_selection_filter'].nil?
+      session['project_selection_filter'] = 'all'
+    end
     if current_user.act_as_admin?
-      @allowed_projects = Project.find(:all, :conditions => ["is_archived = ?", false])
-      respond_to do |format|
-        format.html
+      case session['project_selection_filter']
+      when 'opened'
+        projects = Project.where(:is_archived => false)
+        when 'archived'
+        projects = Project.where(:is_archived => true)
+        when 'starred'
+        projects = current_user.starred_projects
+      else
+        projects = Project.find(:all)
       end
     else
-      allowed_project_ids = @members.collect{|member| member.project_id}
-      @allowed_projects = Project.find(allowed_project_ids)
-      @allowed_projects.delete_if{ |project| project.is_archived }
-      respond_to do |format|
-        format.html
+      case session['project_selection_filter']
+      when 'opened'
+        projects = current_user.opened_projects
+        when 'archived'
+        projects = current_user.archived_projects
+        when 'starred'
+        projects = current_user.starred_projects
+      else
+        projects = current_user.projects
       end
+      
     end
+    respond_to do |format|
+        format.html {render :action => 'index', :locals => {:projects => projects} }
+        format.js {
+          render :update do |page|
+            page.replace 'projects', :partial => 'projects/list', :locals => {:allow_to_star => false, :projects => projects}
+          end
+        }
+      end
   end
 
 

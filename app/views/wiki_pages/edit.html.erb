@@ -8,7 +8,7 @@ File: edit.html
   <h1><%= t(:label_new_wiki_page) %></h1>
 </div>
 <%= render :partial => 'wiki/sidebar' %>
-<%= form_for @wiki_page, {:url => wiki_page_path(@project.slug),:html => {:class => "form"}} do |f| %>
-  <%= render :partial => "wiki_pages/form", :locals => {:f => f} %>
+<%= form_for @wiki_page, {:url => wiki_page_path(@project.slug),:html => {:class => 'form'}} do |f| %>
+  <%= render :partial => 'wiki_pages/form', :locals => {:f => f} %>
   <%= submit_tag t(:button_save) %>
 <% end %>

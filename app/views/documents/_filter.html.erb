@@ -10,8 +10,8 @@
   <div class="content">
     <%= form_tag url_for(:controller => 'documents', :action => 'index'),:method => :get, :html => {:class => 'filter_form'}, :remote => true do -%>
   <%#= Start of the form %>
-      <%= radio_button_tag "type", "all", true, {:align => "center"} %><%= t(:label_all) %>
-      <%= radio_button_tag "type", "filter", false %><%= t(:link_filter) %>
+      <%= radio_button_tag 'type', 'all', true, {:align => 'center'} %><%= t(:label_all) %>
+      <%= radio_button_tag 'type', 'filter', false %><%= t(:link_filter) %>
       <div class="autocomplete-combobox nosearch no-padding_left no-height">
         <%= select_tag 'filters_list', options_for_select(Document.filtered_attributes),:class => 'chzn-select cbb-verylarge', :id => 'filters_list', :multiple => true%>
       </div>

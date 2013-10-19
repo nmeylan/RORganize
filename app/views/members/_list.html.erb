@@ -18,7 +18,7 @@
           <div class="autocomplete-combobox cbb-medium nosearch">
             <% if current_user.allowed_to?('change_role','Members',@project) %>
               <%= select_tag('roles_'+member.id.to_s,
-                options_from_collection_for_select(roles, "id", "name",member.role ? member.role.id.to_s : ""),
+                options_from_collection_for_select(roles, 'id', 'name',member.role ? member.role.id.to_s : ''),
                 {:class => 'chzn-select cbb-medium',
                   :include_blank => true
                 } )%>
@@ -32,7 +32,7 @@
             member_path(@project.slug, member.id), 
             @project, 
             {:method => :delete, 
-              :target => "self",
+              :target => 'self',
               :html => {:class => 'icon icon-del', 
                 :onclick => "button_delete('#{member_path(@project.slug, member.id)}')"}}) %>
         </td>

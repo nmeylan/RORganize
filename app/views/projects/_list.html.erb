@@ -5,12 +5,10 @@
 # File: _list.html.erb
 %>
 <div id="projects">
-  <% if  members && members.any? %>
-    <ul class="project list <%=allow_to_star ? "sortable" : ""%>">
-      <% members.sort!{|x, y| x.project_position <=> y.project_position} %>
-      <% members.each do |member| %>
-        <% project = member.project %>
-        <li class="<%= project.is_archived ? "archived" : ""%>" id="<%=project.id%>">
+  <% if  projects && projects.any? %>
+    <ul class="project list <%=allow_to_star ? 'sortable' : ''%>">
+      <% projects.each do |project| %>
+        <li class="<%= project.is_archived ? 'archived' : '' %>" id="<%=project.id%>">
           <a class="project" href="<%= url_for({:action => 'overview', :controller => 'project', :project_id => project.slug}) %>">
     <%#= If project get a logo %>
             <% if project.attachments.any? %>
@@ -36,29 +34,28 @@
               <p class="icon"><%= image_tag('/assets/calendar.png')%> : <%= project.created_at.to_date.to_formatted_s(:long_ordinal) %></p>
             </div>
             <div style="clear:both;"></div>
-
-          </a>
-          <%if !members.nil? && allow_to_star %>
-            <% if member.is_project_starred %>
-              <%= link_to "", "#", {:class => "icon icon-fav starred star"} %>
-            <% else %>
-              <%= link_to "", "#", {:class => "icon icon-fav-off star"} %>
+            <%if allow_to_star %>
+              <% if project.starred? %>
+                <%= link_to '', '#', {:class => 'icon icon-fav starred star'} %>
+              <% else %>
+                <%= link_to '', '#', {:class => 'icon icon-fav-off star'} %>
+              <% end %>
             <% end %>
-          <% end %>
+          </a>
         </li>
       <% end %>
     </ul>
     <% if allow_to_star %>
-      <%= submit_tag t(:button_save), {:id => "save_position"} %>
+      <%= submit_tag t(:button_save), {:id => 'save_position'} %>
     <% end %>
   <% else %>
     <h2><%= t(:text_no_data) %></h2>
   <% end %>
 
   <script type="text/javascript">
-    bind_star_project("<%=url_for({:action => "star_project", :controller => "my", :id => current_user.id})%>");
+    bind_star_project("<%=url_for({:action => 'star_project', :controller => 'my', :id => current_user.id})%>");
     jQuery(".sortable").sortable();
-    bind_save_project_position("<%=url_for({:action => "save_project_position", :controller => "my", :id => current_user.id})%>");
+    bind_save_project_position("<%=url_for({:action => 'save_project_position', :controller => 'my', :id => current_user.id})%>");
   </script>
 
 </div>

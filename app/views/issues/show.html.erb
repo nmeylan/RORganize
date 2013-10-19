@@ -6,83 +6,94 @@
 %>
 
 <div class="contextual">
-  <h1><%= (@issue.tracker ? @issue.tracker.name : "-")+' : #'+@issue.id.to_s%></h1>
+  <h1><%= (@issue.tracker ? @issue.tracker.name : '-')+' : #'+@issue.id.to_s %></h1>
+
   <div class="splitcontentright">
 <%#= New link %>
     <%= link_to_with_permissions(
-      t(:link_new_issue), 
-      new_issue_path(@project.slug), 
-      @project, 
-      {:method => :get, :html => {:class => 'icon icon-add'}}) %>
+                t(:link_new_issue),
+                new_issue_path(@project.slug),
+                @project,
+                {:method => :get, :html => {:class => 'icon icon-add'}}) %>
 <%#= Edit link %>
     <%= link_to_with_not_owner_permissions(
-      t(:link_edit), 
-      edit_issue_path(@project.slug,@issue.id), 
-      @project, 
-      @issue.author_id, 
-      {:method => :get, 
-        :html => {:class => 'icon icon-edit'}}) %>
+                t(:link_edit),
+                edit_issue_path(@project.slug, @issue.id),
+                @project,
+                @issue.author_id,
+                {:method => :get,
+                 :html => {:class => 'icon icon-edit'}}) %>
 <%#= Start date link %>
     <%= link_to t(:link_start_today), '#',
-      {:class => 'icon icon-calendar', :id => 'start_today',
-      :onclick => "button_post_with_message('#{start_today_issues_path(@project.slug)}','#{t(:text_set_start_date_today)}',{ids : [#{@issue.id}]})"} %>
+                {:class => 'icon icon-calendar', :id => 'start_today',
+                 :onclick => "button_post_with_message('#{start_today_issues_path(@project.slug)}','#{t(:text_set_start_date_today)}',{ids : [#{@issue.id}]})"} %>
 <%#= Update link %>
     <%= link_to t(:link_update), '#update_issue', {:class => 'icon icon-update_issue', :id => 'update_issue_link'} %>
 <%#= Checklist link %>
     <%= link_to_with_permissions(
-      t(:link_checklist), 
-      checklist_issues_path(@project.slug), 
-      @project, 
-      {:method => :get,
-        :target => "self",
-        :html => {:class => 'icon icon-checklist', 
-          :onclick => "jQuery('#checklist_overlay').overlay().load();"}}) %>
+                t(:link_checklist),
+                checklist_issues_path(@project.slug),
+                @project,
+                {:method => :get,
+                 :target => 'self',
+                 :html => {:class => 'icon icon-checklist',
+                           :onclick => "jQuery('#checklist_overlay').overlay().load();"}}) %>
+<%#= Log time link %>
+    <%= link_to t(:link_log_time), '#', {:class => 'icon icon-time', :onclick => "fill_log_issue_time_overlay('#{fill_overlay_time_entries_path}',#{@issue.id},this);jQuery('#spent_time_overlay').overlay().load();"} %>
 <%#= Delete link %>
     <%= link_to_with_not_owner_permissions(
-      t(:link_delete), 
-      issue_path(@project.slug, @issue.id), 
-      @project, 
-      @issue.author_id, 
-      {:method => :delete, 
-        :target => "self",
-        :html => {:class => 'icon icon-del',
-          :onclick => "button_delete('#{issue_path(@project.slug, @issue.id)}')"}}) %>
+                t(:link_delete),
+                issue_path(@project.slug, @issue.id),
+                @project,
+                @issue.author_id,
+                {:method => :delete,
+                 :target => 'self',
+                 :html => {:class => 'icon icon-del',
+                           :onclick => "button_delete('#{issue_path(@project.slug, @issue.id)}')"}}) %>
   </div>
 </div>
 
-<h2><%=@issue.subject%></h2>
-<%# TODO: link to user_name%>
+<h2><%= @issue.subject %></h2>
 <p>
   <em>
     <%= "#{t(:label_added)}
-#{distance_of_time_in_words(@issue.created_at,Time.now)}
-#{t(:label_ago)},
+        #{distance_of_time_in_words(@issue.created_at, Time.now)}
+        #{t(:label_ago)},
 #{t(:label_by)}
-#{@issue.author ? @issue.author.name : t(:label_unknown)}.
+        #{@issue.author ? @issue.author.name : t(:label_unknown)}.
 #{(@issue.created_at.eql?(@issue.updated_at) ? '' :
-    "#{t(:label_updated)} #{distance_of_time_in_words(@issue.updated_at,Time.now)}
-    #{t(:label_ago)}.").to_s}"%>
+            "#{t(:label_updated)} #{distance_of_time_in_words(@issue.updated_at, Time.now)}
+            #{t(:label_ago)}.").to_s}" %>
   </em>
 </p>
 <table class="detail" style="width:100%">
   <tr>
-    <th style="width:15%"><%= t(:field_status) %> :</th><td style="width:30%"><%= @issue.status ? @issue.status.enumeration.name : '-' %></td>
-    <th style="width:15%"><%= t(:field_start_date) %> :</th><td style="width:30%"><%= @issue.start_date ? @issue.start_date : '-' %></td>
+    <th style="width:15%"><%= t(:field_status) %> :</th>
+    <td style="width:30%"><%= @issue.status ? @issue.status.enumeration.name : '-' %></td>
+    <th style="width:15%"><%= t(:field_start_date) %> :</th>
+    <td style="width:30%"><%= @issue.start_date ? @issue.start_date : '-' %></td>
   </tr>
   <tr>
-    <th style="width:15%"><%= t(:field_assigned_to) %> :</th><td style="width:30%"><%= @issue.assigned_to ? @issue.assigned_to.name : '-' %></td>
-    <th style="width:15%"><%= t(:field_due_date) %> :</th><td style="width:30%"><%= @issue.due_date ? @issue.due_date : '-' %></td>
+    <th style="width:15%"><%= t(:field_assigned_to) %> :</th>
+    <td style="width:30%"><%= @issue.assigned_to ? @issue.assigned_to.name : '-' %></td>
+    <th style="width:15%"><%= t(:field_due_date) %> :</th>
+    <td style="width:30%"><%= @issue.due_date ? @issue.due_date : '-' %></td>
   </tr>
   <tr>
-    <th style="width:15%"><%= t(:field_version) %> :</th><td style="width:30%"><%= @issue.version ? @issue.version.name : '-' %></td>
-    <th style="width:15%"><%= t(:field_estimated_time) %> :</th><td style="width:30%"><%= @issue.estimated_time ? @issue.estimated_time.to_s+'h' : '-' %></td>
+    <th style="width:15%"><%= t(:field_version) %> :</th>
+    <td style="width:30%"><%= @issue.version ? @issue.version.name : '-' %></td>
+    <th style="width:15%"><%= t(:field_estimated_time) %> :</th>
+    <td style="width:30%"><%= @issue.estimated_time ? @issue.estimated_time.to_s+'h' : '-' %></td>
   </tr>
   <tr>
-    <th style="width:15%"><%= t(:field_category) %> :</th><td style="width:30%"><%= @issue.category ? @issue.category.name : '-' %></td>
-    <th style="width:15%"><%= t(:field_done) %> :</th><td style="width:30%"><%= @issue.done ? @issue.done.to_s+'%' : '-' %></td>
+    <th style="width:15%"><%= t(:field_category) %> :</th>
+    <td style="width:30%"><%= @issue.category ? @issue.category.name : '-' %></td>
+    <th style="width:15%"><%= t(:field_done) %> :</th>
+    <td style="width:30%"><%= @issue.done ? @issue.done.to_s+'%' : '-' %></td>
   </tr>
 </table>
-<br/><hr /><br/>
+<br/>
+<hr/><br/>
 <h2><%= t(:field_description) %> :</h2>
 <%= raw !@issue.description.eql?('') ? textile_to_html(@issue.description) : '-' %>
 
@@ -92,62 +103,65 @@
   <%= render :partial => 'issues/show_checklist' %>
 </ul>
 <span><h3><%= link_to_with_permissions(
-      t(:link_edit_checklist), 
-      checklist_issues_path(@project.slug), 
-      @project, 
-      {:method => :get,
-        :target => "self",
-        :html => {:class => 'icon icon-checklist', 
-          :onclick => "jQuery('#checklist_overlay').overlay().load();"}}) %></h3>
-
-  <div class="separator"></div>
-  <%= link_to "", "#", {:class => "icon icon-collapsed toggle right", :style => "float:right", :id => "gantt_informations"} %>
-  <div style="clear:both"></div>
-  <div class="content gantt_informations">
-    <div id="predecessor">
-      <%= render :partial => 'issues/predecessor' %>
-    </div>
-    <hr/>
-    <div id="children">
-
-      <%= render :partial => 'issues/children' %>
-    </div>
+                      t(:link_edit_checklist),
+                      checklist_issues_path(@project.slug),
+                      @project,
+                      {:method => :get,
+                       :target => 'self',
+                       :html => {:class => 'icon icon-checklist',
+                                 :onclick => "jQuery('#checklist_overlay').overlay().load();"}}) %></h3>
+ </span>
+<div class="separator"></div>
+<%= link_to '', '#', {:class => 'icon icon-collapsed toggle right', :style => 'float:right', :id => 'gantt_informations'} %>
+<div style="clear:both "></div>
+<div class="content gantt_informations">
+  <div id="predecessor">
+    <%= render :partial => 'issues/predecessor' %>
   </div>
+  <hr/>
+  <div id="children">
+
+    <%= render :partial => 'issues/children' %>
+  </div>
+</div>
 <%#= ATTACHMENT %>
-  <div id="attachments">
-    <%= render :partial => 'issues/show_attachments', :locals => {:attachments => @issue.attachments} %>
-  </div>
+<div id="attachments">
+  <%= render :partial => 'issues/show_attachments', :locals => {:attachments => @issue.attachments} %>
+</div>
 
-  <% if journals.any? %>
-    <%= render :partial => "issues/history", :locals => {:journals => journals} %>
-  <% end %>
-  <div id="update_issue">
-    <div class="separator"></div>
-    <h2><%= t(:link_update) %></h2>
-    <div class="box">
-      <%= render :partial => 'issues/update_form', 
-        :locals => {:allowed_statuses => allowed_statuses, :done_ratio => done_ratio} %>
-    </div>
+<% if journals.any? %>
+    <%= render :partial => 'issues/history', :locals => {:journals => journals} %>
+<% end %>
+<div id="update_issue">
+  <div class="separator"></div>
+  <h2><%= t(:link_update) %></h2>
+
+  <div class="box">
+    <%= render :partial => 'issues/update_form',
+               :locals => {:allowed_statuses => allowed_statuses, :done_ratio => done_ratio} %>
   </div>
-  <%= render :partial => 'issues/checklist_overlay' %>
-  <script type="text/javascript">
+</div>
+<%= render :partial => 'issues/checklist_overlay' %>
+<%= render :partial => 'time_entries/log_issue_spent_time', :locals => {:issue_id => @issue.id, :tracker_name => @issue.tracker.name} %>
+<script type="text/javascript">
     multi_toogle();
     jQuery(".content.gantt_informations").hide();
-    jQuery(document).ready(function() {
-      jQuery('a.lightbox').lightBox({
-        fixedNavigation: true,
-        imageLoading: "<%= asset_path 'lightbox-ico-loading.gif' %>",
-        imageBtnClose: "<%= asset_path 'lightbox-btn-close.gif' %>",
-        imageBtnPrev: "<%= asset_path 'lightbox-btn-prev.gif' %>",
-        imageBtnNext: "<%= asset_path 'lightbox-btn-next.gif' %>",
-        imageBlank: "<%= asset_path 'lightbox-blank.gif' %>",
-        containerResizeSpeed: 350
-      });
-      jQuery('#update_issue').hide();
-      createOverlay("#checklist_overlay", 150);
+    jQuery(document).ready(function () {
+        jQuery('a.lightbox').lightBox({
+            fixedNavigation: true,
+            imageLoading: "<%= asset_path 'lightbox-ico-loading.gif' %>",
+            imageBtnClose: "<%= asset_path 'lightbox-btn-close.gif' %>",
+            imageBtnPrev: "<%= asset_path 'lightbox-btn-prev.gif' %>",
+            imageBtnNext: "<%= asset_path 'lightbox-btn-next.gif' %>",
+            imageBlank: "<%= asset_path 'lightbox-blank.gif' %>",
+            containerResizeSpeed: 350
+        });
+        jQuery('#update_issue').hide();
+        createOverlay("#checklist_overlay", 150);
+        createOverlay("#spent_time_overlay", 150);
     });
-    jQuery("#update_issue_link").click(function() {
-      jQuery('#update_issue').show();
+    jQuery("#update_issue_link").click(function () {
+        jQuery('#update_issue').show();
     });
 
-  </script>
+</script>

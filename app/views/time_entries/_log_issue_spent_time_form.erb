@@ -1,0 +1,11 @@
+<% if @time_entry.id %>
+    <%= form_for(@time_entry, :html => {:id => 'spent_time_form', :class => 'form',  :method => :put,:remote => true}) do |f| %>
+        <%= render :partial => 'time_entries/log_issue_spent_time_form_content', :locals => {:f => f,:issue_id => params[:issue_id]} %>
+    <% end %>
+<% else %>
+    <%= form_for(@time_entry, :html => {:id => 'spent_time_form', :class => 'form', :remote => true}) do |f| %>
+        <%= render :partial => 'time_entries/log_issue_spent_time_form_content', :locals => {:f => f,:issue_id => params[:issue_id]} %>
+    <% end %>
+<% end %>
+
+

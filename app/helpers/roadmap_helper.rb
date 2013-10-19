@@ -19,7 +19,7 @@ module RoadmapHelper
         end
       }
     end
-    return builder.to_xml.gsub(/\n/,"").gsub(/\"/,"'").gsub(/>\s*/,">")
+    return builder.to_xml.gsub(/\n/, '').gsub(/\"/,"'").gsub(/>\s*/, '>')
   end
 
   def task_builder(xml,issue,issues)
@@ -27,7 +27,7 @@ module RoadmapHelper
       xml.task(:id => issue.id){
         xml.name issue.subject
         xml.est issue.start_date.strftime('%Y,%m,%d')
-        xml.duration issue.due_date ? (issue.due_date - issue.start_date).to_i * 8 : ""
+        xml.duration issue.due_date ? (issue.due_date - issue.start_date).to_i * 8 : ''
         xml.percentcompleted issue.done
         if !issue.parent.nil? && issue.parent.due_date < issue.start_date
           xml.predecessortasks issue.predecessor_id

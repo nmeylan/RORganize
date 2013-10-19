@@ -6,41 +6,46 @@
 %>
 
 <div class="contextual">
-  <h1><%= "#{t(:label_document)} ##{@document.id}"%></h1>
+  <h1><%= "#{t(:label_document)} ##{@document.id}" %></h1>
+
   <div class="splitcontentright">
     <%= link_to_with_permissions(t(:link_new_document), new_document_path(@project.slug), @project, {:html => {:class => 'icon icon-add'}}) %>
     <%= link_to_with_permissions(t(:link_edit), edit_document_path(@project.slug), @project, {:html => {:class => 'icon icon-edit'}}) %>
-    <%= link_to_with_permissions(t(:link_delete), 
-      document_path(@project.slug, @document.id), 
-      @project, 
-      {:method => :delete, 
-        :target => "self",
-        :html => {:class => 'icon icon-del', 
-          :onclick => "button_delete('#{document_path}')"}}) %>
+    <%= link_to_with_permissions(t(:link_delete),
+                                 document_path(@project.slug, @document.id),
+                                 @project,
+                                 {:method => :delete,
+                                  :target => 'self',
+                                  :html => {:class => 'icon icon-del',
+                                            :onclick => "button_delete('#{document_path}')"}}) %>
   </div>
 </div>
 
-<h2><%=@document.name%></h2>
+<h2><%= @document.name %></h2>
 <p>
   <em>
     <%= "#{t(:label_added)}
-#{distance_of_time_in_words(@document.created_at,Time.now)}
-#{t(:label_ago)},
+        #{distance_of_time_in_words(@document.created_at, Time.now)}
+        #{t(:label_ago)},
 #{t(:label_by)}
-#{journal_created.user.name}.
+        #{journal_created.user.name}.
 #{(@document.created_at.eql?(@document.updated_at) ? '' :
-    "#{t(:label_updated)} #{distance_of_time_in_words(@document.updated_at,Time.now)}
-    #{t(:label_ago)}.").to_s}"%>
+            "#{t(:label_updated)} #{distance_of_time_in_words(@document.updated_at, Time.now)}
+            #{t(:label_ago)}.").to_s}" %>
   </em>
 </p>
 <table class="detail" style="width:100%">
-  <th style="width:15%"><%= t(:field_version) %> :</th><td style="width:30%"><%= @document.version ? @document.version.name : '-' %></td>
-</tr>
-<tr>
-  <th style="width:15%"><%= t(:field_category) %> :</th><td style="width:30%"><%= @document.category ? @document.category.name : '-' %></td>
-</tr>
+  <tr>
+    <th style="width:15%"><%= t(:field_version) %> :</th>
+    <td style="width:30%"><%= @document.version ? @document.version.name : '-' %></td>
+  </tr>
+  <tr>
+    <th style="width:15%"><%= t(:field_category) %> :</th>
+    <td style="width:30%"><%= @document.category ? @document.category.name : '-' %></td>
+  </tr>
 </table>
-<br/><hr /><br/>
+<br/>
+<hr/><br/>
 <h2><%= t(:field_description) %> :</h2>
 <%= raw !@document.description.eql?('') ? textile_to_html(@document.description) : '-' %>
 
@@ -50,21 +55,21 @@
 </div>
 
 <% if journals.any? %>
-  <div id="history">
-    <%= raw history_render(journals) %>
-  </div>
+    <div id="history">
+      <%= raw history_render(journals) %>
+    </div>
 <% end %>
 <script type="text/javascript">
-  jQuery(document).ready(function() {
-    jQuery('a.lightbox').lightBox({
-      fixedNavigation: true,
-      imageLoading: "<%= asset_path 'lightbox-ico-loading.gif' %>",
-      imageBtnClose: "<%= asset_path 'lightbox-btn-close.gif' %>",
-      imageBtnPrev: "<%= asset_path 'lightbox-btn-prev.gif' %>",
-      imageBtnNext: "<%= asset_path 'lightbox-btn-next.gif' %>",
-      imageBlank: "<%= asset_path 'lightbox-blank.gif' %>",
-      containerResizeSpeed: 350
+    jQuery(document).ready(function () {
+        jQuery('a.lightbox').lightBox({
+            fixedNavigation: true,
+            imageLoading: "<%= asset_path 'lightbox-ico-loading.gif' %>",
+            imageBtnClose: "<%= asset_path 'lightbox-btn-close.gif' %>",
+            imageBtnPrev: "<%= asset_path 'lightbox-btn-prev.gif' %>",
+            imageBtnNext: "<%= asset_path 'lightbox-btn-next.gif' %>",
+            imageBlank: "<%= asset_path 'lightbox-blank.gif' %>",
+            containerResizeSpeed: 350
+        });
     });
-  });
 
 </script>

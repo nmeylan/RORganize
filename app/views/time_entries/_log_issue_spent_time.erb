@@ -1,0 +1,11 @@
+<div class="overlayOuter" id="spent_time_overlay">
+  <div class="overlayInner">
+    <div id="spent_time_overlay_content">
+      <div id="spent_time_overlay_form">
+        <% if @time_entry %>
+            <%= render :partial => 'time_entries/log_issue_spent_time_form' %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

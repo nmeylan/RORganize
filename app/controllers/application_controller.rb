@@ -9,7 +9,7 @@ class ApplicationController < ActionController::Base
   end
 
   def menu_item(controller, action = nil)
-    @current_menu_item = "menu_"
+    @current_menu_item = 'menu_'
     @current_menu_item+= "#{controller}"
     if action
       @current_menu_item += "_#{action}"
@@ -17,7 +17,7 @@ class ApplicationController < ActionController::Base
   end
 
   def top_menu_item(menu_name)
-    @current_top_menu_item = "menu_"
+    @current_top_menu_item = 'menu_'
     @current_top_menu_item+= "#{menu_name}"
 
   end

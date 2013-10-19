@@ -20,18 +20,18 @@
           <%= issues_status.default_done_ratio%>
         </td>
         <td class="list_center is_closed">
-          <%= issues_status.is_closed ? "true" : "false" %>
+          <%= issues_status.is_closed ? 'true' : 'false' %>
         </td>
         <td class="action">
           <% if issues_status.enumeration.position > 1 %>
-            <%= link_to "", "#",  {:class => 'icon icon-up_arrow change_position dec'} %>
+            <%= link_to '', '#',  {:class => 'icon icon-up_arrow change_position dec'} %>
           <% else %>
-            <%= link_to "", "#",  {:class => 'icon icon-disabled_up_arrow'} %>
+            <%= link_to '', '#',  {:class => 'icon icon-disabled_up_arrow'} %>
           <% end %>
           <% if issues_status.enumeration.position < @max %>
-            <%= link_to "", "#",  {:class => 'icon icon-down_arrow change_position inc'}  %>
+            <%= link_to '', '#',  {:class => 'icon icon-down_arrow change_position inc'}  %>
           <% else %>
-            <%= link_to "", "#",  {:class => 'icon icon-disabled_down_arrow'} %>
+            <%= link_to '', '#',  {:class => 'icon icon-disabled_down_arrow'} %>
           <% end %>
         </td>
         <td class="action">
@@ -39,7 +39,7 @@
             issues_status_path(issues_status.id), 
             @project, 
             {:method => :delete, 
-              :target => "self",
+              :target => 'self',
               :html => {:class => 'icon icon-del', 
                 :onclick => "button_delete('#{issues_status_path(issues_status.id)}')"}}) %>
            </td>

@@ -73,6 +73,10 @@ en:
   label_new_home_page: New Home page
   label_created: Created
   label_sub_pages: Sub pages
+  label_my_pages: My pages
+  label_my_preferences: My preferences
+  label_issue: Issue
+  label_total_spent_time: Total
 # LINK
   link_new_project: New project
   link_new_issue: New issue
@@ -135,6 +139,14 @@ en:
   link_edit_page: Edit page
   link_organize_pages: Organize pages
   link_edit_checklist: Edit checklist
+  link_starred: Starred
+  link_opened: Opened
+  link_archived: Archived
+  link_my_assigned_requests: My assigned requests
+  link_my_activities: My activities
+  link_my_submited_requests: My submited requests
+  link_log_time: Log time
+  link_my_spent_time: My spent time
  #FORM
   field_name: Name
   field_description: Description
@@ -174,6 +186,9 @@ en:
   field_title: Title
   field_content: Content
   field_new_sub_section: New sub section
+  field_date: Date
+  field_spent_time: Spent time
+  field_hours: Hours
   #FLASH
   successful_creation: Successful creation
   successful_update: Successful update
@@ -181,6 +196,8 @@ en:
   failure_deletion: Deletion failed
   failure_update: Update failed
   failure_operation: Operation failed
+  successful_time_entry_creation: Your time spent on this issue was successfully logged
+  successful_time_entry_update: Your time spent on this issue was successfully updated
   #TEXT
   text_changed: changed
   text_from: from
@@ -201,3 +218,4 @@ en:
   text_set_start_date_today: Are you sure you want to set issue start date at today?
   text_no_wiki: This project doesn't have wiki yet.
   text_welcome: Welcome
+  text_time_entry_not_owner_deletion: Well, you tried to delete a coworker time entry.

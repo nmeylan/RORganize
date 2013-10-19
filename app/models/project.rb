@@ -5,7 +5,7 @@ class Project < ActiveRecord::Base
   after_create :create_member
   after_update :save_attachments
   
-  belongs_to :author, :class_name => 'User', :foreign_key => "created_by"
+  belongs_to :author, :class_name => 'User', :foreign_key => 'created_by'
   has_many :members, :class_name => 'Member',:dependent => :destroy
   has_and_belongs_to_many :trackers, :class_name => 'Tracker'
   has_many :versions, :class_name => 'Version'
@@ -20,12 +20,22 @@ class Project < ActiveRecord::Base
   validates :name, :length => {
     :maximum   => 255,
     :tokenizer => lambda { |str| str.scan(/\w+/) },
-    :too_long  => "must have at most 255 words"
+    :too_long  => 'must have at most 255 words'
   }
 
   def create_member
-    role = Role.find_by_name("Project Manager")
+    role = Role.find_by_name('Project Manager')
     Member.create(:project_id => self.id, :role_id => role.id, :user_id => self.created_by)
+  end
+  
+  def starred?
+    members = self.members
+    member = members.select{|member| member.user_id == User.current.id}.first
+    return member.is_project_starred
+  end
+  
+  def self.opened_projects_id
+    return Project.select('id').where(:is_archived => false).collect{|p| p.id}
   end
 
   #ATTACHMENT METHODS

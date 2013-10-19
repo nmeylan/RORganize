@@ -11,7 +11,7 @@
   </div>
 </div>
 <%= render :partial => 'wiki/sidebar' %>
-<%= form_for @wiki_page, {:html => {:class => "form"}} do |f| %>
-  <%= render :partial => "wiki_pages/form", :locals => {:f => f} %>
+<%= form_for @wiki_page, {:html => {:class => 'form'}} do |f| %>
+  <%= render :partial => 'wiki_pages/form', :locals => {:f => f} %>
   <%= submit_tag t(:button_create) %>
 <% end %>

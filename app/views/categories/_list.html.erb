@@ -26,7 +26,7 @@
             category_path(@project.slug, category.id), 
             @project, 
             {:method => :delete, 
-              :target => "self",
+              :target => 'self',
               :html => {:class => 'icon icon-del', 
                 :onclick => "button_delete('#{ category_path(@project.slug, category.id)}')"}}) %>
 

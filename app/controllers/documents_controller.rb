@@ -8,7 +8,7 @@ class DocumentsController < ApplicationController
   before_filter :check_permission, :except => [:download_attachment, :toolbox]
   before_filter { |c| c.menu_context :project_menu }
   before_filter { |c| c.menu_item(params[:controller]) }
-  before_filter {|c| c.top_menu_item("projects")}
+  before_filter {|c| c.top_menu_item('projects')}
   include ApplicationHelper
   include DocumentsHelper
   helper_method :sort_column, :sort_direction
@@ -18,7 +18,7 @@ class DocumentsController < ApplicationController
       format.html
       format.js do
         render :update do |page|
-          page.replace "documents_content", :partial => 'documents/list'
+          page.replace 'documents_content', :partial => 'documents/list'
         end
       end
     end
@@ -39,9 +39,10 @@ class DocumentsController < ApplicationController
     respond_to do |format|
       if @document.save
         flash[:notice] = t(:successful_creation)
-        format.html {redirect_to :action => "show", :id => @document.id}
+        format.html {redirect_to :action => 'show', :id => @document.id}
       else
-        format.html {render :action => "new"}
+        format.html {render :action => 'new'
+        }
       end
     end
   end
@@ -65,17 +66,18 @@ class DocumentsController < ApplicationController
         flash[:notice] = t(:successful_update)
         format.html { redirect_to document_path(@project.slug,@document.id)}
       else
-        format.html {render :action => "new"}
+        format.html {render :action => 'new'
+        }
       end
     end
   end
 
   def show
     @document = Document.find(params[:id], :include => [:category, :version, :attachments])
-    journal_created = Journal.includes(:user).where(:action_type => "created", :journalized_id => @document.id,:journalized_type => @document.class.to_s ).first
+    journal_created = Journal.includes(:user).where(:action_type => 'created', :journalized_id => @document.id,:journalized_type => @document.class.to_s ).first
     journals = Journal.find_all_by_journalized_type_and_journalized_id(@document.class.to_s, @document.id, :include => [:details, :user])
     respond_to do |format|
-      format.html {render :action => "show", :locals => {:journals => journals, :journal_created => journal_created}}
+      format.html {render :action => 'show', :locals => {:journals => journals, :journal_created => journal_created}}
     end
   end
 
@@ -145,18 +147,18 @@ class DocumentsController < ApplicationController
       attribute_name = ''
       attribute_value = ''
       params[:value].each do |k,v|
-        unless v.eql?('')
+        if v.eql?('')
+          #delete other parameters, that wasn't updated
+          params[:value].reject! { |k, v| v.eql?('') }
+        else
           attribute_name = k
-          if(attributes.keys.include?(k))
+          if (attributes.keys.include?(k))
             !k.eql?('status_id') ?
-              attribute_value = attributes[k].find_by_name(v) :
-              attribute_value = attributes[k].find_by_enumeration_id(Enumeration.find_by_name_and_opt(v,'ISTS'))
+                attribute_value = attributes[k].find_by_name(v) :
+                attribute_value = attributes[k].find_by_enumeration_id(Enumeration.find_by_name_and_opt(v, 'ISTS'))
           else
             attribute_value = v
           end
-        else
-          #delete other parameters, that wasn't updated
-          params[:value].reject!{|k,v| v.eql?('')}
         end
       end
       params[:value][attribute_name] = attribute_value ? attribute_value : ''
@@ -192,7 +194,7 @@ class DocumentsController < ApplicationController
       (session[@project.slug+'_controller_documents_filter'] = filter) : 
       session[@project.slug+'_controller_documents_filter'] =
       (session[@project.slug+'_controller_documents_filter'] ? 
-        session[@project.slug+'_controller_documents_filter'] : "")
+        session[@project.slug+'_controller_documents_filter'] : '')
   end
 
   private
@@ -231,13 +233,13 @@ class DocumentsController < ApplicationController
   def toolbox_menu
     menu = {}
     # Toolbox menu content
-    menu["versions"] = @project.versions.collect{|version| version.name} << 'None' #field that can include blank
-    menu["categories"] = @project.categories.collect{|category| category.name} << 'None'
+    menu['versions'] = @project.versions.collect{|version| version.name} << 'None' #field that can include blank
+    menu['categories'] = @project.categories.collect{|category| category.name} << 'None'
     #documents current states for each fields
     current_states = Hash.new{}
-    current_states["version"] = @documents_toolbox.collect{|document| document.version.nil? ? 'None' : document.version.name}.uniq
-    current_states["category"] = @documents_toolbox.collect{|document| document.category.nil? ? 'None' : document.category.name}.uniq
-    menu["current_states"] = current_states
+    current_states['version'] = @documents_toolbox.collect{|document| document.version.nil? ? 'None' : document.version.name}.uniq
+    current_states['category'] = @documents_toolbox.collect{|document| document.category.nil? ? 'None' : document.category.name}.uniq
+    menu['current_states'] = current_states
     return menu
   end
   
@@ -248,7 +250,7 @@ class DocumentsController < ApplicationController
       session['controller_documents_per_page'] = (session['controller_documents_per_page'] ?
         session['controller_documents_per_page'] :
         25)
-    order = sort_column + " " + sort_direction
+    order = sort_column + ' ' + sort_direction
     filter = session[@project.slug+'_controller_documents_filter']
     @documents = Document.paginated_documents(params[:page],
       session['controller_documents_per_page'],

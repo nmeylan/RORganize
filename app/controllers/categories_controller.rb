@@ -7,8 +7,8 @@ class CategoriesController < ApplicationController
   before_filter :find_project
   before_filter :check_permission
   before_filter { |c| c.menu_context :project_menu }
-  before_filter { |c| c.menu_item("settings") }
-  before_filter {|c| c.top_menu_item("projects")}
+  before_filter { |c| c.menu_item('settings') }
+  before_filter {|c| c.top_menu_item('projects')}
   include ApplicationHelper
 
   def index
@@ -35,7 +35,7 @@ class CategoriesController < ApplicationController
         format.json  { render :json => @category,
           :status => :created, :location => @category}
       else
-        format.html  { render :action => "new" }
+        format.html  { render :action => 'new' }
         format.json  { render :json => @category.errors,
           :status => :unprocessable_entity }
       end
@@ -61,7 +61,7 @@ class CategoriesController < ApplicationController
         format.json  { render :json => @category,
           :status => :created, :location => @category}
       else
-        format.html  { render :action => "edit" }
+        format.html  { render :action => 'edit' }
         format.json  { render :json => @category.errors,
           :status => :unprocessable_entity }
       end

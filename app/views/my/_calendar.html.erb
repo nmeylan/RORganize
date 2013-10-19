@@ -1,0 +1,60 @@
+<%#
+# Author: Nicolas Meylan
+# Date: 16 mars 2013
+# Encoding: UTF-8
+# File: _calendar.erb
+%>
+<div id="calendar_header">
+  <p>
+
+    <%= link_to "<< #{t(:link_prev_month)}", '#', {:style => 'float:left', :class => 'change_month ', :id => "#{@date.prev_month}"} %>
+    <%= @date.strftime('%B, %Y') %>
+    <%= link_to "#{t(:link_next_month)} >>", '#', {:style => 'float:right', :class => 'change_month', :id => "#{@date.next_month}"} %>
+  </p>
+
+</div>
+<ul id="calendar_body">
+  <% i = 1 %>
+  <% while i <= Time.days_in_month(@date.month) %>
+      <% date = Date.parse("#{@date.year}-#{@date.month}-#{i}") %>
+      <li class="li_calendar_item odd_even">
+        <div class="calendar_item">
+          <div class="calendar_item_header">
+            <%= i %>
+          </div>
+          <div class="calendar_item_body">
+            <ul>
+              <% total = 0 %>
+              <% @time_entries[date].each do |time_entry| %>
+                  <li>
+                    <span class="calendar_item_left">
+                      <%= link_to "##{time_entry.issue_id}", issue_path(time_entry.project.slug, time_entry.issue_id) %>
+                    </span>
+                    <span class="calendar_item_middle">
+                      <%= link_to time_entry.spent_time, '#', {:class => 'icon icon-time', :onclick => "fill_log_issue_time_overlay('#{fill_overlay_time_entries_path}',#{time_entry.issue_id},this,'#{date}');jQuery('#spent_time_overlay').overlay().load();"} %>
+                    </span>
+                    <span class="calendar_item_right">
+                      <%= link_to '', '#', {:class => 'icon icon-del',
+                                            :onclick => "button_delete_with_data('#{time_entry_path(time_entry.id)}',{date:'#{@date.to_date}'})"} %>
+                    </span>
+                  </li>
+                  <% total += time_entry.spent_time %>
+              <% end %>
+            </ul>
+          </div>
+          <% if total > 0 %>
+              <div class="calendar_item_bottom">
+                <%= "#{t(:label_total_spent_time)} : #{total} h" %>
+              </div>
+          <% end %>
+        </div>
+      </li>
+      <% i+=1 %>
+  <% end %>
+</ul>
+<div style="clear:both"></div>
+<%= render :partial => 'time_entries/log_issue_spent_time', :locals => {:issue_id => nil, :tracker_name => nil} %>
+<script type="text/javascript">
+    bind_calendar_button("<%= my_spent_time_my_index_path(current_user.slug) %>");
+    createOverlay("#spent_time_overlay", 150);
+</script>

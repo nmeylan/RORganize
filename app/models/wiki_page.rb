@@ -4,8 +4,8 @@
 # File: wiki_page.rb
 class WikiPage < RorganizeActiveRecord
   #Class variables
-  assign_journalized_properties({'title' => "Title",
-      "content" => "Content"})
+  assign_journalized_properties({'title' => 'Title',
+      'content' => 'Content'})
   assign_foreign_keys({})
   assign_journalized_icon('/assets/document.png')
   #Slug
@@ -20,19 +20,19 @@ class WikiPage < RorganizeActiveRecord
   has_one :wiki_home_page, :class_name => 'Wiki', :foreign_key => 'home_page_id', :dependent => :nullify
   belongs_to :author, :class_name => 'User', :foreign_key => 'author_id'
   belongs_to :wiki, :class_name => 'Wiki', :foreign_key => 'wiki_id'
-  belongs_to :parent, :class_name => "WikiPage"
-  has_many :sub_pages, :class_name => "WikiPage", :foreign_key => 'parent_id', :dependent => :nullify
+  belongs_to :parent, :class_name => 'WikiPage'
+  has_many :sub_pages, :class_name => 'WikiPage', :foreign_key => 'parent_id', :dependent => :nullify
  
   validates :title, :presence => true, :uniqueness => true
   
   def inc_position
-    self.position = self.class.where(:parent_id => self.parent_id).count("*")
+    self.position = self.class.where(:parent_id => self.parent_id).count('*')
   end
   
   def dec_position
-    pages = self.class.where("parent_id = ? AND id <> ? AND position > ?", self.parent_id, self.id, self.position)
+    pages = self.class.where('parent_id = ? AND id <> ? AND position > ?', self.parent_id, self.id, self.position)
     pages.each do |wiki_page|
-      p = (wiki_page.read_attribute("position") -1)
+      p = (wiki_page.read_attribute('position') -1)
       wiki_page.update_attributes(:position => p)
     end
   end

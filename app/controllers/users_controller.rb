@@ -9,19 +9,19 @@ class UsersController < ApplicationController
   before_filter :check_permission, :except => [:update_permissions]
   before_filter { |c| c.menu_context :admin_menu }
   before_filter { |c| c.menu_item(params[:controller])}
-  before_filter {|c| c.top_menu_item("administration")}
+  before_filter {|c| c.top_menu_item('administration')}
 
   include ApplicationHelper
   require 'will_paginate'
   #GET /administration/users
   def index
     params[:per_page] ? session['controller_users_per_page'] = params[:per_page] : session['controller_users_per_page'] = (session['controller_users_per_page'] ? session['controller_users_per_page'] : 25)
-    @users = User.paginated_users(params[:page], session['controller_users_per_page'], sort_column + " " + sort_direction)
+    @users = User.paginated_users(params[:page], session['controller_users_per_page'], sort_column + ' ' + sort_direction)
     respond_to do |format|
       format.html
       format.js do
         render :update do |page|
-          page.replace "users_content", :partial => 'users/list'
+          page.replace 'users_content', :partial => 'users/list'
         end
       end
     end
@@ -48,7 +48,7 @@ class UsersController < ApplicationController
         format.json  { render :json => @user,
           :status => :created, :location => @user}
       else
-        format.html  { render :action => "new" }
+        format.html  { render :action => 'new' }
         format.json  { render :json => @user.errors,
           :status => :unprocessable_entity }
       end
@@ -66,7 +66,7 @@ class UsersController < ApplicationController
   #Put /administration/users/edit/:id
   def update
     @user = User.find(params[:id])
-    @user.admin = (params[:user][:admin].eql?("1"))
+    @user.admin = (params[:user][:admin].eql?('1'))
     params[:user][:updated_at] = Time.now.to_formatted_s(:db)
     @user.attributes=params[:user]
     respond_to do |format|
@@ -80,7 +80,7 @@ class UsersController < ApplicationController
         format.json  { render :json => @user,
           :status => :created, :location => @user}
       else
-        format.html  { render :action => "edit" }
+        format.html  { render :action => 'edit' }
         format.json  { render :json => @user.errors,
           :status => :unprocessable_entity }
       end

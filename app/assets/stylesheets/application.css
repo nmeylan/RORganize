@@ -3,6 +3,7 @@
  * and any sub-directories. You're free to add application-wide styles to this file and they'll appear at
  * the top of the compiled file, but it's generally better to create a new file per style scope.
  *= require_self
+ *= require scenarios/application
  *= require_tree .
 */
 html{
@@ -86,7 +87,7 @@ body{
     border-bottom: 1px solid #CACACA;
     /*background-color: #39424A;*/
     background-image: -moz-linear-gradient(#6c8393, #4F5B66);
-    background-image: -webkit-linear-gradient(#6c83935, #4F5B66A);
+    background-image: -webkit-linear-gradient(#6c8393, #4F5B66);
     background-image: linear-gradient(#6c8393, #4F5B66);
 }
 #header h1{
@@ -103,13 +104,14 @@ body{
 */
 #sidebar{
     float: right;
-    width: 22%;
+    width: 15%;
     position: relative;
     z-index: 9;
     padding: 0;
     margin: 0;
 }
 #content{
+    float: left;
     color: #484848;
     background-color: white;
     padding: 6px 10px 10px 10px;
@@ -118,7 +120,7 @@ body{
     -webkit-box-shadow: 0 0px 6px rgba(0, 0, 0, 0.3);
     -moz-box-shadow: 0 0 3px #ccc;
     z-index: 10;
-    width: 75%;
+    width: 82%;
     text-align: justify;
 }
 hr{
@@ -133,6 +135,7 @@ pre{
 }
 #main.nosidebar #content{
     width: auto;
+    float: inherit;
 }
 
 #content h1{
@@ -590,7 +593,7 @@ table.list{
     background-image: -webkit-linear-gradient(#7f95a5, #6c8393);
     background-image: linear-gradient(#7f95a5, #6c8393);
     border-bottom: 1px solid #DADEE5;
-    
+    color: white;
     /*background-color: #EEE;*/
 }
 .list .header a{
@@ -985,44 +988,77 @@ a.selected{
 /*
    CALENDAR
 */
-#calendar ul{
-    padding:  0;
-    width: 100%
-}
 #calendar_header{
     border: 1px solid #CACACA;
     text-align: center;
     background-color: whitesmoke;
 }
 #calendar_body{
-
+    padding:  0;
+    width: 100%
 }
-#calendar li{
+
+#calendar .li_calendar_item{
     list-style-type: none;
     float: left;
     display: inline-block;
     padding:  0;
     width: 10%;
-    height: 131px;
+    min-height: 131px;
+}
+#spent_time .li_calendar_item{
+    width: 14%;
+    min-height: 201px;
 }
 .calendar_item{
     height: 130px;
     margin-right: -1px;
     border: 1px solid #CACACA;
 }
+#spent_time .calendar_item{
+    height: 200px;
+}
 .calendar_item .calendar_item_header{
     background-color: whitesmoke;
-    /*   width: 100%;*/
     height: 20px;
     border-bottom: 1px solid #CACACA;
     margin: 0;
 
 }
 .calendar_item .calendar_item_body{
-    /*   width: 100%;*/
     height: 110px;
     margin: 0;
 }
+#spent_time .calendar_item .calendar_item_body{
+    height: 160px;
+}
+.calendar_item .calendar_item_body ul{
+    padding: 0px;
+    height: 95%;
+    overflow-x: auto;
+}
+.calendar_item .calendar_item_bottom{
+    border-top: 1px solid #CACACA;
+}
+.calendar_item .calendar_item_body li{
+    list-style-type: none;
+    padding: 5px;
+    margin: 2px;
+    border: 1px solid #bbb;
+    text-shadow: 0 1px 0 #fff;
+
+    box-shadow: 0 1px 2px #ccc;
+    -moz-box-shadow: 0 1px 2px #ccc;
+    -webkit-box-shadow: 0 1px 2px #ccc;
+    border: 1px solid #bbb;
+    color: #888;
+    text-decoration: none;
+    background-color: #EEF0F3;
+}
+#calendar .odd_even:nth-child(odd) .calendar_item_body li{
+    background-color: white;
+}
+
 #calendar .odd_even:nth-child(odd){
     background: #F1F5FA;
 }
@@ -1037,6 +1073,13 @@ a.selected{
 }
 .calendar_item .calendar_item_body.today{
     background-color: #D7D7D7;
+}
+.calendar_item_left{
+    width: 45%;
+    float:left;
+}
+.calendar_item_right{
+    float:right;
 }
 
 /*
@@ -1063,4 +1106,18 @@ a.selected{
 #organize_pages ul.trash{
     margin: 0px;
     padding: 0px;
+}
+
+/*
+    MY
+*/
+.my .issue.list td.project,td.assigned_to{
+     width: 10%;
+ }
+
+/*
+    Log time
+*/
+#spent_time_overlay_content{
+    width: 700px;
 }

@@ -5,7 +5,7 @@ class ProjectController < ApplicationController
   before_filter :check_permission,:except => [:create,:load_journal_activity, :filter]
   before_filter { |c| c.menu_context :project_menu }
   before_filter { |c| c.menu_item(params[:controller], params[:action]) }
-  before_filter {|c| c.top_menu_item("projects")}
+  before_filter {|c| c.top_menu_item('projects')}
   #GET /project/:project_id
   #Project overview
   def overview
@@ -26,24 +26,24 @@ class ProjectController < ApplicationController
   #GET/project/:project_id/activity
   def activity
     if session['project_activities_filter'].nil?
-      session['project_activities_filter'] = [Time.now.to_date.months_ago(1), "tm"]
+      session['project_activities_filter'] = [Time.now.to_date.months_ago(1), 'tm']
     end
     #Structure of the hash is
     # {:date => [journal]}
     @issue_activities = Hash.new{|hash, key| hash[key] = []}
     journals =(
-      session['project_activities_filter'][0].eql?("all") ?
+      session['project_activities_filter'][0].eql?('all') ?
         Journal.where(:project_id => @project.id)
       .includes([:details, :user, :journalized])
-      .order("created_at DESC") :
-        Journal.where(["project_id = ? AND created_at > ?",@project.id, session['project_activities_filter'][0]])
+      .order('created_at DESC') :
+        Journal.where(['project_id = ? AND created_at > ?',@project.id, session['project_activities_filter'][0]])
       .includes([:details, :user, :journalized])
-      .order("created_at DESC") 
+      .order('created_at DESC')
     )
     
     @activities = Hash.new{|hash, key| hash[key] = []}
     journals.each do |journal|
-      if journal.journalized_type.eql?("Issue")
+      if journal.journalized_type.eql?('Issue')
         @issue_activities[journal.created_at.to_formatted_s(:db).to_date.to_s] << journal
       else
         @activities[journal.created_at.to_date.to_s] << journal
@@ -54,8 +54,8 @@ class ProjectController < ApplicationController
       format.html
       format.js do
         render :update do |page|
-          page.replace_html "issues_activities", :partial => 'project/issues_activities'
-          page.replace_html "others_activities", :partial => 'project/activities'
+          page.replace_html 'issues_activities', :partial => 'project/issues_activities'
+          page.replace_html 'others_activities', :partial => 'project/activities'
         end
       end
     end
@@ -69,7 +69,7 @@ class ProjectController < ApplicationController
       format.html
       format.js do
         render :update do |page|
-          page.replace_html "issue_history", :partial => 'project/activity_history'
+          page.replace_html 'issue_history', :partial => 'project/activity_history'
         end
       end
     end
@@ -96,7 +96,7 @@ class ProjectController < ApplicationController
         format.json  { render :json => @project,
           :status => :created, :location => @project }
       else
-        format.html  { render :action => "new" }
+        format.html  { render :action => 'new' }
         format.json  { render :json => @project.errors,
           :status => :unprocessable_entity }
       end
@@ -151,11 +151,11 @@ class ProjectController < ApplicationController
   def filter
     date = Time.now.to_date
     filter_type = {
-      "tm" => date.months_ago(1),
-      "lsm" => date.months_ago(6),
-      "ltm" => date.months_ago(3),
-      "ty" => date.prev_year(),
-      "all" => "all"
+      'tm' => date.months_ago(1),
+      'lsm' => date.months_ago(6),
+      'ltm' => date.months_ago(3),
+      'ty' => date.prev_year(),
+      'all' => 'all'
     }
     #    session stock conditions and filter_code
     session['project_activities_filter'] = [filter_type[params[:type]],params[:type]]

@@ -18,7 +18,7 @@
   <div class="splitcontentleft">
     <div class="autocomplete-combobox cbb-medium nosearch">
       <label for="document_version"><%=t(:field_version)%></label>
-      <%= raw select_tag_versions("document_version_id", "document[version_id]", @document.version_id) %>
+      <%= raw select_tag_versions('document_version_id', 'document[version_id]', @document.version_id) %>
     </div>
     <div class="autocomplete-combobox cbb-medium nosearch">
       <label for="document_category"><%=t(:field_category)%></label>
@@ -34,7 +34,7 @@
 
   </div>
   <p>
-    <%= add_attachments_link "Add a file" %>
+    <%= add_attachments_link 'Add a file' %>
   </p>
 </div>
 

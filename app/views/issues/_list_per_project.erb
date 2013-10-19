@@ -4,7 +4,6 @@
 # Encoding: UTF-8
 # File: _list_per_project.erb
 %>
-
 <div id="issues_content">
   <table class="issue list">
     <tr class="header">
@@ -20,7 +19,7 @@
       <tr class="odd_even issue_tr">
         <td class="list_center id"><%= issue.id %></td>
         <td class="list_center tracker"><%= issue.tracker ? issue.tracker.name : '-' %></td>
-        <td class="list_center project"><%= issue.project ? issue.project.name : '-' %></td>
+        <td class="list_center project"><%= link_to issue.project.name, overview_project_index_path(issue.project.slug) %></td>
         <td class="subject"><%= link_to issue.subject, {:action => 'show', :controller => 'issues', :id => issue.id, :project_id => issue.project.slug}, {:id => issue.id} %></td>
         <td class="list_center status"><%= issue.status ? issue.status.enumeration.name : '-' %></td>
         <td class="list_center done"><%= issue.done ? issue.done.to_s+'%' : '-' %></td>

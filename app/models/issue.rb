@@ -5,16 +5,16 @@
 
 class Issue < RorganizeActiveRecord
   #Class variables
-  assign_journalized_properties({'status_id' => "Status",
-      'category_id' => "Category",
-      'assigned_to_id' => "Assigned to",
-      'tracker_id' => "Tracker",
-      'due_date' => "Due date",
-      'start_date' => "Start date",
-      'done' => "Done",
-      'estimated_time' => "Estimated time",
-      'version_id' => "Version",
-      'predecessor_id' => "Predecessor"})
+  assign_journalized_properties({'status_id' => 'Status',
+      'category_id' => 'Category',
+      'assigned_to_id' => 'Assigned to',
+      'tracker_id' => 'Tracker',
+      'due_date' => 'Due date',
+      'start_date' => 'Start date',
+      'done' => 'Done',
+      'estimated_time' => 'Estimated time',
+      'version_id' => 'Version',
+      'predecessor_id' => 'Predecessor'})
   assign_foreign_keys({'status_id' => IssuesStatus,
       'category_id' => Category,
       'assigned_to_id' => User,
@@ -56,6 +56,20 @@ class Issue < RorganizeActiveRecord
       :order => order)
 
   end
+  #Assigned open requests on any open project
+  def self.current_user_assigned_issues(order)
+     return Issue.includes([:tracker,:version,:assigned_to,:category,:status => [:enumeration]])
+     .where(:assigned_to_id => User.current.id, :status_id => IssuesStatus.opened_statuses_id, :project_id => Project.opened_projects_id)
+     .order(order)
+    
+  end
+  #Created open requests on any open project
+  def self.current_user_submitted_issues(order)
+     return Issue.includes([:tracker,:version,:assigned_to,:category,:status => [:enumeration]])
+     .where(:author_id => User.current.id, :status_id => IssuesStatus.opened_statuses_id, :project_id => Project.opened_projects_id)
+     .order(order)
+    
+  end
   #Attributes name without id
   def self.attributes_formalized_names
     names = []
@@ -65,7 +79,7 @@ class Issue < RorganizeActiveRecord
   #  Custom validator
   def validate_start_date
     if !((self.due_date && self.start_date) ? self.start_date <= self.due_date : true)
-      errors.add(:start_date,"must be inferior than due date")
+      errors.add(:start_date, 'must be inferior than due date')
     end
   end
 
@@ -73,15 +87,15 @@ class Issue < RorganizeActiveRecord
     if !self.predecessor_id.nil?
       issue = Issue.find(self.predecessor_id)
       if !issue.nil? && !issue.project_id.eql?(self.project_id) || issue.nil?
-        errors.add(:predecessor,"not exist in this project")
+        errors.add(:predecessor, 'not exist in this project')
       elsif !issue.nil? && issue.id.eql?(self.id)
         errors.add(:predecessor,"can't be self")
       elsif !issue.nil? && self.children.include?(issue)
-        errors.add(:predecessor,"is already a child")
+        errors.add(:predecessor, 'is already a child')
       end
     end
   rescue
-    errors.add(:predecessor,"not found")
+    errors.add(:predecessor, 'not found')
   end
 
   def self.filter(hash)
@@ -119,29 +133,29 @@ class Issue < RorganizeActiveRecord
   def self.filter_content_hash(project)
     content_hash = {}
     members = project.members.includes(:user)
-    content_hash["hash_for_select"] = {}
-    content_hash["hash_for_radio"] = Hash.new{|k,v| k[v] = []}
-    content_hash["hash_for_select"]["assigned"] = members.collect{|member| [member.user.name, member.user.id]}
-    content_hash["hash_for_radio"]["assigned"] = ["all","equal","different"]
-    content_hash["hash_for_select"]["assigned"] << ["Nobody", "NULL"]
-    content_hash["hash_for_select"]["author"] = members.collect{|member| [member.user.name, member.user.id]}
-    content_hash["hash_for_radio"]["author"] = ["all","equal","different"]
-    content_hash["hash_for_select"]["category"] = project.categories.collect{|category| [category.name, category.id]}
-    content_hash["hash_for_radio"]["category"] = ["all","equal","different"]
-    content_hash["hash_for_radio"]["created"] = ["all","equal","superior","inferior","today"]
-    content_hash["hash_for_radio"]["done"] = ["all","equal","superior","inferior"]
-    content_hash["hash_for_select"]["done"] = [[0,0],[10,10],[20,20],[30,30],[40,40],[50,50],[60,60],[70,70],[80,80],[90,90],[100,100]]
-    content_hash["hash_for_radio"]["due_date"] = ["all","equal","superior","inferior","today"]
-    content_hash["hash_for_select"]["status"] = IssuesStatus.find(:all, :include => [:enumeration]).collect{|status| [status.enumeration.name, status.id]}
-    content_hash["hash_for_radio"]["status"] = ["all","equal","different","open","close"]
-    content_hash["hash_for_radio"]["start"] = ["all","equal","superior","inferior","today"]
-    content_hash["hash_for_radio"]["subject"] = ["all","contains","not contains"]
-    content_hash["hash_for_select"]["tracker"] = project.trackers.collect{|tracker| [tracker.name, tracker.id]}
-    content_hash["hash_for_radio"]["tracker"] = ["all","equal","different"]
-    content_hash["hash_for_select"]["version"] = project.versions.collect{|version| [version.name, version.id]}
-    content_hash["hash_for_select"]["version"] << ["Unplanned", "NULL"]
-    content_hash["hash_for_radio"]["version"] = ["all","equal","different"]
-    content_hash["hash_for_radio"]["updated"] = ["all","equal","superior","inferior","today"]
+    content_hash['hash_for_select'] = {}
+    content_hash['hash_for_radio'] = Hash.new{|k,v| k[v] = []}
+    content_hash['hash_for_select']['assigned'] = members.collect{|member| [member.user.name, member.user.id]}
+    content_hash['hash_for_radio']['assigned'] = %w(all equal different)
+    content_hash['hash_for_select']['assigned'] << %w(Nobody NULL)
+    content_hash['hash_for_select']['author'] = members.collect{|member| [member.user.name, member.user.id]}
+    content_hash['hash_for_radio']['author'] = %w(all equal different)
+    content_hash['hash_for_select']['category'] = project.categories.collect{|category| [category.name, category.id]}
+    content_hash['hash_for_radio']['category'] = %w(all equal different)
+    content_hash['hash_for_radio']['created'] = %w(all equal superior inferior today)
+    content_hash['hash_for_radio']['done'] = %w(all equal superior inferior)
+    content_hash['hash_for_select']['done'] = [[0,0],[10,10],[20,20],[30,30],[40,40],[50,50],[60,60],[70,70],[80,80],[90,90],[100,100]]
+    content_hash['hash_for_radio']['due_date'] = %w(all equal superior inferior today)
+    content_hash['hash_for_select']['status'] = IssuesStatus.find(:all, :include => [:enumeration]).collect{|status| [status.enumeration.name, status.id]}
+    content_hash['hash_for_radio']['status'] = %w(all equal different open close)
+    content_hash['hash_for_radio']['start'] = %w(all equal superior inferior today)
+    content_hash['hash_for_radio']['subject'] = ['all', 'contains', 'not contains']
+    content_hash['hash_for_select']['tracker'] = project.trackers.collect{|tracker| [tracker.name, tracker.id]}
+    content_hash['hash_for_radio']['tracker'] = %w(all equal different)
+    content_hash['hash_for_select']['version'] = project.versions.collect{|version| [version.name, version.id]}
+    content_hash['hash_for_select']['version'] << %w(Unplanned NULL)
+    content_hash['hash_for_radio']['version'] = %w(all equal different)
+    content_hash['hash_for_radio']['updated'] = %w(all equal superior inferior today)
     return content_hash
   end
   #Return an array with all attribute that can be filtered

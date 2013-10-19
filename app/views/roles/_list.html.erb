@@ -24,7 +24,7 @@
             role_path(role.id), 
             @project, 
             {:method => :delete, 
-              :target => "self",
+              :target => 'self',
               :html => {:class => 'icon icon-del', 
                 :onclick => "button_delete('#{role_path(role.id)}')"}}) %>
       </tr>

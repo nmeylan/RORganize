@@ -9,7 +9,7 @@
 <div class="box">
   <div class="autocomplete-combobox cbb-medium nosearch">
     <label for="issue_tracker"><%=t(:field_tracker)%><span class ="required"> *</span></label>
-    <%= f.select :tracker_id, form_content["trackers"], { :include_blank => false }, {:class => 'chzn-select cbb-medium'} %>
+    <%= f.select :tracker_id, form_content['trackers'], { :include_blank => false }, {:class => 'chzn-select cbb-medium'} %>
   </div>
   <p>
     <label for="issue_subject"><%=t(:field_subject)%><span class ="required"> *</span></label>
@@ -22,19 +22,19 @@
   <div class="splitcontentleft">
     <div class="autocomplete-combobox cbb-medium nosearch">
       <label for="issue_version"><%=t(:field_version)%></label>
-      <%= raw select_tag_versions("issue_version_id", "issue[version_id]", @issue.version_id) %>
+      <%= raw select_tag_versions('issue_version_id', 'issue[version_id]', @issue.version_id) %>
     </div>
     <div class="autocomplete-combobox cbb-medium nosearch">
       <label for="issue_status"><%=t(:field_status)%><span class ="required"> *</span></label>
-      <%= f.select :status_id, form_content["allowed_statuses"], { :include_blank => false }, {:class => 'chzn-select cbb-medium'} %>
+      <%= f.select :status_id, form_content['allowed_statuses'], { :include_blank => false }, {:class => 'chzn-select cbb-medium'} %>
     </div>
     <div class="autocomplete-combobox cbb-medium nosearch">
       <label for="issue_assigned_to"><%=t(:field_assigned_to)%></label>
-      <%= f.select :assigned_to_id, form_content["members"], { :include_blank => true }, {:class => 'chzn-select-deselect cbb-medium'} %>
+      <%= f.select :assigned_to_id, form_content['members'], { :include_blank => true }, {:class => 'chzn-select-deselect cbb-medium'} %>
     </div>
     <div class="autocomplete-combobox cbb-medium nosearch">
       <label for="issue_category"><%=t(:field_category)%></label>
-      <%= f.select :category_id,form_content["categories"], { :include_blank => true }, {:class => 'chzn-select-deselect cbb-medium'} %>
+      <%= f.select :category_id,form_content['categories'], { :include_blank => true }, {:class => 'chzn-select-deselect cbb-medium'} %>
     </div>
   </div>
   <div class="splitcontentright">
@@ -48,7 +48,7 @@
     </p>
     <div class="autocomplete-combobox cbb-small nosearch">
       <label for="issue_done"><%=t(:field_done)%></label>
-      <%= f.select :done, form_content["done_ratio"].collect{|done| [done]}, { :include_blank => false }, {:class => 'chzn-select cbb-small'} %>
+      <%= f.select :done, form_content['done_ratio'].collect{|done| [done]}, { :include_blank => false }, {:class => 'chzn-select cbb-small'} %>
     </div>
     <p>
       <label for="issue_estimated_time"><%=t(:field_estimated_time)%></label>
@@ -65,7 +65,7 @@
       <%= render :partial => 'issues/attachments', :collection => @issue.attachments %>
     </div>
     <p>
-      <%= add_attachments_link "Add a file" %>
+      <%= add_attachments_link 'Add a file' %>
     </p>
   <% end %>
 </div>

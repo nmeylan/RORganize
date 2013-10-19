@@ -1,0 +1,17 @@
+<%#
+Author : Nicolas Meylan
+Date: 30 août 2013 
+Encoding: UTF-8
+File: my_assigned_requests
+%>
+
+<%= render :partial => 'my/sidebar' %>
+<div class="contextual">
+  <h1><%= t(:link_my_submited_requests) %></h1>
+</div>
+<% if issues %>
+    <div class="my">
+      <%= render :partial => 'my/submitted_requests', :locals => {:issues => issues} %>
+    </div>
+<% else %>
+<% end %>

@@ -2,12 +2,12 @@ module ProjectHelper
 
   def project_archive_permissions(action, controller)
     permissions = Hash.new{|h,k| h[k] = []}
-    permissions["action"] = ["new","edit","create","update","destroy","delete","checklist", "change"]
-    permissions["controller"] = ["Categories","Versions"]
-    if permissions["controller"].include?(controller)
+    permissions['action'] = %w(new edit create update destroy delete checklist change)
+    permissions['controller'] = %w(Categories Versions)
+    if permissions['controller'].include?(controller)
       return false
     end
-    permissions["action"].each do |a|
+    permissions['action'].each do |a|
       if action.include?(a)
         return false
       end
@@ -20,7 +20,7 @@ module ProjectHelper
       v.each do |journal|
         user = (journal.user ? journal.user.name : t(:label_unknown))
         #UPDATED
-        if journal.action_type.eql?("updated")
+        if journal.action_type.eql?('updated')
           activity_hash[k] << "#{journal.journalized.tracker.name} ##{journal.journalized.id}
                              #{link_to journal.journalized.subject,
           {:action => 'show',
@@ -32,7 +32,7 @@ module ProjectHelper
           :id => journal.journalized.id.to_s+'.'+k.to_s}) : t(:label_updated_lower_case)}</b>
           #{t(:label_by)} #{user}"
           #CREATED
-        elsif journal.action_type.eql?("created")
+        elsif journal.action_type.eql?('created')
           activity_hash[k] << "#{journal.journalized.tracker.name} ##{journal.journalized.id}
                              #{link_to journal.journalized.subject,
           {:action => 'show',
@@ -41,25 +41,26 @@ module ProjectHelper
                               <b>#{t(:label_created_lower_case)}</b>
                               #{t(:label_by)} #{user}"
           #DELETED
-        elsif journal.action_type.eql?("deleted")
+        elsif journal.action_type.eql?('deleted')
           activity_hash[k] << "Issue ##{journal.journalized_id}
                               <b>#{t(:label_deleted_lower_case)}</b>
                               #{t(:label_by)} #{user}"
         end
       end
     end
-    activity_str = ""
+    activity_str = ''
     issues_activity.each do |k,v|
       activity_str += "<h2>#{k}</h2>"
-      activity_str += "<ul>"
-      activity_hash[k].uniq.each{|activity| activity_str += "<li>"+activity+"</li>"}
-      activity_str += "</ul>"
+      activity_str += '<ul>'
+      activity_hash[k].uniq.each{|activity| activity_str += '<li>'+activity+'</li>'
+      }
+      activity_str += '</ul>'
     end
     return activity_str.html_safe
   end
 
   def activity_update_link(issue, date)
-    link_str = ""
+    link_str = ''
     link_str += "jQuery('#activity_overlay').overlay().load();"
     link_str += "jQuery.ajax({url:'#{url_for(:action => 'load_journal_activity', :controller => 'project',
     :issue_id => issue.id, :activity_date => date)}',
@@ -69,16 +70,16 @@ module ProjectHelper
   end
 
   def project_members(members_hash)
-    project_members = ""
+    project_members = ''
     members_hash.each do |role, members|
-      members_list = ""
+      members_list = ''
       if members.any?
-        members_list += "<ul>"
+        members_list += '<ul>'
         members.each do |member|
-          members_list += "<li>"+member.user.name+"</li>"
+          members_list += '<li>'+member.user.name+'</li>'
         end
-        members_list += "</ul>"
-        project_members += role.to_s+": "+members_list
+        members_list += '</ul>'
+        project_members += role.to_s+': '+members_list
       end
     end
     return project_members.html_safe
@@ -95,7 +96,7 @@ module ProjectHelper
     close << 'Close'
     versions = @project.versions
     today = Date.current
-    select_tag = ""
+    select_tag = ''
     versions.each do |version|
       if version.target_date.nil? || (version.target_date && version.target_date > today)
         open_ary << [version.name, version.id, version.target_date]
@@ -113,11 +114,11 @@ module ProjectHelper
     option_group_ary.each do |opt_group|
       select_tag += "<optgroup label='#{opt_group[0].to_s}'>"
       opt_group[1].each do |options|
-        select_tag += "<option id='#{options[2]}' value='#{options[1]}' #{'selected="selected"' if options[1].eql?(select_key)}>"+options[0].to_s+"</option>"
+        select_tag += "<option id='#{options[2]}' value='#{options[1]}' #{'selected="selected"' if options[1].eql?(select_key)}>"+options[0].to_s+'</option>'
       end
-      select_tag += "</optgroup>"
+      select_tag += '</optgroup>'
     end
-    select_tag += "</select>"
+    select_tag += '</select>'
     return select_tag
   end
 end

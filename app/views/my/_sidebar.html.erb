@@ -7,12 +7,22 @@
 
 <%= content_for :sidebar do %>
   <h2><%= @user.name %></h2>
+  <h3><%= t(:label_my_pages) %></h3>
   <ul>
-    <li><%= link_to t(:link_change_password), {:action => "change_password", :controller => "my", :id => current_user.slug} %></li>
+    <li><%= link_to t(:link_my_assigned_requests), my_assigned_requests_my_index_path(current_user.slug)%></li>
+    <li><%#= link_to t(:link_my_activities), my_activities_my_index_path(current_user.slug) %></li>
+    <li><%= link_to t(:link_my_spent_time),my_spent_time_my_index_path(current_user.slug)%></li>
+    <li><%= link_to t(:link_my_submited_requests),my_submitted_requests_my_index_path(current_user.slug)%></li>
+  </ul>
+  <h3><%= t(:label_my_preferences) %></h3>
+  <ul>
+    <li><%= link_to t(:link_custom_queries), {:action => 'custom_queries', :controller => 'my', :id => current_user.slug}%></li>
+    <li><%= link_to t(:link_my_projects), {:action => 'my_projects', :controller => 'my', :id => current_user.slug} %></li>
+  </ul>
+  <h3><%= t(:label_setting_plural) %></h3>
+  <ul>
     <li><%= link_to t(:link_change_email), '#'%></li>
-    <li><%= link_to t(:link_my_projects), {:action => "my_projects", :controller => "my", :id => current_user.slug} %></li>
-    <li><%= link_to t(:link_my_options), '#'%></li>
-    <li><%= link_to t(:link_custom_queries), {:action => "custom_queries", :controller => "my", :id => current_user.slug}%></li>
+    <li><%= link_to t(:link_change_password), {:action => 'change_password', :controller => 'my', :id => current_user.slug} %></li>
   </ul>
 
 <% end %>

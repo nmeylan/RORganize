@@ -9,7 +9,7 @@ class IssuesController < ApplicationController
   before_filter :check_not_owner_permission, :only => [:edit,:update, :destroy]
   before_filter { |c| c.menu_context :project_menu }
   before_filter { |c| c.menu_item(params[:controller]) }
-  before_filter {|c| c.top_menu_item("projects")}
+  before_filter {|c| c.top_menu_item('projects')}
   include ApplicationHelper
   include IssuesHelper
   helper_method :sort_column, :sort_direction
@@ -22,11 +22,12 @@ class IssuesController < ApplicationController
     load_issues
     find_custom_queries
     respond_to do |format|
-      format.html { render "issues/index"}
+      format.html { render 'issues/index'
+      }
       format.js do
         render :update do |page|
-          page.replace "issues_content", :partial => 'issues/list'
-          page.replace_html "save_query_button", :partial => 'issues/save_query_button'
+          page.replace 'issues_content', :partial => 'issues/list'
+          page.replace_html 'save_query_button', :partial => 'issues/save_query_button'
         end
       end
     end
@@ -34,13 +35,13 @@ class IssuesController < ApplicationController
 
   def show
     @issue = Issue.find(params[:id], :include => [:tracker,:version,:status,:assigned_to,:category,:attachments, :parent])
-    journals = Journal.where(:journalized_type => "Issue", :journalized_id => @issue.id).includes([:details, :user])
+    journals = Journal.where(:journalized_type => 'Issue', :journalized_id => @issue.id).includes([:details, :user])
     allowed_statuses = current_user.allowed_statuses(@project)
     done_ratio = [0,10,20,30,40,50,60,70,80,90,100]
-    @checklist_statuses = Enumeration.where(:opt => "CLIS")
+    @checklist_statuses = Enumeration.where(:opt => 'CLIS')
     @checklist_items = ChecklistItem.where(:issue_id => @issue.id).includes([:enumeration])
     respond_to do |format|
-      format.html {render :action => "show", 
+      format.html {render :action => 'show',
         :locals => {:journals => journals, :done_ratio => done_ratio, :allowed_statuses => allowed_statuses}}
     end
   end
@@ -49,7 +50,7 @@ class IssuesController < ApplicationController
     @issue = Issue.new
     @issue.attachments.build
     respond_to do |format|
-      format.html { render :action => "new", :locals => {:form_content => form_content}}
+      format.html { render :action => 'new', :locals => {:form_content => form_content}}
     end
   end
   #POST/project/:project_identifier/issues/
@@ -67,7 +68,7 @@ class IssuesController < ApplicationController
           :status => :created, :location => @issue}
       else
         @issue.errors.add(:due_date, 'format is invalid') unless date_valid?(params[:issue][:due_date])
-        format.html  { render :action => "new", :locals => {:form_content => form_content}}
+        format.html  { render :action => 'new', :locals => {:form_content => form_content}}
         format.json  { render :json => @issue.errors,
           :status => :unprocessable_entity }
       end
@@ -77,7 +78,7 @@ class IssuesController < ApplicationController
   #GET /project/:project_identifier/issues/:id/edit
   def edit
     respond_to do |format|
-      format.html { render :action => "edit", :locals => {:form_content => form_content}}
+      format.html { render :action => 'edit', :locals => {:form_content => form_content}}
     end
   end
 
@@ -99,7 +100,7 @@ class IssuesController < ApplicationController
       else
         @allowed_statuses = current_user.allowed_statuses(@project)
         @done_ratio = [0,10,20,30,40,50,60,70,80,90,100]
-        format.html  { render :action => "edit", :locals => {:form_content => form_content}}
+        format.html  { render :action => 'edit', :locals => {:form_content => form_content}}
         format.json  { render :json => @issue.errors,
           :status => :unprocessable_entity }
       end
@@ -157,7 +158,7 @@ class IssuesController < ApplicationController
       format.html { redirect_to :action => 'show'}
       format.js do
         render :update do |page|
-          if params[:context] && params[:context].eql?("toolbox")
+          if params[:context] && params[:context].eql?('toolbox')
             flash[:notice] = t(:successful_update)
             page.redirect_to :action => 'index'
           else
@@ -196,9 +197,9 @@ class IssuesController < ApplicationController
         end
         position += 1
       end
-      ChecklistItem.delete_all(["name NOT IN (?) AND issue_id = ?",params[:items].keys, params[:id]])
+      ChecklistItem.delete_all(['name NOT IN (?) AND issue_id = ?',params[:items].keys, params[:id]])
     else
-      ChecklistItem.delete_all(["issue_id = ?", params[:id]])
+      ChecklistItem.delete_all(['issue_id = ?', params[:id]])
     end
     respond_to do |format|
       format.js { render :update do |page|
@@ -236,7 +237,7 @@ class IssuesController < ApplicationController
       #Multi delete
       issues = Issue.find_all_by_id(params[:delete_ids])
       issues.each do |issue|
-        if(issue.author_id.eql?(current_user.id) || current_user.allowed_to?("delete not owner",params[:controller],@project))
+        if(issue.author_id.eql?(current_user.id) || current_user.allowed_to?('delete not owner',params[:controller],@project))
           issue.destroy
         end
       end
@@ -248,18 +249,18 @@ class IssuesController < ApplicationController
       attribute_name = ''
       attribute_value = ''
       params[:value].each do |attr_name,attr_value|
-        unless attr_value.eql?('')
+        if attr_value.eql?('')
+          #delete other parameters, that wasn't updated
+          params[:value].reject! { |attr_name, attr_value| attr_value.eql?('') }
+        else
           attribute_name = attr_name
-          if(attributes.keys.include?(attr_name))
+          if (attributes.keys.include?(attr_name))
             !attr_name.eql?('status_id') ?
-              attribute_value = attributes[attr_name].find_by_name(attr_value) :
-              attribute_value = attributes[attr_name].find_by_enumeration_id(Enumeration.find_by_name_and_opt(attr_value,'ISTS'))
+                attribute_value = attributes[attr_name].find_by_name(attr_value) :
+                attribute_value = attributes[attr_name].find_by_enumeration_id(Enumeration.find_by_name_and_opt(attr_value, 'ISTS'))
           else
             attribute_value = attr_value
           end
-        else
-          #delete other parameters, that wasn't updated
-          params[:value].reject!{|attr_name,attr_value| attr_value.eql?('')}
         end
       end
       
@@ -296,8 +297,8 @@ class IssuesController < ApplicationController
         format.js do
           render :update do |page|
             if journal.update_column(:notes, params[:notes])
-              journals = Journal.where(:journalized_type => "Issue", :journalized_id => @issue.id).includes([:details, :user])
-              page.replace_html 'history', :partial => "issues/history", :locals => {:journals => journals}
+              journals = Journal.where(:journalized_type => 'Issue', :journalized_id => @issue.id).includes([:details, :user])
+              page.replace_html 'history', :partial => 'issues/history', :locals => {:journals => journals}
               response.headers['flash-message'] = t(:successful_update)
             else
               response.headers['flash-error_message'] = t(:failure_update)
@@ -316,12 +317,12 @@ class IssuesController < ApplicationController
         if journal.details.empty?
           journal.destroy
         else
-          journal.update_column(:notes, "")
+          journal.update_column(:notes, '')
         end
         format.js do
           render :update do |page|
-            journals = Journal.where(:journalized_type => "Issue", :journalized_id => @issue.id).includes([:details, :user])
-            page.replace_html 'history', :partial => "issues/history", :locals => {:journals => journals}
+            journals = Journal.where(:journalized_type => 'Issue', :journalized_id => @issue.id).includes([:details, :user])
+            page.replace_html 'history', :partial => 'issues/history', :locals => {:journals => journals}
             response.headers['flash-message'] = t(:successful_deletion)
           end
         end
@@ -336,8 +337,8 @@ class IssuesController < ApplicationController
       format.js do
         render :update do |page|
           if @issue.save            
-            journals = Journal.where(:journalized_type => "Issue", :journalized_id => @issue.id).includes([:details, :user])
-            page.replace_html 'history', :partial => "issues/history", :locals => {:journals => journals}
+            journals = Journal.where(:journalized_type => 'Issue', :journalized_id => @issue.id).includes([:details, :user])
+            page.replace_html 'history', :partial => 'issues/history', :locals => {:journals => journals}
             page.replace_html 'predecessor', :partial => 'issues/predecessor'
             response.headers['flash-message'] = t(:successful_update)
           else
@@ -355,8 +356,8 @@ class IssuesController < ApplicationController
       format.js do
         render :update do |page|
           if @issue.save
-            journals = Journal.where(:journalized_type => "Issue", :journalized_id => @issue.id).includes([:details, :user])
-            page.replace_html 'history', :partial => "issues/history", :locals => {:journals => journals}
+            journals = Journal.where(:journalized_type => 'Issue', :journalized_id => @issue.id).includes([:details, :user])
+            page.replace_html 'history', :partial => 'issues/history', :locals => {:journals => journals}
             page.replace_html 'predecessor', :partial => 'issues/predecessor'
             response.headers['flash-message'] = t(:successful_deletion)
           else
@@ -381,10 +382,10 @@ class IssuesController < ApplicationController
       return true
     else
       action = "#{find_action(params[:action].to_s)}_not_owner"
-      unless current_user.allowed_to?(action,params[:controller],@project)
-        render_403
-      else
+      if current_user.allowed_to?(action, params[:controller], @project)
         return true
+      else
+        render_403
       end
     end
   end
@@ -439,14 +440,14 @@ class IssuesController < ApplicationController
       (session[@project.slug+'_controller_issues_filter'] = filter) : 
       session[@project.slug+'_controller_issues_filter'] =
       (session[@project.slug+'_controller_issues_filter'] ? 
-        session[@project.slug+'_controller_issues_filter'] : "")
+        session[@project.slug+'_controller_issues_filter'] : '')
   end
   #Find custom queries
   def find_custom_queries
     @custom_queries = Query.find(:all,
-      :conditions => ["(project_id = ? AND (author_id = ? OR is_public = ?)) OR
+      :conditions => ['(project_id = ? AND (author_id = ? OR is_public = ?)) OR
                           (is_for_all = ? AND (author_id = ? OR is_public = ?)) AND
-                        object_type = ?",
+                        object_type = ?',
         @project.id,
         current_user.id,
         true,
@@ -463,7 +464,7 @@ class IssuesController < ApplicationController
       session['controller_issues_per_page'] = (session['controller_issues_per_page'] ?
         session['controller_issues_per_page'] :
         25)
-    order = sort_column + " " + sort_direction
+    order = sort_column + ' ' + sort_direction
     filter = session[@project.slug+'_controller_issues_filter']
     @issues = Issue.paginated_issues(params[:page],
       session['controller_issues_per_page'],
@@ -474,29 +475,29 @@ class IssuesController < ApplicationController
   
   def form_content
     form_content = {}
-    form_content["allowed_statuses"] = current_user.allowed_statuses(@project).collect{|status| [status.enumeration.name, status.id]}
-    form_content["done_ratio"] = [0,10,20,30,40,50,60,70,80,90,100]
-    form_content["members"] = @project.members.includes(:user).collect{|member| [member.user.name, member.user.id]}
-    form_content["categories"] = @project.categories.collect{|category| [category.name, category.id]}
-    form_content["trackers"] = @project.trackers.collect{|tracker| [tracker.name, tracker.id]}
+    form_content['allowed_statuses'] = current_user.allowed_statuses(@project).collect{|status| [status.enumeration.name, status.id]}
+    form_content['done_ratio'] = [0,10,20,30,40,50,60,70,80,90,100]
+    form_content['members'] = @project.members.includes(:user).collect{|member| [member.user.name, member.user.id]}
+    form_content['categories'] = @project.categories.collect{|category| [category.name, category.id]}
+    form_content['trackers'] = @project.trackers.collect{|tracker| [tracker.name, tracker.id]}
     return form_content
   end
   
   def toolbox_menu
     menu = {}
-    menu["allowed_statuses"] = current_user.allowed_statuses(@project).collect{|status| status.enumeration.name}
-    menu["done_ratio"] = [0,10,20,30,40,50,60,70,80,90,100]
-    menu["versions"] = @project.versions.collect{|version| version.name} << 'None' #field that can include blank
-    menu["members"] = @project.members.collect{|member|member.user.name} << 'None'
-    menu["categories"] = @project.categories.collect{|category| category.name} << 'None'
+    menu['allowed_statuses'] = current_user.allowed_statuses(@project).collect{|status| status.enumeration.name}
+    menu['done_ratio'] = [0,10,20,30,40,50,60,70,80,90,100]
+    menu['versions'] = @project.versions.collect{|version| version.name} << 'None' #field that can include blank
+    menu['members'] = @project.members.collect{|member|member.user.name} << 'None'
+    menu['categories'] = @project.categories.collect{|category| category.name} << 'None'
     #collecting informations from selected issues
     current_states = Hash.new{}
-    current_states["member"] = @issues_toolbox.collect{|issue| issue.assigned_to.nil? ? 'None' : issue.assigned_to.name }.uniq
-    current_states["version"] = @issues_toolbox.collect{|issue| issue.version.nil? ? 'None' : issue.version.name}.uniq
-    current_states["status"] = @issues_toolbox.collect{|issue| issue.status.enumeration.name}.uniq
-    current_states["done"] = @issues_toolbox.collect{|issue| issue.done}.uniq
-    current_states["category"] = @issues_toolbox.collect{|issue| issue.category.nil? ? 'None' : issue.category.name}.uniq
-    menu["current_states"] = current_states
+    current_states['member'] = @issues_toolbox.collect{|issue| issue.assigned_to.nil? ? 'None' : issue.assigned_to.name }.uniq
+    current_states['version'] = @issues_toolbox.collect{|issue| issue.version.nil? ? 'None' : issue.version.name}.uniq
+    current_states['status'] = @issues_toolbox.collect{|issue| issue.status.enumeration.name}.uniq
+    current_states['done'] = @issues_toolbox.collect{|issue| issue.done}.uniq
+    current_states['category'] = @issues_toolbox.collect{|issue| issue.category.nil? ? 'None' : issue.category.name}.uniq
+    menu['current_states'] = current_states
     return menu
   end
 end

@@ -9,7 +9,7 @@ class WikiController < ApplicationController
   before_filter :check_organize_pages_permission, :only => [:organize_pages]
   before_filter { |c| c.menu_context :project_menu }
   before_filter { |c| c.menu_item(params[:controller])}
-  before_filter {|c| c.top_menu_item("projects")}
+  before_filter {|c| c.top_menu_item('projects')}
   include ApplicationHelper
   
   def index
@@ -56,7 +56,7 @@ class WikiController < ApplicationController
   end
   
   def pages
-    @wiki_pages = WikiPage.select("*").where(:wiki_id => Wiki.find_by_project_id(@project.id), :parent_id => nil)
+    @wiki_pages = WikiPage.select('*').where(:wiki_id => Wiki.find_by_project_id(@project.id), :parent_id => nil)
     respond_to do |format|
       format.html {}
     end
@@ -64,7 +64,7 @@ class WikiController < ApplicationController
  
   
   def organize_pages
-    @wiki_pages = WikiPage.select("*").where(:wiki_id => Wiki.find_by_project_id(@project.id), :parent_id => nil)
+    @wiki_pages = WikiPage.select('*').where(:wiki_id => Wiki.find_by_project_id(@project.id), :parent_id => nil)
     respond_to do |format|
       format.html {}
     end
@@ -72,11 +72,11 @@ class WikiController < ApplicationController
   
   def set_organization
     page_ids = params[:pages_organization].keys
-    @wiki_pages = WikiPage.select("*").where(:id => page_ids)
+    @wiki_pages = WikiPage.select('*').where(:id => page_ids)
     parent = nil
     @wiki_pages.each do |page|
       parent = params[:pages_organization][page.id.to_s][:parent_id]
-      if parent.eql?("null")
+      if parent.eql?('null')
         params[:pages_organization][page.id.to_s][:parent_id] = nil
       end
       page.update_attributes(params[:pages_organization][page.id.to_s])

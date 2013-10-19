@@ -7,7 +7,7 @@ class TrackersController < ApplicationController
   before_filter :check_permission
   before_filter { |c| c.menu_context :admin_menu }
   before_filter { |c| c.menu_item(params[:controller])}
-  before_filter {|c| c.top_menu_item("administration")}
+  before_filter {|c| c.top_menu_item('administration')}
   include ApplicationHelper
 
   #Get /administration/trackers
@@ -34,7 +34,7 @@ class TrackersController < ApplicationController
         flash[:notice] = t(:successful_creation)
         format.html {redirect_to :action => 'index'}
       else
-        format.html  { render :action => "new" }
+        format.html  { render :action => 'new' }
         format.json  { render :json => @tracker.errors,
           :status => :unprocessable_entity }
       end

@@ -8,16 +8,16 @@
   <h2><%= t(:link_versions) %></h2>
   <ul>
     <% @versions.each do |version| %>
-      <li><%= link_to version.name, "#v-#{version.id ? version.id : "unplanned"}" %></li>
+      <li><%= link_to version.name, "#v-#{version.id ? version.id : 'unplanned'}" %></li>
     <% end %>
   </ul>
   <h2><%= t(:label_report_plural) %></h2>
   <ul>
     <li>
-      <%= link_to t(:label_calendar), {:controller => "roadmap", :action => "calendar", :project_id => @project.slug} %>
+      <%= link_to t(:label_calendar), {:controller => 'roadmap', :action => 'calendar', :project_id => @project.slug} %>
     </li>
     <li>
-      <%= link_to t(:label_gantt_chart), {:controller => "roadmap", :action => "gantt", :project_id => @project.slug} %>
+      <%= link_to t(:label_gantt_chart), {:controller => 'roadmap', :action => 'gantt', :project_id => @project.slug} %>
     </li>
   </ul>
 <% end %>

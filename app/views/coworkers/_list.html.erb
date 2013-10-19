@@ -8,13 +8,13 @@
   <% if @coworkers.any?  %>
     <div class="box">
       <label>
-        <%= radio_button_tag "project", "All", true, {:class => "radio_filter"} %>
+        <%= radio_button_tag 'project', 'All', true, {:class => 'radio_filter'} %>
         <%= t(:label_all) %>
       </label>
       <% @coworkers.keys.each do |project| %>
         <% if @coworkers[project].any?%>
           <label>
-            <%= radio_button_tag "project", project, false, {:class => "radio_filter"} %>
+            <%= radio_button_tag 'project', project, false, {:class => 'radio_filter'} %>
             <%= project %>
           </label>
         <% end %>
@@ -30,7 +30,7 @@
       </tr>
       <% @coworkers.each do |project, coworkers| %>
         <% coworkers.each do |coworker|  %>
-          <tr class="odd_even member_tr <%= project.gsub(" ", "_") %>" id="<%=coworker.id%>">
+          <tr class="odd_even member_tr <%= project.gsub(' ', '_') %>" id="<%=coworker.id%>">
             <td><%= check_box_tag 'user-'+coworker.user.id.to_s, coworker.user.id %></td>
             <td class="list_center name"><%= coworker.id %></td>
             <td class="list_center name"><%= coworker.name %></td>

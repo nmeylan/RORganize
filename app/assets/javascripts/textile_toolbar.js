@@ -10,7 +10,7 @@
 // -------------------------------------------------------------------
 // Feel free to add more tags
 // -------------------------------------------------------------------
-mySettings = {
+var mySettings = {
    previewParserPath: '', // path to your Textile parser
    onShiftEnter: {keepDefault: false, replaceWith: '\n\n'},
    markupSet: [

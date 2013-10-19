@@ -7,7 +7,7 @@ module PermissionsHelper
 
   def critical_permissions(permission_name)
     #Contains array with critical actions
-    critical_permissions = ["destroy", "delete", "remove", "public"]
+    critical_permissions = %w(destroy delete remove public)
     critical_permissions.each do |permission|
       if permission_name.include?(permission) || permission_name.include?(permission.capitalize)
         return true
@@ -17,7 +17,7 @@ module PermissionsHelper
   end
 
   def critical_controllers(controller_name)
-    critical_controllers =  ["administration", "permissions", "roles", "settings", "trackers"]
+    critical_controllers = %w(administration permissions roles settings trackers)
     critical_controllers.each do |controller|
       if controller_name.eql?(controller) || controller_name.eql?(controller.capitalize)
         return true

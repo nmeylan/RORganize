@@ -14,4 +14,21 @@
   <div style="clear:both;"></div>
 </div>
 
-<%= render :partial => "projects/list", :locals => {:allow_to_star => false, :members => @members}  %>
+<%= link_to t(:link_all), '#all',
+  {:class => "project_selection_filter #{session['project_selection_filter'].eql?('all') ? 'selected' : ''}",
+  :id => 'all'} %> |
+<%= link_to t(:link_starred), '#starred',
+  {:class => "project_selection_filter #{session['project_selection_filter'].eql?('starred') ? 'selected' : ''}",
+  :id => 'starred'} %> |
+<%= link_to t(:link_opened), '#opened',
+  {:class => "project_selection_filter #{session['project_selection_filter'].eql?('opened') ? 'selected' : ''}",
+  :id => 'opened'} %> |
+<%= link_to t(:link_archived), '#archived',
+  {:class => "project_selection_filter #{session['project_selection_filter'].eql?('archived') ? 'selected' : ''}",
+  :id => 'archived'} %>
+
+
+<%= render :partial => 'projects/list', :locals => {:allow_to_star => false, :projects => projects}  %>
+<script type="text/javascript">
+  project_selection_filter("<%=url_for({:action => 'index', :controller => 'projects'})%>");
+</script>

@@ -6,7 +6,7 @@
 %>
 
 <div class="contextual">
-  <h1><%= t(:link_permissions) %> - <%= params[:role_name].gsub("_"," ") %></h1>
+  <h1><%= t(:link_permissions) %> - <%= params[:role_name].gsub('_', ' ') %></h1>
 </div>
 <%= form_tag({:action => 'update_permissions', :controller => 'permissions'}) %>
 <div class="box">
@@ -15,8 +15,8 @@
       <legend>
         <%= link_to '', '#',
           {:class => 'icon icon-checked',
-          :id => 'check_all_'+k.to_s, 'cb_checked' => "b",
-          :title => "check all"} %>
+          :id => 'check_all_'+k.to_s, 'cb_checked' => 'b',
+          :title => 'check all'} %>
 
         <% if critical_controllers(k) %>
           <span class="icon icon-warning">
@@ -31,7 +31,7 @@
           <%= check_box_tag  "[permissions][#{key}]", value, selected_permissions.include?(value)%>
           <label>
             <%= link_to key, edit_permission_path(value),
-              {:class => (critical_permissions(key) ? "alert icon icon-alert" : "")}%>
+              {:class => (critical_permissions(key) ? 'alert icon icon-alert' : '')}%>
           </label>
 
         <% end %>
@@ -39,7 +39,7 @@
     </fieldset>
   <% end %>
 </div>
-<%= submit_tag "save" %>
+<%= submit_tag 'save' %>
 
 <script type="text/javascript">
   multi_toogle();

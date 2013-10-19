@@ -7,8 +7,8 @@ class MembersController < ApplicationController
   before_filter :find_project
   before_filter :check_permission, :except => [:create]
   before_filter { |c| c.menu_context :project_menu }
-  before_filter { |c| c.menu_item("settings") }
-  before_filter {|c| c.top_menu_item("projects")}
+  before_filter { |c| c.menu_item('settings') }
+  before_filter {|c| c.top_menu_item('projects')}
   include ApplicationHelper
   #GET /projects/
   def index
@@ -17,7 +17,7 @@ class MembersController < ApplicationController
     users = User.find(:all)
     users =users.select{|user| !@members.collect{|member| member.user.id}.include?(user.id)}
     respond_to do |format|
-      format.html{render :action => "index", :locals => {:roles => roles, :users => users}}
+      format.html{render :action => 'index', :locals => {:roles => roles, :users => users}}
     end
   end
 

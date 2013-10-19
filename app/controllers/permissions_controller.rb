@@ -10,7 +10,7 @@ class PermissionsController < ApplicationController
   include Rorganize::PermissionManager::PermissionManagerHelper
   before_filter { |c| c.menu_context :admin_menu }
   before_filter { |c| c.menu_item(params[:controller])}
-  before_filter {|c| c.top_menu_item("administration")}
+  before_filter {|c| c.top_menu_item('administration')}
 
   #GET administration/permissions
   def index
@@ -40,7 +40,7 @@ class PermissionsController < ApplicationController
           :status => :created, :location => @permission}
       else
         controller_list
-        format.html  { render :action => "new" }
+        format.html  { render :action => 'new' }
         format.json  { render :json => @permission.errors,
           :status => :unprocessable_entity }
       end
@@ -52,7 +52,7 @@ class PermissionsController < ApplicationController
     @permission = Permission.find(params[:id])
     controllers = controller_list
     respond_to do |format|
-      format.html {render :action => "edit", :locals =>{:controllers => controllers}}
+      format.html {render :action => 'edit', :locals =>{:controllers => controllers}}
     end
   end
 
@@ -67,7 +67,7 @@ class PermissionsController < ApplicationController
           :status => :created, :location => @permission}
       else
         controller_list
-        format.html  { render :action => "edit" }
+        format.html  { render :action => 'edit' }
         format.json  { render :json => @permission.errors,
           :status => :unprocessable_entity }
       end
@@ -92,7 +92,7 @@ class PermissionsController < ApplicationController
   def list
     controllers = controller_list
     permission_hash = Hash.new{|h,k| h[k] = {}}
-    role = Role.find_by_name(params[:role_name].gsub("_"," "))
+    role = Role.find_by_name(params[:role_name].gsub('_', ' '))
     selected_permissions = role.permissions.collect{|permission| permission.id}
     permissions = Permission.find(:all)
     tmp_ary = []
@@ -106,12 +106,12 @@ class PermissionsController < ApplicationController
       tmp_hash = {}
     end
     respond_to do |format|
-      format.html {render :action => "list", :locals => {:permissions => permission_hash, :selected_permissions => selected_permissions}}
+      format.html {render :action => 'list', :locals => {:permissions => permission_hash, :selected_permissions => selected_permissions}}
     end
   end
 
   def update_permissions
-    @role = Role.find_by_name(params[:role_name].gsub("_"," "))
+    @role = Role.find_by_name(params[:role_name].gsub('_', ' '))
     if params[:permissions]
       permissions_id = params[:permissions].values
       permissions = Permission.find_all_by_id(permissions_id)
@@ -135,7 +135,7 @@ class PermissionsController < ApplicationController
   private
   def controller_list
     controllers =  Rails.application.routes.routes.collect{|route| route.defaults[:controller]}
-    unused_controller = ["rorganize", "my"]
+    unused_controller = %w(rorganize my)
     controllers = controllers.uniq!.select{|controller_name| controller_name && !controller_name.match(/.*\/.*/) && !unused_controller.include?(controller_name)}
     controllers.collect! do |controller|
       controller = controller.capitalize
