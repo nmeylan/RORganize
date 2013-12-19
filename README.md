@@ -36,7 +36,8 @@ RORganize is a bugs and issue-tracking app, which integrate additional tools suc
 	
 _All stuff described in previous part is available in version 0.5.1_	
 	
-#In next versions	
-+ Repository integration (integrate your repository to update your issues' progress)
+#In next versions
+	A big refactor of AJAX part was done to make it with UJS. This will be available in the version 0.6. 
++Repository integration (integrate your repository to update your issues' progress)
 + Activities notifications (follow in real time each project's activities)
 + Testing tool (test your developpment and update your issues with test's result)
