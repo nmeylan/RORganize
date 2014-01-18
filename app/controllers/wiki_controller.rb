@@ -36,11 +36,7 @@ class WikiController < ApplicationController
     flash[:notice] = t(:successful_deletion)
     respond_to do |format|
       format.html { redirect_to wiki_index_path}
-      format.js do
-        render :update do |page|
-          page.redirect_to wiki_index_path
-        end
-      end
+      format.js {js_redirect_to wiki_index_path}
     end
   end
 
@@ -71,22 +67,10 @@ class WikiController < ApplicationController
   end
   
   def set_organization
-    page_ids = params[:pages_organization].keys
-    @wiki_pages = WikiPage.select('*').where(:id => page_ids)
-    parent = nil
-    @wiki_pages.each do |page|
-      parent = params[:pages_organization][page.id.to_s][:parent_id]
-      if parent.eql?('null')
-        params[:pages_organization][page.id.to_s][:parent_id] = nil
-      end
-      page.update_attributes(params[:pages_organization][page.id.to_s])
-    end
+
+    Wiki.organize_pages(params[:pages_organization])
     respond_to do |format|
-      format.js do
-        render :update do |page|
-          response.headers['flash-message'] = t(:successful_update)
-        end
-      end
+      format.js { respond_to_js :action => :empty_action, :response_header => :success, :response_content => t(:successful_update)}
     end
   end
   

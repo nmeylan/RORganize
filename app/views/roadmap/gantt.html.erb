@@ -18,13 +18,3 @@
 <p>
   Only task with a start date are displayed.
 </p>
-<script type="text/javascript" language="JavaScript">
-
-  var gantt = new GanttChart();
-  gantt.setImagePath("/assets/gantt/");
-  gantt.showTreePanel(true);
-  gantt.showDescTask(true, 'n,e,d');
-  gantt.create("gantt_chart");
-
-</script>
-<%= javascript_tag("gantt.loadData(new String(\""+@data+"\"), false, true);") %>

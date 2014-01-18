@@ -21,7 +21,7 @@ class RolesController < ApplicationController
   #GET /administration/roles/new
   def new
     @role = Role.new
-    @issues_statuses = IssuesStatus.select('*').includes(:enumeration)
+    @old_issues_statuses = IssuesStatus.select('*').includes(:enumeration)
     respond_to do |format|
       format.html
     end
@@ -30,16 +30,16 @@ class RolesController < ApplicationController
   #POST /administration/roles/new
   def create
     @role = Role.new(params[:role])
-    if(params[:issues_statuses])
-      issues_statuses = IssuesStatus.select('*').where(:id => params[:issues_statuses].values)
-      issues_statuses.each{|status|@role.issues_statuses << status}
+    if(params[:old_issues_statuses])
+      issues_statuses = IssuesStatus.select('*').where(:id => params[:old_issues_statuses].values)
+      issues_statuses.each{|status|@role.old_issues_statuses << status}
     end
     respond_to do |format|
       if @role.save
         flash[:notice] = t(:successful_creation)
         format.html {redirect_to :action => 'index'}
       else
-        @issues_statuses = IssuesStatus.select('*').includes(:enumeration)
+        @old_issues_statuses = IssuesStatus.select('*').includes(:enumeration)
         format.html  { render :action => 'new' }
         format.json  { render :json => @role.errors,
           :status => :unprocessable_entity }
@@ -50,7 +50,7 @@ class RolesController < ApplicationController
   #GET /administration/roles/edit/:id
   def edit
     @role = Role.find_by_id(params[:id])
-    @issues_statuses = IssuesStatus.select('*').includes(:enumeration)
+    @old_issues_statuses = IssuesStatus.select('*').includes(:enumeration)
     respond_to do |format|
       format.html
     end
@@ -59,15 +59,15 @@ class RolesController < ApplicationController
   #PUT /administration/roles/edit/:id
   def update
     @role = Role.find_by_id(params[:id])
-    issues_statuses = IssuesStatus.select('*').where(:id => params[:issues_statuses].values)
-    @role.issues_statuses.clear
-    issues_statuses.each{|status|@role.issues_statuses << status}
+    issues_statuses = IssuesStatus.select('*').where(:id => params[:old_issues_statuses].values)
+    @role.old_issues_statuses.clear
+    issues_statuses.each{|status|@role.old_issues_statuses << status}
     respond_to do |format|
       if @role.update_attributes(params[:role])
         flash[:notice] = t(:successful_update)
         format.html {redirect_to :action => 'index'}
       else
-        @issues_statuses = IssuesStatus.select('*').includes(:enumeration)
+        @old_issues_statuses = IssuesStatus.select('*').includes(:enumeration)
         format.html {render :action => 'edit'}
       end
     end
@@ -80,12 +80,7 @@ class RolesController < ApplicationController
     @roles = Role.find(:all)
     respond_to do |format|
       format.html {redirect_to :action => 'index'}
-      format.js do
-        render :update do |page|
-          page.replace 'roles_content', :partial => 'roles/list'
-          response.headers['flash-message'] = t(:successful_deletion)
-        end
-      end
+      format.js {respond_to_js :response_header => :success, :response_content => t(:successful_deletion), :locals => { :id => @role.id}}
     end
   end
 end

@@ -13,7 +13,7 @@
   </p>
   <p>
     <%= f.label :description, t(:field_description) %>
-    <%= f.text_area :description, :rows => 12 %>
+    <%= f.text_area :description, :rows => 12, :class => 'fancyEditor' %>
   </p>
   <div class="splitcontentleft">
     <p>
@@ -29,9 +29,3 @@
   </div>
   <div style="clear:both"></div>
 </div>
-
-<%= raw set_toolbar('version_description') %>
-<script type="text/javascript">
-  jQuery('#calendar_start').datepicker({dateFormat: 'dd/mm/yy'});
-  jQuery('#calendar').datepicker({dateFormat: 'dd/mm/yy'});
-</script>

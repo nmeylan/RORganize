@@ -6,14 +6,12 @@ class RorganizeController < ApplicationController
     unless current_user.nil?
       order = sort_column + ' ' + sort_direction
       #Load favorites projects
+      #Load favorites projects
       projects = current_user.starred_projects
       #Load latest assigned requests
-      issues = Issue.select('issues.*')
-      .where('issues.id IN (?)',Issue.select('issues.id').where('assigned_to_id = ?', current_user.id).limit(5).order('issues.id DESC'))
-      .includes(:tracker, :project,:status => [:enumeration])
-      .order(order)
+      issues = current_user.latest_assigned_issues(order, 5)
       #Load latest activities
-      activities = Journal.select('journals.*').where(:user_id => current_user.id).includes(:details, :project, :user, :journalized).limit(5).order('created_at DESC')
+      activities =  current_user.latest_activities(5)
       respond_to do |format|
         format.html {render :action => 'index', :locals => {:issues => issues, :activities => activities, :projects => projects}}
         format.js do

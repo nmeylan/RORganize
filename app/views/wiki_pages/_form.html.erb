@@ -12,7 +12,6 @@
 </p>
 <p>
   <label for="wiki_page_content"><%=t(:field_content)%></label>
-  <%= f.text_area :content, :rows => 30 %>
+  <%= f.text_area :content, :rows => 30, :class => 'fancyEditor' %>
 </p>
 </div>
-<%= raw set_toolbar('wiki_page_content') %>

@@ -12,7 +12,7 @@
       <th></th>
     </tr>
     <% @categories.each do |category| %>
-      <tr class="odd_even">
+      <tr class="odd_even" id="category-<%= category.id %>">
 
         <td class="list_center name">
           <% if current_user.allowed_to?('edit','Categories',@project) %>
@@ -25,10 +25,11 @@
           <%= link_to_with_permissions(t(:link_delete), 
             category_path(@project.slug, category.id), 
             @project, 
-            {:method => :delete, 
-              :target => 'self',
-              :html => {:class => 'icon icon-del', 
-                :onclick => "button_delete('#{ category_path(@project.slug, category.id)}')"}}) %>
+            {:method => :delete,
+              :remote => true,
+              :confirm => t(:text_delete_item),
+              :class => 'icon icon-del'
+            }) %>
 
         </td>
       </tr>

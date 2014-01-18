@@ -14,9 +14,7 @@
     <fieldset>
       <legend>
         <%= link_to '', '#',
-          {:class => 'icon icon-checked',
-          :id => 'check_all_'+k.to_s, 'cb_checked' => 'b',
-          :title => 'check all'} %>
+          {:class => 'icon icon-checked', :id => 'check_all_'+k.to_s, 'cb_checked' => 'b', :title => 'check all'} %>
 
         <% if critical_controllers(k) %>
           <span class="icon icon-warning">
@@ -40,11 +38,3 @@
   <% end %>
 </div>
 <%= submit_tag 'save' %>
-
-<script type="text/javascript">
-  multi_toogle();
-  jQuery(".content").each(function(){
-    var id = jQuery(this).attr("class").split(' ')[1];
-    checkAllBox("#check_all_"+id, jQuery(this));
-  });
-</script>

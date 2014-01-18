@@ -7,7 +7,7 @@
 
 <div class="overlayOuter" id="add_member_overlay">
   <div class="overlayInner">
-    <%if users.any? %>
+    <%if users && users.any? %>
       <%= form_tag(members_path,:remote => true) do -%>
         <p>
           <label for="users"><%=t(:field_user)%></label>
@@ -20,7 +20,7 @@
           <!--</div>-->
         </p>
         <div class="overlayButtons">
-          <%= submit_tag 'Ok', {:onclick => "jQuery('#add_member_overlay').overlay().close()"} %>
+          <%= submit_tag 'Ok' %>
           <input type="button" class="close" value="<%= t(:button_close) %>">
         </div>
       <% end %>
@@ -30,8 +30,3 @@
 
   </div>
 </div>
-<script type="text/javascript">
-  jQuery(document).ready(function() {
-    createOverlay("#add_member_overlay", 150);
-  });
-</script>

@@ -17,7 +17,7 @@
     </p>
     <p style="padding-right: 3px;">
       <%= f.label :description %>
-      <%= f.text_area :description, :rows => 12 %>
+      <%= f.text_area :description, :rows => 12, :class => 'fancyEditor' %>
     </p>
     <% if current_user.allowed_to?('public_queries','Queries',@project) %>
       <p>
@@ -33,7 +33,5 @@
     </p>
     <%= hidden_field :query, :object_type%>
   </div>
-  <%= submit_tag t(:button_save), {:onclick => "jQuery('#create_query_overlay').overlay().close()"} %>
-  <input type="button" onclick ="jQuery('#create_query_overlay').overlay().close()" class="close" value="<%= t(:button_close)  %>">
+  <%= submit_tag t(:button_save) %>
 <% end %>
-<%= raw set_toolbar('query_description') %>

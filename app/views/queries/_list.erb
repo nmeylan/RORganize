@@ -16,20 +16,11 @@
       </tr>
       <% query_ids = @queries.collect{|query| query.id}.to_json %>
       <% @queries.each do |query| %>
-        <tr class="odd_even query_tr">
+        <tr class="odd_even query_tr" id="<%= query.id %>">
           <td class="list_left name"><%= link_to query.name, query_path(:id => query.id) %></td>
-          <td class="action"><%= link_to_with_permissions(
-              t(:link_edit), 
-              edit_query_path(query.id),
-              nil,
-              {:html => {:class => 'icon icon-edit'}}) %></td>
-          <td class="action"> <%= link_to_with_permissions(t(:link_delete), 
-            query_path(query.id), 
-            @project, 
-            {:method => :delete, 
-              :target => 'self',
-              :html => {:class => 'icon icon-del', 
-                :onclick =>  "button_delete_with_data('#{query_path(query.id)}', {queries:#{query_ids}})"}}) %>
+          <td class="action"><%= link_to_with_permissions(t(:link_edit),edit_query_path(query.id),nil, {:class => 'icon icon-edit'}) %></td>
+          <td class="action"> <%= link_to_with_permissions(t(:link_delete), query_path(query.id), @project, {:method => :delete, :class => 'icon icon-del', :remote => true, :confirm => t(:text_delete_item )}) %>
+
         </tr>
       <%end%>
     </table>

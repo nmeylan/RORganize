@@ -9,7 +9,7 @@
     <ul class="project list <%=allow_to_star ? 'sortable' : ''%>">
       <% projects.each do |project| %>
         <li class="<%= project.is_archived ? 'archived' : '' %>" id="<%=project.id%>">
-          <a class="project" href="<%= url_for({:action => 'overview', :controller => 'project', :project_id => project.slug}) %>">
+          <a class="project" href="<%= overview_projects_path(project.slug) %>">
     <%#= If project get a logo %>
             <% if project.attachments.any? %>
               <div class="splitcontentleft" style="margin-top: 9px">
@@ -36,9 +36,9 @@
             <div style="clear:both;"></div>
             <%if allow_to_star %>
               <% if project.starred? %>
-                <%= link_to '', '#', {:class => 'icon icon-fav starred star'} %>
+                <%= link_to '', star_project_my_index_path(project.id), {:class => 'icon icon-fav starred star', :method => :post, :remote => true} %>
               <% else %>
-                <%= link_to '', '#', {:class => 'icon icon-fav-off star'} %>
+                <%= link_to '', star_project_my_index_path(project.id), {:class => 'icon icon-fav-off star', :method => :post, :remote => true} %>
               <% end %>
             <% end %>
           </a>
@@ -46,16 +46,10 @@
       <% end %>
     </ul>
     <% if allow_to_star %>
-      <%= submit_tag t(:button_save), {:id => 'save_position'} %>
+      <%= submit_tag t(:button_save), {:id => 'save_position', 'data-link' => save_project_position_my_index_path} %>
     <% end %>
   <% else %>
     <h2><%= t(:text_no_data) %></h2>
   <% end %>
-
-  <script type="text/javascript">
-    bind_star_project("<%=url_for({:action => 'star_project', :controller => 'my', :id => current_user.id})%>");
-    jQuery(".sortable").sortable();
-    bind_save_project_position("<%=url_for({:action => 'save_project_position', :controller => 'my', :id => current_user.id})%>");
-  </script>
 
 </div>

@@ -22,8 +22,9 @@ gem 'jquery-rails'
 gem 'RedCloth'
 gem 'mongrel', '>= 1.2.0.pre2'
 gem 'will_paginate', '~> 3.0.3'
-gem 'prototype-rails', '~> 3.2.1'
 gem 'nokogiri'
+gem 'gon'
+
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
 
@@ -41,9 +42,8 @@ group :test do
   gem 'turn', '~> 0.8.3', :require => false
 end
 group :developpement do
-  
-  gem "bullet", :group => "development"
-  gem "ruby-growl", :group => "development"
+  gem "bullet"
+  gem "ruby-growl"
 end
 
 

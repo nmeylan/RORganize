@@ -93,4 +93,28 @@ class Document < RorganizeActiveRecord
     attrs.each{|attribute| filtered_attributes << [attribute,attribute.gsub(/\s/,'_').downcase]}
     return filtered_attributes
   end
+
+  #Get all document activities
+  def activities
+    Journal.find_all_by_journalized_type_and_journalized_id(self.class.to_s, self.id, :include => [:details, :user])
+  end
+
+  #Get creation date and author
+  def creation_info
+    Journal.includes(:user).where(:action_type => 'created', :journalized_id => self.id, :journalized_type => self.class.to_s).first
+  end
+
+  #Get toolbox menu for document class.
+  def self.toolbox_menu(project, documents)
+    menu = {}
+    # Toolbox menu content
+    menu['versions'] = project.versions.collect { |version| version }
+    menu['categories'] = project.categories.collect { |category| category }
+    #documents current states for each fields
+    current_states = Hash.new {}
+    current_states['version'] = documents.collect { |document| document.version }.uniq
+    current_states['category'] = documents.collect { |document| document.category }.uniq
+    menu['current_states'] = current_states
+    menu
+  end
 end

@@ -22,10 +22,9 @@ class PermissionsController < ApplicationController
 
   #GET administration/permission/new
   def new
-    controller_list
     @permission = Permission.new
     respond_to do |format|
-      format.html
+      format.html {render :action => 'new', :locals =>{:controllers =>  Permission.controller_list}}
     end
   end
 
@@ -39,7 +38,7 @@ class PermissionsController < ApplicationController
         format.json  { render :json => @permission,
           :status => :created, :location => @permission}
       else
-        controller_list
+        Permission.controller_list
         format.html  { render :action => 'new' }
         format.json  { render :json => @permission.errors,
           :status => :unprocessable_entity }
@@ -49,8 +48,8 @@ class PermissionsController < ApplicationController
 
   #GET administration/permission/edit/:id
   def edit
-    @permission = Permission.find(params[:id])
-    controllers = controller_list
+    @permission = Permission.find_by_id(params[:id])
+    controllers = Permission.controller_list
     respond_to do |format|
       format.html {render :action => 'edit', :locals =>{:controllers => controllers}}
     end
@@ -66,8 +65,8 @@ class PermissionsController < ApplicationController
         format.json  { render :json => @permission,
           :status => :created, :location => @permission}
       else
-        controller_list
-        format.html  { render :action => 'edit' }
+
+        format.html  {render :action => 'edit', :locals =>{:controllers =>  Permission.controller_list}}
         format.json  { render :json => @permission.errors,
           :status => :unprocessable_entity }
       end
@@ -81,47 +80,21 @@ class PermissionsController < ApplicationController
     flash[:notice] = t(:successful_deletion)
     respond_to do |format|
       format.html { redirect_to permissions_path}
-      format.js do
-        render :update do |page|
-          page.redirect_to permissions_path
-        end
-      end
+      format.js {js_redirect_to (permissions_path)}
     end
   end
   #Other methods
   def list
-    controllers = controller_list
-    permission_hash = Hash.new{|h,k| h[k] = {}}
-    role = Role.find_by_name(params[:role_name].gsub('_', ' '))
-    selected_permissions = role.permissions.collect{|permission| permission.id}
-    permissions = Permission.find(:all)
-    tmp_ary = []
-    tmp_hash = {}
-    controllers.each do |controller|
-      tmp_ary = permissions.select{ |permission| permission.controller.eql?(controller)}
-      tmp_ary.each do |permission|
-        tmp_hash[permission.name] = permission.id
-      end
-     permission_hash[controller] = tmp_hash
-      tmp_hash = {}
-    end
+    permissions = Permission.permission_list(params[:role_name])
     respond_to do |format|
-      format.html {render :action => 'list', :locals => {:permissions => permission_hash, :selected_permissions => selected_permissions}}
+      format.html {render :action => 'list', :locals => {:permissions => permissions[:permission_hash],:selected_permissions => permissions[:selected_permissions]}}
     end
   end
 
   def update_permissions
     @role = Role.find_by_name(params[:role_name].gsub('_', ' '))
-    if params[:permissions]
-      permissions_id = params[:permissions].values
-      permissions = Permission.find_all_by_id(permissions_id)
-      @role.permissions.clear
-      permissions_id.each do |permission_id|
-        permission = permissions.select{|perm| perm.id == permission_id.to_i }
-        @role.permissions << permission
-      end
-    end
-    if @role.save
+    saved = @role.update_permissions(params[:permissions])
+    if saved
       reload_permission(@role.id)
       @roles = Role.find(:all)
       respond_to do |format|
@@ -132,15 +105,6 @@ class PermissionsController < ApplicationController
       list
     end
   end
-  private
-  def controller_list
-    controllers =  Rails.application.routes.routes.collect{|route| route.defaults[:controller]}
-    unused_controller = %w(rorganize my)
-    controllers = controllers.uniq!.select{|controller_name| controller_name && !controller_name.match(/.*\/.*/) && !unused_controller.include?(controller_name)}
-    controllers.collect! do |controller|
-      controller = controller.capitalize
-    end
-    return controllers
-  end
+
 end
 

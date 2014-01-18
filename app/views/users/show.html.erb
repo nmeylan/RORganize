@@ -8,18 +8,8 @@
 <div class="contextual">
   <h1><%= t(:label_user)+': '+@user.name%></h1>
   <div class="splitcontentright">
-    <%= link_to_with_permissions(
-      t(:link_edit), 
-      edit_user_path(@user.id), 
-      nil, 
-      {:html => {:class => 'icon icon-edit'}}) %>
-     <%= link_to_with_permissions(t(:link_delete), 
-      user_path(@user.id), 
-      nil, 
-      {:method => :delete, 
-        :target => 'self',
-        :html => {:class => 'icon icon-del', 
-          :onclick => "button_delete('#{user_path(@user.id)}')"}}) %>
+    <%= link_to_with_permissions(t(:link_edit), edit_user_path(@user.id), nil, {:class => 'icon icon-edit'}) %>
+     <%= link_to_with_permissions(t(:link_delete), user_path(@user.id), nil, {:method => :delete, :class => 'icon icon-del', :remote => true, :confirm => t(:text_delete_item)}) %>
 
   </div>
 </div>

@@ -14,12 +14,9 @@ class MyController < ApplicationController
     #Load favorites projects
     projects = current_user.starred_projects
     #Load latest assigned requests
-    issues = Issue.select('issues.*')
-    .where('issues.id IN (?)', Issue.select('issues.id').where('assigned_to_id = ?', current_user.id).limit(5).order('issues.id DESC'))
-    .includes(:tracker, :project, :status => [:enumeration])
-    .order(order)
+    issues = current_user.latest_assigned_issues(order, 5)
     #Load latest activities
-    activities = Journal.select('journals.*').where(:user_id => current_user.id).includes(:details, :project, :user, :journalized).limit(5).order('created_at DESC')
+    activities =  current_user.latest_activities(5)
     respond_to do |format|
       format.html { render :action => 'show', :locals => {:issues => issues, :activities => activities, :projects => projects} }
       format.js do
@@ -86,15 +83,12 @@ class MyController < ApplicationController
 
   def star_project
     members= current_user.members
-    member = members.select { |member| member.project_id.eql?(params[:star_project_id].to_i) }.first
+    member = members.select { |member| member.project_id.eql?(params[:project_id].to_i) }.first
     member.is_project_starred = !member.is_project_starred
     member.save
+    message = "#{t(:text_project)} #{member.project.name} #{member.is_project_starred ? t(:successful_starred) : t(:successful_unstarred )}"
     respond_to do |format|
-      format.js {
-        render :update do |page|
-          page.replace 'projects', :partial => 'projects/list', :locals => {:allow_to_star => true, :projects => current_user.projects}
-          response.headers['flash-message'] = t(:successful_update)
-        end }
+      format.js {respond_to_js :response_header => :success, :response_content => message}
     end
   end
 
@@ -106,11 +100,7 @@ class MyController < ApplicationController
       member.save
     end
     respond_to do |format|
-      format.js {
-        render :update do |page|
-          page.replace 'projects', :partial => 'projects/list', :locals => {:allow_to_star => true, :projects => current_user.projects}
-          response.headers['flash-message'] = t(:successful_update)
-        end }
+      format.js {respond_to_js :action => 'star_project', :response_header => :success, :response_content => t(:successful_update)}
     end
   end
 
@@ -127,11 +117,7 @@ class MyController < ApplicationController
     end
     respond_to do |format|
       format.html
-      format.js do
-        render :update do |page|
-          page.replace_html 'calendar', :partial => 'my/calendar'
-        end
-      end
+      format.js {respond_to_js}
     end
   end
 

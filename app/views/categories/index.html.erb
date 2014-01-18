@@ -12,7 +12,7 @@
       t(:link_new_category), 
       new_category_path(@project.slug), 
       @project, 
-      {:html => {:class => 'icon icon-add'}}) %>
+      :class => 'icon icon-add') %>
   </div>
 </div>
 <%= render :partial => 'categories/list' %>

@@ -8,6 +8,3 @@
 <div id="history">
   <%= raw history_render(journals) %>
 </div>
-<script type="text/javascript">
-  edit_notes("<%=url_for(edit_note_issues_path(@project.slug, @issue.id))%>");
-</script>

@@ -12,34 +12,24 @@ module ProjectHelper
         return false
       end
     end
-    return true
+    true
   end
   def activities_ary(issues_activity)
     activity_hash = Hash.new{|h,k| h[k] = []}
     issues_activity.each do |k,v|
       v.each do |journal|
         user = (journal.user ? journal.user.name : t(:label_unknown))
+        item_id = journal.journalized_id
+        project_id = journal.project.slug
         #UPDATED
         if journal.action_type.eql?('updated')
-          activity_hash[k] << "#{journal.journalized.tracker.name} ##{journal.journalized.id}
-                             #{link_to journal.journalized.subject,
-          {:action => 'show',
-          :controller => 'issues',
-          :id => journal.journalized.id} }
-                             <b>#{journal.details.any? ? (link_to t(:label_updated_lower_case),
-          '#',
-          {:class => 'open_overlay',
-          :id => journal.journalized.id.to_s+'.'+k.to_s}) : t(:label_updated_lower_case)}</b>
+          activity_hash[k] << "#{journal.journalized.tracker.name} ##{item_id}
+                             #{link_to journal.journalized.subject, issue_path(project_id,item_id)}
+                             <b>#{journal.details.any? ? (link_to t(:label_updated_lower_case), load_journal_activity_projects_path(project_id, item_id,k), {:remote => true, :method => :get, :class => 'open_overlay'}) : t(:label_updated_lower_case)}</b>
           #{t(:label_by)} #{user}"
           #CREATED
         elsif journal.action_type.eql?('created')
-          activity_hash[k] << "#{journal.journalized.tracker.name} ##{journal.journalized.id}
-                             #{link_to journal.journalized.subject,
-          {:action => 'show',
-          :controller => 'issues',
-          :id => journal.journalized.id} }
-                              <b>#{t(:label_created_lower_case)}</b>
-                              #{t(:label_by)} #{user}"
+          activity_hash[k] << "#{journal.journalized.tracker.name} ##{item_id} #{link_to journal.journalized.subject,issue_path(project_id,item_id) } <b>#{t(:label_created_lower_case)}</b> #{t(:label_by)} #{user}"
           #DELETED
         elsif journal.action_type.eql?('deleted')
           activity_hash[k] << "Issue ##{journal.journalized_id}
@@ -56,17 +46,7 @@ module ProjectHelper
       }
       activity_str += '</ul>'
     end
-    return activity_str.html_safe
-  end
-
-  def activity_update_link(issue, date)
-    link_str = ''
-    link_str += "jQuery('#activity_overlay').overlay().load();"
-    link_str += "jQuery.ajax({url:'#{url_for(:action => 'load_journal_activity', :controller => 'project',
-    :issue_id => issue.id, :activity_date => date)}',
-                              type: 'GET',
-                              dataType: 'script'});"
-    return link_str
+    activity_str.html_safe
   end
 
   def project_members(members_hash)
@@ -82,7 +62,7 @@ module ProjectHelper
         project_members += role.to_s+': '+members_list
       end
     end
-    return project_members.html_safe
+    project_members.html_safe
   end
 
   def select_tag_versions(id,name,select_key)
@@ -119,6 +99,5 @@ module ProjectHelper
       select_tag += '</optgroup>'
     end
     select_tag += '</select>'
-    return select_tag
   end
 end

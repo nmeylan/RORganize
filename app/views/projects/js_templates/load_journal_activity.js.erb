@@ -1,0 +1,8 @@
+<%#=
+ * User: Nicolas
+ * Date: 14/12/13
+ * Time: 14:02
+ %>
+jQuery("#activity_overlay").replaceWith("<%= escape_javascript(render :partial => 'projects/activity_overlay') %>");
+createOverlay("#activity_overlay", 150);
+jQuery('#activity_overlay').overlay().load();

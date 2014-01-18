@@ -18,6 +18,7 @@ class SettingsController < ApplicationController
     if @project.attachments.empty?
       @project.attachments.build
     end
+
     @trackers = Tracker.all
     respond_to do |format|
       format.html
@@ -27,15 +28,7 @@ class SettingsController < ApplicationController
   #POST project/:project_identifier/settings/
   #POST project/:project_identifier/settings/
   def update
-    @project.update_attributes(params[:project])
-
-    tracker_ids = params[:trackers].values
-    trackers = Tracker.where(:id => tracker_ids)
-    @project.trackers.clear
-    tracker_ids.each do |id|
-      tracker = trackers.select{|track| track.id == id.to_i }
-      @project.trackers << tracker
-    end
+   @project.update_info(params[:project], params[:trackers])
     respond_to do |format|
       flash[:notice] = t(:successful_update)
       format.html { redirect_to :controller => 'settings', :action => 'index', :project_id => @project.slug }
@@ -43,27 +36,20 @@ class SettingsController < ApplicationController
   end
 
   def public_queries
-    @queries = Query.find(:all,
-      :conditions => ['project_id = ? AND is_public = ? AND is_for_all = ?', @project.id, true, false])
+    @queries = Query.public_queries(@project.id)
     respond_to do |format|
       format.html
     end
   end
 
   def delete_attachment
-    attachment = Attachment.find(params[:attachment_id])
+    attachment = Attachment.find(params[:id])
     @project.attachments.delete_if{|attach| attach.id == attachment.id}
     if attachment.destroy
       @project.attachments.build
       respond_to do |format|
-        format.html { redirect_to :action => 'index', :controller => 'settings'
-        }
-        format.js do
-          render :update do |page|
-            page.replace_html('attachments', :partial => 'project/show_attachments', :locals => {:attachments => @project.attachments})
-            response.headers['flash-message'] = t(:successful_deletion)
-          end
-        end
+        format.html { redirect_to :action => 'index', :controller => 'settings'}
+        format.js {respond_to_js :response_header => :success, :response_content => t(:successful_deletion)}
       end
     end
   end

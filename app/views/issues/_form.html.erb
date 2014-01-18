@@ -8,78 +8,70 @@
 <%= raw error_messages(@issue.errors.full_messages) %>
 <div class="box">
   <div class="autocomplete-combobox cbb-medium nosearch">
-    <label for="issue_tracker"><%=t(:field_tracker)%><span class ="required"> *</span></label>
-    <%= f.select :tracker_id, form_content['trackers'], { :include_blank => false }, {:class => 'chzn-select cbb-medium'} %>
+    <label for="issue_tracker"><%= t(:field_tracker) %><span class="required"> *</span></label>
+    <%= f.select :tracker_id, form_content['trackers'], {:include_blank => false}, {:class => 'chzn-select cbb-medium'} %>
   </div>
   <p>
-    <label for="issue_subject"><%=t(:field_subject)%><span class ="required"> *</span></label>
+    <label for="issue_subject"><%= t(:field_subject) %><span class="required"> *</span></label>
     <%= f.text_field :subject, :size => 80 %>
   </p>
+
   <p>
     <%= f.label :description, t(:field_description) %>
-    <%= f.text_area :description, :rows => 12 %>
+    <%= f.text_area :description, :rows => 12, :class => 'fancyEditor' %>
   </p>
+
   <div class="splitcontentleft">
     <div class="autocomplete-combobox cbb-medium nosearch">
-      <label for="issue_version"><%=t(:field_version)%></label>
+      <label for="issue_version"><%= t(:field_version) %></label>
       <%= raw select_tag_versions('issue_version_id', 'issue[version_id]', @issue.version_id) %>
     </div>
     <div class="autocomplete-combobox cbb-medium nosearch">
-      <label for="issue_status"><%=t(:field_status)%><span class ="required"> *</span></label>
-      <%= f.select :status_id, form_content['allowed_statuses'], { :include_blank => false }, {:class => 'chzn-select cbb-medium'} %>
+      <label for="issue_status"><%= t(:field_status) %><span class="required"> *</span></label>
+      <%= f.select :status_id, form_content['allowed_statuses'], {:include_blank => false}, {:class => 'chzn-select cbb-medium'} %>
     </div>
     <div class="autocomplete-combobox cbb-medium nosearch">
-      <label for="issue_assigned_to"><%=t(:field_assigned_to)%></label>
-      <%= f.select :assigned_to_id, form_content['members'], { :include_blank => true }, {:class => 'chzn-select-deselect cbb-medium'} %>
+      <label for="issue_assigned_to"><%= t(:field_assigned_to) %></label>
+      <%= f.select :assigned_to_id, form_content['members'], {:include_blank => true}, {:class => 'chzn-select-deselect cbb-medium'} %>
     </div>
     <div class="autocomplete-combobox cbb-medium nosearch">
-      <label for="issue_category"><%=t(:field_category)%></label>
-      <%= f.select :category_id,form_content['categories'], { :include_blank => true }, {:class => 'chzn-select-deselect cbb-medium'} %>
+      <label for="issue_category"><%= t(:field_category) %></label>
+      <%= f.select :category_id, form_content['categories'], {:include_blank => true}, {:class => 'chzn-select-deselect cbb-medium'} %>
     </div>
   </div>
   <div class="splitcontentright">
     <p>
-      <label for="issue_start_date"><%=t(:field_start_date)%></label>
+      <label for="issue_start_date"><%= t(:field_start_date) %></label>
       <%= f.text_field :start_date, :size => 6, :id => 'calendar_start' %>
     </p>
+
     <p>
-      <label for="issue_due_date"><%=t(:field_due_date)%></label>
+      <label for="issue_due_date"><%= t(:field_due_date) %></label>
       <%= f.text_field :due_date, :size => 6, :id => 'calendar' %>
     </p>
+
     <div class="autocomplete-combobox cbb-small nosearch">
-      <label for="issue_done"><%=t(:field_done)%></label>
-      <%= f.select :done, form_content['done_ratio'].collect{|done| [done]}, { :include_blank => false }, {:class => 'chzn-select cbb-small'} %>
+      <label for="issue_done"><%= t(:field_done) %></label>
+      <%= f.select :done, form_content['done_ratio'].collect { |done| [done] }, {:include_blank => false}, {:class => 'chzn-select cbb-small'} %>
     </div>
     <p>
-      <label for="issue_estimated_time"><%=t(:field_estimated_time)%></label>
+      <label for="issue_estimated_time"><%= t(:field_estimated_time) %></label>
       <%= f.text_field :estimated_time, :size => 6 %>
     </p>
   </div>
   <div style="clear:both"></div>
   <div style="clear:both"></div>
-  <% if current_user.allowed_to?('delete_attachment','Issues',@project) %>
-    <div id="attachments">
-      <p>
-        <label><%= t(:field_attachments) %></label>
-      </p>
-      <%= render :partial => 'issues/attachments', :collection => @issue.attachments %>
-    </div>
-    <p>
-      <%= add_attachments_link 'Add a file' %>
-    </p>
+  <% if current_user.allowed_to?('delete_attachment', 'Issues', @project) %>
+      <div id="attachments">
+        <p>
+          <label><%= t(:field_attachments) %></label>
+
+          <%= add_attachments_link 'Add a file' %>
+        </p>
+
+        <%= render :partial => 'issues/attachments', :collection => @issue.attachments %>
+      </div>
+
   <% end %>
 </div>
 
-
-<%= raw set_toolbar('issue_description') %>
-<script type="text/javascript">
-  jQuery("#issue_version_id").change(function(e) {
-    e.preventDefault();
-    var self = this;
-    var date = jQuery('#issue_version_id option:selected').attr("id");
-    if (date != "")
-      jQuery('#calendar').val(date)
-  });
-  jQuery('#calendar_start').datepicker({dateFormat: 'yy-mm-dd'});
-  jQuery('#calendar').datepicker({dateFormat: 'yy-mm-dd'});
-</script>

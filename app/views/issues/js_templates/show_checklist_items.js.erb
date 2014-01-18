@@ -1,0 +1,9 @@
+/**
+ * User: Nicolas
+ * Date: 07/12/13
+ * Time: 06:06
+ */
+
+jQuery('#checklist_overlay').replaceWith("<%= escape_javascript (render :partial => "show_checklist", :locals => {:checklist_items =>checklist_items} )%>");
+createOverlay("#checklist_overlay", 150);
+jQuery('#checklist_overlay').overlay().load();

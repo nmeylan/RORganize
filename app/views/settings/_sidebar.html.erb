@@ -39,25 +39,17 @@
       </li>
     <% end %>
     <li class="settings_repository"><%= link_to t(:link_repository),'#' %></li>
-    <% if current_user.allowed_to?('archive', 'Project', @project) %>
+
+    <% if current_user.allowed_to?('archive', 'Projects', @project) %>
       <li class="project_delete warning">
-        <% if !@project.is_archived %>
-          <%= link_to t(:text_close_this_project),'#',
-            {:onclick => "button_post_with_message('#{archive_project_index_path(@project.id)}',
-        '#{t(:text_archive_project)}',
-        {is_archived: true})"} %>
-        <% else %>
-          <%= link_to t(:text_open_this_project),'#',
-            {:onclick => "button_post_with_message('#{archive_project_index_path(@project.id)}',
-        '#{t(:text_open_project)}',
-        {is_archived: false})"} %>
-        <% end %>
+          <%= link_to !@project.is_archived ? t(:text_close_this_project) : t(:text_open_this_project), archive_projects_path(@project.id),
+            {:remote => true, :confirm => !@project.is_archived ? t(:text_archive_project) : t(:text_open_project), :method => :post} %>
       </li>
     <% end %>
-    <% if current_user.allowed_to?('destroy', 'Project', @project) %>
+    <% if current_user.allowed_to?('destroy', 'Projects', @project) %>
       <li class="project_delete alert">
-        <%= link_to t(:text_delete_this_project),'#',
-          {:onclick => "button_delete_with_message('#{project_path(@project.id)}','#{t(:text_delete_project)}')"} %>
+        <%= link_to t(:text_delete_this_project),project_path(@project.id),
+          {:remote => true, :confirm => t(:text_delete_project), :method => :delete} %>
       </li>
     <% end %>
   </ul>

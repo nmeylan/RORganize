@@ -1,0 +1,18 @@
+<%#=
+ * User: Nicolas
+ * Date: 07/12/13
+ * Time: 08:03
+ %>
+<% if new %>
+    jQuery('#create_query_overlay').replaceWith("<%= escape_javascript (render :partial => "queries/create_overlay" )%>");
+    createOverlay("#create_query_overlay", 150);
+    jQuery('#create_query_overlay').overlay().load();
+    jQuery(".close").click(function(e){
+        jQuery('#create_query_overlay').overlay().close();
+    });
+<% else %>
+    <% if success %>
+        jQuery('#create_query_overlay').overlay().close();
+        on_addition_effect('#custom_queries', "<%= escape_javascript (render :partial => 'issues/custom_queries')%>");
+    <% end %>
+<% end  %>

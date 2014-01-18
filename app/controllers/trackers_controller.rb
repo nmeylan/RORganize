@@ -12,7 +12,7 @@ class TrackersController < ApplicationController
 
   #Get /administration/trackers
   def index
-    @trackers = Tracker.find(:all)
+    @trackers = Tracker.select('*')
     respond_to do |format|
       format.html
     end
@@ -66,15 +66,10 @@ class TrackersController < ApplicationController
   def destroy
     @tracker = Tracker.find_by_id(params[:id])
     @tracker.destroy
-    @trackers = Tracker.find(:all)
+    @trackers = Tracker.select('*')
     respond_to do |format|
       format.html {redirect_to :action => 'index'}
-      format.js do
-        render :update do |page|
-          page.replace 'trackers_content', :partial => 'trackers/list'
-          response.headers['flash-message'] = t(:successful_deletion)
-        end
-      end
+      format.js {respond_to_js :response_header => :success, :response_content => t(:successful_deletion), :locals => { :id => @tracker.id}}
     end
   end
 end

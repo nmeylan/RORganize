@@ -9,10 +9,7 @@
   <h1><%= t(:label_wiki) %></h1>
   <div class="splitcontentright">
     <% unless @wiki.nil? %>
-      <%= link_to_with_permissions(t(:link_delete), wiki_path(@project.slug,@wiki.id), @project,{:method => :delete, 
-          :target => 'self',
-          :html => {:class => 'icon icon-del',
-            :onclick => "button_delete('#{wiki_path(@project.slug,@wiki.id)}')"}}) %>
+      <%= link_to_with_permissions(t(:link_delete), wiki_path(@project.slug,@wiki.id), @project,{:method => :delete, :class => 'icon icon-del', :remote => true, :confirm => t(:text_delete_item )}) %>
     <% end %>
   </div>
 </div>

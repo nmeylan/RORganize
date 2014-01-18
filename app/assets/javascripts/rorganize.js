@@ -1,15 +1,71 @@
 //
-
 (function ($) {
-    $(document).ready(function() {
+    $(document).ready(function () {
         // hide flash messages
         display_flash();
+
+        //BIND ACTIONS : depending on which controller is called
+        switch (gon.controller) {
+            case 'coworkers' :
+                on_load_coworkers_scripts();
+                break;
+            case 'documents' :
+                on_load_documents_scripts();
+                break;
+            case 'issues' :
+                on_load_issues_scripts();
+                break;
+            case 'members' :
+                on_load_members_scripts();
+                break;
+            case 'my' :
+                on_load_my_scripts();
+                break;
+            case 'issues_statuses' :
+                on_load_issues_statuses_scripts();
+                break;
+            case 'permissions' :
+                on_load_permissions_scripts();
+                break;
+            case 'projects' :
+                on_load_projects_scripts();
+                break;
+            case 'roadmap' :
+                on_load_roadmap_scripts();
+                break;
+            case 'users' :
+                on_load_users_scripts();
+                break;
+            case 'versions' :
+                on_load_versions_scripts();
+                break;
+            case 'wiki' :
+                on_load_wiki_scripts();
+                break;
+        }
+
+        //MarkItUp
+        jQuery('.fancyEditor').markItUp(mySettings);
+        //BIND_CHZN-SELECT
         $(".chzn-select").chosen();
         $(".chzn-select-deselect").chosen({allow_single_deselect: true});
+
+
+    });
+    jQuery(document).ajaxSend(function (e, xhr, options) {
+        jQuery("#loading").show();
+        var token = jQuery("meta[name='csrf-token']").attr("content");
+        xhr.setRequestHeader("X-CSRF-Token", token);
     });
 
-    $(document).ajaxComplete(function(e, xhr, options) {
+    $(document).ajaxComplete(function (e, xhr, options) {
+        //BIND_CHZN-SELECT
+        //BIND_CHZN-SELECT
         $(".chzn-select").chosen();
+        $(".chzn-select-deselect").chosen({allow_single_deselect: true});
+
+        //MarkItUp
+        jQuery('.fancyEditor').markItUp(mySettings);
         $("#loading").hide();
         if (xhr.getResponseHeader('flash-message')) {
             $.jGrowl(xhr.getResponseHeader('flash-message'), {
@@ -18,6 +74,11 @@
         }
         if (xhr.getResponseHeader('flash-error-message')) {
             $.jGrowl(xhr.getResponseHeader('flash-error-message'), {
+                theme: 'failure'
+            });
+        }
+        if(xhr.status != 200){
+            $.jGrowl('An unexpected error occured, please try again!', {
                 theme: 'failure'
             });
         }
@@ -58,8 +119,24 @@
         });
 
     }
+    //Override jquery-rails confirm behaviour.
+    $.rails.allowAction = function(link){
+        var message = link.attr('data-confirm');
+        if(!message){
+            return true;
+        }
+        apprise(message, {confirm : true}, function(response){
+            if(response){
+                link.removeAttr('data-confirm');
+                link.trigger('click.rails');
+            }
+        });
+        return false;
+    }
+
 
 })(jQuery);
+
 
 function display_flash() {
     jQuery(".flash").each(function () {
@@ -94,53 +171,7 @@ function button_delete_with_message(url, message) {
         }
     });
 }
-//bind action on delete button
-function button_delete(url) {
-    event.preventDefault();
-    apprise('Are you sure to want to delete this item?', {
-        'confirm': true
-    }, function (r) {
-        if (r) {
-            jQuery.ajax({
-                url: url,
-                type: 'DELETE',
-                dataType: 'script'
-            });
-        }
-    });
-}
-//bind action on delete button
-function button_delete_with_data(url, data) {
-    event.preventDefault();
-    apprise('Are you sure to want to delete this item?', {
-        'confirm': true
-    }, function (r) {
-        if (r) {
-            jQuery.ajax({
-                url: url,
-                type: 'DELETE',
-                dataType: 'script',
-                data: eval(data)
-            });
-        }
-    });
-}
-//bind action on post button
-function button_post_with_message(url, message, data) {
-    event.preventDefault();
-    apprise(message, {
-        'confirm': true
-    }, function (r) {
-        if (r) {
-            jQuery.ajax({
-                url: url,
-                type: 'POST',
-                dataType: 'script',
-                data: eval(data)
-            });
-        }
-    });
-}
+
 function createOverlay(id, top) {
     jQuery(id).overlay({
         // custom top position
@@ -162,35 +193,18 @@ function createOverlay(id, top) {
 }
 
 //Submit form with ajax
-function ajax_submit_form(form_id){
+function ajax_submit_form(form_id) {
     var serialized_form = jQuery(form_id).serialize();
     var action = jQuery(form_id).attr("action");
-    var method = jQuery(form_id).attr("method") ? jQuery(form_id).attr("method") :  "POST";
+    var method = jQuery(form_id).attr("method") ? jQuery(form_id).attr("method") : "POST";
     jQuery.ajax({
-        url : action,
-        datatype : "script",
-        type : method,
-        data : serialized_form
+        url: action,
+        datatype: "script",
+        type: method,
+        data: serialized_form
     });
 }
 
-function activities_overlay(url) {
-    jQuery('.open_overlay').click(function (e) {
-        e.preventDefault();
-        var id = jQuery(this).attr("id").split(".")[0];
-        var date = jQuery(this).attr("id").split(".")[1];
-        jQuery('#activity_overlay').overlay().load();
-        jQuery.ajax({
-            url: url,
-            type: 'GET',
-            data: {
-                activity_date: date,
-                issue_id: id
-            },
-            dataType: 'script'
-        });
-    });
-}
 //Checklist JS
 function checklist_statuses_color(self) {
     var statuses = {};
@@ -213,6 +227,7 @@ function checklist_build_select(item_value, option_for_select) {
     select_status += "<a href='#' class='icon icon-del' id='link-" + item_value.replace(/\s/g, "") + "'></a>";
     select_status += "</div>";
     jQuery("#items").prepend(select_status);
+    jQuery(".chzn-select").chosen();
 }
 function checklist_add_item(checklist_statuses_json) {
     jQuery("#add_checklist_item").click(function () {
@@ -237,7 +252,6 @@ function checklist_add_item(checklist_statuses_json) {
             });
             //binding delete button
             checklist_remove_item();
-            jQuery(".chzn-select").chosen();
         }
     });
 }
@@ -267,7 +281,7 @@ function checkAllBox(selector, context) {
     jQuery(selector).click(function (e) {
         e.preventDefault();
         var cases = jQuery(context).find(':checkbox');
-        var checked = jQuery(this).attr("cb_checked") == 'b' ? true : false;
+        var checked = jQuery(this).attr("cb_checked") == 'b';
         cases.attr('checked', checked);
         jQuery(this).attr("cb_checked", checked ? "a" : "b");
     });
@@ -322,19 +336,22 @@ function listUniqTrClick(selector) {
 }
 
 //initializer with optional hash: options are:
-// url needed to send the ajax request
 // list needed to get checkboxes.
 function init_toolbox(selector, id, options) {
-    jQuery(selector).jeegoocontext(id, {
+    var self_element = jQuery(selector);
+    self_element.jeegoocontext(id, {
         livequery: true
     });
-    jQuery(selector).mousedown(function (e) {
-        if (e.which == 3) {
-            jQuery(this).find(':checkbox').attr('checked', true);
-            menu_item_updater(options);
-            jQuery(this).addClass("toolbox_selection");
+    self_element.mousedown(function (e) {
+            if (e.which == 3) {
+                var self_element = jQuery(this);
+                self_element.find(':checkbox').attr('checked', true);
+                menu_item_updater(options);
+                self_element.addClass("toolbox_selection");
+            }
         }
-    });
+    );
+
 }
 
 function menu_item_updater(options) {
@@ -345,7 +362,7 @@ function menu_item_updater(options) {
         i++;
     });
     jQuery.ajax({
-        url: options["url"],
+        url: jQuery(options["list"]).data("link"),
         type: 'GET',
         dateType: 'script',
         data: {
@@ -354,9 +371,32 @@ function menu_item_updater(options) {
     });
 }
 
+
+function bind_menu_actions(toolbox_id) {
+    jQuery(".submenu a").click(function (e) {
+        e.preventDefault();
+        // find the context of the selected options: e.g: "category" for update categories of the selected documents
+        var context = _.without(jQuery(this).parents(".submenu").attr('class').split(' '), 'submenu', 'hover');
+        //put new value into hidden field which name is matching with context
+        jQuery("input#value_" + context).val(jQuery(this).data("id"));
+        jQuery(toolbox_id).find("form").submit();
+    });
+    jQuery("a.action_link").click(function (e) {
+        e.preventDefault();
+        var context = _.without(jQuery(this).parents("li").attr('class').split(' '), 'hover');
+        console.log(context);
+        //put new value into hidden field which name is matching with context
+        jQuery("input#value_" + context).val(jQuery(this).data("id"));
+        jQuery(toolbox_id).find("form").submit();
+    });
+    jQuery("#open_delete_overlay").click(function (e) {
+        jQuery('#delete_overlay').overlay().load();
+    });
+}
 //tooltip
-function init_tooltip(selector, url) {
-    jQuery(selector).tooltip({
+function init_tooltip(selector) {
+    var self_element = jQuery(selector);
+    self_element.tooltip({
         effect: 'slide',
         predelay: 1000,
         position: 'bottom left',
@@ -364,31 +404,29 @@ function init_tooltip(selector, url) {
         tip: '#tooltip',
         onBeforeShow: function () {
             jQuery.ajax({
-                url: url,
-                datatype: 'script',
-                data: {
-                    id: this.getTrigger().attr('id')
-                }
+                url: jQuery(this.getTrigger()).data("url"),
+                datatype: 'script'
             });
         }
     });
 }
 
-//Toogle icon: fieldset
-function multi_toogle() {
-    jQuery(".toggle").click(function (e) {
+//Toggle icon: fieldset
+function multi_toogle(selector) {
+    jQuery(selector).click(function (e) {
+        var self_element = jQuery(this);
         e.preventDefault();
-        var id = jQuery(this).attr("id");
-        if (jQuery(this).hasClass('icon-collapsed'))
-            jQuery(this).switchClass('icon-collapsed', 'icon-expanded');
+        var id = self_element.attr("id");
+        if (self_element.hasClass('icon-collapsed'))
+            self_element.switchClass('icon-collapsed', 'icon-expanded');
         else
-            jQuery(this).switchClass('icon-expanded', 'icon-collapsed');
+            self_element.switchClass('icon-expanded', 'icon-collapsed');
         jQuery(".content." + id).slideToggle();
     });
 }
-//toogle content
-function uniq_toogle(content) {
-    jQuery(".toggle").click(function (e) {
+//toggle content
+function uniq_toogle(trigger_id, content) {
+    jQuery(trigger_id).click(function (e) {
         e.preventDefault();
         if (jQuery(this).hasClass('icon-collapsed'))
             jQuery(this).switchClass('icon-collapsed', 'icon-expanded');
@@ -417,8 +455,7 @@ function binding_radio_button(selector) {
 //Param is json object that containing html: {'assigned_to':"<td>some html</td>",....}
 function add_filters(json_content) {
     jQuery("#filters_list").change(function (e) {
-        var rails_hash = json_content;
-        var domobject = jQuery(jQuery.parseJSON(JSON.stringify(rails_hash)));
+        var domobject = jQuery(jQuery.parseJSON(json_content));
         var selected = jQuery(this).val();
         var tmp = "";
         var selector = "";
@@ -436,7 +473,7 @@ function add_filters(json_content) {
                 radio_button_behaviour("#filter_content " + selector + " input[type=radio]");
                 if (tmp == 'Status')
                     jQuery("#filter_content " + selector + " input[type=radio]#status_open").attr('checked', 'checked');
-                jQuery(".chzn-select").chosen();
+
             } else if (jQuery(selector).length > 0 && jQuery.inArray(jQuery(this).val(), selected) == -1) {
                 jQuery(selector).remove();
             } else {
@@ -446,12 +483,13 @@ function add_filters(json_content) {
     });
 }
 function load_filter(json_content, present_filters) {
-    var rails_hash = json_content;
-    var domobject = jQuery(jQuery.parseJSON(JSON.stringify(rails_hash)));
+    present_filters = jQuery.parseJSON(present_filters);
+    var domobject = jQuery(jQuery.parseJSON(json_content));
     var tmp = "";
     var selector = "";
     var radio = "";
     if (_.any(present_filters)) {
+        jQuery("#filter_content").html("");
         jQuery("#type_filter").attr('checked', 'checked');
         _.each(present_filters, function (value, key) {
             radio = "#" + key + "_" + value.operator;
@@ -476,7 +514,6 @@ function load_filter(json_content, present_filters) {
                     jQuery("#td-" + key).find("select").find("option[value='" + v + "']").attr("selected", "selected");
                 });
             }
-            jQuery(".chzn-select").trigger("liszt:updated");
         });
         jQuery(".content").hide();
     } else {
@@ -486,9 +523,6 @@ function load_filter(json_content, present_filters) {
     }
 }
 
-function bind_calendar_field() {
-
-}
 //Overlay init code here
 
 //Query overlay
@@ -502,28 +536,13 @@ function create_query_overlay(e, ajax_url) {
     });
 }
 
-//Show checklist overlay
-function show_checklist_overlay(url) {
-    jQuery(".icon-checklist").click(function (e) {
-        e.preventDefault();
-        jQuery.ajax({
-            url: url,
-            data: {
-                id: jQuery(this).attr('id')
-            },
-            dataType: 'script'
-        });
-        jQuery('#checklist_overlay').overlay().load();
-    });
-}
-
 //Per page issue list
-function per_page(url) {
+function per_page() {
     jQuery("#per_page").change(function () {
         jQuery.ajax({
-            url: url,
+            url: jQuery(this).data("link"),
             data: {
-                per_page: jQuery('#per_page :selected').val()
+                per_page: this.value
             },
             type: 'GET',
             dataType: 'script'
@@ -531,7 +550,7 @@ function per_page(url) {
     });
 }
 
-function edit_notes(url) {
+function edit_notes() {
     jQuery(".edit_notes").click(function (e) {
         e.preventDefault();
         jQuery('#edit_note_form').remove();
@@ -545,7 +564,7 @@ function edit_notes(url) {
         form += "</div>";
         jQuery(note_id).append(form);
         jQuery('#edit_note').markItUp(mySettings);
-        edit_notes_bind_save_button("#send_edit_note", url, journal_id)
+        edit_notes_bind_save_button("#send_edit_note", jQuery(this).attr("href"), journal_id)
     });
 }
 
@@ -564,53 +583,36 @@ function edit_notes_bind_save_button(id, url, journal_id) {
     })
 }
 
-function activities_filter(url) {
-    jQuery(".activities_filter").click(function (e) {
-        var id = jQuery(this).attr("id");
-        jQuery.ajax({
-            url: url,
-            type: 'POST',
-            dataType: 'script',
-            data: {type: id}
-        });
-    });
-}
-
-function bind_calendar_button(url) {
+function bind_calendar_button() {
     jQuery(".change_month").click(function (e) {
         e.preventDefault();
-        var c = jQuery(this).attr("id");
+        var self_element = jQuery(this);
+        var c = self_element.attr("id");
         jQuery.ajax({
-            url: url,
+            url: self_element.attr("href"),
             dataType: "script",
             data: {date: c}
         });
     });
 }
 
-function bind_star_project(vurl) {
+function bind_star_project() {
     jQuery(".star").click(function (e) {
-        e.preventDefault();
-        var id = jQuery(this).parents("li").attr("id");
-        jQuery.ajax({
-            url: vurl,
-            type: "post",
-            dataType: "script",
-            data: {
-                star_project_id: id
-            }
-        });
+        var self_element = jQuery(this);
+        self_element.hasClass("icon-fav-off") ? self_element.switchClass('icon-fav-off', 'icon-fav') : self_element.switchClass('icon-fav', 'icon-fav-off');
     });
 }
 
-function bind_version_change_positions(vurl) {
-    jQuery(".change_position").click(function () {
-        var vid = jQuery(this).parents("tr").attr("id");
-        var ope = jQuery(this).attr("class").split(" ");
+function bind_version_change_positions() {
+    jQuery(".change_position").click(function (e) {
+        e.preventDefault();
+        var self_element = jQuery(this);
+        var vid = self_element.parents("tr").attr("id");
+        var ope = self_element.attr("class").split(" ");
         ope = ope[3];
         if (ope == "inc" || ope == "dec") {
             jQuery.ajax({
-                url: vurl,
+                url: self_element.attr("href"),
                 type: "post",
                 dataType: "script",
                 data: {
@@ -623,15 +625,16 @@ function bind_version_change_positions(vurl) {
     });
 }
 
-function bind_save_project_position(vurl) {
+function bind_save_project_position() {
     jQuery("#save_position").click(function (e) {
         e.preventDefault();
         var p_ids = [];
+        var url = jQuery(this).data('link');
         jQuery.each(jQuery(".project.list.sortable li"), function (project) {
             p_ids.push(jQuery(this).attr("id"));
         });
         jQuery.ajax({
-            url: vurl,
+            url: url,
             type: "post",
             dataType: "script",
             data: {
@@ -641,34 +644,6 @@ function bind_save_project_position(vurl) {
     });
 }
 
-//Coworker
-function bind_tr_ajax(selector, vurl) {
-    jQuery(selector).click(function (e) {
-        var member_id = jQuery(this).attr("id");
-        var getActivity = jQuery(selector).hasClass("toolbox_selection");
-        jQuery.ajax({
-            url: vurl,
-            type: "get",
-            dataType: "script",
-            data: {
-                id: member_id,
-                getAct: getActivity
-            }
-        })
-    });
-}
-
-function bind_coworker_radio_filter(selector, list) {
-    jQuery(selector).click(function () {
-        var value = jQuery(this).val().replace(/\s/g, "_");
-        if (value === "All") {
-            jQuery(list + " tr").show();
-        } else {
-            jQuery(list + " tr").hide();
-            jQuery(list + " tr." + value).show();
-        }
-    });
-}
 
 /*
  *  WIKI organization
@@ -703,7 +678,7 @@ function add_sub_item(selector) {
         bind_organization_behaviour(".connectedSortable");
     });
 }
-function bind_set_organization_button(main_selector, list_selector, url) {
+function bind_set_organization_button(main_selector, list_selector) {
     jQuery(list_selector).click(function (e) {
         var dom_pages = jQuery(main_selector);
         //{page_id => {parent_id : value, position : value},...}
@@ -724,7 +699,7 @@ function bind_set_organization_button(main_selector, list_selector, url) {
             serialized_hash[tmp_item_id] = {parent_id: tmp_parent_id, position: tmp_position};
 
         });
-
+        var url = jQuery(this).data('link');
         jQuery.ajax({
             url: url,
             type: 'PUT',
@@ -735,22 +710,16 @@ function bind_set_organization_button(main_selector, list_selector, url) {
 
 
 }
-function project_selection_filter(url) {
+function project_selection_filter() {
     jQuery(".project_selection_filter").click(function (e) {
         jQuery(".project_selection_filter").removeClass("selected");
         jQuery(this).addClass("selected");
-        var id = jQuery(this).attr("id");
-        jQuery.ajax({
-            url: url,
-            type: 'GET',
-            dataType: 'script',
-            data: {filter: id}
-        });
+
     });
 }
 // LOG TIME
 //Date is optional
-function fill_log_issue_time_overlay(url, issue_id, context, date) {
+function fill_log_issue_time_overlay(url, context, date) {
     if (jQuery(context).attr("id") === "pick_calendar")
         date = jQuery(context).val();
 
@@ -758,6 +727,55 @@ function fill_log_issue_time_overlay(url, issue_id, context, date) {
         url: url,
         type: 'GET',
         dataType: 'script',
-        data: {issue_id: issue_id, spent_on: date}
+        data: {spent_on: date}
     });
+}
+
+// UPDATE DOM with style !
+function on_deletion_effect(element_id) {
+    $(element_id).fadeOut(400, function () {
+        $(this).remove();
+    });
+}
+
+function on_addition_effect(element_id, content) {
+    $(element_id).hide().html(content).fadeIn(500);
+}
+
+function on_replace_effect(element_id, content) {
+    $(element_id).replaceWith(content).fadeIn(500);
+}
+
+function initialize_filters(options) {
+
+    $("#type_filter").click(function (e) {
+        $("#filters_list_chzn").show();
+        $("#filter_content").show();
+    });
+    $("#type_all").click(function (e) {
+        $("#filters_list_chzn").hide();
+        $("#filter_content").hide();
+    });
+
+    if (gon) {
+        load_filter(gon.DOM_filter, (options && options["dom_persisted_filter"]) ? options["dom_persisted_filter"] : gon.DOM_persisted_filter);
+        //Display or hide filter's conditions
+        add_filters(gon.DOM_filter);
+    }
+
+}
+
+function ajax_trigger(element, event, method) {
+    jQuery(element).on(event, function (e) {
+
+        e.preventDefault();
+        var self_element = jQuery(this);
+        jQuery.ajax({
+            url: self_element.data("link"),
+            type: method,
+            dataType: 'script',
+            data: {value: self_element.val()}
+        });
+    });
+
 }

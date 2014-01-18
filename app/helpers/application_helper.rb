@@ -147,14 +147,9 @@ EOD
         history_str += '</ul>'
         unless journal.notes.eql?('')
           if journal.user_id.eql?(current_user.id) && show
-            history_str += link_to(t(:link_delete), '#',
-              {:class => 'icon icon-del right',
-                :onclick => "button_delete('#{url_for(:action => 'delete_note',
-                :controller => 'issues',
-                :project_id => @project.slug,
-                :journal_id => journal.id,
-                :journalized_id => journal.journalized_id)}')"})
-            history_str += link_to(t(:link_edit), '#', {:id => "link_edit_note_#{journal.id}", :class => 'icon icon-edit right edit_notes'})
+            history_str += link_to(t(:link_delete), delete_note_issues_path(@project.slug, journal.id),
+              {:class => 'icon icon-del right', :remote => true, :method => :delete,  :confirm => t(:text_delete_item )})
+            history_str += link_to(t(:link_edit), edit_note_issues_path(@project.slug, journal.id), {:id => "link_edit_note_#{journal.id}", :class => 'icon icon-edit right edit_notes'})
           end
           history_str += "<div class='box_notes' id ='note_#{journal.id}'><p>#{textile_to_html(journal.notes)}</p>"
           history_str += '</div>'
@@ -172,9 +167,8 @@ EOD
   end
 
   def add_attachments_link(name)
-    link_to_function name do |page|
-      page.insert_html :bottom, :attachments, :partial => 'attachments', :object => Attachment.new
-    end
+    content = escape_once(render :partial => 'attachments', :locals => {:attachments => Attachment.new})
+    link_to name, '#', {:class => 'add_attachment_link', 'data-content' => content}
   end
 
   def sort_hash_by_keys(hash, order)
@@ -201,7 +195,7 @@ EOD
     radio_str = generics_filter_radio_button(name,options_for_radio)
     select_str = ''
     select_str += "<div class='autocomplete-combobox nosearch no-padding_left no-height'>"
-    select_str += select_tag("filter[#{name}][value][]",options_for_select(options_for_select), :class => 'chzn-select '+size, :id => name+'_list', :multiple => multiple)
+    select_str += select_tag("filter[#{name}][value][]", options_for_select(options_for_select), :class => 'chzn-select '+size, :id => name+'_list', :multiple => multiple)
     select_str += '</div>'
     tr += "<tr class='#{name}'>"
     tr += "<td class='label'>#{label}</td>"
@@ -331,7 +325,7 @@ EOD
         text += "<b>#{journal.journalized_type} : unknown</b>"
       end
       if journal.project_id && is_not_in_project
-        text += " #{t(:label_at)} <b>#{link_to journal.project.slug, url_for({:action => 'overview', :controller => 'project', :project_id => journal.project.slug})}</b>"
+        text += " #{t(:label_at)} <b>#{link_to journal.project.slug,overview_projects_path(journal.project.slug)}</b>"
       end
       text += '</p>'
     elsif journal.action_type.eql?('created')
@@ -343,7 +337,7 @@ EOD
         text += "<b>#{journal.journalized_type} : unknown</b>"
       end
       if journal.project_id && is_not_in_project
-        text += " #{t(:label_at)} <b>#{link_to journal.project.slug, url_for({:action => 'overview', :controller => 'project', :project_id => journal.project.slug})}</b>"
+        text += " #{t(:label_at)} <b>#{link_to journal.project.slug, overview_projects_path(journal.project.slug)}</b>"
       end
       text += '</p>'
     elsif journal.action_type.eql?('deleted')
@@ -351,7 +345,7 @@ EOD
       text += "#{image_tag('/assets/activity_deleted.png')} #{user} #{t(:label_deleted_lower_case)} "
       text += "<b>#{journal.journalized_type} : #{journal.identifier_value}</b>"
       if journal.project_id && is_not_in_project
-        text += " #{t(:label_at)} <b>#{link_to journal.project.slug, url_for({:action => 'overview', :controller => 'project', :project_id => journal.project.slug})}</b>"
+        text += " #{t(:label_at)} <b>#{journal.project_id}</b>"
       end
       text += '</p>'
     end
@@ -373,23 +367,23 @@ EOD
   def link_to_with_permissions(label, path, project, params = {})
     routes = Rails.application.routes
     hash_path = routes.recognize_path(path, :method => params[:method])
-    if(current_user.allowed_to?(hash_path[:action],hash_path[:controller],project))
+    if current_user.allowed_to?(hash_path[:action],hash_path[:controller],project)
       if params[:target] && params[:target].eql?('self')
-        link_to(label, '#', params[:html])
+        link_to(label, '#', params)
       else
-        link_to(label, path, params[:html])
+        link_to(label, path, params)
       end
     end
   end
   def link_to_with_not_owner_permissions(label, path, project, owner_id, params = {})
     routes = Rails.application.routes
     hash_path = routes.recognize_path(path, :method => params[:method])
-    if(current_user.allowed_to?(hash_path[:action],hash_path[:controller],project) && owner_id.eql?(current_user.id) || 
-          current_user.allowed_to?("#{hash_path[:action]}_not_owner",hash_path[:controller],project))
+    if current_user.allowed_to?(hash_path[:action],hash_path[:controller],project) && owner_id.eql?(current_user.id) ||
+          current_user.allowed_to?("#{hash_path[:action]}_not_owner",hash_path[:controller],project)
       if params[:target] && params[:target].eql?('self')
-        link_to(label, '#', params[:html])
+        link_to(label, '#', params)
       else
-        link_to(label, path, params[:html])
+        link_to(label, path, params)
       end
     end
   end

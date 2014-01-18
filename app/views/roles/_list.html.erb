@@ -12,7 +12,7 @@
       <th></th>
     </tr>
     <% @roles.each do |role| %>
-      <tr class="odd_even">
+      <tr class="odd_even" id="<%= role.id %>">
         <td class="list_left name"><% if current_user.allowed_to?('edit','Roles') %>
             <%= link_to role.name, edit_role_path(role.id)%>
           <% else %>
@@ -22,11 +22,8 @@
         <td class="action">
           <%= link_to_with_permissions(t(:link_delete), 
             role_path(role.id), 
-            @project, 
-            {:method => :delete, 
-              :target => 'self',
-              :html => {:class => 'icon icon-del', 
-                :onclick => "button_delete('#{role_path(role.id)}')"}}) %>
+            nil,
+            {:method => :delete, :class => 'icon icon-del', :remote => true, :confirm => t(:text_delete_item ) }) %>
       </tr>
     <%end%>
   </table>

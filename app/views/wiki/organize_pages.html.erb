@@ -17,12 +17,4 @@ File: organize_pages
 <% else %>
   <h2><%= t(:text_no_data) %></h2>
 <% end %>
-<%= button_tag t(:button_save),:id => 'serialize', :type => 'button' %>
-
-<script type="text/javascript">
-  bind_organization_behaviour(".connectedSortable");
-  jQuery(".connectedSortable li.item").prepend("<a href='#' class='add_sub_item icon icon-add'></a>");
-  add_sub_item(".add_sub_item");
-  bind_set_organization_button("#organize_pages li.item", "#serialize", "<%=set_organization_wiki_index_path(@project.slug)%>");
-
-</script>
+<%= button_tag t(:button_save),:id => 'serialize', :type => 'button', 'data-link' => set_organization_wiki_index_path(@project.slug)%>

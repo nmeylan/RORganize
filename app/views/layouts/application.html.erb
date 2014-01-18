@@ -3,14 +3,14 @@
 <head>
   <%= csrf_meta_tags %>
   <title>RORganize</title>
-<%#= JS Files %>
-  <%= javascript_include_tag 'application'%>
-  <%= javascript_include_tag "prototype.js"%>
 
-<%#= Engines files %>
+  <%= include_gon :init => true%>
 
-<%#= CSS Files %>
+
+  <%#= CSS Files %>
   <%= stylesheet_link_tag 'application' %>
+  <%#= JS Files %>
+  <%= javascript_include_tag 'application'%>
 
 
 </head>
@@ -46,11 +46,4 @@
         </div>
         <div id="footer">RORganize 2012 - 2013 by Nicolas Meylan</div>
     </body>
-<script type="text/javascript">
-    jQuery(document).ajaxSend(function(e, xhr, options) {
-        jQuery("#loading").show();
-        var token = jQuery("meta[name='csrf-token']").attr("content");
-        xhr.setRequestHeader("X-CSRF-Token", token);
-    });
-</script>
 </html>

@@ -71,17 +71,13 @@ class CategoriesController < ApplicationController
   def destroy
     category = Category.find(params[:id])
     category.destroy
-    @categories = @project.categories
     respond_to do |format|
       format.html do
         flash[:notice] = t(:successful_deletion)
         redirect_to category_path
       end
-      format.js do
-        render :update do |page|
-          page.replace 'categories_content', :partial => 'categories/list'
-          response.headers['flash-message'] = t(:successful_deletion)
-        end
+      format.js do |js|
+        respond_to_js :locals => {:id => params[:id]}, :response_header => :success, :response_content => t(:successful_deletion)
       end
     end
   end

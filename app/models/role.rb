@@ -9,4 +9,17 @@ class Role < ActiveRecord::Base
   has_and_belongs_to_many :permissions, :class_name => 'Permission'
 
   validates :name, :presence => true, :uniqueness => true
+
+  def update_permissions(permissions_param)
+    if permissions_param
+      permissions_id = permissions_param.values
+      permissions = Permission.find_all_by_id(permissions_id)
+      self.permissions.clear
+      permissions_id.each do |permission_id|
+        permission = permissions.select{|perm| perm.id == permission_id.to_i }
+        self.permissions << permission
+      end
+    end
+    self.save
+  end
 end

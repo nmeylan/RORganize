@@ -12,12 +12,11 @@ class MembersController < ApplicationController
   include ApplicationHelper
   #GET /projects/
   def index
-    @members = Member.where(:project_id => @project.id).includes(:role, :user)
-    roles = Role.find(:all)
-    users = User.find(:all)
-    users =users.select{|user| !@members.collect{|member| member.user.id}.include?(user.id)}
+    members_roles = Member.find_members_and_roles_by_project_id(@project.id)
+    @members = members_roles[:members]
+    roles = members_roles[:roles]
     respond_to do |format|
-      format.html{render :action => 'index', :locals => {:roles => roles, :users => users}}
+      format.html{render :action => 'index', :locals => {:roles => roles, :users => nil}}
     end
   end
 
@@ -25,35 +24,39 @@ class MembersController < ApplicationController
   def destroy
     @member = Member.find(params[:id])
     @member.destroy
-    render_index_js(true,t(:successful_deletion))
+    respond_to do |format|
+      format.js {respond_to_js :locals => {:id => params[:id]}, :response_header => :success, :response_content => t(:successful_deletion)}
+    end
+  end
+
+  def new
+    members_roles = Member.find_members_and_roles_by_project_id(@project.id)
+    ids = members_roles[:members].collect{|member| member.user.id}
+    users = User.where("id NOT IN (?)", ids)
+    @member = Member.new
+    respond_to do |format|
+      format.js {respond_to_js :locals => {:roles => members_roles[:roles], :users => users, :new => true}}
+    end
   end
 
   def create
     success = Member.create(:project_id => @project.id, :role_id => params[:role], :user_id => params[:user])
-    render_index_js(success, t(:successful_creation))
+    members_roles = Member.find_members_and_roles_by_project_id(@project.id)
+    @members = members_roles[:members]
+    roles = members_roles[:roles]
+    respond_to do |format|
+      format.js {respond_to_js :action => :new, :locals => {:roles => roles, :users => nil, :new => false},:response_header => :success, :response_content => t(:successful_creation)}
+    end
   end
   #Others method
   def change_role
     member = Member.find_by_id(params[:member_id])
-    success = member.update_attribute(:role_id, params[:role_id])
-    render_index_js(success)
-  end
-
-  #Private methods
-  private
-
-  def render_index_js(success = true, message = t(:successful_update))
-    @members = Member.where(:project_id => @project.id).includes(:role, :user)
-    roles = Role.find(:all)
-    users = User.find(:all)
-    users = users.select{|user| !@members.collect{|member| member.user.id}.include?(user.id)}
+    change_role_result = member.change_role(params[:value])
+    @members = change_role_result[:members]
     respond_to do |format|
-      format.js{
-        render :update do |page|
-          page.replace 'members_content', :partial => 'members/list', :locals => {:roles => roles, :users => users}
-          success ? (response.headers['flash-message'] = message) : (response.headers['flash-error-message'] = t(:failure_operation))
-        end}
+      format.js {respond_to_js :response_header => change_role_result[:saved] ? :success : :failure, :response_content =>  change_role_result[:saved] ? t(:successful_update) : t(:failure_operation)}
     end
   end
+
 end
 

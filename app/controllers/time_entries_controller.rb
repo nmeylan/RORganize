@@ -18,9 +18,7 @@ class TimeEntriesController < ApplicationController
     @time_entry.spent_on = params[:spent_on] ? params[:spent_on] : Time.now.to_date
     respond_to do |format|
       format.js do
-        render :update do |page|
-          page.replace_html 'spent_time_overlay_form', :partial => 'time_entries/log_issue_spent_time_form', :locals => {:issue_id => params[:issue_id]}
-        end
+        respond_to_js :locals => {:issue_id => params[:issue_id]}
       end
     end
   end
@@ -31,16 +29,10 @@ class TimeEntriesController < ApplicationController
     @time_entry.issue_id = issue.id
     @time_entry.project_id = issue.project_id
     @time_entry.user_id = current_user.id
+    saved = @time_entry.save
     respond_to do |format|
       format.js do
-        render :update do |page|
-          if @time_entry.save
-            page << "jQuery('#spent_time_overlay').overlay().close()";
-            response.headers['flash-message'] = t(:successful_time_entry_creation)
-          else
-            response.headers['flash-error-message'] = @time_entry.errors.full_messages
-          end
-        end
+        respond_to_js :action => 'entries_operations', :locals => {:success => saved}, :response_header => saved ? :success : :failure, :response_content => saved ? t(:successful_time_entry_creation) : @time_entry.errors.full_messages
       end
     end
   end
@@ -48,9 +40,7 @@ class TimeEntriesController < ApplicationController
   def edit
     respond_to do |format|
       format.js do
-        render :update do |page|
-          page.replace_html 'spent_time_overlay_form', :partial => 'time_entries/log_issue_spent_time_form', :locals => {:issue_id => params[:issue_id]}
-        end
+        respond_to_js :locals => {:issue_id => params[:issue_id]}
       end
     end
   end
@@ -58,36 +48,22 @@ class TimeEntriesController < ApplicationController
   def update
     @time_entry = TimeEntry.find(params[:id])
     @time_entry.attributes = params[:time_entry]
+    saved = @time_entry.save
     respond_to do |format|
       format.js do
-        render :update do |page|
-          if @time_entry.save
-            page << "jQuery('#spent_time_overlay').overlay().close()";
-            response.headers['flash-message'] = t(:successful_time_entry_update)
-          else
-            response.headers['flash-error-message'] = @time_entry.errors.full_messages
-          end
-        end
+        respond_to_js :action => 'entries_operations', :locals => {:success => saved}, :response_header => saved ? :success : :failure, :response_content => saved ? t(:successful_time_entry_update) : @time_entry.errors.full_messages
       end
     end
   end
 
   def destroy
     @time_entry = TimeEntry.find(params[:id])
+    trusted = @time_entry && @time_entry.user_id.eql?(current_user.id)
+    success = trusted && @time_entry.destroy
     respond_to do |format|
       format.js do
-        render :update do |page|
-          if @time_entry && @time_entry.user_id.eql?(current_user.id)
-            if @time_entry.destroy
-              page.redirect_to url_for(:controller => :my, :action => :my_spent_time, :id => current_user.slug, :date => params[:date])
-              response.headers['flash-message'] = t(:successful_deletion)
-            else
-              response.headers['flash-error-message'] = t(:failure_deletion)
-            end
-          else
-            response.headers['flash-error-message'] = t(:text_time_entry_not_owner_deletion)
-          end
-        end
+        js_redirect_to url_for(:controller => :my, :action => :my_spent_time, :id => current_user.slug, :date => params[:date])
+        trusted ? (success ? flash[:notice] = t(:successful_deletion):  flash[:alert] = t(:failure_deletion)) : flash[:alert] = t(:text_time_entry_not_owner_deletion)
       end
     end
   end

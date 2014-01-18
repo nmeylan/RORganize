@@ -1,0 +1,31 @@
+<%#
+# Author: Nicolas Meylan
+# Date: 1 juil. 2012
+# Encoding: UTF-8
+# File: index.html.erb
+#Project overview
+%>
+<div class="contextual">
+  <h1><%= t(:label_overview) %></h1>
+</div>
+
+<div class="splitcontentleft">
+  <%= raw textile_to_html(@project.description) %>
+</div>
+
+<div class="splitcontentright box">
+  <div class="header"><h2><%=t(:label_last_request_plural)%></h2></div>
+  <ul>
+    <% last_requests.sort{|x,y| y.id <=> x.id}.each do |issue|%>
+      <li><%= link_to issue.subject, issue_path(@project.slug, issue.id) %></li>
+    <% end %>
+  </ul>
+</div>
+
+<div class="splitcontentright box">
+  <div class="header"><h2><%=t(:label_member_plural)%></h2></div>
+  <%= raw project_members(members) %>
+</div>
+
+<div style="clear:both;"></div>
+<div style="clear:both;"></div>

@@ -198,6 +198,8 @@ en:
   failure_operation: Operation failed
   successful_time_entry_creation: Your time spent on this issue was successfully logged
   successful_time_entry_update: Your time spent on this issue was successfully updated
+  successful_starred : was successfully starred.
+  successful_unstarred : was successfully unstarred.
   #TEXT
   text_changed: changed
   text_from: from
@@ -206,6 +208,7 @@ en:
   text_deleted: deleted
   text_no_data: No data to display
   text_choose_role: Define permissions for following roles
+  text_delete_item : Are you sure to want to delete this item?
   text_delete_this_project: Delete this project
   text_close_this_project: Close this project
   text_open_this_project: Open this project
@@ -219,3 +222,5 @@ en:
   text_no_wiki: This project doesn't have wiki yet.
   text_welcome: Welcome
   text_time_entry_not_owner_deletion: Well, you tried to delete a coworker time entry.
+  text_project: Project
+  text_negative_position: Invalid position, please try again later.

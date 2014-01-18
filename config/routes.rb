@@ -1,46 +1,55 @@
 ProjectManager::Application.routes.draw do
-  devise_for :users
 
-  match "rorganize/:action", :controller => 'rorganize'
-  match 'projects', :to => 'projects#index', :via => :get
-  scope "administration/" do
+
+  match 'rorganize/:action', :controller => 'rorganize'
+  resources :projects do
+    collection do
+      post 'filter', :path => ':filter'
+      get 'overview', :path => ':project_id/overview'
+      get 'activity', :path => ':project_id/activity'
+      get 'load_journal_activity', :path => ':project_id/load_journal_activity/:item_id/:date'
+      post 'archive', :path => 'archive/:id'
+      post 'activity_filter', :path => ':project_id/activity_filter/:type'
+    end
+  end
+  scope 'administration/' do
     resources :users
     resources :permissions do
       collection do
-        get "list", :path => ":role_name/list"
-        post "update_permissions", :path => ":role_name/update_permissions"
+        get 'list', :path => ':role_name/list'
+        post 'update_permissions', :path => ':role_name/update_permissions'
       end
     end
     resources :roles
     resources :trackers
     resources :issues_statuses do
       collection do
-        post "change_position"
+        post 'change_position'
       end
     end
   end
-  scope "project/:project_id/" do
+  scope 'projects/:project_id/' do
     resources :issues do
       collection do
         get 'toolbox'
         post 'toolbox'
-        get 'show_checklist_items'
-        get 'issue_description'
-        delete 'delete_attachment'
+        get 'show_checklist_items', :path => 'show_checklist_items/:id'
+        get 'issue_description', :path => 'issue_description/:id'
+        delete 'delete_attachment', :path => 'delete_attachment/:id'
         get 'download_attachment'
         post 'save_checklist'
         get 'checklist'
-        post 'edit_note', :path => ":id/edit_note"
-        post 'start_today'
-        delete 'delete_note'
-        get 'apply_custom_query', :path => "filter/:query_id"
-        post 'add_predecessor', :path => ":id/add_predecessor"
-        delete 'del_predecessor', :path => ":id/del_predecessor"
+        post 'edit_note', :path => 'edit_note/:note_id'
+        post 'start_today', :path => 'start_today/:id'
+        delete 'delete_note', :path => 'delete_note/:note_id'
+        get 'apply_custom_query', :path => 'filter/:query_id'
+        post 'add_predecessor', :path => ':id/add_predecessor'
+        delete 'del_predecessor', :path => ':id/del_predecessor'
       end
     end
     resources :documents do
       collection do
-        delete 'delete_attachment'
+        delete 'delete_attachment', :path => 'delete_attachment/:id'
         get 'download_attachment'
         get 'toolbox'
         post 'toolbox'
@@ -49,7 +58,7 @@ ProjectManager::Application.routes.draw do
     resources :roadmap do
       collection do
         get 'calendar'
-        get 'version_description'
+        get 'version_description', :path => 'version_description/:id'
         get 'gantt'
       end
     end
@@ -63,51 +72,42 @@ ProjectManager::Application.routes.draw do
     resources :wiki_pages do
       collection do
         get 'new_home_page'
-        get 'new_sub_page', :path => ":id/new_sub_page"
+        get 'new_sub_page', :path => ':id/new_sub_page'
       end
     end
-    resources :settings, :except => "show" do
+    resources :settings, :except => 'show' do
       collection do
-        post "update_project_informations"
-        get "public_queries", :path => "queries"
-        delete 'delete_attachment'
-        get "modules"
-        post "modules"
+        post 'update_project_informations'
+        get 'public_queries', :path => 'queries'
+        delete 'delete_attachment', :path => 'delete_attachment/:id'
+        get 'modules'
+        post 'modules'
       end
     end
   end
   resources :queries do
-
+    collection do
+      get 'new_project_query', :path => 'new_project_query/:project_id/:query_type'
+    end
   end
-  scope "project/:project_id/settings/" do
+  scope 'projects/:project_id/settings/' do
     resources :versions do
       collection do
-        post "change_position"
+        post 'change_position'
       end
     end
     resources :categories
-    resources :members, :except => "show" do
+    resources :members, :except => 'show' do
       collection do
-        get "change_role"
-        post "change_role"
+        post 'change_role', :path => 'change_role/:member_id'
 
       end
-    end
-  end
-
-  resources :project do
-    collection do
-      get "overview", :path => ":project_id/overview"
-      get "activity", :path => ":project_id/activity"
-      get "load_journal_activity"
-      post "archive", :path => "archive/:id"
-      post "filter", :path => ":project_id/acitivity_filter"
     end
   end
 
   resources :administration do
     collection do
-      get "public_queries", :path => "queries"
+      get 'public_queries', :path => 'queries'
     end
   end
   resources :my do
@@ -121,26 +121,32 @@ ProjectManager::Application.routes.draw do
       get 'my_submitted_requests', :path => ':id/my_submitted_requests'
       get 'my_activities', :path => ':id/my_activities'
       get 'my_spent_time', :path => ':id/my_spent_time'
-      post "star_project"
-      post "save_project_position"
+      post 'star_project', :path => 'star_project/:project_id'
+      post 'save_project_position'
     end
   end
 
   resources :coworkers do
     collection do
-      get 'display_activities'
+      get 'display_activities', :path => 'display_activities/:id'
     end
   end
 
   resources :time_entries do
     collection do
-      get 'fill_overlay'
+      get 'fill_overlay', :path => 'fill_overlay/:issue_id'
+      get 'fill_overlay', :path => 'fill_overlay/:issue_id/:spent_on', :as => 'fill_overlay_with_date'
     end
   end
-  #MOUNT PLUGINS
-  mount Scenarios::Engine => "/", :as => "scenarios_route" #/scenarios
 
-  match 'project/:project_id/scenarios/:action', :controller => 'scenarios'
+  match '/projects', :controller => :projects, :action => :index
+
+  #MOUNT PLUGINS
+  mount Scenarios::Engine => '/', :as => 'scenarios_route' #/scenarios
+
+  match 'projects/:project_id/scenarios/:action', :controller => 'scenarios'
 
   root :to => 'Rorganize#index'
+
+  devise_for :users, :controllers => {:sessions => :sessions}
 end

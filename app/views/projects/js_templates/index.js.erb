@@ -1,0 +1,6 @@
+<%#=
+ * User: Nicolas
+ * Date: 14/12/13
+ * Time: 14:43
+ %>
+on_addition_effect("#projects", "<%= escape_javascript(render :partial => 'projects/list', :locals => {:allow_to_star => false, :projects => projects}) %>");

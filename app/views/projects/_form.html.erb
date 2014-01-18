@@ -1,0 +1,34 @@
+<%#
+# Author: Nicolas Meylan
+# Date: 3 juil. 2012
+# Encoding: UTF-8
+# File: _form.erb.erb
+%>
+<%= form_for(@project, :url => projects_path, :html => {:class => 'form',:multipart => true}) do |f|%>
+  <%= %>
+  <%= raw error_messages(@project.errors.full_messages) %>
+  <div class="box">
+    <p>
+      <label for="project_name"><%=t(:field_name)%><span class ="required"> *</span></label>
+      <%= f.text_field :name, :size => 80 %>
+    </p>
+
+    <p>
+      <label for="project_identifier"><%=t(:field_identifier)%><span class ="required"> *</span></label>
+      <%= f.text_field :identifier, :size => 80 %>
+    </p>
+
+    <p>
+      <%= f.label :description, t(:field_description) %>
+      <%= f.text_area :description, :class => 'fancyEditor'%>
+    </p>
+
+    <div id="attachments">
+      <p>
+        <label><%= t(:field_attachments) %></label>
+      </p>
+      <%= render :partial => 'projects/attachments', :collection => @project.attachments %>
+    </div>
+  </div>
+  <%= submit_tag t(:button_create) %>
+<% end %>

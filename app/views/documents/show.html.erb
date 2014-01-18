@@ -9,15 +9,9 @@
   <h1><%= "#{t(:label_document)} ##{@document.id}" %></h1>
 
   <div class="splitcontentright">
-    <%= link_to_with_permissions(t(:link_new_document), new_document_path(@project.slug), @project, {:html => {:class => 'icon icon-add'}}) %>
-    <%= link_to_with_permissions(t(:link_edit), edit_document_path(@project.slug), @project, {:html => {:class => 'icon icon-edit'}}) %>
-    <%= link_to_with_permissions(t(:link_delete),
-                                 document_path(@project.slug, @document.id),
-                                 @project,
-                                 {:method => :delete,
-                                  :target => 'self',
-                                  :html => {:class => 'icon icon-del',
-                                            :onclick => "button_delete('#{document_path}')"}}) %>
+    <%= link_to_with_permissions(t(:link_new_document), new_document_path(@project.slug), @project, :class => 'icon icon-add') %>
+    <%= link_to_with_permissions(t(:link_edit), edit_document_path(@project.slug), @project, :class => 'icon icon-edit') %>
+    <%= link_to_with_permissions(t(:link_delete),document_path(@project.slug, @document.id), @project, {:method => :delete, :remote => true, :class => 'icon icon-del', :confirm => t(:text_delete_item )}) %>
   </div>
 </div>
 
@@ -59,17 +53,3 @@
       <%= raw history_render(journals) %>
     </div>
 <% end %>
-<script type="text/javascript">
-    jQuery(document).ready(function () {
-        jQuery('a.lightbox').lightBox({
-            fixedNavigation: true,
-            imageLoading: "<%= asset_path 'lightbox-ico-loading.gif' %>",
-            imageBtnClose: "<%= asset_path 'lightbox-btn-close.gif' %>",
-            imageBtnPrev: "<%= asset_path 'lightbox-btn-prev.gif' %>",
-            imageBtnNext: "<%= asset_path 'lightbox-btn-next.gif' %>",
-            imageBlank: "<%= asset_path 'lightbox-blank.gif' %>",
-            containerResizeSpeed: 350
-        });
-    });
-
-</script>

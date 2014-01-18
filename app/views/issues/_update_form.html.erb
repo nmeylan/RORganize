@@ -31,8 +31,7 @@
   <div style="clear:both"></div>
   <p>
     <%= label 'notes', t(:field_notes) %>
-    <%= text_area_tag 'notes', '', :rows => 12, :id => 'notes' %>
+    <%= text_area_tag 'notes', '', :rows => 12, :id => 'notes' , :class => 'fancyEditor'%>
   </p>
   <%= submit_tag t(:button_submit) %>
 <% end %>
-<%= raw set_toolbar('notes') %>

@@ -1,0 +1,10 @@
+<%#=
+ * User: Nicolas
+ * Date: 07/12/13
+ * Time: 14:49
+%>
+<% if checklist_items %>
+    <% checklist_items.sort! { |x, y| x.position <=> y.position }.each do |item| %>
+        <li class="<%= item.enumeration.name.downcase %>"><%= item.name %></li>
+    <% end %>
+<% end %>

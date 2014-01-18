@@ -4,6 +4,10 @@
 # Encoding: UTF-8
 # File: _show_checklist.erb
 %>
-<% @checklist_items.sort!{|x,y| x.position <=> y.position}.each do |item| %>
-  <li class="<%=item.enumeration.name.downcase%>"><%= item.name %></li>
-<% end %>
+<div class="overlayOuter" id="checklist_overlay">
+  <div class="overlayInner">
+    <ul class="checklist" id="items">
+        <%= render :partial => "issues/checklist_items", :locals => {:checklist_items => checklist_items} %>
+    </ul>
+  </div>
+</div>

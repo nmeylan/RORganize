@@ -9,26 +9,23 @@
   <h1><%= t(:label_project_plural) %></h1>
   <div class="splitcontentright">
     <%= link_to_with_permissions(
-      t(:link_new_permission), new_project_path, nil, {:method => :get, :html => {:class => 'icon icon-add'}}) %>
+      t(:link_new_project), new_project_path, nil, {:method => :get, :class => 'icon icon-add'}) %>
   </div>
   <div style="clear:both;"></div>
 </div>
 
-<%= link_to t(:link_all), '#all',
+<%= link_to t(:link_all), filter_projects_path('all'),
   {:class => "project_selection_filter #{session['project_selection_filter'].eql?('all') ? 'selected' : ''}",
-  :id => 'all'} %> |
-<%= link_to t(:link_starred), '#starred',
+  :id => 'all', :remote => true, :method => :post} %> |
+<%= link_to t(:link_starred), filter_projects_path('starred'),
   {:class => "project_selection_filter #{session['project_selection_filter'].eql?('starred') ? 'selected' : ''}",
-  :id => 'starred'} %> |
-<%= link_to t(:link_opened), '#opened',
+  :id => 'starred', :remote => true, :method => :post} %> |
+<%= link_to t(:link_opened), filter_projects_path('opened'),
   {:class => "project_selection_filter #{session['project_selection_filter'].eql?('opened') ? 'selected' : ''}",
-  :id => 'opened'} %> |
-<%= link_to t(:link_archived), '#archived',
+  :id => 'opened', :remote => true, :method => :post} %> |
+<%= link_to t(:link_archived), filter_projects_path('archived'),
   {:class => "project_selection_filter #{session['project_selection_filter'].eql?('archived') ? 'selected' : ''}",
-  :id => 'archived'} %>
+  :id => 'archived', :remote => true, :method => :post} %>
 
 
 <%= render :partial => 'projects/list', :locals => {:allow_to_star => false, :projects => projects}  %>
-<script type="text/javascript">
-  project_selection_filter("<%=url_for({:action => 'index', :controller => 'projects'})%>");
-</script>

@@ -10,46 +10,22 @@
 
   <div class="splitcontentright">
 <%#= New link %>
-    <%= link_to_with_permissions(
-                t(:link_new_issue),
-                new_issue_path(@project.slug),
-                @project,
-                {:method => :get, :html => {:class => 'icon icon-add'}}) %>
+    <%= link_to_with_permissions( t(:link_new_issue),new_issue_path(@project.slug), @project, {:method => :get, :class => 'icon icon-add'}) %>
 <%#= Edit link %>
-    <%= link_to_with_not_owner_permissions(
-                t(:link_edit),
-                edit_issue_path(@project.slug, @issue.id),
-                @project,
-                @issue.author_id,
-                {:method => :get,
-                 :html => {:class => 'icon icon-edit'}}) %>
+    <%= link_to_with_not_owner_permissions(t(:link_edit),edit_issue_path(@project.slug, @issue.id),@project,@issue.author_id, {:method => :get,:class => 'icon icon-edit'}) %>
 <%#= Start date link %>
-    <%= link_to t(:link_start_today), '#',
-                {:class => 'icon icon-calendar', :id => 'start_today',
-                 :onclick => "button_post_with_message('#{start_today_issues_path(@project.slug)}','#{t(:text_set_start_date_today)}',{ids : [#{@issue.id}]})"} %>
+    <%= link_to t(:link_start_today), start_today_issues_path(@project.slug, @issue.id),
+                {:class => 'icon icon-calendar', :id => 'start_today',:confirm => t(:text_set_start_date_today),
+                 :method => :post,:remote => true} %>
 <%#= Update link %>
     <%= link_to t(:link_update), '#update_issue', {:class => 'icon icon-update_issue', :id => 'update_issue_link'} %>
 <%#= Checklist link %>
-    <%= link_to_with_permissions(
-                t(:link_checklist),
-                checklist_issues_path(@project.slug),
-                @project,
-                {:method => :get,
-                 :target => 'self',
-                 :html => {:class => 'icon icon-checklist',
-                           :onclick => "jQuery('#checklist_overlay').overlay().load();"}}) %>
+    <%= link_to_with_permissions(t(:link_checklist),checklist_issues_path(@project.slug), @project, {:class => 'icon icon-checklist open_checklist_overlay'}) %>
 <%#= Log time link %>
-    <%= link_to t(:link_log_time), '#', {:class => 'icon icon-time', :onclick => "fill_log_issue_time_overlay('#{fill_overlay_time_entries_path}',#{@issue.id},this);jQuery('#spent_time_overlay').overlay().load();"} %>
+    <%= link_to t(:link_log_time),fill_overlay_time_entries_path(@issue.id) , {:id => 'log_time', :class => 'icon icon-time'} %>
 <%#= Delete link %>
-    <%= link_to_with_not_owner_permissions(
-                t(:link_delete),
-                issue_path(@project.slug, @issue.id),
-                @project,
-                @issue.author_id,
-                {:method => :delete,
-                 :target => 'self',
-                 :html => {:class => 'icon icon-del',
-                           :onclick => "button_delete('#{issue_path(@project.slug, @issue.id)}')"}}) %>
+    <%= link_to_with_not_owner_permissions( t(:link_delete), issue_path(@project.slug, @issue.id), @project,@issue.author_id,
+                {:method => :delete, :class => 'icon icon-del',:remote => true, :confirm => t(:text_delete_item )}) %>
   </div>
 </div>
 
@@ -58,10 +34,7 @@
   <em>
     <%= "#{t(:label_added)}
         #{distance_of_time_in_words(@issue.created_at, Time.now)}
-        #{t(:label_ago)},
-#{t(:label_by)}
-        #{@issue.author ? @issue.author.name : t(:label_unknown)}.
-#{(@issue.created_at.eql?(@issue.updated_at) ? '' :
+        #{t(:label_ago)},#{t(:label_by)} #{@issue.author ? @issue.author.name : t(:label_unknown)}. #{(@issue.created_at.eql?(@issue.updated_at) ? '' :
             "#{t(:label_updated)} #{distance_of_time_in_words(@issue.updated_at, Time.now)}
             #{t(:label_ago)}.").to_s}" %>
   </em>
@@ -100,16 +73,9 @@
 <div class="separator"></div>
 <h2>Checklist :</h2>
 <ul class="checklist" id="ck_refresh">
-  <%= render :partial => 'issues/show_checklist' %>
+  <%= render :partial => "issues/checklist_items", :locals => {:checklist_items => checklist_items} %>
 </ul>
-<span><h3><%= link_to_with_permissions(
-                      t(:link_edit_checklist),
-                      checklist_issues_path(@project.slug),
-                      @project,
-                      {:method => :get,
-                       :target => 'self',
-                       :html => {:class => 'icon icon-checklist',
-                                 :onclick => "jQuery('#checklist_overlay').overlay().load();"}}) %></h3>
+<span><h3> <%= link_to_with_permissions(t(:link_checklist),checklist_issues_path(@project.slug), @project, {:class => 'icon icon-checklist open_checklist_overlay'}) %></h3>
  </span>
 <div class="separator"></div>
 <%= link_to '', '#', {:class => 'icon icon-collapsed toggle right', :style => 'float:right', :id => 'gantt_informations'} %>
@@ -137,31 +103,8 @@
   <h2><%= t(:link_update) %></h2>
 
   <div class="box">
-    <%= render :partial => 'issues/update_form',
-               :locals => {:allowed_statuses => allowed_statuses, :done_ratio => done_ratio} %>
+    <%= render :partial => 'issues/update_form', :locals => {:allowed_statuses => allowed_statuses, :done_ratio => done_ratio} %>
   </div>
 </div>
-<%= render :partial => 'issues/checklist_overlay' %>
+<%= render :partial => 'issues/checklist_overlay', :locals => {:checklist_items =>  checklist_items} %>
 <%= render :partial => 'time_entries/log_issue_spent_time', :locals => {:issue_id => @issue.id, :tracker_name => @issue.tracker.name} %>
-<script type="text/javascript">
-    multi_toogle();
-    jQuery(".content.gantt_informations").hide();
-    jQuery(document).ready(function () {
-        jQuery('a.lightbox').lightBox({
-            fixedNavigation: true,
-            imageLoading: "<%= asset_path 'lightbox-ico-loading.gif' %>",
-            imageBtnClose: "<%= asset_path 'lightbox-btn-close.gif' %>",
-            imageBtnPrev: "<%= asset_path 'lightbox-btn-prev.gif' %>",
-            imageBtnNext: "<%= asset_path 'lightbox-btn-next.gif' %>",
-            imageBlank: "<%= asset_path 'lightbox-blank.gif' %>",
-            containerResizeSpeed: 350
-        });
-        jQuery('#update_issue').hide();
-        createOverlay("#checklist_overlay", 150);
-        createOverlay("#spent_time_overlay", 150);
-    });
-    jQuery("#update_issue_link").click(function () {
-        jQuery('#update_issue').show();
-    });
-
-</script>

@@ -82,7 +82,7 @@ module IssuesHelper
       end
       text += "<b>#{journal.journalized_type} ##{link_to journal.journalized_id, issue_path(journal.project.slug, journal.journalized_id)}</b>"
       if journal.project_id && specified_project
-        text += " #{t(:label_at)} <b>#{link_to journal.project.slug, url_for({:action => 'overview', :controller => 'project', :project_id => journal.project.slug})}</b>"
+        text += " #{t(:label_at)} <b>#{link_to journal.project.slug,overview_projects_path(journal.project.slug)}</b>"
       end
       text += '</p>'
     elsif journal.action_type.eql?('created')
@@ -90,7 +90,7 @@ module IssuesHelper
       text += "#{image_tag('/assets/activity_add.png')} #{journal.user.name} #{t(:label_created_lower_case)} "
       text += "<b>#{journal.journalized_type} ##{link_to journal.journalized_id, issue_path(journal.project.slug, journal.journalized_id)}</b>"
       if journal.project_id && specified_project
-        text += " #{t(:label_at)} <b>#{link_to journal.project.slug, url_for({:action => 'overview', :controller => 'project', :project_id => journal.project.slug})}</b>"
+        text += " #{t(:label_at)} <b>#{link_to journal.project.slug, overview_projects_path(journal.project.slug)}</b>"
       end
       text += '</p>'
     elsif journal.action_type.eql?('deleted')
@@ -98,7 +98,7 @@ module IssuesHelper
       text += "#{image_tag('/assets/activity_deleted.png')} #{journal.user.name} #{t(:label_deleted_lower_case)} "
       text += "<b>#{journal.journalized_type} ##{journal.journalized_id}</b>"
       if journal.project_id && specified_project
-        text += " #{t(:label_at)} <b>#{link_to journal.project.slug, url_for({:action => 'overview', :controller => 'project', :project_id => journal.project.slug})}</b>"
+        text += " #{t(:label_at)} <b>#{link_to journal.project.slug, overview_projects_path(journal.project.slug)}</b>"
       end
       text += '</p>'
     end

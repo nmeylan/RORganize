@@ -14,8 +14,8 @@ Rorganize::MenuManager.map :project_menu do |menu|
   #Id must be declare as following: menu_controller
   #If you have more than one item per controller
   #Id must be declare as following: menu_controller_action
-  menu.add(:overview, I18n.t(:label_overview), {:controller => 'project', :action => 'overview'}, {:id => "menu_project_overview"})
-  menu.add(:activity, I18n.t(:label_activity), {:controller => 'project', :action => 'activity'}, {:id => "menu_project_activity"})
+  menu.add(:overview, I18n.t(:label_overview), {:controller => 'projects', :action => 'overview'}, {:id => "menu_projects_overview"})
+  menu.add(:activity, I18n.t(:label_activity), {:controller => 'projects', :action => 'activity'}, {:id => "menu_projects_activity"})
   menu.add(:roadmap, I18n.t(:label_roadmap), {:controller => 'roadmap', :action => 'index'}, {:id => "menu_roadmap"})
   menu.add(:requests, I18n.t(:label_request_plural), {:controller => 'issues', :action => 'index'}, {:id => "menu_issues"})
   menu.add(:wiki, I18n.t(:label_wiki),  {:controller => 'wiki', :action => 'index'}, {:id => "menu_wiki"})
@@ -30,7 +30,7 @@ Rorganize::MenuManager.map :admin_menu do |menu|
   menu.add(:users, I18n.t(:link_users), {:controller => 'users', :action => 'index'}, {:id => "menu_users"})
   menu.add(:queries, I18n.t(:link_queries), {:controller => 'administration', :action => 'public_queries'}, {:id => "menu_administration_public_queries"})
   menu.add(:trackers, I18n.t(:link_trackers), {:controller => 'trackers', :action => 'index'}, {:id => "menu_trackers"})
-  menu.add(:issues_statuses, I18n.t(:link_issues_statuses), {:controller => 'issues_statuses', :action => 'index'}, {:id => "menu_issues_statuses"})
+  menu.add(:old_issues_statuses, I18n.t(:link_issues_statuses), {:controller => 'issues_statuses', :action => 'index'}, {:id => "menu_issues_statuses"})
 end
 
 Rorganize::MenuManager.map :top_menu do |menu|

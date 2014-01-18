@@ -1,0 +1,7 @@
+<%#=
+ * User: Nicolas
+ * Date: 14/12/13
+ * Time: 11:34
+ %>
+on_replace_effect('#issues_statuses_content', "<%= escape_javascript(render :partial => 'issues_statuses/list') %>");
+bind_version_change_positions();

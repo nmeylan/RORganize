@@ -10,10 +10,11 @@
     <li><%= link_to t(:field_assigned_to), '#', {:class => 'icon icon-group', :id => 'assigned_to'} %>
       <ul class="submenu assigned_to_id">
         <% if !menu['members'].nil? && menu['members'].any? %>
-          <%= hidden_field_tag 'value[assigned_to_id]' %>
+            <%= hidden_field_tag 'value[assigned_to_id]' %>
           <% menu['members'].each do |member| %>
-            <li><%= link_to member, '#', {:class => menu['current_states']['member'].include?(member) ? 'icon icon-toggle_check' : 'no-icon'} %></li>
+            <li><%= link_to member.name, '#', {:class => menu['current_states']['member'].include?(member) ? 'icon icon-toggle_check' : 'no-icon', :'data-id' => member.id} %></li>
           <% end %>
+            <li><%= link_to "None", '#', {:class => menu['current_states']['member'].include?(nil) ? 'icon icon-toggle_check' : 'no-icon', :'data-id' => -1} %></li>
         <%  end %>
       </ul>
     </li>
@@ -24,8 +25,9 @@
         <% if !menu['versions'].nil? && menu['versions'].any? %>
           <%= hidden_field_tag 'value[version_id]' %>
           <% menu['versions'].each do |version| %>
-            <li><%= link_to version, '#', {:class => menu['current_states']['version'].include?(version) ? 'icon icon-toggle_check' : 'no-icon'} %></li>
+            <li><%= link_to version.name, '#', {:class => menu['current_states']['version'].include?(version) ? 'icon icon-toggle_check' : 'no-icon', :'data-id' => version.id} %></li>
           <% end %>
+            <li><%= link_to "None", '#', {:class => menu['current_states']['version'].include?(nil) ? 'icon icon-toggle_check' : 'no-icon', :'data-id' => -1} %></li>
         <%  end %>
       </ul>
     </li>
@@ -36,7 +38,7 @@
         <% if !menu['allowed_statuses'].nil? && menu['allowed_statuses'].any? %>
           <%= hidden_field_tag 'value[status_id]' %>
           <% menu['allowed_statuses'].each do |status| %>
-            <li><%= link_to status, '#', {:class => menu['current_states']['status'].include?(status) ? 'icon icon-toggle_check' : 'no-icon'} %></li>
+            <li><%= link_to status.enumeration.name, '#', {:class => menu['current_states']['status'].include?(status) ? 'icon icon-toggle_check' : 'no-icon', :'data-id' => status.id} %></li>
           <% end %>
         <%  end %>
       </ul>
@@ -48,8 +50,9 @@
         <% if !menu['categories'].nil? && menu['categories'].any? %>
           <%= hidden_field_tag 'value[category_id]' %>
           <% menu['categories'].each do |category| %>
-            <li><%= link_to category, '#', {:class => menu['current_states']['category'].include?(category) ? 'icon icon-toggle_check' : 'no-icon'} %></li>
+            <li><%= link_to category.name, '#', {:class => menu['current_states']['category'].include?(category) ? 'icon icon-toggle_check' : 'no-icon', :'data-id' => category.id } %></li>
           <% end %>
+            <li><%= link_to "None", '#', {:class => menu['current_states']['category'].include?(nil) ? 'icon icon-toggle_check' : 'no-icon', :'data-id' => -1} %></li>
         <%  end %>
       </ul>
     </li>
@@ -60,38 +63,23 @@
         <% if !menu['done_ratio'].nil? && menu['done_ratio'].any? %>
           <%= hidden_field_tag 'value[done]' %>
           <% menu['done_ratio'].each do |done| %>
-            <li><%= link_to done, '#', {:class => menu['current_states']['done'].include?(done) ? 'icon icon-toggle_check' : 'no-icon'} %></li>
+            <li><%= link_to done, '#', {:class => menu['current_states']['done'].include?(done) ? 'icon icon-toggle_check' : 'no-icon', :'data-id' => done} %></li>
           <% end %>
         <%  end %>
       </ul>
     </li>
   <% end %>
-  <li><%= link_to t(:link_start_today), '#', {:class => 'icon icon-calendar', :id => 'start_today',
-      :onclick => "button_post_with_message('#{start_today_issues_path(@project.slug)}','#{t(:text_set_start_date_today)}',{ids : #{@issues_toolbox.collect{|issue| issue.id}}, context : 'toolbox' })"}%></li>
+  <li class="start_date">
+    <%= hidden_field_tag 'value[start_date]' %>
+    <%= link_to t(:link_start_today), '#', {:class => 'icon icon-calendar action_link', :id => 'start_today', :'data-id' => Date.current()}%>
+  </li>
   <% if current_user.allowed_to?('edit','Issues',@project) %>
     <li><%= link_to t(:link_edit), {:action => 'edit', :project_id => @project.slug, :id => ids[0]}, {:class => 'icon icon-edit'} if @issues_toolbox.size == 1%></li>
   <% end %>
   <% if current_user.allowed_to?('destroy','Issues',@project) %>
-    <li><%= link_to t(:link_delete), '#', {:class => 'icon icon-del', :onclick => "jQuery('#delete_overlay').overlay().load();"}%></li>
+    <li><%= link_to t(:link_delete), '#', {:class => 'icon icon-del', :id => "open_delete_overlay"}%></li>
   <% end %>
   <% ids.each do |id| %>
     <%= hidden_field_tag 'ids[]', id %>
   <% end %>
 <% end -%>
-
-<script type="text/javascript">
-  createOverlay("#delete_overlay", 150);
-  jQuery(".submenu a").click(function(e) {
-    e.preventDefault();
-    // find the context of the selected options: e.g: "category" for update menu["categories"] of the selected issues
-    var context = _.without(jQuery(this).parents(".submenu").attr('class').split(' '), 'submenu', 'hover');
-    //put new value into hidden field which name is matching with context
-    jQuery("input#value_" + context).val(jQuery(this).text());
-    jQuery.ajax({
-      url : '<%=toolbox_issues_path(@project.slug)%>',
-      dataType : 'script',
-      type :'POST',
-      data : jQuery("#toolbox_form").serializeArray()
-    });
-  });
-</script>

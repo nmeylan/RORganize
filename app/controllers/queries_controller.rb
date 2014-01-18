@@ -7,25 +7,21 @@ class QueriesController < ApplicationController
   #  before_filter :find_project
   before_filter :check_permission
   before_filter :check_query_permission, :only => [:show, :edit, :destroy, :update]
-  before_filter {|c| c.top_menu_item('administration')}
+  before_filter { |c| c.top_menu_item('administration') }
   include ApplicationHelper
+
   def index
     respond_to do |format|
       format.html
     end
   end
 
-  def new
+  def new_project_query
     find_project
     @query = Query.new
-    @query.object_type = params[:object_type]
+    @query.object_type = params[:query_type]
     respond_to do |format|
-      format.html
-      format.js do
-        render :update do |page|
-          page.replace_html 'form_content', :partial => 'queries/form'
-        end
-      end
+      format.js { respond_to_js :locals => {:new => true} }
     end
   end
 
@@ -36,25 +32,19 @@ class QueriesController < ApplicationController
     @query.project_id = @project.id
     @query.stringify_query = session[@project.slug+'_controller_issues_filter']
     @query.stringify_params = session[@project.slug+'_controller_issues_filter_params'].inspect
-    if @query.save
-      find_custom_queries
-      respond_to do |format|
-        format.js do
-          render :update do |page|
-            page.replace_html 'custom_queries', :partial => 'issues/custom_queries'
-            response.headers['flash-message'] = t(:successful_creation)
-          end
-        end
-      end
-    else
-      respond_to do |format|
-        format.js do
-          render :update do |page|
-            response.headers['flash-error-message'] = @query.errors.full_messages
-          end
+    success = @query.save
+
+    respond_to do |format|
+      format.js do
+        if success
+          find_custom_queries
+          respond_to_js :action => 'new_project_query', :locals => {:new => false, :success => success}, :response_header => :success, :response_content => t(:successful_creation)
+        else
+          respond_to_js :action => 'new_project_query', :locals => {:new => false, :success => success}, :response_header => :failure, :response_content => @query.errors.full_messages
         end
       end
     end
+
   end
 
   def show
@@ -85,15 +75,10 @@ class QueriesController < ApplicationController
   end
 
   def destroy
-    @queries = Query.find_all_by_id(params[:queries])
     @query.destroy
-    @queries.reject!{ |item| item.id.eql?(@query.id )}
     respond_to do |format|
       format.js do
-        render :update do |page|
-          page.replace 'queries_content', :partial => 'queries/list'
-          response.headers['flash-message'] = t(:successful_deletion)
-        end
+        respond_to_js :response_header => :success, :response_content => t(:successful_deletion), :locals => {:id => @query.id}
       end
     end
   end
@@ -105,21 +90,12 @@ class QueriesController < ApplicationController
   end
 
   def find_custom_queries
-    @custom_queries = Query.find(:all,
-      :conditions => ['(project_id = ? AND (author_id = ? OR is_public = ?))
-        OR (is_for_all = ? AND (author_id = ? OR is_public = ?))',
-        @project.id,
-        current_user.id,
-        true,
-        true,
-        current_user.id,
-        true
-      ])
+    @custom_queries = Query.project_queries(@project.id, current_user.id)
   end
 
   def check_query_permission
     @query = Query.find_by_id(params[:id])
-    if (@query.is_public && !current_user.allowed_to?('public_queries','Queries',@project)) ||
+    if (@query.is_public && !current_user.allowed_to?('public_queries', 'Queries', @project)) ||
         (!@query.is_public && !@query.author_id.eql?(current_user.id))
       render_403
     end

@@ -14,5 +14,18 @@ class Wiki < RorganizeActiveRecord
   validates :project_id, :uniqueness => true
   #Triggers
   after_create :create_journal 
-  after_destroy :destroy_journal 
+  after_destroy :destroy_journal
+
+  def self.organize_pages(organization)
+    page_ids = organization.keys
+    wiki_pages = WikiPage.select('*').where(:id => page_ids)
+    parent = nil
+    wiki_pages.each do |page|
+      parent = organization[page.id.to_s][:parent_id]
+      if parent.eql?('null')
+        organization[page.id.to_s][:parent_id] = nil
+      end
+      page.update_attributes(organization[page.id.to_s])
+    end
+  end
 end

@@ -14,8 +14,8 @@
   <p>
   <p>
     <label><%= t(:link_issues_statuses) %></label>
-    <% @issues_statuses.sort{|x,y| x.enumeration.position <=> y.enumeration.position}.each do |status| %>
-      <label class="normal_label"><%= status.enumeration.name %><%= check_box_tag "[issues_statuses][#{status.enumeration.name}]", status.enumeration.id.to_i, @role.issues_statuses.include?(status)%></label>
+    <% @old_issues_statuses.sort{|x,y| x.enumeration.position <=> y.enumeration.position}.each do |status| %>
+      <label class="normal_label"><%= status.enumeration.name %><%= check_box_tag "[issues_statuses][#{status.enumeration.name}]", status.enumeration.id.to_i, @role.old_issues_statuses.include?(status)%></label>
     <% end %>
   </p>
 </div>

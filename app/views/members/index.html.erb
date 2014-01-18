@@ -13,8 +13,8 @@
       new_member_path(@project.slug), 
       @project,
       {:method => :get,
-        :target => 'self',
-        :html => {:class => 'icon icon-add', :onclick => "jQuery('#add_member_overlay').overlay().load();"}})%>
+        :remote => true,
+        :id => 'add_members',:class => 'icon icon-add'})%>
   </div>
 </div>
 <%= render :partial => 'settings/sidebar' %>

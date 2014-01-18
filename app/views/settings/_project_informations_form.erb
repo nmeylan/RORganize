@@ -19,10 +19,10 @@
     </p>
     <p>
       <%= f.label :description, t(:field_description) %>
-      <%= f.text_area :description %>
+      <%= f.text_area :description, :class => 'fancyEditor' %>
     </p>
     <div id="attachments">
-      <%= render :partial => 'project/show_attachments', :locals => {:attachments => @project.attachments} %>
+      <%= render :partial => 'projects/show_attachments', :locals => {:attachments => @project.attachments} %>
     </div>
   </div>
   <p>
@@ -36,4 +36,3 @@
   </p>
   <%= submit_tag t(:button_save) %>
 <% end %>
-<%= raw set_toolbar('project_description') %>

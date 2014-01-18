@@ -7,7 +7,7 @@
 
 <div id="documents_content">
   <% if @documents.any?  %>
-    <table class="document list">
+    <table class="document list" data-link="<%= toolbox_documents_path(@project.slug) %>">
       <tr class="header">
         <th><%= link_to '', '#', {:class => 'icon icon-checked', :id => 'check_all', 'cb_checked' => 'b'} %></th>
         <th><%= sortable 'documents.id', '#'%></th>
@@ -28,7 +28,7 @@
     <%= will_paginate(@documents, :renderer => 'RemoteLinkRenderer')%>
     <div class="autocomplete-combobox nosearch per_page">
       <label for="per_page"><%=t(:label_per_page)%></label>
-      <%= select_tag 'per_page', options_for_select([%w(25 25), %w(50 50), %w(100 100)], session[:controller_documents_per_page]),:class => 'chzn-select cbb-small', :id => 'per_page'%>
+      <%= select_tag 'per_page', options_for_select([%w(25 25), %w(50 50), %w(100 100)], session[:controller_documents_per_page]),:class => 'chzn-select cbb-small', :id => 'per_page', :'data-link' => "#{documents_path(@project.slug)}"%>
     </div>
   <% else %>
     <h2><%= t(:text_no_data) %></h2>
@@ -41,17 +41,3 @@
   </ul>
   <%= render :partial => 'documents/delete_overlay', :locals => {:documents => @documents_toolbox} %>
 </div>
-
-<script type="text/javascript">
-  (function($) {
-    $(document).ready(function() {
-      $(".chzn-select").chosen();
-    });
-    per_page("<%=url_for(:action => 'index', :controller => 'documents', :project_id => @project.slug)%>");
-    checkAll("#check_all", ".list");
-    listTrClick(".list .document_tr");
-    checkboxToolbox(".list");
-    init_toolbox('.document.list .document_tr', 'documents_toolbox', {list: '.document.list', url: "<%= url_for(:controller => 'documents', :action => 'toolbox', :project_id => @project.slug) %>"});
-  })(jQuery);
-
-</script>

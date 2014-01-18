@@ -33,5 +33,26 @@ class Member < RorganizeActiveRecord
       :project_id => self.project_id)
     journal.detail_insertion(created_journalized_attributes, self.class.journalized_properties, self.class.foreign_keys)
   end
+
+  #Get activities for a project member
+  def activities
+    Journal.select('journals.*')
+    .where(:user_id => self.user_id, :project_id => self.project_id)
+    .includes(:details, :project, :user, :journalized)
+    .order('created_at DESC')
+  end
+
+  #Change a member's role
+  def change_role(value)
+    success = self.update_attribute(:role_id, value)
+    members = Member.where(:project_id => self.project.id).includes(:role, :user)
+    {:saved => success, :members => members}
+  end
+
+  def self.find_members_and_roles_by_project_id(project_id)
+    members = Member.where(:project_id => project_id).includes(:role, :user)
+    roles = Role.select('*')
+    {:members => members, :roles => roles}
+  end
   
 end

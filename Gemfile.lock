@@ -59,10 +59,13 @@ GEM
       multi_json (~> 1.0)
     friendly_id (4.0.9)
     gem_plugin (0.2.3)
+    gon (4.1.1)
+      actionpack (>= 2.3.0)
+      json
     hike (1.2.3)
     i18n (0.6.4)
     journey (1.0.4)
-    jquery-rails (3.0.1)
+    jquery-rails (2.3.0)
       railties (>= 3.0, < 5.0)
       thor (>= 0.14, < 2.0)
     json (1.8.0)
@@ -88,8 +91,6 @@ GEM
       cocaine (~> 0.3.0)
       mime-types
     polyglot (0.3.3)
-    prototype-rails (3.2.1)
-      rails (~> 3.2)
     rack (1.4.5)
     rack-cache (1.2)
       rack (>= 0.4)
@@ -157,12 +158,12 @@ DEPENDENCIES
   coffee-rails (~> 3.2.2)
   devise
   friendly_id (~> 4.0.9)
+  gon
   jquery-rails
   mongrel (>= 1.2.0.pre2)
   mysql2
   nokogiri
   paperclip (~> 2.7.0)
-  prototype-rails (~> 3.2.1)
   rails (= 3.2.12)
   ruby-growl
   sass-rails (~> 3.2.6)

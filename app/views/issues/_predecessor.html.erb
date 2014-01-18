@@ -28,7 +28,7 @@
     <p>
       #<%= @issue.predecessor_id %> :
       <%= link_to @issue.parent.subject, {:action => 'show', :controller => 'issues', :id => @issue.predecessor_id}%>
-      <%= link_to t(:link_delete), '#', {:class => 'icon icon-del', :onclick => "button_delete('#{del_predecessor_issues_path(@project.slug, @issue.id)}')"}  %>
+      <%= link_to t(:link_delete), del_predecessor_issues_path(@project.slug, @issue.id), {:class => 'icon icon-del', :remote => true, :confirm => t(:text_delete_item), :method => :delete}  %>
     </p>
   <% else %>
     <% if @issue.parent.nil? %>

@@ -10,12 +10,7 @@ class CoworkersController < ApplicationController
   include ApplicationHelper
 
   def index
-    @coworkers = Hash.new{|h,k| h[k] = []}
-    current_user.members.includes(:role, :project => [:members => [:user, :role]]).each do |member|
-      if current_user.allowed_to?('display_activities', 'Coworkers', member.project)
-        @coworkers[member.project.name] = member.project.members.delete_if{|member| member.user_id.eql?(current_user.id)}
-      end
-    end
+    @coworkers = current_user.coworkers_per_project
     respond_to do |format|
       format.html
     end
@@ -24,19 +19,11 @@ class CoworkersController < ApplicationController
   def display_activities
     if params[:getAct].eql?('true')
       @coworker = Member.find(params[:id])
-      activities = Journal.select('journals.*')
-      .where(:user_id => @coworker.user_id, :project_id => @coworker.project_id)
-      .includes(:details, :project, :user, :journalized)
-      .order('created_at DESC')
     end
 
     respond_to do |format|
       format.html
-      format.js{
-        render :update do |page|
-          page.replace 'coworker_activities', :partial => 'coworkers/activities', :locals => {:activities => activities}
-        end
-      }
+      format.js{ respond_to_js :locals => {:activities => @coworker.activities} }
     end
   end
 

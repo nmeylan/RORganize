@@ -7,9 +7,9 @@
 <div id="calendar_header">
   <p>
 
-    <%= link_to "<< #{t(:link_prev_month)}", '#', {:style => 'float:left', :class => 'change_month ', :id => "#{@date.prev_month}"} %>
+    <%= link_to "<< #{t(:link_prev_month)}", my_spent_time_my_index_path(current_user.slug), {:style => 'float:left', :class => 'change_month ', :id => "#{@date.prev_month}"} %>
     <%= @date.strftime('%B, %Y') %>
-    <%= link_to "#{t(:link_next_month)} >>", '#', {:style => 'float:right', :class => 'change_month', :id => "#{@date.next_month}"} %>
+    <%= link_to "#{t(:link_next_month)} >>", my_spent_time_my_index_path(current_user.slug), {:style => 'float:right', :class => 'change_month', :id => "#{@date.next_month}"} %>
   </p>
 
 </div>
@@ -31,11 +31,10 @@
                       <%= link_to "##{time_entry.issue_id}", issue_path(time_entry.project.slug, time_entry.issue_id) %>
                     </span>
                     <span class="calendar_item_middle">
-                      <%= link_to time_entry.spent_time, '#', {:class => 'icon icon-time', :onclick => "fill_log_issue_time_overlay('#{fill_overlay_time_entries_path}',#{time_entry.issue_id},this,'#{date}');jQuery('#spent_time_overlay').overlay().load();"} %>
+                      <%= link_to time_entry.spent_time, fill_overlay_with_date_time_entries_path(time_entry.issue_id, date), {:class => 'icon icon-time log_time'} %>
                     </span>
                     <span class="calendar_item_right">
-                      <%= link_to '', '#', {:class => 'icon icon-del',
-                                            :onclick => "button_delete_with_data('#{time_entry_path(time_entry.id)}',{date:'#{@date.to_date}'})"} %>
+                      <%= link_to '', time_entry_path(time_entry.id), {:class => 'icon icon-del', :remote => true, :method => :delete, :confirm => t(:text_delete_item)} %>
                     </span>
                   </li>
                   <% total += time_entry.spent_time %>
@@ -54,7 +53,3 @@
 </ul>
 <div style="clear:both"></div>
 <%= render :partial => 'time_entries/log_issue_spent_time', :locals => {:issue_id => nil, :tracker_name => nil} %>
-<script type="text/javascript">
-    bind_calendar_button("<%= my_spent_time_my_index_path(current_user.slug) %>");
-    createOverlay("#spent_time_overlay", 150);
-</script>

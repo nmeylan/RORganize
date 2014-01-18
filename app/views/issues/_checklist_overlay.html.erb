@@ -14,7 +14,7 @@
     <div id="checklist">
       <%= form_tag({:action => 'save_checklist', :id => @issue}, :id => 'checklist_form', :remote=>true ) do -%>
         <ul id="items">
-          <% @checklist_items.sort!{|x,y| x.position <=> y.position}.each do |item| %>
+          <% checklist_items.sort!{|x,y| x.position <=> y.position}.each do |item| %>
             <div class='autocomplete-combobox nosearch no-padding_left' id="item-<%=item.name.gsub(/\s/,'')%>">
               <%= select_tag "items[#{item.name}]", options_from_collection_for_select(@checklist_statuses, 'id', 'name', item.enumeration_id), {:class => 'chzn-select cbb-medium', :id => item.name.gsub(/\s/,'') } %>
               <label style='margin-left:10px' id="label-<%=item.name.gsub(/\s/,'')%>"><%= item.name %></label>
@@ -24,13 +24,9 @@
         </ul>
       </div>
       <div class="overlayButtons">
-        <%= submit_tag t(:button_save), {:onclick => "jQuery('#checklist_overlay').overlay().close()"} %>
+        <%= submit_tag t(:button_save) %>
       <% end %>
       <button class="close" value="close"><%= t(:button_close) %></button>
     </div>
   </div>
 </div>
-
-<script type="text/javascript">
-    checklist_behaviour('<%= @checklist_statuses.to_json %>');
-</script>

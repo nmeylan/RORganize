@@ -6,7 +6,7 @@
 %>
 
 <fieldset>
-  <legend><%= link_to t(:link_filter), '#', {:class => 'icon icon-collapsed toggle'} %></legend>
+  <legend><%= link_to t(:link_filter), '#', {:class => 'icon icon-collapsed toggle', :id => "issue"} %></legend>
   <div class="content">
     <%= form_tag url_for(:controller => 'issues', :action => 'index'),:method => :get, :html => {:class => 'filter_form'}, :remote => true do -%>
   <%#= Start of the form %>
@@ -26,26 +26,3 @@
     <% end -%>
   </div>
 </fieldset>
-<script type="text/javascript">
-  (function($) {
-    $(document).ready(function() {
-
-      load_filter(<%= raw  issues_generics_form_to_json.to_s%>,
-<%= raw session[@project.slug+'_controller_issues_filter_params'].to_json%>);
-    });
-    $("#type_filter").click(function(e) {
-      $("#filters_list_chzn").show();
-      $("#filter_content").show();
-    });
-    $("#type_all").click(function(e) {
-      $("#filters_list_chzn").hide();
-      $("#filter_content").hide();
-    });
-
-
-    //Display or hide filter's conditions
-    add_filters(<%= raw  issues_generics_form_to_json.to_s%>);
-  })(jQuery);
-
-  uniq_toogle(".content");
-</script>

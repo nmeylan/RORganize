@@ -12,7 +12,7 @@
       <th></th>
     </tr>
     <% @trackers.each do |tracker| %>
-      <tr class="odd_even">
+      <tr class="odd_even" id="<%= tracker.id %>">
         <td class="list_left name"><% if current_user.allowed_to?('edit','Trackers') %>
             <%= link_to tracker.name, edit_tracker_path(tracker.id)%>
           <% else %>
@@ -20,13 +20,7 @@
           <% end %>
         </td>
         <td class="action">
-          <%= link_to_with_permissions(t(:link_delete), 
-            tracker_path(tracker.id), 
-            nil, 
-            {:method => :delete, 
-              :target => 'self',
-              :html => {:class => 'icon icon-del', 
-                :onclick => "button_delete('#{tracker_path(tracker.id)}')"}}) %>
+          <%= link_to_with_permissions(t(:link_delete), tracker_path(tracker.id),  nil,  {:method => :delete, :class => 'icon icon-del', :remote => true, :confirm => t(:text_delete_item )}) %>
         </td>
       </tr>
     <%end%>

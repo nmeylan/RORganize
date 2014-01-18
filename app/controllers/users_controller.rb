@@ -8,22 +8,19 @@ class UsersController < ApplicationController
   helper_method :sort_column, :sort_direction
   before_filter :check_permission, :except => [:update_permissions]
   before_filter { |c| c.menu_context :admin_menu }
-  before_filter { |c| c.menu_item(params[:controller])}
-  before_filter {|c| c.top_menu_item('administration')}
+  before_filter { |c| c.menu_item(params[:controller]) }
+  before_filter { |c| c.top_menu_item('administration') }
 
   include ApplicationHelper
   require 'will_paginate'
   #GET /administration/users
   def index
-    params[:per_page] ? session['controller_users_per_page'] = params[:per_page] : session['controller_users_per_page'] = (session['controller_users_per_page'] ? session['controller_users_per_page'] : 25)
+    session['controller_users_per_page'] = params[:per_page] ? params[:per_page] : (session['controller_users_per_page'] ? session['controller_users_per_page'] : 25)
     @users = User.paginated_users(params[:page], session['controller_users_per_page'], sort_column + ' ' + sort_direction)
     respond_to do |format|
       format.html
-      format.js do
-        render :update do |page|
-          page.replace 'users_content', :partial => 'users/list'
-        end
-      end
+      format.js { respond_to_js }
+
     end
   end
 
@@ -44,13 +41,12 @@ class UsersController < ApplicationController
     respond_to do |format|
       if @user.save
         flash[:notice] = t(:successful_creation)
-        format.html { redirect_to :action => 'show', :controller => 'users', :id => @user}
-        format.json  { render :json => @user,
-          :status => :created, :location => @user}
+        format.html { redirect_to :action => 'show', :controller => 'users', :id => @user }
+        format.json { render :json => @user,
+                             :status => :created, :location => @user }
       else
-        format.html  { render :action => 'new' }
-        format.json  { render :json => @user.errors,
-          :status => :unprocessable_entity }
+        format.html { render :action => 'new' }
+        format.json { render :json => @user.errors, :status => :unprocessable_entity }
       end
     end
   end
@@ -72,17 +68,17 @@ class UsersController < ApplicationController
     respond_to do |format|
       if !@user.changed?
         format.html { redirect_to :action => 'show', :controller => 'users', :id => @user }
-        format.json  { render :json => @user,
-          :status => :created, :location => @user}
+        format.json { render :json => @user,
+                             :status => :created, :location => @user }
       elsif @user.save
         flash[:notice] = t(:successful_update)
-        format.html { redirect_to :action => 'show', :controller => 'users', :id => @user}
-        format.json  { render :json => @user,
-          :status => :created, :location => @user}
+        format.html { redirect_to :action => 'show', :controller => 'users', :id => @user }
+        format.json { render :json => @user,
+                             :status => :created, :location => @user }
       else
-        format.html  { render :action => 'edit' }
-        format.json  { render :json => @user.errors,
-          :status => :unprocessable_entity }
+        format.html { render :action => 'edit' }
+        format.json { render :json => @user.errors,
+                             :status => :unprocessable_entity }
       end
     end
   end
@@ -102,26 +98,19 @@ class UsersController < ApplicationController
     @user.destroy
     flash[:notice] = t(:successful_deletion)
     respond_to do |format|
-      format.html { redirect_to users_path}
-      format.js do
-        render :update do |page|
-          page.redirect_to users_path
-        end
-      end
+      format.html { redirect_to users_path }
+      format.js { js_redirect_to(users_path) }
     end
   end
 
 
-
   private
   def sort_column
-    params[:sort] ? session['controller_users_sort'] = params[:sort] : session['controller_users_sort'] = (session['controller_users_sort'] ? session['controller_users_sort'] : 'id')
-    session['controller_users_sort']
+    session['controller_users_sort'] = params[:sort] ?  params[:sort] : (session['controller_users_sort'] ? session['controller_users_sort'] : 'id')
   end
 
   def sort_direction
-    params[:direction] ? session['controller_users_direction'] = params[:direction] : session['controller_users_direction'] = (session['controller_users_direction'] ? session['controller_users_direction'] : 'desc')
-    session['controller_users_direction']
+    session['controller_users_direction'] = params[:direction] ? params[:direction] : (session['controller_users_direction'] ? session['controller_users_direction'] : 'desc')
   end
 
 end

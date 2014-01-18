@@ -12,9 +12,7 @@ File: pages.html
     <% if current_user.allowed_to?('set_organization', 'Wiki', @project) %>
       <%= link_to t(:link_organize_pages), organize_pages_wiki_index_path(@project.identifier), {:class => 'icon icon-hierarchy'} %>
     <% end %>  
-    <%= link_to_with_permissions(t(:link_new_page), 
-      new_wiki_page_path(@project.slug), 
-      @project, {:method => :get, :html => {:class => 'icon icon-document'}}) %>
+    <%= link_to_with_permissions(t(:link_new_page), new_wiki_page_path(@project.slug),  @project, {:method => :get, :class => 'icon icon-document'}) %>
   </div>
 </div>
 <%= render :partial => 'wiki/sidebar' %>

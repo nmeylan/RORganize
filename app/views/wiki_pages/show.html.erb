@@ -18,17 +18,14 @@ File: show
       edit_wiki_page_path(@project.slug,@wiki_page.slug), 
       @project, 
       @wiki_page.author_id, 
-      {:method => :get, 
-        :html => {:class => 'icon icon-edit'}}) %>
+      {:method => :get, :class => 'icon icon-edit'}) %>
     <%= link_to_with_not_owner_permissions(
       t(:link_delete), 
       wiki_page_path(@project.slug, @wiki_page.slug), 
       @project, 
       @wiki_page.author_id, 
-      {:method => :delete, 
-        :target => 'self',
-        :html => {:class => 'icon icon-del',
-          :onclick => "button_delete('#{wiki_page_path(@project.slug, @wiki_page.slug)}')"}}) %>
+      {:method => :delete,
+        :class => 'icon icon-del', :remote => true, :confirm => t(:text_delete_item )}) %>
   </div>
 </div>
 <%= render :partial => 'wiki/sidebar' %>

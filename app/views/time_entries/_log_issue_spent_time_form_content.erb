@@ -14,13 +14,11 @@
 
   <p>
     <%= label_tag :comment, t(:field_notes) %>
-    <%= f.text_area :comment, {:rows => 8} %>
+    <%= f.text_area :comment, :rows => 8, :class => 'fancyEditor' %>
   </p>
   <%= hidden_field_tag :issue_id, issue_id %>
 </div>
-<%#= submit_tag t(:button_save), :onclick=>"" %>
 
-<input type="button" id="" class="save" value="<%= t(:button_save) %>" onclick="ajax_submit_form('#spent_time_form')"/>
+<input type="submit" id="" class="save" value="<%= t(:button_save) %>"/>
 <input type="button" id="" class="close" value="<%= t(:button_close) %>" onclick="jQuery('#spent_time_overlay').overlay().close()"/>
 <%= javascript_tag("jQuery('#pick_calendar').datepicker({dateFormat: 'yy-mm-dd'});") %>
-<%= raw set_toolbar("time_entry_comment") %>

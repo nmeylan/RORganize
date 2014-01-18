@@ -27,12 +27,12 @@
         <td class="action">
           <% if current_user.allowed_to?('change_position','Versions',@project) %>
             <% if version.position > 1 %>
-              <%= link_to '', '#',  {:class => 'icon icon-up_arrow change_position dec'} %>
+              <%= link_to '', change_position_versions_path(@project.slug),  {:class => 'icon icon-up_arrow change_position dec'} %>
             <% else %>
               <%= link_to '', '#',  {:class => 'icon icon-disabled_up_arrow'} %>
             <% end %>
             <% if version.position < @max %>
-              <%= link_to '', '#',  {:class => 'icon icon-down_arrow change_position inc'}  %>
+              <%= link_to '', change_position_versions_path(@project.slug),  {:class => 'icon icon-down_arrow change_position inc'}  %>
             <% else %>
               <%= link_to '', '#',  {:class => 'icon icon-disabled_down_arrow'} %>
             <% end %>
@@ -43,17 +43,11 @@
          <%= link_to_with_permissions(t(:link_delete), 
             version_path(@project.slug, version.id), 
             @project, 
-            {:method => :delete, 
-              :target => 'self',
-              :html => {:class => 'icon icon-del', 
-                :onclick => "button_delete('#{version_path(@project.slug, version.id)}')"}}) %>
+            {:method => :delete,
+              :class => 'icon icon-del', :remote => true, :confirm => t(:text_delete_item )}) %>
         </td>
 
       </tr>
     <%end%>
   </table>
 </div>
-
-<script type="text/javascript">
-  bind_version_change_positions("<%=change_position_versions_path(@project.slug) %>");
-</script>
