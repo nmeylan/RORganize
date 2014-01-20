@@ -1,6 +1,7 @@
 ## Welcome to my personnal project
 ### Started on June 20 2012
 ### Last update on January 18 2014
+_Only stable release are push here_
 
 # Overview
 
