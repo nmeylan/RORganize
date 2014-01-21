@@ -1,14 +1,13 @@
-## Welcome to my personnal project
-### Started on June 20 2012
-### Last update on January 18 2014
-_Only stable release are push here_
+## Welcome to my project management tool
+### Started on June 20, 2012 - Last update : January 18, 2014
+_Only stable release are push on this repo_
 
 # Overview
 
 RORganize is a web application based on Ruby on Rails framework.
-RORganize was inspired by the project manager application: Redmine.
+RORganize was inspired by the project management application: Redmine.
 
-RORganize is a bugs and issue-tracking app, which integrate additional tools such as:
+RORganize is a bugs and issue-tracking app, which integrate lots of additional tools such as:
 
 ### Project creation
 >You can easily create your project, add members and their role(PM, dev), versions. You can also set up all you need for your project as plugins activation, or which tracker you need for your project issues.
