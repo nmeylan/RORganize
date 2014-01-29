@@ -140,4 +140,14 @@ class Document < RorganizeActiveRecord
       end
     end
   end
+
+  def self.bulk_delete(doc_ids)
+    documents_toolbox = Document.where(:id => doc_ids)
+    # Can't call Document.delete_all because, after_delete and :depends destroy callback is not triggered :(
+    Document.transaction do
+      documents_toolbox.each do |document|
+        document.destroy
+      end
+    end
+  end
 end

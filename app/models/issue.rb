@@ -233,12 +233,13 @@ class Issue < RorganizeActiveRecord
 
   def self.bulk_delete(issue_ids)
     issues = Issue.find_all_by_id(issue_ids)
-    issues.each do |issue|
-      unless issue.author_id.eql?(User.current.id) || User.current.allowed_to?('delete not owner', 'Issue', @project)
-        issue_ids.delete(issue.id)
+    Issue.transaction do
+      issues.each do |issue|
+        if issue.author_id.eql?(User.current.id) || User.current.allowed_to?('delete not owner', 'Issue', @project)
+          issue.destroy
+        end
       end
     end
-    Issue.delete_all(:id => issue_ids)
   end
 
 
