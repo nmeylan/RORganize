@@ -19,6 +19,10 @@ function on_load_issues_scripts(options) {
         case 'edit' :
             issues_form();
             break;
+        case 'apply_custom_query' :
+            issues_index(options);
+            uniq_toogle("#issue.toggle", ".content");
+            break;
     }
 
 
