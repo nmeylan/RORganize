@@ -103,11 +103,6 @@ class Issue < RorganizeActiveRecord
     errors.add(:predecessor, 'not found')
   end
 
-  def self.filter(hash)
-
-    return Issue.find(:all, :conditions => query_str)
-  end
-
   #ATTACHMENT METHODS
   def new_attachment_attributes=(attachment_attributes)
     attachment_attributes.each do |attributes|
@@ -153,7 +148,7 @@ class Issue < RorganizeActiveRecord
     content_hash['hash_for_radio']['done'] = %w(all equal superior inferior)
     content_hash['hash_for_select']['done'] = [[0, 0], [10, 10], [20, 20], [30, 30], [40, 40], [50, 50], [60, 60], [70, 70], [80, 80], [90, 90], [100, 100]]
     content_hash['hash_for_radio']['due_date'] = %w(all equal superior inferior today)
-    content_hash['hash_for_select']['status'] = IssuesStatus.find(:all, :include => [:enumeration]).collect { |status| [status.enumeration.name, status.id] }
+    content_hash['hash_for_select']['status'] = IssuesStatus.select('*').includes(:enumeration).collect { |status| [status.enumeration.name, status.id] }
     content_hash['hash_for_radio']['status'] = %w(all equal different open close)
     content_hash['hash_for_radio']['start'] = %w(all equal superior inferior today)
     content_hash['hash_for_radio']['subject'] = ['all', 'contains', 'not contains']

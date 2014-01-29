@@ -75,7 +75,7 @@
 <ul class="checklist" id="ck_refresh">
   <%= render :partial => "issues/checklist_items", :locals => {:checklist_items => checklist_items} %>
 </ul>
-<span><h3> <%= link_to_with_permissions(t(:link_checklist),checklist_issues_path(@project.slug), @project, {:class => 'icon icon-checklist open_checklist_overlay'}) %></h3>
+<span><%= link_to_with_permissions(t(:link_checklist),checklist_issues_path(@project.slug), @project, {:class => 'icon icon-checklist open_checklist_overlay'}) %>
  </span>
 <div class="separator"></div>
 <%= link_to '', '#', {:class => 'icon icon-collapsed toggle right', :style => 'float:right', :id => 'gantt_informations'} %>

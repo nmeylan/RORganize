@@ -60,7 +60,6 @@
 
     $(document).ajaxComplete(function (e, xhr, options) {
         //BIND_CHZN-SELECT
-        //BIND_CHZN-SELECT
         $(".chzn-select").chosen();
         $(".chzn-select-deselect").chosen({allow_single_deselect: true});
 
@@ -255,8 +254,7 @@ function checklist_add_item(checklist_statuses_json) {
     });
 }
 function checklist_behaviour(statuses) {
-    var checklist_statuses = statuses;
-    var checklist_statuses_json = (eval(checklist_statuses.replace(/&quot;/g, "\"")));
+    var checklist_statuses_json = (eval(statuses.replace(/&quot;/g, "\"")));
     jQuery(function () {
         jQuery("#items").sortable();
         jQuery("#items").disableSelection();
@@ -475,10 +473,10 @@ function add_filters(json_content) {
 
             } else if (jQuery(selector).length > 0 && jQuery.inArray(jQuery(this).val(), selected) == -1) {
                 jQuery(selector).remove();
-            } else {
-
             }
         });
+        $(".chzn-select").chosen();
+        $(".chzn-select-deselect").chosen({allow_single_deselect: true});
     });
 }
 function load_filter(json_content, present_filters) {

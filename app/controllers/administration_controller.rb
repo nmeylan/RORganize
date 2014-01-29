@@ -18,8 +18,7 @@ class AdministrationController < ApplicationController
   end
 
   def public_queries
-    @queries = Query.find(:all,
-      :conditions => ['is_public = ? AND is_for_all = ?', true, true])
+    @queries = Query.where(['is_public = ? AND is_for_all = ?', true, true])
     respond_to do |format|
       format.html
     end

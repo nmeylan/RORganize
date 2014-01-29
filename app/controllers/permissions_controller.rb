@@ -96,7 +96,7 @@ class PermissionsController < ApplicationController
     saved = @role.update_permissions(params[:permissions])
     if saved
       reload_permission(@role.id)
-      @roles = Role.find(:all)
+      @roles = Role.select('*')
       respond_to do |format|
         flash[:notice] = t(:successful_update)
         format.html { redirect_to :action => 'index', :controller => 'permissions'}
