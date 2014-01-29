@@ -177,7 +177,7 @@ class Issue < RorganizeActiveRecord
 
   def self.display_issue_object(issue_id)
     object = {}
-    object[:issue] = Issue.find(issue_id, :joins => [:tracker, :version, :status], :include => [:assigned_to, :category, :attachments, :parent])
+    object[:issue] = Issue.find(issue_id, :joins => [:tracker, :status], :include => [:version, :assigned_to, :category, :attachments, :parent])
     object[:journals] = Journal.where(:journalized_type => 'Issue', :journalized_id => issue_id).includes([:details, :user])
     object[:allowed_statuses] = User.current.allowed_statuses(object[:issue].project)
     object[:done_ratio] = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
@@ -194,7 +194,7 @@ class Issue < RorganizeActiveRecord
   end
 
   #Get toolbox menu for issue class.
-  def self.toolbox_menu(project,issues)
+  def self.toolbox_menu(project, issues)
     menu = {}
     menu['allowed_statuses'] = User.current.allowed_statuses(project).collect { |status| status }
     menu['done_ratio'] = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
@@ -210,6 +210,35 @@ class Issue < RorganizeActiveRecord
     current_states['category'] = issues.collect { |issue| issue.category }.uniq
     menu['current_states'] = current_states
     menu
+  end
+
+  def self.bulk_edit(issue_ids, value_param)
+    issues_toolbox = Issue.where(:id => issue_ids).includes(:tracker, :version, :assigned_to, :category, :status => [:enumeration])
+    #As form send all attributes, we drop all attributes except th filled one.
+    value_param.delete_if { |k, v| v.eql?('') }
+    key = value_param.keys[0]
+    value = value_param.values[0]
+    if value.eql?('-1')
+      value_param[key] = nil
+    end
+    Issue.transaction do
+      issues_toolbox.each do |issue|
+        issue.attributes = value_param
+        if issue.changed?
+          issue.save
+        end
+      end
+    end
+  end
+
+  def self.bulk_delete(issue_ids)
+    issues = Issue.find_all_by_id(issue_ids)
+    issues.each do |issue|
+      unless issue.author_id.eql?(User.current.id) || User.current.allowed_to?('delete not owner', 'Issue', @project)
+        issue_ids.delete(issue.id)
+      end
+    end
+    Issue.delete_all(:id => issue_ids)
   end
 
 

@@ -5,40 +5,40 @@
 class Document < RorganizeActiveRecord
   #Class variables
   assign_journalized_properties({
-    'name' => 'Name',
-    'category_id' => 'Category',
-    'version_id' => 'Version'})
+                                    'name' => 'Name',
+                                    'category_id' => 'Category',
+                                    'version_id' => 'Version'})
   assign_foreign_keys({
-    'category_id' => Category,
-    'version_id' => Version})
+                          'category_id' => Category,
+                          'version_id' => Version})
   assign_journalized_icon('/assets/document.png')
   #Relations
   belongs_to :version
   belongs_to :category
-  has_many :attachments, :foreign_key => 'object_id', :conditions => {:object_type => self.to_s},:dependent => :destroy
+  has_many :attachments, :foreign_key => 'object_id', :conditions => {:object_type => self.to_s}, :dependent => :destroy
   belongs_to :project
-  has_many :journals, :as => :journalized,:conditions => {:journalized_type => self.to_s}, :dependent => :destroy
+  has_many :journals, :as => :journalized, :conditions => {:journalized_type => self.to_s}, :dependent => :destroy
   #Validators
   validates_associated :attachments
   validates :name, :presence => true
   #triggers
-  after_update :save_attachments,:update_journal
+  after_update :save_attachments, :update_journal
   after_create :create_journal
   after_destroy :destroy_journal
   #methods
-  
+
   def self.paginated_documents(page, per_page, order, filter, project_id)
     paginate(:page => page,
-      :include => [:version,:category],
-      :conditions => filter+" documents.project_id = #{project_id}",
-      :per_page => per_page,
-      :order => order)
+             :include => [:version, :category],
+             :conditions => filter+" documents.project_id = #{project_id}",
+             :per_page => per_page,
+             :order => order)
   end
 
   #Attributes name without id
   def self.attributes_formalized_names
     names = []
-    Document.attribute_names.each{|attribute| !attribute.eql?('id') ? names << attribute.gsub(/_id/,'').gsub(/id/,'').gsub(/_/,' ').capitalize : ''}
+    Document.attribute_names.each { |attribute| !attribute.eql?('id') ? names << attribute.gsub(/_id/, '').gsub(/id/, '').gsub(/_/, ' ').capitalize : '' }
     return names
   end
 
@@ -66,7 +66,7 @@ class Document < RorganizeActiveRecord
       attachment.save(:validation => false)
     end
   end
-  
+
   #Return a hash with the content requiered for the filter's construction
   #Can define 2 type of filters:
   #Radio : with values : all - equal/contains - different/not contains
@@ -74,23 +74,24 @@ class Document < RorganizeActiveRecord
   def self.filter_content_hash(project)
     content_hash = {}
     content_hash['hash_for_select'] = {}
-    content_hash['hash_for_radio'] = Hash.new{|k,v| k[v] = []}
+    content_hash['hash_for_radio'] = Hash.new { |k, v| k[v] = [] }
     content_hash['hash_for_radio']['name'] = ['all', 'contains', 'not contains']
-    content_hash['hash_for_select']['category'] = project.categories.collect{|category| [category.name, category.id]}
+    content_hash['hash_for_select']['category'] = project.categories.collect { |category| [category.name, category.id] }
     content_hash['hash_for_radio']['category'] = %w(all equal different)
     content_hash['hash_for_radio']['created'] = %w(all equal superior inferior today)
-    content_hash['hash_for_select']['version'] = project.versions.collect{|version| [version.name, version.id]}
+    content_hash['hash_for_select']['version'] = project.versions.collect { |version| [version.name, version.id] }
     content_hash['hash_for_select']['version'] << %w(Unplanned NULL)
     content_hash['hash_for_radio']['version'] = %w(all equal different)
     content_hash['hash_for_radio']['updated'] = %w(all equal superior inferior today)
     return content_hash
   end
+
   #Return an array with all attribute that can be filtered
   def self.filtered_attributes
     filtered_attributes = []
     unused_attributes = %w(Project Description)
-    attrs = Document.attributes_formalized_names.delete_if {|attribute| unused_attributes.include?(attribute)}
-    attrs.each{|attribute| filtered_attributes << [attribute,attribute.gsub(/\s/,'_').downcase]}
+    attrs = Document.attributes_formalized_names.delete_if { |attribute| unused_attributes.include?(attribute) }
+    attrs.each { |attribute| filtered_attributes << [attribute, attribute.gsub(/\s/, '_').downcase] }
     return filtered_attributes
   end
 
@@ -116,5 +117,27 @@ class Document < RorganizeActiveRecord
     current_states['category'] = documents.collect { |document| document.category }.uniq
     menu['current_states'] = current_states
     menu
+  end
+
+  def self.bulk_edit(doc_ids, value_param)
+    #Editing with toolbox
+    documents_toolbox = Document.where(:id => doc_ids)
+
+    #As form send all attributes, we drop all attributes except th filled one.
+    value_param.delete_if { |k, v| v.eql?('') }
+    key = value_param.keys[0]
+    value = value_param.values[0]
+    if value.eql?('-1')
+      value_param[key] = nil
+    end
+    # Can't call Document.update_all because, after_update callback is not triggered :(
+    Document.transaction do
+      documents_toolbox.each do |document|
+        document.attributes = value_param
+        if document.changed?
+          document.save
+        end
+      end
+    end
   end
 end

@@ -19,7 +19,4 @@
 /.git-rewrite/database.yml
 config/database.yml
 config/database.yml
-/public/system/*
-/public/assets/*
-.svn
-*.idea
+/public

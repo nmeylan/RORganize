@@ -90,7 +90,7 @@ class User < RorganizeActiveRecord
   end
 
   def allowed_statuses(project)
-    self.members.select { |member| member.project_id == project.id }.first.role.old_issues_statuses.sort { |x, y| x.enumeration.position <=> y.enumeration.position }
+    self.members.select { |member| member.project_id == project.id }.first.role.issues_statuses.sort { |x, y| x.enumeration.position <=> y.enumeration.position }
   end
 
   def allowed_to?(action, controller, project = nil)

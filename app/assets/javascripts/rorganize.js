@@ -227,7 +227,6 @@ function checklist_build_select(item_value, option_for_select) {
     select_status += "<a href='#' class='icon icon-del' id='link-" + item_value.replace(/\s/g, "") + "'></a>";
     select_status += "</div>";
     jQuery("#items").prepend(select_status);
-    jQuery(".chzn-select").chosen();
 }
 function checklist_add_item(checklist_statuses_json) {
     jQuery("#add_checklist_item").click(function () {

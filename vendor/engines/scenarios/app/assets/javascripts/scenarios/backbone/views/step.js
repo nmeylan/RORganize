@@ -148,9 +148,9 @@
       openCreateIssueOverlay: function(e) {
          e.preventDefault();
          $("#create_issue_overlay_" + this.model.id).overlay().load();
-        /* $(".chzn-select-deselect").chosen({
+         $(".chzn-select-deselect").chosen({
             allow_single_deselect: true
-         }); */
+         });
       },
       linkWithIssues: function(e) {
          var issue_ids = [];

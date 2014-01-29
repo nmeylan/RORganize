@@ -119,25 +119,7 @@ class DocumentsController < ApplicationController
         format.js { respond_to_js :action => :index, :response_header => :success, :response_content => t(:successful_deletion) }
       end
     else
-      #Editing with toolbox
-      @documents_toolbox = Document.where(:id => params[:ids])
-      attributes ={'version_id' => Version, 'category_id' => Category}
-      #As form send all attributes, we drop all attributes except th filled one.
-      params[:value].delete_if { |k, v| v.eql?('') }
-      key = params[:value].keys[0]
-      value = params[:value].values[0]
-      if value.eql?('-1')
-        params[:value][key] = nil
-      end
-      # Can't call Document.update_all because, after_update callback is not triggered :(
-      #TODO : refactor this part.
-      @documents_toolbox.each do |document|
-        document.attributes = params[:value]
-        if document.changed?
-          document.save
-        end
-      end
-      @documents_toolbox = nil
+      Document.bulk_edit(params[:ids], params[:value])
       respond_to do |format|
         load_documents
         format.js { respond_to_js :action => :index, :response_header => :success, :response_content => t(:successful_update) }

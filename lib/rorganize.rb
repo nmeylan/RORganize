@@ -30,7 +30,7 @@ Rorganize::MenuManager.map :admin_menu do |menu|
   menu.add(:users, I18n.t(:link_users), {:controller => 'users', :action => 'index'}, {:id => "menu_users"})
   menu.add(:queries, I18n.t(:link_queries), {:controller => 'administration', :action => 'public_queries'}, {:id => "menu_administration_public_queries"})
   menu.add(:trackers, I18n.t(:link_trackers), {:controller => 'trackers', :action => 'index'}, {:id => "menu_trackers"})
-  menu.add(:old_issues_statuses, I18n.t(:link_issues_statuses), {:controller => 'issues_statuses', :action => 'index'}, {:id => "menu_issues_statuses"})
+  menu.add(:issues_statuses, I18n.t(:link_issues_statuses), {:controller => 'issues_statuses', :action => 'index'}, {:id => "menu_issues_statuses"})
 end
 
 Rorganize::MenuManager.map :top_menu do |menu|

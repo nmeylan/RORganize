@@ -19,10 +19,6 @@ function on_load_issues_scripts(options) {
         case 'edit' :
             issues_form();
             break;
-        case 'apply_custom_query' :
-            issues_index(options);
-            uniq_toogle("#issue.toggle", ".content");
-            break;
     }
 
 
@@ -60,7 +56,6 @@ function issues_show() {
     createOverlay("#checklist_overlay", 150);
     createOverlay("#spent_time_overlay", 150);
     jQuery(".open_checklist_overlay").click(function (e) {
-        e.preventDefault();
         jQuery("#checklist_overlay").overlay().load();
     });
     jQuery("#update_issue_link").click(function () {

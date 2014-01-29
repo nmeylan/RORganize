@@ -176,36 +176,14 @@ class IssuesController < ApplicationController
       end
     elsif params[:delete_ids]
       #Multi delete
-      issues = Issue.find_all_by_id(params[:delete_ids])
-      issues.each do |issue|
-        if (issue.author_id.eql?(current_user.id) || current_user.allowed_to?('delete not owner', params[:controller], @project))
-          issue.destroy
-        end
-      end
+      Issue.bulk_delete(params[:delete_ids])
       load_issues
       respond_to do |format|
         format.js { respond_to_js :action => :index, :response_header => :success, :response_content => t(:successful_deletion) }
       end
     else
       #Editing with toolbox
-      @issues_toolbox = Issue.where(:id => params[:ids])
-
-      #As form send all attributes, we drop all attributes except th filled one.
-      params[:value].delete_if { |k, v| v.eql?('') }
-      key = params[:value].keys[0]
-      value = params[:value].values[0]
-      if value.eql?('-1')
-        params[:value][key] = nil
-      end
-
-      #TODO : refactor this part.
-      @issues_toolbox.each do |issue|
-        issue.attributes = params[:value]
-        if issue.changed?
-          issue.save
-        end
-      end
-      @issues_toolbox = nil
+      Issue.bulk_edit(params[:ids], params[:value])
       load_issues
       respond_to do |format|
         format.js { respond_to_js :action => :index, :response_header => :success, :response_content => t(:successful_update) }
