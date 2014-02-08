@@ -34,7 +34,7 @@
   <em>
     <%= "#{t(:label_added)}
         #{distance_of_time_in_words(@issue.created_at, Time.now)}
-        #{t(:label_ago)},#{t(:label_by)} #{@issue.author ? @issue.author.name : t(:label_unknown)}. #{(@issue.created_at.eql?(@issue.updated_at) ? '' :
+        #{t(:label_ago)}, #{t(:label_by)} #{@issue.author ? @issue.author.name : t(:label_unknown)}. #{(@issue.created_at.eql?(@issue.updated_at) ? '' :
             "#{t(:label_updated)} #{distance_of_time_in_words(@issue.updated_at, Time.now)}
             #{t(:label_ago)}.").to_s}" %>
   </em>

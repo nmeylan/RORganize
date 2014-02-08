@@ -148,5 +148,5 @@ ProjectManager::Application.routes.draw do
 
   root :to => 'Rorganize#index'
 
-  devise_for :users, :controllers => {:sessions => :sessions}
+  devise_for :users
 end

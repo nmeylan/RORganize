@@ -10,15 +10,13 @@
       <% projects.each do |project| %>
         <li class="<%= project.is_archived ? 'archived' : '' %>" id="<%=project.id%>">
           <a class="project" href="<%= overview_projects_path(project.slug) %>">
-    <%#= If project get a logo %>
+    <%#= If project has a logo %>
             <% if project.attachments.any? %>
               <div class="splitcontentleft" style="margin-top: 9px">
                 <h2><%= project.name %><%= image_tag('/assets/locked.png') if project.is_archived%></h2>
               </div>
               <div class="splitcontentright">
-                <% for attachment in project.attachments %>
-                  <%= image_tag attachment.file.url(:logo), :align => :right %>
-                <% end %>
+                  <%= image_tag project.attachments.first.file.url(:logo), :align => :right %>
               </div>
               <div style="clear:both;"></div>
             <% else %>

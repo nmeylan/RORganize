@@ -10,7 +10,7 @@ ProjectManager::Application.configure do
   config.whiny_nils = true
 
   # Show full error reports and disable caching
-  config.consider_all_requests_local       = true
+  config.consider_all_requests_local = true
   config.action_controller.perform_caching = false
 
   # Don't care if the mailer can't send
@@ -28,16 +28,17 @@ ProjectManager::Application.configure do
   config.assets.debug = false
   #ImageMagick
   Paperclip.options[:command_path] = "C:\Program%20Files\ImageMagick-6.8.6-Q16"
-#  Paperclip.options[:swallow_stderr] = false
+  #  Paperclip.options[:swallow_stderr] = false
+  config.after_initialize do
+    #Bullet sql eager loading optimization
+    if defined? Bullet
+      Bullet.enable = false
+      Bullet.console = true
+      Bullet.add_footer = true
+      Bullet.bullet_logger = true
+    else
+      puts 'BULLET IS NOT DEFINED!'
+    end
+  end
 
-  #Bullet sql eager loading optimization
-#  config.after_initialize do
-#  Bullet.enable = true
-#  Bullet.alert = true
-#  Bullet.bullet_logger = true
-#  Bullet.console = true
-##  Bullet.growl = true
-#  Bullet.rails_logger = true
-##  Bullet.airbrake = true
-#end
 end

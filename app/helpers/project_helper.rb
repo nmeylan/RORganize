@@ -23,13 +23,13 @@ module ProjectHelper
         project_id = journal.project.slug
         #UPDATED
         if journal.action_type.eql?('updated')
-          activity_hash[k] << "#{journal.journalized.tracker.name} ##{item_id}
-                             #{link_to journal.journalized.subject, issue_path(project_id,item_id)}
+          activity_hash[k] << "#{journal.issue.tracker.name} ##{item_id}
+                             #{link_to journal.issue.subject, issue_path(project_id,item_id)}
                              <b>#{journal.details.any? ? (link_to t(:label_updated_lower_case), load_journal_activity_projects_path(project_id, item_id,k), {:remote => true, :method => :get, :class => 'open_overlay'}) : t(:label_updated_lower_case)}</b>
           #{t(:label_by)} #{user}"
           #CREATED
         elsif journal.action_type.eql?('created')
-          activity_hash[k] << "#{journal.journalized.tracker.name} ##{item_id} #{link_to journal.journalized.subject,issue_path(project_id,item_id) } <b>#{t(:label_created_lower_case)}</b> #{t(:label_by)} #{user}"
+          activity_hash[k] << "#{journal.issue.tracker.name} ##{item_id} #{link_to journal.issue.subject,issue_path(project_id,item_id) } <b>#{t(:label_created_lower_case)}</b> #{t(:label_by)} #{user}"
           #DELETED
         elsif journal.action_type.eql?('deleted')
           activity_hash[k] << "Issue ##{journal.journalized_id}

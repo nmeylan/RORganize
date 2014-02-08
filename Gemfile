@@ -41,9 +41,10 @@ group :test do
   # Pretty printed test output
   gem 'turn', '~> 0.8.3', :require => false
 end
-group :developpement do
-  gem "bullet"
+group :development do
+  gem 'bullet'
   gem "ruby-growl"
+  gem 'active_record_query_trace'
 end
 
 

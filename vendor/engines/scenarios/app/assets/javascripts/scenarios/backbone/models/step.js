@@ -28,16 +28,16 @@ window.Step = Backbone.Model.extend({
    },
    setUrl : function(action){
       if(action === "fetch")
-         this.mUrl = '/project/'+this.project_id+'/scenarios/'+this.attributes.scenario_id+'/steps/'+this.id+'/edit';
+         this.mUrl = '/projects/'+this.project_id+'/scenarios/'+this.attributes.scenario_id+'/steps/'+this.id+'/edit';
       else if(action === "add_issues")
-         this.mUrl = '/project/'+this.project_id+'/scenarios/'+this.attributes.scenario_id+'/steps/'+this.id+'/add_issues';
+         this.mUrl = '/projects/'+this.project_id+'/scenarios/'+this.attributes.scenario_id+'/steps/'+this.id+'/add_issues';
       else if(action === "create_issue")
-         this.mUrl = '/project/'+this.project_id+'/scenarios/'+this.attributes.scenario_id+'/steps/'+this.id+'/create_simple_issue';
+         this.mUrl = '/projects/'+this.project_id+'/scenarios/'+this.attributes.scenario_id+'/steps/'+this.id+'/create_simple_issue';
       else if(action === "load_issues")
-         this.mUrl = '/project/'+this.project_id+'/scenarios/'+this.attributes.scenario_id+'/steps/load_all_issues';
+         this.mUrl = '/projects/'+this.project_id+'/scenarios/'+this.attributes.scenario_id+'/steps/load_all_issues';
       else
-         this.mUrl = (this.id ? '/project/'+this.project_id+'/scenarios/'+this.attributes.scenario_id+'/steps/'+this.id :
-            '/project/'+this.project_id+'/scenarios/'+this.attributes.scenario_id+'/steps/');
+         this.mUrl = (this.id ? '/projects/'+this.project_id+'/scenarios/'+this.attributes.scenario_id+'/steps/'+this.id :
+            '/projects/'+this.project_id+'/scenarios/'+this.attributes.scenario_id+'/steps/');
    }
 });
 
@@ -61,9 +61,9 @@ window.Steps = Backbone.Collection.extend({
    },
    setUrl : function(action){
       if(action === "fetch")
-         this.mUrl = '/project/'+this.project_id+'/scenarios/'+this.scenario_id+'/steps/';
+         this.mUrl = '/projects/'+this.project_id+'/scenarios/'+this.scenario_id+'/steps/';
       else
-         this.mUrl = (this.id ? '/project/'+this.project_id+'/scenarios/'+this.attributes.scenario_id+'/steps/'+this.id :
-            '/project/'+this.project_id+'/scenarios/'+this.attributes.scenario_id+'/steps/');
+         this.mUrl = (this.id ? '/projects/'+this.project_id+'/scenarios/'+this.attributes.scenario_id+'/steps/'+this.id :
+            '/projects/'+this.project_id+'/scenarios/'+this.attributes.scenario_id+'/steps/');
    }
 });

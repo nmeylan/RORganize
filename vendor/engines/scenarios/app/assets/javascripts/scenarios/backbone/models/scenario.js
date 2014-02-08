@@ -23,7 +23,7 @@ window.Scenario = Backbone.Model.extend({
       if(fetch)
          this.mUrl = document.URL;
       else
-         this.mUrl = (this.id ? '/project/'+this.project_id+'/scenarios/'+this.id : '/project/'+this.project_id+'/scenarios/');
+         this.mUrl = (this.id ? '/projects/'+this.project_id+'/scenarios/'+this.id : '/projects/'+this.project_id+'/scenarios/');
    }
 
 });

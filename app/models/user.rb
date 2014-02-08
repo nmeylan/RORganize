@@ -16,6 +16,7 @@ class User < RorganizeActiveRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
+
   # Setup accessible (or protected) attributes for your model
   attr_accessible :id, :login, :email, :name, :password, :password_confirmation, :remember_me
   #Relations
@@ -31,6 +32,7 @@ class User < RorganizeActiveRecord
   after_create :create_journal
   after_update :update_journal
   after_destroy :destroy_journal
+
 
   def is_admin?
     return self.admin

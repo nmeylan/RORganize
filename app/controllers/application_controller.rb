@@ -2,7 +2,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
   helper Rorganize::MenuManager::MenuHelper
   helper Rorganize::PermissionManager::PermissionManagerHelper
-  before_filter :authenticate_user!, :smart_js_loader
+  before_filter :authenticate, :smart_js_loader
   around_filter :set_current_user
 
   def menu_context(context)
@@ -24,8 +24,14 @@ class ApplicationController < ActionController::Base
 
   end
 
+  def authenticate
+    if !user_signed_in?
+      authenticate_user!
+    end
+  end
+
   def find_project
-    @project = Project.find_by_slug(params[:project_id])
+    @project = Project.includes(:attachments).find_by_slug(params[:project_id])
     render_404 if @project.nil?
   end
 

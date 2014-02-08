@@ -7,6 +7,7 @@ class Journal < ActiveRecord::Base
 
   has_many :details, :class_name => 'JournalDetail', :dependent => :destroy
   belongs_to :journalized, :polymorphic => true
+  belongs_to :issue, :foreign_key => 'journalized_id', conditions: "journals.journalized_type = 'Issue'"
   belongs_to :user, :class_name => 'User'
 
   belongs_to :project

@@ -18,7 +18,7 @@
          this.model.project_id = jQuery("#project_id").val();
          this.model.scenario_id = $("#scenario_id").val();
          this.model.step_id = $(this.el).attr("id");
-         if(this.model.step_id != "undefined"){
+         if(this.model.step_id !== undefined && this.model.step_id.trim() !== ''){
             this.model.setUrl("fetch");
             this.model.fetch({
                error:function(model){

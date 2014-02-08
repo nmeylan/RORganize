@@ -50,8 +50,7 @@ class Issue < RorganizeActiveRecord
   validate :validate_start_date, :validate_predecessor
   #  validates :due_date, :format =>
   def self.paginated_issues(page, per_page, order, filter, project_id)
-    paginate(:page => page,
-             :include => [:tracker, :version, :assigned_to, :category, :status => [:enumeration]],
+    self.eager_load([:tracker, :version, :assigned_to, :category, :status => [:enumeration]]).paginate(:page => page,
              :conditions => filter+" issues.project_id = #{project_id}",
              :per_page => per_page,
              :order => order)
@@ -60,7 +59,7 @@ class Issue < RorganizeActiveRecord
 
   #Assigned open requests on any open project
   def self.current_user_assigned_issues(order)
-    return Issue.includes([:tracker, :version, :assigned_to, :category, :status => [:enumeration]])
+    return Issue.eager_load([:tracker, :version, :assigned_to, :category, :project, :status => [:enumeration]])
     .where(:assigned_to_id => User.current.id, :status_id => IssuesStatus.opened_statuses_id, :project_id => Project.opened_projects_id)
     .order(order)
 
@@ -134,7 +133,7 @@ class Issue < RorganizeActiveRecord
   #Select : for attributes which only defined values : e.g : version => [1,2,3]
   def self.filter_content_hash(project)
     content_hash = {}
-    members = project.members.includes(:user)
+    members = project.members
     content_hash['hash_for_select'] = {}
     content_hash['hash_for_radio'] = Hash.new { |k, v| k[v] = [] }
     content_hash['hash_for_select']['assigned'] = members.collect { |member| [member.user.name, member.user.id] }
@@ -172,7 +171,7 @@ class Issue < RorganizeActiveRecord
 
   def self.display_issue_object(issue_id)
     object = {}
-    object[:issue] = Issue.find(issue_id, :joins => [:tracker, :status], :include => [:version, :assigned_to, :category, :attachments, :parent])
+    object[:issue] = Issue.eager_load([:version, :assigned_to, :category, :attachments, :parent]).find(issue_id, :joins => [:tracker, :status])
     object[:journals] = Journal.where(:journalized_type => 'Issue', :journalized_id => issue_id).includes([:details, :user])
     object[:allowed_statuses] = User.current.allowed_statuses(object[:issue].project)
     object[:done_ratio] = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]

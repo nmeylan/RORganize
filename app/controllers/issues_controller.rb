@@ -258,7 +258,7 @@ class IssuesController < ApplicationController
   end
 
   def sort_column
-    session['controller_issues_sort'] = params[:sort] ? params[:sort] : (session['controller_issues_sort'] ? session['controller_issues_sort'] :'id')
+    session['controller_issues_sort'] = params[:sort] ? params[:sort] : (session['controller_issues_sort'] ? session['controller_issues_sort'] :'issues.id')
   end
 
   def sort_direction

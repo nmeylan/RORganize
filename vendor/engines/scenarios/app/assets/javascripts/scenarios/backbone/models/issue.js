@@ -25,10 +25,10 @@ window.Issue = Backbone.Model.extend({
    },
    setUrl : function(action){
       if(action === "fetch")
-         this.mUrl = '/project/'+this.project_id+'/scenarios/'+this.scenario_id+'/steps/'+this.step_id+'/load_issues';
+         this.mUrl = '/projects/'+this.project_id+'/scenarios/'+this.scenario_id+'/steps/'+this.step_id+'/load_issues';
       else
-         this.mUrl = (this.id ? '/project/'+this.project_id+'/scenarios/'+this.scenario_id+'/steps/'+this.id :
-            '/project/'+this.project_id+'/scenarios/'+this.scenario_id+'/steps/');
+         this.mUrl = (this.id ? '/projects/'+this.project_id+'/scenarios/'+this.scenario_id+'/steps/'+this.id :
+            '/projects/'+this.project_id+'/scenarios/'+this.scenario_id+'/steps/');
    }
 });
 
@@ -45,9 +45,9 @@ window.Issues = Backbone.Collection.extend({
    },
    setUrl : function(action){
       if(action === "fetch")
-         this.mUrl = '/project/'+this.project_id+'/scenarios/'+this.scenario_id+'/steps/'+this.step_id+'/load_issues';
+         this.mUrl = '/projects/'+this.project_id+'/scenarios/'+this.scenario_id+'/steps/'+this.step_id+'/load_issues';
       else
-         this.mUrl = (this.id ? '/project/'+this.project_id+'/scenarios/'+this.scenario_id+'/steps/'+this.id :
-            '/project/'+this.project_id+'/scenarios/'+this.scenario_id+'/steps/');
+         this.mUrl = (this.id ? '/projects/'+this.project_id+'/scenarios/'+this.scenario_id+'/steps/'+this.id :
+            '/projects/'+this.project_id+'/scenarios/'+this.scenario_id+'/steps');
    }
 });

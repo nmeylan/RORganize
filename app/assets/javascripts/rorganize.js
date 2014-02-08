@@ -76,7 +76,9 @@
                 theme: 'failure'
             });
         }
-        if(xhr.status != 200){
+        var first_char = xhr.status.toString().charAt(0);
+        var is_error = first_char == '5' || first_char == '4';
+        if(is_error){
             $.jGrowl('An unexpected error occured, please try again!', {
                 theme: 'failure'
             });

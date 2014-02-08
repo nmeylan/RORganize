@@ -70,12 +70,8 @@ class Project < ActiveRecord::Base
     issue_activities = Hash.new { |hash, key| hash[key] = [] }
     journals =(
     filter[0].eql?('all') ?
-        Journal.where(:project_id => self.id)
-        .includes([:details, :user, :project, :journalized])
-        .order('created_at DESC') :
-        Journal.where(['project_id = ? AND created_at > ?', self.id, filter[0]])
-        .includes([:details, :user, :project, :journalized])
-        .order('created_at DESC')
+        Journal.eager_load([:details, :user, :project, :issue => :tracker]).where(:project_id => self.id).order('journals.created_at DESC') :
+        Journal.eager_load([:details, :user, :project, :issue => :tracker]).where(['journals.project_id = ? AND journals.created_at > ?', self.id, filter[0]]).order('journals.created_at DESC')
     )
     activities = Hash.new { |hash, key| hash[key] = [] }
     journals.each do |journal|
@@ -91,7 +87,7 @@ class Project < ActiveRecord::Base
 
   #Return a member hash for project overview
   def members_overview
-    members = Member.where(:project_id => self.id).includes([:role, :user])
+    members = Member.where(:project_id => self.id).includes([:user])
     roles = Role.all
     members_hash = Hash.new { |h, k| h[k] = [] }
     roles.each { |role| members_hash[role.name] = members.select { |member| member.role_id == role.id } }
