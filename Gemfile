@@ -1,27 +1,27 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.2.12'
+gem 'rails', '~> 4.0.2'
 gem 'test-unit'
 # Bundle edge Rails instead:
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
 gem 'devise'
 gem 'mysql2'
-gem "friendly_id", "~> 4.0.9"
+gem "friendly_id"
 
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
-  gem 'sass-rails',   '~> 3.2.6'
-  gem 'coffee-rails', '~> 3.2.2'
-  gem 'uglifier', '>= 1.2.6'
+  gem 'sass-rails'
+  gem 'coffee-rails'
+  gem 'uglifier'
 end
 
-gem 'cocaine', '~> 0.3.2'
-gem 'paperclip', '~> 2.7.0'
+gem 'cocaine'
+gem 'paperclip'
 gem 'jquery-rails'
 gem 'RedCloth'
 gem 'mongrel', '>= 1.2.0.pre2'
-gem 'will_paginate', '~> 3.0.3'
+gem 'will_paginate'
 gem 'nokogiri'
 gem 'gon'
 
@@ -43,7 +43,6 @@ group :test do
 end
 group :development do
   gem 'bullet'
-  gem "ruby-growl"
   gem 'active_record_query_trace'
 end
 

@@ -27,7 +27,7 @@ class VersionsController < ApplicationController
   end
 
   def create
-    @version = Version.new(params[:version])
+    @version = Version.new(version_params)
     @version.project_id = @project.id
     @version.position = @project.versions.count + 1
     respond_to do |format|
@@ -55,7 +55,7 @@ class VersionsController < ApplicationController
 
   def update
     @version = Version.find(params[:id])
-    @version.attributes= params[:version]
+    @version.attributes= version_params
     respond_to do |format|
       if !@version.changed?
         format.html { redirect_to :action => 'index', :controller => 'versions' }
@@ -102,4 +102,8 @@ class VersionsController < ApplicationController
     end
   end
 
+  private
+  def version_params
+    params.require(:version).permit(Version.permit_attributes)
+  end
 end

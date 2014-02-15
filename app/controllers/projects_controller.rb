@@ -34,8 +34,8 @@ class ProjectsController < ApplicationController
   end
 
   def load_journal_activity
-    @issue = Issue.find(params[:item_id], :include => [:tracker, :version, :status, :assigned_to, :category])
-    @journals = Journal.find_all_by_journalized_type_and_journalized_id(@issue.class.to_s, @issue, :include => [:details])
+    @issue = Issue.where(:id => params[:item_id]).includes(:tracker, :version, :status, :assigned_to, :category)
+    @journals = Journal.where(:journalized_type => @issue.class.to_s, :journalized_id => @issue).includes([:details])
     @journals.select! { |journal| journal.created_at.to_formatted_s(:db).to_date.to_s == params[:date] }
     respond_to do |format|
       format.html
@@ -55,7 +55,7 @@ class ProjectsController < ApplicationController
 
   #POST /project/new
   def create
-    @project = Project.new(params[:project])
+    @project = Project.new(project_params)
     @project.created_by = current_user.id
     respond_to do |format|
       if @project.save
@@ -138,6 +138,12 @@ class ProjectsController < ApplicationController
       session['project_selection_filter'] = params[:filter]
     end
     index
+  end
+
+  private
+
+  def project_params
+    params.require(:project).permit(Project.permit_attributes)
   end
 
 

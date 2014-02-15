@@ -17,7 +17,7 @@ class Document < RorganizeActiveRecord
   belongs_to :category
   has_many :attachments, :foreign_key => 'object_id', :conditions => {:object_type => self.to_s}, :dependent => :destroy
   belongs_to :project
-  has_many :journals, :as => :journalized, :conditions => {:journalized_type => self.to_s}, :dependent => :destroy
+  has_many :journals, -> { where journalized_type: self.to_s }, :as => :journalized, :dependent => :destroy
   #Validators
   validates_associated :attachments
   validates :name, :presence => true
@@ -33,6 +33,10 @@ class Document < RorganizeActiveRecord
              :conditions => filter+" documents.project_id = #{project_id}",
              :per_page => per_page,
              :order => order)
+  end
+
+  def self.permit_attributes
+    [:name, :description, :version_id, :category_id, {:new_attachment_attributes => Attachment.permit_attributes},{:edit_attachment_attributes => Attachment.permit_attributes}]
   end
 
   #Attributes name without id
@@ -97,7 +101,7 @@ class Document < RorganizeActiveRecord
 
   #Get all document activities
   def activities
-    Journal.find_all_by_journalized_type_and_journalized_id(self.class.to_s, self.id, :include => [:details, :user])
+    Journal.where(:journalized_type => self.class.to_s, :journalized_id => self.id).includes([:details, :user])
   end
 
   #Get creation date and author

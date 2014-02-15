@@ -7,7 +7,7 @@ class Wiki < RorganizeActiveRecord
  
   assign_journalized_icon('/assets/wiki.png')
   #Relations
-  belongs_to :home_page, :class_name => 'WikiPage', :foreign_key => 'home_page_id'
+  belongs_to :home_page, :class_name => 'WikiPage', :foreign_key => :home_page_id
   has_many :pages, :class_name => 'WikiPage', :foreign_key => :wiki_id, :dependent => :destroy
   belongs_to :project
   #Validations

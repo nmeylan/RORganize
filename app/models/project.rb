@@ -23,6 +23,10 @@ class Project < ActiveRecord::Base
       :too_long => 'must have at most 255 words'
   }
 
+  def self.permit_attributes
+    [:name, :description, :identifier, :new_attachment_attributes => Attachment.permit_attributes, :existing_attachment_attributes => Attachment.permit_attributes]
+  end
+
   def create_member
     role = Role.find_by_name('Project Manager')
     Member.create(:project_id => self.id, :role_id => role.id, :user_id => self.created_by)

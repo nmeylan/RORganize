@@ -28,7 +28,7 @@ class TrackersController < ApplicationController
 
   #POST /administration/trackers/new
   def create
-    @tracker = Tracker.new(params[:tracker])
+    @tracker = Tracker.new(tracker_params)
     respond_to do |format|
       if @tracker.save
         flash[:notice] = t(:successful_creation)
@@ -53,7 +53,7 @@ class TrackersController < ApplicationController
   def update
     @tracker = Tracker.find_by_id(params[:id])
     respond_to do |format|
-      if @tracker.update_attributes(params[:tracker])
+      if @tracker.update_attributes(tracker_params)
         flash[:notice] = t(:successful_update)
         format.html {redirect_to :action => 'index'}
       else
@@ -71,6 +71,11 @@ class TrackersController < ApplicationController
       format.html {redirect_to :action => 'index'}
       format.js {respond_to_js :response_header => :success, :response_content => t(:successful_deletion), :locals => { :id => @tracker.id}}
     end
+  end
+
+  private
+  def tracker_params
+    params.require(:tracker).permit(Tracker.permit_attributes)
   end
 end
 

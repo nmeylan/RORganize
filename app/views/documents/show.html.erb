@@ -10,7 +10,7 @@
 
   <div class="splitcontentright">
     <%= link_to_with_permissions(t(:link_new_document), new_document_path(@project.slug), @project, :class => 'icon icon-add') %>
-    <%= link_to_with_permissions(t(:link_edit), edit_document_path(@project.slug), @project, :class => 'icon icon-edit') %>
+    <%= link_to_with_permissions(t(:link_edit), edit_document_path(@project.slug, @document.id), @project, :class => 'icon icon-edit') %>
     <%= link_to_with_permissions(t(:link_delete),document_path(@project.slug, @document.id), @project, {:method => :delete, :remote => true, :class => 'icon icon-del', :confirm => t(:text_delete_item )}) %>
   </div>
 </div>
@@ -18,14 +18,7 @@
 <h2><%= @document.name %></h2>
 <p>
   <em>
-    <%= "#{t(:label_added)}
-        #{distance_of_time_in_words(@document.created_at, Time.now)}
-        #{t(:label_ago)},
-#{t(:label_by)}
-        #{journal_created.user.name}.
-#{(@document.created_at.eql?(@document.updated_at) ? '' :
-            "#{t(:label_updated)} #{distance_of_time_in_words(@document.updated_at, Time.now)}
-            #{t(:label_ago)}.").to_s}" %>
+    <%= "#{t(:label_added)} #{distance_of_time_in_words(@document.created_at, Time.now)} #{t(:label_ago)}, #{t(:label_by)} #{journal_created.user.name}. #{(@document.created_at.eql?(@document.updated_at) ? '' : "#{t(:label_updated)} #{distance_of_time_in_words(@document.updated_at, Time.now)} #{t(:label_ago)}.").to_s}" %>
   </em>
 </p>
 <table class="detail" style="width:100%">

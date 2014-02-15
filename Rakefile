@@ -4,4 +4,4 @@
 
 require File.expand_path('../config/application', __FILE__)
 
-ProjectManager::Application.load_tasks
+RORganize::Application.load_tasks

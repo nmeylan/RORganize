@@ -1,7 +1,7 @@
-ProjectManager::Application.routes.draw do
+RORganize::Application.routes.draw do
 
 
-  match 'rorganize/:action', :controller => 'rorganize'
+  get 'rorganize/:action', :controller => 'rorganize'
   resources :projects do
     collection do
       post 'filter', :path => ':filter'
@@ -139,14 +139,14 @@ ProjectManager::Application.routes.draw do
     end
   end
 
-  match '/projects', :controller => :projects, :action => :index
+  get '/projects', :controller => :projects, :action => :index
 
   #MOUNT PLUGINS
   mount Scenarios::Engine => '/', :as => 'scenarios_route' #/scenarios
 
-  match 'projects/:project_id/scenarios/:action', :controller => 'scenarios'
+  get 'projects/:project_id/scenarios/:action', :controller => 'scenarios'
 
-  root :to => 'Rorganize#index'
+  root :to => 'rorganize#index'
 
   devise_for :users
 end

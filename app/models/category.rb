@@ -16,5 +16,9 @@ class Category < RorganizeActiveRecord
   after_create :create_journal 
   after_update :update_journal
   after_destroy :destroy_journal
+
+  def self.permit_attributes
+    [:name]
+  end
   
 end

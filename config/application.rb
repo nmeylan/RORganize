@@ -4,12 +4,12 @@ require 'rails/all'
 
 if defined?(Bundler)
   # If you precompile assets before deploying to production, use this line
-  Bundler.require(*Rails.groups(:assets => %w(development test)))
+  Bundler.require(:default, Rails.env)
   # If you want your assets lazily compiled in production, use this line
   # Bundler.require(:default, :assets, Rails.env)
 end
 
-module ProjectManager
+module RORganize
   class Application < Rails::Application
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
@@ -52,7 +52,9 @@ module ProjectManager
 
     #MODULES
     config.after_initialize() do
-      require "module_configuration"
+      unless $0.end_with?('rake')
+        require "module_configuration"
+      end
     end
   end
 end

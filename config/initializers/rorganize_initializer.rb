@@ -3,5 +3,6 @@
 # Encoding: UTF-8
 # File: rorganize_initalizer.rb
 
-
-require "rorganize"
+unless $0.end_with?('rake')
+  require "rorganize"
+end

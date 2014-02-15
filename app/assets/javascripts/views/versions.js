@@ -14,6 +14,12 @@ function on_load_versions_scripts(){
         case 'edit' :
             versions_form();
             break;
+        case 'create' :
+            versions_form();
+            break;
+        case 'update' :
+            versions_form();
+            break;
     }
 
 }

@@ -30,7 +30,7 @@ class DocumentsController < ApplicationController
   end
 
   def create
-    @document = Document.new(params[:document])
+    @document = Document.new(document_params)
     @document.project_id = @project.id
     @document.created_at = Time.now.to_formatted_s(:db)
     respond_to do |format|
@@ -52,11 +52,11 @@ class DocumentsController < ApplicationController
 
   def update
     @document = Document.find(params[:id])
-    @document.attributes= params[:document]
+    @document.attributes = document_params
     respond_to do |format|
       if !@document.changed? &&
-          (params[:document][:existing_attachment_attributes].nil? &&
-              params[:document][:new_attachment_attributes].nil?)
+          (document_params[:existing_attachment_attributes].nil? &&
+              document_params[:new_attachment_attributes].nil?)
         format.html { redirect_to document_path(@project.slug, @document.id) }
       elsif @document.save && @document.save_attachments
         flash[:notice] = t(:successful_update)
@@ -69,7 +69,7 @@ class DocumentsController < ApplicationController
   end
 
   def show
-    @document = Document.find(params[:id], :include => [:category, :version, :attachments])
+    @document = Document.includes(:category, :version, :attachments).find(params[:id])
     respond_to do |format|
       format.html { render :action => 'show', :locals => {:journals => @document.activities, :journal_created => @document.creation_info} }
     end
@@ -164,5 +164,9 @@ class DocumentsController < ApplicationController
     order = sort_column + ' ' + sort_direction
     filter = session["#{@project.slug}_controller_documents_filter"]
     @documents = Document.paginated_documents(params[:page], session['controller_documents_per_page'],order, filter, @project.id)
+  end
+
+  def document_params
+    params.require(:document).permit(Document.permit_attributes)
   end
 end

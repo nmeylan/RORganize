@@ -48,7 +48,7 @@ class IssuesController < ApplicationController
 
   #POST/project/:project_identifier/issues/
   def create
-    @issue = Issue.new(params[:issue])
+    @issue = Issue.new(issue_params)
     @issue.created_at = Time.now.to_formatted_s(:db)
     @issue.updated_at = Time.now.to_formatted_s(:db)
     @issue.project_id = @project.id
@@ -77,10 +77,10 @@ class IssuesController < ApplicationController
 
   #PUT /project/:project_identifier/issues/:id
   def update
-    @issue.attributes = params[:issue]
+    @issue.attributes = issue_params
     @issue.notes = params[:notes]
     respond_to do |format|
-      if  !@issue.changed? && (params[:notes].nil? || params[:notes].eql?('')) && (params[:issue][:existing_attachment_attributes].nil? && params[:issue][:new_attachment_attributes].nil?)
+      if  !@issue.changed? && (params[:notes].nil? || params[:notes].eql?('')) && (issue_params[:existing_attachment_attributes].nil? && issue_params[:new_attachment_attributes].nil?)
         format.html { redirect_to :action => 'show', :controller => 'issues', :id => @issue.id }
         format.json { render :json => @issue,
                              :status => :created, :location => @issue }
@@ -183,7 +183,7 @@ class IssuesController < ApplicationController
       end
     else
       #Editing with toolbox
-      Issue.bulk_edit(params[:ids], params[:value])
+      Issue.bulk_edit(params[:ids], value_params)
       load_issues
       respond_to do |format|
         format.js { respond_to_js :action => :index, :response_header => :success, :response_content => t(:successful_update) }
@@ -192,7 +192,7 @@ class IssuesController < ApplicationController
   end
 
   def apply_custom_query
-    query = Query.find(params[:query_id])
+    query = Query.friendly.find(params[:query_id])
     if query
       session[@project.slug+'_controller_issues_filter'] = query.stringify_query
       session[@project.slug+'_controller_issues_filter_params'] = eval(query.stringify_params)
@@ -305,6 +305,14 @@ class IssuesController < ApplicationController
     form_content['categories'] = @project.categories.collect { |category| [category.name, category.id] }
     form_content['trackers'] = @project.trackers.collect { |tracker| [tracker.name, tracker.id] }
     form_content
+  end
+
+  def issue_params
+    params.require(:issue).permit(Issue.permit_attributes)
+  end
+
+  def value_params
+    params.require(:value).permit(Issue.permit_values)
   end
 
 

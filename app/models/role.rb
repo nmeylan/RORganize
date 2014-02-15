@@ -10,16 +10,28 @@ class Role < ActiveRecord::Base
 
   validates :name, :presence => true, :uniqueness => true
 
+  def self.permit_attributes
+    [:name]
+  end
+
   def update_permissions(permissions_param)
     if permissions_param
       permissions_id = permissions_param.values
-      permissions = Permission.find_all_by_id(permissions_id)
+      permissions = Permission.where(:di => permissions_id)
       self.permissions.clear
       permissions_id.each do |permission_id|
-        permission = permissions.select{|perm| perm.id == permission_id.to_i }
+        permission = permissions.select { |perm| perm.id == permission_id.to_i }
         self.permissions << permission
       end
     end
     self.save
+  end
+
+  def set_statuses(statuses)
+    if statuses && statuses.any?
+      self.issues_statuses.clear
+      issues_statuses = IssuesStatus.where(:id => statuses.values)
+      issues_statuses.each { |status| self.issues_statuses << status }
+    end
   end
 end

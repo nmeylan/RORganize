@@ -19,7 +19,7 @@ class QueriesController < ApplicationController
   def new_project_query
     find_project
     @query = Query.new
-    @query.object_type = params[:query_type]
+    @query.object_type = query_params[:object_type]
     respond_to do |format|
       format.js { respond_to_js :locals => {:new => true} }
     end
@@ -27,7 +27,7 @@ class QueriesController < ApplicationController
 
   def create
     find_project
-    @query = Query.new(params[:query])
+    @query = Query.new(query_params)
     @query.author_id = current_user.id
     @query.project_id = @project.id
     @query.stringify_query = session[@project.slug+'_controller_issues_filter']
@@ -61,7 +61,7 @@ class QueriesController < ApplicationController
 
   def update
     respond_to do |format|
-      if @query.update_attributes(params[:query])
+      if @query.update_attributes(query_params)
         format.html do
           flash[:notice] = t(:successful_update)
           redirect_to query_path(@query.id)
@@ -99,6 +99,10 @@ class QueriesController < ApplicationController
         (!@query.is_public && !@query.author_id.eql?(current_user.id))
       render_403
     end
+  end
+
+  def query_params
+    params.require(:query).permit(Query.permit_attributes)
   end
 end
 

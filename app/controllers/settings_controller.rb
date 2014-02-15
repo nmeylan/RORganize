@@ -28,7 +28,7 @@ class SettingsController < ApplicationController
   #POST project/:project_identifier/settings/
   #POST project/:project_identifier/settings/
   def update
-   @project.update_info(params[:project], params[:trackers])
+   @project.update_info(project_params, params[:trackers])
     respond_to do |format|
       flash[:notice] = t(:successful_update)
       format.html { redirect_to :controller => 'settings', :action => 'index', :project_id => @project.slug }
@@ -78,6 +78,10 @@ class SettingsController < ApplicationController
     unless current_user.allowed_to?(params[:action], 'Queries', @project)
       render_403
     end
+  end
+
+  def project_params
+    params.require(:project).permit(Project.permit_attributes)
   end
 
 end

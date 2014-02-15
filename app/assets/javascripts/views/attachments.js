@@ -10,7 +10,6 @@ function on_load_attachments_scripts() {
         var self_element = jQuery(this);
         var content = self_element.data("content");
         var id = self_element.data("id");
-        content = $("<p />").html(content).text();
         self_element.parent().parent().append(content);
     });
 }

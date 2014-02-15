@@ -6,7 +6,7 @@
 
 class UsersController < ApplicationController
   helper_method :sort_column, :sort_direction
-  before_filter :check_permission, :except => [:update_permissions]
+  before_filter :check_permission
   before_filter { |c| c.menu_context :admin_menu }
   before_filter { |c| c.menu_item(params[:controller]) }
   before_filter { |c| c.top_menu_item('administration') }
@@ -34,10 +34,10 @@ class UsersController < ApplicationController
 
   #Post /administration/users/new
   def create
-    @user = User.new(params[:user])
+    @user = User.new(user_params)
     @user.created_at = Time.now.to_formatted_s(:db)
     @user.updated_at = Time.now.to_formatted_s(:db)
-    @user.admin = params[:user][:admin]
+    @user.admin = user_params[:admin]
     respond_to do |format|
       if @user.save
         flash[:notice] = t(:successful_creation)
@@ -62,9 +62,9 @@ class UsersController < ApplicationController
   #Put /administration/users/edit/:id
   def update
     @user = User.find(params[:id])
-    @user.admin = (params[:user][:admin].eql?('1'))
-    params[:user][:updated_at] = Time.now.to_formatted_s(:db)
-    @user.attributes=params[:user]
+    @user.admin = (user_params[:admin].eql?('1'))
+    user_params[:updated_at] = Time.now.to_formatted_s(:db)
+    @user.attributes = user_params
     respond_to do |format|
       if !@user.changed?
         format.html { redirect_to :action => 'show', :controller => 'users', :id => @user }
@@ -85,8 +85,8 @@ class UsersController < ApplicationController
 
   #Get /administration/users/:id
   def show
-    @user = User.find(params[:id])
-    @journals = Journal.find_all_by_journalized_type_and_journalized_id(@user.class.to_s, @user, :include => [:details])
+    @user = User.friendly.find(params[:id])
+    @journals = Journal.where(:journalized_type => @user.class.to_s, :journalized_id => @user).includes([:details])
     respond_to do |format|
       format.html
     end
@@ -106,11 +106,15 @@ class UsersController < ApplicationController
 
   private
   def sort_column
-    session['controller_users_sort'] = params[:sort] ?  params[:sort] : (session['controller_users_sort'] ? session['controller_users_sort'] : 'id')
+    session['controller_users_sort'] = params[:sort] ? params[:sort] : (session['controller_users_sort'] ? session['controller_users_sort'] : 'id')
   end
 
   def sort_direction
     session['controller_users_direction'] = params[:direction] ? params[:direction] : (session['controller_users_direction'] ? session['controller_users_direction'] : 'desc')
+  end
+
+  def user_params
+    params.require(:user).permit(User.permit_attributes)
   end
 
 end

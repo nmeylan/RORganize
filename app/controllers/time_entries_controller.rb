@@ -24,7 +24,7 @@ class TimeEntriesController < ApplicationController
   end
 
   def create
-    @time_entry = TimeEntry.new(params[:time_entry])
+    @time_entry = TimeEntry.new(time_entry_params)
     issue = Issue.find_by_id(params[:issue_id])
     @time_entry.issue_id = issue.id
     @time_entry.project_id = issue.project_id
@@ -47,7 +47,7 @@ class TimeEntriesController < ApplicationController
 
   def update
     @time_entry = TimeEntry.find(params[:id])
-    @time_entry.attributes = params[:time_entry]
+    @time_entry.attributes = time_entry_params
     saved = @time_entry.save
     respond_to do |format|
       format.js do
@@ -66,5 +66,10 @@ class TimeEntriesController < ApplicationController
         trusted ? (success ? flash[:notice] = t(:successful_deletion):  flash[:alert] = t(:failure_deletion)) : flash[:alert] = t(:text_time_entry_not_owner_deletion)
       end
     end
+  end
+
+  private
+  def time_entry_params
+    params.require(:time_entry).permit(TimeEntry.permit_attributes)
   end
 end

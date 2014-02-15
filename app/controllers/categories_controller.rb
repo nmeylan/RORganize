@@ -26,7 +26,7 @@ class CategoriesController < ApplicationController
   end
 
   def create
-    @category = Category.new(params[:category])
+    @category = Category.new(category_params)
     @category.project_id = @project.id
     respond_to do |format|
       if @category.save
@@ -51,7 +51,7 @@ class CategoriesController < ApplicationController
 
   def update
     @category = Category.find(params[:id])
-    @category.attributes = (params[:category])
+    @category.attributes = (category_params)
     respond_to do |format|
       if !@category.changed?
         format.html { redirect_to :action => 'index', :controller => 'categories'}
@@ -80,5 +80,9 @@ class CategoriesController < ApplicationController
         respond_to_js :locals => {:id => params[:id]}, :response_header => :success, :response_content => t(:successful_deletion)
       end
     end
+  end
+  private
+  def category_params
+    params.require(:category).permit(Category.permit_attributes)
   end
 end

@@ -32,7 +32,7 @@ class IssuesStatusesController < ApplicationController
     @status = IssuesStatus.find_by_id(params[:id])
     @enumeration = @status.enumeration
     respond_to do |format|
-      if @status.update_attributes(params[:issues_status]) && @enumeration.update_attributes(:name => params[:enumeration])
+      if @status.update_attributes(issue_statutes_params) && @enumeration.update_attributes(:name => enumeration_params[:name])
         flash[:notice] = t(:successful_update)
         format.html { redirect_to :action => 'index' }
       else
@@ -44,8 +44,8 @@ class IssuesStatusesController < ApplicationController
   end
 
   def create
-    @status = IssuesStatus.new(params[:issues_status])
-    @enumeration = Enumeration.new(:name => params[:enumeration], :opt => 'ISTS')
+    @status = IssuesStatus.new(issue_statutes_params)
+    @enumeration = Enumeration.new(:name => enumeration_params[:name], :opt => 'ISTS')
     respond_to do |format|
       if @enumeration.save
         @status.enumeration_id = @enumeration.id
@@ -94,10 +94,16 @@ class IssuesStatusesController < ApplicationController
   end
 
   private
+  def issue_statutes_params
+    params.require(:issues_status).permit(IssuesStatus.permit_attributes)
+  end
 
+  def enumeration_params
+    params.require(:enumeration).permit(Enumeration.permit_attributes)
+  end
 
   def get_statuses
-    @issues_statuses = IssuesStatus.select('*').includes(:enumeration).order('enumerations.position')
+    @issues_statuses = IssuesStatus.includes(:enumeration).order('enumerations.position')
     @max = @issues_statuses.count
   end
 

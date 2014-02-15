@@ -15,7 +15,7 @@
     <%= link_to_with_not_owner_permissions(t(:link_edit),edit_issue_path(@project.slug, @issue.id),@project,@issue.author_id, {:method => :get,:class => 'icon icon-edit'}) %>
 <%#= Start date link %>
     <%= link_to t(:link_start_today), start_today_issues_path(@project.slug, @issue.id),
-                {:class => 'icon icon-calendar', :id => 'start_today',:confirm => t(:text_set_start_date_today),
+                {:class => 'icon icon-calendar', :id => 'start_today', :data => {:confirm => t(:text_set_start_date_today)},
                  :method => :post,:remote => true} %>
 <%#= Update link %>
     <%= link_to t(:link_update), '#update_issue', {:class => 'icon icon-update_issue', :id => 'update_issue_link'} %>

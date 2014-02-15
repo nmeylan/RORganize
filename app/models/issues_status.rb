@@ -13,9 +13,13 @@ class IssuesStatus < ActiveRecord::Base
     return IssuesStatus.select('id').where(:is_closed => false).collect { |status| status.id }
   end
 
+  def self.permit_attributes
+    [:is_closed, :default_done_ratio]
+  end
+
   #Change position
   def change_position(operator)
-    old_issues_statuses = IssuesStatus.select('*').includes(:enumeration).order('enumerations.position')
+    old_issues_statuses = IssuesStatus.includes(:enumeration).order('enumerations.position')
     status = old_issues_statuses.select { |status| status.id.eql?(self.id) }.first
     max = old_issues_statuses.count
     saved = false

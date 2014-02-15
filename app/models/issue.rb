@@ -171,7 +171,7 @@ class Issue < RorganizeActiveRecord
 
   def self.display_issue_object(issue_id)
     object = {}
-    object[:issue] = Issue.eager_load([:version, :assigned_to, :category, :attachments, :parent]).find(issue_id, :joins => [:tracker, :status])
+    object[:issue] = Issue.eager_load([:version, :assigned_to, :category, :attachments, :parent]).joins([:tracker, :status]).find(issue_id)
     object[:journals] = Journal.where(:journalized_type => 'Issue', :journalized_id => issue_id).includes([:details, :user])
     object[:allowed_statuses] = User.current.allowed_statuses(object[:issue].project)
     object[:done_ratio] = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
@@ -226,7 +226,7 @@ class Issue < RorganizeActiveRecord
   end
 
   def self.bulk_delete(issue_ids)
-    issues = Issue.find_all_by_id(issue_ids)
+    issues = Issue..where(:id => issue_ids)
     Issue.transaction do
       issues.each do |issue|
         if issue.author_id.eql?(User.current.id) || User.current.allowed_to?('delete not owner', 'Issue', @project)
@@ -249,6 +249,15 @@ class Issue < RorganizeActiveRecord
     if self.version && !self.version.target_date.nil? && self.version_id_changed?
       self.due_date = self.version.target_date
     end
+  end
+
+  #Permit attributes
+  def self.permit_attributes
+    [:assigned_to_id, :author_id, :version_id, :done, :category_id, :status_id, :start_date, :subject, :description, :tracker_id, :due_date, :estimated_time, {:new_attachment_attributes => Attachment.permit_attributes},{:edit_attachment_attributes => Attachment.permit_attributes}]
+  end
+
+  def self.permit_values
+    [:assigned_to_id, :author_id, :version_id, :done, :category_id, :status_id, :start_date]
   end
 end
 

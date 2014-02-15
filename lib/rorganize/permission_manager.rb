@@ -27,7 +27,7 @@ module Rorganize
       end
 
       def load_permissions
-        roles = Role.find(:all)
+        roles = Role.all
         permissions = Hash.new{|h, k| h[k] = []}
         roles.each do |role|
           permissions[role.id.to_s] = []
@@ -39,7 +39,7 @@ module Rorganize
       end
 
       def load_permissions_spec_role(role_id)
-        role =Role.find(role_id)
+        role = Role.find(role_id)
         @permissions[role_id.to_s].clear
         role.permissions.each do |perm|
            @permissions[role_id.to_s] << {:action => perm.action, :controller => perm.controller.downcase}

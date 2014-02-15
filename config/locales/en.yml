@@ -69,8 +69,10 @@ en:
   label_children: Children
   label_activities: Activities
   label_new_wiki: New Wiki
+  label_edit_wiki_page: Edit Wiki Page
   label_new_wiki_page: New Wiki Page
   label_new_home_page: New Home page
+  label_new_sub_page: New Sub page
   label_created: Created
   label_sub_pages: Sub pages
   label_my_pages: My pages
@@ -128,11 +130,11 @@ en:
   link_modules: Modules
   link_new_document: New document
   link_edit_document: Edit document
-  link_issues_statuses : Issues statuses
+  link_issues_statuses: Issues statuses
   link_new_status: New status
   link_edit_status: Edit status
   link_start_today: Start today
-  link_coworkers : Coworkers
+  link_coworkers: Coworkers
   link_pages: Pages
   link_new_page: New page
   link_new_sub_page: New sub page
@@ -198,8 +200,8 @@ en:
   failure_operation: Operation failed
   successful_time_entry_creation: Your time spent on this issue was successfully logged
   successful_time_entry_update: Your time spent on this issue was successfully updated
-  successful_starred : was successfully starred.
-  successful_unstarred : was successfully unstarred.
+  successful_starred: was successfully starred.
+  successful_unstarred: was successfully unstarred.
   #TEXT
   text_changed: changed
   text_from: from
@@ -208,7 +210,7 @@ en:
   text_deleted: deleted
   text_no_data: No data to display
   text_choose_role: Define permissions for following roles
-  text_delete_item : Are you sure to want to delete this item?
+  text_delete_item: Are you sure to want to delete this item?
   text_delete_this_project: Delete this project
   text_close_this_project: Close this project
   text_open_this_project: Open this project

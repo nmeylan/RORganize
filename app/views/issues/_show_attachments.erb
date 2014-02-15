@@ -14,7 +14,7 @@
       <% else %>
         <%= link_to attachment.file_file_name,{:action => 'download_attachment', :controller => 'issues', :path => attachment.file.path}, {:class => "icon-file #{attachment.file_content_type.gsub(/\//,'-')}"} %>
       <% end %>
-      <%= link_to_with_permissions t(:link_delete), delete_attachment_issues_path(@project.slug,attachment.id), @projet, {:class => 'icon icon-del', :remote => true, :confirm => t(:text_delete_item ), :method => :delete}%>
+      <%= link_to_with_permissions t(:link_delete), delete_attachment_issues_path(@project.slug,attachment.id), @project, {:class => 'icon icon-del', :remote => true, :confirm => t(:text_delete_item ), :method => :delete}%>
     </p>
   <% end %>
 <% end %>

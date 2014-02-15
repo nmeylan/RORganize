@@ -11,5 +11,8 @@ class TimeEntry < ActiveRecord::Base
    validates :spent_on, :spent_time, :project_id, :issue_id, :presence => true
 
   #Methods
+  def self.permit_attributes
+    [:spent_on, :spent_time, :comment]
+  end
 
 end

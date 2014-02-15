@@ -9,6 +9,11 @@ class Permission < ActiveRecord::Base
   validates :name, :controller, :action, :presence => true
   validates :name, :uniqueness => true
 
+  def self.permit_attributes
+    [:name, :action, :controller]
+  end
+
+
   def self.permission_list(role_name)
     controllers = Permission.controller_list
     permission_hash = Hash.new{|h,k| h[k] = {}}

@@ -27,7 +27,7 @@ class WikiPagesController < ApplicationController
   end
 
   def create
-    @wiki_page = WikiPage.new(params[:wiki_page])
+    @wiki_page = WikiPage.new(wiki_page_params)
     wiki = @wiki
     @wiki_page.wiki_id = wiki.id
     @wiki_page.author_id = current_user.id
@@ -73,8 +73,8 @@ class WikiPagesController < ApplicationController
   end
 
   def update
-    @wiki_page = WikiPage.find_by_slug(params[:id])
-    @wiki_page.attributes=params[:wiki_page]
+    @wiki_page = WikiPage.friendly.find(params[:id])
+    @wiki_page.attributes = wiki_page_params
     respond_to do |format|
       if !@wiki_page.changed?
         format.html { redirect_to wiki_page_path(@project.slug, @wiki_page.slug) }
@@ -134,5 +134,9 @@ class WikiPagesController < ApplicationController
         render_403
       end
     end
+  end
+
+  def wiki_page_params
+    params.require(:wiki_page).permit(WikiPage.permit_attributes)
   end
 end

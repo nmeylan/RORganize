@@ -290,7 +290,7 @@ function checkAll(selector, context) {
     jQuery(selector).click(function (e) {
         e.preventDefault();
         var cases = jQuery(context).find(':checkbox');
-        var checked = jQuery(this).attr("cb_checked") === 'b' ? true : false;
+        var checked = jQuery(this).attr("cb_checked") === 'b';
         cases.attr('checked', checked);
         jQuery(this).attr("cb_checked", checked ? "a" : "b");
         checked ? jQuery(".issue_tr").addClass("toolbox_selection") : jQuery(".issue_tr").removeClass("toolbox_selection");

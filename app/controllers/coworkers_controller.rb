@@ -12,7 +12,7 @@ class CoworkersController < ApplicationController
   def index
     @coworkers = current_user.coworkers_per_project
     respond_to do |format|
-      format.html
+      format.html {}
     end
   end
 

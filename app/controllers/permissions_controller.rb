@@ -30,7 +30,7 @@ class PermissionsController < ApplicationController
 
   #POST administration/permission/new
   def create
-    @permission = Permission.new(params[:permission])
+    @permission = Permission.new(permission_params)
     respond_to do |format|
       if @permission.save
         flash[:notice] = t(:successful_creation)
@@ -59,7 +59,7 @@ class PermissionsController < ApplicationController
   def update
     @permission = Permission.find(params[:id])
     respond_to do |format|
-      if @permission.update_attributes(params[:permission])
+      if @permission.update_attributes(permission_params)
         flash[:notice] = t(:successful_update)
         format.html { redirect_to :action => 'index', :controller => 'permissions'}
         format.json  { render :json => @permission,
@@ -104,6 +104,11 @@ class PermissionsController < ApplicationController
     else
       list
     end
+  end
+
+  private
+  def permission_params
+    params.require(:permission).permit(Permission.permit_attributes)
   end
 
 end

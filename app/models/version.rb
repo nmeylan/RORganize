@@ -17,8 +17,12 @@ class Version < RorganizeActiveRecord
   after_update :update_journal, :update_issues_due_date
   after_destroy :destroy_journal, :dec_position_on_destroy
 
+  def self.permit_attributes
+    [:name, :target_date, :description, :start_date]
+  end
+
   def update_issues_due_date
-    issues = Issue.find_all_by_version_id(self.id)
+    issues = Issue.where(:version_id => self.id)
     issues.each do |issue|
       if issue.due_date >= self.target_date && issue.due_date.nil
         journal = Journal.create(:user_id => User.current.id,

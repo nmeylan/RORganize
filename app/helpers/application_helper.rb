@@ -367,6 +367,11 @@ EOD
   def link_to_with_permissions(label, path, project, params = {})
     routes = Rails.application.routes
     hash_path = routes.recognize_path(path, :method => params[:method])
+    unless params[:confirm].nil?
+      params[:data] ||= {}
+      params[:data][:confirm] = params[:confirm].clone
+      params[:confirm] = nil
+    end
     if current_user.allowed_to?(hash_path[:action],hash_path[:controller],project)
       if params[:target] && params[:target].eql?('self')
         link_to(label, '#', params)
@@ -378,6 +383,11 @@ EOD
   def link_to_with_not_owner_permissions(label, path, project, owner_id, params = {})
     routes = Rails.application.routes
     hash_path = routes.recognize_path(path, :method => params[:method])
+    unless params[:confirm].nil?
+      params[:data] ||= {}
+      params[:data][:confirm] = params[:confirm]
+      params[:confirm] = nil
+    end
     if current_user.allowed_to?(hash_path[:action],hash_path[:controller],project) && owner_id.eql?(current_user.id) ||
           current_user.allowed_to?("#{hash_path[:action]}_not_owner",hash_path[:controller],project)
       if params[:target] && params[:target].eql?('self')
@@ -400,4 +410,5 @@ EOD
     attributes.delete_if{|attribute| exclude_attributes.include?(attribute.to_sym)}
     puts attributes.inspect
   end
+
 end

@@ -15,6 +15,7 @@ class Member < RorganizeActiveRecord
   belongs_to :role, :class_name => 'Role'
   has_many :journals, :as => :journalized, :conditions => {:journalized_type => self.to_s}, :dependent => :destroy
   #Triggers
+  before_create :set_project_position
   after_create :create_journal
   after_update :update_journal
   after_destroy :destroy_journal
@@ -53,6 +54,10 @@ class Member < RorganizeActiveRecord
     members = Member.where(:project_id => project_id).includes(:role, :user)
     roles = Role.select('*')
     {:members => members, :roles => roles}
+  end
+
+  def set_project_position
+    self.project_position = Member.where(:user_id => self.user_id).count
   end
   
 end

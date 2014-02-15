@@ -43,13 +43,13 @@
     <% if current_user.allowed_to?('archive', 'Projects', @project) %>
       <li class="project_delete warning">
           <%= link_to !@project.is_archived ? t(:text_close_this_project) : t(:text_open_this_project), archive_projects_path(@project.id),
-            {:remote => true, :confirm => !@project.is_archived ? t(:text_archive_project) : t(:text_open_project), :method => :post} %>
+            {:remote => true, :data => {:confirm => !@project.is_archived ? t(:text_archive_project) : t(:text_open_project)}, :method => :post} %>
       </li>
     <% end %>
     <% if current_user.allowed_to?('destroy', 'Projects', @project) %>
       <li class="project_delete alert">
         <%= link_to t(:text_delete_this_project),project_path(@project.id),
-          {:remote => true, :confirm => t(:text_delete_project), :method => :delete} %>
+          {:remote => true, :data => {:confirm => t(:text_delete_project)}, :method => :delete} %>
       </li>
     <% end %>
   </ul>

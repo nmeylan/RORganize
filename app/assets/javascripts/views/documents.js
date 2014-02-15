@@ -17,6 +17,12 @@ function on_load_documents_scripts(options) {
         case 'edit' :
             on_load_attachments_scripts();
             break;
+        case 'create' :
+            on_load_attachments_scripts();
+            break;
+        case 'update' :
+            on_load_attachments_scripts();
+            break;
     }
 }
 

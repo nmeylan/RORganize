@@ -67,8 +67,7 @@ class WikiController < ApplicationController
   end
   
   def set_organization
-
-    Wiki.organize_pages(params[:pages_organization])
+    Wiki.organize_pages(pages_organization_params)
     respond_to do |format|
       format.js { respond_to_js :action => :empty_action, :response_header => :success, :response_content => t(:successful_update)}
     end
@@ -79,5 +78,9 @@ class WikiController < ApplicationController
      unless current_user.allowed_to?('set_organization', 'Wiki', @project)
       render_403
     end
+  end
+
+  def pages_organization_params
+    params.require(:pages_organization).permit!
   end
 end

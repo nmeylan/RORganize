@@ -18,7 +18,7 @@ class User < RorganizeActiveRecord
 
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :id, :login, :email, :name, :password, :password_confirmation, :remember_me
+  #attr_accessible :id, :login, :email, :name, :password, :password_confirmation, :remember_me
   #Relations
   has_many :members, :class_name => 'Member', :dependent => :destroy
   has_many :members_archived, :class_name => 'Member', :include => :project, :conditions => {'projects.is_archived' => true}
@@ -33,6 +33,9 @@ class User < RorganizeActiveRecord
   after_update :update_journal
   after_destroy :destroy_journal
 
+  def self.permit_attributes
+    [:name, :login, :email, :password, :admin]
+  end
 
   def is_admin?
     return self.admin
@@ -68,7 +71,7 @@ class User < RorganizeActiveRecord
   end
 
   def projects
-    members= self.members.includes(:project => [:attachments])
+    members = self.members.includes(:project => [:attachments])
     members.sort! { |x, y| x.project_position <=> y.project_position }
     members.collect { |member| member.project }
   end
@@ -166,9 +169,9 @@ class User < RorganizeActiveRecord
   #Load latest assigned requests
   def latest_assigned_issues(order, limit)
     Issue.select('issues.*')
-    .where('issues.id IN (?)', Issue.select('issues.id').where('assigned_to_id = ?', self.id).limit(limit).order('issues.id DESC'))
+    .where('issues.id IN (?)', Issue.select('issues.id').where('assigned_to_id = ?', self.id).order('issues.id DESC'))
     .includes(:tracker, :project, :status => [:enumeration])
-    .order(order)
+    .order(order).limit(limit)
   end
 
   def latest_activities(limit)

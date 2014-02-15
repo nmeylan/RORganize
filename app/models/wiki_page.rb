@@ -24,6 +24,10 @@ class WikiPage < RorganizeActiveRecord
   has_many :sub_pages, :class_name => 'WikiPage', :foreign_key => 'parent_id', :dependent => :nullify
  
   validates :title, :presence => true, :uniqueness => true
+
+  def self.permit_attributes
+    [:parent_id, :title, :content]
+  end
   
   def inc_position
     self.position = self.class.where(:parent_id => self.parent_id).count('*')
