@@ -16,7 +16,6 @@
 /nbproject/private/
 /.sass-cache/
 /.git-rewrite/database.yml
-/.git-rewrite/database.yml
-config/database.yml
 config/database.yml
 /public
+config/initializers/secret_token.rb
