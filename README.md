@@ -1,6 +1,9 @@
 ## Welcome to my project management tool
-### Started on June 20, 2012 - Last update : January 18, 2014
-_Only stable release are push on this repo_
+### Started on June 20, 2012 - Last update : April 28, 2014
+_Only stable release are push on this repo._
+
+_Project is currently in stand by until June 2014, I will only work on refactoring and unit testing until June because I don't have time to develop feature._
+
 
 # Overview
 
@@ -45,7 +48,19 @@ RORganize is a bugs and issue-tracking app, which integrate lots of additional t
 _All previous stuff is available in version 0.5.2_	
 	
 #In next versions
-* SQL optimisations
+##Quality
+* Upgrade to rails 4.1, replace deprecated stuff.
+* A better test coverage.
+* SQL optimisations.
+
+##Features
 * Repository integration (integrate your repository to update your issues' progress)
 * Activities notifications (follow in real time each project's activities)
 * Testing tool (test your developpment and update your issues with test's result)
+
+##Misc
+* Demo version
+* Devblog
+* Fill wiki
+
+
