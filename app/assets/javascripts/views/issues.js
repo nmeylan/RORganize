@@ -66,6 +66,7 @@ function issues_show() {
     createOverlay("#checklist_overlay", 150);
     createOverlay("#spent_time_overlay", 150);
     jQuery(".open_checklist_overlay").click(function (e) {
+        e.preventDefault();
         jQuery("#checklist_overlay").overlay().load();
     });
     jQuery("#update_issue_link").click(function () {

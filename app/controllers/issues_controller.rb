@@ -154,13 +154,13 @@ class IssuesController < ApplicationController
   def save_checklist
     ChecklistItem.save_items(params[:items], params[:id])
     respond_to do |format|
-      format.js { respond_to_js :response_header => :success, :response_content => t(:successful_update), :locals => {:checklist_items => ChecklistItem.find_all_by_issue_id(params[:id], :include => [:enumeration])} }
+      format.js { respond_to_js :response_header => :success, :response_content => t(:successful_update), :locals => {:checklist_items => ChecklistItem.where(:issue_id => params[:id]).includes([:enumeration])} }
     end
   end
 
   def show_checklist_items
     respond_to do |format|
-      format.js { respond_to_js :locals => {:checklist_items => ChecklistItem.find_all_by_issue_id(params[:id], :include => [:enumeration])} }
+      format.js { respond_to_js :locals => {:checklist_items => ChecklistItem.where(:issue_id => params[:id]).includes([:enumeration])} }
     end
   end
 

@@ -52,7 +52,7 @@ class WikiController < ApplicationController
   end
   
   def pages
-    @wiki_pages = WikiPage.select('*').where(:wiki_id => Wiki.find_by_project_id(@project.id), :parent_id => nil)
+    @wiki_pages = WikiPage.select('*').includes(:sub_pages, :parent).where(:wiki_id => Wiki.find_by_project_id(@project.id), :parent_id => nil)
     respond_to do |format|
       format.html {}
     end

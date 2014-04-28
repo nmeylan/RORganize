@@ -4,20 +4,15 @@
 # File: document.rb
 class Document < RorganizeActiveRecord
   #Class variables
-  assign_journalized_properties({
-                                    'name' => 'Name',
-                                    'category_id' => 'Category',
-                                    'version_id' => 'Version'})
-  assign_foreign_keys({
-                          'category_id' => Category,
-                          'version_id' => Version})
+  assign_journalized_properties({ 'name' => 'Name', 'category_id' => 'Category','version_id' => 'Version'})
+  assign_foreign_keys({'category_id' => Category, 'version_id' => Version})
   assign_journalized_icon('/assets/document.png')
   #Relations
   belongs_to :version
   belongs_to :category
-  has_many :attachments, :foreign_key => 'object_id', :conditions => {:object_type => self.to_s}, :dependent => :destroy
+  has_many :attachments, -> {where :object_type => 'Document'}, :foreign_key => 'object_id', :dependent => :destroy
   belongs_to :project
-  has_many :journals, -> { where journalized_type: self.to_s }, :as => :journalized, :dependent => :destroy
+  has_many :journals, -> { where :journalized_type => 'Document' }, :as => :journalized, :dependent => :destroy
   #Validators
   validates_associated :attachments
   validates :name, :presence => true
@@ -28,11 +23,7 @@ class Document < RorganizeActiveRecord
   #methods
 
   def self.paginated_documents(page, per_page, order, filter, project_id)
-    paginate(:page => page,
-             :include => [:version, :category],
-             :conditions => filter+" documents.project_id = #{project_id}",
-             :per_page => per_page,
-             :order => order)
+    Document.where("#{filter} documents.project_id = #{project_id}").includes([:version, :category]).paginate(:page => page, :per_page => per_page).order(order)
   end
 
   def self.permit_attributes

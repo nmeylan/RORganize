@@ -21,11 +21,12 @@ class User < RorganizeActiveRecord
   #attr_accessible :id, :login, :email, :name, :password, :password_confirmation, :remember_me
   #Relations
   has_many :members, :class_name => 'Member', :dependent => :destroy
-  has_many :members_archived, :class_name => 'Member', :include => :project, :conditions => {'projects.is_archived' => true}
-  has_many :members_opened, :class_name => 'Member', :include => :project, :conditions => {'projects.is_archived' => false}
+  has_many :members_archived, -> {where({'projects.is_archived' => true}).includes([:project])}, :class_name => 'Member'
+  has_many :members_opened, -> {where({'projects.is_archived' => false}).includes([:project])}, :class_name => 'Member'
   has_many :issues, :class_name => 'Issue', :foreign_key => :author_id, :dependent => :nullify
   has_many :issues, :class_name => 'Issue', :foreign_key => :assigned_to_id, :dependent => :nullify
-  has_many :journals, :as => :journalized, :conditions => {:journalized_type => self.to_s}, :dependent => :nullify
+  has_many :journals, -> {where :journalized_type => 'User'}, :as => :journalized, :dependent => :nullify
+
   validates :login, :presence => true, :length => 4..50, :uniqueness => true
   validates :name, :presence => true, :length => 4..50
   #Triggers
@@ -71,26 +72,22 @@ class User < RorganizeActiveRecord
   end
 
   def projects
-    members = self.members.includes(:project => [:attachments])
-    members.sort! { |x, y| x.project_position <=> y.project_position }
+    members = self.members.includes(:project => [:attachments]).order(:project_position)
     members.collect { |member| member.project }
   end
 
   def starred_projects
-    members= self.members.includes(:project => [:attachments]).select { |member| member.is_project_starred }
-    members.sort! { |x, y| x.project_position <=> y.project_position }
+    members = self.members.where(:is_project_starred => 1).includes(:project => [:attachments]).order(:project_position)
     members.collect { |member| member.project }
   end
 
   def archived_projects
-    members= self.members_archived.includes(:project => [:attachments])
-    members.sort! { |x, y| x.project_position <=> y.project_position }
+    members= self.members_archived.includes(:project => [:attachments]).order(:project_position)
     members.collect { |member| member.project }
   end
 
   def opened_projects
-    members= self.members_opened.includes(:project => [:attachments])
-    members.sort! { |x, y| x.project_position <=> y.project_position }
+    members= self.members_opened.includes(:project => [:attachments]).order(:project_position)
     members.collect { |member| member.project }
   end
 

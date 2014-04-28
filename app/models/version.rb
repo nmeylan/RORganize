@@ -7,7 +7,7 @@ class Version < RorganizeActiveRecord
   #Relations
   belongs_to :project, :class_name => 'Project'
   has_many :issues, :class_name => 'Issue', :dependent => :nullify
-  has_many :journals, :as => :journalized, :conditions => {:journalized_type => self.to_s}, :dependent => :destroy
+  has_many :journals, -> {where :journalized_type => 'Version'}, :as => :journalized, :dependent => :destroy
   validates :name, :presence => true, :length => 2..20
   validates :start_date, :presence => true
   validate :validate_start_date
@@ -25,13 +25,7 @@ class Version < RorganizeActiveRecord
     issues = Issue.where(:version_id => self.id)
     issues.each do |issue|
       if issue.due_date >= self.target_date && issue.due_date.nil
-        journal = Journal.create(:user_id => User.current.id,
-                                 :journalized_id => issue.id,
-                                 :journalized_type => issue.class.to_s,
-                                 :created_at => Time.now.to_formatted_s(:db),
-                                 :notes => '',
-                                 :action_type => 'updated',
-                                 :project_id => issue.project.id)
+        journal = Journal.create(:user_id => User.current.id, :journalized_id => issue.id, :journalized_type => issue.class.to_s, :created_at => Time.now.to_formatted_s(:db), :notes => '', :action_type => 'updated', :project_id => issue.project.id)
         #Create an entry for the journal
         #noinspection RubyStringKeysInHashInspection
         issues_journal_insertion({'due_date' => [issue.due_date, self.target_date]}, journal, {'due_date' => 'Due date'}, {})
@@ -120,7 +114,7 @@ class Version < RorganizeActiveRecord
   end
 
   def change_position(project, operator)
-    versions = project.versions.sort{|x, y| x.position <=> y.position}
+    versions = project.versions.order(:position)
     version = versions.select{|version| version.id.eql?(self.id)}.first
     max = versions.count
     position = version.position

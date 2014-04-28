@@ -11,7 +11,7 @@ class Project < ActiveRecord::Base
   has_many :versions, :class_name => 'Version'
   has_many :categories, :class_name => 'Category', :dependent => :destroy
   has_many :issues, :class_name => 'Issue', :dependent => :destroy
-  has_many :attachments, :foreign_key => 'object_id', :conditions => {:object_type => self.name}, :dependent => :destroy
+  has_many :attachments, -> {where :object_type => 'Project'}, :foreign_key => 'object_id', :dependent => :destroy
   has_many :enabled_modules, :dependent => :destroy
   has_many :documents, :dependent => :destroy
 
@@ -74,8 +74,9 @@ class Project < ActiveRecord::Base
     issue_activities = Hash.new { |hash, key| hash[key] = [] }
     journals =(
     filter[0].eql?('all') ?
-        Journal.eager_load([:details, :user, :project, :issue => :tracker]).where(:project_id => self.id).order('journals.created_at DESC') :
-        Journal.eager_load([:details, :user, :project, :issue => :tracker]).where(['journals.project_id = ? AND journals.created_at > ?', self.id, filter[0]]).order('journals.created_at DESC')
+        Journal.includes([:journalized,:details, :user, :project, :issue => [:tracker]]).where(:project_id => self.id).order('journals.created_at DESC') :
+        Journal.includes([:journalized, :details, :user, :project, :issue => [:tracker]]).where(['journals.project_id = ? AND journals.created_at > ?', self.id,
+                                                                                                  filter[0]]).order('journals.created_at DESC')
     )
     activities = Hash.new { |hash, key| hash[key] = [] }
     journals.each do |journal|

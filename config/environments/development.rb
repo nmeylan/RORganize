@@ -26,6 +26,9 @@ RORganize::Application.configure do
   #ImageMagick
   Paperclip.options[:command_path] = "C:\Program%20Files\ImageMagick-6.8.6-Q16"
 
+  ActiveRecordQueryTrace.enabled = true
+  ActiveRecordQueryTrace.level = :full
+
   config.eager_load = false
   #  Paperclip.options[:swallow_stderr] = false
   config.after_initialize do

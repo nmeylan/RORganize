@@ -34,9 +34,8 @@ class ProjectsController < ApplicationController
   end
 
   def load_journal_activity
-    @issue = Issue.where(:id => params[:item_id]).includes(:tracker, :version, :status, :assigned_to, :category)
-    @journals = Journal.where(:journalized_type => @issue.class.to_s, :journalized_id => @issue).includes([:details])
-    @journals.select! { |journal| journal.created_at.to_formatted_s(:db).to_date.to_s == params[:date] }
+  #  @issue = Issue.select('id').where(:id => params[:item_id])
+    @journals = Journal.includes([:details, :user]).where(:journalized_type => 'Issue', :journalized_id => params[:item_id]).where("DATE(`journals`.`created_at`) = ?", params[:date])
     respond_to do |format|
       format.html
       format.js { respond_to_js }

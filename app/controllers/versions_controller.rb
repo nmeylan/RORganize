@@ -12,7 +12,7 @@ class VersionsController < ApplicationController
   include ApplicationHelper
 
   def index
-    @versions = @project.versions.sort { |x, y| x.position <=> y.position }
+    @versions = @project.versions.order(:position)
     @max = @versions.count
     respond_to do |format|
       format.html
@@ -91,7 +91,7 @@ class VersionsController < ApplicationController
   def change_position
     @version = Version.find_by_id(params[:id])
     saved = @version.change_position(@project, params[:operator])
-    @versions = @project.versions.sort { |x, y| x.position <=> y.position }
+    @versions = @project.versions.order(:position)
     @max = @versions.count
     respond_to do |format|
       if saved

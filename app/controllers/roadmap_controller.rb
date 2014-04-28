@@ -12,7 +12,7 @@ class RoadmapController < ApplicationController
   before_filter { |c| c.top_menu_item('projects') }
   #GET/project/:project_id/roadmap
   def index
-    @versions = @project.versions.sort { |x, y| y.position <=> x.position }
+    @versions = @project.versions.order(:position)
     data = Version.define_roadmap(@versions, @project.id)
     respond_to do |format|
       format.html { render :action => 'index', :locals => {:versions_details => data} }
@@ -21,7 +21,7 @@ class RoadmapController < ApplicationController
 
 
   def calendar
-    @versions = @project.versions.sort { |x, y| y.position <=> x.position }
+    @versions = @project.versions.order(:position)
     calendar = Version.define_calendar(@versions, params[:date])
     @versions_hash = calendar[:versions_hash]
     @date = calendar[:date]

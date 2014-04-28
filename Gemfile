@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-gem 'rails', '~> 4.0.2'
+gem 'rails', '~> 4.1.0'
 gem 'test-unit'
 # Bundle edge Rails instead:
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
@@ -24,6 +24,7 @@ gem 'mongrel', '>= 1.2.0.pre2'
 gem 'will_paginate'
 gem 'nokogiri'
 gem 'gon'
+gem 'tzinfo-data', platforms: [:mingw, :mswin]
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'

@@ -63,9 +63,9 @@ module IssuesHelper
     }
     hash.each do |k,v|
       if v['operator'].eql?('open')
-        v['value'] = IssuesStatus.find_all_by_is_closed(0).collect{|status| status.id}
+        v['value'] = IssuesStatus.where(:is_closed => 0).collect{|status| status.id}
       elsif v['operator'].eql?('close')
-        v['value'] = IssuesStatus.find_all_by_is_closed(1).collect{|status| status.id}
+        v['value'] = IssuesStatus.where(:is_closed => 1).collect{|status| status.id}
       end
     end
     generics_filter(hash,attributes)

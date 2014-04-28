@@ -11,7 +11,7 @@ class Category < RorganizeActiveRecord
   #Relations
   belongs_to :project, :class_name => 'Project'
   has_many :issues, :class_name => 'Issue', :dependent => :nullify
-  has_many :journals, :as => :journalized, :conditions => {:journalized_type => self.to_s}, :dependent => :destroy
+  has_many :journals, ->  {where :journalized_type => 'Category'}, :as => :journalized, :dependent => :destroy
   #Triggers
   after_create :create_journal 
   after_update :update_journal

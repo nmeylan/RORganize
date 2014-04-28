@@ -5,21 +5,8 @@
 
 class Issue < RorganizeActiveRecord
   #Class variables
-  assign_journalized_properties({'status_id' => 'Status',
-                                 'category_id' => 'Category',
-                                 'assigned_to_id' => 'Assigned to',
-                                 'tracker_id' => 'Tracker',
-                                 'due_date' => 'Due date',
-                                 'start_date' => 'Start date',
-                                 'done' => 'Done',
-                                 'estimated_time' => 'Estimated time',
-                                 'version_id' => 'Version',
-                                 'predecessor_id' => 'Predecessor'})
-  assign_foreign_keys({'status_id' => IssuesStatus,
-                       'category_id' => Category,
-                       'assigned_to_id' => User,
-                       'tracker_id' => Tracker,
-                       'version_id' => Version})
+  assign_journalized_properties({'status_id' => 'Status', 'category_id' => 'Category', 'assigned_to_id' => 'Assigned to', 'tracker_id' => 'Tracker', 'due_date' => 'Due date', 'start_date' => 'Start date', 'done' => 'Done', 'estimated_time' => 'Estimated time', 'version_id' => 'Version', 'predecessor_id' => 'Predecessor'})
+  assign_foreign_keys({'status_id' => IssuesStatus, 'category_id' => Category, 'assigned_to_id' => User, 'tracker_id' => Tracker, 'version_id' => Version})
   assign_journalized_icon('')
   attr_accessor :notes
   #Relations
@@ -33,8 +20,8 @@ class Issue < RorganizeActiveRecord
   has_many :children, :foreign_key => 'predecessor_id', :class_name => 'Issue'
   belongs_to :parent, :foreign_key => 'predecessor_id', :class_name => 'Issue'
   has_many :checklist_items, :class_name => 'ChecklistItem', :dependent => :destroy
-  has_many :attachments, :foreign_key => 'object_id', :conditions => {:object_type => self.to_s}, :dependent => :destroy
-  has_many :journals, :as => :journalized, :conditions => {:journalized_type => self.to_s}, :dependent => :destroy
+  has_many :attachments, -> {where :object_type => 'Issue'}, :foreign_key => 'object_id', :dependent => :destroy
+  has_many :journals, -> {where :journalized_type => 'Issue'}, :as => :journalized, :dependent => :destroy
   has_many :time_entries, :dependent => :destroy
 
   #triggers
@@ -50,11 +37,7 @@ class Issue < RorganizeActiveRecord
   validate :validate_start_date, :validate_predecessor
   #  validates :due_date, :format =>
   def self.paginated_issues(page, per_page, order, filter, project_id)
-    self.eager_load([:tracker, :version, :assigned_to, :category, :status => [:enumeration]]).paginate(:page => page,
-             :conditions => filter+" issues.project_id = #{project_id}",
-             :per_page => per_page,
-             :order => order)
-
+    Issue.where("#{filter} issues.project_id = #{project_id}").eager_load([:tracker, :version, :assigned_to, :category, :attachments, :status => [:enumeration]]).paginate(:page => page, :per_page => per_page).order(order)
   end
 
   #Assigned open requests on any open project
@@ -176,7 +159,7 @@ class Issue < RorganizeActiveRecord
     object[:allowed_statuses] = User.current.allowed_statuses(object[:issue].project)
     object[:done_ratio] = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
     object[:checklist_statuses] = Enumeration.where(:opt => 'CLIS')
-    object[:checklist_items] = ChecklistItem.where(:issue_id => issue_id).includes([:enumeration])
+    object[:checklist_items] = ChecklistItem.where(:issue_id => issue_id).includes([:enumeration]).order(:position)
     object
   end
 

@@ -13,7 +13,7 @@ class Attachment < ActiveRecord::Base
       :large => '800x800>'}: {}
   },:size => { :in => 0..2.megabytes }
 
-  validates_attachment_content_type :file, :content_type => %w(image/jpeg image/bmp image/png image/jpg image/gif)
+  validates_attachment_content_type :file, :content_type => /\Aimage\/.*\Z/
 
   def self.permit_attributes
     [:file, :tempfile, :original_filename, :content_type, :headers, :form_data, :name]

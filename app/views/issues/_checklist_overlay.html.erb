@@ -14,7 +14,7 @@
     <div id="checklist">
       <%= form_tag({:action => 'save_checklist', :id => @issue}, :id => 'checklist_form', :remote=>true ) do -%>
         <ul id="items">
-          <% checklist_items.sort!{|x,y| x.position <=> y.position}.each do |item| %>
+          <% checklist_items.each do |item| %>
             <div class='autocomplete-combobox nosearch no-padding_left' id="item-<%=item.name.gsub(/\s/,'')%>">
               <%= select_tag "items[#{item.name}]", options_from_collection_for_select(@checklist_statuses, 'id', 'name', item.enumeration_id), {:class => 'chzn-select cbb-medium', :id => item.name.gsub(/\s/,'') } %>
               <label style='margin-left:10px' id="label-<%=item.name.gsub(/\s/,'')%>"><%= item.name %></label>

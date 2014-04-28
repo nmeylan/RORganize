@@ -2,8 +2,6 @@
 ### Started on June 20, 2012 - Last update : January 18, 2014
 _Only stable release are push on this repo_
 
-Run with rails 4.0.2
-
 # Overview
 
 RORganize is a web application based on Ruby on Rails framework.

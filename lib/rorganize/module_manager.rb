@@ -70,7 +70,7 @@ module Rorganize
 
       def load_enabled_modules
         enabled_modules = Hash.new{|h, k| h[k] = []}
-        projects = Project.find(:all)
+        projects = Project.all
         projects.each do |project|
           project.enabled_modules.each do |mod|
             enabled_modules[project.id.to_s] << {:action => mod.action, :controller => mod.controller.downcase}

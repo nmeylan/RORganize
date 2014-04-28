@@ -7,7 +7,7 @@ class Journal < ActiveRecord::Base
 
   has_many :details, :class_name => 'JournalDetail', :dependent => :destroy
   belongs_to :journalized, :polymorphic => true
-  belongs_to :issue, -> { where 'journals.journalized_type = \'Issue\'' }, foreign_key: 'journalized_id'
+  belongs_to :issue, foreign_key: 'journalized_id'
   belongs_to :user, :class_name => 'User'
 
   belongs_to :project
@@ -17,11 +17,7 @@ class Journal < ActiveRecord::Base
     updated_attrs.each do |attribute, old_new_value|
       old_value = old_new_value[0]
       new_value = old_new_value[1]
-      JournalDetail.create(:journal_id => self.id,
-                           :property => journalized_property[attribute],
-                           :property_key => attribute,
-                           :old_value => old_value,
-                           :value => new_value)
+      JournalDetail.create(:journal_id => self.id,:property => journalized_property[attribute], :property_key => attribute, :old_value => old_value, :value => new_value)
     end
   end
 
@@ -40,11 +36,7 @@ class Journal < ActiveRecord::Base
         old_value = old_new_value[0]
         new_value = old_new_value[1]
       end
-      JournalDetail.create(:journal_id => self.id,
-                           :property => journalized_property[attribute],
-                           :property_key => attribute,
-                           :old_value => old_value,
-                           :value => new_value)
+      JournalDetail.create(:journal_id => self.id, :property => journalized_property[attribute], :property_key => attribute, :old_value => old_value, :value => new_value)
     end
   end
 

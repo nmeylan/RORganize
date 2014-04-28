@@ -13,7 +13,7 @@ class Member < RorganizeActiveRecord
   
   belongs_to :user, :class_name => 'User'
   belongs_to :role, :class_name => 'Role'
-  has_many :journals, :as => :journalized, :conditions => {:journalized_type => self.to_s}, :dependent => :destroy
+  has_many :journals, -> { where :journalized_type => 'Member'}, :dependent => :destroy, :as => :journalized
   #Triggers
   before_create :set_project_position
   after_create :create_journal
