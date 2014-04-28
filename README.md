@@ -4,6 +4,7 @@ _Only stable release are push on this repo._
 
 _Project is currently in stand by until June 2014, I will only work on refactoring and unit testing until June because I don't have time to develop feature._
 
+Run with Rails 4.1
 
 # Overview
 
@@ -49,7 +50,6 @@ _All previous stuff is available in version 0.5.2_
 	
 #In next versions
 ##Quality
-* Upgrade to rails 4.1, replace deprecated stuff.
 * A better test coverage.
 * SQL optimisations.
 
@@ -63,4 +63,5 @@ _All previous stuff is available in version 0.5.2_
 * Devblog
 * Fill wiki
 
-
+#Licence
+RORganize is released under the [MIT License](http://www.opensource.org/licenses/MIT).
