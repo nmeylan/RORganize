@@ -120,9 +120,8 @@ class User < RorganizeActiveRecord
   end
 
   def self.paginated_users(page, per_page, order)
-    paginate(:page => page,
-             :per_page => per_page,
-             :order => order)
+    User.all.paginate(:page => page,
+             :per_page => per_page).order(order)
   end
 
   #Get owned projects with filters
@@ -157,7 +156,7 @@ class User < RorganizeActiveRecord
     coworkers = Hash.new { |h, k| h[k] = [] }
     self.members.includes(:role, :project => [:members => [:user, :role]]).each do |member|
       if self.allowed_to?('display_activities', 'Coworkers', member.project)
-        coworkers[member.project.name] = member.project.members.delete_if { |m| m.user_id.eql?(self.id) }
+        coworkers[member.project.name] = member.project.members.where(["members.user_id NOT LIKE ?", self.id])
       end
     end
     coworkers

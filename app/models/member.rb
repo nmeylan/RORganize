@@ -37,8 +37,7 @@ class Member < RorganizeActiveRecord
 
   #Get activities for a project member
   def activities
-    Journal.select('journals.*')
-    .where(:user_id => self.user_id, :project_id => self.project_id)
+    Journal.where(:user_id => self.user_id, :project_id => self.project_id)
     .includes(:details, :project, :user, :journalized)
     .order('created_at DESC')
   end

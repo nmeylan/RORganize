@@ -18,7 +18,7 @@ class CoworkersController < ApplicationController
 
   def display_activities
     if params[:getAct].eql?('true')
-      @coworker = Member.find(params[:id])
+      @coworker = Member.find_by_id(params[:id])
     end
 
     respond_to do |format|

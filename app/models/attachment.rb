@@ -4,16 +4,17 @@
 # File: attachment.rb
 
 class Attachment < ActiveRecord::Base
-  has_attached_file :file, :styles => lambda{ |a|
-    %w(image/jpeg image/bmp image/png image/jpg image/gif).include?( a.content_type ) ? {
+  has_attached_file :file, :styles =>  {
       :logo => '40x40',
       :thumb=> '100x100>',
       :small  => '150x150>',
       :medium => '300x300>',
-      :large => '800x800>'}: {}
-  },:size => { :in => 0..2.megabytes }
+      :large => '800x800>' }
 
-  validates_attachment_content_type :file, :content_type => /\Aimage\/.*\Z/
+  validates_attachment_content_type :file, :content_type => %w(image/jpeg image/bmp image/png image/jpg image/gif application/pdf)
+  # Validate filename
+  validates_attachment_size :file, :in => 0..2.megabytes
+  validates_attachment_file_name :file, :not => /.exe/
 
   def self.permit_attributes
     [:file, :tempfile, :original_filename, :content_type, :headers, :form_data, :name]

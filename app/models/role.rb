@@ -17,7 +17,7 @@ class Role < ActiveRecord::Base
   def update_permissions(permissions_param)
     if permissions_param
       permissions_id = permissions_param.values
-      permissions = Permission.where(:di => permissions_id)
+      permissions = Permission.where(:id => permissions_id)
       self.permissions.clear
       permissions_id.each do |permission_id|
         permission = permissions.select { |perm| perm.id == permission_id.to_i }
