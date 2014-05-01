@@ -4,59 +4,78 @@ projects_001:
   name: RORganize
   description: ! "_Started on June 20 2012_\r\n\r\nh2. Overview\r\n\r\nRORganize is
     a web application based on Ruby on Rails framework.\r\nRORganize was inspired
-    by the project manager application: Redmine.\r\n\r\nRORganize is a bugs and issue-tracking
-    app, which integrate additional tools such as:\r\n\r\n* Testing tool (test your
-    developpment and update your issues with test's result)\r\n* Scenario creation
-    (create your scenario will help you to generate issues)\r\n* Issues' checklist
-    (detail the step of your issues)\r\n* Wiki pages for each project (add some informations
-    about the project to help your team mates)\r\n* Projects’ activities tracking
-    (follow projects' progress)\r\n* Simply roles and permissions management (each
-    roles' permissions can be customized)\r\n* Time tracking (look where you waste
-    your time)\r\n* Repository integration (integrate your repository to update your
-    issues' progress)\r\n* Activities notifications (follow in real time each project's
-    activities)\r\n* Internal chat (your team mate is working, ask him anything!)\r\n*
-    Personnal permission(you can customise permissions for each users independent
-    of the project where they work)\r\n* And more …"
+    by the project manager application: Redmine.\r\n\r\nRORganize is a bug and issue-tracking's
+    application, which integrate additional tools such as:\r\n\r\n* Testing tool (Test
+    your project and update your issues with the result)\r\n* Scenario creation (Build
+    a scenario will help you to create issues)\r\n* Issues’ checklist (Detail each
+    step of your issues)\r\n* Wiki pages for each project \r\n* Projects’ activities
+    tracking\r\n* Project's roadmap\r\n* Simply roles and permissions management (each
+    role’s can be customized with differents permissions)\r\n* Time tracking (look
+    where you waste your time)\r\n* Repository integration \r\n* Activities notifications\r\n*
+    Internal chat\r\n* Personnal permission\r\n* And more …"
   identifier: RORganize
   created_at: 2012-07-01 14:25:02.000000000 Z
-  updated_at: 2012-10-19 20:08:17.000000000 Z
+  updated_at: 2014-01-18 05:27:26.000000000 Z
+  created_by: 
+  is_archived: 0
+  slug: rorganize
+  members_count: 1
+  issues_count: 80
+  attachments_count: 0
 projects_002:
-  id: 3
-  name: Project test
-  description: ''
-  identifier: Project-Test
-  created_at: 2012-07-06 20:18:54.000000000 Z
-  updated_at: 2012-07-06 20:18:54.000000000 Z
+  id: 5
+  name: Pursuit evasion game
+  description: ! "h1. Contexte\r\n\r\nUn jeu inventé par Richard J. Nowakowski et
+    Peter M. Winkler, dans leur article “Vertex-to-vertex pursuit in a graph” publié
+    dans Discrete Mathematics, Vol. 43 : pages 235-239, 1983.\r\n\r\nh1. Règles du
+    jeu\r\n\r\n* Les pions sont placés sur les sommets du graphe\r\n* Les pions ne
+    peuvent se déplacer que de voisin en voisin\r\n* Les pions sont initialement placés
+    aléatoirement\r\n* Le voleur est le premier à jouer\r\n* Le gendarme gagne quand
+    il place un pion sur le voleur\r\n* Le voleur se déplace n fois plus que les gendarmes,
+    n étant le nombre de gendarmes\r\n\r\nh1. Objectifs\r\n\r\n* Assurer la capture
+    avec un minimum de pions pour le gendarme.\r\n* Avec ce minimum de pions, assurer
+    la capture en un minimum de coups. \r\n\r\nh1. Les terrains\r\n\r\n* Grilles 8
+    * 8 et 9 * 20\r\n* Grilles toriques 8 * 8 et 9 * 20\r\n* Hypercube de degré 3\r\n*
+    Hypercube de degré 4"
+  identifier: PursuitEvasion
+  created_at: 2012-12-20 14:37:56.000000000 Z
+  updated_at: 2013-07-04 15:06:15.000000000 Z
+  created_by: 
+  is_archived: 1
+  slug: pursuitevasion
+  members_count: 2
+  issues_count: 13
+  attachments_count: 0
 projects_003:
-  id: 4
-  name: Project description
-  description: ! "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed mattis
-    ante at leo iaculis malesuada. In non quam orci. Fusce eu risus mi, eu imperdiet
-    quam. In hac habitasse platea dictumst. Suspendisse ut nisi eros. Sed facilisis
-    adipiscing ligula, quis molestie sapien pretium vitae. Pellentesque varius sollicitudin
-    pulvinar. Aliquam diam nisi, ultrices at porttitor vitae, imperdiet vitae ligula.
-    Vivamus volutpat porta augue, vel malesuada velit posuere a. Pellentesque consequat
-    tincidunt hendrerit.\r\n\r\nVestibulum ante ipsum primis in faucibus orci luctus
-    et ultrices posuere cubilia Curae; Integer fringilla laoreet tincidunt. In at
-    sem id nisi ornare placerat sed et tellus. Vestibulum non risus faucibus massa
-    dapibus feugiat in nec enim. Mauris sit amet quam nibh. Donec ullamcorper mattis
-    tincidunt. Etiam varius porttitor mauris quis dapibus. Donec vehicula ultrices
-    arcu, id condimentum velit bibendum ut. Aenean tincidunt quam ut elit aliquet
-    a eleifend orci adipiscing. Cras purus nibh, euismod et ornare quis, aliquam vel
-    tellus.\r\n\r\nMaecenas id risus id augue egestas aliquet. Sed adipiscing rhoncus
-    dolor, sed tincidunt odio tincidunt vulputate. Vestibulum vel consectetur nulla.
-    Ut scelerisque libero sed nibh posuere at mollis elit fermentum. Praesent cursus,
-    lorem a imperdiet accumsan, dui lorem volutpat mauris, vitae adipiscing felis
-    metus a diam. Donec vitae est magna. Nam rutrum placerat sapien sed bibendum.
-    Aliquam volutpat, orci vitae faucibus blandit, nibh nisi dictum eros, quis blandit
-    eros dolor eu arcu.\r\n\r\nProin arcu massa, semper at dapibus pharetra, pellentesque
-    sit amet urna. Proin tristique justo nec nulla vulputate vitae rutrum felis ultrices.
-    Aliquam erat volutpat. Praesent aliquam facilisis mauris, ac eleifend tortor iaculis
-    id. Fusce commodo laoreet semper. Morbi accumsan lorem id massa mattis eget bibendum
-    nisl lobortis. Suspendisse potenti. Vestibulum nec ante risus, ac blandit ligula.
-    Morbi ultrices, massa in semper suscipit, nunc diam commodo mi, eu consectetur
-    metus augue at ligula. Fusce eu magna nec purus porta volutpat eu tristique sapien.
-    In aliquam faucibus pulvinar. Suspendisse potenti."
-  identifier: ProDesc
-  created_at: 2012-07-06 20:37:31.000000000 Z
-  updated_at: 2012-07-06 20:37:31.000000000 Z
+  id: 6
+  name: System administrator interface
+  description: ! "Interface pour les administrateurs système sous forme d'une application
+    web.\r\n\r\nPermet de faciliter : \r\n* La gestion des services et processus\r\n*
+    L'accès aux la base de données\r\n* La migration des applications rails\r\n* l'exécution
+    de scripts\r\n* La création/suppression de dépots svn\r\n* La gestion des utilisateurs\r\n\r\n"
+  identifier: SysAdmin Interface
+  created_at: 2013-02-24 20:07:52.000000000 Z
+  updated_at: 2013-07-04 15:06:15.000000000 Z
+  created_by: 1
+  is_archived: 0
+  slug: sysadmin-interface
+  members_count: 1
+  issues_count: 0
+  attachments_count: 0
+projects_004:
+  id: 7
+  name: Jeu de la vie
+  description: ! "h1. Automates cellulaire, jeu de la vie\r\n\r\nLe jeu de la vie,
+    automate cellulaire imaginé par John Horton Conway en 1970, est probablement,
+    à l’heure actuelle, le plus connu de tous les automates cellulaires.\r\nMalgré
+    des règles très simples, le jeu de la vie permet le développement de motifs extrêmement
+    complexes."
+  identifier: JDV
+  created_at: 2013-03-26 14:48:46.000000000 Z
+  updated_at: 2013-07-04 15:06:15.000000000 Z
+  created_by: 1
+  is_archived: 1
+  slug: jdv
+  members_count: 2
+  issues_count: 15
+  attachments_count: 0

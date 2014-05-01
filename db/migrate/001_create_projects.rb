@@ -2,8 +2,8 @@ class CreateProjects < ActiveRecord::Migration
   def up
     create_table :projects do |t|
       t.string :name, :limit => 255
-      t.string :description,:limit => 65555
-      t.string :slug,:limit => 20
+      t.text :description, :limit => 65535
+      t.string :identifier,:limit => 20
       t.timestamps :created_on
       t.timestamps :updated_on
     end

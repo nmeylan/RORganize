@@ -28,25 +28,25 @@ issues_statuses_roles_009:
   issues_status_id: 2
 issues_statuses_roles_010:
   role_id: 3
-  issues_status_id: 3
+  issues_status_id: 4
 issues_statuses_roles_011:
   role_id: 3
-  issues_status_id: 4
+  issues_status_id: 5
 issues_statuses_roles_012:
   role_id: 3
-  issues_status_id: 5
+  issues_status_id: 6
 issues_statuses_roles_013:
   role_id: 3
-  issues_status_id: 6
-issues_statuses_roles_014:
-  role_id: 3
   issues_status_id: 7
-issues_statuses_roles_015:
+issues_statuses_roles_014:
   role_id: 2
   issues_status_id: 1
-issues_statuses_roles_016:
+issues_statuses_roles_015:
   role_id: 2
   issues_status_id: 2
+issues_statuses_roles_016:
+  role_id: 2
+  issues_status_id: 3
 issues_statuses_roles_017:
   role_id: 2
   issues_status_id: 4

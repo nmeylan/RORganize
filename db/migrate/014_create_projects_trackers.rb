@@ -7,7 +7,7 @@ class CreateProjectsTrackers < ActiveRecord::Migration
   def up
     create_table :projects_trackers, :id => false do |t|
       t.integer :tracker_id
-      t.integer :project_slug
+      t.integer :project_id
     end
   end
 

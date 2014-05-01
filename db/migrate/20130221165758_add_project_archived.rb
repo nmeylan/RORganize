@@ -1,7 +1,7 @@
 class AddProjectArchived < ActiveRecord::Migration
   def up
     add_column :projects, :is_archived, :boolean, :default => false
-    Permission.create(:controller => 'Project', :action => 'archive', :name => "Archive project", :is_locked => true)
+    Permission.create(:controller => 'Project', :action => 'archive', :name => "Archive project", is_locked: true)
   end
 
   def down

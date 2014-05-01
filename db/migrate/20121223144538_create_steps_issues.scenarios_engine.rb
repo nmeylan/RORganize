@@ -13,6 +13,6 @@ class CreateStepsIssues < ActiveRecord::Migration
   end
 
   def down
-    drop_table :steps
+    drop_table :issues_steps
   end
 end

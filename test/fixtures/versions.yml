@@ -2,15 +2,88 @@
 versions_001:
   id: 1
   name: Version 0.1
-  target_date: 2012-07-31
-  description: ! "\r\n"
+  target_date: 2012-09-30
+  description: ! "h2. Gestion des issues\r\n* CRUD\r\n* Toolbox\r\n* Tri\r\n* Liste\r\n*
+    Tooltip\r\n"
+  position: 1
+  start_date: 
+  project_id: 1
 versions_002:
   id: 2
   name: Version 0.2
-  target_date: 2012-09-01
-  description: ''
+  target_date: 2012-11-17
+  description: ! "h2. Gestion projets\r\n* Settings\r\n* Activités\r\n\r\nh2. Gestion
+    utilisateur\r\n* Role\r\n* Permission\r\n* Changer admin/user\r\n* Changer mot
+    de passe\r\n* Preférences\r\n"
+  position: 3
+  start_date: 
+  project_id: 1
 versions_003:
   id: 4
-  name: Version 0.4
+  name: Version 0.3
+  target_date: 2013-02-05
+  description: ! "h2. Issues\r\n* Filtres\r\n* Upload fichiers\r\n\r\nh2. Scenarios\r\n*
+    Crud\r\n* Utilisation backbone JS"
+  position: 4
+  start_date: 
+  project_id: 1
+versions_004:
+  id: 5
+  name: Version 1
+  target_date: 2013-01-25
+  description: ''
+  position: 1
+  start_date: 
+  project_id: 
+versions_005:
+  id: 6
+  name: Bonus
   target_date: 
   description: ''
+  position: 2
+  start_date: 
+  project_id: 
+versions_006:
+  id: 7
+  name: Version 0.1.x
+  target_date: 
+  description: Correction bugs Issues
+  position: 2
+  start_date: 
+  project_id: 1
+versions_007:
+  id: 8
+  name: Version 0.3.x
+  target_date: 2013-03-17
+  description: ! "Correction bugs upload et scenarios.\r\n\r\nh3. Ajout:\r\n* Enregistrement
+    des custom queries\r\n\r\nh3. Modification:\r\n* Gestion des menus\r\n* Refonte
+    de project settings\r\n* Optimisation project activities\r\n"
+  position: 5
+  start_date: 
+  project_id: 1
+versions_008:
+  id: 10
+  name: Version 1.0
+  target_date: 2013-04-19
+  description: ''
+  position: 1
+  start_date: 2013-03-26
+  project_id: 
+versions_009:
+  id: 11
+  name: Extentions
+  target_date: 2013-04-30
+  description: ''
+  position: 2
+  start_date: 2013-04-01
+  project_id: 
+versions_010:
+  id: 12
+  name: Version 0.4
+  target_date: 2013-12-25
+  description: ! "h2. Ajout\r\n* Gantt chart\r\n* Stockage des documents du projet\r\n*
+    Système de gestion des menus\r\n* Système de gestion des modules\r\n\r\nh2. Modifications\r\n*
+    Refonte des activités utilisateurs\r\n* Refonte du système de permission"
+  position: 6
+  start_date: 2013-02-15
+  project_id: 1

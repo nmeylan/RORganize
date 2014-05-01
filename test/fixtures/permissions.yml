@@ -1,266 +1,931 @@
 ---
 permissions_001:
+  id: 1
+  name: Create issues
+  action: new
+  controller: Issues
+  is_locked: 1
+permissions_002:
+  id: 2
+  name: View issues
+  action: index
+  controller: Issues
+  is_locked: 1
+permissions_003:
+  id: 3
+  name: View issue
+  action: show
+  controller: Issues
+  is_locked: 1
+permissions_004:
+  id: 4
+  name: Edit issues
+  action: edit
+  controller: Issues
+  is_locked: 1
+permissions_005:
+  id: 5
+  name: Use checklist
+  action: checklist
+  controller: Issues
+  is_locked: 1
+permissions_006:
+  id: 6
+  name: Change versions
+  action: change_version
+  controller: Issues
+  is_locked: 1
+permissions_007:
+  id: 7
+  name: Change category
+  action: change_category
+  controller: Issues
+  is_locked: 1
+permissions_008:
+  id: 8
+  name: Change progress
+  action: change_progress
+  controller: Issues
+  is_locked: 1
+permissions_009:
+  id: 9
+  name: Change assigned
+  action: change_assigned
+  controller: Issues
+  is_locked: 1
+permissions_010:
+  id: 10
+  name: Change status
+  action: change_status
+  controller: Issues
+  is_locked: 1
+permissions_011:
+  id: 11
+  name: Delete issues
+  action: destroy
+  controller: Issues
+  is_locked: 1
+permissions_012:
+  id: 12
+  name: Add or delete attachments
+  action: delete_attachment
+  controller: Issues
+  is_locked: 1
+permissions_013:
+  id: 13
+  name: Access to settings
+  action: index
+  controller: Settings
+  is_locked: 1
+permissions_014:
+  id: 14
+  name: Edit project informations
+  action: update_project_informations
+  controller: Settings
+  is_locked: 1
+permissions_015:
+  id: 15
+  name: View members
+  action: index
+  controller: Members
+  is_locked: 1
+permissions_016:
+  id: 16
+  name: Delete members
+  action: destroy
+  controller: Members
+  is_locked: 1
+permissions_017:
+  id: 17
+  name: Change role
+  action: change_role
+  controller: Members
+  is_locked: 1
+permissions_018:
+  id: 18
+  name: Add members
+  action: new
+  controller: Members
+  is_locked: 1
+permissions_019:
+  id: 19
+  name: View categories
+  action: index
+  controller: Categories
+  is_locked: 1
+permissions_020:
+  id: 20
+  name: Create categories
+  action: new
+  controller: Categories
+  is_locked: 1
+permissions_021:
+  id: 21
+  name: Edit categories
+  action: edit
+  controller: Categories
+  is_locked: 1
+permissions_022:
+  id: 22
+  name: Delete categories
+  action: destroy
+  controller: Categories
+  is_locked: 1
+permissions_023:
+  id: 23
+  name: View category
+  action: show
+  controller: Categories
+  is_locked: 1
+permissions_024:
+  id: 24
+  name: View versions
+  action: index
+  controller: Versions
+  is_locked: 1
+permissions_025:
+  id: 25
+  name: Create versions
+  action: new
+  controller: Versions
+  is_locked: 1
+permissions_026:
+  id: 26
+  name: Edit versions
+  action: edit
+  controller: Versions
+  is_locked: 1
+permissions_027:
+  id: 27
+  name: Delete versions
+  action: destroy
+  controller: Versions
+  is_locked: 1
+permissions_028:
+  id: 28
+  name: View version
+  action: show
+  controller: Versions
+  is_locked: 1
+permissions_029:
+  id: 29
+  name: Access to administration
+  action: index
+  controller: Administration
+  is_locked: 1
+permissions_030:
+  id: 30
+  name: View users
+  action: index
+  controller: Users
+  is_locked: 1
+permissions_031:
+  id: 31
+  name: Create users
+  action: new
+  controller: Users
+  is_locked: 1
+permissions_032:
+  id: 32
+  name: Edit users
+  action: edit
+  controller: Users
+  is_locked: 1
+permissions_033:
+  id: 33
+  name: Delete users
+  action: destroy
+  controller: Users
+  is_locked: 1
+permissions_034:
+  id: 34
+  name: View user
+  action: show
+  controller: Users
+  is_locked: 1
+permissions_035:
+  id: 35
+  name: View permissions
+  action: index
+  controller: Permissions
+  is_locked: 1
+permissions_036:
+  id: 36
+  name: Create permissions
+  action: new
+  controller: Permissions
+  is_locked: 1
+permissions_037:
+  id: 37
+  name: Edit permissions
+  action: edit
+  controller: Permissions
+  is_locked: 1
+permissions_038:
+  id: 38
+  name: Delete permissions
+  action: destroy
+  controller: Permissions
+  is_locked: 1
+permissions_039:
+  id: 39
+  name: View permission
+  action: show
+  controller: Permissions
+  is_locked: 1
+permissions_040:
+  id: 40
+  name: Change roles permissions
+  action: list
+  controller: Permissions
+  is_locked: 1
+permissions_041:
+  id: 41
+  name: View project overview
+  action: overview
+  controller: Project
+  is_locked: 1
+permissions_042:
+  id: 42
+  name: View project activity
+  action: activity
+  controller: Project
+  is_locked: 1
+permissions_043:
+  id: 43
+  name: View project roadmap
+  action: rodmap
+  controller: Project
+  is_locked: 1
+permissions_044:
+  id: 44
+  name: Create projects
+  action: new
+  controller: Project
+  is_locked: 1
+permissions_045:
+  id: 45
+  name: View project
+  action: show
+  controller: Project
+  is_locked: 1
+permissions_046:
+  id: 46
+  name: View roles
+  action: index
+  controller: Roles
+  is_locked: 1
+permissions_047:
+  id: 47
+  name: Create roles
+  action: new
+  controller: Roles
+  is_locked: 1
+permissions_048:
+  id: 48
+  name: Edit roles
+  action: edit
+  controller: Roles
+  is_locked: 1
+permissions_049:
+  id: 49
+  name: Delete roles
+  action: destroy
+  controller: Roles
+  is_locked: 1
+permissions_050:
+  id: 50
+  name: View role
+  action: show
+  controller: Roles
+  is_locked: 1
+permissions_051:
+  id: 51
+  name: View trackers
+  action: index
+  controller: Trackers
+  is_locked: 1
+permissions_052:
+  id: 52
+  name: Create trackers
+  action: new
+  controller: Trackers
+  is_locked: 1
+permissions_053:
+  id: 53
+  name: Edit trackers
+  action: edit
+  controller: Trackers
+  is_locked: 1
+permissions_054:
+  id: 54
+  name: Delete trackers
+  action: destroy
+  controller: Trackers
+  is_locked: 1
+permissions_055:
   id: 158
   name: Create issues
   action: new
   controller: Issues
-permissions_002:
+  is_locked: 1
+permissions_056:
   id: 159
   name: View issues
   action: index
   controller: Issues
-permissions_003:
+  is_locked: 1
+permissions_057:
   id: 160
   name: View issue
   action: show
   controller: Issues
-permissions_004:
+  is_locked: 1
+permissions_058:
   id: 161
   name: Edit issues
   action: edit
   controller: Issues
-permissions_005:
+  is_locked: 1
+permissions_059:
   id: 162
   name: Use checklist
   action: checklist
   controller: Issues
-permissions_006:
+  is_locked: 1
+permissions_060:
   id: 163
   name: Change versions
   action: change_version
   controller: Issues
-permissions_007:
+  is_locked: 1
+permissions_061:
   id: 164
   name: Change category
   action: change_category
   controller: Issues
-permissions_008:
+  is_locked: 1
+permissions_062:
   id: 165
   name: Change progress
   action: change_progress
   controller: Issues
-permissions_009:
+  is_locked: 1
+permissions_063:
   id: 166
   name: Change assigned
   action: change_assigned
   controller: Issues
-permissions_010:
+  is_locked: 1
+permissions_064:
   id: 167
   name: Change status
   action: change_status
   controller: Issues
-permissions_011:
+  is_locked: 1
+permissions_065:
   id: 168
   name: Delete issues
   action: destroy
   controller: Issues
-permissions_012:
+  is_locked: 1
+permissions_066:
   id: 169
   name: Access to settings
   action: index
   controller: Settings
-permissions_013:
+  is_locked: 1
+permissions_067:
   id: 170
   name: Edit project informations
   action: update_project_informations
   controller: Settings
-permissions_014:
+  is_locked: 1
+permissions_068:
   id: 171
   name: View members
   action: index
   controller: Members
-permissions_015:
+  is_locked: 1
+permissions_069:
   id: 172
   name: Delete members
   action: destroy
   controller: Members
-permissions_016:
+  is_locked: 1
+permissions_070:
   id: 173
   name: Change role
   action: change_role
   controller: Members
-permissions_017:
-  id: 174
-  name: Add members
-  action: add_member
-  controller: Members
-permissions_018:
+  is_locked: 1
+permissions_071:
   id: 175
   name: View categories
   action: index
   controller: Categories
-permissions_019:
+  is_locked: 1
+permissions_072:
   id: 176
   name: Create categories
   action: new
   controller: Categories
-permissions_020:
+  is_locked: 1
+permissions_073:
   id: 177
   name: Edit categories
   action: edit
   controller: Categories
-permissions_021:
+  is_locked: 1
+permissions_074:
   id: 178
   name: Delete categories
   action: destroy
   controller: Categories
-permissions_022:
+  is_locked: 1
+permissions_075:
   id: 179
   name: View category
   action: show
   controller: Categories
-permissions_023:
+  is_locked: 1
+permissions_076:
   id: 180
   name: View versions
   action: index
   controller: Versions
-permissions_024:
+  is_locked: 1
+permissions_077:
   id: 181
   name: Create versions
   action: new
   controller: Versions
-permissions_025:
+  is_locked: 1
+permissions_078:
   id: 182
   name: Edit versions
   action: edit
   controller: Versions
-permissions_026:
+  is_locked: 1
+permissions_079:
   id: 183
   name: Delete versions
   action: destroy
   controller: Versions
-permissions_027:
+  is_locked: 1
+permissions_080:
   id: 184
   name: View version
   action: show
   controller: Versions
-permissions_028:
+  is_locked: 1
+permissions_081:
   id: 185
   name: Access to administration
   action: index
   controller: Administration
-permissions_029:
+  is_locked: 1
+permissions_082:
   id: 186
   name: View users
   action: index
   controller: Users
-permissions_030:
+  is_locked: 1
+permissions_083:
   id: 187
   name: Create users
   action: new
   controller: Users
-permissions_031:
+  is_locked: 1
+permissions_084:
   id: 188
   name: Edit users
   action: edit
   controller: Users
-permissions_032:
+  is_locked: 1
+permissions_085:
   id: 189
   name: Delete users
   action: destroy
   controller: Users
-permissions_033:
+  is_locked: 1
+permissions_086:
   id: 190
   name: View user
   action: show
   controller: Users
-permissions_034:
+  is_locked: 1
+permissions_087:
   id: 191
   name: View permissions
   action: index
   controller: Permissions
-permissions_035:
+  is_locked: 1
+permissions_088:
   id: 192
   name: Create permissions
   action: new
   controller: Permissions
-permissions_036:
+  is_locked: 1
+permissions_089:
   id: 193
   name: Edit permissions
   action: edit
   controller: Permissions
-permissions_037:
+  is_locked: 1
+permissions_090:
   id: 194
   name: Delete permissions
   action: destroy
   controller: Permissions
-permissions_038:
+  is_locked: 1
+permissions_091:
   id: 195
   name: View permission
   action: show
   controller: Permissions
-permissions_039:
+  is_locked: 1
+permissions_092:
   id: 196
   name: Change roles permissions
   action: list
   controller: Permissions
-permissions_040:
+  is_locked: 1
+permissions_093:
   id: 197
   name: View project overview
   action: overview
   controller: Project
-permissions_041:
+  is_locked: 1
+permissions_094:
   id: 198
   name: View project activity
   action: activity
   controller: Project
-permissions_042:
+  is_locked: 1
+permissions_095:
   id: 199
   name: View project roadmap
   action: rodmap
   controller: Project
-permissions_043:
+  is_locked: 1
+permissions_096:
   id: 200
   name: Create projects
   action: new
   controller: Project
-permissions_044:
+  is_locked: 1
+permissions_097:
   id: 201
   name: View project
   action: show
   controller: Project
-permissions_045:
+  is_locked: 1
+permissions_098:
   id: 202
   name: View roles
   action: index
   controller: Roles
-permissions_046:
+  is_locked: 1
+permissions_099:
   id: 203
   name: Create roles
   action: new
   controller: Roles
-permissions_047:
+  is_locked: 1
+permissions_100:
   id: 204
   name: Edit roles
   action: edit
   controller: Roles
-permissions_048:
+  is_locked: 1
+permissions_101:
   id: 205
   name: Delete roles
   action: destroy
   controller: Roles
-permissions_049:
+  is_locked: 1
+permissions_102:
   id: 206
   name: View role
   action: show
   controller: Roles
-permissions_050:
+  is_locked: 1
+permissions_103:
   id: 207
   name: View trackers
   action: index
   controller: Trackers
-permissions_051:
+  is_locked: 1
+permissions_104:
   id: 208
   name: Create trackers
   action: new
   controller: Trackers
-permissions_052:
+  is_locked: 1
+permissions_105:
   id: 209
   name: Edit trackers
   action: edit
   controller: Trackers
-permissions_053:
+  is_locked: 1
+permissions_106:
   id: 210
   name: Delete trackers
   action: destroy
   controller: Trackers
+  is_locked: 1
+permissions_107:
+  id: 211
+  name: Add or delete attachments
+  action: delete_attachment
+  controller: Issues
+  is_locked: 1
+permissions_108:
+  id: 212
+  name: View scenario
+  action: show
+  controller: Scenarios
+  is_locked: 1
+permissions_109:
+  id: 213
+  name: Edit scenarios
+  action: edit
+  controller: Scenarios
+  is_locked: 1
+permissions_110:
+  id: 214
+  name: Create scenarios
+  action: new
+  controller: Scenarios
+  is_locked: 1
+permissions_111:
+  id: 215
+  name: View scenarios
+  action: index
+  controller: Scenarios
+  is_locked: 1
+permissions_112:
+  id: 217
+  name: Create/Edit/Delete Public Queries
+  action: public_queries
+  controller: Queries
+  is_locked: 1
+permissions_113:
+  id: 226
+  name: Create Queries
+  action: new
+  controller: Queries
+  is_locked: 1
+permissions_114:
+  id: 227
+  name: View Queries
+  action: index
+  controller: Queries
+  is_locked: 1
+permissions_115:
+  id: 228
+  name: View Query
+  action: show
+  controller: Queries
+  is_locked: 1
+permissions_116:
+  id: 229
+  name: Edit Queries
+  action: edit
+  controller: Queries
+  is_locked: 1
+permissions_117:
+  id: 230
+  name: Delete Queries
+  action: destroy
+  controller: Queries
+  is_locked: 1
+permissions_118:
+  id: 231
+  name: Use custom Queries
+  action: apply_custom_query
+  controller: Issues
+  is_locked: 1
+permissions_119:
+  id: 232
+  name: Edit when not issue's owner
+  action: edit_not_owner
+  controller: Issues
+  is_locked: 1
+permissions_120:
+  id: 233
+  name: Delete when not issue's owner
+  action: destroy_not_owner
+  controller: Issues
+  is_locked: 1
+permissions_121:
+  id: 234
+  name: View projects
+  action: index
+  controller: Projects
+  is_locked: 1
+permissions_122:
+  id: 235
+  name: View roadmap
+  action: index
+  controller: Roadmap
+  is_locked: 1
+permissions_123:
+  id: 236
+  name: Change position
+  action: change_position
+  controller: Versions
+  is_locked: 1
+permissions_124:
+  id: 237
+  name: Delete project
+  action: destroy
+  controller: Project
+  is_locked: 1
+permissions_125:
+  id: 238
+  name: Archive project
+  action: archive
+  controller: Project
+  is_locked: 1
+permissions_126:
+  id: 239
+  name: Delete scenarios
+  action: delete
+  controller: Scenarios
+  is_locked: 
+permissions_127:
+  id: 240
+  name: manage modules
+  action: modules
+  controller: Settings
+  is_locked: 1
+permissions_128:
+  id: 241
+  name: view roadmap
+  action: index
+  controller: Roadmap
+  is_locked: 1
+permissions_129:
+  id: 242
+  name: View documents
+  action: index
+  controller: Documents
+  is_locked: 1
+permissions_130:
+  id: 243
+  name: Create documents
+  action: new
+  controller: Documents
+  is_locked: 1
+permissions_131:
+  id: 244
+  name: Edit documents
+  action: edit
+  controller: Documents
+  is_locked: 1
+permissions_132:
+  id: 245
+  name: Delete documents
+  action: destroy
+  controller: Documents
+  is_locked: 1
+permissions_133:
+  id: 246
+  name: View document
+  action: show
+  controller: Documents
+  is_locked: 1
+permissions_134:
+  id: 247
+  name: Delete attachments
+  action: delete_attachment
+  controller: Documents
+  is_locked: 1
+permissions_135:
+  id: 248
+  name: View issues statuses
+  action: index
+  controller: Issues_statuses
+  is_locked: 1
+permissions_136:
+  id: 249
+  name: Create issues statuses
+  action: new
+  controller: Issues_statuses
+  is_locked: 1
+permissions_137:
+  id: 250
+  name: Edit issues statuses
+  action: edit
+  controller: Issues_statuses
+  is_locked: 1
+permissions_138:
+  id: 251
+  name: Delete issues statuses
+  action: destroy
+  controller: Issues_statuses
+  is_locked: 1
+permissions_139:
+  id: 252
+  name: View issues status
+  action: show
+  controller: Issues_statuses
+  is_locked: 1
+permissions_140:
+  id: 253
+  name: Display activities
+  action: display_activities
+  controller: Coworkers
+  is_locked: 1
+permissions_141:
+  id: 254
+  name: View coworkers
+  action: index
+  controller: Coworkers
+  is_locked: 1
+permissions_142:
+  id: 273
+  name: View wiki
+  action: index
+  controller: Wiki
+  is_locked: 1
+permissions_143:
+  id: 274
+  name: Create wiki
+  action: new
+  controller: Wiki
+  is_locked: 1
+permissions_144:
+  id: 275
+  name: Destroy wiki
+  action: destroy
+  controller: Wiki
+  is_locked: 1
+permissions_145:
+  id: 276
+  name: Organize wiki pages
+  action: set_organization
+  controller: Wiki
+  is_locked: 1
+permissions_146:
+  id: 277
+  name: View wiki pages
+  action: pages
+  controller: Wiki
+  is_locked: 1
+permissions_147:
+  id: 278
+  name: Create wiki page
+  action: new
+  controller: Wiki_pages
+  is_locked: 1
+permissions_148:
+  id: 279
+  name: View wiki page
+  action: show
+  controller: Wiki_pages
+  is_locked: 1
+permissions_149:
+  id: 280
+  name: Edit wiki page
+  action: edit
+  controller: Wiki_pages
+  is_locked: 1
+permissions_150:
+  id: 281
+  name: Edit wiki page when not owner
+  action: edit_not_owner
+  controller: Wiki_pages
+  is_locked: 1
+permissions_151:
+  id: 282
+  name: Delete wiki page
+  action: destroy
+  controller: Wiki_pages
+  is_locked: 1
+permissions_152:
+  id: 283
+  name: Destroy wiki page when not owner
+  action: destroy_not_owner
+  controller: Wiki_pages
+  is_locked: 1
+permissions_153:
+  id: 284
+  name: Comment wiki page
+  action: comment
+  controller: Wiki_pages
+  is_locked: 1
+permissions_154:
+  id: 285
+  name: Add predecessor
+  action: add_predecessor
+  controller: Issues
+  is_locked: 
+permissions_155:
+  id: 286
+  name: Delete predecessor
+  action: del_predecessor
+  controller: Issues
+  is_locked: 

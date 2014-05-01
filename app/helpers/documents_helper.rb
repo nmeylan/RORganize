@@ -4,6 +4,8 @@
 # File: documents_helper.rb
 
 module DocumentsHelper
+  include Rorganize::MagicFilter
+
   def documents_generics_form_to_json
     form_hash = {}
     filter_content_hash = Document.filter_content_hash(@project)
@@ -18,7 +20,7 @@ module DocumentsHelper
     return form_hash.to_json
   end
 
-  def documents_filter(hash, project_id)
+  def documents_filter(hash)
     #attributes from db: get real attribute name to build query
     attributes = {
         'category' => 'category_id',

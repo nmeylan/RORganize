@@ -490,2368 +490,6015 @@ journal_details_070:
   old_value: Version 0.1
   value: Version 1.2
 journal_details_071:
-  id: 108
-  journal_id: 120
-  property: Target phase
-  property_key: version_id
-  old_value: Version 0.1
-  value: Version 1.2
-journal_details_072:
   id: 109
   journal_id: 121
   property: Status
   property_key: status_id
   old_value: New
   value: Fixed to test
-journal_details_073:
+journal_details_072:
   id: 110
   journal_id: 122
   property: Target phase
   property_key: version_id
   old_value: Version 0.1
   value: Version 1.0
-journal_details_074:
+journal_details_073:
   id: 111
   journal_id: 123
   property: Target phase
   property_key: version_id
   old_value: Version 1.0
   value: Version 1.2
-journal_details_075:
+journal_details_074:
   id: 112
   journal_id: 124
   property: Category
   property_key: category_id
   old_value: 
   value: Development
-journal_details_076:
+journal_details_075:
   id: 113
   journal_id: 125
   property: Category
   property_key: category_id
   old_value: Development
   value: Development
-journal_details_077:
+journal_details_076:
   id: 114
   journal_id: 127
   property: Target phase
   property_key: version_id
   old_value: Version 1.0
   value: Version 1.2
-journal_details_078:
+journal_details_077:
   id: 115
   journal_id: 128
   property: Target phase
   property_key: version_id
   old_value: Version 1.0
   value: Version 1.2
-journal_details_079:
+journal_details_078:
   id: 116
   journal_id: 129
   property: Target phase
   property_key: version_id
   old_value: Version 1.0
   value: Version 1.2
-journal_details_080:
+journal_details_079:
   id: 117
   journal_id: 130
   property: Target phase
   property_key: version_id
   old_value: Version 1.0
   value: Version 1.2
-journal_details_081:
+journal_details_080:
   id: 118
   journal_id: 131
   property: Target phase
   property_key: version_id
   old_value: Version 1.0
   value: Version 1.2
-journal_details_082:
-  id: 119
-  journal_id: 132
-  property: Target phase
-  property_key: version_id
-  old_value: Version 1.0
-  value: Version 1.2
-journal_details_083:
+journal_details_081:
   id: 120
   journal_id: 133
   property: Target phase
   property_key: version_id
   old_value: Version 1.0
   value: Version 1.2
-journal_details_084:
+journal_details_082:
   id: 121
   journal_id: 135
   property: Done
   property_key: done
   old_value: '0'
   value: '100'
-journal_details_085:
+journal_details_083:
   id: 122
   journal_id: 136
   property: Done
   property_key: done
   old_value: '0'
   value: '100'
-journal_details_086:
+journal_details_084:
   id: 123
   journal_id: 137
   property: Done
   property_key: done
   old_value: '0'
   value: '100'
-journal_details_087:
+journal_details_085:
   id: 124
   journal_id: 138
   property: Done
   property_key: done
   old_value: '80'
   value: '100'
-journal_details_088:
+journal_details_086:
   id: 125
   journal_id: 142
   property: Status
   property_key: status_id
   old_value: New
   value: In progress
-journal_details_089:
+journal_details_087:
   id: 126
   journal_id: 144
   property: Done
   property_key: done
   old_value: '0'
   value: '20'
-journal_details_090:
+journal_details_088:
   id: 127
   journal_id: 145
   property: Done
   property_key: done
   old_value: '0'
   value: '20'
-journal_details_091:
-  id: 128
-  journal_id: 146
-  property: Done
-  property_key: done
-  old_value: '0'
-  value: '20'
-journal_details_092:
+journal_details_089:
   id: 129
   journal_id: 147
   property: Done
   property_key: done
   old_value: '0'
   value: '20'
-journal_details_093:
+journal_details_090:
   id: 130
   journal_id: 148
   property: Done
   property_key: done
   old_value: '0'
   value: '20'
-journal_details_094:
+journal_details_091:
   id: 131
   journal_id: 149
   property: Done
   property_key: done
   old_value: '0'
   value: '20'
-journal_details_095:
+journal_details_092:
   id: 132
   journal_id: 150
   property: Done
   property_key: done
   old_value: '20'
   value: '0'
-journal_details_096:
+journal_details_093:
   id: 133
   journal_id: 151
   property: Done
   property_key: done
   old_value: '20'
   value: '0'
-journal_details_097:
+journal_details_094:
   id: 134
   journal_id: 152
   property: Done
   property_key: done
   old_value: '20'
   value: '0'
-journal_details_098:
-  id: 135
-  journal_id: 153
-  property: Done
-  property_key: done
-  old_value: '20'
-  value: '0'
-journal_details_099:
+journal_details_095:
   id: 136
   journal_id: 154
   property: Done
   property_key: done
   old_value: '20'
   value: '0'
-journal_details_100:
+journal_details_096:
   id: 137
   journal_id: 155
   property: Done
   property_key: done
   old_value: '20'
   value: '0'
-journal_details_101:
+journal_details_097:
   id: 138
   journal_id: 156
   property: Done
   property_key: done
   old_value: '20'
   value: '0'
-journal_details_102:
+journal_details_098:
   id: 139
   journal_id: 164
   property: Status
   property_key: status_id
   old_value: New
   value: In progress
-journal_details_103:
+journal_details_099:
   id: 140
   journal_id: 165
   property: Status
   property_key: status_id
   old_value: In progress
   value: New
-journal_details_104:
+journal_details_100:
   id: 141
   journal_id: 166
   property: Done
   property_key: done
   old_value: '0'
   value: '60'
-journal_details_105:
+journal_details_101:
   id: 142
   journal_id: 167
   property: Done
   property_key: done
   old_value: '100'
   value: '60'
-journal_details_106:
+journal_details_102:
   id: 143
   journal_id: 168
   property: Done
   property_key: done
   old_value: '60'
   value: '0'
-journal_details_107:
+journal_details_103:
   id: 144
   journal_id: 169
   property: Status
   property_key: status_id
   old_value: New
   value: In progress
-journal_details_108:
+journal_details_104:
   id: 145
   journal_id: 171
   property: Status
   property_key: status_id
   old_value: In progress
   value: New
-journal_details_109:
+journal_details_105:
   id: 146
   journal_id: 172
   property: Status
   property_key: status_id
   old_value: New
   value: In progress
-journal_details_110:
+journal_details_106:
   id: 147
   journal_id: 173
   property: Status
   property_key: status_id
   old_value: In progress
   value: In progress
-journal_details_111:
+journal_details_107:
   id: 148
   journal_id: 174
   property: Done
   property_key: done
   old_value: '60'
   value: '50'
-journal_details_112:
+journal_details_108:
   id: 149
   journal_id: 177
   property: Status
   property_key: status_id
   old_value: In progress
   value: Closed
-journal_details_113:
+journal_details_109:
   id: 150
   journal_id: 182
   property: Target phase
   property_key: version_id
   old_value: Version 1.0
   value: Version 1.2
-journal_details_114:
+journal_details_110:
   id: 151
   journal_id: 183
   property: Target phase
   property_key: version_id
   old_value: Version 1.0
   value: Version 1.2
-journal_details_115:
+journal_details_111:
   id: 152
   journal_id: 185
   property: Status
   property_key: status_id
   old_value: New
   value: In progress
-journal_details_116:
+journal_details_112:
   id: 153
   journal_id: 186
   property: Status
   property_key: status_id
   old_value: New
   value: In progress
-journal_details_117:
+journal_details_113:
   id: 154
   journal_id: 187
   property: Status
   property_key: status_id
   old_value: In progress
   value: New
-journal_details_118:
+journal_details_114:
   id: 155
   journal_id: 188
   property: Done
   property_key: done
   old_value: '0'
   value: '20'
-journal_details_119:
+journal_details_115:
   id: 156
   journal_id: 191
   property: Status
   property_key: status_id
   old_value: New
   value: Closed
-journal_details_120:
+journal_details_116:
   id: 157
   journal_id: 192
   property: Done
   property_key: done
   old_value: '20'
   value: '10'
-journal_details_121:
+journal_details_117:
   id: 158
   journal_id: 193
   property: Target phase
   property_key: version_id
   old_value: Version 1.2
   value: Version 0.1
-journal_details_122:
+journal_details_118:
   id: 159
   journal_id: 196
   property: Target phase
   property_key: version_id
   old_value: Version 1.0
   value: Version 1.2
-journal_details_123:
+journal_details_119:
   id: 160
   journal_id: 197
   property: Category
   property_key: category_id
   old_value: 
   value: Development
-journal_details_124:
+journal_details_120:
   id: 161
   journal_id: 198
   property: Done
   property_key: done
   old_value: '0'
   value: '20'
-journal_details_125:
+journal_details_121:
   id: 162
   journal_id: 200
   property: Done
   property_key: done
   old_value: '20'
   value: '30'
-journal_details_126:
+journal_details_122:
   id: 163
   journal_id: 201
   property: Done
   property_key: done
   old_value: '30'
   value: '20'
-journal_details_127:
+journal_details_123:
   id: 164
   journal_id: 204
   property: Status
   property_key: status_id
   old_value: New
   value: Closed
-journal_details_128:
+journal_details_124:
   id: 165
   journal_id: 206
   property: Status
   property_key: status_id
   old_value: Closed
   value: In progress
-journal_details_129:
+journal_details_125:
   id: 166
   journal_id: 207
   property: Status
   property_key: status_id
   old_value: In progress
   value: In progress
-journal_details_130:
+journal_details_126:
   id: 167
   journal_id: 209
   property: Status
   property_key: status_id
   old_value: In progress
   value: Closed
-journal_details_131:
+journal_details_127:
   id: 168
   journal_id: 210
   property: Status
   property_key: status_id
   old_value: Closed
   value: In progress
-journal_details_132:
+journal_details_128:
   id: 169
   journal_id: 211
   property: Status
   property_key: status_id
   old_value: In progress
   value: In progress
-journal_details_133:
+journal_details_129:
   id: 170
   journal_id: 212
   property: Target phase
   property_key: version_id
   old_value: Version 1.2
   value: Version 1.0
-journal_details_134:
+journal_details_130:
   id: 171
   journal_id: 213
   property: Status
   property_key: status_id
   old_value: In progress
   value: In progress
-journal_details_135:
+journal_details_131:
   id: 172
   journal_id: 214
   property: Status
   property_key: status_id
   old_value: In progress
   value: In progress
-journal_details_136:
+journal_details_132:
   id: 173
   journal_id: 215
   property: Status
   property_key: status_id
   old_value: In progress
   value: Closed
-journal_details_137:
+journal_details_133:
   id: 174
   journal_id: 216
   property: Target phase
   property_key: version_id
   old_value: Version 1.0
   value: Version 1.2
-journal_details_138:
+journal_details_134:
   id: 175
   journal_id: 217
   property: Status
   property_key: status_id
   old_value: Closed
   value: Closed
-journal_details_139:
+journal_details_135:
   id: 176
   journal_id: 218
   property: Status
   property_key: status_id
   old_value: Closed
   value: In progress
-journal_details_140:
+journal_details_136:
   id: 177
   journal_id: 219
   property: Target phase
   property_key: version_id
   old_value: Version 1.2
   value: Version 1.0
-journal_details_141:
+journal_details_137:
   id: 178
   journal_id: 220
   property: Status
   property_key: status_id
   old_value: In progress
   value: In progress
-journal_details_142:
+journal_details_138:
   id: 179
   journal_id: 221
   property: Status
   property_key: status_id
   old_value: In progress
   value: Closed
-journal_details_143:
+journal_details_139:
   id: 180
   journal_id: 222
   property: Target phase
   property_key: version_id
   old_value: Version 1.0
   value: Version 1.2
-journal_details_144:
+journal_details_140:
   id: 181
   journal_id: 223
   property: Status
   property_key: status_id
   old_value: Closed
   value: Closed
-journal_details_145:
+journal_details_141:
   id: 182
   journal_id: 224
   property: Target phase
   property_key: version_id
   old_value: Version 1.2
   value: Version 1.0
-journal_details_146:
+journal_details_142:
   id: 183
   journal_id: 225
   property: Status
   property_key: status_id
   old_value: Closed
   value: Fixed to test
-journal_details_147:
+journal_details_143:
   id: 184
   journal_id: 226
   property: Status
   property_key: status_id
   old_value: Fixed to test
   value: Fixed to test
-journal_details_148:
+journal_details_144:
   id: 185
   journal_id: 227
   property: Target phase
   property_key: version_id
   old_value: Version 1.0
   value: Version 1.2
-journal_details_149:
+journal_details_145:
   id: 186
   journal_id: 228
   property: Status
   property_key: status_id
   old_value: Fixed to test
   value: Closed
-journal_details_150:
+journal_details_146:
   id: 187
   journal_id: 229
   property: Status
   property_key: status_id
   old_value: Closed
   value: Closed
-journal_details_151:
+journal_details_147:
   id: 188
   journal_id: 230
   property: Done
   property_key: done
   old_value: '20'
   value: '10'
-journal_details_152:
+journal_details_148:
   id: 189
   journal_id: 233
   property: Target phase
   property_key: version_id
   old_value: Version 1.2
   value: Version 1.0
-journal_details_153:
+journal_details_149:
   id: 190
   journal_id: 234
   property: Status
   property_key: status_id
   old_value: Closed
   value: In progress
-journal_details_154:
+journal_details_150:
   id: 191
   journal_id: 235
   property: Status
   property_key: status_id
   old_value: In progress
   value: Closed
-journal_details_155:
+journal_details_151:
   id: 192
   journal_id: 236
   property: Status
   property_key: status_id
   old_value: Closed
   value: Closed
-journal_details_156:
+journal_details_152:
   id: 193
   journal_id: 237
   property: Target phase
   property_key: version_id
   old_value: Version 1.0
   value: Version 1.2
-journal_details_157:
+journal_details_153:
   id: 194
   journal_id: 238
   property: Target phase
   property_key: version_id
   old_value: Version 1.2
   value: Version 1.2
-journal_details_158:
+journal_details_154:
   id: 195
   journal_id: 239
   property: Target phase
   property_key: version_id
   old_value: Version 1.2
   value: Version 1.2
-journal_details_159:
+journal_details_155:
   id: 196
   journal_id: 240
   property: Category
   property_key: category_id
   old_value: 
   value: Development
-journal_details_160:
+journal_details_156:
   id: 197
   journal_id: 241
   property: Category
   property_key: category_id
   old_value: Development
   value: Development
-journal_details_161:
+journal_details_157:
   id: 198
   journal_id: 242
   property: Category
   property_key: category_id
   old_value: Development
   value: Development
-journal_details_162:
+journal_details_158:
   id: 199
   journal_id: 243
   property: Category
   property_key: category_id
   old_value: Development
   value: Development
-journal_details_163:
+journal_details_159:
   id: 200
   journal_id: 244
   property: Category
   property_key: category_id
   old_value: Development
   value: Development
-journal_details_164:
+journal_details_160:
   id: 201
   journal_id: 245
   property: Category
   property_key: category_id
   old_value: Development
   value: Development
-journal_details_165:
+journal_details_161:
   id: 202
   journal_id: 246
   property: Category
   property_key: category_id
   old_value: Development
   value: Development
-journal_details_166:
+journal_details_162:
   id: 203
   journal_id: 247
   property: Category
   property_key: category_id
   old_value: Development
   value: Development
-journal_details_167:
+journal_details_163:
   id: 204
   journal_id: 248
   property: Category
   property_key: category_id
   old_value: Development
   value: Development
-journal_details_168:
+journal_details_164:
   id: 205
   journal_id: 249
   property: Category
   property_key: category_id
   old_value: Development
   value: Development
-journal_details_169:
+journal_details_165:
   id: 206
   journal_id: 250
   property: Category
   property_key: category_id
   old_value: Development
   value: Development
-journal_details_170:
+journal_details_166:
   id: 207
   journal_id: 251
   property: Category
   property_key: category_id
   old_value: Development
   value: Development
-journal_details_171:
+journal_details_167:
   id: 208
   journal_id: 252
   property: Category
   property_key: category_id
   old_value: Development
   value: Development
-journal_details_172:
+journal_details_168:
   id: 209
   journal_id: 253
   property: Category
   property_key: category_id
   old_value: Development
   value: Development
-journal_details_173:
+journal_details_169:
   id: 210
   journal_id: 254
   property: Category
   property_key: category_id
   old_value: Development
   value: Development
-journal_details_174:
+journal_details_170:
   id: 211
   journal_id: 255
   property: Category
   property_key: category_id
   old_value: Development
   value: Development
-journal_details_175:
+journal_details_171:
   id: 212
   journal_id: 256
   property: Category
   property_key: category_id
   old_value: Development
   value: Development
-journal_details_176:
+journal_details_172:
   id: 213
   journal_id: 257
   property: Category
   property_key: category_id
   old_value: Development
   value: Development
-journal_details_177:
+journal_details_173:
   id: 214
   journal_id: 258
   property: Category
   property_key: category_id
   old_value: Development
   value: Development
-journal_details_178:
+journal_details_174:
   id: 215
   journal_id: 259
   property: Category
   property_key: category_id
   old_value: Development
   value: Development
-journal_details_179:
+journal_details_175:
   id: 216
   journal_id: 260
   property: Target phase
   property_key: version_id
   old_value: Version 1.2
   value: Version 1.0
-journal_details_180:
+journal_details_176:
   id: 217
   journal_id: 261
   property: Target phase
   property_key: version_id
   old_value: Version 1.0
   value: Version 1.2
-journal_details_181:
+journal_details_177:
   id: 218
   journal_id: 262
   property: Target phase
   property_key: version_id
   old_value: Version 1.2
   value: Version 0.1
-journal_details_182:
+journal_details_178:
   id: 219
   journal_id: 263
   property: Target phase
   property_key: version_id
   old_value: Version 0.1
   value: Version 0.1
-journal_details_183:
+journal_details_179:
   id: 220
   journal_id: 264
   property: Done
   property_key: done
   old_value: '10'
   value: '20'
-journal_details_184:
+journal_details_180:
   id: 221
   journal_id: 267
   property: Target phase
   property_key: version_id
   old_value: Version 0.1
   value: Version 1.2
-journal_details_185:
+journal_details_181:
   id: 222
   journal_id: 268
   property: Status
   property_key: status_id
   old_value: Closed
   value: New
-journal_details_186:
+journal_details_182:
   id: 223
   journal_id: 269
   property: Status
   property_key: status_id
   old_value: New
   value: New
-journal_details_187:
+journal_details_183:
   id: 224
   journal_id: 270
   property: Category
   property_key: category_id
   old_value: Development
   value: Testing
-journal_details_188:
+journal_details_184:
   id: 225
   journal_id: 273
   property: Target phase
   property_key: version_id
   old_value: Version 1.2
   value: Version 1.0
-journal_details_189:
+journal_details_185:
   id: 226
   journal_id: 274
   property: Target phase
   property_key: version_id
   old_value: Version 1.0
   value: Version 0.1
-journal_details_190:
+journal_details_186:
   id: 227
   journal_id: 275
   property: Target phase
   property_key: version_id
   old_value: Version 0.1
   value: Version 0.1
-journal_details_191:
+journal_details_187:
   id: 228
   journal_id: 276
   property: Target phase
   property_key: version_id
   old_value: Version 0.1
   value: Version 1.0
-journal_details_192:
+journal_details_188:
   id: 229
   journal_id: 277
   property: Status
   property_key: status_id
   old_value: New
   value: Closed
-journal_details_193:
+journal_details_189:
   id: 230
   journal_id: 278
   property: Status
   property_key: status_id
   old_value: Closed
   value: Closed
-journal_details_194:
+journal_details_190:
   id: 231
   journal_id: 279
   property: Target phase
   property_key: version_id
   old_value: Version 1.0
   value: Version 1.2
-journal_details_195:
+journal_details_191:
   id: 232
   journal_id: 280
   property: Status
   property_key: status_id
   old_value: Closed
   value: New
-journal_details_196:
+journal_details_192:
   id: 233
   journal_id: 281
   property: Done
   property_key: done
   old_value: '20'
   value: '10'
-journal_details_197:
+journal_details_193:
   id: 234
   journal_id: 282
   property: Done
   property_key: done
   old_value: '0'
   value: '90'
-journal_details_198:
+journal_details_194:
   id: 235
   journal_id: 283
   property: Target phase
   property_key: version_id
   old_value: Version 1.2
   value: Version 1.2
-journal_details_199:
+journal_details_195:
   id: 236
   journal_id: 284
   property: Target phase
   property_key: version_id
   old_value: Version 1.2
   value: Version 1.2
-journal_details_200:
-  id: 237
-  journal_id: 285
-  property: Target phase
-  property_key: version_id
-  old_value: Version 1.2
-  value: Version 1.2
-journal_details_201:
+journal_details_196:
   id: 238
   journal_id: 286
   property: Target phase
   property_key: version_id
   old_value: Version 1.0
   value: Version 1.2
-journal_details_202:
+journal_details_197:
   id: 239
   journal_id: 287
   property: Target phase
   property_key: version_id
   old_value: Version 1.0
   value: Version 1.2
-journal_details_203:
+journal_details_198:
   id: 240
   journal_id: 288
   property: Target phase
   property_key: version_id
   old_value: Version 1.0
   value: Version 1.2
-journal_details_204:
+journal_details_199:
   id: 241
   journal_id: 289
   property: Target phase
   property_key: version_id
   old_value: Version 1.2
   value: Version 1.2
-journal_details_205:
+journal_details_200:
   id: 242
   journal_id: 290
   property: Target phase
   property_key: version_id
   old_value: Version 1.2
   value: Version 1.2
-journal_details_206:
-  id: 243
-  journal_id: 291
-  property: Target phase
-  property_key: version_id
-  old_value: Version 1.2
-  value: Version 1.2
-journal_details_207:
+journal_details_201:
   id: 244
   journal_id: 292
   property: Target phase
   property_key: version_id
   old_value: Version 1.2
   value: Version 1.2
-journal_details_208:
+journal_details_202:
   id: 245
   journal_id: 293
   property: Target phase
   property_key: version_id
   old_value: Version 1.2
   value: Version 1.2
-journal_details_209:
+journal_details_203:
   id: 246
   journal_id: 294
   property: Target phase
   property_key: version_id
   old_value: Version 1.0
   value: Version 1.2
-journal_details_210:
+journal_details_204:
   id: 247
   journal_id: 295
   property: Target phase
   property_key: version_id
   old_value: Version 1.0
   value: Version 1.2
-journal_details_211:
+journal_details_205:
   id: 248
   journal_id: 296
   property: Status
   property_key: status_id
   old_value: New
   value: In progress
-journal_details_212:
+journal_details_206:
   id: 249
   journal_id: 297
   property: Done
   property_key: done
   old_value: '10'
   value: '30'
-journal_details_213:
+journal_details_207:
   id: 250
   journal_id: 298
   property: Done
   property_key: done
   old_value: '30'
   value: '10'
-journal_details_214:
+journal_details_208:
   id: 251
   journal_id: 299
   property: Due date
   property_key: due_date
   old_value: 
   value: 09/01/2012
-journal_details_215:
+journal_details_209:
   id: 252
   journal_id: 299
   property: Done
   property_key: done
   old_value: '100'
   value: '10'
-journal_details_216:
+journal_details_210:
   id: 253
   journal_id: 299
   property: Status
   property_key: status_id
   old_value: Fixed to test
   value: In progress
-journal_details_217:
+journal_details_211:
   id: 254
   journal_id: 299
   property: Target phase
   property_key: version_id
   old_value: Version 1.0
   value: Version 1.2
-journal_details_218:
+journal_details_212:
   id: 255
   journal_id: 299
   property: Estimated time
   property_key: estimated_time
   old_value: 
   value: '2'
-journal_details_219:
+journal_details_213:
   id: 256
   journal_id: 300
   property: Done
   property_key: done
   old_value: '0'
   value: '10'
-journal_details_220:
+journal_details_214:
   id: 257
   journal_id: 301
   property: Done
   property_key: done
   old_value: '10'
   value: '0'
-journal_details_221:
+journal_details_215:
   id: 258
   journal_id: 302
   property: Done
   property_key: done
   old_value: '10'
   value: '0'
-journal_details_222:
+journal_details_216:
   id: 259
   journal_id: 303
   property: Status
   property_key: status_id
   old_value: In progress
   value: Fixed to test
-journal_details_223:
+journal_details_217:
   id: 260
   journal_id: 304
   property: Done
   property_key: done
   old_value: '90'
   value: '0'
-journal_details_224:
+journal_details_218:
   id: 261
   journal_id: 305
   property: Target phase
   property_key: version_id
   old_value: Version 1.2
   value: Version 1.0
-journal_details_225:
+journal_details_219:
   id: 262
   journal_id: 306
   property: Target phase
   property_key: version_id
   old_value: Version 1.0
   value: Version 1.2
-journal_details_226:
+journal_details_220:
   id: 263
   journal_id: 307
   property: Status
   property_key: status_id
   old_value: New
   value: Fixed to test
-journal_details_227:
+journal_details_221:
   id: 264
   journal_id: 308
   property: Done
   property_key: done
   old_value: '0'
   value: '100'
-journal_details_228:
+journal_details_222:
   id: 265
   journal_id: 309
   property: Status
   property_key: status_id
   old_value: Closed
   value: New
-journal_details_229:
+journal_details_223:
   id: 266
   journal_id: 310
   property: Done
   property_key: done
   old_value: '10'
   value: '100'
-journal_details_230:
+journal_details_224:
   id: 267
   journal_id: 311
   property: Status
   property_key: status_id
   old_value: In progress
   value: Fixed to test
-journal_details_231:
+journal_details_225:
   id: 268
   journal_id: 312
   property: Target phase
   property_key: version_id
   old_value: Version 1.0
   value: Version 1.2
-journal_details_232:
+journal_details_226:
   id: 269
   journal_id: 313
   property: Target phase
   property_key: version_id
   old_value: Version 1.0
   value: Version 1.2
-journal_details_233:
+journal_details_227:
   id: 270
   journal_id: 314
   property: Status
   property_key: status_id
   old_value: New
   value: In progress
-journal_details_234:
+journal_details_228:
   id: 271
   journal_id: 315
   property: Target phase
   property_key: version_id
   old_value: Version 1.2
   value: Version 1.0
-journal_details_235:
+journal_details_229:
   id: 272
   journal_id: 316
   property: Category
   property_key: category_id
   old_value: 
   value: Development
-journal_details_236:
+journal_details_230:
   id: 273
   journal_id: 317
   property: Target phase
   property_key: version_id
   old_value: Version 1.0
   value: Version 1.2
-journal_details_237:
+journal_details_231:
   id: 274
   journal_id: 318
   property: Target phase
   property_key: version_id
   old_value: Version 1.2
   value: Version 1.0
-journal_details_238:
+journal_details_232:
   id: 275
   journal_id: 319
   property: Target phase
   property_key: version_id
   old_value: Version 1.0
   value: Version 1.2
-journal_details_239:
+journal_details_233:
   id: 276
   journal_id: 320
   property: Done
   property_key: done
   old_value: '0'
   value: '20'
-journal_details_240:
+journal_details_234:
   id: 277
   journal_id: 321
   property: Target phase
   property_key: version_id
   old_value: Version 1.2
   value: Version 1.0
-journal_details_241:
+journal_details_235:
   id: 278
   journal_id: 322
   property: Done
   property_key: done
   old_value: '20'
   value: '0'
-journal_details_242:
+journal_details_236:
   id: 279
   journal_id: 323
   property: Target phase
   property_key: version_id
   old_value: Version 1.0
   value: Version 1.2
-journal_details_243:
+journal_details_237:
   id: 280
   journal_id: 324
   property: Status
   property_key: status_id
   old_value: In progress
   value: Closed
-journal_details_244:
+journal_details_238:
   id: 281
   journal_id: 325
   property: Status
   property_key: status_id
   old_value: Closed
   value: In progress
-journal_details_245:
+journal_details_239:
   id: 282
   journal_id: 326
   property: Category
   property_key: category_id
   old_value: Development
   value: Testing
-journal_details_246:
+journal_details_240:
   id: 283
   journal_id: 327
   property: Target phase
   property_key: version_id
   old_value: Version 1.2
   value: Version 1.0
-journal_details_247:
+journal_details_241:
   id: 284
   journal_id: 328
   property: Target phase
   property_key: version_id
   old_value: Version 1.0
   value: Version 1.2
-journal_details_248:
+journal_details_242:
   id: 285
   journal_id: 330
   property: Status
   property_key: status_id
   old_value: New
   value: Fixed to test
-journal_details_249:
+journal_details_243:
   id: 286
   journal_id: 331
   property: Done
   property_key: done
   old_value: '0'
   value: '100'
-journal_details_250:
+journal_details_244:
   id: 287
   journal_id: 332
   property: Done
   property_key: done
   old_value: '0'
   value: '10'
-journal_details_251:
+journal_details_245:
   id: 288
   journal_id: 333
   property: Status
   property_key: status_id
   old_value: New
   value: In progress
-journal_details_252:
+journal_details_246:
   id: 289
   journal_id: 334
   property: Name
   property_key: name
   old_value: Sudo ku
   value: Sudo kuf
-journal_details_253:
+journal_details_247:
   id: 290
   journal_id: 334
   property: Administrator
   property_key: admin
   old_value: 
   value: '0'
-journal_details_254:
+journal_details_248:
   id: 291
   journal_id: 335
   property: Administrator
   property_key: admin
   old_value: 
   value: '1'
-journal_details_255:
+journal_details_249:
   id: 292
   journal_id: 336
   property: Administrator
   property_key: admin
   old_value: '1'
   value: '1'
-journal_details_256:
+journal_details_250:
   id: 293
   journal_id: 337
   property: Administrator
   property_key: admin
   old_value: '0'
   value: '0'
-journal_details_257:
+journal_details_251:
   id: 294
   journal_id: 338
   property: Name
   property_key: name
   old_value: Test admin
   value: Test adminp
-journal_details_258:
+journal_details_252:
   id: 295
   journal_id: 338
   property: Login
   property_key: login
   old_value: test
   value: testp
-journal_details_259:
+journal_details_253:
   id: 296
   journal_id: 338
   property: Administrator
   property_key: admin
   old_value: '0'
   value: '0'
-journal_details_260:
+journal_details_254:
   id: 297
   journal_id: 339
   property: Email
   property_key: email
   old_value: l@l.com
   value: l@l.net
-journal_details_261:
+journal_details_255:
   id: 298
   journal_id: 340
   property: Administrator
   property_key: admin
   old_value: '1'
   value: '1'
-journal_details_262:
+journal_details_256:
   id: 299
   journal_id: 341
   property: Administrator
   property_key: admin
   old_value: '1'
   value: '0'
-journal_details_263:
+journal_details_257:
   id: 300
   journal_id: 342
   property: Done
   property_key: done
   old_value: '0'
   value: '100'
-journal_details_264:
+journal_details_258:
   id: 301
   journal_id: 343
   property: Target phase
   property_key: version_id
   old_value: 
   value: Version 1.2
-journal_details_265:
+journal_details_259:
   id: 302
   journal_id: 344
   property: Target phase
   property_key: version_id
   old_value: 
   value: Version 1.2
-journal_details_266:
+journal_details_260:
   id: 303
   journal_id: 346
   property: Category
   property_key: category_id
   old_value: 
   value: Development
-journal_details_267:
+journal_details_261:
   id: 304
   journal_id: 363
   property: Target phase
   property_key: version_id
   old_value: 
   value: Version 1.2
-journal_details_268:
+journal_details_262:
   id: 305
   journal_id: 365
   property: Target phase
   property_key: version_id
   old_value: 
   value: Version 1.2
-journal_details_269:
+journal_details_263:
   id: 306
   journal_id: 367
   property: Target phase
   property_key: version_id
   old_value: 
   value: Version 1.2
-journal_details_270:
+journal_details_264:
   id: 307
   journal_id: 370
   property: 
   property_key: subject
   old_value: test
   value: 
-journal_details_271:
+journal_details_265:
   id: 308
   journal_id: 370
   property: Due date
   property_key: due_date
   old_value: 
   value: 
-journal_details_272:
+journal_details_266:
   id: 309
   journal_id: 371
   property: 
   property_key: subject
   old_value: test
   value: 
-journal_details_273:
+journal_details_267:
   id: 310
   journal_id: 371
   property: Due date
   property_key: due_date
   old_value: 
   value: 
-journal_details_274:
+journal_details_268:
   id: 311
   journal_id: 372
   property: 
   property_key: subject
   old_value: test
   value: 
-journal_details_275:
+journal_details_269:
   id: 312
   journal_id: 372
   property: Due date
   property_key: due_date
   old_value: 
   value: 
-journal_details_276:
+journal_details_270:
   id: 313
   journal_id: 372
   property: Done
   property_key: done
   old_value: '0'
   value: 
-journal_details_277:
+journal_details_271:
   id: 314
   journal_id: 374
   property: Category
   property_key: category_id
   old_value: 
   value: Development
-journal_details_278:
+journal_details_272:
   id: 315
   journal_id: 375
   property: Target phase
   property_key: version_id
   old_value: 
   value: Version 1.2
-journal_details_279:
+journal_details_273:
   id: 316
   journal_id: 376
   property: Done
   property_key: done
   old_value: '0'
   value: '10'
-journal_details_280:
+journal_details_274:
   id: 317
   journal_id: 377
   property: Target phase
   property_key: version_id
   old_value: 
   value: Version 1.2
-journal_details_281:
+journal_details_275:
   id: 318
   journal_id: 378
   property: Done
   property_key: done
   old_value: '0'
   value: '100'
-journal_details_282:
+journal_details_276:
   id: 319
   journal_id: 379
   property: Status
   property_key: status_id
   old_value: New
   value: Fixed to test
-journal_details_283:
+journal_details_277:
   id: 320
   journal_id: 380
   property: Done
   property_key: done
   old_value: '60'
   value: '90'
-journal_details_284:
+journal_details_278:
   id: 321
   journal_id: 381
   property: Status
   property_key: status_id
   old_value: In progress
   value: Fixed to test
-journal_details_285:
+journal_details_279:
   id: 322
   journal_id: 382
   property: Due date
   property_key: due_date
   old_value: '2012-12-09'
   value: ''
-journal_details_286:
+journal_details_280:
   id: 323
   journal_id: 383
   property: Due date
   property_key: due_date
   old_value: 
   value: 10/24/2012
-journal_details_287:
+journal_details_281:
   id: 324
   journal_id: 384
   property: Due date
   property_key: due_date
   old_value: 
   value: 10/09/2012
-journal_details_288:
+journal_details_282:
   id: 325
   journal_id: 385
   property: Category
   property_key: category_id
   old_value: 
   value: Development
-journal_details_289:
+journal_details_283:
   id: 326
   journal_id: 386
   property: Due date
   property_key: due_date
   old_value: '2012-09-10'
   value: ''
-journal_details_290:
+journal_details_284:
   id: 327
   journal_id: 387
   property: Category
   property_key: category_id
   old_value: 
   value: Testing
-journal_details_291:
+journal_details_285:
   id: 328
   journal_id: 389
   property: Category
   property_key: category_id
   old_value: 
   value: Testing
-journal_details_292:
+journal_details_286:
   id: 329
   journal_id: 391
   property: Category
   property_key: category_id
   old_value: 
   value: Development
-journal_details_293:
+journal_details_287:
   id: 330
   journal_id: 393
   property: Category
   property_key: category_id
   old_value: 
   value: Development
-journal_details_294:
+journal_details_288:
   id: 331
   journal_id: 394
   property: Category
   property_key: category_id
   old_value: Development
   value: ''
-journal_details_295:
+journal_details_289:
   id: 332
   journal_id: 395
   property: Category
   property_key: category_id
   old_value: 
   value: Development
-journal_details_296:
+journal_details_290:
   id: 333
   journal_id: 398
   property: Target phase
   property_key: version_id
   old_value: 
   value: Version 1.2
-journal_details_297:
+journal_details_291:
   id: 334
   journal_id: 400
   property: Target phase
   property_key: version_id
   old_value: 
   value: Version 1.2
-journal_details_298:
+journal_details_292:
   id: 335
   journal_id: 401
   property: Target phase
   property_key: version_id
   old_value: Version 1.2
   value: ''
-journal_details_299:
+journal_details_293:
   id: 336
   journal_id: 402
   property: Status
   property_key: status_id
   old_value: New
   value: Fixed to test
-journal_details_300:
+journal_details_294:
   id: 337
   journal_id: 403
   property: Done
   property_key: done
   old_value: '0'
   value: '100'
-journal_details_301:
+journal_details_295:
   id: 338
   journal_id: 404
   property: Status
   property_key: status_id
   old_value: In progress
   value: Closed
-journal_details_302:
+journal_details_296:
   id: 339
   journal_id: 405
   property: Status
   property_key: status_id
   old_value: Closed
   value: Fixed to test
-journal_details_303:
+journal_details_297:
   id: 340
   journal_id: 406
   property: Status
   property_key: status_id
   old_value: Fixed to test
   value: Not satisfying
-journal_details_304:
+journal_details_298:
   id: 341
   journal_id: 407
   property: Status
   property_key: status_id
   old_value: Not satisfying
   value: Fixed to test
-journal_details_305:
+journal_details_299:
   id: 342
   journal_id: 408
   property: Status
   property_key: status_id
   old_value: Fixed to test
   value: Closed
-journal_details_306:
+journal_details_300:
   id: 343
   journal_id: 409
   property: Status
   property_key: status_id
   old_value: Closed
   value: Fixed to test
-journal_details_307:
+journal_details_301:
   id: 344
   journal_id: 410
   property: Status
   property_key: status_id
   old_value: Fixed to test
   value: Closed
-journal_details_308:
+journal_details_302:
   id: 345
   journal_id: 411
   property: Status
   property_key: status_id
   old_value: Closed
   value: In progress
-journal_details_309:
+journal_details_303:
   id: 346
   journal_id: 412
   property: Done
   property_key: done
   old_value: '100'
   value: '0'
-journal_details_310:
+journal_details_304:
   id: 347
   journal_id: 413
   property: Status
   property_key: status_id
   old_value: In progress
   value: In progress
-journal_details_311:
+journal_details_305:
   id: 348
   journal_id: 414
   property: Status
   property_key: status_id
   old_value: In progress
   value: Fixed to test
-journal_details_312:
+journal_details_306:
   id: 349
   journal_id: 415
   property: Status
   property_key: status_id
   old_value: Fixed to test
   value: In progress
-journal_details_313:
+journal_details_307:
   id: 350
   journal_id: 416
   property: Status
   property_key: status_id
   old_value: New
   value: In progress
-journal_details_314:
+journal_details_308:
   id: 351
   journal_id: 417
   property: Status
   property_key: status_id
   old_value: New
   value: In progress
-journal_details_315:
+journal_details_309:
   id: 352
   journal_id: 418
   property: Target phase
   property_key: version_id
   old_value: 
   value: Version 1.2
-journal_details_316:
+journal_details_310:
   id: 353
   journal_id: 419
   property: Target phase
   property_key: version_id
   old_value: Version 0.1
   value: Version 1.2
-journal_details_317:
+journal_details_311:
   id: 354
   journal_id: 420
   property: Status
   property_key: status_id
   old_value: New
   value: Tested to be delivered
-journal_details_318:
+journal_details_312:
   id: 355
   journal_id: 421
   property: Target phase
   property_key: version_id
   old_value: Version 0.1
   value: Version 1.2
-journal_details_319:
+journal_details_313:
   id: 356
   journal_id: 422
   property: Status
   property_key: status_id
   old_value: New
   value: Fixed to test
-journal_details_320:
+journal_details_314:
   id: 357
   journal_id: 423
   property: Target phase
   property_key: version_id
   old_value: Version 0.1
   value: Version 1.2
-journal_details_321:
+journal_details_315:
   id: 358
   journal_id: 424
   property: Status
   property_key: status_id
   old_value: New
   value: In progress
-journal_details_322:
+journal_details_316:
   id: 359
   journal_id: 425
   property: Target phase
   property_key: version_id
   old_value: Version 0.1
   value: Version 1.0
-journal_details_323:
+journal_details_317:
   id: 360
   journal_id: 426
   property: Category
   property_key: category_id
   old_value: 
   value: Testing
-journal_details_324:
+journal_details_318:
   id: 361
   journal_id: 427
   property: Status
   property_key: status_id
   old_value: New
   value: In progress
-journal_details_325:
+journal_details_319:
   id: 362
   journal_id: 428
   property: Category
   property_key: category_id
   old_value: Testing
   value: Development
-journal_details_326:
+journal_details_320:
   id: 363
   journal_id: 430
   property: Status
   property_key: status_id
   old_value: New
   value: In progress
-journal_details_327:
+journal_details_321:
   id: 364
   journal_id: 431
   property: Status
   property_key: status_id
   old_value: New
   value: Fixed to test
-journal_details_328:
+journal_details_322:
   id: 365
   journal_id: 432
   property: Status
   property_key: status_id
   old_value: Fixed to test
   value: In progress
-journal_details_329:
+journal_details_323:
   id: 366
   journal_id: 433
   property: Target phase
   property_key: version_id
   old_value: 
   value: Version 1.0
-journal_details_330:
+journal_details_324:
   id: 367
   journal_id: 434
   property: Status
   property_key: status_id
   old_value: In progress
   value: Fixed to test
-journal_details_331:
+journal_details_325:
   id: 368
   journal_id: 435
   property: Status
   property_key: status_id
   old_value: Fixed to test
   value: In progress
-journal_details_332:
+journal_details_326:
   id: 369
   journal_id: 436
   property: Target phase
   property_key: version_id
   old_value: Version 1.0
   value: Version 1.2
-journal_details_333:
+journal_details_327:
   id: 370
   journal_id: 437
   property: Status
   property_key: status_id
   old_value: New
   value: In progress
-journal_details_334:
+journal_details_328:
   id: 371
   journal_id: 438
   property: Target phase
   property_key: version_id
   old_value: Version 0.1
   value: Version 1.2
-journal_details_335:
+journal_details_329:
   id: 372
   journal_id: 439
   property: Target phase
   property_key: version_id
   old_value: Version 1.2
   value: ''
-journal_details_336:
+journal_details_330:
   id: 373
   journal_id: 440
   property: Administrator
   property_key: admin
   old_value: '1'
   value: '0'
-journal_details_337:
+journal_details_331:
   id: 374
   journal_id: 441
   property: Administrator
   property_key: admin
   old_value: '1'
   value: '0'
-journal_details_338:
+journal_details_332:
   id: 375
   journal_id: 442
   property: Administrator
   property_key: admin
   old_value: '1'
   value: '0'
-journal_details_339:
+journal_details_333:
   id: 376
   journal_id: 443
   property: Done
   property_key: done
   old_value: '10'
   value: '30'
-journal_details_340:
+journal_details_334:
   id: 377
   journal_id: 444
   property: Status
   property_key: status_id
   old_value: New
   value: In progress
-journal_details_341:
+journal_details_335:
   id: 378
   journal_id: 445
   property: Category
   property_key: category_id
   old_value: 
   value: Development
-journal_details_342:
+journal_details_336:
   id: 379
   journal_id: 446
   property: Assigned to
   property_key: assigned_to_id
   old_value: Nicolas Meylan
   value: James Bond
-journal_details_343:
+journal_details_337:
   id: 380
   journal_id: 447
   property: Status
   property_key: status_id
   old_value: New
   value: In progress
-journal_details_344:
+journal_details_338:
   id: 381
   journal_id: 448
   property: Done
   property_key: done
   old_value: '100'
   value: '60'
-journal_details_345:
+journal_details_339:
   id: 382
   journal_id: 449
   property: Category
   property_key: category_id
   old_value: Development
   value: Testing
-journal_details_346:
+journal_details_340:
   id: 383
   journal_id: 450
   property: Status
   property_key: status_id
   old_value: In progress
   value: Closed
-journal_details_347:
+journal_details_341:
   id: 384
   journal_id: 451
   property: Status
   property_key: status_id
   old_value: Closed
   value: Fixed to test
-journal_details_348:
+journal_details_342:
   id: 385
   journal_id: 452
   property: Status
   property_key: status_id
   old_value: Fixed to test
   value: New
-journal_details_349:
+journal_details_343:
   id: 386
   journal_id: 453
   property: Status
   property_key: status_id
   old_value: New
   value: Fixed to test
-journal_details_350:
+journal_details_344:
   id: 387
   journal_id: 454
   property: Subject
   property_key: subject
   old_value: ! 'Issues : Selection automatique de certains champs'
   value: ! 'Issues : Selection automatique de certains champs (versions)'
-journal_details_351:
+journal_details_345:
   id: 388
   journal_id: 455
   property: Category
   property_key: category_id
   old_value: 
   value: UX
-journal_details_352:
+journal_details_346:
   id: 389
   journal_id: 456
   property: 
   property_key: description
   old_value: ''
   value: test
-journal_details_353:
+journal_details_347:
   id: 390
   journal_id: 458
   property: 
   property_key: description
   old_value: testaaa
   value: testaaaeeee
-journal_details_354:
+journal_details_348:
   id: 391
   journal_id: 460
   property: Status
   property_key: status_id
   old_value: New
   value: In progress
-journal_details_355:
+journal_details_349:
   id: 392
   journal_id: 461
   property: Target phase
   property_key: version_id
   old_value: 
   value: Version 1.2
-journal_details_356:
+journal_details_350:
   id: 393
   journal_id: 462
   property: Status
   property_key: status_id
   old_value: In progress
   value: New
-journal_details_357:
+journal_details_351:
   id: 394
   journal_id: 463
   property: 
   property_key: subject
   old_value: Bug edition titre issue
   value: Bug edition titre issue k
-journal_details_358:
+journal_details_352:
   id: 395
   journal_id: 465
   property: Status
   property_key: status_id
   old_value: New
   value: Fixed to test
-journal_details_359:
+journal_details_353:
   id: 396
   journal_id: 466
   property: Done
   property_key: done
   old_value: '0'
   value: '100'
-journal_details_360:
+journal_details_354:
   id: 397
   journal_id: 467
   property: Status
   property_key: status_id
   old_value: New
   value: In progress
-journal_details_361:
+journal_details_355:
   id: 398
   journal_id: 468
   property: Delete
   property_key: delete
   old_value: test
   value: Deleted
-journal_details_362:
+journal_details_356:
   id: 399
   journal_id: 469
   property: Due date
   property_key: due_date
   old_value: 
   value: 10/20/2012
-journal_details_363:
+journal_details_357:
   id: 400
   journal_id: 470
   property: Due date
   property_key: due_date
   old_value: 
   value: 20/10/2012
-journal_details_364:
+journal_details_358:
   id: 401
   journal_id: 471
   property: Due date
   property_key: due_date
   old_value: 
   value: '111111111111111111111111'
-journal_details_365:
+journal_details_359:
   id: 402
   journal_id: 471
   property: Target phase
   property_key: version_id
   old_value: Version 0.4
   value: ''
-journal_details_366:
+journal_details_360:
   id: 403
   journal_id: 472
   property: Due date
   property_key: due_date
   old_value: '1111-11-11'
   value: 56/78/2012
-journal_details_367:
+journal_details_361:
   id: 404
   journal_id: 473
   property: Due date
   property_key: due_date
   old_value: 
   value: 02/10/2012
-journal_details_368:
+journal_details_362:
   id: 405
   journal_id: 474
   property: Due date
   property_key: due_date
   old_value: '2012-10-02'
   value: '2012-10-18'
-journal_details_369:
+journal_details_363:
   id: 406
   journal_id: 475
   property: Target phase
   property_key: version_id
   old_value: 
   value: Version 0.4
-journal_details_370:
+journal_details_364:
   id: 407
   journal_id: 476
   property: Target phase
   property_key: version_id
   old_value: Version 0.4
   value: Version 0.1
-journal_details_371:
+journal_details_365:
   id: 408
   journal_id: 477
   property: Delete
   property_key: delete
   old_value: eee
   value: Deleted
-journal_details_372:
+journal_details_366:
   id: 409
   journal_id: 478
   property: Status
   property_key: status_id
   old_value: New
   value: Fixed to test
-journal_details_373:
+journal_details_367:
   id: 410
   journal_id: 479
   property: Done
   property_key: done
   old_value: '30'
   value: '70'
-journal_details_374:
+journal_details_368:
   id: 411
   journal_id: 480
   property: Done
   property_key: done
   old_value: '60'
   value: '100'
-journal_details_375:
+journal_details_369:
   id: 412
   journal_id: 481
   property: Status
   property_key: status_id
   old_value: In progress
   value: Fixed to test
-journal_details_376:
+journal_details_370:
   id: 413
   journal_id: 482
   property: Assigned to
   property_key: assigned_to_id
   old_value: Nicolas Meylan
   value: Jerome JJ
-journal_details_377:
+journal_details_371:
   id: 414
   journal_id: 483
   property: Done
   property_key: done
   old_value: '0'
   value: '20'
-journal_details_378:
+journal_details_372:
   id: 415
   journal_id: 483
   property: Category
   property_key: category_id
   old_value: 
   value: Testing
-journal_details_379:
+journal_details_373:
   id: 416
   journal_id: 483
   property: Estimated time
   property_key: estimated_time
   old_value: 
   value: '2'
-journal_details_380:
+journal_details_374:
   id: 417
   journal_id: 485
   property: Done
   property_key: done
   old_value: '20'
   value: '40'
-journal_details_381:
+journal_details_375:
   id: 418
   journal_id: 486
   property: Status
   property_key: status_id
   old_value: New
   value: In progress
-journal_details_382:
+journal_details_376:
   id: 419
   journal_id: 487
   property: Tracker
   property_key: tracker_id
   old_value: Task
   value: Bug
-journal_details_383:
+journal_details_377:
   id: 420
   journal_id: 487
   property: Target phase
   property_key: version_id
   old_value: Version 0.4
   value: ''
-journal_details_384:
+journal_details_378:
   id: 421
   journal_id: 489
   property: Done
   property_key: done
   old_value: '0'
   value: '50'
-journal_details_385:
+journal_details_379:
   id: 422
   journal_id: 489
   property: Status
   property_key: status_id
   old_value: New
   value: In progress
-journal_details_386:
+journal_details_380:
   id: 423
   journal_id: 491
   property: Done
   property_key: done
   old_value: '50'
   value: '100'
-journal_details_387:
+journal_details_381:
   id: 424
   journal_id: 492
   property: Status
   property_key: status_id
   old_value: In progress
   value: Fixed to test
-journal_details_388:
+journal_details_382:
   id: 425
   journal_id: 493
   property: Target phase
   property_key: version_id
   old_value: 
   value: Version 0.4
-journal_details_389:
+journal_details_383:
   id: 426
   journal_id: 494
   property: Status
   property_key: status_id
   old_value: New
   value: In progress
-journal_details_390:
+journal_details_384:
   id: 427
   journal_id: 495
   property: Done
   property_key: done
   old_value: '0'
   value: '10'
-journal_details_391:
+journal_details_385:
   id: 428
   journal_id: 496
   property: Target phase
   property_key: version_id
   old_value: Version 0.4
   value: Version 0.2
-journal_details_392:
+journal_details_386:
   id: 429
   journal_id: 497
   property: Done
   property_key: done
   old_value: '10'
   value: '20'
-journal_details_393:
+journal_details_387:
   id: 430
   journal_id: 498
   property: Target phase
   property_key: version_id
   old_value: Version 0.2
   value: Version 0.4
-journal_details_394:
+journal_details_388:
   id: 431
   journal_id: 499
   property: Target phase
   property_key: version_id
   old_value: Version 0.4
   value: Version 0.1
-journal_details_395:
+journal_details_389:
   id: 432
   journal_id: 500
   property: Done
   property_key: done
   old_value: '20'
   value: '10'
-journal_details_396:
+journal_details_390:
   id: 433
   journal_id: 501
   property: Done
   property_key: done
   old_value: '10'
   value: '20'
-journal_details_397:
+journal_details_391:
   id: 434
   journal_id: 502
   property: Assigned to
   property_key: assigned_to_id
   old_value: Nicolas Meylan
   value: James Bond
-journal_details_398:
+journal_details_392:
   id: 435
   journal_id: 503
   property: Target phase
   property_key: version_id
   old_value: Version 0.1
   value: Version 0.2
-journal_details_399:
+journal_details_393:
   id: 436
   journal_id: 504
   property: Assigned to
   property_key: assigned_to_id
   old_value: James Bond
   value: Nicolas Meylan
-journal_details_400:
+journal_details_394:
   id: 437
   journal_id: 505
   property: Target phase
   property_key: version_id
   old_value: Version 0.2
   value: Version 0.1
-journal_details_401:
+journal_details_395:
   id: 438
   journal_id: 506
   property: Target phase
   property_key: version_id
   old_value: Version 0.1
   value: Version 0.2
-journal_details_402:
+journal_details_396:
   id: 439
   journal_id: 507
   property: Target phase
   property_key: version_id
   old_value: Version 0.2
   value: Version 0.4
-journal_details_403:
+journal_details_397:
   id: 440
   journal_id: 508
   property: Target phase
   property_key: version_id
   old_value: Version 0.4
   value: Version 0.2
-journal_details_404:
+journal_details_398:
   id: 441
   journal_id: 509
   property: Category
   property_key: category_id
   old_value: 
   value: Testing
-journal_details_405:
+journal_details_399:
   id: 442
   journal_id: 510
   property: Status
   property_key: status_id
   old_value: In progress
   value: Fixed to test
-journal_details_406:
+journal_details_400:
   id: 443
   journal_id: 511
   property: Status
   property_key: status_id
   old_value: New
   value: Fixed to test
-journal_details_407:
+journal_details_401:
   id: 444
   journal_id: 512
   property: Status
   property_key: status_id
   old_value: New
   value: Fixed to test
-journal_details_408:
+journal_details_402:
   id: 445
   journal_id: 513
   property: Status
   property_key: status_id
   old_value: New
   value: In progress
+journal_details_403:
+  id: 446
+  journal_id: 514
+  property: Status
+  property_key: status_id
+  old_value: New
+  value: Closed
+journal_details_404:
+  id: 447
+  journal_id: 515
+  property: Assigned to
+  property_key: assigned_to_id
+  old_value: Nicolas Meylan
+  value: James Bond
+journal_details_405:
+  id: 448
+  journal_id: 516
+  property: Status
+  property_key: status_id
+  old_value: Fixed to test
+  value: Closed
+journal_details_406:
+  id: 449
+  journal_id: 517
+  property: Category
+  property_key: category_id
+  old_value: 
+  value: Development
+journal_details_407:
+  id: 450
+  journal_id: 518
+  property: Status
+  property_key: status_id
+  old_value: Closed
+  value: In progress
+journal_details_408:
+  id: 451
+  journal_id: 519
+  property: Status
+  property_key: status_id
+  old_value: In progress
+  value: Fixed to test
+journal_details_409:
+  id: 452
+  journal_id: 520
+  property: Category
+  property_key: category_id
+  old_value: 
+  value: Development
+journal_details_410:
+  id: 453
+  journal_id: 521
+  property: Status
+  property_key: status_id
+  old_value: In progress
+  value: Fixed to test
+journal_details_411:
+  id: 454
+  journal_id: 522
+  property: Assigned to
+  property_key: assigned_to_id
+  old_value: James Bond
+  value: Nicolas Meylan
+journal_details_412:
+  id: 455
+  journal_id: 523
+  property: Status
+  property_key: status_id
+  old_value: Closed
+  value: New
+journal_details_413:
+  id: 456
+  journal_id: 524
+  property: Delete
+  property_key: delete
+  old_value: test
+  value: Deleted
+journal_details_414:
+  id: 457
+  journal_id: 525
+  property: Delete
+  property_key: delete
+  old_value: test
+  value: Deleted
+journal_details_415:
+  id: 458
+  journal_id: 526
+  property: Delete
+  property_key: delete
+  old_value: test
+  value: Deleted
+journal_details_416:
+  id: 459
+  journal_id: 553
+  property: Delete
+  property_key: delete
+  old_value: f
+  value: Deleted
+journal_details_417:
+  id: 460
+  journal_id: 564
+  property: Delete
+  property_key: delete
+  old_value: new test
+  value: Deleted
+journal_details_418:
+  id: 461
+  journal_id: 579
+  property: Status
+  property_key: status_id
+  old_value: New
+  value: Fixed to test
+journal_details_419:
+  id: 462
+  journal_id: 580
+  property: Status
+  property_key: status_id
+  old_value: New
+  value: Fixed to test
+journal_details_420:
+  id: 463
+  journal_id: 581
+  property: Done
+  property_key: done
+  old_value: '50'
+  value: '0'
+journal_details_421:
+  id: 464
+  journal_id: 582
+  property: Status
+  property_key: status_id
+  old_value: Fixed to test
+  value: Closed
+journal_details_422:
+  id: 465
+  journal_id: 583
+  property: Status
+  property_key: status_id
+  old_value: Closed
+  value: Closed
+journal_details_423:
+  id: 466
+  journal_id: 584
+  property: Status
+  property_key: status_id
+  old_value: Closed
+  value: Closed
+journal_details_424:
+  id: 467
+  journal_id: 585
+  property: Status
+  property_key: status_id
+  old_value: Fixed to test
+  value: Closed
+journal_details_425:
+  id: 468
+  journal_id: 586
+  property: Status
+  property_key: status_id
+  old_value: Fixed to test
+  value: Closed
+journal_details_426:
+  id: 469
+  journal_id: 587
+  property: Status
+  property_key: status_id
+  old_value: Fixed to test
+  value: Closed
+journal_details_427:
+  id: 470
+  journal_id: 588
+  property: Status
+  property_key: status_id
+  old_value: Fixed to test
+  value: Closed
+journal_details_428:
+  id: 471
+  journal_id: 589
+  property: Status
+  property_key: status_id
+  old_value: Fixed to test
+  value: Closed
+journal_details_429:
+  id: 472
+  journal_id: 590
+  property: Status
+  property_key: status_id
+  old_value: Fixed to test
+  value: Closed
+journal_details_430:
+  id: 473
+  journal_id: 591
+  property: Status
+  property_key: status_id
+  old_value: Fixed to test
+  value: Closed
+journal_details_431:
+  id: 474
+  journal_id: 592
+  property: Status
+  property_key: status_id
+  old_value: Fixed to test
+  value: Closed
+journal_details_432:
+  id: 475
+  journal_id: 593
+  property: Status
+  property_key: status_id
+  old_value: Fixed to test
+  value: Closed
+journal_details_433:
+  id: 476
+  journal_id: 594
+  property: Status
+  property_key: status_id
+  old_value: Fixed to test
+  value: Closed
+journal_details_434:
+  id: 477
+  journal_id: 595
+  property: Status
+  property_key: status_id
+  old_value: Fixed to test
+  value: Closed
+journal_details_435:
+  id: 478
+  journal_id: 596
+  property: Status
+  property_key: status_id
+  old_value: Fixed to test
+  value: Closed
+journal_details_436:
+  id: 479
+  journal_id: 597
+  property: Status
+  property_key: status_id
+  old_value: Fixed to test
+  value: Closed
+journal_details_437:
+  id: 480
+  journal_id: 598
+  property: Status
+  property_key: status_id
+  old_value: Fixed to test
+  value: Closed
+journal_details_438:
+  id: 481
+  journal_id: 599
+  property: Status
+  property_key: status_id
+  old_value: Fixed to test
+  value: Closed
+journal_details_439:
+  id: 482
+  journal_id: 600
+  property: Status
+  property_key: status_id
+  old_value: Fixed to test
+  value: Closed
+journal_details_440:
+  id: 483
+  journal_id: 601
+  property: Status
+  property_key: status_id
+  old_value: Fixed to test
+  value: Closed
+journal_details_441:
+  id: 484
+  journal_id: 602
+  property: Status
+  property_key: status_id
+  old_value: Fixed to test
+  value: Closed
+journal_details_442:
+  id: 485
+  journal_id: 603
+  property: Status
+  property_key: status_id
+  old_value: Fixed to test
+  value: Closed
+journal_details_443:
+  id: 486
+  journal_id: 604
+  property: Status
+  property_key: status_id
+  old_value: Fixed to test
+  value: Closed
+journal_details_444:
+  id: 487
+  journal_id: 605
+  property: Status
+  property_key: status_id
+  old_value: Fixed to test
+  value: Closed
+journal_details_445:
+  id: 488
+  journal_id: 606
+  property: Status
+  property_key: status_id
+  old_value: New
+  value: Closed
+journal_details_446:
+  id: 489
+  journal_id: 607
+  property: Status
+  property_key: status_id
+  old_value: New
+  value: Closed
+journal_details_447:
+  id: 490
+  journal_id: 608
+  property: Status
+  property_key: status_id
+  old_value: New
+  value: Closed
+journal_details_448:
+  id: 491
+  journal_id: 609
+  property: Status
+  property_key: status_id
+  old_value: Closed
+  value: Closed
+journal_details_449:
+  id: 492
+  journal_id: 610
+  property: Status
+  property_key: status_id
+  old_value: Closed
+  value: Closed
+journal_details_450:
+  id: 493
+  journal_id: 611
+  property: Status
+  property_key: status_id
+  old_value: New
+  value: Closed
+journal_details_451:
+  id: 494
+  journal_id: 612
+  property: Status
+  property_key: status_id
+  old_value: New
+  value: Closed
+journal_details_452:
+  id: 495
+  journal_id: 613
+  property: Status
+  property_key: status_id
+  old_value: New
+  value: Closed
+journal_details_453:
+  id: 496
+  journal_id: 614
+  property: Status
+  property_key: status_id
+  old_value: New
+  value: Closed
+journal_details_454:
+  id: 497
+  journal_id: 615
+  property: Status
+  property_key: status_id
+  old_value: New
+  value: Closed
+journal_details_455:
+  id: 498
+  journal_id: 616
+  property: Status
+  property_key: status_id
+  old_value: New
+  value: Closed
+journal_details_456:
+  id: 499
+  journal_id: 617
+  property: Status
+  property_key: status_id
+  old_value: New
+  value: Closed
+journal_details_457:
+  id: 500
+  journal_id: 618
+  property: Status
+  property_key: status_id
+  old_value: New
+  value: Closed
+journal_details_458:
+  id: 501
+  journal_id: 619
+  property: Status
+  property_key: status_id
+  old_value: New
+  value: Closed
+journal_details_459:
+  id: 502
+  journal_id: 620
+  property: Status
+  property_key: status_id
+  old_value: New
+  value: Closed
+journal_details_460:
+  id: 503
+  journal_id: 621
+  property: Status
+  property_key: status_id
+  old_value: New
+  value: Closed
+journal_details_461:
+  id: 504
+  journal_id: 622
+  property: Status
+  property_key: status_id
+  old_value: New
+  value: Closed
+journal_details_462:
+  id: 505
+  journal_id: 623
+  property: Status
+  property_key: status_id
+  old_value: New
+  value: Closed
+journal_details_463:
+  id: 506
+  journal_id: 624
+  property: Status
+  property_key: status_id
+  old_value: New
+  value: Closed
+journal_details_464:
+  id: 507
+  journal_id: 625
+  property: Status
+  property_key: status_id
+  old_value: New
+  value: Closed
+journal_details_465:
+  id: 508
+  journal_id: 626
+  property: Status
+  property_key: status_id
+  old_value: New
+  value: Closed
+journal_details_466:
+  id: 509
+  journal_id: 627
+  property: Status
+  property_key: status_id
+  old_value: New
+  value: Closed
+journal_details_467:
+  id: 510
+  journal_id: 628
+  property: Status
+  property_key: status_id
+  old_value: New
+  value: Closed
+journal_details_468:
+  id: 511
+  journal_id: 629
+  property: Status
+  property_key: status_id
+  old_value: New
+  value: Closed
+journal_details_469:
+  id: 512
+  journal_id: 630
+  property: Status
+  property_key: status_id
+  old_value: New
+  value: Closed
+journal_details_470:
+  id: 513
+  journal_id: 631
+  property: Status
+  property_key: status_id
+  old_value: New
+  value: Closed
+journal_details_471:
+  id: 514
+  journal_id: 632
+  property: Status
+  property_key: status_id
+  old_value: New
+  value: Closed
+journal_details_472:
+  id: 515
+  journal_id: 633
+  property: Delete
+  property_key: delete
+  old_value: test
+  value: Deleted
+journal_details_473:
+  id: 516
+  journal_id: 634
+  property: Due date
+  property_key: due_date
+  old_value: 
+  value: '2012-09-01'
+journal_details_474:
+  id: 517
+  journal_id: 635
+  property: Due date
+  property_key: due_date
+  old_value: 
+  value: '2012-09-01'
+journal_details_475:
+  id: 518
+  journal_id: 636
+  property: Status
+  property_key: status_id
+  old_value: New
+  value: Fixed to test
+journal_details_476:
+  id: 519
+  journal_id: 637
+  property: Status
+  property_key: status_id
+  old_value: New
+  value: Fixed to test
+journal_details_477:
+  id: 520
+  journal_id: 638
+  property: Status
+  property_key: status_id
+  old_value: New
+  value: In progress
+journal_details_478:
+  id: 521
+  journal_id: 639
+  property: Done
+  property_key: done
+  old_value: '0'
+  value: '10'
+journal_details_479:
+  id: 522
+  journal_id: 640
+  property: Status
+  property_key: status_id
+  old_value: In progress
+  value: New
+journal_details_480:
+  id: 523
+  journal_id: 641
+  property: Done
+  property_key: done
+  old_value: '0'
+  value: '10'
+journal_details_481:
+  id: 524
+  journal_id: 642
+  property: Done
+  property_key: done
+  old_value: '10'
+  value: '20'
+journal_details_482:
+  id: 525
+  journal_id: 643
+  property: Done
+  property_key: done
+  old_value: '20'
+  value: '10'
+journal_details_483:
+  id: 526
+  journal_id: 644
+  property: Done
+  property_key: done
+  old_value: '10'
+  value: '20'
+journal_details_484:
+  id: 527
+  journal_id: 645
+  property: Done
+  property_key: done
+  old_value: '20'
+  value: '10'
+journal_details_485:
+  id: 528
+  journal_id: 646
+  property: Target phase
+  property_key: version_id
+  old_value: 
+  value: Version 0.2
+journal_details_486:
+  id: 529
+  journal_id: 647
+  property: Done
+  property_key: done
+  old_value: '10'
+  value: '20'
+journal_details_487:
+  id: 530
+  journal_id: 648
+  property: Done
+  property_key: done
+  old_value: '20'
+  value: '0'
+journal_details_488:
+  id: 531
+  journal_id: 649
+  property: Category
+  property_key: category_id
+  old_value: 
+  value: Terrain
+journal_details_489:
+  id: 532
+  journal_id: 650
+  property: Category
+  property_key: category_id
+  old_value: 
+  value: Terrain
+journal_details_490:
+  id: 533
+  journal_id: 651
+  property: Category
+  property_key: category_id
+  old_value: 
+  value: Terrain
+journal_details_491:
+  id: 534
+  journal_id: 652
+  property: Target phase
+  property_key: version_id
+  old_value: Version 1
+  value: Version 1
+journal_details_492:
+  id: 535
+  journal_id: 653
+  property: Target phase
+  property_key: version_id
+  old_value: Version 1
+  value: Version 1
+journal_details_493:
+  id: 536
+  journal_id: 654
+  property: Target phase
+  property_key: version_id
+  old_value: Version 1
+  value: Version 1
+journal_details_494:
+  id: 537
+  journal_id: 655
+  property: Target phase
+  property_key: version_id
+  old_value: Version 1
+  value: Version 1
+journal_details_495:
+  id: 538
+  journal_id: 656
+  property: Target phase
+  property_key: version_id
+  old_value: Version 1
+  value: Version 1
+journal_details_496:
+  id: 539
+  journal_id: 657
+  property: Target phase
+  property_key: version_id
+  old_value: 
+  value: Version 1
+journal_details_497:
+  id: 540
+  journal_id: 658
+  property: Target phase
+  property_key: version_id
+  old_value: 
+  value: Version 1
+journal_details_498:
+  id: 541
+  journal_id: 659
+  property: Target phase
+  property_key: version_id
+  old_value: 
+  value: Version 1
+journal_details_499:
+  id: 542
+  journal_id: 660
+  property: Target phase
+  property_key: version_id
+  old_value: 
+  value: Version 1
+journal_details_500:
+  id: 543
+  journal_id: 661
+  property: Target phase
+  property_key: version_id
+  old_value: 
+  value: Version 1
+journal_details_501:
+  id: 544
+  journal_id: 662
+  property: Status
+  property_key: status_id
+  old_value: New
+  value: Closed
+journal_details_502:
+  id: 545
+  journal_id: 663
+  property: Status
+  property_key: status_id
+  old_value: New
+  value: Closed
+journal_details_503:
+  id: 546
+  journal_id: 664
+  property: Status
+  property_key: status_id
+  old_value: New
+  value: Closed
+journal_details_504:
+  id: 547
+  journal_id: 665
+  property: Status
+  property_key: status_id
+  old_value: New
+  value: In progress
+journal_details_505:
+  id: 548
+  journal_id: 666
+  property: Assigned to
+  property_key: assigned_to_id
+  old_value: Nicolas Meylan
+  value: Alexis Monnet
+journal_details_506:
+  id: 549
+  journal_id: 667
+  property: Target phase
+  property_key: version_id
+  old_value: 
+  value: Version 1
+journal_details_507:
+  id: 550
+  journal_id: 668
+  property: Done
+  property_key: done
+  old_value: '0'
+  value: '20'
+journal_details_508:
+  id: 551
+  journal_id: 669
+  property: Done
+  property_key: done
+  old_value: '0'
+  value: '10'
+journal_details_509:
+  id: 552
+  journal_id: 670
+  property: Target phase
+  property_key: version_id
+  old_value: 
+  value: Version 0.1
+journal_details_510:
+  id: 553
+  journal_id: 671
+  property: Target phase
+  property_key: version_id
+  old_value: Version 0.1
+  value: Version 0.3
+journal_details_511:
+  id: 554
+  journal_id: 672
+  property: Due date
+  property_key: due_date
+  old_value: '2012-07-31'
+  value: ''
+journal_details_512:
+  id: 555
+  journal_id: 672
+  property: Target phase
+  property_key: version_id
+  old_value: Version 0.3
+  value: ''
+journal_details_513:
+  id: 556
+  journal_id: 673
+  property: Done
+  property_key: done
+  old_value: '10'
+  value: '0'
+journal_details_514:
+  id: 557
+  journal_id: 674
+  property: Target phase
+  property_key: version_id
+  old_value: 
+  value: Version 0.3
+journal_details_515:
+  id: 558
+  journal_id: 675
+  property: Target phase
+  property_key: version_id
+  old_value: Version 0.3
+  value: Version 0.1
+journal_details_516:
+  id: 559
+  journal_id: 676
+  property: Target phase
+  property_key: version_id
+  old_value: Version 1
+  value: Version 1
+journal_details_517:
+  id: 560
+  journal_id: 677
+  property: Target phase
+  property_key: version_id
+  old_value: Version 1
+  value: Version 1
+journal_details_518:
+  id: 561
+  journal_id: 678
+  property: Target phase
+  property_key: version_id
+  old_value: Version 1
+  value: Version 1
+journal_details_519:
+  id: 562
+  journal_id: 679
+  property: Target phase
+  property_key: version_id
+  old_value: 
+  value: Version 1
+journal_details_520:
+  id: 563
+  journal_id: 680
+  property: Target phase
+  property_key: version_id
+  old_value: Version 1
+  value: Version 1
+journal_details_521:
+  id: 564
+  journal_id: 681
+  property: Target phase
+  property_key: version_id
+  old_value: Version 1
+  value: Version 1
+journal_details_522:
+  id: 565
+  journal_id: 682
+  property: Target phase
+  property_key: version_id
+  old_value: Version 1
+  value: Version 1
+journal_details_523:
+  id: 566
+  journal_id: 683
+  property: Target phase
+  property_key: version_id
+  old_value: Version 1
+  value: Version 1
+journal_details_524:
+  id: 567
+  journal_id: 684
+  property: Target phase
+  property_key: version_id
+  old_value: Version 1
+  value: Version 1
+journal_details_525:
+  id: 568
+  journal_id: 685
+  property: Target phase
+  property_key: version_id
+  old_value: Version 1
+  value: Version 1
+journal_details_526:
+  id: 569
+  journal_id: 686
+  property: Target phase
+  property_key: version_id
+  old_value: Version 1
+  value: Version 1
+journal_details_527:
+  id: 570
+  journal_id: 687
+  property: Target phase
+  property_key: version_id
+  old_value: Version 1
+  value: ''
+journal_details_528:
+  id: 571
+  journal_id: 688
+  property: Target phase
+  property_key: version_id
+  old_value: Version 1
+  value: ''
+journal_details_529:
+  id: 572
+  journal_id: 689
+  property: Target phase
+  property_key: version_id
+  old_value: Version 1
+  value: ''
+journal_details_530:
+  id: 573
+  journal_id: 690
+  property: Target phase
+  property_key: version_id
+  old_value: Version 1
+  value: ''
+journal_details_531:
+  id: 574
+  journal_id: 691
+  property: Target phase
+  property_key: version_id
+  old_value: Version 1
+  value: ''
+journal_details_532:
+  id: 575
+  journal_id: 692
+  property: Target phase
+  property_key: version_id
+  old_value: Version 1
+  value: ''
+journal_details_533:
+  id: 576
+  journal_id: 693
+  property: Target phase
+  property_key: version_id
+  old_value: 
+  value: Version 1
+journal_details_534:
+  id: 577
+  journal_id: 694
+  property: Target phase
+  property_key: version_id
+  old_value: 
+  value: Version 1
+journal_details_535:
+  id: 578
+  journal_id: 695
+  property: Target phase
+  property_key: version_id
+  old_value: 
+  value: Version 1
+journal_details_536:
+  id: 579
+  journal_id: 696
+  property: Target phase
+  property_key: version_id
+  old_value: 
+  value: Version 1
+journal_details_537:
+  id: 580
+  journal_id: 697
+  property: Target phase
+  property_key: version_id
+  old_value: 
+  value: Version 1
+journal_details_538:
+  id: 581
+  journal_id: 698
+  property: Target phase
+  property_key: version_id
+  old_value: 
+  value: Version 1
+journal_details_539:
+  id: 582
+  journal_id: 699
+  property: Target phase
+  property_key: version_id
+  old_value: Version 0.1
+  value: ''
+journal_details_540:
+  id: 583
+  journal_id: 701
+  property: Done
+  property_key: done
+  old_value: '10'
+  value: '80'
+journal_details_541:
+  id: 584
+  journal_id: 701
+  property: Status
+  property_key: status_id
+  old_value: New
+  value: In progress
+journal_details_542:
+  id: 585
+  journal_id: 702
+  property: Done
+  property_key: done
+  old_value: '20'
+  value: '40'
+journal_details_543:
+  id: 586
+  journal_id: 703
+  property: Done
+  property_key: done
+  old_value: '0'
+  value: '40'
+journal_details_544:
+  id: 587
+  journal_id: 704
+  property: Status
+  property_key: status_id
+  old_value: New
+  value: Tested to be delivered
+journal_details_545:
+  id: 588
+  journal_id: 705
+  property: Status
+  property_key: status_id
+  old_value: New
+  value: Tested to be delivered
+journal_details_546:
+  id: 589
+  journal_id: 706
+  property: Status
+  property_key: status_id
+  old_value: New
+  value: Tested to be delivered
+journal_details_547:
+  id: 590
+  journal_id: 707
+  property: Status
+  property_key: status_id
+  old_value: New
+  value: Tested to be delivered
+journal_details_548:
+  id: 591
+  journal_id: 708
+  property: Status
+  property_key: status_id
+  old_value: Tested to be delivered
+  value: Closed
+journal_details_549:
+  id: 592
+  journal_id: 709
+  property: Status
+  property_key: status_id
+  old_value: Tested to be delivered
+  value: Closed
+journal_details_550:
+  id: 593
+  journal_id: 710
+  property: Status
+  property_key: status_id
+  old_value: Tested to be delivered
+  value: Closed
+journal_details_551:
+  id: 594
+  journal_id: 711
+  property: Status
+  property_key: status_id
+  old_value: Tested to be delivered
+  value: Closed
+journal_details_552:
+  id: 595
+  journal_id: 712
+  property: Delete
+  property_key: delete
+  old_value: test
+  value: Deleted
+journal_details_553:
+  id: 596
+  journal_id: 713
+  property: Done
+  property_key: done
+  old_value: '40'
+  value: '90'
+journal_details_554:
+  id: 597
+  journal_id: 714
+  property: Status
+  property_key: status_id
+  old_value: New
+  value: In progress
+journal_details_555:
+  id: 598
+  journal_id: 715
+  property: Status
+  property_key: status_id
+  old_value: New
+  value: Closed
+journal_details_556:
+  id: 599
+  journal_id: 716
+  property: Done
+  property_key: done
+  old_value: 
+  value: '10'
+journal_details_557:
+  id: 600
+  journal_id: 717
+  property: Target phase
+  property_key: version_id
+  old_value: 
+  value: Version 0.3
+journal_details_558:
+  id: 601
+  journal_id: 717
+  property: Category
+  property_key: category_id
+  old_value: 
+  value: Development
+journal_details_559:
+  id: 605
+  journal_id: 721
+  property: Done
+  property_key: done
+  old_value: 
+  value: '0'
+journal_details_560:
+  id: 606
+  journal_id: 722
+  property: Status
+  property_key: status_id
+  old_value: New
+  value: In progress
+journal_details_561:
+  id: 607
+  journal_id: 723
+  property: Done
+  property_key: done
+  old_value: '0'
+  value: '70'
+journal_details_562:
+  id: 608
+  journal_id: 724
+  property: Target phase
+  property_key: version_id
+  old_value: Version 0.3
+  value: Version 0.1
+journal_details_563:
+  id: 609
+  journal_id: 725
+  property: Target phase
+  property_key: version_id
+  old_value: Version 0.3
+  value: Version 0.1
+journal_details_564:
+  id: 610
+  journal_id: 726
+  property: Target phase
+  property_key: version_id
+  old_value: Version 0.2
+  value: Version 0.1
+journal_details_565:
+  id: 611
+  journal_id: 727
+  property: Target phase
+  property_key: version_id
+  old_value: Version 0.2
+  value: Version 0.2
+journal_details_566:
+  id: 612
+  journal_id: 728
+  property: Target phase
+  property_key: version_id
+  old_value: Version 0.3
+  value: Version 0.2
+journal_details_567:
+  id: 613
+  journal_id: 729
+  property: Target phase
+  property_key: version_id
+  old_value: 
+  value: Version 0.2
+journal_details_568:
+  id: 615
+  journal_id: 731
+  property: Target phase
+  property_key: version_id
+  old_value: 
+  value: Version 0.2
+journal_details_569:
+  id: 616
+  journal_id: 732
+  property: Target phase
+  property_key: version_id
+  old_value: 
+  value: Version 0.2
+journal_details_570:
+  id: 617
+  journal_id: 733
+  property: Target phase
+  property_key: version_id
+  old_value: 
+  value: Version 0.2
+journal_details_571:
+  id: 618
+  journal_id: 734
+  property: Target phase
+  property_key: version_id
+  old_value: Version 0.3
+  value: Version 0.2
+journal_details_572:
+  id: 619
+  journal_id: 735
+  property: Target phase
+  property_key: version_id
+  old_value: 
+  value: Version 0.2
+journal_details_573:
+  id: 620
+  journal_id: 736
+  property: Target phase
+  property_key: version_id
+  old_value: 
+  value: Version 0.3
+journal_details_574:
+  id: 621
+  journal_id: 737
+  property: Target phase
+  property_key: version_id
+  old_value: 
+  value: Version 0.3
+journal_details_575:
+  id: 622
+  journal_id: 738
+  property: Target phase
+  property_key: version_id
+  old_value: 
+  value: Version 0.1.x
+journal_details_576:
+  id: 623
+  journal_id: 739
+  property: Target phase
+  property_key: version_id
+  old_value: 
+  value: Version 0.3
+journal_details_577:
+  id: 624
+  journal_id: 740
+  property: Target phase
+  property_key: version_id
+  old_value: 
+  value: Version 0.1.x
+journal_details_578:
+  id: 625
+  journal_id: 741
+  property: Target phase
+  property_key: version_id
+  old_value: 
+  value: Version 0.3.x
+journal_details_579:
+  id: 626
+  journal_id: 742
+  property: Target phase
+  property_key: version_id
+  old_value: 
+  value: Version 0.1.x
+journal_details_580:
+  id: 627
+  journal_id: 743
+  property: Target phase
+  property_key: version_id
+  old_value: 
+  value: Version 0.1.x
+journal_details_581:
+  id: 628
+  journal_id: 744
+  property: Status
+  property_key: status_id
+  old_value: Fixed to test
+  value: Closed
+journal_details_582:
+  id: 629
+  journal_id: 745
+  property: Status
+  property_key: status_id
+  old_value: Fixed to test
+  value: Closed
+journal_details_583:
+  id: 630
+  journal_id: 746
+  property: Done
+  property_key: done
+  old_value: '100'
+  value: '0'
+journal_details_584:
+  id: 631
+  journal_id: 747
+  property: Status
+  property_key: status_id
+  old_value: New
+  value: In progress
+journal_details_585:
+  id: 632
+  journal_id: 748
+  property: Status
+  property_key: status_id
+  old_value: New
+  value: Fixed to test
+journal_details_586:
+  id: 633
+  journal_id: 749
+  property: Status
+  property_key: status_id
+  old_value: Fixed to test
+  value: Closed
+journal_details_587:
+  id: 634
+  journal_id: 751
+  property: Status
+  property_key: status_id
+  old_value: New
+  value: Closed
+journal_details_588:
+  id: 635
+  journal_id: 753
+  property: Status
+  property_key: status_id
+  old_value: New
+  value: Fixed to test
+journal_details_589:
+  id: 636
+  journal_id: 754
+  property: Status
+  property_key: status_id
+  old_value: New
+  value: Closed
+journal_details_590:
+  id: 637
+  journal_id: 756
+  property: Status
+  property_key: status_id
+  old_value: New
+  value: Closed
+journal_details_591:
+  id: 638
+  journal_id: 757
+  property: Status
+  property_key: status_id
+  old_value: New
+  value: Closed
+journal_details_592:
+  id: 639
+  journal_id: 758
+  property: Tracker
+  property_key: tracker_id
+  old_value: Task
+  value: Bug
+journal_details_593:
+  id: 640
+  journal_id: 760
+  property: Status
+  property_key: status_id
+  old_value: Closed
+  value: New
+journal_details_594:
+  id: 641
+  journal_id: 761
+  property: Done
+  property_key: done
+  old_value: '100'
+  value: '0'
+journal_details_595:
+  id: 642
+  journal_id: 762
+  property: Status
+  property_key: status_id
+  old_value: New
+  value: Closed
+journal_details_596:
+  id: 643
+  journal_id: 762
+  property: Category
+  property_key: category_id
+  old_value: 
+  value: Development
+journal_details_597:
+  id: 644
+  journal_id: 763
+  property: Status
+  property_key: status_id
+  old_value: New
+  value: Closed
+journal_details_598:
+  id: 645
+  journal_id: 764
+  property: Status
+  property_key: status_id
+  old_value: In progress
+  value: Closed
+journal_details_599:
+  id: 646
+  journal_id: 765
+  property: Target phase
+  property_key: version_id
+  old_value: 
+  value: Version 0.3.x
+journal_details_600:
+  id: 647
+  journal_id: 766
+  property: Target phase
+  property_key: version_id
+  old_value: 
+  value: Version 0.3.x
+journal_details_601:
+  id: 648
+  journal_id: 767
+  property: Target phase
+  property_key: version_id
+  old_value: 
+  value: Version 0.3.x
+journal_details_602:
+  id: 649
+  journal_id: 768
+  property: Target phase
+  property_key: version_id
+  old_value: Version 0.3.x
+  value: Version 0.3.x
+journal_details_603:
+  id: 650
+  journal_id: 769
+  property: Target phase
+  property_key: version_id
+  old_value: 
+  value: Version 0.3.x
+journal_details_604:
+  id: 651
+  journal_id: 770
+  property: Target phase
+  property_key: version_id
+  old_value: 
+  value: Version 0.3.x
+journal_details_605:
+  id: 652
+  journal_id: 771
+  property: Target phase
+  property_key: version_id
+  old_value: 
+  value: Version 0.3.x
+journal_details_606:
+  id: 653
+  journal_id: 772
+  property: Target phase
+  property_key: version_id
+  old_value: 
+  value: Version 0.3.x
+journal_details_607:
+  id: 654
+  journal_id: 773
+  property: Target phase
+  property_key: version_id
+  old_value: 
+  value: Version 0.3.x
+journal_details_608:
+  id: 655
+  journal_id: 774
+  property: Category
+  property_key: category_id
+  old_value: Development
+  value: Development
+journal_details_609:
+  id: 656
+  journal_id: 775
+  property: Category
+  property_key: category_id
+  old_value: Development
+  value: Development
+journal_details_610:
+  id: 657
+  journal_id: 776
+  property: Category
+  property_key: category_id
+  old_value: Development
+  value: Development
+journal_details_611:
+  id: 658
+  journal_id: 777
+  property: Category
+  property_key: category_id
+  old_value: Development
+  value: Development
+journal_details_612:
+  id: 659
+  journal_id: 778
+  property: Category
+  property_key: category_id
+  old_value: Development
+  value: Development
+journal_details_613:
+  id: 660
+  journal_id: 779
+  property: Category
+  property_key: category_id
+  old_value: 
+  value: Development
+journal_details_614:
+  id: 661
+  journal_id: 780
+  property: Category
+  property_key: category_id
+  old_value: 
+  value: Development
+journal_details_615:
+  id: 662
+  journal_id: 781
+  property: Category
+  property_key: category_id
+  old_value: 
+  value: Development
+journal_details_616:
+  id: 663
+  journal_id: 782
+  property: Category
+  property_key: category_id
+  old_value: 
+  value: Development
+journal_details_617:
+  id: 665
+  journal_id: 784
+  property: Category
+  property_key: category_id
+  old_value: 
+  value: Development
+journal_details_618:
+  id: 666
+  journal_id: 785
+  property: Category
+  property_key: category_id
+  old_value: 
+  value: Development
+journal_details_619:
+  id: 667
+  journal_id: 786
+  property: Category
+  property_key: category_id
+  old_value: Development
+  value: Development
+journal_details_620:
+  id: 668
+  journal_id: 787
+  property: Category
+  property_key: category_id
+  old_value: Development
+  value: Development
+journal_details_621:
+  id: 669
+  journal_id: 788
+  property: Category
+  property_key: category_id
+  old_value: 
+  value: Development
+journal_details_622:
+  id: 670
+  journal_id: 789
+  property: Category
+  property_key: category_id
+  old_value: 
+  value: Development
+journal_details_623:
+  id: 671
+  journal_id: 790
+  property: Category
+  property_key: category_id
+  old_value: 
+  value: Development
+journal_details_624:
+  id: 672
+  journal_id: 791
+  property: Category
+  property_key: category_id
+  old_value: 
+  value: Development
+journal_details_625:
+  id: 673
+  journal_id: 792
+  property: Category
+  property_key: category_id
+  old_value: 
+  value: Development
+journal_details_626:
+  id: 674
+  journal_id: 793
+  property: Category
+  property_key: category_id
+  old_value: 
+  value: Development
+journal_details_627:
+  id: 675
+  journal_id: 794
+  property: Category
+  property_key: category_id
+  old_value: 
+  value: Development
+journal_details_628:
+  id: 677
+  journal_id: 796
+  property: Category
+  property_key: category_id
+  old_value: Development
+  value: Development
+journal_details_629:
+  id: 678
+  journal_id: 797
+  property: Category
+  property_key: category_id
+  old_value: 
+  value: Development
+journal_details_630:
+  id: 679
+  journal_id: 798
+  property: Category
+  property_key: category_id
+  old_value: 
+  value: Development
+journal_details_631:
+  id: 680
+  journal_id: 799
+  property: Category
+  property_key: category_id
+  old_value: 
+  value: Development
+journal_details_632:
+  id: 681
+  journal_id: 800
+  property: Category
+  property_key: category_id
+  old_value: 
+  value: Development
+journal_details_633:
+  id: 682
+  journal_id: 801
+  property: Category
+  property_key: category_id
+  old_value: Development
+  value: Development
+journal_details_634:
+  id: 683
+  journal_id: 802
+  property: Category
+  property_key: category_id
+  old_value: 
+  value: Development
+journal_details_635:
+  id: 684
+  journal_id: 803
+  property: Category
+  property_key: category_id
+  old_value: 
+  value: Development
+journal_details_636:
+  id: 685
+  journal_id: 804
+  property: Category
+  property_key: category_id
+  old_value: 
+  value: Development
+journal_details_637:
+  id: 686
+  journal_id: 805
+  property: Category
+  property_key: category_id
+  old_value: Development
+  value: Development
+journal_details_638:
+  id: 687
+  journal_id: 806
+  property: Category
+  property_key: category_id
+  old_value: 
+  value: Development
+journal_details_639:
+  id: 688
+  journal_id: 807
+  property: Category
+  property_key: category_id
+  old_value: Development
+  value: Development
+journal_details_640:
+  id: 689
+  journal_id: 808
+  property: Category
+  property_key: category_id
+  old_value: 
+  value: Development
+journal_details_641:
+  id: 690
+  journal_id: 809
+  property: Category
+  property_key: category_id
+  old_value: 
+  value: Development
+journal_details_642:
+  id: 691
+  journal_id: 810
+  property: Category
+  property_key: category_id
+  old_value: 
+  value: Development
+journal_details_643:
+  id: 692
+  journal_id: 811
+  property: Category
+  property_key: category_id
+  old_value: 
+  value: Development
+journal_details_644:
+  id: 693
+  journal_id: 812
+  property: Category
+  property_key: category_id
+  old_value: Development
+  value: Development
+journal_details_645:
+  id: 694
+  journal_id: 813
+  property: Category
+  property_key: category_id
+  old_value: 
+  value: Development
+journal_details_646:
+  id: 697
+  journal_id: 816
+  property: Category
+  property_key: category_id
+  old_value: 
+  value: Development
+journal_details_647:
+  id: 699
+  journal_id: 818
+  property: Category
+  property_key: category_id
+  old_value: 
+  value: Development
+journal_details_648:
+  id: 700
+  journal_id: 819
+  property: Category
+  property_key: category_id
+  old_value: Development
+  value: Development
+journal_details_649:
+  id: 701
+  journal_id: 820
+  property: Category
+  property_key: category_id
+  old_value: 
+  value: Development
+journal_details_650:
+  id: 702
+  journal_id: 821
+  property: Category
+  property_key: category_id
+  old_value: Development
+  value: Development
+journal_details_651:
+  id: 703
+  journal_id: 822
+  property: Category
+  property_key: category_id
+  old_value: Development
+  value: Development
+journal_details_652:
+  id: 704
+  journal_id: 823
+  property: Category
+  property_key: category_id
+  old_value: 
+  value: Development
+journal_details_653:
+  id: 705
+  journal_id: 824
+  property: Category
+  property_key: category_id
+  old_value: 
+  value: Development
+journal_details_654:
+  id: 706
+  journal_id: 825
+  property: Category
+  property_key: category_id
+  old_value: 
+  value: Development
+journal_details_655:
+  id: 707
+  journal_id: 826
+  property: Category
+  property_key: category_id
+  old_value: 
+  value: Development
+journal_details_656:
+  id: 708
+  journal_id: 827
+  property: Category
+  property_key: category_id
+  old_value: 
+  value: Development
+journal_details_657:
+  id: 709
+  journal_id: 828
+  property: Category
+  property_key: category_id
+  old_value: Development
+  value: Development
+journal_details_658:
+  id: 710
+  journal_id: 829
+  property: Category
+  property_key: category_id
+  old_value: 
+  value: Development
+journal_details_659:
+  id: 711
+  journal_id: 830
+  property: Category
+  property_key: category_id
+  old_value: 
+  value: Development
+journal_details_660:
+  id: 712
+  journal_id: 831
+  property: Category
+  property_key: category_id
+  old_value: 
+  value: Development
+journal_details_661:
+  id: 713
+  journal_id: 832
+  property: Category
+  property_key: category_id
+  old_value: 
+  value: Development
+journal_details_662:
+  id: 716
+  journal_id: 835
+  property: Status
+  property_key: status_id
+  old_value: New
+  value: Closed
+journal_details_663:
+  id: 717
+  journal_id: 836
+  property: Status
+  property_key: status_id
+  old_value: Closed
+  value: Closed
+journal_details_664:
+  id: 718
+  journal_id: 837
+  property: Status
+  property_key: status_id
+  old_value: New
+  value: Closed
+journal_details_665:
+  id: 719
+  journal_id: 838
+  property: Status
+  property_key: status_id
+  old_value: In progress
+  value: Closed
+journal_details_666:
+  id: 720
+  journal_id: 839
+  property: Status
+  property_key: status_id
+  old_value: In progress
+  value: Closed
+journal_details_667:
+  id: 721
+  journal_id: 840
+  property: Status
+  property_key: status_id
+  old_value: New
+  value: Closed
+journal_details_668:
+  id: 722
+  journal_id: 841
+  property: Status
+  property_key: status_id
+  old_value: New
+  value: Closed
+journal_details_669:
+  id: 723
+  journal_id: 842
+  property: Status
+  property_key: status_id
+  old_value: New
+  value: Closed
+journal_details_670:
+  id: 724
+  journal_id: 843
+  property: Status
+  property_key: status_id
+  old_value: New
+  value: Closed
+journal_details_671:
+  id: 725
+  journal_id: 844
+  property: Status
+  property_key: status_id
+  old_value: New
+  value: In progress
+journal_details_672:
+  id: 726
+  journal_id: 845
+  property: Done
+  property_key: done
+  old_value: '0'
+  value: '70'
+journal_details_673:
+  id: 727
+  journal_id: 846
+  property: Done
+  property_key: done
+  old_value: 
+  value: '0'
+journal_details_674:
+  id: 728
+  journal_id: 847
+  property: Done
+  property_key: done
+  old_value: 
+  value: '0'
+journal_details_675:
+  id: 731
+  journal_id: 850
+  property: Done
+  property_key: done
+  old_value: '70'
+  value: '90'
+journal_details_676:
+  id: 732
+  journal_id: 978
+  property: Status
+  property_key: status_id
+  old_value: New
+  value: In progress
+journal_details_677:
+  id: 733
+  journal_id: 979
+  property: Done
+  property_key: done
+  old_value: '0'
+  value: '60'
+journal_details_678:
+  id: 734
+  journal_id: 980
+  property: Email
+  property_key: email
+  old_value: jb@atz.com
+  value: jb@atzb.com
+journal_details_679:
+  id: 735
+  journal_id: 981
+  property: Target phase
+  property_key: version_id
+  old_value: Version 0.3
+  value: ''
+journal_details_680:
+  id: 736
+  journal_id: 984
+  property: Done
+  property_key: done
+  old_value: '0'
+  value: '100'
+journal_details_681:
+  id: 737
+  journal_id: 984
+  property: Status
+  property_key: status_id
+  old_value: New
+  value: Closed
+journal_details_682:
+  id: 739
+  journal_id: 987
+  property: Status
+  property_key: status_id
+  old_value: In progress
+  value: Closed
+journal_details_683:
+  id: 740
+  journal_id: 987
+  property: Done
+  property_key: done
+  old_value: '60'
+  value: '100'
+journal_details_684:
+  id: 741
+  journal_id: 989
+  property: Status
+  property_key: status_id
+  old_value: Closed
+  value: Not satisfying
+journal_details_685:
+  id: 742
+  journal_id: 989
+  property: Done
+  property_key: done
+  old_value: '100'
+  value: '50'
+journal_details_686:
+  id: 745
+  journal_id: 991
+  property: Status
+  property_key: status_id
+  old_value: Not satisfying
+  value: Closed
+journal_details_687:
+  id: 746
+  journal_id: 991
+  property: Done
+  property_key: done
+  old_value: '50'
+  value: '100'
+journal_details_688:
+  id: 751
+  journal_id: 997
+  property: Role
+  property_key: role_id
+  old_value: 
+  value: Team Member
+journal_details_689:
+  id: 752
+  journal_id: 1005
+  property: Category
+  property_key: category_id
+  old_value: 
+  value: Vues
+journal_details_690:
+  id: 753
+  journal_id: 1008
+  property: Target phase
+  property_key: version_id
+  old_value: 
+  value: Version 1.0
+journal_details_691:
+  id: 754
+  journal_id: 1008
+  property: Due date
+  property_key: due_date
+  old_value: 
+  value: '2013-04-09'
+journal_details_692:
+  id: 761
+  journal_id: 1016
+  property: Assigned to
+  property_key: assigned_to_id
+  old_value: Nicolas Meylan
+  value: Alexis Monnet
+journal_details_693:
+  id: 762
+  journal_id: 1017
+  property: Assigned to
+  property_key: assigned_to_id
+  old_value: Nicolas Meylan
+  value: Alexis Monnet
+journal_details_694:
+  id: 763
+  journal_id: 1018
+  property: Status
+  property_key: status_id
+  old_value: New
+  value: In progress
+journal_details_695:
+  id: 764
+  journal_id: 1019
+  property: Status
+  property_key: status_id
+  old_value: New
+  value: In progress
+journal_details_696:
+  id: 765
+  journal_id: 1020
+  property: Status
+  property_key: status_id
+  old_value: New
+  value: In progress
+journal_details_697:
+  id: 766
+  journal_id: 1021
+  property: Status
+  property_key: status_id
+  old_value: New
+  value: Closed
+journal_details_698:
+  id: 767
+  journal_id: 1021
+  property: Done
+  property_key: done
+  old_value: '0'
+  value: '100'
+journal_details_699:
+  id: 768
+  journal_id: 1022
+  property: Status
+  property_key: status_id
+  old_value: In progress
+  value: Closed
+journal_details_700:
+  id: 769
+  journal_id: 1022
+  property: Done
+  property_key: done
+  old_value: '90'
+  value: '100'
+journal_details_701:
+  id: 770
+  journal_id: 1024
+  property: Status
+  property_key: status_id
+  old_value: New
+  value: Fixed to test
+journal_details_702:
+  id: 771
+  journal_id: 1024
+  property: Done
+  property_key: done
+  old_value: '0'
+  value: '100'
+journal_details_703:
+  id: 772
+  journal_id: 1025
+  property: Status
+  property_key: status_id
+  old_value: In progress
+  value: Closed
+journal_details_704:
+  id: 773
+  journal_id: 1025
+  property: Done
+  property_key: done
+  old_value: '0'
+  value: '100'
+journal_details_705:
+  id: 774
+  journal_id: 1026
+  property: Done
+  property_key: done
+  old_value: '0'
+  value: '90'
+journal_details_706:
+  id: 775
+  journal_id: 1027
+  property: Done
+  property_key: done
+  old_value: '0'
+  value: '90'
+journal_details_707:
+  id: 776
+  journal_id: 1034
+  property: Target phase
+  property_key: version_id
+  old_value: 
+  value: Version 1.0
+journal_details_708:
+  id: 777
+  journal_id: 1034
+  property: Due date
+  property_key: due_date
+  old_value: 
+  value: '2013-04-09'
+journal_details_709:
+  id: 778
+  journal_id: 1036
+  property: Assigned to
+  property_key: assigned_to_id
+  old_value: Nicolas Meylan
+  value: Alexis Monnet
+journal_details_710:
+  id: 779
+  journal_id: 1038
+  property: due date
+  property_key: target_date
+  old_value: '2013-04-09'
+  value: 19/04/2013
+journal_details_711:
+  id: 780
+  journal_id: 1039
+  property: Target phase
+  property_key: version_id
+  old_value: 
+  value: Version 1.0
+journal_details_712:
+  id: 781
+  journal_id: 1040
+  property: Done
+  property_key: done
+  old_value: '0'
+  value: '20'
+journal_details_713:
+  id: 782
+  journal_id: 1041
+  property: Status
+  property_key: status_id
+  old_value: New
+  value: In progress
+journal_details_714:
+  id: 783
+  journal_id: 1042
+  property: Status
+  property_key: status_id
+  old_value: In progress
+  value: Fixed to test
+journal_details_715:
+  id: 784
+  journal_id: 1042
+  property: Done
+  property_key: done
+  old_value: '20'
+  value: '100'
+journal_details_716:
+  id: 785
+  journal_id: 1047
+  property: Target phase
+  property_key: version_id
+  old_value: 
+  value: Extentions
+journal_details_717:
+  id: 786
+  journal_id: 1047
+  property: Due date
+  property_key: due_date
+  old_value: 
+  value: '2013-04-30'
+journal_details_718:
+  id: 787
+  journal_id: 1053
+  property: Target phase
+  property_key: version_id
+  old_value: 
+  value: Extentions
+journal_details_719:
+  id: 788
+  journal_id: 1053
+  property: Due date
+  property_key: due_date
+  old_value: 
+  value: '2013-04-30'
+journal_details_720:
+  id: 791
+  journal_id: 1055
+  property: Status
+  property_key: status_id
+  old_value: In progress
+  value: Closed
+journal_details_721:
+  id: 792
+  journal_id: 1055
+  property: Done
+  property_key: done
+  old_value: '90'
+  value: '100'
+journal_details_722:
+  id: 793
+  journal_id: 1056
+  property: Status
+  property_key: status_id
+  old_value: In progress
+  value: Closed
+journal_details_723:
+  id: 794
+  journal_id: 1056
+  property: Done
+  property_key: done
+  old_value: '90'
+  value: '100'
+journal_details_724:
+  id: 795
+  journal_id: 1057
+  property: Status
+  property_key: status_id
+  old_value: Fixed to test
+  value: Closed
+journal_details_725:
+  id: 796
+  journal_id: 1058
+  property: Status
+  property_key: status_id
+  old_value: New
+  value: Fixed to test
+journal_details_726:
+  id: 797
+  journal_id: 1058
+  property: Done
+  property_key: done
+  old_value: '0'
+  value: '100'
+journal_details_727:
+  id: 798
+  journal_id: 1060
+  property: Category
+  property_key: category_id
+  old_value: 
+  value: Controller
+journal_details_728:
+  id: 799
+  journal_id: 1061
+  property: Category
+  property_key: category_id
+  old_value: 
+  value: Controller
+journal_details_729:
+  id: 800
+  journal_id: 1062
+  property: Category
+  property_key: category_id
+  old_value: 
+  value: Controller
+journal_details_730:
+  id: 801
+  journal_id: 1063
+  property: Category
+  property_key: category_id
+  old_value: 
+  value: Controller
+journal_details_731:
+  id: 803
+  journal_id: 1065
+  property: Category
+  property_key: category_id
+  old_value: 
+  value: Controller
+journal_details_732:
+  id: 805
+  journal_id: 1069
+  property: Target phase
+  property_key: version_id
+  old_value: 
+  value: Version 1.0
+journal_details_733:
+  id: 806
+  journal_id: 1069
+  property: Due date
+  property_key: due_date
+  old_value: 
+  value: '2013-04-19'
+journal_details_734:
+  id: 807
+  journal_id: 1070
+  property: Target phase
+  property_key: version_id
+  old_value: 
+  value: Version 1.0
+journal_details_735:
+  id: 808
+  journal_id: 1070
+  property: Due date
+  property_key: due_date
+  old_value: 
+  value: '2013-04-19'
+journal_details_736:
+  id: 809
+  journal_id: 1075
+  property: Status
+  property_key: status_id
+  old_value: New
+  value: In progress
+journal_details_737:
+  id: 810
+  journal_id: 1076
+  property: Status
+  property_key: status_id
+  old_value: New
+  value: In progress
+journal_details_738:
+  id: 811
+  journal_id: 1077
+  property: Status
+  property_key: status_id
+  old_value: New
+  value: In progress
+journal_details_739:
+  id: 812
+  journal_id: 1078
+  property: Done
+  property_key: done
+  old_value: '0'
+  value: '40'
+journal_details_740:
+  id: 813
+  journal_id: 1079
+  property: Done
+  property_key: done
+  old_value: '0'
+  value: '40'
+journal_details_741:
+  id: 814
+  journal_id: 1080
+  property: Done
+  property_key: done
+  old_value: '0'
+  value: '40'
+journal_details_742:
+  id: 815
+  journal_id: 1082
+  property: Done
+  property_key: done
+  old_value: '0'
+  value: '80'
+journal_details_743:
+  id: 816
+  journal_id: 1082
+  property: Status
+  property_key: status_id
+  old_value: New
+  value: In progress
+journal_details_744:
+  id: 817
+  journal_id: 1085
+  property: Status
+  property_key: status_id
+  old_value: In progress
+  value: Fixed to test
+journal_details_745:
+  id: 818
+  journal_id: 1085
+  property: Done
+  property_key: done
+  old_value: '40'
+  value: '100'
+journal_details_746:
+  id: 819
+  journal_id: 1086
+  property: Status
+  property_key: status_id
+  old_value: In progress
+  value: Fixed to test
+journal_details_747:
+  id: 820
+  journal_id: 1086
+  property: Done
+  property_key: done
+  old_value: '40'
+  value: '100'
+journal_details_748:
+  id: 821
+  journal_id: 1087
+  property: Status
+  property_key: status_id
+  old_value: In progress
+  value: Fixed to test
+journal_details_749:
+  id: 822
+  journal_id: 1087
+  property: Done
+  property_key: done
+  old_value: '40'
+  value: '100'
+journal_details_750:
+  id: 823
+  journal_id: 1088
+  property: Status
+  property_key: status_id
+  old_value: In progress
+  value: Fixed to test
+journal_details_751:
+  id: 824
+  journal_id: 1088
+  property: Done
+  property_key: done
+  old_value: '80'
+  value: '100'
+journal_details_752:
+  id: 827
+  journal_id: 1092
+  property: Assigned to
+  property_key: assigned_to_id
+  old_value: Nicolas Meylan
+  value: ''
+journal_details_753:
+  id: 828
+  journal_id: 1093
+  property: Assigned to
+  property_key: assigned_to_id
+  old_value: Nicolas Meylan
+  value: ''
+journal_details_754:
+  id: 830
+  journal_id: 1095
+  property: Status
+  property_key: status_id
+  old_value: New
+  value: In progress
+journal_details_755:
+  id: 831
+  journal_id: 1096
+  property: Done
+  property_key: done
+  old_value: '0'
+  value: '100'
+journal_details_756:
+  id: 832
+  journal_id: 1098
+  property: Status
+  property_key: status_id
+  old_value: New
+  value: Fixed to test
+journal_details_757:
+  id: 833
+  journal_id: 1098
+  property: Done
+  property_key: done
+  old_value: '0'
+  value: '100'
+journal_details_758:
+  id: 834
+  journal_id: 1101
+  property: Target phase
+  property_key: version_id
+  old_value: 
+  value: Extentions
+journal_details_759:
+  id: 835
+  journal_id: 1101
+  property: Due date
+  property_key: due_date
+  old_value: 
+  value: '2013-04-30'
+journal_details_760:
+  id: 836
+  journal_id: 1104
+  property: Done
+  property_key: done
+  old_value: '0'
+  value: '80'
+journal_details_761:
+  id: 837
+  journal_id: 1106
+  property: Status
+  property_key: status_id
+  old_value: In progress
+  value: Fixed to test
+journal_details_762:
+  id: 838
+  journal_id: 1111
+  property: 
+  property_key: start_date
+  old_value: 
+  value: 26/03/2013
+journal_details_763:
+  id: 839
+  journal_id: 1112
+  property: 
+  property_key: start_date
+  old_value: 
+  value: 08/04/2013
+journal_details_764:
+  id: 840
+  journal_id: 1113
+  property: Start date
+  property_key: start_date
+  old_value: 
+  value: '2013-03-26'
+journal_details_765:
+  id: 841
+  journal_id: 1114
+  property: Start date
+  property_key: start_date
+  old_value: 
+  value: '2013-03-26'
+journal_details_766:
+  id: 842
+  journal_id: 1115
+  property: Start date
+  property_key: start_date
+  old_value: 
+  value: '2013-03-26'
+journal_details_767:
+  id: 843
+  journal_id: 1116
+  property: Start date
+  property_key: start_date
+  old_value: 
+  value: '2013-03-26'
+journal_details_768:
+  id: 844
+  journal_id: 1117
+  property: Start date
+  property_key: start_date
+  old_value: 
+  value: '2013-04-01'
+journal_details_769:
+  id: 845
+  journal_id: 1118
+  property: Start date
+  property_key: start_date
+  old_value: 
+  value: '2013-04-01'
+journal_details_770:
+  id: 846
+  journal_id: 1119
+  property: Start date
+  property_key: start_date
+  old_value: 
+  value: '2013-04-01'
+journal_details_771:
+  id: 847
+  journal_id: 1121
+  property: 
+  property_key: start_date
+  old_value: '2013-04-08'
+  value: 01/04/2013
+journal_details_772:
+  id: 848
+  journal_id: 1124
+  property: Done
+  property_key: done
+  old_value: '0'
+  value: '30'
+journal_details_773:
+  id: 849
+  journal_id: 1125
+  property: Target phase
+  property_key: version_id
+  old_value: 
+  value: Extentions
+journal_details_774:
+  id: 850
+  journal_id: 1126
+  property: Start date
+  property_key: start_date
+  old_value: 
+  value: '2013-04-01'
+journal_details_775:
+  id: 851
+  journal_id: 1127
+  property: Status
+  property_key: status_id
+  old_value: Fixed to test
+  value: Closed
+journal_details_776:
+  id: 852
+  journal_id: 1130
+  property: Due date
+  property_key: due_date
+  old_value: '2013-04-19'
+  value: '2013-04-04'
+journal_details_777:
+  id: 853
+  journal_id: 1131
+  property: Start date
+  property_key: start_date
+  old_value: '2013-04-01'
+  value: '2013-04-05'
+journal_details_778:
+  id: 854
+  journal_id: 1132
+  property: Start date
+  property_key: start_date
+  old_value: '2013-04-01'
+  value: '2013-04-05'
+journal_details_779:
+  id: 855
+  journal_id: 1133
+  property: Predecessor
+  property_key: predecessor_id
+  old_value: 
+  value: '258'
+journal_details_780:
+  id: 856
+  journal_id: 1134
+  property: Predecessor
+  property_key: predecessor_id
+  old_value: 
+  value: '254'
+journal_details_781:
+  id: 857
+  journal_id: 1135
+  property: Start date
+  property_key: start_date
+  old_value: 
+  value: '2013-04-24'
+journal_details_782:
+  id: 858
+  journal_id: 1136
+  property: Due date
+  property_key: due_date
+  old_value: 
+  value: '2013-04-30'
+journal_details_783:
+  id: 859
+  journal_id: 1136
+  property: Target phase
+  property_key: version_id
+  old_value: 
+  value: Extentions
+journal_details_784:
+  id: 860
+  journal_id: 1137
+  property: Start date
+  property_key: start_date
+  old_value: 
+  value: '2013-04-06'
+journal_details_785:
+  id: 861
+  journal_id: 1138
+  property: Due date
+  property_key: due_date
+  old_value: 
+  value: '2013-04-30'
+journal_details_786:
+  id: 862
+  journal_id: 1138
+  property: Target phase
+  property_key: version_id
+  old_value: 
+  value: Extentions
+journal_details_787:
+  id: 863
+  journal_id: 1138
+  property: Start date
+  property_key: start_date
+  old_value: 
+  value: '2013-04-06'
+journal_details_788:
+  id: 864
+  journal_id: 1139
+  property: Due date
+  property_key: due_date
+  old_value: '2013-04-19'
+  value: '2013-04-30'
+journal_details_789:
+  id: 865
+  journal_id: 1139
+  property: Target phase
+  property_key: version_id
+  old_value: Version 1.0
+  value: Extentions
+journal_details_790:
+  id: 866
+  journal_id: 1140
+  property: Due date
+  property_key: due_date
+  old_value: '2013-04-19'
+  value: '2013-04-30'
+journal_details_791:
+  id: 867
+  journal_id: 1140
+  property: Target phase
+  property_key: version_id
+  old_value: Version 1.0
+  value: Extentions
+journal_details_792:
+  id: 868
+  journal_id: 1140
+  property: Start date
+  property_key: start_date
+  old_value: 
+  value: '2013-04-06'
+journal_details_793:
+  id: 869
+  journal_id: 1141
+  property: Predecessor
+  property_key: predecessor_id
+  old_value: 
+  value: '254'
+journal_details_794:
+  id: 870
+  journal_id: 1142
+  property: Predecessor
+  property_key: predecessor_id
+  old_value: 
+  value: '254'
+journal_details_795:
+  id: 871
+  journal_id: 1143
+  property: Predecessor
+  property_key: predecessor_id
+  old_value: 
+  value: '254'
+journal_details_796:
+  id: 872
+  journal_id: 1144
+  property: Predecessor
+  property_key: predecessor_id
+  old_value: '254'
+  value: 
+journal_details_797:
+  id: 873
+  journal_id: 1145
+  property: Predecessor
+  property_key: predecessor_id
+  old_value: '254'
+  value: 
+journal_details_798:
+  id: 874
+  journal_id: 1146
+  property: Predecessor
+  property_key: predecessor_id
+  old_value: '254'
+  value: 
+journal_details_799:
+  id: 875
+  journal_id: 1147
+  property: Predecessor
+  property_key: predecessor_id
+  old_value: '258'
+  value: 
+journal_details_800:
+  id: 876
+  journal_id: 1148
+  property: Predecessor
+  property_key: predecessor_id
+  old_value: 
+  value: '254'
+journal_details_801:
+  id: 877
+  journal_id: 1149
+  property: Predecessor
+  property_key: predecessor_id
+  old_value: '254'
+  value: 
+journal_details_802:
+  id: 878
+  journal_id: 1150
+  property: Predecessor
+  property_key: predecessor_id
+  old_value: 
+  value: '258'
+journal_details_803:
+  id: 888
+  journal_id: 1156
+  property: Status
+  property_key: status_id
+  old_value: New
+  value: Closed
+journal_details_804:
+  id: 889
+  journal_id: 1156
+  property: Done
+  property_key: done
+  old_value: '80'
+  value: '100'
+journal_details_805:
+  id: 890
+  journal_id: 1157
+  property: Done
+  property_key: done
+  old_value: '30'
+  value: '80'
+journal_details_806:
+  id: 891
+  journal_id: 1159
+  property: Status
+  property_key: status_id
+  old_value: New
+  value: Closed
+journal_details_807:
+  id: 892
+  journal_id: 1159
+  property: Done
+  property_key: done
+  old_value: '80'
+  value: '100'
+journal_details_808:
+  id: 894
+  journal_id: 1164
+  property: Status
+  property_key: status_id
+  old_value: New
+  value: Closed
+journal_details_809:
+  id: 895
+  journal_id: 1164
+  property: Done
+  property_key: done
+  old_value: '0'
+  value: '100'
+journal_details_810:
+  id: 904
+  journal_id: 1174
+  property: Target phase
+  property_key: version_id
+  old_value: 
+  value: Version 0.3.x
+journal_details_811:
+  id: 905
+  journal_id: 1174
+  property: Due date
+  property_key: due_date
+  old_value: 
+  value: '2013-03-17'
+journal_details_812:
+  id: 906
+  journal_id: 1175
+  property: Target phase
+  property_key: version_id
+  old_value: 
+  value: Version 0.3.x
+journal_details_813:
+  id: 907
+  journal_id: 1175
+  property: Due date
+  property_key: due_date
+  old_value: 
+  value: '2013-03-17'
+journal_details_814:
+  id: 908
+  journal_id: 1176
+  property: Target phase
+  property_key: version_id
+  old_value: 
+  value: Version 0.3.x
+journal_details_815:
+  id: 909
+  journal_id: 1176
+  property: Due date
+  property_key: due_date
+  old_value: 
+  value: '2013-03-17'
+journal_details_816:
+  id: 916
+  journal_id: 1180
+  property: Target phase
+  property_key: version_id
+  old_value: 
+  value: Version 0.3.x
+journal_details_817:
+  id: 917
+  journal_id: 1180
+  property: Due date
+  property_key: due_date
+  old_value: 
+  value: '2013-03-17'
+journal_details_818:
+  id: 918
+  journal_id: 1181
+  property: Target phase
+  property_key: version_id
+  old_value: 
+  value: Version 0.3
+journal_details_819:
+  id: 919
+  journal_id: 1181
+  property: Due date
+  property_key: due_date
+  old_value: 
+  value: '2013-02-05'
+journal_details_820:
+  id: 920
+  journal_id: 1182
+  property: Target phase
+  property_key: version_id
+  old_value: 
+  value: Version 0.3
+journal_details_821:
+  id: 921
+  journal_id: 1182
+  property: Due date
+  property_key: due_date
+  old_value: 
+  value: '2013-02-05'
+journal_details_822:
+  id: 922
+  journal_id: 1183
+  property: Target phase
+  property_key: version_id
+  old_value: 
+  value: Version 0.4
+journal_details_823:
+  id: 923
+  journal_id: 1183
+  property: Due date
+  property_key: due_date
+  old_value: 
+  value: '2013-05-19'
+journal_details_824:
+  id: 924
+  journal_id: 1184
+  property: Target phase
+  property_key: version_id
+  old_value: 
+  value: Version 0.4
+journal_details_825:
+  id: 925
+  journal_id: 1184
+  property: Due date
+  property_key: due_date
+  old_value: '2012-07-31'
+  value: '2013-05-19'
+journal_details_826:
+  id: 926
+  journal_id: 1185
+  property: Target phase
+  property_key: version_id
+  old_value: 
+  value: Version 0.4
+journal_details_827:
+  id: 927
+  journal_id: 1185
+  property: Due date
+  property_key: due_date
+  old_value: 
+  value: '2013-05-19'
+journal_details_828:
+  id: 928
+  journal_id: 1186
+  property: Target phase
+  property_key: version_id
+  old_value: 
+  value: Version 0.4
+journal_details_829:
+  id: 929
+  journal_id: 1186
+  property: Due date
+  property_key: due_date
+  old_value: 
+  value: '2013-05-19'
+journal_details_830:
+  id: 930
+  journal_id: 1187
+  property: Target phase
+  property_key: version_id
+  old_value: 
+  value: Version 0.4
+journal_details_831:
+  id: 931
+  journal_id: 1187
+  property: Due date
+  property_key: due_date
+  old_value: 
+  value: '2013-05-19'
+journal_details_832:
+  id: 956
+  journal_id: 1232
+  property: Role
+  property_key: role_id
+  old_value: Project Manager
+  value: Team Member
+journal_details_833:
+  id: 957
+  journal_id: 1233
+  property: Role
+  property_key: role_id
+  old_value: Project Manager
+  value: Team Member
+journal_details_834:
+  id: 961
+  journal_id: 1246
+  property: 
+  property_key: updated_at
+  old_value: '2013-07-14 09:20:56'
+  value: '2013-07-14 09:23:50'
+journal_details_835:
+  id: 962
+  journal_id: 1246
+  property: 
+  property_key: name
+  old_value: tset document
+  value: test document
+journal_details_836:
+  id: 963
+  journal_id: 1246
+  property: Version
+  property_key: version_id
+  old_value: 
+  value: '2'
+journal_details_837:
+  id: 964
+  journal_id: 1247
+  property: 
+  property_key: name
+  old_value: tset document
+  value: test document
+journal_details_838:
+  id: 965
+  journal_id: 1247
+  property: Target phase
+  property_key: version_id
+  old_value: 
+  value: Version 0.2
+journal_details_839:
+  id: 966
+  journal_id: 1248
+  property: 
+  property_key: updated_at
+  old_value: '2013-07-14 09:23:50'
+  value: '2013-07-14 09:24:40'
+journal_details_840:
+  id: 967
+  journal_id: 1248
+  property: Name
+  property_key: name
+  old_value: test document
+  value: test documents
+journal_details_841:
+  id: 968
+  journal_id: 1248
+  property: Category
+  property_key: category_id
+  old_value: '2'
+  value: 
+journal_details_842:
+  id: 969
+  journal_id: 1249
+  property: 
+  property_key: name
+  old_value: test document
+  value: test documents
+journal_details_843:
+  id: 970
+  journal_id: 1249
+  property: Category
+  property_key: category_id
+  old_value: Development
+  value: ''
+journal_details_844:
+  id: 1022
+  journal_id: 1324
+  property: Role
+  property_key: role_id
+  old_value: Project Manager
+  value: Team Member
+journal_details_845:
+  id: 1023
+  journal_id: 1325
+  property: Role
+  property_key: role_id
+  old_value: Team Member
+  value: Engagement Manager
+journal_details_846:
+  id: 1024
+  journal_id: 1326
+  property: Role
+  property_key: role_id
+  old_value: Team Member
+  value: Engagement Manager
+journal_details_847:
+  id: 1025
+  journal_id: 1327
+  property: Role
+  property_key: role_id
+  old_value: Team Member
+  value: Engagement Manager
+journal_details_848:
+  id: 1026
+  journal_id: 1328
+  property: Role
+  property_key: role_id
+  old_value: Project Manager
+  value: Engagement Manager
+journal_details_849:
+  id: 1027
+  journal_id: 1329
+  property: Role
+  property_key: role_id
+  old_value: Project Manager
+  value: Team Member
+journal_details_850:
+  id: 1028
+  journal_id: 1330
+  property: Role
+  property_key: role_id
+  old_value: Project Manager
+  value: Team Member
+journal_details_851:
+  id: 1030
+  journal_id: 1332
+  property: Role
+  property_key: role_id
+  old_value: Project Manager
+  value: Team Member
+journal_details_852:
+  id: 1042
+  journal_id: 1354
+  property: Role
+  property_key: role_id
+  old_value: Team Member
+  value: Engagement Manager
+journal_details_853:
+  id: 1043
+  journal_id: 1355
+  property: Role
+  property_key: role_id
+  old_value: Engagement Manager
+  value: Project Manager
+journal_details_854:
+  id: 1052
+  journal_id: 1372
+  property: Name
+  property_key: name
+  old_value: documentation
+  value: Documentation
+journal_details_855:
+  id: 1055
+  journal_id: 1383
+  property: Administrator
+  property_key: admin
+  old_value: '0'
+  value: '1'
+journal_details_856:
+  id: 1056
+  journal_id: 1384
+  property: Email
+  property_key: email
+  old_value: sg@t.com
+  value: sg@t.comm
+journal_details_857:
+  id: 1057
+  journal_id: 1385
+  property: Name
+  property_key: name
+  old_value: Sasha Grey
+  value: Sasha Greyy
+journal_details_858:
+  id: 1058
+  journal_id: 1385
+  property: Email
+  property_key: email
+  old_value: sg@t.comm
+  value: sg@t.com
+journal_details_859:
+  id: 1059
+  journal_id: 1386
+  property: Administrator
+  property_key: admin
+  old_value: '1'
+  value: '0'
+journal_details_860:
+  id: 1060
+  journal_id: 1387
+  property: Name
+  property_key: name
+  old_value: Sasha Greyy
+  value: Sasha Grey
+journal_details_861:
+  id: 1061
+  journal_id: 1412
+  property: Title
+  property_key: title
+  old_value: Test
+  value: Testa
+journal_details_862:
+  id: 1062
+  journal_id: 1412
+  property: Content
+  property_key: content
+  old_value: ''
+  value: aaaaa
+journal_details_863:
+  id: 1113
+  journal_id: 1474
+  property: Version
+  property_key: version_id
+  old_value: 
+  value: Version 0.1
+journal_details_864:
+  id: 1114
+  journal_id: 1474
+  property: Due date
+  property_key: due_date
+  old_value: 
+  value: '2012-09-30'
+journal_details_865:
+  id: 1126
+  journal_id: 1487
+  property: Status
+  property_key: status_id
+  old_value: Fixed to test
+  value: In progress
+journal_details_866:
+  id: 1127
+  journal_id: 1488
+  property: Status
+  property_key: status_id
+  old_value: New
+  value: In progress
+journal_details_867:
+  id: 1128
+  journal_id: 1489
+  property: Assigned to
+  property_key: assigned_to_id
+  old_value: Nicolas Meylan
+  value: ''
+journal_details_868:
+  id: 1129
+  journal_id: 1490
+  property: Status
+  property_key: status_id
+  old_value: In progress
+  value: New
+journal_details_869:
+  id: 1130
+  journal_id: 1491
+  property: Category
+  property_key: category_id
+  old_value: Development
+  value: ''
+journal_details_870:
+  id: 1161
+  journal_id: 1608
+  property: Done
+  property_key: done
+  old_value: '100'
+  value: '10'
+journal_details_871:
+  id: 1171
+  journal_id: 1618
+  property: Assigned to
+  property_key: assigned_to_id
+  old_value: Nicolas Meylan
+  value: ''
+journal_details_872:
+  id: 1172
+  journal_id: 1619
+  property: Assigned to
+  property_key: assigned_to_id
+  old_value: 
+  value: Nicolas Meylan
+journal_details_873:
+  id: 1173
+  journal_id: 1620
+  property: Version
+  property_key: version_id
+  old_value: Version 0.1
+  value: Version 0.2
+journal_details_874:
+  id: 1174
+  journal_id: 1620
+  property: Due date
+  property_key: due_date
+  old_value: '2012-09-30'
+  value: '2012-11-17'
+journal_details_875:
+  id: 1182
+  journal_id: 1627
+  property: Status
+  property_key: status_id
+  old_value: New
+  value: Fixed to test
+journal_details_876:
+  id: 1183
+  journal_id: 1627
+  property: Done
+  property_key: done
+  old_value: '0'
+  value: '100'
+journal_details_877:
+  id: 1187
+  journal_id: 1633
+  property: Status
+  property_key: status_id
+  old_value: In progress
+  value: Fixed to test
+journal_details_878:
+  id: 1188
+  journal_id: 1633
+  property: Done
+  property_key: done
+  old_value: '10'
+  value: '100'
+journal_details_879:
+  id: 1189
+  journal_id: 1634
+  property: Predecessor
+  property_key: predecessor_id
+  old_value: 
+  value: '272'
+journal_details_880:
+  id: 1199
+  journal_id: 1654
+  property: Role
+  property_key: role_id
+  old_value: Project Manager
+  value: Team Member
+journal_details_881:
+  id: 1200
+  journal_id: 1655
+  property: Role
+  property_key: role_id
+  old_value: Team Member
+  value: Project Manager
+journal_details_882:
+  id: 1206
+  journal_id: 1664
+  property: Role
+  property_key: role_id
+  old_value: Project Manager
+  value: Team Member
+journal_details_883:
+  id: 1207
+  journal_id: 1665
+  property: Role
+  property_key: role_id
+  old_value: Team Member
+  value: Project Manager
+journal_details_884:
+  id: 1208
+  journal_id: 1666
+  property: Role
+  property_key: role_id
+  old_value: Project Manager
+  value: Engagement Manager
+journal_details_885:
+  id: 1212
+  journal_id: 1672
+  property: Role
+  property_key: role_id
+  old_value: Engagement Manager
+  value: Team Member
+journal_details_886:
+  id: 1213
+  journal_id: 1673
+  property: Role
+  property_key: role_id
+  old_value: Team Member
+  value: Project Manager
+journal_details_887:
+  id: 1214
+  journal_id: 1674
+  property: Role
+  property_key: role_id
+  old_value: Project Manager
+  value: Team Member
+journal_details_888:
+  id: 1215
+  journal_id: 1676
+  property: Due date
+  property_key: target_date
+  old_value: '2013-05-19'
+  value: '2013-12-25'
+journal_details_889:
+  id: 1222
+  journal_id: 1698
+  property: Content
+  property_key: content
+  old_value: ''
+  value: tgg
+journal_details_890:
+  id: 1223
+  journal_id: 1699
+  property: Assigned to
+  property_key: assigned_to_id
+  old_value: Nicolas Meylan
+  value: Alexis Monnet
+journal_details_891:
+  id: 1225
+  journal_id: 1719
+  property: Category
+  property_key: category_id
+  old_value: 
+  value: UX
+journal_details_892:
+  id: 1226
+  journal_id: 1720
+  property: Role
+  property_key: role_id
+  old_value: Team Member
+  value: Project Manager
+journal_details_893:
+  id: 1227
+  journal_id: 1721
+  property: Version
+  property_key: version_id
+  old_value: Version 1
+  value: ''
+journal_details_894:
+  id: 1228
+  journal_id: 1725
+  property: Predecessor
+  property_key: predecessor_id
+  old_value: 
+  value: '11'
+journal_details_895:
+  id: 1229
+  journal_id: 1726
+  property: Predecessor
+  property_key: predecessor_id
+  old_value: '11'
+  value: 
+journal_details_896:
+  id: 1230
+  journal_id: 1727
+  property: Predecessor
+  property_key: predecessor_id
+  old_value: 
+  value: '12'
+journal_details_897:
+  id: 1231
+  journal_id: 1728
+  property: Predecessor
+  property_key: predecessor_id
+  old_value: '12'
+  value: 
+journal_details_898:
+  id: 1232
+  journal_id: 1729
+  property: Role
+  property_key: role_id
+  old_value: Project Manager
+  value: Team Member
+journal_details_899:
+  id: 1233
+  journal_id: 1730
+  property: Role
+  property_key: role_id
+  old_value: Team Member
+  value: Project Manager
+journal_details_900:
+  id: 1234
+  journal_id: 1731
+  property: Role
+  property_key: role_id
+  old_value: Project Manager
+  value: Engagement Manager
+journal_details_901:
+  id: 1235
+  journal_id: 1732
+  property: Role
+  property_key: role_id
+  old_value: Engagement Manager
+  value: Team Member
+journal_details_902:
+  id: 1236
+  journal_id: 1733
+  property: Role
+  property_key: role_id
+  old_value: Team Member
+  value: Project Manager
+journal_details_903:
+  id: 1238
+  journal_id: 1737
+  property: Category
+  property_key: category_id
+  old_value: UX
+  value: Development
+journal_details_904:
+  id: 1239
+  journal_id: 1738
+  property: Category
+  property_key: category_id
+  old_value: 
+  value: Development
+journal_details_905:
+  id: 1240
+  journal_id: 1738
+  property: Done
+  property_key: done
+  old_value: '0'
+  value: '100'
+journal_details_906:
+  id: 1241
+  journal_id: 1739
+  property: Done
+  property_key: done
+  old_value: '100'
+  value: '0'
+journal_details_907:
+  id: 1242
+  journal_id: 1740
+  property: Done
+  property_key: done
+  old_value: '100'
+  value: '0'
+journal_details_908:
+  id: 1243
+  journal_id: 1741
+  property: Status
+  property_key: status_id
+  old_value: Closed
+  value: Fixed to test
+journal_details_909:
+  id: 1244
+  journal_id: 1741
+  property: Done
+  property_key: done
+  old_value: '0'
+  value: '100'
+journal_details_910:
+  id: 1245
+  journal_id: 1742
+  property: Status
+  property_key: status_id
+  old_value: Fixed to test
+  value: New
+journal_details_911:
+  id: 1246
+  journal_id: 1743
+  property: Status
+  property_key: status_id
+  old_value: Fixed to test
+  value: New
+journal_details_912:
+  id: 1247
+  journal_id: 1744
+  property: Status
+  property_key: status_id
+  old_value: Fixed to test
+  value: New
+journal_details_913:
+  id: 1248
+  journal_id: 1745
+  property: Status
+  property_key: status_id
+  old_value: New
+  value: Fixed to test
+journal_details_914:
+  id: 1249
+  journal_id: 1745
+  property: Done
+  property_key: done
+  old_value: '0'
+  value: '100'
+journal_details_915:
+  id: 1250
+  journal_id: 1746
+  property: Status
+  property_key: status_id
+  old_value: New
+  value: Fixed to test
+journal_details_916:
+  id: 1251
+  journal_id: 1746
+  property: Done
+  property_key: done
+  old_value: '0'
+  value: '100'
+journal_details_917:
+  id: 1252
+  journal_id: 1747
+  property: Status
+  property_key: status_id
+  old_value: New
+  value: Fixed to test
+journal_details_918:
+  id: 1253
+  journal_id: 1747
+  property: Done
+  property_key: done
+  old_value: '0'
+  value: '100'
+journal_details_919:
+  id: 1254
+  journal_id: 1748
+  property: Version
+  property_key: version_id
+  old_value: Version 0.2
+  value: Version 0.1
+journal_details_920:
+  id: 1255
+  journal_id: 1748
+  property: Due date
+  property_key: due_date
+  old_value: '2013-05-19'
+  value: '2012-09-30'
+journal_details_921:
+  id: 1256
+  journal_id: 1749
+  property: Version
+  property_key: version_id
+  old_value: Version 0.2
+  value: Version 0.1
+journal_details_922:
+  id: 1257
+  journal_id: 1749
+  property: Due date
+  property_key: due_date
+  old_value: '2013-05-19'
+  value: '2012-09-30'
+journal_details_923:
+  id: 1258
+  journal_id: 1750
+  property: Version
+  property_key: version_id
+  old_value: Version 0.2
+  value: Version 0.1
+journal_details_924:
+  id: 1259
+  journal_id: 1750
+  property: Due date
+  property_key: due_date
+  old_value: 
+  value: '2012-09-30'
+journal_details_925:
+  id: 1260
+  journal_id: 1751
+  property: Version
+  property_key: version_id
+  old_value: 
+  value: Version 0.1
+journal_details_926:
+  id: 1261
+  journal_id: 1752
+  property: Version
+  property_key: version_id
+  old_value: 
+  value: Version 0.1
+journal_details_927:
+  id: 1262
+  journal_id: 1758
+  property: Category
+  property_key: category_id
+  old_value: 
+  value: Development
+journal_details_928:
+  id: 1263
+  journal_id: 1762
+  property: Assigned to
+  property_key: assigned_to_id
+  old_value: 
+  value: Nicolas Meylan
+journal_details_929:
+  id: 1264
+  journal_id: 1764
+  property: Status
+  property_key: status_id
+  old_value: Closed
+  value: New

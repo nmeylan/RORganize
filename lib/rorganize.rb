@@ -11,9 +11,9 @@ unless $0.end_with?('rake')
   Rorganize::MenuManager.map :project_menu do |menu|
     #menu.add(menu_name, menu_url, options)
     #If you have one menu item per controller
-    #Id must be declare as following: menu_controller
+    #Client id must be declare as following: menu_controller
     #If you have more than one item per controller
-    #Id must be declare as following: menu_controller_action
+    #Client id must be declare as following: menu_controller_action
     menu.add(:overview, I18n.t(:label_overview), {:controller => 'projects', :action => 'overview'}, {:id => "menu_projects_overview"})
     menu.add(:activity, I18n.t(:label_activity), {:controller => 'projects', :action => 'activity'}, {:id => "menu_projects_activity"})
     menu.add(:roadmap, I18n.t(:label_roadmap), {:controller => 'roadmap', :action => 'index'}, {:id => "menu_roadmap"})

@@ -3,6 +3,7 @@
 # Encoding: UTF-8
 # File: module_configuration.rb
 
+#These module can't be disabled.
 always_enabled_module = [{:controller => "settings", :action => "index"},
   {:controller => "members", :action => "index"},
   {:controller => "categories", :action => "index"},

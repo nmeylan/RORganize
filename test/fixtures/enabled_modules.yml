@@ -1,0 +1,139 @@
+---
+enabled_modules_001:
+  id: 7
+  name: overview
+  action: overview
+  controller: project
+  project_id: 5
+enabled_modules_002:
+  id: 8
+  name: activity
+  action: activity
+  controller: project
+  project_id: 5
+enabled_modules_003:
+  id: 9
+  name: roadmap
+  action: index
+  controller: roadmap
+  project_id: 5
+enabled_modules_004:
+  id: 10
+  name: requests
+  action: index
+  controller: issues
+  project_id: 5
+enabled_modules_005:
+  id: 11
+  name: settings
+  action: index
+  controller: settings
+  project_id: 5
+enabled_modules_006:
+  id: 12
+  name: overview
+  action: overview
+  controller: project
+  project_id: 6
+enabled_modules_007:
+  id: 13
+  name: roadmap
+  action: index
+  controller: roadmap
+  project_id: 6
+enabled_modules_008:
+  id: 14
+  name: requests
+  action: index
+  controller: issues
+  project_id: 6
+enabled_modules_009:
+  id: 69
+  name: overview
+  action: overview
+  controller: project
+  project_id: 7
+enabled_modules_010:
+  id: 70
+  name: activity
+  action: activity
+  controller: project
+  project_id: 7
+enabled_modules_011:
+  id: 71
+  name: roadmap
+  action: index
+  controller: roadmap
+  project_id: 7
+enabled_modules_012:
+  id: 72
+  name: requests
+  action: index
+  controller: issues
+  project_id: 7
+enabled_modules_013:
+  id: 73
+  name: wiki
+  action: index
+  controller: wiki
+  project_id: 7
+enabled_modules_014:
+  id: 74
+  name: documents
+  action: index
+  controller: documents
+  project_id: 7
+enabled_modules_015:
+  id: 75
+  name: settings
+  action: index
+  controller: settings
+  project_id: 7
+enabled_modules_016:
+  id: 83
+  name: overview
+  action: overview
+  controller: projects
+  project_id: 1
+enabled_modules_017:
+  id: 84
+  name: activity
+  action: activity
+  controller: projects
+  project_id: 1
+enabled_modules_018:
+  id: 85
+  name: roadmap
+  action: index
+  controller: roadmap
+  project_id: 1
+enabled_modules_019:
+  id: 86
+  name: requests
+  action: index
+  controller: issues
+  project_id: 1
+enabled_modules_020:
+  id: 87
+  name: scenarios
+  action: index
+  controller: scenarios
+  project_id: 1
+enabled_modules_021:
+  id: 88
+  name: wiki
+  action: index
+  controller: wiki
+  project_id: 1
+enabled_modules_022:
+  id: 89
+  name: documents
+  action: index
+  controller: documents
+  project_id: 1
+enabled_modules_023:
+  id: 90
+  name: settings
+  action: index
+  controller: settings
+  project_id: 1

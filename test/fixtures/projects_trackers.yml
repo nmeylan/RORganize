@@ -1,13 +1,25 @@
 ---
 projects_trackers_001:
-  tracker_id: 2
-  project_id: 3
-projects_trackers_002:
   tracker_id: 1
-  project_id: 3
+  project_id: 5
+projects_trackers_002:
+  tracker_id: 2
+  project_id: 5
 projects_trackers_003:
   tracker_id: 1
-  project_id: 1
+  project_id: 6
 projects_trackers_004:
+  tracker_id: 2
+  project_id: 6
+projects_trackers_005:
+  tracker_id: 1
+  project_id: 7
+projects_trackers_006:
+  tracker_id: 2
+  project_id: 7
+projects_trackers_007:
+  tracker_id: 1
+  project_id: 1
+projects_trackers_008:
   tracker_id: 2
   project_id: 1

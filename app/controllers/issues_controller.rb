@@ -269,7 +269,7 @@ class IssuesController < ApplicationController
     filter_params = params[:filter] ? params[:filter].clone : nil
     filter = nil
     if params[:type].eql?('filter') && params[:filter] && params[:filters_list] && params[:filters_list].any?
-      filter = issues_filter(params[:filter], @project.id)
+      filter = issues_filter(params[:filter])
     elsif params[:commit]
       #filter SQL content
       session["#{@project.slug}_controller_issues_filter"] = nil

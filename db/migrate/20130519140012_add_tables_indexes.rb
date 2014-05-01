@@ -1,16 +1,16 @@
 class AddTablesIndexes < ActiveRecord::Migration
   def up
     add_index :attachments, :object_id
-    add_index :categories, :project_slug
+    add_index :categories, :project_id
     add_index :checklist_items, :enumeration_id
     add_index :checklist_items, :issue_id
     add_index :documents, :version_id
-    add_index :documents, :project_slug
+    add_index :documents, :project_id
     add_index :documents, :category_id
-    add_index :enabled_modules, :project_slug
+    add_index :enabled_modules, :project_id
     add_index :issues, :author_id
     add_index :issues, :assigned_to_id
-    add_index :issues, :project_slug
+    add_index :issues, :project_id
     add_index :issues, :tracker_id
     add_index :issues, :version_id
     add_index :issues, :category_id
@@ -21,19 +21,19 @@ class AddTablesIndexes < ActiveRecord::Migration
     add_index :issues_steps, :issue_id
     add_index :issues_steps, :step_id
     add_index :journals, :user_id
-    add_index :journals, :project_slug
-    add_index :members, :project_slug
+    add_index :journals, :project_id
+    add_index :members, :project_id
     add_index :members, :user_id
     add_index :members, :role_id
     add_index :permissions_roles, :role_id
     add_index :permissions_roles, :permission_id
     add_index :projects_trackers, :tracker_id
-    add_index :projects_trackers, :project_slug
-    add_index :projects_versions, :project_slug
+    add_index :projects_trackers, :project_id
+    add_index :projects_versions, :project_id
     add_index :projects_versions, :version_id
     add_index :queries, :author_id
-    add_index :queries, :project_slug
-    add_index :scenarios, :project_slug
+    add_index :queries, :project_id
+    add_index :scenarios, :project_id
     add_index :scenarios, :version_id
     add_index :scenarios, :actor_id
     add_index :steps, :scenario_id
@@ -41,16 +41,16 @@ class AddTablesIndexes < ActiveRecord::Migration
 
   def down
     remove_index :attachments, :object_id
-    remove_index :categories, :project_slug
+    remove_index :categories, :project_id
     remove_index :checklist_items, :enumeration_id
     remove_index :checklist_items, :issue_id
     remove_index :documents, :version_id
-    remove_index :documents, :project_slug
+    remove_index :documents, :project_id
     remove_index :documents, :category_id
-    remove_index :enabled_modules, :project_slug
+    remove_index :enabled_modules, :project_id
     remove_index :issues, :author_id
     remove_index :issues, :assigned_to_id
-    remove_index :issues, :project_slug
+    remove_index :issues, :project_id
     remove_index :issues, :tracker_id
     remove_index :issues, :version_id
     remove_index :issues, :category_id
@@ -61,19 +61,19 @@ class AddTablesIndexes < ActiveRecord::Migration
     remove_index :issues_steps, :issue_id
     remove_index :issues_steps, :step_id
     remove_index :journals, :user_id
-    remove_index :journals, :project_slug
-    remove_index :members, :project_slug
+    remove_index :journals, :project_id
+    remove_index :members, :project_id
     remove_index :members, :user_id
     remove_index :members, :role_id
     remove_index :permissions_roles, :role_id
     remove_index :permissions_roles, :permission_id
     remove_index :projects_trackers, :tracker_id
-    remove_index :projects_trackers, :project_slug
-    remove_index :projects_versions, :project_slug
+    remove_index :projects_trackers, :project_id
+    remove_index :projects_versions, :project_id
     remove_index :projects_versions, :version_id
     remove_index :queries, :author_id
-    remove_index :queries, :project_slug
-    remove_index :scenarios, :project_slug
+    remove_index :queries, :project_id
+    remove_index :scenarios, :project_id
     remove_index :scenarios, :version_id
     remove_index :scenarios, :actor_id
     remove_index :steps, :scenario_id

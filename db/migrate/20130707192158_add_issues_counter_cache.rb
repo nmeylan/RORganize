@@ -4,11 +4,11 @@ class AddIssuesCounterCache < ActiveRecord::Migration
     add_column :issues, :attachments_count, :integer, :default => 0
 
     Issue.reset_column_information
-    Issue.find(:all).each do |i|
+    Issue.all.each do |i|
       Issue.update_counters i.id, :attachments_count => i.attachments.length
     end
     Issue.reset_column_information
-    Issue.find(:all).each do |i|
+    Issue.all.each do |i|
       Issue.update_counters i.id, :checklist_items_count => i.checklist_items.length
     end
   end

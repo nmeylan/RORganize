@@ -11,3 +11,39 @@ categories_003:
   id: 3
   project_id: 1
   name: UX
+categories_004:
+  id: 4
+  project_id: 5
+  name: Terrain
+categories_005:
+  id: 5
+  project_id: 5
+  name: Intelligence artificiel
+categories_006:
+  id: 6
+  project_id: 5
+  name: Expérience utilisateur
+categories_007:
+  id: 7
+  project_id: 5
+  name: Jeu
+categories_008:
+  id: 8
+  project_id: 7
+  name: Vues
+categories_009:
+  id: 9
+  project_id: 7
+  name: Controller
+categories_010:
+  id: 10
+  project_id: 7
+  name: Modeles
+categories_011:
+  id: 11
+  project_id: 7
+  name: Conception
+categories_012:
+  id: 19
+  project_id: 1
+  name: Documentation

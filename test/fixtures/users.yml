@@ -5,17 +5,18 @@ users_001:
   login: nmeylan
   admin: 1
   email: nmeylan@gmail.com
-  encrypted_password: $2a$10$EHm0F6r2qrvZXSJ8bmsnzuD3/BMkmj1K4YLOBmjhHm0s9FgoCvT32
+  encrypted_password: $2a$10$tGve9Yqzujn4F06IGuCcMOZV0DnPQpYjsiQYz72dwcxHHdWxcQ8FO
   reset_password_token: 
   reset_password_sent_at: 
-  remember_created_at: 2012-11-09 20:26:03.000000000 Z
-  sign_in_count: 73
-  current_sign_in_at: 2012-11-09 20:26:03.000000000 Z
-  last_sign_in_at: 2012-10-31 13:28:59.000000000 Z
+  remember_created_at: 
+  sign_in_count: 271
+  current_sign_in_at: 2014-04-28 11:53:37.000000000 Z
+  last_sign_in_at: 2014-02-20 08:26:23.000000000 Z
   current_sign_in_ip: 127.0.0.1
   last_sign_in_ip: 127.0.0.1
   created_at: 2012-07-01 12:22:35.000000000 Z
-  updated_at: 2012-11-09 20:26:03.000000000 Z
+  updated_at: 2014-04-28 11:53:37.000000000 Z
+  slug: nicolas-meylan
 users_002:
   id: 4
   name: James Bond
@@ -26,10 +27,47 @@ users_002:
   reset_password_token: 
   reset_password_sent_at: 
   remember_created_at: 
-  sign_in_count: 6
-  current_sign_in_at: 2012-11-09 20:36:37.000000000 Z
-  last_sign_in_at: 2012-10-28 16:52:33.000000000 Z
-  current_sign_in_ip: 127.0.0.1
-  last_sign_in_ip: 127.0.0.1
+  sign_in_count: 10
+  current_sign_in_at: 2013-02-16 19:05:20.000000000 Z
+  last_sign_in_at: 2013-02-16 16:49:16.000000000 Z
+  current_sign_in_ip: 82.230.144.76
+  last_sign_in_ip: 82.230.144.76
   created_at: 2012-09-30 12:57:00.000000000 Z
-  updated_at: 2012-11-09 20:36:37.000000000 Z
+  updated_at: 2013-02-16 19:05:20.000000000 Z
+  slug: james-bond
+users_003:
+  id: 5
+  name: Alexis Monnet
+  login: amonnet
+  admin: 0
+  email: alexis.monnet01@gmail.com
+  encrypted_password: $2a$10$GcKzN5xLVsnOhC.act4yve3p8LHInffy/iCw7jGqzbtD071pQdGdC
+  reset_password_token: 
+  reset_password_sent_at: 
+  remember_created_at: 2013-06-04 15:41:00.000000000 Z
+  sign_in_count: 20
+  current_sign_in_at: 2013-06-04 15:41:00.000000000 Z
+  last_sign_in_at: 2013-06-02 13:54:16.000000000 Z
+  current_sign_in_ip: 82.67.52.161
+  last_sign_in_ip: 2.3.49.223
+  created_at: 2012-12-20 14:41:32.000000000 Z
+  updated_at: 2013-06-04 15:41:00.000000000 Z
+  slug: alexis-monnet
+users_004:
+  id: 7
+  name: Sasha Grey
+  login: sgrey
+  admin: 0
+  email: sg@t.com
+  encrypted_password: $2a$10$sN6V68VLqMN/4GqNGJJuh.6ptMtH1u9.1EROhSxGZzWEFtZz.Dei2
+  reset_password_token: 
+  reset_password_sent_at: 
+  remember_created_at: 
+  sign_in_count: 0
+  current_sign_in_at: 
+  last_sign_in_at: 
+  current_sign_in_ip: 
+  last_sign_in_ip: 
+  created_at: 2013-07-22 13:23:23.000000000 Z
+  updated_at: 2013-07-22 13:34:15.000000000 Z
+  slug: sasha-grey

@@ -1,4 +1,5 @@
 module IssuesHelper
+  include Rorganize::MagicFilter
   #Insert updated attributes in journal detail
   def issues_journal_insertion(updated_attrs, journal, journalized_property, foreign_key_value = {})
     #Remove attributes that won't be considarate in journal update
@@ -45,7 +46,7 @@ module IssuesHelper
     return form_hash.to_json
   end
 
-  def issues_filter(hash, project_id)
+  def issues_filter(hash)
     #attributes from db: get real attribute name to build query
     #noinspection RubyStringKeysInHashInspection,RubyStringKeysInHashInspection
     attributes = {'assigned_to' => 'assigned_to_id',

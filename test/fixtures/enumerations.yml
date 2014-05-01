@@ -3,22 +3,22 @@ enumerations_001:
   id: 1
   opt: ISTS
   name: New
-  position: 1
+  position: 2
 enumerations_002:
   id: 2
   opt: ISTS
   name: In progress
-  position: 2
+  position: 7
 enumerations_003:
   id: 3
   opt: ISTS
   name: Closed
-  position: 7
+  position: 3
 enumerations_004:
   id: 4
   opt: ISTS
   name: Fixed to test
-  position: 3
+  position: 1
 enumerations_005:
   id: 5
   opt: ISTS
@@ -28,24 +28,34 @@ enumerations_006:
   id: 6
   opt: ISTS
   name: Not satisfying
-  position: 5
+  position: 4
 enumerations_007:
   id: 7
   opt: ISTS
   name: Redo
-  position: 4
+  position: 5
 enumerations_008:
-  id: 15
+  id: 8
   opt: CLIS
   name: New
   position: 1
 enumerations_009:
-  id: 16
+  id: 9
   opt: CLIS
   name: Started
   position: 2
 enumerations_010:
-  id: 17
+  id: 10
   opt: CLIS
   name: Finish
   position: 3
+enumerations_011:
+  id: 11
+  opt: SCAC
+  name: Administrator
+  position: 1
+enumerations_012:
+  id: 12
+  opt: SCAC
+  name: User
+  position: 2
