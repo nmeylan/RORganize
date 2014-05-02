@@ -2,7 +2,6 @@
 # Date: 13 juil. 2012
 # Encoding: UTF-8
 # File: issue.rb
-
 class Issue < RorganizeActiveRecord
   #Class variables
   assign_journalized_properties({'status_id' => 'Status', 'category_id' => 'Category', 'assigned_to_id' => 'Assigned to', 'tracker_id' => 'Tracker', 'due_date' => 'Due date', 'start_date' => 'Start date', 'done' => 'Done', 'estimated_time' => 'Estimated time', 'version_id' => 'Version', 'predecessor_id' => 'Predecessor'})
@@ -217,6 +216,32 @@ class Issue < RorganizeActiveRecord
         end
       end
     end
+  end
+
+  def self.conditions_string(hash)
+    #attributes from db: get real attribute name to build query
+    #noinspection RubyStringKeysInHashInspection,RubyStringKeysInHashInspection
+    attributes = {'assigned_to' => 'issues.assigned_to_id',
+                  'author' => 'issues.author_id',
+                  'category' => 'issues.category_id',
+                  'created_at' => 'issues.created_at',
+                  'done' => 'issues.done',
+                  'due_date' => 'issues.due_date',
+                  'start_date' => 'issues.start_date',
+                  'status' => 'issues.status_id',
+                  'subject' => 'issues.subject',
+                  'tracker' => 'issues.tracker_id',
+                  'version' => 'issues.version_id',
+                  'updated_at' => 'issues.updated_at'
+    }
+    hash.each do |k, v|
+      if v['operator'].eql?('open')
+        v['value'] = IssuesStatus.where(:is_closed => 0).collect { |status| status.id }
+      elsif v['operator'].eql?('close')
+        v['value'] = IssuesStatus.where(:is_closed => 1).collect { |status| status.id }
+      end
+    end
+    Rorganize::MagicFilter.generics_filter(hash, attributes)
   end
 
 

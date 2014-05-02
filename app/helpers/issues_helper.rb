@@ -1,5 +1,4 @@
 module IssuesHelper
-  include Rorganize::MagicFilter
   #Insert updated attributes in journal detail
   def issues_journal_insertion(updated_attrs, journal, journalized_property, foreign_key_value = {})
     #Remove attributes that won't be considarate in journal update
@@ -44,32 +43,6 @@ module IssuesHelper
     form_hash['updated_at'] = generics_filter_date_field('updated_at',hash_for_radio['updated'], 'Updated')
     form_hash.each{|k,v| v.gsub(/"/,"'").gsub(/\n/, '')}
     return form_hash.to_json
-  end
-
-  def issues_filter(hash)
-    #attributes from db: get real attribute name to build query
-    #noinspection RubyStringKeysInHashInspection,RubyStringKeysInHashInspection
-    attributes = {'assigned_to' => 'assigned_to_id',
-      'author' => 'author_id',
-      'category' => 'category_id',
-      'created_at' => 'created_at',
-      'done' => 'done',
-      'due_date' => 'due_date',
-      'start_date' => 'start_date',
-      'status' => 'status_id',
-      'subject' => 'subject',
-      'tracker' => 'tracker_id',
-      'version' => 'version_id',
-      'updated_at' => 'updated_at'
-    }
-    hash.each do |k,v|
-      if v['operator'].eql?('open')
-        v['value'] = IssuesStatus.where(:is_closed => 0).collect{|status| status.id}
-      elsif v['operator'].eql?('close')
-        v['value'] = IssuesStatus.where(:is_closed => 1).collect{|status| status.id}
-      end
-    end
-    generics_filter(hash,attributes)
   end
 
   def issues_activities_text_builder(journal, specified_project = true)

@@ -132,7 +132,7 @@ class DocumentsController < ApplicationController
     filter = nil
     slug = @project.slug
     if params[:type].eql?('filter') && params[:filter] && params[:filters_list] && params[:filters_list].any?
-      filter = documents_filter(params[:filter])
+      filter = Document.conditions_string(params[:filter])
     elsif params[:commit]
       #filter SQL content
       session["#{slug}_controller_documents_filter"] = nil

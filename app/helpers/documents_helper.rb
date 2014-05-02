@@ -4,7 +4,6 @@
 # File: documents_helper.rb
 
 module DocumentsHelper
-  include Rorganize::MagicFilter
 
   def documents_generics_form_to_json
     form_hash = {}
@@ -18,18 +17,6 @@ module DocumentsHelper
     form_hash['updated_at'] = generics_filter_date_field('updated_at', hash_for_radio['updated'], 'Updated')
     form_hash.each { |k, v| v.gsub(/"/, "'").gsub(/\n/, '') }
     return form_hash.to_json
-  end
-
-  def documents_filter(hash)
-    #attributes from db: get real attribute name to build query
-    attributes = {
-        'category' => 'category_id',
-        'created_at' => 'created_at',
-        'name' => 'name',
-        'version' => 'version_id',
-        'updated_at' => 'updated_at'
-    }
-    generics_filter(hash, attributes)
   end
 
   def documents_filter_js_tag
