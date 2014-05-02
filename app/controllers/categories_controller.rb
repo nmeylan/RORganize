@@ -76,9 +76,7 @@ class CategoriesController < ApplicationController
         flash[:notice] = t(:successful_deletion)
         redirect_to category_path
       end
-      format.js do |js|
-        respond_to_js :locals => {:id => params[:id]}, :response_header => :success, :response_content => t(:successful_deletion)
-      end
+      format.js {respond_to_js :locals => {:id => params[:id]}, :response_header => :success, :response_content => t(:successful_deletion)}
     end
   end
   private

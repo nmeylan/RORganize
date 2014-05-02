@@ -8,12 +8,12 @@ module Rorganize
     module ModuleManagerHelper
       def module_enabled?(project_id, action, controller)
         always_enabled_module = Rorganize::ModuleManager.always_enabled_module
-        if always_enabled_module.any?{|mod|(mod[:controller].eql?(controller.downcase) && mod[:action].eql?("index")) || (mod[:controller].eql?(controller.downcase) && mod[:action].eql?(action.downcase)) }
+        if always_enabled_module.any?{|mod|(mod[:controller].eql?(controller.downcase) && mod[:action].eql?('index')) || (mod[:controller].eql?(controller.downcase) && mod[:action].eql?(action.downcase)) }
           return true
         end
         module_is_enabled = false
         Rorganize::ModuleManager.modules(:project).enabled_modules[project_id].each do |m|
-          module_is_enabled = (m[:controller].eql?(controller.downcase) && m[:action].eql?("index")) ||
+          module_is_enabled = (m[:controller].eql?(controller.downcase) && m[:action].eql?('index')) ||
             (m[:controller].eql?(controller.downcase) && m[:action].eql?(action.downcase))
           if module_is_enabled
             break
@@ -89,7 +89,7 @@ module Rorganize
 
       def enabled_module?(action, controller)
         @module_items.each do |m|
-          module_is_enabled = (m.controller.eql?(controller.downcase) && m.action.eql?("index")) || (m.controller.eql?(controller.downcase) && m.action.eql?(action.downcase))
+          module_is_enabled = (m.controller.eql?(controller.downcase) && m.action.eql?('index')) || (m.controller.eql?(controller.downcase) && m.action.eql?(action.downcase))
           if module_is_enabled
             break
           end

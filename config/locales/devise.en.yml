@@ -55,3 +55,10 @@ en:
         subject: 'Reset password instructions'
       unlock_instructions:
         subject: 'Unlock Instructions'
+  link_new_scenario: "New scenario"
+  link_create_issue: "New issue"
+  link_add_issue: "Add issue"
+  field_steps: "Steps"
+  field_actor: "Actor"
+  successfull_update: "Succefful update"
+  successful_created: "Successfull creation"

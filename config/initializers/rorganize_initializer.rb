@@ -4,5 +4,5 @@
 # File: rorganize_initalizer.rb
 
 unless $0.end_with?('rake')
-  require "rorganize"
+  require 'rorganize'
 end

@@ -33,48 +33,48 @@ module Rorganize
       end
     end
     def create_journal
-      p_id = self.respond_to?("project_id") ? self.project_id : nil
+      p_id = self.respond_to?('project_id') ? self.project_id : nil
       Journal.create(:user_id => User.current.id,
         :journalized_id => self.id,
         :journalized_type => self.class.to_s,
         :journalized_identifier => journalized_identifier,
         :notes => '',
-        :action_type => "created",
+        :action_type => 'created',
         :project_id => p_id)
     end
     def update_journal
-      p_id = self.respond_to?("project_id") ? self.project_id : nil
-      notes = self.respond_to?("notes") && !self.notes.nil? ? self.notes : ""
+      p_id = self.respond_to?('project_id') ? self.project_id : nil
+      notes = self.respond_to?('notes') && !self.notes.nil? ? self.notes : ''
       properties =  self.class.journalized_properties
       foreign_keys = self.class.foreign_keys
       journalized_attributes = properties.keys
       updated_journalized_attributes = self.changes.delete_if{|attribute, value| !journalized_attributes.include?(attribute)}
       #Create journal only if a relevant attribute has been updated
-      if updated_journalized_attributes.any? || (!notes.nil? && !notes.eql?(""))
+      if updated_journalized_attributes.any? || (!notes.nil? && !notes.eql?(''))
         journal = Journal.create(:user_id => User.current.id,
           :journalized_id => self.id,
           :journalized_type => self.class.to_s,
           :journalized_identifier => journalized_identifier,
           :notes => notes,
-          :action_type => "updated",
+          :action_type => 'updated',
           :project_id => p_id)
         journal.detail_insertion(updated_journalized_attributes, properties, foreign_keys)
       end
     end
     def destroy_journal
-      p_id = self.respond_to?("project_id") ? self.project_id : nil
+      p_id = self.respond_to?('project_id') ? self.project_id : nil
       Journal.create(:user_id => User.current.id,
         :journalized_id => self.id,
         :journalized_type => self.class.to_s,
         :journalized_identifier => journalized_identifier,
         :notes => '',
-        :action_type => "deleted",
+        :action_type => 'deleted',
         :project_id => p_id)
     end
     
     def string_identifier_method
       #Identify item with a user friendly id, select first of the following attribute
-      identifier_attribute_names = ["slug", "name", "title", "identifier"] # Or add more
+      identifier_attribute_names = %w(slug name title identifier) # Or add more
       identifier_attribute_names.each do |identifier_attribute_name|
         if self.respond_to?(identifier_attribute_name)
           return identifier_attribute_name

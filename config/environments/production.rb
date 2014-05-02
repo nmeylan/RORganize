@@ -49,7 +49,7 @@ RORganize::Application.configure do
   # config.action_controller.asset_host = "http://assets.example.com"
 
   # Precompile additional assets (application.js, application.css, and all non-JS/CSS are already added)
-  config.assets.precompile = ['*.js', '*.css', '*.png', '*.jpg', '*.jpeg', '*.bmp', '*.gif']
+  config.assets.precompile = %w(*.js *.css *.png *.jpg *.jpeg *.bmp *.gif)
   # Disable delivery errors, bad email addresses will be ignored
   # config.action_mailer.raise_delivery_errors = false
 
@@ -66,5 +66,5 @@ RORganize::Application.configure do
   # Send deprecation notices to registered listeners
   #  config.active_support.deprecation = :notice
   #ImageMagick
-  Paperclip.options[:command_path] = "/usr/local/bin/"
+  Paperclip.options[:command_path] = '/usr/local/bin/'
 end

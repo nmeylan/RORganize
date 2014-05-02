@@ -35,6 +35,6 @@
   <%= will_paginate(@issues, :renderer => 'RemoteLinkRenderer')%>
   <div class="autocomplete-combobox nosearch per_page">
     <label for="per_page"><%=t(:label_per_page)%></label>
-    <%= select_tag 'per_page', options_for_select([%w(25 25), %w(50 50), %w(100 100)], session[:controller_users_per_page]),:class => 'chzn-select cbb-small', :id => 'per_page', 'data-link' => users_path()%>
+    <%= select_tag 'per_page', options_for_select([%w(25 25), %w(50 50), %w(100 100)], session[:controller_users_per_page]), :class => 'chzn-select cbb-small', :id => 'per_page', 'data-link' => users_path%>
   </div>
 </div>

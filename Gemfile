@@ -6,7 +6,7 @@ gem 'test-unit'
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
 gem 'devise'
 gem 'mysql2'
-gem "friendly_id"
+gem 'friendly_id'
 
 # Gems used only for assets and not required
 # in production environments by default.

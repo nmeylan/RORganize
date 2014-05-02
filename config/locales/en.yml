@@ -226,3 +226,13 @@ en:
   text_time_entry_not_owner_deletion: Well, you tried to delete a coworker time entry.
   text_project: Project
   text_negative_position: Invalid position, please try again later.
+  password: "Password"
+  field_steps: "Steps"
+  text_number_of_step: "Number of steps"
+  field_actor: "Actor"
+  link_delete_scenario: "Delete scenario"
+  link_edit_scenario: "Edit scenario"
+  link_new_scenario: "New scenario"
+  link_add_step: "Add step"
+  successfull_update: "Successfull update"
+  successful_created: "Sucessfull creation"

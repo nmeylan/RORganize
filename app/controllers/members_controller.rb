@@ -32,7 +32,7 @@ class MembersController < ApplicationController
   def new
     members_roles = Member.find_members_and_roles_by_project_id(@project.id)
     ids = members_roles[:members].collect{|member| member.user.id}
-    users = User.where("id NOT IN (?)", ids)
+    users = User.where('id NOT IN (?)', ids)
     @member = Member.new
     respond_to do |format|
       format.js {respond_to_js :locals => {:roles => members_roles[:roles], :users => users, :new => true}}

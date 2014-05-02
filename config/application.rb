@@ -36,7 +36,7 @@ module RORganize
       "#{html_tag}".html_safe
     }
     # Configure the default encoding used in templates for Ruby 1.9.
-    config.encoding = "utf-8"
+    config.encoding = 'utf-8'
 
     # Configure sensitive parameters which will be filtered from the log file.
     config.filter_parameters += [:password]
@@ -51,9 +51,9 @@ module RORganize
     config.railties_order = [Scenarios::Engine, self]
 
     #MODULES
-    config.after_initialize() do
+    config.after_initialize do
       unless $0.end_with?('rake')
-        require "module_configuration"
+        require 'module_configuration'
       end
     end
   end

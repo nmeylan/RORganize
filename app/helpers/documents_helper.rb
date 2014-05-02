@@ -32,7 +32,7 @@ module DocumentsHelper
     generics_filter(hash, attributes)
   end
 
-  def documents_filter_js_tag()
+  def documents_filter_js_tag
     content_for(:js) do
       javascript_tag
     end

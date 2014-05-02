@@ -35,7 +35,7 @@ class ProjectsController < ApplicationController
 
   def load_journal_activity
   #  @issue = Issue.select('id').where(:id => params[:item_id])
-    @journals = Journal.includes([:details, :user]).where(:journalized_type => 'Issue', :journalized_id => params[:item_id]).where("DATE(`journals`.`created_at`) = ?", params[:date])
+    @journals = Journal.includes([:details, :user]).where(:journalized_type => 'Issue', :journalized_id => params[:item_id]).where('DATE(`journals`.`created_at`) = ?', params[:date])
     respond_to do |format|
       format.html
       format.js { respond_to_js }
@@ -112,7 +112,7 @@ class ProjectsController < ApplicationController
         'tm' => date.months_ago(1),
         'lsm' => date.months_ago(6),
         'ltm' => date.months_ago(3),
-        'ty' => date.prev_year(),
+        'ty' => date.prev_year,
         'all' => 'all'
     }
     #    session stock conditions and filter_code

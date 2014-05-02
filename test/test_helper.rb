@@ -1,6 +1,6 @@
-ENV["RAILS_ENV"] = "test"
+ENV['RAILS_ENV'] = 'test'
 require File.expand_path('../../config/environment', __FILE__)
-require File.dirname(__FILE__) + "/../config/environment" unless defined?(RAILS_ROOT)
+require File.dirname(__FILE__) + '/../config/environment' unless defined?(RAILS_ROOT)
 
 require 'rails/test_help'
 require 'test/unit/ui/console/testrunner'

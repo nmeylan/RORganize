@@ -68,7 +68,7 @@ class User < RorganizeActiveRecord
     dt = Date.new(year, month)
     start_of_month = dt.beginning_of_month
     end_of_month = dt.end_of_month
-    TimeEntry.where("user_id = ? AND spent_on >= ? AND spent_on <= ?", self.id, start_of_month, end_of_month).includes(:project)
+    TimeEntry.where('user_id = ? AND spent_on >= ? AND spent_on <= ?', self.id, start_of_month, end_of_month).includes(:project)
   end
 
   def projects
@@ -156,7 +156,7 @@ class User < RorganizeActiveRecord
     coworkers = Hash.new { |h, k| h[k] = [] }
     self.members.includes(:role, :project => [:members => [:user, :role]]).each do |member|
       if self.allowed_to?('display_activities', 'Coworkers', member.project)
-        coworkers[member.project.name] = member.project.members.where(["members.user_id NOT LIKE ?", self.id])
+        coworkers[member.project.name] = member.project.members.where(['members.user_id NOT LIKE ?', self.id])
       end
     end
     coworkers

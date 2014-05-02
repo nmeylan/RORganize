@@ -73,7 +73,7 @@
 <div class="separator"></div>
 <h2>Checklist :</h2>
 <ul class="checklist" id="ck_refresh">
-  <%= render :partial => "issues/checklist_items", :locals => {:checklist_items => checklist_items} %>
+  <%= render :partial => 'issues/checklist_items', :locals => {:checklist_items => checklist_items} %>
 </ul>
 <span><%= link_to_with_permissions(t(:link_checklist),checklist_issues_path(@project.slug), @project, {:class => 'icon icon-checklist open_checklist_overlay'}) %>
  </span>

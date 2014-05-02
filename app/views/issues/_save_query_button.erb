@@ -6,5 +6,5 @@
 %>
 <% if !session["#{@project.slug}_controller_issues_filter"].eql?('') && current_user.allowed_to?('new','Queries',@project)%>
 
-    <%=  link_to t(:button_save), new_project_query_queries_path(@project.slug, "Issue"), {:remote => true} %>
+    <%=  link_to t(:button_save), new_project_query_queries_path(@project.slug, 'Issue'), {:remote => true} %>
 <% end %>

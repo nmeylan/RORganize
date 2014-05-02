@@ -20,8 +20,8 @@ class Issue < RorganizeActiveRecord
   has_many :children, :foreign_key => 'predecessor_id', :class_name => 'Issue'
   belongs_to :parent, :foreign_key => 'predecessor_id', :class_name => 'Issue'
   has_many :checklist_items, :class_name => 'ChecklistItem', :dependent => :destroy
-  has_many :attachments, -> {where :object_type => 'Issue'}, :foreign_key => 'object_id', :dependent => :destroy
-  has_many :journals, -> {where :journalized_type => 'Issue'}, :as => :journalized, :dependent => :destroy
+  has_many :attachments, -> { where :object_type => 'Issue' }, :foreign_key => 'object_id', :dependent => :destroy
+  has_many :journals, -> { where :journalized_type => 'Issue' }, :as => :journalized, :dependent => :destroy
   has_many :time_entries, :dependent => :destroy
 
   #triggers
@@ -222,9 +222,11 @@ class Issue < RorganizeActiveRecord
 
   private
   def set_done_ratio
-    done_ratio = self.status.default_done_ratio
-    if done_ratio != 0 && !self.done_changed?
-      self.done = done_ratio
+    unless self.status.nil?
+      done_ratio = self.status.default_done_ratio
+      if done_ratio != 0 && !self.done_changed?
+        self.done = done_ratio
+      end
     end
   end
 
@@ -236,7 +238,7 @@ class Issue < RorganizeActiveRecord
 
   #Permit attributes
   def self.permit_attributes
-    [:assigned_to_id, :author_id, :version_id, :done, :category_id, :status_id, :start_date, :subject, :description, :tracker_id, :due_date, :estimated_time, {:new_attachment_attributes => Attachment.permit_attributes},{:edit_attachment_attributes => Attachment.permit_attributes}]
+    [:assigned_to_id, :author_id, :version_id, :done, :category_id, :status_id, :start_date, :subject, :description, :tracker_id, :due_date, :estimated_time, {:new_attachment_attributes => Attachment.permit_attributes}, {:edit_attachment_attributes => Attachment.permit_attributes}]
   end
 
   def self.permit_values

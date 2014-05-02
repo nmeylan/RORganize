@@ -36,25 +36,25 @@ module Rorganize
       end
 
       def render_project_menu(menu, project)
-        content = ""
+        content = ''
         menu.menu_items.each do |item|
           if current_user.allowed_to?(item.url[:action], item.url[:controller],project)
             item.url[:project_id] = project.slug
             content += content_tag(:li,
               link_to(item.label, item.url, {:id => item.params[:id]}),
-              :class => item.params[:id].eql?(@current_menu_item) ? "selected" :"" )
+              :class => item.params[:id].eql?(@current_menu_item) ? 'selected' : '')
           end
         end
         content_for :main_menu, content.html_safe
       end
 
       def render_admin_menu(menu)
-        content = ""
+        content = ''
         menu.menu_items.each do |item|
           if current_user.allowed_to?(item.url[:action], item.url[:controller])
             content += content_tag(:li,
               link_to(item.label, item.url, {:id => item.params[:id]}),
-              :class => item.params[:id].eql?(@current_menu_item) ? "selected" :"" )
+              :class => item.params[:id].eql?(@current_menu_item) ? 'selected' : '')
           end
         end
         content_for :main_menu, content.html_safe
@@ -62,14 +62,14 @@ module Rorganize
 
       def render_top_menu
         menu = Rorganize::MenuManager.items(:top_menu)
-        content = ""
+        content = ''
         content += content += content_tag(:li,
-          link_to(t(:home), :root, { :class => @current_top_menu_item.eql?("menu_home") ? "selected square" :"square"}))
+          link_to(t(:home), :root, { :class => @current_top_menu_item.eql?('menu_home') ? 'selected square' : 'square'}))
         menu.menu_items.each do |item|
           if current_user && current_user.allowed_to?(item.url[:action], item.url[:controller])
             content += content_tag(:li,
               link_to(item.label, item.url, {:id => item.params[:id],
-                  :class => item.params[:id].eql?(@current_top_menu_item) ? "selected square" :"square"}
+                  :class => item.params[:id].eql?(@current_top_menu_item) ? 'selected square' : 'square'}
               ))
           end
         end
@@ -138,7 +138,7 @@ module Rorganize
         @action = url[:action]
         @url = url
         @params = options
-        if(url[:action] && url[:controller])
+        if url[:action] && url[:controller]
           @url[:action] = url[:action]
           @url[:controller] = url[:controller]
         else
