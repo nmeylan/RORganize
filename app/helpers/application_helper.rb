@@ -63,20 +63,6 @@ module ApplicationHelper
       return error_explanation.to_s
     end
   end
-  #Return updated attributes
-  def updated_attributes(object, parameter)
-    #{attribute_name => [old_value, new_value],...}
-    attr_updated = Hash.new{|k,v| v = []}
-
-    attributes_names = object.attributes.keys
-    #For each attributes compare differences between old object and new parameters
-    attributes_names.each do |name|
-      if !object[name].to_s.eql?(parameter[name].to_s) && !parameter[name].nil?
-        attr_updated[name] = [object[name], parameter[name]]
-      end
-    end
-    return attr_updated
-  end
 
   def decimal_zero_removing(decimal)
     removed_zero = decimal.gsub(/^*[.][0]$/,'')
@@ -89,7 +75,6 @@ module ApplicationHelper
 EOD
     return t.to_html
   end
-  
 
   def set_toolbar(id)
     javascript_tag(
@@ -106,19 +91,7 @@ EOD
     link_to title, {:sort => column, :direction => direction, :action => default_action}, {:class => css_class, :remote => true}
   end
 
-  #generic journal detail insertion
-  def journal_insertion(updated_attributes, journal, journalized_property)
-    updated_attrs = updated_attributes
-    updated_attrs.each do |attribute, old_new_value|
-      old_value = old_new_value[0]
-      new_value = old_new_value[1]
-      JournalDetail.create(:journal_id => journal.id,
-        :property => journalized_property[attribute],
-        :property_key => attribute,
-        :old_value => old_value,
-        :value => new_value)
-    end
-  end
+
 
   def history_detail_render(detail)
     history_str = ''

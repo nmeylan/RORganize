@@ -1,7 +1,8 @@
 # Author: Nicolas
 # Date: 02/05/2014
 # Encoding: UTF-8
-# File: issue_test.rbrequire 'test/unit'
+# File: issue_test.rb
+# require 'test/unit'
 
 class IssueTest < ActiveSupport::TestCase
 
