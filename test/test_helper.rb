@@ -8,7 +8,7 @@ require 'rubygems'
 require 'active_support'
 require 'active_support/test_case'
 require 'test/unit'
-require 'issue'
+
 class ActiveSupport::TestCase
   # Setup all fixtures in test/fixtures/*.(yml|csv) for all tests in alphabetical order.
   #
