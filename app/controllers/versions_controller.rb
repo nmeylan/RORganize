@@ -29,7 +29,6 @@ class VersionsController < ApplicationController
   def create
     @version = Version.new(version_params)
     @version.project_id = @project.id
-    @version.position = @project.versions.count + 1
     respond_to do |format|
       if @version.save
         @project.versions << @version

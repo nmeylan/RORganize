@@ -6,7 +6,7 @@
 class Query < ActiveRecord::Base
   extend FriendlyId
   friendly_id :name, use: :slugged
-  
+
   belongs_to :project
   belongs_to :user, :foreign_key => :author_id
   validates :name, :stringify_query, :stringify_params, :object_type, :presence => true
@@ -22,7 +22,7 @@ class Query < ActiveRecord::Base
 
   def self.project_queries(project_id, author_id)
     self.where('(project_id = ? AND (author_id = ? OR is_public = ?))
-        OR (is_for_all = ? AND (author_id = ? OR is_public = ?))', project_id, author_id, true, true, author_id, true )
+        OR (is_for_all = ? AND (author_id = ? OR is_public = ?))', project_id, author_id, true, true, author_id, true)
   end
 
   def self.public_queries(project_id)

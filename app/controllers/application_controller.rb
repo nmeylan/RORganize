@@ -52,6 +52,7 @@ class ApplicationController < ActionController::Base
   end
 
   protected
+
   #Options : same as render method
   #Except response_header : :success, :failure
   # response_content : text

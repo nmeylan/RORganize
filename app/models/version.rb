@@ -13,6 +13,7 @@ class Version < RorganizeActiveRecord
   validate :validate_start_date
   include IssuesHelper
   #Triggers
+  before_create :inc_position
   after_create :create_journal
   after_update :update_journal, :update_issues_due_date
   after_destroy :destroy_journal, :dec_position_on_destroy
@@ -41,9 +42,14 @@ class Version < RorganizeActiveRecord
     end
   end
 
+  def inc_position
+    count = self.project.versions.count
+    self.position = count + 1
+  end
+
   def dec_position_on_destroy
     position = self.position
-    Version.update_all 'position = position - 1', "position > #{position}"
+    Version.where("position > #{position} AND project_id = #{self.project_id}").update_all('position = position - 1')
   end
 
   def self.define_roadmap(versions, project_id)
@@ -115,24 +121,6 @@ class Version < RorganizeActiveRecord
 
   def change_position(project, operator)
     versions = project.versions.order(:position)
-    version = versions.select{|version| version.id.eql?(self.id)}.first
-    max = versions.count
-    position = version.position
-    saved = false
-      if version.position == 1 && operator.eql?('dec') ||
-          version.position == max && operator.eql?('inc')
-      else
-        if operator.eql?('inc')
-          o_version = versions.select{|v| v.position.eql?(position + 1)}.first
-          o_version.update_column(:position, position)
-          version.update_column(:position, position + 1)
-        else
-          o_version = versions.select{|v| v.position.eql?(position - 1)}.first
-          o_version.update_column(:position, position)
-          version.update_column(:position, position - 1)
-        end
-       saved = true
-      end
-    saved
+    Rorganize::SmartRecords.change_position(versions, self, operator)
   end
 end

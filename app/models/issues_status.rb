@@ -18,26 +18,8 @@ class IssuesStatus < ActiveRecord::Base
 
   #Change position
   def change_position(operator)
-    old_issues_statuses = IssuesStatus.includes(:enumeration).order('enumerations.position')
-    status = old_issues_statuses.select { |status| status.id.eql?(self.id) }.first
-    max = old_issues_statuses.count
-    saved = false
-    position = status.enumeration.position
-    if status.enumeration.position == 1 && operator.eql?('dec') ||
-        status.enumeration.position == max && operator.eql?('inc')
-    elsif %w(inc dec).include? operator
-      if operator.eql?('inc')
-        o_status = old_issues_statuses.select { |stat| stat.enumeration.position.eql?(position + 1) }.first
-        o_status.enumeration.update_column(:position, position)
-        status.enumeration.update_column(:position, position + 1)
-      else
-        o_status = old_issues_statuses.select { |stat| stat.enumeration.position.eql?(position - 1) }.first
-        o_status.enumeration.update_column(:position, position)
-        status.enumeration.update_column(:position, position - 1)
-      end
-      saved = true
-    end
-    saved
+    enumerations = Enumeration.where(opt: 'ISTS').order('position ASC')
+    Rorganize::SmartRecords.change_position(enumerations, self.enumeration, operator)
   end
 
 end
