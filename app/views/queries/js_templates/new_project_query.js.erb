@@ -10,6 +10,20 @@
     jQuery(".close").click(function(e){
         jQuery('#create_query_overlay').overlay().close();
     });
+    jQuery("#query_creation_form").submit(function(e){
+        e.preventDefault();
+        var self_element = jQuery(this);
+        var json = jQuery("#filter_form").serializeJSON();
+        var json2 = self_element.serializeJSON();
+        var forms = jQuery.extend(json, json2);
+        console.log(forms);
+        jQuery.ajax({
+            url: self_element[0].action,
+            type: 'post',
+            dataType: 'script',
+            data: forms
+        })
+    });
 <% else %>
     <% if success %>
         jQuery('#create_query_overlay').overlay().close();

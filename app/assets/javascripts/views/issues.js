@@ -48,6 +48,10 @@ function issues_index(options) {
     //Filters
 
     initialize_filters(options);
+
+    save_edit_filter("#filter_edit_save","#filter_form");
+
+
 }
 
 function issues_show() {

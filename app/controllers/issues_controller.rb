@@ -285,7 +285,7 @@ class IssuesController < ApplicationController
 
   #Find custom queries
   def find_custom_queries
-    @custom_queries = Query.issues_queries(@project_id)
+    @custom_queries = Query.issues_queries(@project.id)
   end
 
   def load_issues

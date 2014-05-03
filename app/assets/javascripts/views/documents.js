@@ -7,6 +7,7 @@ function on_load_documents_scripts(options) {
     switch (gon.action) {
         case 'index' :
             documents_index(options);
+            uniq_toogle("#document.toggle",".content");
             break;
         case 'show' :
             documents_show();
@@ -27,7 +28,6 @@ function on_load_documents_scripts(options) {
 }
 
 function documents_index(options){
-    uniq_toogle("#document.toggle",".content");
     checkAll("#check_all", ".list");
     listTrClick(".list .document_tr");
     checkboxToolbox(".list");

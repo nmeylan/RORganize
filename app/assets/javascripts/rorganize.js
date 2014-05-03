@@ -85,11 +85,21 @@
         }
     });
 
+    String.prototype.endsWith = function(suffix) {
+        return this.indexOf(suffix, this.length - suffix.length) !== -1;
+    };
+
     //JSON
     $.fn.serializeJSON = function () {
         var json = {};
         jQuery.map($(this).serializeArray(), function (n, i) {
-            json[n['name']] = n['value'];
+            if(n['name'].endsWith('[]')){
+                if(json[n['name']] === undefined)
+                    json[n['name']] = [];
+                json[n['name']].push(n['value']);
+            }
+            else
+                json[n['name']] = n['value'];
         });
         return json;
     };
@@ -487,6 +497,7 @@ function load_filter(json_content, present_filters) {
     var tmp = "";
     var selector = "";
     var radio = "";
+
     if (_.any(present_filters)) {
         jQuery("#filter_content").html("");
         jQuery("#type_filter").attr('checked', 'checked');
@@ -746,7 +757,12 @@ function on_replace_effect(element_id, content) {
 }
 
 function initialize_filters(options) {
+    if (gon) {
+        //Display or hide filter's conditions
+        add_filters(gon.DOM_filter);
+        load_filter(gon.DOM_filter, (options && options["dom_persisted_filter"]) ? options["dom_persisted_filter"] : gon.DOM_persisted_filter);
 
+    }
     $("#type_filter").click(function (e) {
         $("#filters_list_chzn").show();
         $("#filter_content").show();
@@ -755,12 +771,6 @@ function initialize_filters(options) {
         $("#filters_list_chzn").hide();
         $("#filter_content").hide();
     });
-
-    if (gon) {
-        load_filter(gon.DOM_filter, (options && options["dom_persisted_filter"]) ? options["dom_persisted_filter"] : gon.DOM_persisted_filter);
-        //Display or hide filter's conditions
-        add_filters(gon.DOM_filter);
-    }
 
 }
 
@@ -777,4 +787,21 @@ function ajax_trigger(element, event, method) {
         });
     });
 
+}
+
+function save_edit_filter(link_id, form_id){
+    jQuery(link_id).click(function(e){
+        e.preventDefault();
+        var self_element = jQuery(this);
+        console.log(jQuery(form_id).serializeArray());
+        json = jQuery(form_id).serializeJSON();
+        console.log(json);
+        jQuery.ajax({
+            url: self_element[0].href,
+            type: 'put',
+            dataType: 'script',
+            data: json
+        })
+
+    })
 }

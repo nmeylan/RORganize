@@ -88,6 +88,7 @@ RORganize::Application.routes.draw do
   resources :queries do
     collection do
       get 'new_project_query', :path => 'new_project_query/:project_id/:query_type'
+      put 'edit_query_filter', :path => 'edit_query_filter/:query_id'
     end
   end
   scope 'projects/:project_id/settings/' do

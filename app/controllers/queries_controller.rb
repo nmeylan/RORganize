@@ -19,7 +19,7 @@ class QueriesController < ApplicationController
   def new_project_query
     find_project
     @query = Query.new
-    @query.object_type = query_params[:object_type]
+    @query.object_type = params[:query_type]
     respond_to do |format|
       format.js { respond_to_js :locals => {:new => true} }
     end
@@ -30,15 +30,17 @@ class QueriesController < ApplicationController
     @query = Query.new(query_params)
     @query.author_id = current_user.id
     @query.project_id = @project.id
-    @query.stringify_query = session[@project.slug+'_controller_issues_filter']
-    @query.stringify_params = session[@project.slug+'_controller_issues_filter_params'].inspect
+    filter = @query.object_type.constantize.conditions_string(params[:filter])
+    @query.stringify_query = filter
+    @query.stringify_params = params[:filter].inspect
     success = @query.save
 
     respond_to do |format|
       format.js do
         if success
-          find_custom_queries
-          respond_to_js :action => 'new_project_query', :locals => {:new => false, :success => success}, :response_header => :success, :response_content => t(:successful_creation)
+          case @query.object_type
+            when 'Issue' then js_redirect_to(apply_custom_query_issues_path(@query.project.slug, @query.slug))
+          end
         else
           respond_to_js :action => 'new_project_query', :locals => {:new => false, :success => success}, :response_header => :failure, :response_content => @query.errors.full_messages
         end
@@ -56,6 +58,23 @@ class QueriesController < ApplicationController
   def edit
     respond_to do |format|
       format.html
+    end
+  end
+
+  def edit_query_filter
+    @query = Query.find_by_slug(params[:query_id])
+    filter = @query.object_type.constantize.conditions_string(params[:filter])
+    @query.stringify_query = filter
+    @query.stringify_params = params[:filter].inspect
+    success = @query.save
+    respond_to do |format|
+      format.js do
+        if success
+          respond_to_js :action => 'do_nothing', :locals => {:new => false, :success => success}, :response_header => :success, :response_content => t(:successful_update)
+        else
+          respond_to_js :action => 'do_nothing', :locals => {:new => false, :success => success}, :response_header => :failure, :response_content => @query.errors.full_messages
+        end
+      end
     end
   end
 

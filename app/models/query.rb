@@ -13,7 +13,7 @@ class Query < ActiveRecord::Base
   validates :name, :uniqueness => true
 
   def self.permit_attributes
-    [:is_for_all, :is_public, :name, :description, :object_type]
+    [:is_for_all, :is_public, :name, :description, :object_type, :id]
   end
 
   def self.issues_queries(project_id)

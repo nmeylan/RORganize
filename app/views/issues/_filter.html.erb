@@ -8,7 +8,7 @@
 <fieldset>
   <legend><%= link_to t(:link_filter), '#', {:class => 'icon icon-collapsed toggle', :id => 'issue'} %></legend>
   <div class="content">
-    <%= form_tag url_for(:controller => 'issues', :action => 'index'),:method => :get, :html => {:class => 'filter_form'}, :remote => true do -%>
+    <%= form_tag url_for(:controller => 'issues', :action => 'index'), {:method => :get, :class => 'filter_form', :id => 'filter_form', :remote => true} do -%>
   <%#= Start of the form %>
       <%= radio_button_tag 'type', 'all', true, {:align => 'center'} %><%= t(:label_all) %>
       <%= radio_button_tag 'type', 'filter', false %><%= t(:link_filter) %>
