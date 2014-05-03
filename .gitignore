@@ -26,3 +26,4 @@ config/database.yml
 *.orig
 config/initializers/secret_token.rb
 *.orig
+/vendor/*
