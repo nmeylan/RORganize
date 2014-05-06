@@ -1,9 +1,9 @@
 source 'http://rubygems.org'
 
-gem 'rails', '~> 4.1.0'
+gem 'rails', '~> 4.1.1'
 gem 'test-unit'
 # Bundle edge Rails instead:
-# gem 'rails',     :git => 'git://github.com/rails/rails.git'
+
 gem 'devise'
 gem 'mysql2'
 gem 'friendly_id'
@@ -16,15 +16,17 @@ group :assets do
   gem 'uglifier'
 end
 
+gem 'jquery-rails'
+
 gem 'cocaine'
 gem 'paperclip'
-gem 'jquery-rails'
 gem 'RedCloth'
 gem 'mongrel', '>= 1.2.0.pre2'
 gem 'will_paginate'
 gem 'nokogiri'
 gem 'gon'
 gem 'tzinfo-data', platforms: [:mingw, :mswin]
+gem 'mime-types'
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
