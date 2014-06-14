@@ -645,25 +645,25 @@ permissions_108:
   id: 212
   name: View scenario
   action: show
-  controller: Scenarios
+  controller: scenarios
   is_locked: 1
 permissions_109:
   id: 213
   name: Edit scenarios
   action: edit
-  controller: Scenarios
+  controller: scenarios
   is_locked: 1
 permissions_110:
   id: 214
   name: Create scenarios
   action: new
-  controller: Scenarios
+  controller: scenarios
   is_locked: 1
 permissions_111:
   id: 215
   name: View scenarios
   action: index
-  controller: Scenarios
+  controller: scenarios
   is_locked: 1
 permissions_112:
   id: 217
@@ -753,7 +753,7 @@ permissions_126:
   id: 239
   name: Delete scenarios
   action: delete
-  controller: Scenarios
+  controller: scenarios
   is_locked: 
 permissions_127:
   id: 240

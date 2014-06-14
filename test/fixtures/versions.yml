@@ -22,7 +22,7 @@ versions_003:
   id: 4
   name: Version 0.3
   target_date: 2013-02-05
-  description: ! "h2. Issues\r\n* Filtres\r\n* Upload fichiers\r\n\r\nh2. Scenarios\r\n*
+  description: ! "h2. Issues\r\n* Filtres\r\n* Upload fichiers\r\n\r\nh2. scenarios\r\n*
     Crud\r\n* Utilisation backbone JS"
   position: 4
   start_date: 

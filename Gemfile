@@ -51,4 +51,4 @@ end
 
 
 #RORganize plugins
-#gem 'scenarios', :path => 'vendor/engines/scenarios'
+gem 'scenarios', :path => 'vendor/engines/scenarios'
