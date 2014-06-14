@@ -6,7 +6,6 @@ class Document < RorganizeActiveRecord
   #Class variables
   assign_journalized_properties({ 'name' => 'Name', 'category_id' => 'Category','version_id' => 'Version'})
   assign_foreign_keys({'category_id' => Category, 'version_id' => Version})
-  assign_journalized_icon('/assets/document.png')
   #Relations
   belongs_to :version
   belongs_to :category

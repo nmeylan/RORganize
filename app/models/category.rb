@@ -7,7 +7,6 @@ class Category < RorganizeActiveRecord
   #Class variables
   assign_journalized_properties({'name' => 'Name'})
   assign_foreign_keys({})
-   assign_journalized_icon('/assets/activity_package.png')
   #Relations
   belongs_to :project, :class_name => 'Project'
   has_many :issues, :class_name => 'Issue', :dependent => :nullify

@@ -242,7 +242,7 @@ EOD
       text += '</p>'
     elsif journal.action_type.eql?('deleted')
       text += "<p class='icon'>"
-      text += "#{image_tag("<%= asset_path 'activity_deleted.png' %>")} #{user} #{t(:label_deleted_lower_case)} "
+      text += "#{image_tag(asset_path 'activity_deleted.png')} #{user} #{t(:label_deleted_lower_case)} "
       text += "<b>#{journal.journalized_type} : #{journal.identifier_value}</b>"
       if journal.project_id && is_not_in_project
         text += " #{t(:label_at)} <b>#{journal.project_id}</b>"
@@ -256,7 +256,7 @@ EOD
     if journal.journalized_type.eql?('Issue')
        text += issues_activities_text_builder(journal, specified_project)
     else
-      text += generics_activities_text_builder(journal, eval(journal.journalized_type).journalized_icon.to_s, specified_project)
+      text += generics_activities_text_builder(journal, '', specified_project)
     end
     return text.html_safe
   end

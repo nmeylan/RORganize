@@ -7,7 +7,6 @@ class Member < RorganizeActiveRecord
   #Constants
   assign_journalized_properties({'role_id' => 'Role'})
   assign_foreign_keys({'role_id' => Role})
-  assign_journalized_icon('/assets/activity_group.png')
   #Relations
   belongs_to :project, :class_name => 'Project'
   

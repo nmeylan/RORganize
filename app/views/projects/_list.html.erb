@@ -13,23 +13,23 @@
     <%#= If project has a logo %>
             <% if project.attachments.any? %>
               <div class="splitcontentleft" style="margin-top: 9px">
-                <h2><%= project.name %><%= image_tag("<%= asset_path 'locked.png' %>") if project.is_archived%></h2>
+                <h2><%= project.name %><%= image_tag(asset_path 'locked.png') if project.is_archived%></h2>
               </div>
               <div class="splitcontentright">
                   <%= image_tag project.attachments.first.file.url(:logo), :align => :right %>
               </div>
               <div style="clear:both;"></div>
             <% else %>
-              <h2><%= project.name %><%= image_tag("<%= asset_path 'locked.png' %>") if project.is_archived%></h2>
+              <h2><%= project.name %><%= image_tag(asset_path 'locked.png') if project.is_archived%></h2>
             <% end %>
             <hr />
             <div class="splitcontentleft">
-              <p class="icon"><%= image_tag("<%= asset_path 'group.png' %>")%> : <%= project.members.size %> <%= t(:label_member_one_or_more) %></p>
-              <p class="icon"><%= image_tag("<%= asset_path 'document.png' %>")%> : <%= project.issues.size %> <%= t(:label_request_one_or_more) %></p>
+              <p class="icon"><%= image_tag(asset_path 'group.png')%> : <%= project.members.size %> <%= t(:label_member_one_or_more) %></p>
+              <p class="icon"><%= image_tag(asset_path 'document.png')%> : <%= project.issues.size %> <%= t(:label_request_one_or_more) %></p>
             </div>
 
             <div class="splitcontentright">
-              <p class="icon"><%= image_tag("<%= asset_path 'calendar.png' %>")%> : <%= project.created_at.to_date.to_formatted_s(:long_ordinal) %></p>
+              <p class="icon"><%= image_tag(asset_path 'calendar.png')%> : <%= project.created_at.to_date.to_formatted_s(:long_ordinal) %></p>
             </div>
             <div style="clear:both;"></div>
             <%if allow_to_star %>

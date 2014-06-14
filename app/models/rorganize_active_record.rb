@@ -5,5 +5,6 @@
 
 class RorganizeActiveRecord < ActiveRecord::Base
   include Rorganize::JournalizedRecordCallback
+  extend ActionView::Helpers::AssetUrlHelper #for icon path
   self.abstract_class = true
 end

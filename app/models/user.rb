@@ -6,7 +6,6 @@ class User < RorganizeActiveRecord
   #noinspection RubyStringKeysInHashInspection
   assign_journalized_properties({'name' => 'Name', 'admin' => 'Administrator', 'email' => 'Email', 'login' => 'Login'})
   assign_foreign_keys({})
-  assign_journalized_icon('/assets/activity_group.png')
   #SLug
   extend FriendlyId
   friendly_id :name, use: :slugged

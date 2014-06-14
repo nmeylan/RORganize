@@ -50,9 +50,9 @@ module IssuesHelper
     if journal.action_type.eql?('updated')
       text += "<p class='icon'>"
       if journal.details.empty? && !journal.notes.nil? && !journal.notes.eql?('')
-        text += "#{image_tag("<%= asset_path 'activity_comment.png' %>")} #{journal.user.name} #{t(:label_commented_lower_case)} "
+        text += "#{image_tag(asset_path 'activity_comment.png')} #{journal.user.name} #{t(:label_commented_lower_case)} "
       else
-        text += "#{image_tag("<%= asset_path 'activity_edit.png' %>")} #{journal.user.name} #{t(:label_updated_lower_case)} "
+        text += "#{image_tag(asset_path 'activity_edit.png')} #{journal.user.name} #{t(:label_updated_lower_case)} "
       end
       text += "<b>#{journal.journalized_type} ##{link_to journal.journalized_id, issue_path(journal.project.slug, journal.journalized_id)}</b>"
       if journal.project_id && specified_project
@@ -61,7 +61,7 @@ module IssuesHelper
       text += '</p>'
     elsif journal.action_type.eql?('created')
       text += "<p class='icon'>"
-      text += "#{image_tag("<%= asset_path 'activity_add.png' %>")} #{journal.user.name} #{t(:label_created_lower_case)} "
+      text += "#{image_tag(asset_path 'activity_add.png')} #{journal.user.name} #{t(:label_created_lower_case)} "
       text += "<b>#{journal.journalized_type} ##{link_to journal.journalized_id, issue_path(journal.project.slug, journal.journalized_id)}</b>"
       if journal.project_id && specified_project
         text += " #{t(:label_at)} <b>#{link_to journal.project.slug, overview_projects_path(journal.project.slug)}</b>"
@@ -69,7 +69,7 @@ module IssuesHelper
       text += '</p>'
     elsif journal.action_type.eql?('deleted')
       text += "<p class='icon'>"
-      text += "#{image_tag("<%= asset_path 'activity_deleted.png' %>")} #{journal.user.name} #{t(:label_deleted_lower_case)} "
+      text += "#{image_tag(asset_path 'activity_deleted.png')} #{journal.user.name} #{t(:label_deleted_lower_case)} "
       text += "<b>#{journal.journalized_type} ##{journal.journalized_id}</b>"
       if journal.project_id && specified_project
         text += " #{t(:label_at)} <b>#{link_to journal.project.slug, overview_projects_path(journal.project.slug)}</b>"

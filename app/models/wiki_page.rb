@@ -7,7 +7,6 @@ class WikiPage < RorganizeActiveRecord
   assign_journalized_properties({'title' => 'Title',
       'content' => 'Content'})
   assign_foreign_keys({})
-  assign_journalized_icon('/assets/document.png')
   #Slug
   extend FriendlyId
   friendly_id :title, use: :slugged

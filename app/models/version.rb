@@ -3,7 +3,6 @@ class Version < RorganizeActiveRecord
   assign_journalized_properties({'name' => 'Name',
                                  'target_date' => 'Due date', 'start_date' => 'Start date'})
   assign_foreign_keys({})
-  assign_journalized_icon('/assets/activity_ticket_go.png')
   #Relations
   belongs_to :project, :class_name => 'Project'
   has_many :issues, :class_name => 'Issue', :dependent => :nullify
