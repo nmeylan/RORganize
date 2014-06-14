@@ -34,7 +34,7 @@
           <td class="list_center due_date"><%= issue.due_date ? issue.due_date : '-' %></td>
           <td class="list_center done"><%= issue.done ? issue.done.to_s+'%' : '-' %></td>
           <td><%= link_to '',show_checklist_items_issues_path(@project.slug, issue.id) , {:class => 'icon icon-checklist', :remote => true} if issue.checklist_items.size > 0 %></td>
-          <td><%= issue.attachments.empty? ? '' : image_tag('/assets/attachment.png')%></td>
+          <td><%= issue.attachments.empty? ? '' : image_tag("<%= asset_path 'attachment.png' %>")%></td>
         </tr>
       <%end%>
     </table>

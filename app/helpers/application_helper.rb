@@ -242,7 +242,7 @@ EOD
       text += '</p>'
     elsif journal.action_type.eql?('deleted')
       text += "<p class='icon'>"
-      text += "#{image_tag('/assets/activity_deleted.png')} #{user} #{t(:label_deleted_lower_case)} "
+      text += "#{image_tag("<%= asset_path 'activity_deleted.png' %>")} #{user} #{t(:label_deleted_lower_case)} "
       text += "<b>#{journal.journalized_type} : #{journal.identifier_value}</b>"
       if journal.project_id && is_not_in_project
         text += " #{t(:label_at)} <b>#{journal.project_id}</b>"
