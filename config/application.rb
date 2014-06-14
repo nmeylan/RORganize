@@ -48,7 +48,8 @@ module RORganize
     config.assets.version = '1.0'
 
     #Engines
-    config.railties_order = [Scenarios::Engine, self]
+    #Scenarios::Engine
+    config.railties_order = [self]
 
     #MODULES
     config.after_initialize do

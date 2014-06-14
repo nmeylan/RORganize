@@ -143,7 +143,7 @@ RORganize::Application.routes.draw do
   get '/projects', :controller => :projects, :action => :index
 
   #MOUNT PLUGINS
-  mount Scenarios::Engine => '/', :as => 'scenarios_route' #/scenarios
+#  mount Scenarios::Engine => '/', :as => 'scenarios_route' #/scenarios
 
   get 'projects/:project_id/scenarios/:action', :controller => 'scenarios'
 
