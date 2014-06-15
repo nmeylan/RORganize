@@ -26,7 +26,7 @@
           <td><%= check_box_tag 'issue-'+issue.id.to_s, issue.id %></td>
           <td class="list_center id"><%= issue.id %></td>
           <td class="list_center tracker"><%= issue.tracker ? issue.tracker.name : '-' %></td>
-          <td class="subject"><%= link_to issue.subject, issue_path(@project.slug, issue.id), {:id => issue.id, :'data-url' => issue_description_issues_path(@project.slug, issue.id)} %></td>
+          <td class="subject"><%= link_to issue.subject, issue_path(@project.slug, issue.id), {:id => issue.id} %></td>
           <td class="list_center assigned_to"><%= issue.assigned_to ? issue.assigned_to.name : '-' %></td>
           <td class="list_center status"><%= issue.status ? issue.status.enumeration.name : '-' %></td>
           <td class="list_center category"><%= issue.category ? issue.category.name : '-' %></td>
