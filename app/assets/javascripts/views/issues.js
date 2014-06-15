@@ -35,8 +35,6 @@ function on_load_issues_scripts(options) {
 }
 
 function issues_index(options) {
-    //Tooltip
-    init_tooltip(".subject a");
     //Paginate
     per_page();
     //Checkboxes
@@ -95,7 +93,5 @@ function issues_form() {
         if (date != "")
             jQuery('#calendar').val(date)
     });
-    jQuery('#calendar_start').datepicker({dateFormat: 'yy-mm-dd'});
-    jQuery('#calendar').datepicker({dateFormat: 'yy-mm-dd'});
     on_load_attachments_scripts();
 }

@@ -36,10 +36,4 @@ class RoadmapController < ApplicationController
     gon.Gantt_XML = @data
   end
 
-  def version_description
-    description = Version.find(params[:id]).description
-    respond_to do |format|
-      format.js { respond_to_js :locals => {:description => description} }
-    end
-  end
 end

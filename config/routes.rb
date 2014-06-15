@@ -34,7 +34,6 @@ RORganize::Application.routes.draw do
         get 'toolbox'
         post 'toolbox'
         get 'show_checklist_items', :path => 'show_checklist_items/:id'
-        get 'issue_description', :path => 'issue_description/:id'
         delete 'delete_attachment', :path => 'delete_attachment/:id'
         get 'download_attachment'
         post 'save_checklist'
@@ -143,7 +142,7 @@ RORganize::Application.routes.draw do
   get '/projects', :controller => :projects, :action => :index
 
   #MOUNT PLUGINS
-#  mount Scenarios::Engine => '/', :as => 'scenarios_route' #/scenarios
+  mount Scenarios::Engine => '/', :as => 'scenarios_route' #/scenarios
 
   get 'projects/:project_id/scenarios/:action', :controller => 'scenarios'
 

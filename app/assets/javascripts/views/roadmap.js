@@ -14,7 +14,6 @@ function roadmap_index() {
 }
 
 function roadmap_calendar() {
-    init_tooltip(".calendar_item_body.target");
     bind_calendar_button();
 }
 

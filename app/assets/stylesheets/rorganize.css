@@ -1766,22 +1766,6 @@ ul#items {
   color: #FFC773; }
 
 /*
-*  TOOLTIP
-*/
-.tooltip {
-  background: #FAFAFA;
-  background: -moz-linear-gradient(#fafafa, #eaeaea);
-  background: -webkit-linear-gradient(#fafafa, #eaeaea);
-  -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#fafafa',endColorstr='#eaeaea')";
-  border: 1px solid #D7D7D7;
-  box-shadow: 0 0 3px #CCC;
-  -webkit-box-shadow: 0 0px 6px rgba(0, 0, 0, 0.3);
-  -moz-box-shadow: 0 0 3px #ccc;
-  padding: 9px 15px 10px;
-  width: 500px;
-  display: none; }
-
-/*
 *  FILTER
 */
 #filter_content td {

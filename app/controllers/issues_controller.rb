@@ -5,7 +5,7 @@
 
 class IssuesController < ApplicationController
   before_filter :find_project
-  before_filter :check_permission, :except => [:save_checklist, :issue_description, :show_checklist_items, :toolbox, :download_attachment, :edit_note, :delete_note, :start_today]
+  before_filter :check_permission, :except => [:save_checklist, :show_checklist_items, :toolbox, :download_attachment, :edit_note, :delete_note, :start_today]
   before_filter :check_not_owner_permission, :only => [:edit, :update, :destroy]
   before_filter { |c| c.menu_context :project_menu }
   before_filter { |c| c.menu_item(params[:controller]) }
@@ -143,12 +143,6 @@ class IssuesController < ApplicationController
     end
   end
 
-  def issue_description
-    description = Issue.find(params[:id]).description
-    respond_to do |format|
-      format.js { respond_to_js :locals => {:description => description} }
-    end
-  end
 
   #Save checklist
   def save_checklist

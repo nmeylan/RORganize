@@ -7,11 +7,8 @@
 //= require jquery_ujs
 //= require underscore-min
 //= require chosen.jquery.min
-//= require jquery-ui-1.8.21.custom.min
 //= require markitup.min
 //= require textile_toolbar
-//= require jquery.tools.min
-//= require jquery.livequery
 //= require jquery.jeegoocontext.min
 //= require apprise-1.5.min
 //= require jquery.lightbox-0.5.min

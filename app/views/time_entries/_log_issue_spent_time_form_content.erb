@@ -3,7 +3,7 @@
   <%= raw error_messages(@time_entry.errors.full_messages) %>
   <p>
     <label for="spent_on"><%= t(:field_date) %><span class="required"> *</span></label>
-    <%= f.text_field :spent_on, {:size => 6, :id => 'pick_calendar', :onchange => ("fill_log_issue_time_overlay('#{fill_overlay_time_entries_path}',#{issue_id},this)")} %>
+    <%= f.date_field :spent_on, {:size => 6, :id => 'pick_calendar', :onchange => ("fill_log_issue_time_overlay('#{fill_overlay_time_entries_path}',#{issue_id},this)")} %>
   </p>
 
   <p>
@@ -21,4 +21,3 @@
 
 <input type="submit" id="" class="save" value="<%= t(:button_save) %>"/>
 <input type="button" id="" class="close" value="<%= t(:button_close) %>" onclick="jQuery('#spent_time_overlay').overlay().close()"/>
-<%= javascript_tag("jQuery('#pick_calendar').datepicker({dateFormat: 'yy-mm-dd'});") %>

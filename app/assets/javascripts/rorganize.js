@@ -402,23 +402,6 @@ function bind_menu_actions(toolbox_id) {
         jQuery('#delete_overlay').overlay().load();
     });
 }
-//tooltip
-function init_tooltip(selector) {
-    var self_element = jQuery(selector);
-    self_element.tooltip({
-        effect: 'slide',
-        predelay: 1000,
-        position: 'bottom left',
-        offset: [10, 500],
-        tip: '#tooltip',
-        onBeforeShow: function () {
-            jQuery.ajax({
-                url: jQuery(this.getTrigger()).data("url"),
-                datatype: 'script'
-            });
-        }
-    });
-}
 
 //Toggle icon: fieldset
 function multi_toogle(selector) {
@@ -473,10 +456,7 @@ function add_filters(json_content) {
             selector = "tr." + tmp.toLowerCase().replace(' ', '_');
             if ((jQuery(selector).length < 1) && jQuery.inArray(jQuery(this).val(), selected) != -1) {
                 jQuery("#filter_content").append(domobject[0][tmp]);
-                //binding action for date field
-                jQuery(selector + " .calendar").datepicker({
-                    dateFormat: 'yy-mm-dd'
-                });
+
                 //binding radio button action
                 binding_radio_button("#filter_content " + selector + " input[type=radio]");
                 radio_button_behaviour("#filter_content " + selector + " input[type=radio]");
@@ -509,10 +489,6 @@ function load_filter(json_content, present_filters) {
             jQuery("#filter_content").append(domobject[0][tmp]);
             jQuery(radio).attr('checked', 'checked');
             jQuery();
-            //binding action for date field
-            jQuery(selector + " .calendar").datepicker({
-                dateFormat: 'yy-mm-dd'
-            });
             //binding radio button action
             binding_radio_button("#filter_content " + selector + " input[type=radio]");
             radio_button_behaviour("#filter_content " + selector + " input[type=radio]");

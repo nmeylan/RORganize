@@ -29,7 +29,4 @@ function versions_index(){
 }
 
 function versions_form(){
-    console.log("aaa");
-    jQuery('#calendar_start').datepicker({dateFormat: 'dd/mm/yy'});
-    jQuery('#calendar').datepicker({dateFormat: 'dd/mm/yy'});
 }

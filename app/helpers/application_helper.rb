@@ -191,12 +191,11 @@ EOD
     label ||= name.capitalize
     tr = ''
     radio_str = generics_filter_radio_button(name,options_for_radio)
-    field_str = text_field_tag("filter[#{name}][value]",'',{:size => 6, :id => 'calendar_'+name, :class => 'calendar'})
+    field_str = date_field_tag("filter[#{name}][value]",'',{:size => 6, :id => 'calendar_'+name, :class => 'calendar'})
     tr += "<tr class='#{name}'>"
     tr += "<td class='label'>#{label}</td>"
     tr += "<td class='radio'>#{radio_str}</td>"
     tr += "<td id='td-#{name}' class='value'>#{field_str}</td>"
-    # tr += javascript_tag("jQuery('#calendar_#{name}').datepicker({dateFormat: 'yy-mm-dd'});")
   end
   #Filters' operator
   def generics_filter_radio_button(name,ary)
