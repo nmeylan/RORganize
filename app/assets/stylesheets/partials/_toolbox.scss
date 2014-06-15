@@ -1,0 +1,66 @@
+/*
+    Document   : toolbox
+    Created on : 2 sept. 2012, 13:30:03
+    Author     : nicolas
+    Description:
+        Purpose of the stylesheet follows.
+*/
+@import 'utilities/variables';
+/*
+*  TOOLBOX
+*/
+
+ul.toolbox, ul.toolbox ul {
+  /* Required settings */
+  top: -1000px;
+  left: -1000px;
+  position: absolute;
+  z-index: 999;
+  /* Progressive background */
+  background: #fff;
+  border: 1px solid #CACACA;
+  li {
+    width: 150px;
+    padding-left: 3px;
+    list-style: none none outside;
+    overflow: hidden;
+    cursor: default;
+    a{
+      color: $link-color;
+    }
+  }
+  li.separator {
+    *margin: -1px 0 -5px 0
+  }
+  li.disabled {
+    color: #999
+  }
+  li span.submenu {
+    display: block;
+    width: 16px;
+    height: 16px;
+    float: right;
+    background: url(asset_path('bullet_arrow_right.png')) no-repeat 0 4px
+  }
+  li.disabled span.submenu {
+    background-image: url(asset_path('bullet_arrow_right.png'))
+  }
+  li:hover {
+    > a{
+      color: $link-hover-color;
+    }
+  }
+  li.hover {
+    margin-left: -3px;
+    border-left: 3px solid $default-selected-border-color;
+  }
+}
+
+.submenu {
+  padding-left: 6px;
+  margin-left: 13px;
+}
+
+.submenu .no-icon {
+  margin-left: 20px;
+}
