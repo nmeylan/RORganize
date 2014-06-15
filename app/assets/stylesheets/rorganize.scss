@@ -1,15 +1,17 @@
 
 @import 'utilities/_variables';
 
-@import "partials/tags"; // HTML tags style. (E.g : p, h2, ...)
+@import "partials/tags"; // HTML tags style. (e.g : p, h2, ...).
 @import 'partials/top_menu';
 @import 'partials/horizontal_menu';
 @import 'partials/pagination';
-@import 'partials/list'; //Tables style
+@import 'partials/list'; //Tables style.
 @import 'partials/icons';
-@import 'partials/combobox'; //Chosen select
+@import 'partials/combobox'; //Chosen select.
 @import 'partials/sidebar';
-@import 'partials/toolbar'; // Textile toolbar
+@import 'partials/toolbar'; // Textile toolbar.
+@import 'partials/overlay'; // Overlay.
+@import 'partials/growl_popup'; // Growl osx like.
 
 
 
@@ -134,30 +136,31 @@
 *  FLASH MESSAGE
 */
 .flash {
-  border: 1px solid #D7D7D7;
-  box-shadow: 0 0 3px #CCC;
-  -webkit-box-shadow: 0 0px 6px rgba(0, 0, 0, 0.3);
-  -moz-box-shadow: 0 0 3px #ccc;
   padding: 9px 35px 10px;
-  /*  margin: -6px -10px 6px -10px; */
-  background-position-x: 12px !important;
-  background-position-y: 9px !important;
 }
-
+.flash ul{
+  margin: 0;
+  padding: 0;
+}
 .flash.alert {
-  background: url(asset-path('alert.png')) 8px 50% no-repeat;
-  background-color: #FFE3E3;
-  color: #800;
+  background: #a00;
+  border-radius: 4px;
+  -webkit-font-smoothing: antialiased;
+  border-color: 1px solid #cd504a;
+  color: white;
 }
 
 .flash.notice {
-  background: url(asset-path('notice.png')) 8px 50% no-repeat;
-  background-color: #F1F5FA;
-  color: #005782;
+  border: 1px solid #97c1da;
+  color: #264c72;
+  background-color: #d0e3ef;
+  background-image: -moz-linear-gradient(#d8ebf8, #d0e3ef);
+  background-image: -webkit-linear-gradient(#d8ebf8, #d0e3ef);
+  background-image: linear-gradient(#d8ebf8, #d0e3ef);
 }
 
 /*
-*
+* Split content
 */
 .splitcontentright {
   float: right;
@@ -183,14 +186,8 @@
 }
 
 /*
-* Alert
+  BOXES
 */
-.alert {
-  color: #800 !important;
-}
-
-
-
 .box {
   padding: 6px;
   margin: 10px;
@@ -210,8 +207,6 @@
 }
 
 .box > .header {
-  /*   -webkit-border-top-left-radius: 5px;*/
-  /*   -webkit-border-top-right-radius: 5px;*/
   background: $default-box-header-background-color;
   color : $default-box-header-color;
   padding-top: 5px;
@@ -263,51 +258,6 @@
   text-align: center;
 }
 
-/*
-*  OVERLAY
-*/
-
-.overlayOuter {
-  background: white;
-  border: 1px solid #fff;
-  box-shadow: 0px 3px 7px #333;
-  -moz-box-shadow: 0px 3px 7px #333;
-  -webkit-box-shadow: 0px 3px 7px #333;
-  /*   -moz-border-radius:4px;*/
-  /*   -webkit-border-radius:4px;*/
-  /*   border-radius:4px;*/
-  /*   -khtml-border-radius:4px;*/
-  position: absolute;
-  z-index: 99999999;
-  min-width: 200px;
-  min-height: 50px;
-  max-width: 75%;
-  position: fixed;
-  display: none;
-}
-
-.overlayInner {
-  padding: 20px;
-  color: #333;
-  text-shadow: 0px 1px 0px #fff;
-
-}
-
-
-.overlayButtons, .overlayInput {
-  margin: 20px 10px 0px 10px;
-  text-align: center;
-}
-
-#activity_overlay .overlayInner {
-  max-height: 400px;
-
-  overflow-y: auto;
-}
-
-.overlayInner #issue_history {
-  width: 600px;
-}
 
 /*
 * CHECKLIST

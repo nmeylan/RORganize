@@ -1,0 +1,42 @@
+
+/*
+*  OVERLAY
+*/
+
+.overlayOuter {
+  background: white;
+  border: 1px solid #fff;
+  box-shadow: 0px 3px 7px #333;
+  -moz-box-shadow: 0px 3px 7px #333;
+  -webkit-box-shadow: 0px 3px 7px #333;
+  position: absolute;
+  z-index: 99999999;
+  min-width: 200px;
+  min-height: 50px;
+  max-width: 75%;
+  position: fixed;
+  display: none;
+}
+
+.overlayInner {
+  padding: 20px;
+  color: #333;
+  text-shadow: 0px 1px 0px #fff;
+
+}
+
+
+.overlayButtons, .overlayInput {
+  margin: 20px 10px 0px 10px;
+  text-align: center;
+}
+
+#activity_overlay .overlayInner {
+  max-height: 400px;
+
+  overflow-y: auto;
+}
+
+.overlayInner #issue_history {
+  width: 600px;
+}
