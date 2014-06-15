@@ -46,26 +46,32 @@ fieldset legend {
 fieldset.margin_fielset {
   margin: 10px; }
 
-button, input[type=button] {
-  border: 1px solid #bbb;
-  /*   -moz-border-radius:3px;*/
-  /*   -webkit-border-radius:3px;*/
-  /*   border-radius:3px;*/
-  /*   -khtml-border-radius:3px;*/
-  background: 0;
-  color: #888;
+button, input[type=button], input[type=submit] {
   font-size: 12px;
   font-weight: 700;
-  text-shadow: 0 1px 0 #fff;
   cursor: pointer;
-  box-shadow: 0 1px 2px #ccc;
-  -moz-box-shadow: 0 1px 2px #ccc;
-  -webkit-box-shadow: 0 1px 2px #ccc;
+  color: #333;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.9);
+  white-space: nowrap;
+  background-color: #eeeeee;
+  background-image: -moz-linear-gradient(#fcfcfc, #eeeeee);
+  background-image: -webkit-linear-gradient(#fcfcfc, #eeeeee);
+  background-image: linear-gradient(#fcfcfc, #eeeeee);
+  background-repeat: repeat-x;
+  border-radius: 3px;
+  border: 1px solid #d5d5d5;
   margin: 0 3px;
   padding: 4px 10px; }
 
-button:hover, input[type=button]:hover {
-  color: #FFC773; }
+button:hover, input[type=button]:hover, input[type=submit]:hover {
+  text-decoration: none;
+  background-color: #dddddd;
+  background-image: -moz-linear-gradient(#eeeeee, #dddddd);
+  background-image: -webkit-linear-gradient(#eeeeee, #dddddd);
+  background-image: linear-gradient(#eeeeee, #dddddd);
+  background-repeat: repeat-x;
+  border-color: #ccc;
+  cursor: pointer; }
 
 input {
   height: 25px;
@@ -91,26 +97,6 @@ textarea {
 
 .required {
   color: #A60800; }
-
-input[type=submit] {
-  border: 1px solid #bbb;
-  background: 0;
-  color: #888;
-  font-size: 12px;
-  font-weight: 700;
-  text-shadow: 0 1px 0 #fff;
-  cursor: pointer;
-  box-shadow: 0 1px 2px #ccc;
-  -moz-box-shadow: 0 1px 2px #ccc;
-  -webkit-box-shadow: 0 1px 2px #ccc;
-  margin-left: 10px;
-  margin-bottom: 0px;
-  padding: 4px 10px; }
-
-input[type=submit]:hover {
-  color: #FFC773;
-  cursor: pointer;
-  margin-left: 10px; }
 
 input[type=radio] {
   height: 13px; }
@@ -1204,7 +1190,7 @@ td .autocomplete-combobox {
 
 #sidebar .tabs .warning:hover {
   background-color: #fcc645 !important;
-  border-left: 3px solid #cd504a; }
+  border-left: 3px solid #fcc645; }
 
 #sidebar .tabs .warning:hover a {
   color: white !important; }
