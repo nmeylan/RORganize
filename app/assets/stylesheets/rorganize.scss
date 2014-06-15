@@ -7,7 +7,9 @@
 @import 'partials/pagination';
 @import 'partials/list'; //Tables style
 @import 'partials/icons';
-@import 'partials/combobox';
+@import 'partials/combobox'; //Chosen select
+@import 'partials/sidebar';
+@import 'partials/toolbar'; // Textile toolbar
 
 
 
@@ -112,18 +114,6 @@
   border-bottom: 1px solid #DADEE5;
 }
 
-.tabs {
-  list-style-type: none;
-  padding-left: 0;
-}
-
-.tabs a, .tabs a:link, .tabs a:visited {
-  color: $link-tabs-color;
-  text-decoration: none;
-}
-
-.tabs a:hover, .tabs a:visited:hover {
-}
 
 .no-margin {
   margin: 0px !important;
@@ -193,7 +183,7 @@
 }
 
 /*
-*  ICON AND LINK
+* Alert
 */
 .alert {
   color: #800 !important;
@@ -248,11 +238,6 @@
   border: 1px solid #e4e4e4;
   outline: none;
 }
-
-
-/*
-*  PROJECT
-*/
 
 
 /*
@@ -359,53 +344,6 @@ ul#items {
   min-width: 400px;
 }
 
-/*
-*  SIDEBAR
-*/
-
-#sidebar .tabs li {
-  background: #FAFAFA;
-  background: -moz-linear-gradient(#FAFAFA, #E5E3DE);
-  background: -webkit-linear-gradient(#FAFAFA, #E5E3DE);
-  -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#fafafa',endColorstr='#E5E3DE')";
-  padding: 10px;
-  border: 1px solid #D7D7D7;
-  /*   -webkit-border-radius: 5px;*/
-  /*   border-radius: 5px;*/
-  margin-bottom: 20px;
-}
-
-#sidebar .tabs ul {
-  margin: 0 -1px 0 0;
-  list-style: none;
-}
-
-#sidebar ul {
-  list-style: none;
-}
-
-#sidebar a, #sidebar a:link, #sidebar a:visited {
-  display: block;
-  color: $link-color;
-  text-decoration: none;
-}
-
-#sidebar a:hover, #sidebar a:visited:hover {
-  color: $link-hover-color;
-}
-
-#sidebar .tabs .selected {
-  background: -moz-linear-gradient(#E6E6E6, #DEDCD5);
-  background: -webkit-linear-gradient(#E6E6E6, #DEDCD5);
-  -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#E6E6E6',endColorstr='#DEDCD5')";
-  font-weight: bold;
-}
-
-#sidebar .tabs li:hover {
-  background: -moz-linear-gradient(#E6E6E6, #DEDCD5);
-  background: -webkit-linear-gradient(#E6E6E6, #DEDCD5);
-  -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#E6E6E6',endColorstr='#DEDCD5')";
-}
 
 /*
 *  jQuery UI
@@ -507,9 +445,6 @@ table.progress_bar td.todo_percent {
   background: #D7D7D7;
 }
 
-.icon img {
-  padding-bottom: 0px;
-}
 
 .project.list p {
   color: #888;
@@ -521,47 +456,6 @@ table.progress_bar td.todo_percent {
   -webkit-box-shadow: 0 0px 6px rgba(0, 0, 0, 0.3);
   -moz-box-shadow: 0 0 3px #ccc;
   z-index: 10;
-}
-
-/*
-      TABS
-*/
-.tabs .alert {
-  background: url(asset-path('alert.png')) 8px 50% no-repeat !important;
-  background-color: #FFE3E3 !important;
-
-}
-
-.tabs .alert a {
-  margin-left: 20px;
-  color: #800 !important;
-}
-
-.tabs .alert:hover {
-  background-color: #E6B7B7 !important;
-}
-
-.tabs .alert:hover a {
-  color: white !important;
-}
-
-.tabs .warning {
-  background: url(asset-path('warning.png')) 8px 50% no-repeat !important;
-  background-color: #FCECAD !important;
-
-}
-
-.tabs .warning a {
-  margin-left: 20px;
-  color: #BA9E00 !important;
-}
-
-.tabs .warning:hover {
-  background-color: #FFE47D !important;
-}
-
-.tabs .warning:hover a {
-  color: white !important;
 }
 
 /*

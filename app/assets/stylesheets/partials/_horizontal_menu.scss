@@ -10,6 +10,7 @@
   background-color: $default-background-color;
   height: 47px;
   font-size: $link-font-size;
+  color: $link-tabs-color;
 }
 
 #horizontal_menu li {
@@ -17,17 +18,21 @@
   display: table-cell;
   width: 1%;
   vertical-align: middle;
+
 }
 
 #horizontal_menu li a {
   display: block;
   line-height: 47px;
   font-weight: bold;
+  color: $link-tabs-color;
 }
 
 #horizontal_menu ul {
   margin: 0 -1px 0 0;
   height: 47px;
+  list-style-type: none;
+  padding-left: 0;
 }
 
 #horizontal_menu li a:hover {
