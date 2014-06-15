@@ -1,0 +1,223 @@
+@import 'utilities/_variables';
+
+.project.list {
+  list-style-type: none;
+}
+
+.project.list li {
+  margin-bottom: 10px;
+}
+
+/*
+*  LIST
+*/
+tr.odd_even:nth-child(odd) {
+  background: $default-table-tr-odd-background-color;
+}
+
+table.list {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid #E4E4E4;
+}
+
+.list .header {
+  background-color: $default-table-head-background-color;
+  border-bottom: 1px solid #DADEE5;
+  color: $default-color;
+}
+
+.list .header a {
+  color: $default-color !important;
+}
+
+.list th {
+  text-align: center;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.list tr {
+  color: $default-smooth-color;
+}
+
+.list tr.close {
+  text-decoration: line-through;
+}
+
+li.close {
+  text-decoration: line-through;
+}
+
+.list .list_center {
+  text-align: center;
+}
+
+.list .list_left {
+  text-align: left;
+}
+
+.list {
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+
+
+.issue_tr:hover {
+  background-color: $default-table-tr-hover-background-color !important;
+}
+
+.toolbox_selection{
+  background-color:$default-table-tr-hover-background-color !important;
+}
+
+.list .id {
+  width: 3%
+}
+
+.issue.list .tracker {
+  width: 7%
+}
+
+.issue.list .subject {
+  width: 25%
+}
+
+.issue.list .assigned_to {
+  width: 13%
+}
+
+.issue.list .status {
+  width: 10%
+}
+
+.issue.list .category {
+  width: 10%
+}
+
+.issue.list .version {
+  width: 15%
+}
+
+.issue.list .due_date {
+  width: 10%
+}
+
+.issue.list .done {
+  width: 6%
+}
+
+.issue_overlay.list .id {
+  width: 3%
+}
+
+.issue_overlay.list .subject {
+  width: 95%
+}
+
+.user.list .id {
+  width: 3%
+}
+
+.user.list .login {
+  width: 15%
+}
+
+.user.list .name {
+  width: 25%
+}
+
+.user.list .email {
+  width: 30%
+}
+
+.user.list .admin {
+  width: 10%
+}
+
+.user.list .last_sign_in {
+  width: 17%
+}
+
+.version.list .name {
+  width: 20%
+}
+
+.version.list .version {
+  width: 25%
+}
+
+.version.list .start_date {
+  width: 25%
+}
+
+.member.list .name {
+  width: 20%
+}
+
+.member.list .role {
+  width: 75%
+}
+
+.list .action {
+  width: 3%
+}
+
+.role.list .name {
+  width: 95%
+}
+
+.tracker.list .name {
+  width: 95%
+}
+
+.queries.list .name {
+  width: 95%
+}
+
+.splitcontentright .issue.list .project {
+  width: 20%
+}
+
+.splitcontentright .issue.list .subject {
+  width: 30%
+}
+
+.splitcontentright .issue.list .due_date {
+  width: 10%
+}
+
+.splitcontentright .issue.list .status {
+  width: 15%
+}
+
+.document.list .name {
+  width: 61%
+}
+
+.document.list .category {
+  width: 15%
+}
+
+.document.list .version {
+  width: 20%
+}
+
+/*
+*  PAGINATION
+*/
+
+
+.list th .current {
+  padding-right: 12px;
+  background-repeat: no-repeat;
+  background-position: right center;
+}
+
+.list th .asc {
+  background-image: url(asset-path('sort_asc.png'));
+}
+
+.list th .desc {
+  background-image: url(asset-path('sort_desc.png'));
+}

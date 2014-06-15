@@ -1,0 +1,56 @@
+@import 'utilities/_variables';
+
+/*
+* HORIZONTAL MENU
+*/
+#horizontal_menu {
+  margin: 0px 15px 15px 15px;
+  padding-bottom: 3px;
+  /* Progressive background */
+  background-color: $default-background-color;
+  height: 47px;
+  font-size: $link-font-size;
+}
+
+#horizontal_menu li {
+  text-align: center;
+  display: table-cell;
+  width: 1%;
+  vertical-align: middle;
+}
+
+#horizontal_menu li a {
+  display: block;
+  line-height: 47px;
+  font-weight: bold;
+}
+
+#horizontal_menu ul {
+  margin: 0 -1px 0 0;
+  height: 47px;
+}
+
+#horizontal_menu li a:hover {
+  border-bottom: 3px solid $default-hover-border-color;
+  color: $link-hover-color;
+}
+
+#horizontal_menu li.selected a{
+  margin-top: -1px;
+  border-top: 1px solid $default-background-color !important;
+  border-left: 1px solid $default-border-color !important;
+  border-right: 1px solid $default-border-color !important;
+  border-bottom: 3px solid $default-selected-border-color !important;
+  color: $link-hover-color;
+}
+
+#horizontal_menu li.selected a:hover {
+}
+
+.menu-separator {
+  margin: auto;
+  width: 95%;
+  height: 3px;
+  background: -webkit-gradient(linear, 70% 0%, 70% 100%, from(white), to(#f2f2f2));
+  background: -moz-linear-gradient(top, #ffffff, #f2f2f2);
+}

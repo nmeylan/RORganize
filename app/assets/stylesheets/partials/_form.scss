@@ -1,0 +1,54 @@
+.form .box{
+  border: inherit;
+}
+
+/*
+*  FORM
+*/
+
+.form p {
+  margin: 0;
+  padding: 3px 0 3px 0;
+  padding-left: 180px; /* width of left column containing the label elements */
+  min-height: 1.8em;
+  clear: left;
+}
+
+fieldset.settings {
+  margin-left: 10px !important;
+  padding: 3px 3px 3px 10px !important;
+}
+
+.form fieldset {
+  margin: 0;
+  padding: 3px 0 3px 0;
+  margin-left: 180px; /* width of left column containing the label elements */
+  min-height: 1.8em;
+  width: 89%;
+  clear: left;
+
+}
+
+
+
+html > body .form p {
+  overflow: hidden;
+}
+
+.form label {
+  font-weight: bold;
+  float: left;
+  text-align: right;
+  /* width of left column */
+  margin-left: -180px;
+  /* width of labels. Should be smaller than left column to create some right margin */
+  width: 175px;
+}
+
+.normal_label {
+  font-weight: normal !important;
+  float: none !important;
+  text-align: inherit !important;
+  margin-left: 0px !important;
+  width: 0px !important;
+}

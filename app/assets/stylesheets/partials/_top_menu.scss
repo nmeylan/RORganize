@@ -1,0 +1,75 @@
+@import 'utilities/_variables';
+
+/*
+*  TOP MENU
+*/
+#top_menu {
+  background-color: $top-menu-background-color;
+  background-image: -moz-linear-gradient(#f9f9f9, #f3f3f3);
+  background-image: -webkit-linear-gradient(#f9f9f9, #f3f3f3);
+  background-image: linear-gradient(#f9f9f9, #f3f3f3);
+  background-repeat: repeat-x;
+  color: #505153;
+  padding: 7px 10px 2px 20px;
+  height: 2.8em;
+  font-size: 11px;
+  font-weight: bold;
+  border-bottom: 1px solid $default-border-color;
+}
+
+#top_menu ul {
+  padding: 0px;
+  margin: 5px 0px;
+}
+
+#top_menu li {
+  float: left;
+  list-style-type: none;
+  padding: 0px;
+  margin: 0px;
+}
+
+#top_menu a {
+  color: $link-color;
+  text-decoration: none;
+  padding: 10px 0px 10px 0px;
+}
+
+#top_menu a:hover {
+  color: $link-hover-color;
+}
+
+#top_menu a.selected {
+  color: $link-selected-color;
+}
+
+#top_menu a.square {
+  border: 1px solid #bbb;
+  text-shadow: 0 1px 0 #fff;
+  cursor: pointer;
+  box-shadow: 0 1px 2px #ccc;
+  -moz-box-shadow: 0 1px 2px #ccc;
+  -webkit-box-shadow: 0 1px 2px #ccc;
+  margin-bottom: 0px;
+  margin-right: 8px;
+  color: $link-color;
+  background-color: $default-background-color;
+  text-decoration: none;
+  padding: 4px 5px 7px 5px;
+}
+
+#top_menu a.square:hover {
+  color: $link-hover-color;
+}
+
+#top_menu a.square.selected {
+  color: $link-selected-color;
+}
+
+#account {
+  float: right;
+}
+
+#project_logo {
+  margin-right: 10px;
+}

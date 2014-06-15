@@ -1,0 +1,303 @@
+
+.icon, .icon-file {
+  background-position: 0% 50%;
+  background-repeat: no-repeat;
+  padding-left: 20px;
+  padding-bottom: 3px;
+}
+
+.icon-alert {
+  background-image: url(asset-path('alert.png'));
+}
+
+.icon-update_issue {
+  background-image: url(asset-path('update_issue.png'));
+}
+
+.icon-add {
+  background-image: url(asset-path('add_icon.png'));
+}
+
+.icon-tool {
+  background-image: url(asset-path('tool_small.png'));
+}
+
+.icon-edit {
+  background-image: url(asset-path('edit.png'));
+}
+
+.icon-copy {
+  background-image: url(asset-path('copy.png'));
+}
+
+.icon-duplicate {
+  background-image: url(asset-path('duplicate.png'));
+}
+
+.icon-del {
+  background-image: url(asset-path('delete.png'));
+}
+
+.icon-move {
+  background-image: url(asset-path('move.png'));
+}
+
+.icon-save {
+  background-image: url(asset-path('save.png'));
+}
+
+.icon-cancel {
+  background-image: url(asset-path('cancel.png'));
+}
+
+.icon-multiple {
+  background-image: url(asset-path('table_multiple.png'));
+}
+
+.icon-folder {
+  background-image: url(asset-path('folder.png'));
+}
+
+.open .icon-folder {
+  background-image: url(asset-path('folder_open.png'));
+}
+
+.icon-package {
+  background-image: url(asset-path('package.png'));
+}
+
+.icon-user {
+  background-image: url(asset-path('user.png'));
+}
+
+.icon-projects {
+  background-image: url(asset-path('projects.png'));
+}
+
+.icon-help {
+  background-image: url(asset-path('help.png'));
+}
+
+.icon-attachment {
+  background-image: url(asset-path('attachment.png'));
+}
+
+.icon-history {
+  background-image: url(asset-path('history.png'));
+}
+
+.icon-time {
+  background-image: url(asset-path('time.png'));
+}
+
+.icon-time-add {
+  background-image: url(asset-path('time_add.png'));
+}
+
+.icon-stats {
+  background-image: url(asset-path('stats.png'));
+}
+
+.icon-warning {
+  background-image: url(asset-path('warning.png'));
+}
+
+.icon-fav {
+  background-image: url(asset-path('fav.png'));
+}
+
+.icon-fav-off {
+  background-image: url(asset-path('fav_off.png'));
+}
+
+.icon-reload {
+  background-image: url(asset-path('reload.png'));
+}
+
+.icon-lock {
+  background-image: url(asset-path('locked.png'));
+}
+
+.icon-unlock {
+  background-image: url(asset-path('unlock.png'));
+}
+
+.icon-checked {
+  background-image: url(asset-path('true.png'));
+}
+
+.icon-details {
+  background-image: url(asset-path('zoom_in.png'));
+}
+
+.icon-report {
+  background-image: url(asset-path('report.png'));
+}
+
+.icon-comment {
+  background-image: url(asset-path('comment.png'));
+}
+
+.icon-summary {
+  background-image: url(asset-path('lightning.png'));
+}
+
+.icon-server-authentication {
+  background-image: url(asset-path('server_key.png'));
+}
+
+.icon-issue {
+  background-image: url(asset-path('ticket.png'));
+}
+
+.icon-zoom-in {
+  background-image: url(asset-path('zoom_in.png'));
+}
+
+.icon-zoom-out {
+  background-image: url(asset-path('zoom_out.png'));
+}
+
+.icon-passwd {
+  background-image: url(asset-path('textfield_key.png'));
+}
+
+.icon-test {
+  background-image: url(asset-path('bullet_go.png'));
+}
+
+.icon-checklist {
+  background-image: url(asset-path('checklist.png'));
+}
+
+.icon-group {
+  background-image: url(asset-path('group.png'));
+}
+
+.icon-target {
+  background-image: url(asset-path('ticket_go.png'));
+}
+
+.icon-done {
+  background-image: url(asset-path('percent.png'));
+}
+
+.icon-status {
+  background-image: url(asset-path('status.png'));
+}
+
+.icon-toggle_check {
+  background-image: url(asset-path('toggle_check.png'));
+}
+
+.icon-collapsed {
+  background-image: url(asset-path('arrow_collapsed.png'));
+}
+
+.icon-expanded {
+  background-image: url(asset-path('arrow_expanded.png'));
+}
+
+.icon-file {
+  background-image: url(asset-path('files/default.png'));
+}
+
+.icon-file.text-plain {
+  background-image: url(asset-path('files/text.png'));
+}
+
+.icon-file.text-x-c {
+  background-image: url(asset-path('files/c.png'));
+}
+
+.icon-file.text-x-csharp {
+  background-image: url(asset-path('files/csharp.png'));
+}
+
+.icon-file.text-x-java {
+  background-image: url(asset-path('files/java.png'));
+}
+
+.icon-file.text-x-javascript {
+  background-image: url(asset-path('files/js.png'));
+}
+
+.icon-file.text-x-php {
+  background-image: url(asset-path('files/php.png'));
+}
+
+.icon-file.text-x-ruby {
+  background-image: url(asset-path('files/ruby.png'));
+}
+
+.icon-file.text-xml {
+  background-image: url(asset-path('files/xml.png'));
+}
+
+.icon-file.text-css {
+  background-image: url(asset-path('files/css.png'));
+}
+
+.icon-file.text-html {
+  background-image: url(asset-path('files/html.png'));
+}
+
+.icon-file.image-gif {
+  background-image: url(asset-path('files/image.png'));
+}
+
+.icon-file.image-jpeg {
+  background-image: url(asset-path('files/image.png'));
+}
+
+.icon-file.image-png {
+  background-image: url(asset-path('files/image.png'));
+}
+
+.icon-file.image-tiff {
+  background-image: url(asset-path('files/image.png'));
+}
+
+.icon-file.application-pdf {
+  background-image: url(asset-path('files/pdf.png'));
+}
+
+.icon-file.application-zip {
+  background-image: url(asset-path('files/zip.png'));
+}
+
+.icon-file.application-x-gzip {
+  background-image: url(asset-path('files/zip.png'));
+}
+
+.icon-up_arrow {
+  background-image: url(asset-path('up_arrow.png'));
+}
+
+.icon-down_arrow {
+  background-image: url(asset-path('down_arrow.png'));
+}
+
+.icon-disabled_up_arrow {
+  background-image: url(asset-path('disabled_up_arrow.png'));
+}
+
+.icon-disabled_down_arrow {
+  background-image: url(asset-path('disabled_down_arrow.png'));
+}
+
+.icon-calendar {
+  background-image: url(asset-path('calendar.png'));
+}
+
+.icon-document {
+  background-image: url(asset-path('document.png'));
+}
+
+.icon-calendar {
+  background-image: url(asset-path('calendar.png'));
+}
+
+.icon-hierarchy {
+  background-image: url(asset-path('hierarchy.png'));
+}
