@@ -1,3 +1,5 @@
+@import 'utilities/variables';
+
 @font-face {
   font-family: 'octicons';
   src: url('octicons/octicons.eot?#iefix') format('embedded-opentype'),
@@ -19,9 +21,16 @@
   line-height: 1;
   margin-right: 6px;
   display: inline-block;
+  color : $default-smooth-color;
   text-decoration: none;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+a:hover .octicon{
+  color : $link-hover-color;
+}
+.octicon:hover{
+  color : $link-hover-color;
 }
 .mega-octicon {
   font: normal normal 32px octicons;

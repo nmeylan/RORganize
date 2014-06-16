@@ -460,9 +460,16 @@ li.close {
   line-height: 1;
   margin-right: 6px;
   display: inline-block;
+  color: gray;
   text-decoration: none;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale; }
+
+a:hover .octicon {
+  color: #484848; }
+
+.octicon:hover {
+  color: #484848; }
 
 .mega-octicon {
   font: normal normal 32px octicons;
@@ -2101,6 +2108,8 @@ ul.toolbox, ul.toolbox ul {
     background-image: url(asset_path("bullet_arrow_right.png")); }
   ul.toolbox li:hover > a, ul.toolbox ul li:hover > a {
     color: #484848; }
+    ul.toolbox li:hover > a .octicon, ul.toolbox ul li:hover > a .octicon {
+      color: #484848; }
   ul.toolbox li.hover, ul.toolbox ul li.hover {
     margin-left: -3px;
     border-left: 3px solid #d26911; }

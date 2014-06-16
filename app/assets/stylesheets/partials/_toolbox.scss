@@ -48,6 +48,9 @@ ul.toolbox, ul.toolbox ul {
   li:hover {
     > a{
       color: $link-hover-color;
+      .octicon {
+        color : $link-hover-color;
+      }
     }
   }
   li.hover {
