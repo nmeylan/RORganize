@@ -78,14 +78,14 @@
         }
         var first_char = xhr.status.toString().charAt(0);
         var is_error = first_char == '5' || first_char == '4';
-        if(is_error){
+        if (is_error) {
             $.jGrowl('An unexpected error occured, please try again!', {
                 theme: 'failure'
             });
         }
     });
 
-    String.prototype.endsWith = function(suffix) {
+    String.prototype.endsWith = function (suffix) {
         return this.indexOf(suffix, this.length - suffix.length) !== -1;
     };
 
@@ -93,8 +93,8 @@
     $.fn.serializeJSON = function () {
         var json = {};
         jQuery.map($(this).serializeArray(), function (n, i) {
-            if(n['name'].endsWith('[]')){
-                if(json[n['name']] === undefined)
+            if (n['name'].endsWith('[]')) {
+                if (json[n['name']] === undefined)
                     json[n['name']] = [];
                 json[n['name']].push(n['value']);
             }
@@ -130,14 +130,15 @@
         });
 
     }
+
     //Override jquery-rails confirm behaviour.
-    $.rails.allowAction = function(link){
+    $.rails.allowAction = function (link) {
         var message = link.attr('data-confirm');
-        if(!message){
+        if (!message) {
             return true;
         }
-        apprise(message, {confirm : true}, function(response){
-            if(response){
+        apprise(message, {confirm: true}, function (response) {
+            if (response) {
                 link.removeAttr('data-confirm');
                 link.trigger('click.rails');
             }
@@ -235,9 +236,10 @@ function checklist_build_select(item_value, option_for_select) {
     var select_status = "<div class='autocomplete-combobox nosearch no-padding_left' id='item-" + item_value.replace(/\s/g, "") + "'>";
     select_status += "<select name='items[" + item_value + "]' class='chzn-select cbb-medium' id='" + item_value.replace(/\s/g, "") + "'>" + option_for_select + "</select>";
     select_status += "<label style='margin-left:10px' id='label-" + item_value.replace(/\s/g, "") + "'>" + item_value + "</label>";
-    select_status += "<a href='#' class='icon icon-del' id='link-" + item_value.replace(/\s/g, "") + "'></a>";
+    select_status += "<a href='#' class='icon icon-del' id='link-" + item_value.replace(/\s/g, "") + "'><span class='octicon octicon-trashcan'></span></a>";
     select_status += "</div>";
     jQuery("#items").prepend(select_status);
+    jQuery(".chzn-select").chosen();
 }
 function checklist_add_item(checklist_statuses_json) {
     jQuery("#add_checklist_item").click(function () {
@@ -260,6 +262,7 @@ function checklist_add_item(checklist_statuses_json) {
             jQuery("#items select").change(function () {
                 checklist_statuses_color(jQuery(this));
             });
+
             //binding delete button
             checklist_remove_item();
         }
@@ -409,10 +412,13 @@ function multi_toogle(selector) {
         var self_element = jQuery(this);
         e.preventDefault();
         var id = self_element.attr("id");
-        if (self_element.hasClass('icon-collapsed'))
+        if (self_element.hasClass('icon-collapsed')) {
             self_element.switchClass('icon-collapsed', 'icon-expanded');
-        else
+            self_element.find("> .octicon").switchClass('octicon-chevron-right', 'octicon-chevron-down');
+        }else {
             self_element.switchClass('icon-expanded', 'icon-collapsed');
+            self_element.find("> .octicon").switchClass('octicon-chevron-down', 'octicon-chevron-right');
+        }
         jQuery(".content." + id).slideToggle();
     });
 }
@@ -420,10 +426,13 @@ function multi_toogle(selector) {
 function uniq_toogle(trigger_id, content) {
     jQuery(trigger_id).click(function (e) {
         e.preventDefault();
-        if (jQuery(this).hasClass('icon-collapsed'))
+        if (jQuery(this).hasClass('icon-collapsed')) {
             jQuery(this).switchClass('icon-collapsed', 'icon-expanded');
-        else
+            jQuery(trigger_id + "> .octicon").switchClass('octicon-chevron-right', 'octicon-chevron-down');
+        } else {
             jQuery(this).switchClass('icon-expanded', 'icon-collapsed');
+            jQuery(trigger_id + "> .octicon").switchClass('octicon-chevron-down', 'octicon-chevron-right');
+        }
         jQuery(content).slideToggle();
     });
 }
@@ -765,8 +774,8 @@ function ajax_trigger(element, event, method) {
 
 }
 
-function save_edit_filter(link_id, form_id){
-    jQuery(link_id).click(function(e){
+function save_edit_filter(link_id, form_id) {
+    jQuery(link_id).click(function (e) {
         e.preventDefault();
         var self_element = jQuery(this);
         console.log(jQuery(form_id).serializeArray());

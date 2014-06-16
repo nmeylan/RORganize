@@ -9,12 +9,12 @@
   <h1><%= t(:label_setting_plural) %> - <%= t(:link_members) %></h1>
   <div class="splitcontentright">
     <%= link_to_with_permissions(
-      t(:link_add_member), 
+      glyph(t(:link_add_member), 'plus'),
       new_member_path(@project.slug), 
       @project,
       {:method => :get,
         :remote => true,
-        :id => 'add_members',:class => 'icon icon-add'})%>
+        :id => 'add_members'})%>
   </div>
 </div>
 <%= render :partial => 'settings/sidebar' %>

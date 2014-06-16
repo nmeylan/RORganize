@@ -31,10 +31,10 @@
                       <%= link_to "##{time_entry.issue_id}", issue_path(time_entry.project.slug, time_entry.issue_id) %>
                     </span>
                     <span class="calendar_item_middle">
-                      <%= link_to time_entry.spent_time, fill_overlay_with_date_time_entries_path(time_entry.issue_id, date), {:class => 'icon icon-time log_time'} %>
+                      <%= link_to glyph(time_entry.spent_time.to_s, 'calendar'), fill_overlay_with_date_time_entries_path(time_entry.issue_id, date), {:class => 'icon icon-time log_time'} %>
                     </span>
                     <span class="calendar_item_right">
-                      <%= link_to '', time_entry_path(time_entry.id), {:class => 'icon icon-del', :remote => true, :method => :delete, :confirm => t(:text_delete_item)} %>
+                      <%= link_to glyph('', 'trashcan'), time_entry_path(time_entry.id), {:class => 'icon icon-del', :remote => true, :method => :delete, :confirm => t(:text_delete_item)} %>
                     </span>
                   </li>
                   <% total += time_entry.spent_time %>

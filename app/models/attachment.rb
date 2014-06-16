@@ -4,12 +4,12 @@
 # File: attachment.rb
 
 class Attachment < ActiveRecord::Base
-  has_attached_file :file, :styles =>  {
+  has_attached_file :file, :styles => {
       :logo => '40x40',
-      :thumb=> '100x100>',
-      :small  => '150x150>',
+      :thumb => '100x100>',
+      :small => '150x150>',
       :medium => '300x300>',
-      :large => '800x800>' }
+      :large => '800x800>'}
 
   validates_attachment_content_type :file, :content_type => %w(image/jpeg image/bmp image/png image/jpg image/gif application/pdf)
   # Validate filename
@@ -18,5 +18,13 @@ class Attachment < ActiveRecord::Base
 
   def self.permit_attributes
     [:file, :tempfile, :original_filename, :content_type, :headers, :form_data, :name]
+  end
+
+  def icon_type
+    if self.file_content_type.gsub(/\//, '-').eql?('pdf')
+      'octicon-file-pdf'
+    else
+      'octicon-file-media'
+    end
   end
 end

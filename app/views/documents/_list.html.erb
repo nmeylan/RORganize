@@ -9,7 +9,7 @@
   <% if @documents.any?  %>
     <table class="document list" data-link="<%= toolbox_documents_path(@project.slug) %>">
       <tr class="header">
-        <th><%= link_to '', '#', {:class => 'icon icon-checked', :id => 'check_all', 'cb_checked' => 'b'} %></th>
+        <th><%= link_to glyph('', 'check'), '#', {:class => 'icon-checked', :id => 'check_all', 'cb_checked' => 'b'} %></th>
         <th><%= sortable 'documents.id', '#'%></th>
         <th><%= sortable 'documents.name', 'Name'%></th>
         <th><%= sortable 'categories.name', 'Category' %></th>

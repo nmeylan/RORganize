@@ -8,7 +8,7 @@
   <% if @issues.any?  %>
     <table class="issue list" data-link="<%= toolbox_issues_path(@project.slug) %>">
       <tr class="header">
-        <th><%= link_to '', '#', {:class => 'icon icon-checked', :id => 'check_all', 'cb_checked' => 'b'} %></th>
+        <th><%= link_to glyph('','check'), '#', {:id => 'check_all', 'cb_checked' => 'b'} %></th>
         <th><%= sortable 'issues.id', '#'%></th>
         <th><%= sortable 'trackers.name', 'Tracker'%></th>
         <th><%= sortable 'issues.subject', 'Subject' %></th>
@@ -33,8 +33,8 @@
           <td class="list_center version"><%= issue.version ? issue.version.name : '-' %></td>
           <td class="list_center due_date"><%= issue.due_date ? issue.due_date : '-' %></td>
           <td class="list_center done"><%= issue.done ? issue.done.to_s+'%' : '-' %></td>
-          <td><%= link_to '',show_checklist_items_issues_path(@project.slug, issue.id) , {:class => 'icon icon-checklist', :remote => true} if issue.checklist_items.size > 0 %></td>
-          <td><%= issue.attachments.empty? ? '' : image_tag(asset_path 'attachment.png')%></td>
+          <td><%= link_to glyph('','checklist'),show_checklist_items_issues_path(@project.slug, issue.id) , {:remote => true} if issue.checklist_items.size > 0 %></td>
+          <td><%= content_tag :span, nil, {class: 'octicon octicon-file-media'} unless issue.attachments.empty? %></td>
         </tr>
       <%end%>
     </table>

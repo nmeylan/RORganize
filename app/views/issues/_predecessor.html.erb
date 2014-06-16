@@ -28,7 +28,7 @@
     <p>
       #<%= @issue.predecessor_id %> :
       <%= link_to @issue.parent.subject, {:action => 'show', :controller => 'issues', :id => @issue.predecessor_id}%>
-      <%= link_to t(:link_delete), del_predecessor_issues_path(@project.slug, @issue.id), {:class => 'icon icon-del', :remote => true, :confirm => t(:text_delete_item), :method => :delete}  %>
+      <%= link_to glyph(t(:link_delete), 'trashcan'), del_predecessor_issues_path(@project.slug, @issue.id), {:remote => true, :confirm => t(:text_delete_item), :method => :delete}  %>
     </p>
   <% else %>
     <% if @issue.parent.nil? %>

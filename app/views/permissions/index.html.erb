@@ -9,7 +9,7 @@
   <h1><%= t(:link_permissions) %></h1>
   <div class="splitcontentright">
     <%= link_to_with_permissions(
-      t(:link_new_permission), new_permission_path, nil, {:method => :get, :class => 'icon icon-add'}) %>
+      glyph(t(:link_new_permission), 'plus'), new_permission_path, nil, {:method => :get}) %>
   </div>
 </div>
 
@@ -40,11 +40,11 @@
 <ul>
   <li>
     If your permissions are named: Delete, Remove or Destroy.. will apear like this:
-    <span class="alert icon icon-alert">Dangerous permissions</span>
+    <span class="octicon octicon-flame"></span>Dangerous permissions
   </li>
   <li>
     If your permission affect a critical controller (e.g administration), controllers will apears like this :
-    <span class="icon icon-warning">Critical controller</span>
+    <span class="octicon octicon-alert"></span>Critical controller
   </li>
 </ul>
 </p>

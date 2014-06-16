@@ -11,7 +11,7 @@ function on_load_wiki_scripts(){
 
 function wiki_organize_pages(){
     bind_organization_behaviour(".connectedSortable");
-    jQuery(".connectedSortable li.item").prepend("<a href='#' class='add_sub_item icon icon-add'></a>");
+    jQuery(".connectedSortable li.item").prepend("<a href='#' class='add_sub_item icon icon-add'><span class='octicon octicon-plus'></span></a> ");
     add_sub_item(".add_sub_item");
     bind_set_organization_button("#organize_pages li.item", "#serialize");
 }

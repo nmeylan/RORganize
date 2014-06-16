@@ -9,7 +9,7 @@
   <h1><%= t(:label_project_plural) %></h1>
   <div class="splitcontentright">
     <%= link_to_with_permissions(
-      t(:link_new_project), new_project_path, nil, {:method => :get, :class => 'icon icon-add'}) %>
+      glyph(t(:link_new_project), 'plus'), new_project_path, nil, {:method => :get}) %>
   </div>
   <div style="clear:both;"></div>
 </div>

@@ -92,7 +92,7 @@ en:
   link_repository: Repository
   link_versions: Versions
   link_new_version: New version
-  link_new_category: new category
+  link_new_category: New category
   link_sign_in: Sign in
   link_view_all: View all
   link_administration: Administration
@@ -149,6 +149,8 @@ en:
   link_my_submited_requests: My submited requests
   link_log_time: Log time
   link_my_spent_time: My spent time
+  link_star: Star
+  link_unstar: Unstar
  #FORM
   field_name: Name
   field_description: Description

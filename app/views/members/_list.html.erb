@@ -26,8 +26,8 @@
           </div>
         </td>
         <td class="action">
-          <%= link_to_with_permissions(t(:link_delete), member_path(@project.slug, member.id),  @project,
-            {:method => :delete,:remote => true,:confirm => t(:text_delete_item),:class => 'icon icon-del' }) %>
+          <%= link_to_with_permissions(glyph(t(:link_delete), 'trashcan'), member_path(@project.slug, member.id),  @project,
+            {:method => :delete,:remote => true,:confirm => t(:text_delete_item)}) %>
         </td>
       </tr>
     <%end%>

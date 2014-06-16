@@ -16,7 +16,7 @@
         <% if attachments.file_content_type.include?('image')  %>
           <%= image_tag attachments.file.url(:thumb) %>
         <% else %>
-          <%= link_to attachments.file_file_name,{}, {:class => "icon-file #{attachments.file_content_type.gsub(/\//,'-')}"} %>
+          <%= link_to glyph(attachments.file_file_name, attachments.icon_type),{}, {} %>
         <% end %>
       <% end %>
     </p>

@@ -9,10 +9,9 @@
   <h1><%= t(:label_setting_plural) %> - <%= t(:link_categories) %></h1>
   <div class="splitcontentright">
     <%= link_to_with_permissions(
-      t(:link_new_category), 
+      glyph(t(:link_new_category), 'plus'),
       new_category_path(@project.slug), 
-      @project, 
-      :class => 'icon icon-add') %>
+      @project) %>
   </div>
 </div>
 <%= render :partial => 'categories/list' %>

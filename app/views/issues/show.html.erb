@@ -10,22 +10,22 @@
 
   <div class="splitcontentright">
 <%#= New link %>
-    <%= link_to_with_permissions( t(:link_new_issue),new_issue_path(@project.slug), @project, {:method => :get, :class => 'icon icon-add'}) %>
+    <%= link_to_with_permissions(glyph(t(:link_new_issue), 'plus'),new_issue_path(@project.slug), @project, {:method => :get}) %>
 <%#= Edit link %>
-    <%= link_to_with_not_owner_permissions(t(:link_edit),edit_issue_path(@project.slug, @issue.id),@project,@issue.author_id, {:method => :get,:class => 'icon icon-edit'}) %>
+    <%= link_to_with_not_owner_permissions(glyph(t(:link_edit), 'pencil'),edit_issue_path(@project.slug, @issue.id),@project,@issue.author_id, {:method => :get}) %>
 <%#= Start date link %>
-    <%= link_to t(:link_start_today), start_today_issues_path(@project.slug, @issue.id),
-                {:class => 'icon icon-calendar', :id => 'start_today', :data => {:confirm => t(:text_set_start_date_today)},
+    <%= link_to glyph(t(:link_start_today), 'calendar'), start_today_issues_path(@project.slug, @issue.id),
+                {:id => 'start_today', :data => {:confirm => t(:text_set_start_date_today)},
                  :method => :post,:remote => true} %>
 <%#= Update link %>
-    <%= link_to t(:link_update), '#update_issue', {:class => 'icon icon-update_issue', :id => 'update_issue_link'} %>
+    <%= link_to glyph(t(:link_update), 'comment'), '#update_issue', {:class => 'icon icon-update_issue', :id => 'update_issue_link'} %>
 <%#= Checklist link %>
-    <%= link_to_with_permissions(t(:link_checklist),checklist_issues_path(@project.slug), @project, {:class => 'icon icon-checklist open_checklist_overlay'}) %>
+    <%= link_to_with_permissions(glyph(t(:link_checklist), 'checklist'),checklist_issues_path(@project.slug), @project, {:class => 'open_checklist_overlay'}) %>
 <%#= Log time link %>
-    <%= link_to t(:link_log_time),fill_overlay_time_entries_path(@issue.id) , {:id => 'log_time', :class => 'icon icon-time'} %>
+    <%= link_to glyph(t(:link_log_time), 'clock'),fill_overlay_time_entries_path(@issue.id) , {:id => 'log_time'} %>
 <%#= Delete link %>
-    <%= link_to_with_not_owner_permissions( t(:link_delete), issue_path(@project.slug, @issue.id), @project,@issue.author_id,
-                {:method => :delete, :class => 'icon icon-del',:remote => true, :confirm => t(:text_delete_item )}) %>
+    <%= link_to_with_not_owner_permissions(glyph(t(:link_delete), 'trashcan'), issue_path(@project.slug, @issue.id), @project,@issue.author_id,
+                {:method => :delete,:remote => true, :confirm => t(:text_delete_item )}) %>
   </div>
 </div>
 
@@ -75,10 +75,10 @@
 <ul class="checklist" id="ck_refresh">
   <%= render :partial => 'issues/checklist_items', :locals => {:checklist_items => checklist_items} %>
 </ul>
-<span><%= link_to_with_permissions(t(:link_checklist),checklist_issues_path(@project.slug), @project, {:class => 'icon icon-checklist open_checklist_overlay'}) %>
+<span><%= link_to_with_permissions(glyph(t(:link_checklist), 'checklist'),checklist_issues_path(@project.slug), @project, {:class => 'icon icon-checklist open_checklist_overlay'}) %>
  </span>
 <div class="separator"></div>
-<%= link_to '', '#', {:class => 'icon icon-collapsed toggle right', :style => 'float:right', :id => 'gantt_informations'} %>
+<%= link_to glyph('', 'chevron-right'), '#', {:class => 'icon icon-collapsed toggle right', :style => 'float:right', :id => 'gantt_informations'} %>
 <div style="clear:both "></div>
 <div class="content gantt_informations">
   <div id="predecessor">

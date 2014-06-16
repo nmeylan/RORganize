@@ -8,11 +8,7 @@
 <div class="contextual">
   <h1><%= t(:link_trackers) %></h1>
   <div class="splitcontentright">
-     <%= link_to_with_permissions(
-       t(:link_new_tracker), 
-      new_tracker_path, 
-      nil, 
-      :class => 'icon icon-add') %>
+     <%= link_to_with_permissions(glyph(t(:link_new_tracker), 'plus'), new_tracker_path, nil) %>
    </div>
 </div>
 

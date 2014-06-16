@@ -6,7 +6,7 @@
 %>
 
 <fieldset>
-  <legend><%= link_to t(:link_filter), '#', {:class => 'icon icon-collapsed toggle', :id => 'document'} %></legend>
+  <legend><%= link_to glyph(t(:link_filter), 'chevron-right'), '#', {:class => 'icon-collapsed toggle', :id => 'document'} %></legend>
   <div class="content">
     <%= form_tag url_for(:controller => 'documents', :action => 'index'),{:method => :get, :class => 'filter_form', :id => 'filter_form', :remote => true} do -%>
   <%#= Start of the form %>

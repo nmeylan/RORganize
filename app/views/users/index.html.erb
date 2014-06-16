@@ -8,7 +8,7 @@
 <div class="contextual">
   <h1><%= t(:label_users) %></h1>
   <div class="splitcontentright">
-    <%= link_to_with_permissions( t(:link_new_user), new_user_path, nil,{:class => 'icon icon-add'}) %>
+    <%= link_to_with_permissions(glyph(t(:link_new_user), 'plus'), new_user_path, nil,{}) %>
   </div>
 </div>
 

@@ -10,9 +10,9 @@
   <div class="splitcontentright">
     <% if current_user.allowed_to?('destroy','Permissions')%>
       <% unless @permission.is_locked %>
-        <%= link_to t(:link_delete),permission_path(@permission.id), {:class => 'icon icon-del', :remote => true, :confirm =>  t(:text_delete_item ), :method => :delete} %>
+        <%= link_to glyph(t(:link_delete), 'trashcan') ,permission_path(@permission.id), {:remote => true, :confirm =>  t(:text_delete_item ), :method => :delete} %>
       <% else %>
-        <span class="icon icon-lock"><%= t(:link_delete) %></span>
+            <span class="octicon octicon-lock"></span><%= t(:link_delete) %>
       <% end %>
     <% end %>
   </div>

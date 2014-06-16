@@ -6,33 +6,41 @@
 %>
 
 <div class="contextual">
-  <h1><%= t(:label_user)+': '+@user.name%></h1>
+  <h1><%= t(:label_user)+': '+@user.name %></h1>
+
   <div class="splitcontentright">
-    <%= link_to_with_permissions(t(:link_edit), edit_user_path(@user.id), nil, {:class => 'icon icon-edit'}) %>
-     <%= link_to_with_permissions(t(:link_delete), user_path(@user.id), nil, {:method => :delete, :class => 'icon icon-del', :remote => true, :confirm => t(:text_delete_item)}) %>
+    <%= link_to_with_permissions(glyph(t(:link_edit), 'pencil'), edit_user_path(@user.id), nil) %>
+    <%= link_to_with_permissions(glyph(t(:link_delete), 'trashcan'), user_path(@user.id), nil, {:method => :delete, :remote => true, :confirm => t(:text_delete_item)}) %>
 
   </div>
 </div>
 
 <table class="detail" style="width:100%">
   <tr>
-    <th style="width:15%"><%= t(:field_login) %> :</th><td style="width:30%"><%= @user.login%></td>
-    <th style="width:15%"><%= t(:label_created_at) %> :</th><td style="width:30%"><%= @user.created_at.to_formatted_s(:short) %></td>
+    <th style="width:15%"><%= t(:field_login) %> :</th>
+    <td style="width:30%"><%= @user.login %></td>
+    <th style="width:15%"><%= t(:label_created_at) %> :</th>
+    <td style="width:30%"><%= @user.created_at.to_formatted_s(:short) %></td>
   </tr>
   <tr>
-    <th style="width:15%"><%= t(:field_name) %> :</th><td style="width:30%"><%= @user.name %></td>
-    <th style="width:15%"><%= t(:label_current_sign_in) %> :</th><td style="width:30%"><%= @user.current_sign_in_at ? @user.current_sign_in_at.time.to_formatted_s(:short) : '-' %></td>
+    <th style="width:15%"><%= t(:field_name) %> :</th>
+    <td style="width:30%"><%= @user.name %></td>
+    <th style="width:15%"><%= t(:label_current_sign_in) %> :</th>
+    <td style="width:30%"><%= @user.current_sign_in_at ? @user.current_sign_in_at.time.to_formatted_s(:short) : '-' %></td>
   </tr>
   <tr>
-    <th style="width:15%"><%= t(:field_email) %> :</th><td style="width:30%"><%= @user.email %></td>
-    <th style="width:15%"><%= t(:label_last_sign_in) %> :</th><td style="width:30%"><%= @user.last_sign_in_at ? @user.last_sign_in_at.time.to_formatted_s(:short) : '-' %></td>
+    <th style="width:15%"><%= t(:field_email) %> :</th>
+    <td style="width:30%"><%= @user.email %></td>
+    <th style="width:15%"><%= t(:label_last_sign_in) %> :</th>
+    <td style="width:30%"><%= @user.last_sign_in_at ? @user.last_sign_in_at.time.to_formatted_s(:short) : '-' %></td>
   </tr>
   <tr>
-    <th style="width:15%"><%= t(:field_administrator) %> :</th><td style="width:30%"><%= @user.admin.to_s %></td>
+    <th style="width:15%"><%= t(:field_administrator) %> :</th>
+    <td style="width:30%"><%= @user.admin.to_s %></td>
   </tr>
 </table>
 <% if @journals.any? %>
-  <div id="history">
-    <%= raw history_render(@journals) %>
-  </div>
+    <div id="history">
+      <%= raw history_render(@journals) %>
+    </div>
 <% end %>

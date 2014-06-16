@@ -20,10 +20,7 @@
           <% end %>
         </td>
         <td class="action">
-          <%= link_to_with_permissions(t(:link_delete), 
-            role_path(role.id), 
-            nil,
-            {:method => :delete, :class => 'icon icon-del', :remote => true, :confirm => t(:text_delete_item ) }) %>
+          <%= link_to_with_permissions(glyph(t(:link_delete), 'trashcan'), role_path(role.id), nil, {:method => :delete, :remote => true, :confirm => t(:text_delete_item ) }) %>
       </tr>
     <%end%>
   </table>

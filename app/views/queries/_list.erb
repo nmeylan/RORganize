@@ -18,8 +18,8 @@
       <% @queries.each do |query| %>
         <tr class="odd_even query_tr" id="<%= query.id %>">
           <td class="list_left name"><%= link_to query.name, query_path(:id => query.id) %></td>
-          <td class="action"><%= link_to_with_permissions(t(:link_edit),edit_query_path(query.id),nil, {:class => 'icon icon-edit'}) %></td>
-          <td class="action"> <%= link_to_with_permissions(t(:link_delete), query_path(query.id), @project, {:method => :delete, :class => 'icon icon-del', :remote => true, :confirm => t(:text_delete_item )}) %>
+          <td class="action"><%= link_to_with_permissions(glyph(t(:link_edit), 'pencil'),edit_query_path(query.id),nil, {}) %></td>
+          <td class="action"> <%= link_to_with_permissions(glyph(t(:link_delete), 'trashcan'), query_path(query.id), @project, {:method => :delete, :remote => true, :confirm => t(:text_delete_item )}) %>
 
         </tr>
       <%end%>
