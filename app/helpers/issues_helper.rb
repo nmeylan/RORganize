@@ -16,10 +16,10 @@ module IssuesHelper
         new_value = old_new_value[1]
       end
       JournalDetail.create(:journal_id => journal.id,
-        :property => journalized_property[attribute],
-        :property_key => attribute,
-        :old_value => old_value,
-        :value => new_value)
+                           :property => journalized_property[attribute],
+                           :property_key => attribute,
+                           :old_value => old_value,
+                           :value => new_value)
     end
   end
 
@@ -29,54 +29,50 @@ module IssuesHelper
     filter_content_hash = Issue.filter_content_hash(@project)
     hash_for_radio = filter_content_hash['hash_for_radio']
     hash_for_select = filter_content_hash['hash_for_select']
-    form_hash['assigned_to'] = generics_filter_simple_select('assigned_to',hash_for_radio['assigned'],hash_for_select['assigned'],true,nil, 'Assigned to')
-    form_hash['author'] = generics_filter_simple_select('author',hash_for_radio['author'],hash_for_select['author'], 'Author')
-    form_hash['category'] = generics_filter_simple_select('category',hash_for_radio['category'],hash_for_select['category'])
-    form_hash['created_at'] = generics_filter_date_field('created_at',hash_for_radio['created'])
-    form_hash['done'] = generics_filter_simple_select('done',hash_for_radio['done'],hash_for_select['done'],false, 'cbb-small')
-    form_hash['due_date'] = generics_filter_date_field('due_date',hash_for_radio['due_date'], 'Due date')
-    form_hash['start_date'] = generics_filter_date_field('start_date',hash_for_radio['start'])
-    form_hash['status'] = generics_filter_simple_select('status',hash_for_radio['status'],hash_for_select['status'], 'Status')
-    form_hash['subject'] = generics_filter_text_field('subject',hash_for_radio['subject'], 'Subject')
-    form_hash['tracker'] = generics_filter_simple_select('tracker',hash_for_radio['tracker'],hash_for_select['tracker'], 'Tracker')
-    form_hash['version'] = generics_filter_simple_select('version',hash_for_radio['version'],hash_for_select['version'], 'Version')
-    form_hash['updated_at'] = generics_filter_date_field('updated_at',hash_for_radio['updated'], 'Updated')
-    form_hash.each{|k,v| v.gsub(/"/,"'").gsub(/\n/, '')}
+    form_hash['assigned_to'] = generics_filter_simple_select('assigned_to', hash_for_radio['assigned'], hash_for_select['assigned'], true, nil, 'Assigned to')
+    form_hash['author'] = generics_filter_simple_select('author', hash_for_radio['author'], hash_for_select['author'], 'Author')
+    form_hash['category'] = generics_filter_simple_select('category', hash_for_radio['category'], hash_for_select['category'])
+    form_hash['created_at'] = generics_filter_date_field('created_at', hash_for_radio['created'])
+    form_hash['done'] = generics_filter_simple_select('done', hash_for_radio['done'], hash_for_select['done'], false, 'cbb-small')
+    form_hash['due_date'] = generics_filter_date_field('due_date', hash_for_radio['due_date'], 'Due date')
+    form_hash['start_date'] = generics_filter_date_field('start_date', hash_for_radio['start'])
+    form_hash['status'] = generics_filter_simple_select('status', hash_for_radio['status'], hash_for_select['status'], 'Status')
+    form_hash['subject'] = generics_filter_text_field('subject', hash_for_radio['subject'], 'Subject')
+    form_hash['tracker'] = generics_filter_simple_select('tracker', hash_for_radio['tracker'], hash_for_select['tracker'], 'Tracker')
+    form_hash['version'] = generics_filter_simple_select('version', hash_for_radio['version'], hash_for_select['version'], 'Version')
+    form_hash['updated_at'] = generics_filter_date_field('updated_at', hash_for_radio['updated'], 'Updated')
+    form_hash.each { |k, v| v.gsub(/"/, "'").gsub(/\n/, '') }
     return form_hash.to_json
   end
 
   def issues_activities_text_builder(journal, specified_project = true)
-    text = ''
-    if journal.action_type.eql?('updated')
-      text += "<p class='icon'>"
-      if journal.details.empty? && !journal.notes.nil? && !journal.notes.eql?('')
-        text += "#{image_tag(asset_path 'activity_comment.png')} #{journal.user.name} #{t(:label_commented_lower_case)} "
-      else
-        text += "#{image_tag(asset_path 'activity_edit.png')} #{journal.user.name} #{t(:label_updated_lower_case)} "
+    content_tag :p do
+      if journal.action_type.eql?('updated') || journal.action_type.eql?('created')
+        if journal.details.empty? && !journal.notes.nil? && !journal.notes.eql?('')
+          safe_concat content_tag :span, nil, {class: 'octicon octicon-comment'}
+          safe_concat "#{journal.user.name} #{t(:label_commented_lower_case)} "
+        else
+          safe_concat content_tag :span, nil, {class: 'octicon octicon-pencil'} if journal.action_type.eql?('updated')
+          safe_concat content_tag :span, nil, {class: 'octicon octicon-diff-added'} if journal.action_type.eql?('created')
+          safe_concat "#{journal.user.name} #{t(:label_updated_lower_case)} "
+        end
+          safe_concat content_tag :b,"#{journal.journalized_type} "
+          safe_concat link_to(journal.journalized_id, issue_path(journal.project.slug, journal.journalized_id))
+        if journal.project_id && specified_project
+          safe_concat " #{t(:label_at)} "
+          safe_concat content_tag :b, link_to(journal.project.slug, overview_projects_path(journal.project.slug))
+        end
+      elsif journal.action_type.eql?('deleted')
+        safe_concat content_tag :span, nil, {class: 'octicon octicon-trashcan'}
+        safe_concat "##{journal.user.name} #{t(:label_deleted_lower_case)} "
+        safe_concat content_tag :b, "#{journal.journalized_type} ##{journal.journalized_id}"
+        if journal.project_id && specified_project
+          safe_concat"#{t(:label_at)} "
+          safe_concat content_tag :b, link_to(journal.project.slug, overview_projects_path(journal.project.slug))
+        end
       end
-      text += "<b>#{journal.journalized_type} ##{link_to journal.journalized_id, issue_path(journal.project.slug, journal.journalized_id)}</b>"
-      if journal.project_id && specified_project
-        text += " #{t(:label_at)} <b>#{link_to journal.project.slug,overview_projects_path(journal.project.slug)}</b>"
-      end
-      text += '</p>'
-    elsif journal.action_type.eql?('created')
-      text += "<p class='icon'>"
-      text += "#{image_tag(asset_path 'activity_add.png')} #{journal.user.name} #{t(:label_created_lower_case)} "
-      text += "<b>#{journal.journalized_type} ##{link_to journal.journalized_id, issue_path(journal.project.slug, journal.journalized_id)}</b>"
-      if journal.project_id && specified_project
-        text += " #{t(:label_at)} <b>#{link_to journal.project.slug, overview_projects_path(journal.project.slug)}</b>"
-      end
-      text += '</p>'
-    elsif journal.action_type.eql?('deleted')
-      text += "<p class='icon'>"
-      text += "#{image_tag(asset_path 'activity_deleted.png')} #{journal.user.name} #{t(:label_deleted_lower_case)} "
-      text += "<b>#{journal.journalized_type} ##{journal.journalized_id}</b>"
-      if journal.project_id && specified_project
-        text += " #{t(:label_at)} <b>#{link_to journal.project.slug, overview_projects_path(journal.project.slug)}</b>"
-      end
-      text += '</p>'
     end
   end
- 
+
 
 end

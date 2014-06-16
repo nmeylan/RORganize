@@ -228,53 +228,40 @@ EOD
 
   #Build text from a specific journal
   def generics_activities_text_builder(journal, activity_icon, is_not_in_project = true)
-    text = ''
     user = (journal.user ? journal.user.name : t(:label_unknown))
     #
-    if journal.action_type.eql?('updated')
-      text += "<p class='icon'>"
-      text += "#{image_tag(activity_icon)} #{user} #{t(:label_updated_lower_case)} "
-      if journal.journalized
-        text += "<b>#{journal.journalized_type} : #{journal.identifier_value}</b>"
-      else
-        text += "<b>#{journal.journalized_type} : unknown</b>"
+    content_tag :p do
+      if journal.action_type.eql?('updated') || journal.action_type.eql?('created')
+        safe_concat content_tag :span, nil, {class: 'octicon octicon-pencil'} if journal.action_type.eql?('updated')
+        safe_concat content_tag :span, nil, {class: 'octicon octicon-diff-added'} if journal.action_type.eql?('created')
+        safe_concat "#{user} #{t(:label_updated_lower_case)} "
+        if journal.journalized
+          safe_concat content_tag :b, "#{journal.journalized_type} : #{journal.identifier_value}"
+        else
+          safe_concat content_tag :b, "#{journal.journalized_type} : unknown"
+        end
+        if journal.project_id && is_not_in_project
+          safe_concat "#{t(:label_at)} "
+          safe_concat content_tag :b, link_to(journal.project.slug, overview_projects_path(journal.project.slug))
+        end
+      elsif journal.action_type.eql?('deleted')
+        safe_concat content_tag :span, nil, {class: 'octicon octicon-trashcan'}
+        safe_concat"#{user} #{t(:label_deleted_lower_case)} "
+        safe_concat content_tag :b, "#{journal.journalized_type} : #{journal.identifier_value}"
+        if journal.project_id && is_not_in_project
+          safe_concat "#{t(:label_at)} "
+          safe_concat content_tag :b, "#{journal.project_id}"
+        end
       end
-      if journal.project_id && is_not_in_project
-        text += " #{t(:label_at)} <b>#{link_to journal.project.slug, overview_projects_path(journal.project.slug)}</b>"
-      end
-      text += '</p>'
-    elsif journal.action_type.eql?('created')
-      text += "<p class='icon'>"
-      text += "#{image_tag(activity_icon)} #{user} #{t(:label_created_lower_case)} "
-      if journal.journalized
-        text += "<b>#{journal.journalized_type} : #{journal.identifier_value}</b>"
-      else
-        text += "<b>#{journal.journalized_type} : unknown</b>"
-      end
-      if journal.project_id && is_not_in_project
-        text += " #{t(:label_at)} <b>#{link_to journal.project.slug, overview_projects_path(journal.project.slug)}</b>"
-      end
-      text += '</p>'
-    elsif journal.action_type.eql?('deleted')
-      text += "<p class='icon'>"
-      text += "#{image_tag(asset_path 'activity_deleted.png')} #{user} #{t(:label_deleted_lower_case)} "
-      text += "<b>#{journal.journalized_type} : #{journal.identifier_value}</b>"
-      if journal.project_id && is_not_in_project
-        text += " #{t(:label_at)} <b>#{journal.project_id}</b>"
-      end
-      text += '</p>'
     end
-    return text
   end
 
   def activities_text_builder(journal, specified_project = true)
-    text = ''
     if journal.journalized_type.eql?('Issue')
-      text += issues_activities_text_builder(journal, specified_project)
+      issues_activities_text_builder(journal, specified_project).html_safe
     else
-      text += generics_activities_text_builder(journal, '', specified_project)
+      generics_activities_text_builder(journal, '', specified_project).html_safe
     end
-    return text.html_safe
   end
 
   #Params hash content:
