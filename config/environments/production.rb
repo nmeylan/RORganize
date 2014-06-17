@@ -48,8 +48,8 @@ RORganize::Application.configure do
   # Enable serving of images, stylesheets, and JavaScripts from an asset server
   # config.action_controller.asset_host = "http://assets.example.com"
 
-  # Precompile additional assets (application.js, application.css, and all non-JS/CSS are already added)
-  config.assets.precompile = %w(*.js *.css *.png *.jpg *.jpeg *.bmp *.gif)
+  # Precompile additional assets (application.js, rorganize.scss, and all non-JS/CSS are already added)
+  config.assets.precompile = %w(*.js *.css *.png *.jpg *.jpeg *.bmp *.gif *.eot *.ttf *.svg *.woff)
   # Disable delivery errors, bad email addresses will be ignored
   # config.action_mailer.raise_delivery_errors = false
 
