@@ -100,7 +100,7 @@ class MyController < ApplicationController
       member.save
     end
     respond_to do |format|
-      format.js {respond_to_js :action => 'star_project', :response_header => :success, :response_content => t(:successful_update)}
+      format.js {respond_to_js :action => 'do_nothing', :response_header => :success, :response_content => t(:successful_update)}
     end
   end
 
