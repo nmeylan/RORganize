@@ -74,7 +74,7 @@ module ApplicationHelper
     t = RedCloth.new <<EOD
 #{text}
 EOD
-    return t.to_html
+    t.to_html
   end
 
   def set_toolbar(id)
@@ -105,50 +105,54 @@ EOD
   end
 
   def history_detail_render(detail)
-    history_str = ''
     if detail.old_value && (detail.value.nil? || detail.value.eql?(''))
-      history_str += "<li><b>#{detail.property}</b> <b>#{detail.old_value.to_s}</b> #{t(:text_deleted)}</li>"
+      content_tag :li do
+        safe_concat content_tag :b, "#{detail.property} #{detail.old_value.to_s} "
+        safe_concat "#{t(:text_deleted)}"
+      end
     elsif detail.old_value && detail.value
-      history_str += "<li><b>#{detail.property}</b> #{t(:text_changed)} #{t(:text_from)} <b>#{detail.old_value.to_s}</b> #{t(:text_to)} <b>#{detail.value.to_s}</b></li>"
+      content_tag :li do
+        safe_concat content_tag :b, "#{detail.property} #{t(:text_changed)} "
+        safe_concat "#{t(:text_from)} "
+        safe_concat content_tag :b, "#{detail.old_value.to_s} "
+        safe_concat "#{t(:text_to)} "
+        safe_concat content_tag :b, "#{detail.value.to_s}"
+      end
     else
-      history_str += "<li><b>#{detail.property}</b> #{t(:text_set_at)} <b>#{detail.value.to_s}</b></li>"
+      content_tag :li do
+        safe_concat content_tag :b, "#{detail.property} "
+        safe_concat "#{t(:text_set_at)} "
+        safe_concat content_tag :b, "#{detail.value.to_s}"
+      end
     end
-    history_str.html_safe
   end
 
   #generic journal renderer
   def history_render(journals, show = true) #If come from show action
-    history_str = ''
-    count_journal = 0
-    #    puts journals.inspect
-    journals.each do |journal|
-      user = (journal.user ? journal.user.name : t(:label_unknown))
-      if !journal.nil? &&journal.details.any? || (!journal.notes.eql?('') && journal.action_type.eql?('updated'))
-        history_str += "<h3>#{t(:label_updated)} #{distance_of_time_in_words(journal.created_at, Time.now)} #{t(:label_ago)}, #{t(:label_by)} #{user}</h3>"
-        history_str += '<ul>'
-        journal.details.each do |detail|
-          history_str += history_detail_render(detail)
+    content_tag :div, class: 'history_blocks' do
+      safe_concat content_tag :div, nil, class: 'separator'
+      safe_concat content_tag :h2, t(:label_history)
+      journals.to_a.compact.collect do |journal|
+        if !journal.nil? && journal.details.any? || (!journal.notes.eql?('') && journal.action_type.eql?('updated'))
+          safe_concat journal_render(journal, show).html_safe
         end
-        history_str += '</ul>'
-        unless journal.notes.eql?('')
-          if journal.user_id.eql?(current_user.id) && show
-            history_str += link_to(glyph(t(:link_delete), 'trashcan'), delete_note_issues_path(@project.slug, journal.id),
-                                   {:class => 'right', :remote => true, :method => :delete, :confirm => t(:text_delete_item)})
-            history_str += link_to(glyph(t(:link_edit), 'pencil'), edit_note_issues_path(@project.slug, journal.id), {:id => "link_edit_note_#{journal.id}", :class => 'right edit_notes'})
-          end
-          history_str += "<div class='box_notes' id ='note_#{journal.id}'><p>#{textile_to_html(journal.notes)}</p>"
-          history_str += '</div>'
+      end.join.html_safe
+    end
+  end
+
+  def journal_render(journal, show)
+    user = (journal.user ? journal.user.name : t(:label_unknown))
+    content_tag :div, class: 'history_block' do
+      safe_concat content_tag :h3, "#{t(:label_updated)} #{distance_of_time_in_words(journal.created_at, Time.now)} #{t(:label_ago)}, #{t(:label_by)} #{user}"
+      safe_concat content_tag(:ul, (journal.details.collect { |detail| history_detail_render(detail) }).join.html_safe)
+      unless journal.notes.eql?('')
+        if journal.user_id.eql?(current_user.id) && show
+          safe_concat link_to(glyph(t(:link_delete), 'trashcan'), delete_note_issues_path(@project.slug, journal.id), {:class => 'right', :remote => true, :method => :delete, :confirm => t(:text_delete_item)})
+          safe_concat link_to(glyph(t(:link_edit), 'pencil'), edit_note_issues_path(@project.slug, journal.id), {:id => "link_edit_note_#{journal.id}", :class => 'right edit_notes'})
         end
-        history_str += '<br/><hr /><br/>' unless journal.eql?(journals.last)
-        count_journal +=1
+        safe_concat content_tag :div, (textile_to_html(journal.notes).html_safe), {class: 'box_notes'}
       end
     end
-    if count_journal > 0
-      s = ''
-      s += "<div class='separator'></div>" if show
-      history_str.insert(0, "#{s}<h2>#{t(:label_history)}</h2>")
-    end
-    return history_str.html_safe
   end
 
   def add_attachments_link(name)
@@ -169,11 +173,11 @@ EOD
     return h
   end
 
-  #  def act_as_admin?
-  #    return session["act_as"].eql?("Admin")
-  #  end
+#  def act_as_admin?
+#    return session["act_as"].eql?("Admin")
+#  end
 
-  #For following filter: e.g: Assigned with 3 radio button (All, equal, different) and 1 combo
+#For following filter: e.g: Assigned with 3 radio button (All, equal, different) and 1 combo
   def generics_filter_simple_select(name, options_for_radio, options_for_select, multiple = true, size = nil, label = nil)
     label ||= name.capitalize
     size ||= 'cbb-large'
@@ -189,7 +193,7 @@ EOD
     tr += "<td id='td-#{name}' class='value'>#{select_str}</td>"
   end
 
-  #For filters that require data from text field: e.g subject
+#For filters that require data from text field: e.g subject
   def generics_filter_text_field(name, options_for_radio, label = nil)
     label ||= name.capitalize
     tr = ''
@@ -201,7 +205,7 @@ EOD
     tr += "<td id='td-#{name}' class='value'>#{field_str}</td>"
   end
 
-  #For filters that require data from date field: e.g created_at
+#For filters that require data from date field: e.g created_at
   def generics_filter_date_field(name, options_for_radio, label = nil)
     label ||= name.capitalize
     tr = ''
@@ -213,7 +217,7 @@ EOD
     tr += "<td id='td-#{name}' class='value'>#{field_str}</td>"
   end
 
-  #Filters' operator
+#Filters' operator
   def generics_filter_radio_button(name, ary)
     radio_str = ''
     ary.each do |v|
@@ -226,7 +230,7 @@ EOD
     return radio_str
   end
 
-  #Build text from a specific journal
+#Build text from a specific journal
   def generics_activities_text_builder(journal, activity_icon, is_not_in_project = true)
     user = (journal.user ? journal.user.name : t(:label_unknown))
     #
@@ -246,7 +250,7 @@ EOD
         end
       elsif journal.action_type.eql?('deleted')
         safe_concat content_tag :span, nil, {class: 'octicon octicon-trashcan'}
-        safe_concat"#{user} #{t(:label_deleted_lower_case)} "
+        safe_concat "#{user} #{t(:label_deleted_lower_case)} "
         safe_concat content_tag :b, "#{journal.journalized_type} : #{journal.identifier_value}"
         if journal.project_id && is_not_in_project
           safe_concat "#{t(:label_at)} "
@@ -264,10 +268,10 @@ EOD
     end
   end
 
-  #Params hash content:
-  #method : possible values :post, :get , :put, :delete
-  #target : possible values "nil" or "self", if self url will be '#' else will be path
-  #html = {}
+#Params hash content:
+#method : possible values :post, :get , :put, :delete
+#target : possible values "nil" or "self", if self url will be '#' else will be path
+#html = {}
   def link_to_with_permissions(label, path, project, params = {})
     routes = Rails.application.routes
     hash_path = routes.recognize_path(path, :method => params[:method])
@@ -303,12 +307,12 @@ EOD
     end
   end
 
-  #Build rows for all entries from a given model
-  #Model : An activeRecord model
-  #Params :
-  # Exclude : all attributes exclude from model
-  # Or Include : all attributes include from model
-  #E.g: Display all users, exclude => [:password, :id]
+#Build rows for all entries from a given model
+#Model : An activeRecord model
+#Params :
+# Exclude : all attributes exclude from model
+# Or Include : all attributes include from model
+#E.g: Display all users, exclude => [:password, :id]
   def generics_list_builder(model, params = {:exclude => []})
     attributes = model.attribute_names
     exclude_attributes = params[:exclude]
