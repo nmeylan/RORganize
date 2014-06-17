@@ -1,12 +1,12 @@
 
 @import 'utilities/_variables';
 
+@import 'partials/icons';
 @import "partials/tags"; // HTML tags style. (e.g : p, h2, ...).
 @import 'partials/top_menu';
 @import 'partials/horizontal_menu';
 @import 'partials/pagination';
 @import 'partials/list'; //Tables style.
-@import 'partials/icons';
 @import 'partials/combobox'; //Chosen select.
 @import 'partials/sidebar';
 @import 'partials/toolbar'; // Textile toolbar.
