@@ -1,23 +1,7 @@
 
 @import 'utilities/_variables';
 
-@import 'partials/icons';
-@import "partials/tags"; // HTML tags style. (e.g : p, h2, ...).
-@import 'partials/top_menu';
-@import 'partials/horizontal_menu';
-@import 'partials/pagination';
-@import 'partials/list'; //Tables style.
-@import 'partials/combobox'; //Chosen select.
-@import 'partials/sidebar';
-@import 'partials/toolbar'; // Textile toolbar.
-@import 'partials/overlay'; // Overlay.
-@import 'partials/growl_popup'; // Growl osx like.
-@import 'partials/toolbox';
-@import 'partials/form';
-
-
-
-
+@import 'partials/*';
 
 /*
 *  HEADER CONTENT
