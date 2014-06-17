@@ -14,6 +14,7 @@ class Project < ActiveRecord::Base
   has_many :attachments, -> {where :object_type => 'Project'}, :foreign_key => 'object_id', :dependent => :destroy
   has_many :enabled_modules, :dependent => :destroy
   has_many :documents, :dependent => :destroy
+  has_many :journals, :dependent => :destroy
 
   validates_associated :attachments
   validates :name, :identifier, :presence => true, :uniqueness => true
@@ -109,5 +110,9 @@ class Project < ActiveRecord::Base
       self.trackers << tracker
     end
     self.save
+  end
+
+  def last_activity
+    self.journals.order("#{:created_at} desc").limit(1).first
   end
 end

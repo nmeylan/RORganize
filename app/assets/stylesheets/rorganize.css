@@ -465,7 +465,7 @@ li.close {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale; }
 
-a:hover .octicon {
+a:hover .mega-octicon, a:hover .octicon {
   color: #484848; }
 
 .octicon:hover {
@@ -474,7 +474,9 @@ a:hover .octicon {
 .mega-octicon {
   font: normal normal 32px octicons;
   line-height: 1;
+  margin-right: 6px;
   display: inline-block;
+  color: gray;
   text-decoration: none;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale; }
@@ -2387,6 +2389,14 @@ ul#items {
   /*   -webkit-border-radius: 5px;*/
   /*   border-radius: 5px;*/ }
 
+/**
+  History
+*/
+.history_block {
+  border-top: 1px solid #e5e5e5;
+  padding-top: 30px;
+  padding-bottom: 30px; }
+
 /*
 *  PROGRESS BAR
 */
@@ -2409,27 +2419,26 @@ table.progress_bar td.todo_percent {
 /*
 * PROJECTS
 */
-.project li {
-  background: #F1F5FA;
-  padding-top: 15px;
-  padding-bottom: 15px;
-  padding-right: 20px;
-  padding-left: 20px;
-  margin: 0px 20px 20px -15px !important;
-  border: 1px solid #DADEE5; }
-
-.project li.archived {
-  background: #D7D7D7; }
-
-.project.list p {
-  color: #888; }
-
-.project li:hover {
-  border: 1px solid #D7D7D7;
-  box-shadow: 0 0 3px #CCC;
-  -webkit-box-shadow: 0 0px 6px rgba(0, 0, 0, 0.3);
-  -moz-box-shadow: 0 0 3px #ccc;
-  z-index: 10; }
+ul.project_list {
+  list-style-type: none; }
+  ul.project_list > li {
+    margin: 0px 30px 30px -15px !important;
+    border-bottom: 1px solid #e5e5e5; }
+    ul.project_list > li > a {
+      font-size: 20px; }
+    ul.project_list > li ul.project_stats {
+      position: relative;
+      float: right;
+      list-style-type: none; }
+      ul.project_list > li ul.project_stats li {
+        float: left; }
+    ul.project_list > li p.project_last_activity {
+      font-size: 12px;
+      padding-bottom: 20px; }
+    ul.project_list > li div.star_project {
+      position: relative;
+      margin-top: -30px;
+      float: right; }
 
 /*
    CALENDAR

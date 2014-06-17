@@ -88,7 +88,7 @@ class MyController < ApplicationController
     member.save
     message = "#{t(:text_project)} #{member.project.name} #{member.is_project_starred ? t(:successful_starred) : t(:successful_unstarred )}"
     respond_to do |format|
-      format.js {respond_to_js :response_header => :success, :response_content => message}
+      format.js {respond_to_js :response_header => :success, :response_content => message, :locals => {id: params[:project_id], is_starred: member.is_project_starred}}
     end
   end
 

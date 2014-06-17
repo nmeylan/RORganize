@@ -375,32 +375,34 @@ table.progress_bar td.todo_percent {
 /*
 * PROJECTS
 */
-.project li {
-  background: #F1F5FA;
-  padding-top: 15px;
-  padding-bottom: 15px;
-  padding-right: 20px;
-  padding-left: 20px;
-  margin: 0px 20px 20px -15px !important;
-  border: 1px solid #DADEE5;
+ul.project_list{
+  list-style-type: none;
+  > li {
+    margin: 0px 30px 30px -15px !important;
+    border-bottom: 1px solid $default-border-color;
+    > a{
+      font-size: 20px;
+    }
+    ul.project_stats{
+      position: relative;
+      float: right;
+      list-style-type: none;
+      li{
+        float: left;
+      }
+    }
+    p.project_last_activity{
+      font-size: 12px;
+      padding-bottom: 20px;
+    }
+    div.star_project{
+      position: relative;
+      margin-top: -30px;
+      float: right;
+    }
+  }
 }
 
-.project li.archived {
-  background: #D7D7D7;
-}
-
-
-.project.list p {
-  color: #888;
-}
-
-.project li:hover {
-  border: 1px solid #D7D7D7;
-  box-shadow: 0 0 3px #CCC;
-  -webkit-box-shadow: 0 0px 6px rgba(0, 0, 0, 0.3);
-  -moz-box-shadow: 0 0 3px #ccc;
-  z-index: 10;
-}
 
 /*
    CALENDAR

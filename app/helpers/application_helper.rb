@@ -92,13 +92,17 @@ EOD
     link_to title, {:sort => column, :direction => direction, :action => default_action}, {:class => css_class, :remote => true}
   end
 
+  def mega_glyph(body, *names)
+    content_tag(:span, nil, :class => names.map { |name| "octicon-#{name.to_s.gsub('_', '-')}" }.push('mega-octicon')) + body #TODO find a better way
+  end
+
   def glyph(body, *names)
     content_tag(:span, nil, :class => names.map { |name| "octicon-#{name.to_s.gsub('_', '-')}" }.push('octicon')) + body #TODO find a better way
   end
 
   def conditional_glyph(body, bool, *names)
     if bool
-      content_tag(:span, nil, :class => names.map { |name| "octicon-#{name.to_s.gsub('_', '-')}" }.push('octicon')) + body #TODO find a better way
+      glyph(body, *names)
     else
       body
     end
