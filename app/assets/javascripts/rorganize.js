@@ -396,7 +396,6 @@ function bind_menu_actions(toolbox_id) {
     jQuery("a.action_link").click(function (e) {
         e.preventDefault();
         var context = _.without(jQuery(this).parents("li").attr('class').split(' '), 'hover');
-        console.log(context);
         //put new value into hidden field which name is matching with context
         jQuery("input#value_" + context).val(jQuery(this).data("id"));
         jQuery(toolbox_id).find("form").submit();
@@ -486,7 +485,6 @@ function load_filter(json_content, present_filters) {
     var tmp = "";
     var selector = "";
     var radio = "";
-
     if (_.any(present_filters)) {
         jQuery("#filter_content").html("");
         jQuery("#type_filter").attr('checked', 'checked');
@@ -512,6 +510,7 @@ function load_filter(json_content, present_filters) {
         });
         jQuery(".content").hide();
     } else {
+        jQuery("#filters_list").chosen();
         jQuery("#filters_list_chzn").hide();
         jQuery("#filter_content").hide();
         jQuery(".content").hide();
@@ -746,7 +745,6 @@ function initialize_filters(options) {
         //Display or hide filter's conditions
         add_filters(gon.DOM_filter);
         load_filter(gon.DOM_filter, (options && options["dom_persisted_filter"]) ? options["dom_persisted_filter"] : gon.DOM_persisted_filter);
-
     }
     $("#type_filter").click(function (e) {
         $("#filters_list_chzn").show();
@@ -778,9 +776,7 @@ function save_edit_filter(link_id, form_id) {
     jQuery(link_id).click(function (e) {
         e.preventDefault();
         var self_element = jQuery(this);
-        console.log(jQuery(form_id).serializeArray());
         json = jQuery(form_id).serializeJSON();
-        console.log(json);
         jQuery.ajax({
             url: self_element[0].href,
             type: 'put',

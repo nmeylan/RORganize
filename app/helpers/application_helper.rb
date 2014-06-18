@@ -1,8 +1,8 @@
 module ApplicationHelper
-  #  require 'Date'
   def sidebar_content?
     content_for?(:sidebar)
   end
+
 
   def render_404
     respond_to do |format|
@@ -162,19 +162,6 @@ EOD
   def add_attachments_link(name)
     content = escape_once(render :partial => 'attachments', :locals => {:attachments => Attachment.new})
     link_to name, '#', {:class => 'add_attachment_link', 'data-content' => content}
-  end
-
-  def sort_hash_by_keys(hash, order)
-    h = {}
-    if order.eql?('desc')
-      sorted_keys = hash.keys.sort { |x, y| y <=> x }
-    else
-      sorted_keys = hash.keys.sort { |x, y| x <=> y }
-    end
-    sorted_keys.each do |sorted_key|
-      h[sorted_key] = hash[sorted_key]
-    end
-    return h
   end
 
 

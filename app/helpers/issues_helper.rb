@@ -29,7 +29,7 @@ module IssuesHelper
     filter_content_hash = Issue.filter_content_hash(@project)
     hash_for_radio = filter_content_hash['hash_for_radio']
     hash_for_select = filter_content_hash['hash_for_select']
-    form_hash['assigned_to'] = generic_filter(:simple_selects, 'Assigned to', 'assigned_to', hash_for_radio['assigned'], hash_for_select['assigned'], true, nil)
+    form_hash['assigned_to'] = generic_filter(:simple_select, 'Assigned to', 'assigned_to', hash_for_radio['assigned'], hash_for_select['assigned'], true, nil)
     form_hash['author'] = generic_filter(:simple_select,  'Author', 'author', hash_for_radio['author'], hash_for_select['author'])
     form_hash['category'] = generic_filter(:simple_select, 'Category', 'category', hash_for_radio['category'], hash_for_select['category'])
     form_hash['created_at'] = generic_filter(:date, 'Created at', 'created_at', hash_for_radio['created'])

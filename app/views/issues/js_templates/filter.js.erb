@@ -1,0 +1,12 @@
+/**
+ * User: Nicolas
+ * Date: 18/06/2014
+ * Time: 20:19
+ */
+
+jQuery('#delete_overlay').overlay();
+jQuery('#delete_overlay').overlay().close();
+on_addition_effect("#issues_content", "<%= escape_javascript(render :partial => 'issues/list')%>");
+issues_index({dom_persisted_filter:"<%= escape_javascript(session["#{@project.slug}_controller_documents_filter_params"].to_json)%>"});
+
+on_replace_effect("#issue_filter", "<%= escape_javascript(render :partial => 'issues/filter')%>");

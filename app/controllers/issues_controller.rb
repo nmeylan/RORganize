@@ -260,7 +260,12 @@ class IssuesController < ApplicationController
   end
 
   def filter
-    filter_params = params[:filter] ? params[:filter].clone : nil
+    if params[:filter]
+      filter_params = params[:filter].clone
+      filter_params.delete_if{|_, filter| filter['operator'].eql?('all')}
+    else
+      filter_params = nil
+    end
     filter = nil
     if params[:type].eql?('filter') && params[:filter] && params[:filters_list] && params[:filters_list].any?
       filter = Issue.conditions_string(params[:filter])
