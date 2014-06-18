@@ -40,7 +40,7 @@
   height: 5px;
   margin-left: auto;
   margin-right: auto;
-  background-image: url(asset_path('handle.png'));
+  //  background-image: url(asset_path('handle.png'));
   cursor: n-resize;
 }
 
@@ -57,7 +57,7 @@
 }
 
 .markItUpHeader ul .markItUpDropMenu {
-  background: transparent url(asset_path('menu.png')) no-repeat 115% 50%;
+  //  background: transparent url(asset_path('menu.png')) no-repeat 115% 50%;
   margin-right: 5px;
 }
 
@@ -81,22 +81,17 @@
 }
 
 .markItUpHeader ul ul .markItUpDropMenu {
-  background: #FFF url(asset_path('submenu.png')) no-repeat 100% 50%;
+  //  background: #FFF url(asset_path('submenu.png')) no-repeat 100% 50%;
 }
 
 .markItUpHeader ul .markItUpSeparator {
-  margin: 0 10px;
+  margin: 0 3px;
   width: 1px;
   height: 16px;
   overflow: hidden;
   background-color: #CCC;
 }
 
-.markItUpHeader ul ul .markItUpSeparator {
-  width: auto;
-  height: 1px;
-  margin: 0px;
-}
 
 /* next rows of buttons */
 .markItUpHeader ul ul ul {
@@ -116,15 +111,12 @@
   text-indent: -10000px;
   background-repeat: no-repeat;
   padding: 3px;
-  margin: 0px;
 }
 
 .markItUpHeader ul ul a {
   display: block;
-  padding-left: 0px;
   text-indent: 0;
   width: 120px;
-  padding: 5px 5px 5px 25px;
   background-position: 2px 50%;
 }
 
@@ -136,70 +128,75 @@
 /**
   Icons
 */
+.markItUp a {
+  width: 16px;
+  height: 16px;
+  margin: 0 3px;
+  margin-bottom: 3px;
+  padding: 0 !important;
+  background: url(asset_path('textile/textile-sprite.png')) 0 0 no-repeat;
+}
+
 .markItUp .markItUpButton1 a {
-  background-image: url(asset_path('textile/h1.png'));
+  background-position: 0px 0px; //h1
 }
 
 .markItUp .markItUpButton2 a {
-  background-image: url(asset_path('textile/h2.png'));
+  background-position: -17px 0px; //h2
 }
 
 .markItUp .markItUpButton3 a {
-  background-image: url(asset_path('textile/h3.png'));
+  background-position: -34px 0px; //h3
 }
 
 .markItUp .markItUpButton4 a {
-  background-image: url(asset_path('textile/h4.png'));
+  background-position: -51px 0px; //h4
 }
 
 .markItUp .markItUpButton5 a {
-  background-image: url(asset_path('textile/h5.png'));
+  background-position: -68px 0px; //h5
 }
 
 .markItUp .markItUpButton6 a {
-  background-image: url(asset_path('textile/h6.png'));
+  background-position: -85px 0px; //h6
 }
 
 .markItUp .markItUpButton7 a {
-  background-image: url(asset_path('textile/paragraph.png'));
+  background-position: -68px -17px; //paragraph
 }
 
 .markItUp .markItUpButton8 a {
-  background-image: url(asset_path('textile/bold.png'));
+  background-position: 0px -17px; // Bold
 }
 
 .markItUp .markItUpButton9 a {
-  background-image: url(asset_path('textile/italic.png'));
+  background-position: -17px -17px; // Italic
 }
 
 .markItUp .markItUpButton10 a {
-  background-image: url(asset_path('textile/stroke.png'));
+  background-position: -17px -34px; // Stroke
 }
 
 .markItUp .markItUpButton11 a {
-  background-image: url(asset_path('textile/list-bullet.png'));
+  background-position: -34px -17px; // Unordered list
 }
 
 .markItUp .markItUpButton12 a {
-  background-image: url(asset_path('textile/list-numeric.png'));
+  background-position: -51px -17px; // Ordered list
 }
 
 .markItUp .markItUpButton13 a {
-  background-image: url(asset_path('textile/picture.png'));
+  background-position: -85px -17px; // Picture
 }
 
 .markItUp .markItUpButton14 a {
-  background-image: url(asset_path('textile/link.png'));
+  background-position: -34px -34px; // link
 }
 
 .markItUp .markItUpButton15 a {
-  background-image: url(asset_path('textile/quotes.png'));
+  background-position: -51px -34px; // Quote
 }
 
 .markItUp .markItUpButton16 a {
-  background-image: url(asset_path('textile/code.png'));
-}
-
-.markItUp .preview a {
-  background-image: url(asset_path('textile/preview.png'));
+  background-position: -0px -34px; // Code
 }

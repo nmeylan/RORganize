@@ -215,9 +215,9 @@ li.close {
 }
 
 .list th .asc {
-  background-image: url(asset-path('sort_asc.png'));
+  content: '\f0aa';
 }
 
 .list th .desc {
-  background-image: url(asset-path('sort_desc.png'));
+  content: '\f05b';
 }

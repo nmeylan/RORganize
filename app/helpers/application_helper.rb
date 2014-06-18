@@ -87,9 +87,9 @@ EOD
   def sortable(column, title = nil, default_action = nil)
     default_action ||= 'index'
     title ||= column.titleize
-    css_class = column == sort_column ? "current #{sort_direction}" : nil
+    icon = column == sort_column ? (sort_direction == 'asc' ? 'triangle-up' : 'triangle-down') : ''
     direction = column == sort_column && sort_direction == 'asc' ? 'desc' : 'asc'
-    link_to title, {:sort => column, :direction => direction, :action => default_action}, {:class => css_class, :remote => true}
+    link_to glyph(title, icon), {:sort => column, :direction => direction, :action => default_action}, {:remote => true}
   end
 
   def mega_glyph(body, *names)
