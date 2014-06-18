@@ -29,20 +29,20 @@ module IssuesHelper
     filter_content_hash = Issue.filter_content_hash(@project)
     hash_for_radio = filter_content_hash['hash_for_radio']
     hash_for_select = filter_content_hash['hash_for_select']
-    form_hash['assigned_to'] = generics_filter_simple_select('assigned_to', hash_for_radio['assigned'], hash_for_select['assigned'], true, nil, 'Assigned to')
-    form_hash['author'] = generics_filter_simple_select('author', hash_for_radio['author'], hash_for_select['author'], 'Author')
-    form_hash['category'] = generics_filter_simple_select('category', hash_for_radio['category'], hash_for_select['category'])
-    form_hash['created_at'] = generics_filter_date_field('created_at', hash_for_radio['created'])
-    form_hash['done'] = generics_filter_simple_select('done', hash_for_radio['done'], hash_for_select['done'], false, 'cbb-small')
-    form_hash['due_date'] = generics_filter_date_field('due_date', hash_for_radio['due_date'], 'Due date')
-    form_hash['start_date'] = generics_filter_date_field('start_date', hash_for_radio['start'])
-    form_hash['status'] = generics_filter_simple_select('status', hash_for_radio['status'], hash_for_select['status'], 'Status')
-    form_hash['subject'] = generics_filter_text_field('subject', hash_for_radio['subject'], 'Subject')
-    form_hash['tracker'] = generics_filter_simple_select('tracker', hash_for_radio['tracker'], hash_for_select['tracker'], 'Tracker')
-    form_hash['version'] = generics_filter_simple_select('version', hash_for_radio['version'], hash_for_select['version'], 'Version')
-    form_hash['updated_at'] = generics_filter_date_field('updated_at', hash_for_radio['updated'], 'Updated')
+    form_hash['assigned_to'] = generic_filter(:simple_selects, 'Assigned to', 'assigned_to', hash_for_radio['assigned'], hash_for_select['assigned'], true, nil)
+    form_hash['author'] = generic_filter(:simple_select,  'Author', 'author', hash_for_radio['author'], hash_for_select['author'])
+    form_hash['category'] = generic_filter(:simple_select, 'Category', 'category', hash_for_radio['category'], hash_for_select['category'])
+    form_hash['created_at'] = generic_filter(:date, 'Created at', 'created_at', hash_for_radio['created'])
+    form_hash['done'] = generic_filter(:simple_select, 'Done', 'done', hash_for_radio['done'], hash_for_select['done'], false, 'cbb-small')
+    form_hash['due_date'] = generic_filter(:date, 'Due date', 'due_date', hash_for_radio['due_date'])
+    form_hash['start_date'] = generic_filter(:date, 'Start date', 'start_date', hash_for_radio['start'])
+    form_hash['status'] = generic_filter(:simple_select, 'Status', 'status', hash_for_radio['status'], hash_for_select['status'])
+    form_hash['subject'] = generic_filter(:text, 'Subject', 'subject', hash_for_radio['subject'])
+    form_hash['tracker'] = generic_filter(:simple_select, 'Tracker', 'tracker', hash_for_radio['tracker'], hash_for_select['tracker'])
+    form_hash['version'] = generic_filter(:simple_select, 'Version', 'version', hash_for_radio['version'], hash_for_select['version'])
+    form_hash['updated_at'] = generic_filter(:date, 'Updated at', 'updated_at', hash_for_radio['updated'])
     form_hash.each { |k, v| v.gsub(/"/, "'").gsub(/\n/, '') }
-    return form_hash.to_json
+    form_hash.to_json
   end
 
   def issues_activities_text_builder(journal, specified_project = true)

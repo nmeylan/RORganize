@@ -36,9 +36,9 @@ module ApplicationHelper
   def find_action(action)
     basic_actions = {'update' => 'edit', 'create' => 'new'}
     if basic_actions.keys.include?(action)
-      return basic_actions[action]
+      basic_actions[action]
     else
-      return action
+      action
     end
   end
 
@@ -67,7 +67,7 @@ module ApplicationHelper
 
   def decimal_zero_removing(decimal)
     removed_zero = decimal.gsub(/^*[.][0]$/, '')
-    return removed_zero ? removed_zero : decimal
+    removed_zero ? removed_zero : decimal
   end
 
   def textile_to_html(text)
@@ -177,67 +177,64 @@ EOD
     return h
   end
 
-#  def act_as_admin?
-#    return session["act_as"].eql?("Admin")
-#  end
+
+  #Filter type : (simple_select date text)
+  # Field label
+  # Field name
+  # Options for radio button selection
+  # Filter arguments (depending on type of filter)
+  def generic_filter(filter_type, label, name, options_for_radio, *args)
+    types = %w(:simple_select :date :text)
+    label ||= name.capitalize
+    filter = case filter_type
+               when :simple_select then
+                 generics_filter_simple_select(name, *args)
+               when :date then
+                 generics_filter_date_field(name, *args)
+               when :text then
+                 generics_filter_text_field(name, *args)
+               else
+                 raise Exception, "Filter with type : :#{filter_type}, doesn't exist! Allowed types are : #{types.join(', ')}"
+             end
+    content_tag :tr, class: name do
+      safe_concat content_tag :td, label, class: 'label'
+      safe_concat content_tag :td, generics_filter_radio_button(name, options_for_radio).html_safe, class: 'radio'
+      safe_concat content_tag :td, filter, id: "td-#{name}", class: 'value'
+    end
+  end
+
 
 #For following filter: e.g: Assigned with 3 radio button (All, equal, different) and 1 combo
-  def generics_filter_simple_select(name, options_for_radio, options_for_select, multiple = true, size = nil, label = nil)
-    label ||= name.capitalize
+  def generics_filter_simple_select(name, options_for_select, multiple = true, size = nil)
     size ||= 'cbb-large'
-    tr = ''
-    radio_str = generics_filter_radio_button(name, options_for_radio)
-    select_str = ''
-    select_str += "<div class='autocomplete-combobox nosearch no-padding_left no-height'>"
-    select_str += select_tag("filter[#{name}][value][]", options_for_select(options_for_select), :class => 'chzn-select '+size, :id => name+'_list', :multiple => multiple)
-    select_str += '</div>'
-    tr += "<tr class='#{name}'>"
-    tr += "<td class='label'>#{label}</td>"
-    tr += "<td class='radio'>#{radio_str}</td>"
-    tr += "<td id='td-#{name}' class='value'>#{select_str}</td>"
+    content_tag :div, class: 'autocomplete-combobox nosearch no-padding_left no-height' do
+      select_tag("filter[#{name}][value][]", options_for_select(options_for_select), :class => 'chzn-select '+size, :id => name+'_list', :multiple => multiple)
+    end
   end
 
 #For filters that require data from text field: e.g subject
-  def generics_filter_text_field(name, options_for_radio, label = nil)
-    label ||= name.capitalize
-    tr = ''
-    radio_str = generics_filter_radio_button(name, options_for_radio)
-    field_str = text_field_tag("filter[#{name}][value]", '', {:size => 80})
-    tr += "<tr class='#{name}'>"
-    tr += "<td class='label'>#{label}</td>"
-    tr += "<td class='radio'>#{radio_str}</td>"
-    tr += "<td id='td-#{name}' class='value'>#{field_str}</td>"
+  def generics_filter_text_field(name)
+    text_field_tag("filter[#{name}][value]", '', {:size => 80})
   end
 
 #For filters that require data from date field: e.g created_at
-  def generics_filter_date_field(name, options_for_radio, label = nil)
-    label ||= name.capitalize
-    tr = ''
-    radio_str = generics_filter_radio_button(name, options_for_radio)
-    field_str = date_field_tag("filter[#{name}][value]", '', {:size => 6, :id => 'calendar_'+name, :class => 'calendar'})
-    tr += "<tr class='#{name}'>"
-    tr += "<td class='label'>#{label}</td>"
-    tr += "<td class='radio'>#{radio_str}</td>"
-    tr += "<td id='td-#{name}' class='value'>#{field_str}</td>"
+  def generics_filter_date_field(name)
+    date_field_tag("filter[#{name}][value]", '', {:size => 6, :id => 'calendar_'+name, :class => 'calendar'})
   end
 
 #Filters' operator
   def generics_filter_radio_button(name, ary)
-    radio_str = ''
-    ary.each do |v|
-      if v.eql?('all')
-        radio_str += "<input align='center' class='#{name}' id='#{name}_#{v}' checked='checked' name='filter[#{name}][operator]' type='radio' value='#{v}'>#{v.capitalize}"
-      else
-        radio_str += "<input align='center' class='#{name}' id='#{name}_#{v}' name='filter[#{name}][operator]' type='radio' value='#{v}'>#{v.capitalize}"
+    content_tag :span do
+      ary.each do |v|
+        safe_concat radio_button_tag %Q(filter[#{name}][operator]), v, v.eql?('all'), {class: name, id: %Q(#{name}_#{v.gsub(' ', '_')}), align: 'center'}
+        safe_concat label_tag %Q(#{name}_#{v}), v.capitalize
       end
     end
-    return radio_str
   end
 
 #Build text from a specific journal
   def generics_activities_text_builder(journal, activity_icon, is_not_in_project = true)
     user = (journal.user ? journal.user.name : t(:label_unknown))
-    #
     content_tag :p do
       if journal.action_type.eql?('updated') || journal.action_type.eql?('created')
         safe_concat content_tag :span, nil, {class: 'octicon octicon-pencil'} if journal.action_type.eql?('updated')
