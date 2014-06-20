@@ -10,9 +10,9 @@
 
   <div class="splitcontentright">
 <%#= New link %>
-    <%= link_to_with_permissions(glyph(t(:link_new_issue), 'plus'),new_issue_path(@project.slug), @project, {:method => :get}) %>
+    <%= link_to_with_permissions(glyph(t(:link_new_issue), 'plus'),new_issue_path(@project.slug), @project) %>
 <%#= Edit link %>
-    <%= link_to_with_not_owner_permissions(glyph(t(:link_edit), 'pencil'),edit_issue_path(@project.slug, @issue.id),@project,@issue.author_id, {:method => :get}) %>
+    <%= link_to_with_not_owner_permissions(glyph(t(:link_edit), 'pencil'),edit_issue_path(@project.slug, @issue.id),@project,@issue.author_id) %>
 <%#= Start date link %>
     <%= link_to glyph(t(:link_start_today), 'calendar'), start_today_issues_path(@project.slug, @issue.id),
                 {:id => 'start_today', :data => {:confirm => t(:text_set_start_date_today)},
