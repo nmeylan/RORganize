@@ -71,7 +71,7 @@
   <% end %>
   <li class="start_date">
     <%= hidden_field_tag 'value[start_date]' %>
-    <%= link_to glyph(t(:link_start_today),'calendar'), '#', {:class => 'icon icon-calendar action_link', :id => 'start_today', :'data-id' => Date.current}%>
+    <%= link_to glyph(t(:link_start_today),'today'), '#', {:class => 'icon icon-calendar action_link', :id => 'start_today', :'data-id' => Date.current}%>
   </li>
   <% if current_user.allowed_to?('edit','Issues',@project) %>
     <li><%= link_to glyph(t(:link_edit), 'pencil'), {:action => 'edit', :project_id => @project.slug, :id => ids[0]}, {:class => 'icon icon-edit'} if @issues_toolbox.size == 1%></li>

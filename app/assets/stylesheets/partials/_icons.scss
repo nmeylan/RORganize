@@ -27,7 +27,7 @@
   -moz-osx-font-smoothing: grayscale;
 }
 a:hover{
-  .mega-octicon, .octicon{
+  .medium-octicon, .mega-octicon, .octicon{
     color : $link-hover-color;
   }
 }
@@ -39,6 +39,18 @@ a:hover{
   font: normal normal 32px octicons;
   line-height: 1;
   margin-right: 6px;
+  display: inline-block;
+  color : $default-smooth-color;
+  text-decoration: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.medium-octicon {
+  font: normal normal 24px octicons;
+  line-height: 1;
+  margin-right: 6px;
+  margin-top: -6px;
   display: inline-block;
   color : $default-smooth-color;
   text-decoration: none;
@@ -252,3 +264,13 @@ a:hover{
 .octicon-remove-close:before,
 .octicon-x:before { content: '\f081'} /*  */
 .octicon-zap:before { content: '\26A1'} /* ⚡ */
+
+.octicon-king:before { content: '\F0D9'} /* ⚡ */
+.octicon-unlock:before { content: '\F0DA'} /* ⚡ */
+.octicon-today:before { content: '\F0DB'}
+.octicon-crown:before { content: '\F0DD'}
+
+.octicon-attachment:before { content: '\F0E1'} /* ⚡ */
+.octicon-duplicate:before { content: '\F0E0'} /* ⚡ */
+.octicon-sub-file:before { content: '\F0DF'}
+.octicon-progress:before { content: '\F0DC'}

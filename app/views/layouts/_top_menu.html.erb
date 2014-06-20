@@ -7,13 +7,16 @@
   <ul>
     <% if user_signed_in? %>
       <li>Welcome
-        <%= link_to current_user.name, {:controller => 'my', :action => 'show',:id => current_user.slug}, {:class => params[:controller].eql?('my') ? 'selected' : ''} %>,
-        <%= link_to(t(:label_log_out), destroy_user_session_path, :method => :delete)%>
+        <%= link_to current_user.name, {:controller => 'my', :action => 'show',:id => current_user.slug}, {:class => params[:controller].eql?('my') ? 'selected' : ''} %>
         <%= '|'  if current_user.is_admin? %>
-        <%= link_to session['act_as'], {:controller => 'my', :id => current_user.id, :action => 'act_as'} if current_user.is_admin?%>
+        <% icon = session['act_as'].eql?('Admin') ? 'crown' : 'person'%>
+        <% switch_to = icon.eql?('crown') ? 'User' : 'Admin' %>
+        <% g = icon.eql?('crown') ? medium_glyph('', icon) : glyph('', icon) %>
+        <%= link_to g, act_as_my_index_path, { title: "You are currently acting as an #{session['act_as']}. Click to act as #{switch_to}"} if current_user.is_admin?%>
+        <%= link_to(glyph('', 'sign-out'), destroy_user_session_path, :method => :delete)%>
       </li>
     <%else%>
-      <li><%= link_to t(:label_log_in), new_user_session_path %></li>
+      <li><%= link_to glyph('', 'sign-in'), new_user_session_path %></li>
     <%end%>
   </ul>
 </div>
