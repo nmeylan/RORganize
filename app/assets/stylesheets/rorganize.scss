@@ -140,6 +140,11 @@
 .flash {
   padding: 9px 35px 10px;
 }
+.flash:hover{
+  .close_flash{
+    opacity: 1;
+  }
+}
 .flash ul{
   margin: 0;
   padding: 0;
@@ -149,16 +154,33 @@
   border-radius: 4px;
   -webkit-font-smoothing: antialiased;
   border-color: 1px solid #cd504a;
+  margin-bottom: 2px;
   color: white;
+  .octicon{
+    color: white;
+  }
 }
 
 .flash.notice {
   border: 1px solid #97c1da;
+  border-radius: 4px;
   color: #264c72;
   background-color: #d0e3ef;
   background-image: -moz-linear-gradient(#d8ebf8, #d0e3ef);
   background-image: -webkit-linear-gradient(#d8ebf8, #d0e3ef);
   background-image: linear-gradient(#d8ebf8, #d0e3ef);
+  margin-bottom: 2px;
+  .octicon{
+    color: #97c1da;
+  }
+}
+
+.close_flash{
+  float: right;
+  opacity: 0.8;
+  text-decoration: none;
+  margin-top: 1px;
+  cursor: pointer;
 }
 
 /*

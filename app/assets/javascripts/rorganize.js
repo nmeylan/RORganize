@@ -105,13 +105,13 @@
     };
 
     $.fn.serializeObject = function () {
-        var values = {}
+        var values = {};
         $("form input, form select, form textarea").each(function () {
             values[this.name] = $(this).val();
         });
 
         return values;
-    }
+    };
     function clear_form_elements(ele) {
 
         $(ele).find(':input').each(function () {
@@ -151,9 +151,14 @@
 
 
 function display_flash() {
+    var el;
     jQuery(".flash").each(function () {
-        if (jQuery(this).text() != "") {
-            jQuery(this).css("display", "block");
+        el = jQuery(this);
+        if (el.text().trim() != "") {
+            el.css("display", "block");
+            el.find(".close_flash").click(function(e){
+                jQuery(this).parent().fadeOut();
+            });
         } else {
             jQuery(this).css("display", "none");
         }
@@ -161,9 +166,9 @@ function display_flash() {
 }
 //Flash message
 function error_explanation(message) {
-    jQuery(".flash.alert").text("");
+    var el = jQuery(".flash.alert");
     if (message != null) {
-        jQuery(".flash.alert").append(message).css("display", "block");
+        el.append(message).css("display", "block");
     }
 
 }
