@@ -11,7 +11,7 @@ class Issue < RorganizeActiveRecord
   belongs_to :project, :class_name => 'Project', counter_cache: true
   belongs_to :author, :class_name => 'User', :foreign_key => 'author_id'
   belongs_to :assigned_to, :class_name => 'User', :foreign_key => 'assigned_to_id'
-  belongs_to :version, :class_name => 'Version', :foreign_key => 'version_id'
+  belongs_to :version, :class_name => 'Version', :foreign_key => 'version_id', :counter_cache => true
   belongs_to :tracker, :class_name => 'Tracker'
   belongs_to :status, :class_name => 'IssuesStatus'
   belongs_to :category, :class_name => 'Category'
