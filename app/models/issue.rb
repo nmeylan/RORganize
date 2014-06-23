@@ -243,7 +243,6 @@ class Issue < RorganizeActiveRecord
     Rorganize::MagicFilter.generics_filter(hash, attributes)
   end
 
-
   private
   def set_done_ratio
     unless self.status.nil?
@@ -265,7 +264,7 @@ class Issue < RorganizeActiveRecord
     [:assigned_to_id, :author_id, :version_id, :done, :category_id, :status_id, :start_date, :subject, :description, :tracker_id, :due_date, :estimated_time, {:new_attachment_attributes => Attachment.permit_attributes}, {:edit_attachment_attributes => Attachment.permit_attributes}]
   end
 
-  def self.permit_values
+  def self.permit_bulk_edit_values
     [:assigned_to_id, :author_id, :version_id, :done, :category_id, :status_id, :start_date]
   end
 end

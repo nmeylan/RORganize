@@ -28,7 +28,9 @@ class Document < RorganizeActiveRecord
   def self.permit_attributes
     [:name, :description, :version_id, :category_id, {:new_attachment_attributes => Attachment.permit_attributes},{:edit_attachment_attributes => Attachment.permit_attributes}]
   end
-
+  def self.permit_bulk_edit_values
+    [:version_id, :category_id]
+  end
   #Attributes name without id
   def self.attributes_formalized_names
     names = []
