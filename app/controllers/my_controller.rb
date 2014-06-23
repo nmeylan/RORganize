@@ -49,8 +49,7 @@ class MyController < ApplicationController
 
   def change_password
     if request.post?
-      if params[:user][:password].eql?(params[:user][:retype_password]) && @user.update_attributes(params[:user])
-
+      if user_params[:password].eql?(user_params[:retype_password]) && @user.update_attributes(password: user_params[:password])
         respond_to do |format|
           flash[:notice] = t(:successful_creation)
           format.html { redirect_to :action => 'show', :id => @user.slug }
@@ -143,6 +142,10 @@ class MyController < ApplicationController
 
   def sort_direction
     params[:direction] ? params[:direction] : 'DESC'
+  end
+
+  def user_params
+    params.require(:user).permit(User.permit_attributes)
   end
 
 end
