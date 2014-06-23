@@ -5,25 +5,8 @@
 # File: _version_detail.html.erb
 %>
 
-<h1 id="v-<%=version.id ? version.id : 'unplanned' %>"><%= version.name %></h1>
-<p><%= version.target_date %></p>
-<p><b><%= versions_details['related_requests'][version.id].count %></b>
-  <%= t(:label_request_plural) %>,
-  <b><%= versions_details['request_statements'][version.id][0] %></b> <%= t(:label_closed) %>
-  <b><%= versions_details['request_statements'][version.id][1] %></b> <%= t(:label_opened) %>
-</p>
+<%= render :partial => 'versions/version_overview', :locals => {version: version, opened_issues_count: versions_details['request_statements'][version.id][1], closed_issues_count: versions_details['request_statements'][version.id][0], percent: versions_details['request_done_percent'][version.id]} %>
 
-<table class="progress_bar">
-  <tr>
-    <td class="done_percent" style="width:<%=versions_details['request_done_percent'][version.id].to_s+'%'%>"></td>
-    <% unless versions_details['request_done_percent'][version.id].eql?(100) %>
-      <td class="todo_percent" style="width:<%=(100 - versions_details['request_done_percent'][version.id]).to_s+'%'%>"></td>
-    <% end %>
-  </tr>
-</table>
-<p>
-  <%=versions_details['request_done_percent'][version.id].to_s+'%'%>
-</p>
 <% if !version.description.eql?('') && version.description %>
   <div class="box">
     <%= raw textile_to_html(version.description) %>

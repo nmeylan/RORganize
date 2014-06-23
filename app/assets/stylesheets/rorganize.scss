@@ -181,6 +181,11 @@
   cursor: pointer;
 }
 
+.disabled{
+  background-color: #cfcfcf;
+  color: #AAA;
+}
+
 /*
 * Split content
 */
@@ -362,6 +367,42 @@ ul#items {
   /*   border-radius: 5px;*/
 }
 
+/*
+  PROGRESS BAR
+*/
+.roadmap .progress_bar{
+  height: 20px;
+}
+.progress_bar{
+  position: relative;
+  display: block;
+  overflow: hidden;
+  background-color: #eee;
+  border-radius: 3px;
+  height: 20px;
+  .progress{
+
+    height: 20px;
+    display: block;
+    background-color: #65bd10;
+    background-image: -moz-linear-gradient(#8dcf16, #65bd10);
+    background-image: -webkit-linear-gradient(#8dcf16, #65bd10);
+    background-image: linear-gradient(#8dcf16, #65bd10);
+    background-repeat: repeat-x;
+  }
+  .percent{
+    position: absolute;
+    top: 3px;
+    left: 7px;
+    font-size: 13px;
+    font-weight: bold;
+    color: #fff;
+    text-shadow: 0 0 2px rgba(0,0,0,0.7);
+  }
+}
+
+
+
 /**
   History
 */
@@ -371,27 +412,6 @@ ul#items {
   padding-bottom: 30px;
 }
 
-/*
-*  PROGRESS BAR
-*/
-.progress_bar {
-  border-collapse: collapse;
-  border-spacing: 0pt;
-  empty-cells: show;
-  text-align: center;
-  margin: 1px 6px 1px 10px;
-  width: 400px;
-  height: 20px;
-  float: left;
-}
-
-table.progress_bar td.done_percent {
-  background: #EAFFEB none repeat scroll 0%;
-}
-
-table.progress_bar td.todo_percent {
-  background: #EEEEEE none repeat scroll 0%;
-}
 
 /*
 * PROJECTS
@@ -423,6 +443,10 @@ ul.project_list{
     }
   }
 }
+#project_description{
+  min-height: 400px;
+}
+
 
 
 /*

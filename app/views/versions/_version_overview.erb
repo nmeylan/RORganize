@@ -1,0 +1,19 @@
+<%#=
+ * User: nmeylan
+ * Date: 23.06.14
+ * Time: 22:03
+%>
+
+<%= content_tag :div, class: 'version_overview' do -%>
+    <%= content_tag :h1, version.name %>
+    <%= content_tag :span, version.target_date %>
+    <%= content_tag :p do %>
+        <%= content_tag :b, version.issues_count %> <%= t(:label_request_plural) %>,
+        <%= content_tag :b, closed_issues_count %> <%= t(:label_closed) %>,
+        <%= content_tag :b, opened_issues_count %> <%= t(:label_opened) %>.
+    <% end -%>
+    <%= content_tag :span, class: 'progress_bar' do -%>
+        <%= content_tag :span, "&nbsp".html_safe, {class: 'progress', style: "width:#{percent}%"} %>
+        <%= content_tag :span, "#{percent}%", {class: 'percent'} %>
+    <% end -%>
+<% end -%>
