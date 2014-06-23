@@ -11,6 +11,7 @@ class DocumentsController < ApplicationController
   before_filter { |c| c.top_menu_item('projects') }
   include ApplicationHelper
   include DocumentsHelper
+  include Rorganize::RichController
   helper_method :sort_column, :sort_direction
   require 'will_paginate'
 
@@ -119,7 +120,7 @@ class DocumentsController < ApplicationController
         format.js { respond_to_js :action => :index, :response_header => :success, :response_content => t(:successful_deletion) }
       end
     else
-      Document.bulk_edit(params[:ids], params[:value])
+      Document.bulk_edit(params[:ids], value_params)
       respond_to do |format|
         load_documents
         format.js { respond_to_js :action => :index, :response_header => :success, :response_content => t(:successful_update) }
@@ -128,27 +129,9 @@ class DocumentsController < ApplicationController
   end
 
   def filter
-    if params[:filter]
-      filter_params = params[:filter].clone
-      filter_params.delete_if{|_, filter| filter['operator'].eql?('all')}
-    else
-      filter_params = nil
-    end
-    filter = nil
-    slug = @project.slug
-    if params[:type].eql?('filter') && params[:filter] && params[:filters_list] && params[:filters_list].any?
-      filter = Document.conditions_string(params[:filter])
-    elsif params[:commit]
-      #filter SQL content
-      session["#{slug}_controller_documents_filter"] = nil
-      #filter DOM content
-      session["#{slug}_controller_documents_filter_params"] = nil
-    end
-    #When page is reloading, user don't loose his filters
-    if params[:type] && params[:type].eql?('filter')
-      session["#{slug}_controller_documents_filter_params"] = filter_params
-    end
-    session["#{slug}_controller_documents_filter"] = filter ?  filter : (session["#{slug}_controller_documents_filter"] ? session["#{slug}_controller_documents_filter"] : '')
+    session_json = "#{@project.slug}_controller_documents_filter_params"
+    session_sql = "#{@project.slug}_controller_documents_filter"
+    session[session_json], session[session_sql] = apply_filter(Document, params, session[session_json], session[session_sql])
   end
 
   private
@@ -173,5 +156,9 @@ class DocumentsController < ApplicationController
 
   def document_params
     params.require(:document).permit(Document.permit_attributes)
+  end
+
+  def value_params
+    params.require(:value).permit(Document.permit_bulk_edit_values)
   end
 end

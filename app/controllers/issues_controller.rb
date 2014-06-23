@@ -12,6 +12,7 @@ class IssuesController < ApplicationController
   before_filter { |c| c.top_menu_item('projects') }
   include ApplicationHelper
   include IssuesHelper
+  include Rorganize::RichController
   helper_method :sort_column, :sort_direction
   require 'will_paginate'
 
@@ -234,6 +235,7 @@ class IssuesController < ApplicationController
 
   #Check if current user is owner of issue
   def check_issue_owner
+
     @issue = Issue.find_by_id(params[:id])
     @issue.author_id.eql?(current_user.id)
   end
@@ -260,26 +262,9 @@ class IssuesController < ApplicationController
   end
 
   def filter
-    if params[:filter]
-      filter_params = params[:filter].clone
-      filter_params.delete_if{|_, filter| filter['operator'].eql?('all')}
-    else
-      filter_params = nil
-    end
-    filter = nil
-    if params[:type].eql?('filter') && params[:filter] && params[:filters_list] && params[:filters_list].any?
-      filter = Issue.conditions_string(params[:filter])
-    elsif params[:commit]
-      #filter SQL content
-      session["#{@project.slug}_controller_issues_filter"] = nil
-      #filter DOM content
-      session["#{@project.slug}_controller_issues_filter_params"] = nil
-    end
-    #When page is reloading, user don't loose his filters
-    if params[:type] && params[:type].eql?('filter')
-      session["#{@project.slug}_controller_issues_filter_params"] = filter_params
-    end
-    session["#{@project.slug}_controller_issues_filter"] = filter ? filter : (session["#{@project.slug}_controller_issues_filter"] ? session["#{@project.slug}_controller_issues_filter"] : '')
+    session_json = "#{@project.slug}_controller_issues_filter_params"
+    session_sql = "#{@project.slug}_controller_issues_filter"
+    session[session_json], session[session_sql] = apply_filter(Issue, params, session[session_json], session[session_sql])
   end
 
   #Find custom queries
@@ -311,7 +296,7 @@ class IssuesController < ApplicationController
   end
 
   def value_params
-    params.require(:value).permit(Issue.permit_values)
+    params.require(:value).permit(Issue.permit_bulk_edit_values)
   end
 
 

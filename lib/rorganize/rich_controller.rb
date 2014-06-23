@@ -14,7 +14,11 @@ module Rorganize
     # session_json : serialized dom filter in json
     # session_sql : sql filter
     #Return : An array (size 2), first index -> sql filter, second index -> HASH criteria
-    def apply_filter(klazz, criteria, filter_type, filters_list, commit, session_json, session_sql)
+    def apply_filter(klazz, params, session_json, session_sql)
+      criteria = params[:filter]
+      filter_type = params[:type]
+      filters_list = params[:filters_list]
+      commit = params[:commit]
       if criteria
         filter_params = criteria.clone
         filter_params.delete_if { |_, filter| filter['operator'].eql?('all') }
@@ -39,6 +43,7 @@ module Rorganize
       elsif !session_sql
         session_sql = ''
       end
+      [session_json, session_sql]
     end
 
   end
