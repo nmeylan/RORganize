@@ -8,7 +8,7 @@ class Issue < RorganizeActiveRecord
   assign_foreign_keys({'status_id' => IssuesStatus, 'category_id' => Category, 'assigned_to_id' => User, 'tracker_id' => Tracker, 'version_id' => Version})
   attr_accessor :notes
   #Relations
-  belongs_to :project, :class_name => 'Project'
+  belongs_to :project, :class_name => 'Project', counter_cache: true
   belongs_to :author, :class_name => 'User', :foreign_key => 'author_id'
   belongs_to :assigned_to, :class_name => 'User', :foreign_key => 'assigned_to_id'
   belongs_to :version, :class_name => 'Version', :foreign_key => 'version_id'

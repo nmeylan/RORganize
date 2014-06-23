@@ -8,7 +8,7 @@ class Member < RorganizeActiveRecord
   assign_journalized_properties({'role_id' => 'Role'})
   assign_foreign_keys({'role_id' => Role})
   #Relations
-  belongs_to :project, :class_name => 'Project'
+  belongs_to :project, :class_name => 'Project', counter_cache: true
   
   belongs_to :user, :class_name => 'User'
   belongs_to :role, :class_name => 'Role'

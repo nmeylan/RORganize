@@ -35,7 +35,7 @@ class Project < ActiveRecord::Base
 
   def starred?
     members = self.members
-    member = members.select { |member| member.user_id == User.current.id }.first
+    member = members.to_a.select { |member| member.user_id == User.current.id }.first
     member.is_project_starred
   end
 
@@ -68,7 +68,7 @@ class Project < ActiveRecord::Base
     end
   end
 
-  #Build an ary containing project issues activities and misc activities
+  #Build an array containing project issues activities and misc activities
   def activities(filter)
     #Structure of the hash is
     # {:date => [journal]}

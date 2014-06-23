@@ -91,14 +91,14 @@ class User < RorganizeActiveRecord
   end
 
   def allowed_statuses(project)
-    self.members.select { |member| member.project_id == project.id }.first.role.issues_statuses.sort { |x, y| x.enumeration.position <=> y.enumeration.position }
+    self.members.to_a.select { |member| member.project_id == project.id }.first.role.issues_statuses.sort { |x, y| x.enumeration.position <=> y.enumeration.position }
   end
 
   def allowed_to?(action, controller, project = nil)
     return true if self.is_admin? && act_as_admin? && (project && module_enabled?(project.id.to_s, action, controller) || !project)
     m = self.members
     if project
-      member = m.select { |mb| mb.project_id == project.id }.first
+      member = m.to_a.select { |mb| mb.project_id == project.id }.first
       return (member &&
           module_enabled?(project.id.to_s, action, controller) &&
           permission_manager_allowed_to?(member.role.id.to_s, action.to_s, controller.downcase.to_s) &&
