@@ -4,82 +4,88 @@
 # Encoding: UTF-8
 # File: _toolbox.html.erb
 %>
-<%= form_tag(toolbox_issues_path(@project.slug),:remote => true, :id => 'toolbox_form') do -%>
-  <% ids = @issues_toolbox.collect{|issue| issue.id} %>
-  <% if current_user.allowed_to?('change_assigned','Issues',@project) %>
-    <li><%= link_to glyph(t(:field_assigned_to), 'person'), '#', {:id => 'assigned_to'} %>
-      <ul class="submenu assigned_to_id">
-        <% if !menu['members'].nil? && menu['members'].any? %>
-            <%= hidden_field_tag 'value[assigned_to_id]' %>
-          <% menu['members'].each do |member| %>
-            <li><%= link_to conditional_glyph(member.name, menu['current_states']['member'].include?(member), 'check'), '#', {:'data-id' => member.id} %></li>
-          <% end %>
-            <li><%= link_to conditional_glyph('None', menu['current_states']['member'].include?(nil), 'check'), '#', {:'data-id' => -1} %></li>
-        <%  end %>
-      </ul>
+<%= form_tag(toolbox_issues_path(@project.slug), :remote => true, :id => 'toolbox_form') do -%>
+    <% ids = @issues_toolbox.collect { |issue| issue.id } %>
+    <% if current_user.allowed_to?('change_assigned', 'Issues', @project) %>
+        <li><%= link_to glyph(t(:field_assigned_to), 'person'), '#', {:id => 'assigned_to'} %>
+          <ul class="submenu assigned_to_id">
+            <% if !menu['members'].nil? && menu['members'].any? %>
+                <%= hidden_field_tag 'value[assigned_to_id]' %>
+                <% menu['members'].each do |member| %>
+                    <li><%= link_to conditional_glyph(member.name, menu['current_states']['member'].include?(member), 'check'), '#', {:'data-id' => member.id} %></li>
+                <% end %>
+                <li><%= link_to conditional_glyph('None', menu['current_states']['member'].include?(nil), 'check'), '#', {:'data-id' => -1} %></li>
+            <% end %>
+          </ul>
+        </li>
+    <% end %>
+    <% if current_user.allowed_to?('change_version', 'Issues', @project) %>
+        <li><%= link_to glyph(t(:field_version), 'clippy'), '#', {:class => 'icon icon-target', :id => 'version'} %>
+          <ul class="submenu version_id">
+            <% if !menu['versions'].nil? && menu['versions'].any? %>
+                <%= hidden_field_tag 'value[version_id]' %>
+                <% menu['versions'].each do |version| %>
+                    <li>
+                    <% if version.is_done %>
+                      <%= conditional_glyph(version.name, menu['current_states']['version'].include?(version), 'check') %>
+                    <% else %>
+                        <%= link_to conditional_glyph(version.name, menu['current_states']['version'].include?(version), 'check'), '#', {:'data-id' => version.id} %>
+                    <% end %>
+                    </li>
+                <% end %>
+                <li><%= link_to conditional_glyph('None', menu['current_states']['version'].include?(nil), 'check'), '#', {:'data-id' => -1} %></li>
+            <% end %>
+          </ul>
+        </li>
+    <% end %>
+    <% if current_user.allowed_to?('change_status', 'Issues', @project) %>
+        <li><%= link_to glyph(t(:field_status), 'dashboard'), '#', {:class => 'icon icon-status', :id => 'status'} %>
+          <ul class="submenu status_id">
+            <% if !menu['allowed_statuses'].nil? && menu['allowed_statuses'].any? %>
+                <%= hidden_field_tag 'value[status_id]' %>
+                <% menu['allowed_statuses'].each do |status| %>
+                    <li><%= link_to conditional_glyph(status.enumeration.name, menu['current_states']['status'].include?(status), 'check'), '#', {:'data-id' => status.id} %></li>
+                <% end %>
+            <% end %>
+          </ul>
+        </li>
+    <% end %>
+    <% if current_user.allowed_to?('change_category', 'Issues', @project) %>
+        <li><%= link_to glyph(t(:field_category), 'package'), '#', {:class => 'icon icon-package'} %>
+          <ul class="submenu category_id">
+            <% if !menu['categories'].nil? && menu['categories'].any? %>
+                <%= hidden_field_tag 'value[category_id]' %>
+                <% menu['categories'].each do |category| %>
+                    <li><%= link_to conditional_glyph(category.name, menu['current_states']['category'].include?(category), 'check'), '#', {:'data-id' => category.id} %></li>
+                <% end %>
+                <li><%= link_to conditional_glyph('None', menu['current_states']['category'].include?(nil), 'check'), '#', {:'data-id' => -1} %></li>
+            <% end %>
+          </ul>
+        </li>
+    <% end %>
+    <% if current_user.allowed_to?('change_progress', 'Issues', @project) %>
+        <li><%= link_to glyph(t(:field_done), 'pulse'), '#', {:class => 'icon icon-done'} %>
+          <ul class="submenu done">
+            <% if !menu['done_ratio'].nil? && menu['done_ratio'].any? %>
+                <%= hidden_field_tag 'value[done]' %>
+                <% menu['done_ratio'].each do |done| %>
+                    <li><%= link_to conditional_glyph(done.to_s, menu['current_states']['done'].include?(done), 'check'), '#', {:'data-id' => done} %></li>
+                <% end %>
+            <% end %>
+          </ul>
+        </li>
+    <% end %>
+    <li class="start_date">
+      <%= hidden_field_tag 'value[start_date]' %>
+      <%= link_to glyph(t(:link_start_today), 'today'), '#', {:class => 'icon icon-calendar action_link', :id => 'start_today', :'data-id' => Date.current} %>
     </li>
-  <% end %>
-  <% if current_user.allowed_to?('change_version','Issues',@project) %>
-    <li><%= link_to glyph(t(:field_version), 'clippy'), '#', {:class => 'icon icon-target', :id => 'version'} %>
-      <ul class="submenu version_id">
-        <% if !menu['versions'].nil? && menu['versions'].any? %>
-          <%= hidden_field_tag 'value[version_id]' %>
-          <% menu['versions'].each do |version| %>
-            <li><%= link_to conditional_glyph(version.name, menu['current_states']['version'].include?(version), 'check'), '#', {:'data-id' => version.id} %></li>
-          <% end %>
-            <li><%= link_to conditional_glyph('None', menu['current_states']['version'].include?(nil), 'check'), '#', {:'data-id' => -1} %></li>
-        <%  end %>
-      </ul>
-    </li>
-  <% end %>
-  <% if current_user.allowed_to?('change_status','Issues',@project) %>
-    <li><%= link_to glyph(t(:field_status), 'dashboard'), '#', {:class => 'icon icon-status', :id => 'status'}%>
-      <ul class="submenu status_id">
-        <% if !menu['allowed_statuses'].nil? && menu['allowed_statuses'].any? %>
-          <%= hidden_field_tag 'value[status_id]' %>
-          <% menu['allowed_statuses'].each do |status| %>
-            <li><%= link_to conditional_glyph(status.enumeration.name, menu['current_states']['status'].include?(status), 'check'), '#', {:'data-id' => status.id} %></li>
-          <% end %>
-        <%  end %>
-      </ul>
-    </li>
-  <% end %>
-  <% if current_user.allowed_to?('change_category','Issues',@project) %>
-    <li><%= link_to glyph(t(:field_category), 'package'), '#', {:class => 'icon icon-package'}%>
-      <ul class="submenu category_id">
-        <% if !menu['categories'].nil? && menu['categories'].any? %>
-          <%= hidden_field_tag 'value[category_id]' %>
-          <% menu['categories'].each do |category| %>
-            <li><%= link_to conditional_glyph(category.name, menu['current_states']['category'].include?(category), 'check'), '#', {:'data-id' => category.id } %></li>
-          <% end %>
-            <li><%= link_to conditional_glyph('None', menu['current_states']['category'].include?(nil), 'check'), '#', {:'data-id' => -1} %></li>
-        <%  end %>
-      </ul>
-    </li>
-  <% end %>
-  <% if current_user.allowed_to?('change_progress','Issues',@project) %>
-    <li><%= link_to glyph(t(:field_done), 'pulse'), '#', {:class => 'icon icon-done'}%>
-      <ul class="submenu done">
-        <% if !menu['done_ratio'].nil? && menu['done_ratio'].any? %>
-          <%= hidden_field_tag 'value[done]' %>
-          <% menu['done_ratio'].each do |done| %>
-            <li><%= link_to conditional_glyph(done.to_s, menu['current_states']['done'].include?(done), 'check'), '#', {:'data-id' => done} %></li>
-          <% end %>
-        <%  end %>
-      </ul>
-    </li>
-  <% end %>
-  <li class="start_date">
-    <%= hidden_field_tag 'value[start_date]' %>
-    <%= link_to glyph(t(:link_start_today),'today'), '#', {:class => 'icon icon-calendar action_link', :id => 'start_today', :'data-id' => Date.current}%>
-  </li>
-  <% if current_user.allowed_to?('edit','Issues',@project) %>
-    <li><%= link_to glyph(t(:link_edit), 'pencil'), {:action => 'edit', :project_id => @project.slug, :id => ids[0]}, {:class => 'icon icon-edit'} if @issues_toolbox.size == 1%></li>
-  <% end %>
-  <% if current_user.allowed_to?('destroy','Issues',@project) %>
-    <li><%= link_to glyph(t(:link_delete), 'trashcan'), '#', {:class => 'icon icon-del', :id => "open_delete_overlay"}%></li>
-  <% end %>
-  <% ids.each do |id| %>
-    <%= hidden_field_tag 'ids[]', id %>
-  <% end %>
+    <% if current_user.allowed_to?('edit', 'Issues', @project) %>
+        <li><%= link_to glyph(t(:link_edit), 'pencil'), {:action => 'edit', :project_id => @project.slug, :id => ids[0]}, {:class => 'icon icon-edit'} if @issues_toolbox.size == 1 %></li>
+    <% end %>
+    <% if current_user.allowed_to?('destroy', 'Issues', @project) %>
+        <li><%= link_to glyph(t(:link_delete), 'trashcan'), '#', {:class => 'icon icon-del', :id => "open_delete_overlay"} %></li>
+    <% end %>
+    <% ids.each do |id| %>
+        <%= hidden_field_tag 'ids[]', id %>
+    <% end %>
 <% end -%>

@@ -12,7 +12,13 @@
         <% if !menu['versions'].nil? && menu['versions'].any? %>
           <%= hidden_field_tag 'value[version_id]' %>
           <% menu['versions'].each do |version| %>
-            <li><%= link_to conditional_glyph(version.name,menu['current_states']['version'].include?(version),'check'), '#', {:'data-id' => version.id} %></li>
+                <li>
+                  <% if version.is_done %>
+                      <%= conditional_glyph(version.name, menu['current_states']['version'].include?(version), 'check') %>
+                  <% else %>
+                      <%= link_to conditional_glyph(version.name, menu['current_states']['version'].include?(version), 'check'), '#', {:'data-id' => version.id} %>
+                  <% end %>
+                </li>
           <% end %>
             <li><%= link_to conditional_glyph('None', menu['current_states']['version'].include?(nil), 'check'), '#', {:'data-id' => -1} %></li>
         <%  end %>

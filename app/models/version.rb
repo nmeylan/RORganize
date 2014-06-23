@@ -18,13 +18,13 @@ class Version < RorganizeActiveRecord
   after_destroy :destroy_journal, :dec_position_on_destroy
 
   def self.permit_attributes
-    [:name, :target_date, :description, :start_date]
+    [:name, :target_date, :description, :start_date, :is_done]
   end
 
   def update_issues_due_date
     issues = Issue.where(:version_id => self.id)
     issues.each do |issue|
-      if issue.due_date >= self.target_date && issue.due_date.nil
+      if issue.due_date > self.target_date || issue.due_date.nil?
         journal = Journal.create(:user_id => User.current.id, :journalized_id => issue.id, :journalized_type => issue.class.to_s, :created_at => Time.now.to_formatted_s(:db), :notes => '', :action_type => 'updated', :project_id => issue.project.id)
         #Create an entry for the journal
         #noinspection RubyStringKeysInHashInspection
