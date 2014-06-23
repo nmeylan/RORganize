@@ -34,7 +34,7 @@ class User < RorganizeActiveRecord
   after_destroy :destroy_journal
 
   def self.permit_attributes
-    [:name, :login, :email, :password, :admin]
+    [:name, :login, :email, :password, :admin, :retype_password]
   end
 
   def is_admin?
