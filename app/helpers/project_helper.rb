@@ -123,6 +123,8 @@ module ProjectHelper
             end
           end.join.html_safe
         end
+      else
+        t(:text_no_data)
       end
     end
   end
