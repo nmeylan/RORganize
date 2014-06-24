@@ -2,7 +2,7 @@
 # Date: 03/05/2014
 # Encoding: UTF-8
 # File: version_test.rb
-require 'test/unit'
+require 'test_helper'
 
 class VersionTest < ActiveSupport::TestCase
 
@@ -10,6 +10,7 @@ class VersionTest < ActiveSupport::TestCase
   # to set up fixture information.
   def setup
     @version = Version.new({name: 'New version', description: '', start_date: '03/05/2014', target_date: '', project_id: 1})
+    User.current= User.find_by_id(1)
     @project = Project.find_by_id(1)
     @version.save
   end

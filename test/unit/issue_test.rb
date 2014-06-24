@@ -3,7 +3,7 @@
 # Encoding: UTF-8
 # File: issue_test.rb
 # require 'test/unit'
-
+require 'test_helper'
 class IssueTest < ActiveSupport::TestCase
 
   # Called before every test method runs. Can be used

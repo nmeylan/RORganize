@@ -8,6 +8,7 @@ versions_001:
   position: 1
   start_date: 
   project_id: 1
+  is_done: false
 versions_002:
   id: 2
   name: Version 0.2
@@ -18,6 +19,7 @@ versions_002:
   position: 3
   start_date: 
   project_id: 1
+  is_done: false
 versions_003:
   id: 4
   name: Version 0.3
@@ -27,22 +29,7 @@ versions_003:
   position: 4
   start_date: 
   project_id: 1
-versions_004:
-  id: 5
-  name: Version 1
-  target_date: 2013-01-25
-  description: ''
-  position: 1
-  start_date: 
-  project_id: 
-versions_005:
-  id: 6
-  name: Bonus
-  target_date: 
-  description: ''
-  position: 2
-  start_date: 
-  project_id: 
+  is_done: false
 versions_006:
   id: 7
   name: Version 0.1.x
@@ -51,6 +38,7 @@ versions_006:
   position: 2
   start_date: 
   project_id: 1
+  is_done: false
 versions_007:
   id: 8
   name: Version 0.3.x
@@ -61,22 +49,7 @@ versions_007:
   position: 5
   start_date: 
   project_id: 1
-versions_008:
-  id: 10
-  name: Version 1.0
-  target_date: 2013-04-19
-  description: ''
-  position: 1
-  start_date: 2013-03-26
-  project_id: 
-versions_009:
-  id: 11
-  name: Extentions
-  target_date: 2013-04-30
-  description: ''
-  position: 2
-  start_date: 2013-04-01
-  project_id: 
+  is_done: false
 versions_010:
   id: 12
   name: Version 0.4
@@ -87,3 +60,4 @@ versions_010:
   position: 6
   start_date: 2013-02-15
   project_id: 1
+  is_done: false
