@@ -4,11 +4,9 @@ class AddPermissionsLockedStatus < ActiveRecord::Migration
 #Reason are that, if user deleted a critical permissions, application behaviour can be affected.
 
   def up
-    add_column :permissions, :is_locked, :boolean
     Permission.update_all(:is_locked => true)
   end
 
   def down
-    remove_column :permissions, :is_locked
   end
 end

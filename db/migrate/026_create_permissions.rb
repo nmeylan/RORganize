@@ -9,6 +9,7 @@ class CreatePermissions < ActiveRecord::Migration
       t.string :name, :limit => 255
       t.string :action,:limit => 255
       t.string :controller,:limit => 255
+      t.boolean :is_locked
     end
   end
 
