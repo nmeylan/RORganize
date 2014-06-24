@@ -80,6 +80,8 @@ en:
   label_issue: Issue
   label_total_spent_time: Total
   label_is_done: Is done
+  label_running_versions: Running versions
+  label_plural_day: days
 # LINK
   link_new_project: New project
   link_new_issue: New issue
@@ -230,6 +232,8 @@ en:
   text_time_entry_not_owner_deletion: Well, you tried to delete a coworker time entry.
   text_project: Project
   text_negative_position: Invalid position, please try again later.
+  text_past_due: Past due to
+
   password: "Password"
   field_steps: "Steps"
   text_number_of_step: "Number of steps"

@@ -8,7 +8,7 @@
 <div class="contextual">
   <h1><%= t(:label_setting_plural) %> - <%= t(:link_versions) %></h1>
   <div class="splitcontentright">
-    <%= link_to_with_permissions(t(:link_new_version), new_version_path(@project.slug),@project, {:class => 'icon icon-add'}) %></div>
+    <%= link_to_with_permissions(glyph(t(:link_new_version), 'plus'), new_version_path(@project.slug),@project, {:class => 'icon icon-add'}) %></div>
 </div>
 <%= render :partial => 'versions/list' %>
 <%= render :partial => 'settings/sidebar' %>

@@ -125,13 +125,25 @@ class Project < ActiveRecord::Base
   end
 
   def current_versions
-    self.versions.where('start_date >= ? AND target_date <= ? AND is_done <> false', Time.now.midnight, Time.now.midnight)
+    self.versions.where('start_date <= ? AND is_done = false', Date.today)
+  end
+
+  def current_versions_overview
+    versions = current_versions
+    condition = %Q(`versions`.`id` IN (#{current_versions.collect { |version| version.id}.join(',')})) if versions.any?
+    versions_overviews = Version.overviews(self.id, condition)
+    structure = Hash.new { |k, v| k[v] = {} }
+    versions_overviews.each do |version_overview|
+      structure[version_overview.first] = {
+          percent: version_overview[3], closed_issues_count:version_overview[2], opened_issues_count: version_overview[1]
+      }
+    end
+    structure
   end
 
   def roadmap
     structure = Hash.new { |k, v| k[v] = {} }
     versions_overviews = Version.overviews(self.id)
-    #'
     issues_array = Issue.eager_load(:status, :tracker).includes(:version).where(project_id: self.id).to_a
     versions_overviews.each do |version_overview|
       structure[version_overview.first] = {

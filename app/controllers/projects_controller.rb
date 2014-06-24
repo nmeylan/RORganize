@@ -10,8 +10,10 @@ class ProjectsController < ApplicationController
   #Project overview
   def overview
     last_requests = Issue.where(:project_id => @project).order('id desc').limit(5)
+    versions = @project.current_versions
+    version_overviews = @project.current_versions_overview
     respond_to do |format|
-      format.html { render :action => 'overview', :locals => {:members => @project.members_overview, :last_requests => last_requests} }
+      format.html { render :action => 'overview', :locals => {:members => @project.members_overview, :last_requests => last_requests, versions: versions, versions_details: version_overviews} }
     end
   end
 

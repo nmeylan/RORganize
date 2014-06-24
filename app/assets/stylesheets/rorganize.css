@@ -1,4 +1,4 @@
-@charset "CP850";
+@charset "UTF-8";
 @font-face {
   font-family: 'octicons';
   src: font-url("octicons/octicons.eot?#iefix") format("embedded-opentype"), font-url("octicons/octicons.woff") format("woff"), font-url("octicons/octicons.ttf") format("truetype"), font-url("octicons/octicons.svg#octicons") format("svg");
@@ -24,7 +24,7 @@
 a:hover .medium-octicon, a:hover .mega-octicon, a:hover .octicon {
   color: #484848; }
 
-.octicon:hover {
+a .octicon:hover {
   color: #484848; }
 
 .mega-octicon {
@@ -2294,6 +2294,9 @@ html > body .form p {
 .no-height {
   height: inherit !important; }
 
+.clear-both {
+  clear: both; }
+
 /*
 *  FLASH MESSAGE
 */
@@ -2335,6 +2338,17 @@ html > body .form p {
   text-decoration: none;
   margin-top: 1px;
   cursor: pointer; }
+
+.disabled {
+  background-color: #cfcfcf;
+  color: #AAA; }
+
+.text-alert {
+  color: #bd2c00; }
+  .text-alert .octicon {
+    color: #bd2c00; }
+  .text-alert .octicon:hover {
+    color: #bd2c00; }
 
 /*
 * Split content
@@ -2483,6 +2497,36 @@ ul#items {
   /*   -webkit-border-radius: 5px;*/
   /*   border-radius: 5px;*/ }
 
+/*
+  PROGRESS BAR
+*/
+.roadmap .progress_bar {
+  height: 20px; }
+
+.progress_bar {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  background-color: #eee;
+  border-radius: 3px;
+  height: 20px; }
+  .progress_bar .progress {
+    height: 20px;
+    display: block;
+    background-color: #65bd10;
+    background-image: -moz-linear-gradient(#8dcf16, #65bd10);
+    background-image: -webkit-linear-gradient(#8dcf16, #65bd10);
+    background-image: linear-gradient(#8dcf16, #65bd10);
+    background-repeat: repeat-x; }
+  .progress_bar .percent {
+    position: absolute;
+    top: 0px;
+    left: 7px;
+    font-size: 13px;
+    font-weight: bold;
+    color: #fff;
+    text-shadow: 0 0 2px rgba(0, 0, 0, 0.7); }
+
 /**
   History
 */
@@ -2490,25 +2534,6 @@ ul#items {
   border-top: 1px solid #e5e5e5;
   padding-top: 30px;
   padding-bottom: 30px; }
-
-/*
-*  PROGRESS BAR
-*/
-.progress_bar {
-  border-collapse: collapse;
-  border-spacing: 0pt;
-  empty-cells: show;
-  text-align: center;
-  margin: 1px 6px 1px 10px;
-  width: 400px;
-  height: 20px;
-  float: left; }
-
-table.progress_bar td.done_percent {
-  background: #EAFFEB none repeat scroll 0%; }
-
-table.progress_bar td.todo_percent {
-  background: #EEEEEE none repeat scroll 0%; }
 
 /*
 * PROJECTS
@@ -2533,6 +2558,20 @@ ul.project_list {
       position: relative;
       margin-top: -30px;
       float: right; }
+
+#project_description {
+  min-height: 400px; }
+
+.version_overview h1 {
+  float: left; }
+.version_overview .version_due_date {
+  float: right; }
+.version_overview .requests_stats {
+  float: left;
+  margin-top: 10px; }
+.version_overview .over_run {
+  float: right;
+  margin-top: 10px; }
 
 /*
    CALENDAR

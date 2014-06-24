@@ -3,6 +3,9 @@ module ApplicationHelper
     content_for?(:sidebar)
   end
 
+  def clear_both
+    content_tag :div, nil, {class: 'clear-both'}
+  end
 
   def render_404
     respond_to do |format|

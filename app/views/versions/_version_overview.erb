@@ -6,14 +6,20 @@
 
 <%= content_tag :div, class: 'version_overview' do -%>
     <%= content_tag :h1, version.name %>
-    <%= content_tag :span, version.target_date %>
-    <%= content_tag :p do %>
-        <%= content_tag :b, version.issues_count %> <%= t(:label_request_plural) %>,
-        <%= content_tag :b, closed_issues_count %> <%= t(:label_closed) %>,
-        <%= content_tag :b, opened_issues_count %> <%= t(:label_opened) %>.
-    <% end -%>
+    <%= content_tag :div, version.target_date, {class: 'version_due_date'} %>
+    <%= clear_both %>
     <%= content_tag :span, class: 'progress_bar' do -%>
         <%= content_tag :span, "&nbsp".html_safe, {class: 'progress', style: "width:#{percent}%"} %>
         <%= content_tag :span, "#{percent}%", {class: 'percent'} %>
     <% end -%>
+    <%= content_tag :span, class: 'requests_stats' do %>
+        <%= content_tag :b, version.issues_count %> <%= t(:label_request_plural) %>,
+        <%= content_tag :b, closed_issues_count %> <%= t(:label_closed) %>,
+        <%= content_tag :b, opened_issues_count %> <%= t(:label_opened) %>.
+    <% end -%>
+    <% over_run = version.target_date.nil? || version.is_done ? 0 : (Date.today - version.target_date).to_i %>
+    <% if over_run > 0 %>
+        <%= content_tag :span, %Q(#{t(:text_past_due)} #{t(:label_by)} #{over_run} #{t(:label_plural_day)}), {class: 'over_run text-alert octicon octicon-alert'} %>
+    <% end %>
+    <%= clear_both %>
 <% end -%>

@@ -131,6 +131,9 @@
   height: inherit !important;
 }
 
+.clear-both {
+  clear: both;
+}
 
 /*
 *  FLASH MESSAGE
@@ -186,6 +189,15 @@
   color: #AAA;
 }
 
+.text-alert{
+  color : #bd2c00;
+  .octicon{
+    color : #bd2c00;
+  }
+  .octicon:hover{
+    color : #bd2c00;
+  }
+}
 /*
 * Split content
 */
@@ -392,7 +404,7 @@ ul#items {
   }
   .percent{
     position: absolute;
-    top: 3px;
+    top: 0px;
     left: 7px;
     font-size: 13px;
     font-weight: bold;
@@ -447,6 +459,23 @@ ul.project_list{
   min-height: 400px;
 }
 
+
+.version_overview{
+  h1{
+    float: left;
+  }
+  .version_due_date{
+    float:right;
+  }
+  .requests_stats{
+    float: left;
+    margin-top: 10px;
+  }
+  .over_run{
+    float: right;
+    margin-top: 10px;
+  }
+}
 
 
 /*
