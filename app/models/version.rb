@@ -24,7 +24,7 @@ class Version < RorganizeActiveRecord
   def update_issues_due_date
     issues = Issue.where(:version_id => self.id)
     issues.each do |issue|
-      if issue.due_date > self.target_date || issue.due_date.nil?
+      if !self.target_date.nil? && (issue.due_date.nil? || issue.due_date > self.target_date)
         journal = Journal.create(:user_id => User.current.id, :journalized_id => issue.id, :journalized_type => issue.class.to_s, :created_at => Time.now.to_formatted_s(:db), :notes => '', :action_type => 'updated', :project_id => issue.project.id)
         #Create an entry for the journal
         #noinspection RubyStringKeysInHashInspection
