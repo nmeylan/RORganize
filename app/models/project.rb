@@ -11,7 +11,7 @@ class Project < ActiveRecord::Base
   has_many :versions, :class_name => 'Version'
   has_many :categories, :class_name => 'Category', :dependent => :destroy
   has_many :issues, :class_name => 'Issue', :dependent => :destroy
-  has_many :attachments, -> {where :object_type => 'Project'}, :foreign_key => 'object_id', :dependent => :destroy
+  has_many :attachments, -> { where :object_type => 'Project' }, :foreign_key => 'object_id', :dependent => :destroy
   has_many :enabled_modules, :dependent => :destroy
   has_many :documents, :dependent => :destroy
   has_many :journals, :dependent => :destroy
@@ -75,9 +75,9 @@ class Project < ActiveRecord::Base
     issue_activities = Hash.new { |hash, key| hash[key] = [] }
     journals =(
     filter[0].eql?('all') ?
-        Journal.includes([:journalized,:details, :user, :project, :issue => [:tracker]]).where(:project_id => self.id).order('journals.created_at DESC') :
+        Journal.includes([:journalized, :details, :user, :project, :issue => [:tracker]]).where(:project_id => self.id).order('journals.created_at DESC') :
         Journal.includes([:journalized, :details, :user, :project, :issue => [:tracker]]).where(['journals.project_id = ? AND journals.created_at > ?', self.id,
-                                                                                                  filter[0]]).order('journals.created_at DESC')
+                                                                                                 filter[0]]).order('journals.created_at DESC')
     )
     activities = Hash.new { |hash, key| hash[key] = [] }
     journals.each do |journal|
@@ -88,7 +88,7 @@ class Project < ActiveRecord::Base
       end
     end
     issue_activities.values.each { |ary| ary.uniq! { |act| act.journalized_id } }
-    [issue_activities,  activities]
+    [issue_activities, activities]
   end
 
   #Return a member hash for project overview
@@ -106,7 +106,7 @@ class Project < ActiveRecord::Base
     trackers = Tracker.where(:id => tracker_ids)
     self.trackers.clear
     tracker_ids.each do |id|
-      tracker = trackers.select{|track| track.id == id.to_i }
+      tracker = trackers.select { |track| track.id == id.to_i }
       self.trackers << tracker
     end
     self.save
@@ -114,5 +114,30 @@ class Project < ActiveRecord::Base
 
   def last_activity
     self.journals.order("#{:created_at} desc").limit(1).first
+  end
+
+  def done_version
+
+  end
+
+  def active_versions
+    self.versions.where(is_done: false)
+  end
+
+  def current_versions
+    self.versions.where('start_date >= ? AND target_date <= ? AND is_done <> false', Time.now.midnight, Time.now.midnight)
+  end
+
+  def roadmap
+    structure = Hash.new { |k, v| k[v] = {} }
+    versions_overviews = Version.overviews(self.id)
+    #'
+    issues_array = Issue.eager_load(:status, :tracker).includes(:version).where(project_id: self.id).to_a
+    versions_overviews.each do |version_overview|
+      structure[version_overview.first] = {
+          percent: version_overview[3], closed_issues_count:version_overview[2], opened_issues_count: version_overview[1], issues: issues_array.select{|issue| issue.version_id.eql?(version_overview.first)}
+      }
+    end
+    structure
   end
 end

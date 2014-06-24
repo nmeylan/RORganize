@@ -12,8 +12,8 @@ class RoadmapController < ApplicationController
   before_filter { |c| c.top_menu_item('projects') }
   #GET/project/:project_id/roadmap
   def index
-    @versions = @project.versions.order(:position)
-    data = Version.define_roadmap(@versions, @project.id)
+    @versions = @project.versions.order(:position).to_a << Version.new(name: 'Unplanned')
+    data = @project.roadmap
     respond_to do |format|
       format.html { render :action => 'index', :locals => {:versions_details => data} }
     end

@@ -10,7 +10,7 @@
 </div>
 
 <% @versions.each do |version| %>
-  <%= render :partial => 'roadmap/version_detail', :locals => {:versions_details => versions_details,:version => version} %>
+  <%= render :partial => 'roadmap/version_detail', :locals => {:versions_details => versions_details[version.id],:version => version} %>
   <br />
   <hr />
   <br />

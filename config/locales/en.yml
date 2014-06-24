@@ -79,6 +79,7 @@ en:
   label_my_preferences: My preferences
   label_issue: Issue
   label_total_spent_time: Total
+  label_is_done: Is done
 # LINK
   link_new_project: New project
   link_new_issue: New issue
@@ -239,3 +240,6 @@ en:
   link_add_step: "Add step"
   successfull_update: "Successfull update"
   successful_created: "Sucessfull creation"
+
+  #INFO
+  info_version_is_done: Define that the mission is over on this phase. You won't be able to assign issues to this phase.

@@ -51,47 +51,9 @@ class Version < RorganizeActiveRecord
     Version.where("position > #{position} AND project_id = #{self.project_id}").update_all('position = position - 1')
   end
 
-  def self.define_roadmap(versions, project_id)
-    data = {}
-    #related requests for each versions
-    data['related_requests'] = Hash.new { |h, k| h[k] = [] }
-    #Request statement for each versions
-    data['request_statements'] = Hash.new { |h, k| h[k] = [] }
-    #Request done percent
-    data['request_done_percent'] = {}
-    tmp_issues_ary = []
-    tmp_closed_status = 0
-    tmp_opened_status = 0
-    tmp_done = 0
-    versions.each do |version|
-      version.issues.includes(:status, :tracker).each do |issue|
-        #add issue
-        tmp_issues_ary << issue
-        issue.status.is_closed ? tmp_closed_status += 1 : tmp_opened_status += 1
-        tmp_done += issue.done
-      end
-      data['related_requests'][version.id] = tmp_issues_ary
-      data['request_statements'][version.id] = [tmp_closed_status, tmp_opened_status]
-      if data['related_requests'][version.id].count != 0
-        data['request_done_percent'][version.id] = (tmp_done / data['related_requests'][version.id].count).round
-      else
-        data['request_done_percent'][version.id] = 0
-      end
-      tmp_issues_ary = []
-      tmp_closed_status = 0
-      tmp_opened_status = 0
-      tmp_done = 0
-    end
-    unplanned_issues = Issue.where(:version_id => nil, :project_id => project_id).includes([:status, :tracker])
-    unless unplanned_issues.empty?
-      versions << Version.new(:name => 'Unplanned')
-      data['related_requests'][nil] = unplanned_issues
-      data['related_requests'][nil].each { |issue| issue.status.is_closed ? tmp_closed_status += 1 : tmp_opened_status += 1
-      tmp_done += issue.done }
-      data['request_statements'][nil] = [tmp_closed_status, tmp_opened_status]
-      data['request_done_percent'][nil] = (tmp_done / data['related_requests'][nil].count).round
-    end
-    data
+  def self.overviews(project_id)
+    #This request return : [version_id, number of opened request, number of closed request, total progress percent]
+    Version.joins('RIGHT OUTER JOIN `issues` ON `issues`.`version_id` = `versions`.`id` INNER JOIN `issues_statuses` ON `issues_statuses`.`id` = `issues`.`status_id`').group('versions.id').where('issues.project_id = ?', project_id).pluck('versions.id, SUM(case when issues_statuses.is_closed = 0 then 1 else 0 end) Opened, SUM(case when issues_statuses.is_closed = 1 then 1 else 0 end) Closed, (SUM(issues.done) / Count(*)) Percent')
   end
 
   def self.define_calendar(versions, date)
