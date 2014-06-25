@@ -4,13 +4,9 @@
 # Encoding: UTF-8
 # File: show.erb
 %>
-<div class="contextual">
-  <h1><%= t(:label_query) %>: #<%= @query.id %></h1>
-
-  <div class="splitcontentright">
-    <%= link_to_with_permissions(t(:link_edit), edit_query_path(@query.id), nil, {:class => 'icon icon-edit'}) %>
-  </div>
-</div>
+<%= contextual "#{t(:label_query)} : # #{@query.id}" do %>
+    <%= link_to_with_permissions(glyph(t(:link_edit), 'pencil'), edit_query_path(@query.id), nil, {:class => 'icon icon-edit'}) %>
+<% end %>
 <table class="detail" style="width:100%">
   <tr>
     <th style="width:10%"><%= t(:field_name) %> :</th>

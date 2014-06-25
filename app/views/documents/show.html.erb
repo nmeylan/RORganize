@@ -5,15 +5,11 @@
 # File: show.html.erb
 %>
 
-<div class="contextual">
-  <h1><%= "#{t(:label_document)} ##{@document.id}" %></h1>
-
-  <div class="splitcontentright">
+<%= contextual "#{t(:label_document)} ##{@document.id}" do -%>
     <%= link_to_with_permissions(glyph(t(:link_new_document), 'plus'), new_document_path(@project.slug), @project) %>
     <%= link_to_with_permissions(glyph(t(:link_edit), 'pencil'), edit_document_path(@project.slug, @document.id), @project) %>
-    <%= link_to_with_permissions(glyph(t(:link_delete), 'trashcan'),document_path(@project.slug, @document.id), @project, {:method => :delete, :remote => true, :confirm => t(:text_delete_item )}) %>
-  </div>
-</div>
+    <%= link_to_with_permissions(glyph(t(:link_delete), 'trashcan'), document_path(@project.slug, @document.id), @project, {:method => :delete, :remote => true, :confirm => t(:text_delete_item)}) %>
+<% end -%>
 
 <h2><%= @document.name %></h2>
 <p>

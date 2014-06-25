@@ -4,9 +4,8 @@ Date: 25 juin 2013
 Encoding: UTF-8
 File: edit.html
 %>
-<div class="contextual">
-  <h1><%= t(:label_edit_wiki_page) %></h1>
-</div>
+<%= contextual t(:label_edit_wiki_page) %>
+
 <%= render :partial => 'wiki/sidebar' %>
 <%= form_for @wiki_page, {:url => wiki_page_path(@project.slug, @wiki_page.slug),:html => {:class => 'form'}} do |f| %>
   <%= render :partial => 'wiki_pages/form', :locals => {:f => f} %>

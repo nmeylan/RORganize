@@ -5,12 +5,9 @@
 # File: index.html.erb
 %>
 
-<div class="contextual">
-  <h1><%= t(:label_users) %></h1>
-  <div class="splitcontentright">
+<%= contextual t(:label_users) do %>
     <%= link_to_with_permissions(glyph(t(:link_new_user), 'plus'), new_user_path, nil,{}) %>
-  </div>
-</div>
+ <% end %>
 
 <% if @users.any? %>
   <%= render :partial => 'users/list' %>

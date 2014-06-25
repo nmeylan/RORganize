@@ -5,8 +5,6 @@
 # File: custom_queries.erb
 %>
 <%= render :partial => 'my/sidebar'  %>
-<div class="contextual">
-  <h1><%= t(:link_custom_queries) %></h1>
+<%= contextual t(:link_custom_queries) %>
 
-</div>
 <%= render :partial => 'queries/list' %>

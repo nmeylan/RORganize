@@ -5,33 +5,7 @@
 # File: _categories_list.html.erb
 %>
 
+
 <div id="categories_content">
-  <table class="category list">
-    <tr class="header">
-      <th>Name</th>
-      <th></th>
-    </tr>
-    <% @categories.each do |category| %>
-      <tr class="odd_even" id="category-<%= category.id %>">
-
-        <td class="list_center name">
-          <% if current_user.allowed_to?('edit','Categories',@project) %>
-            <%= link_to_with_permissions(category.name, edit_category_path(@project.slug, category.id), @project) %>
-          <% else %>
-            <%= category.name %>
-          <% end %>
-        </td>
-        <td class="action">
-          <%= link_to_with_permissions(glyph(t(:link_delete), 'trashcan'),
-            category_path(@project.slug, category.id), 
-            @project, 
-            {:method => :delete,
-              :remote => true,
-              :confirm => t(:text_delete_item)
-            }) %>
-
-        </td>
-      </tr>
-    <%end%>
-  </table>
+  <%= @categories.display %>
 </div>

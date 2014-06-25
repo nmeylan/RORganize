@@ -5,9 +5,8 @@
 # File: edit.erb
 %>
 
-<div class="contextual">
-  <h1><%= t(:link_edit_query) %></h1>
-</div>
+<%= contextual t(:link_edit_query) %>
+
 <%= form_for @query, :url => query_path , :method => :put, :html => {:class => 'form'} do |f|%>
 <%= raw error_messages(@query.errors.full_messages) %>
   <div class="box">

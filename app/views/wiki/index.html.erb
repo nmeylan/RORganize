@@ -5,22 +5,19 @@
 # File: index.html.erb
 %>
 
-<div class="contextual">
-  <h1><%= t(:label_wiki) %></h1>
-  <div class="splitcontentright">
+<%= contextual t(:label_wiki) do %>
     <% unless @wiki.nil? %>
-      <%= link_to_with_permissions(glyph(t(:link_delete), 'trashcan'), wiki_path(@project.slug,@wiki.id), @project,{:method => :delete, :remote => true, :confirm => t(:text_delete_item )}) %>
+        <%= link_to_with_permissions(glyph(t(:link_delete), 'trashcan'), wiki_path(@project.slug, @wiki.id), @project, {:method => :delete, :remote => true, :confirm => t(:text_delete_item)}) %>
     <% end %>
-  </div>
-</div>
+<% end %>
 <%= render :partial => 'wiki/sidebar' %>
 <% if @wiki.nil? %>
-  <h2><%= t(:text_no_wiki) %></h2>
-  <%= link_to t(:button_create), wiki_index_path(@project.slug), {:method => :post} %>
+    <h2><%= t(:text_no_wiki) %></h2>
+    <%= link_to t(:button_create), wiki_index_path(@project.slug), {:method => :post} %>
 <% else %>
-  <% if @wiki.home_page.nil? %>
-    <%= link_to t(:label_new_home_page), new_home_page_wiki_pages_path(@project.slug) %>
-  <% else %>
-    <%= render :partial => 'wiki_pages/page_content', :locals => {:page => @wiki.home_page} %>
-  <% end %>
+    <% if @wiki.home_page.nil? %>
+        <%= link_to t(:label_new_home_page), new_home_page_wiki_pages_path(@project.slug) %>
+    <% else %>
+        <%= render :partial => 'wiki_pages/page_content', :locals => {:page => @wiki.home_page} %>
+    <% end %>
 <% end %>

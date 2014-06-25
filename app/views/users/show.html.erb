@@ -5,15 +5,11 @@
 # File: show.html.erb
 %>
 
-<div class="contextual">
-  <h1><%= t(:label_user)+': '+@user.name %></h1>
-
-  <div class="splitcontentright">
+<%= contextual "#{t(:label_user)} : #{@user.name}" do %>
     <%= link_to_with_permissions(glyph(t(:link_edit), 'pencil'), edit_user_path(@user.id), nil) %>
     <%= link_to_with_permissions(glyph(t(:link_delete), 'trashcan'), user_path(@user.id), nil, {:method => :delete, :remote => true, :confirm => t(:text_delete_item)}) %>
 
-  </div>
-</div>
+ <% end %>
 
 <table class="detail" style="width:100%">
   <tr>

@@ -5,9 +5,7 @@
 # File: new.html.erb
 %>
 
-<div class="contextual">
-  <h1><%= t(:link_new_permission) %></h1>
-</div>
+<%= contextual t(:link_new_permission) %>
 
 <%= form_for @permission, :url => {:controller => 'permissions'}, :html => {:class => 'form'} do |f|%>
   <%= render :partial => 'permissions/form', :locals => {:f => f, :controllers => controllers} %>

@@ -1,8 +1,5 @@
-<div class="contextual">
-  <h1><%= t(:label_issues_statuses) %></h1>
-  <div class="splitcontentright">
+<%= contextual t(:label_issues_statuses) do %>
     <%= link_to_with_permissions(glyph(t(:link_new_issue), 'plus'), new_issues_status_path, nil, {:method => :get}) %>
-   </div>
-</div>
+<% end %>
 
 <%= render :partial => 'issues_statuses/list' %>

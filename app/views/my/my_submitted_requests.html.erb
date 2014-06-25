@@ -6,9 +6,7 @@ File: my_assigned_requests
 %>
 
 <%= render :partial => 'my/sidebar' %>
-<div class="contextual">
-  <h1><%= t(:link_my_submited_requests) %></h1>
-</div>
+<%= contextual t(:link_my_submited_requests) %>
 <% if issues %>
     <div class="my">
       <%= render :partial => 'my/submitted_requests', :locals => {:issues => issues} %>

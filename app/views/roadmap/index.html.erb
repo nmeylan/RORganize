@@ -5,9 +5,7 @@
 # File: roadmap.html.erb
 %>
 
-<div class="contextual">
-  <h1><%= t(:label_roadmap) %></h1>
-</div>
+<%= contextual t(:label_roadmap) %>
 
 <% @versions.each do |version| %>
   <%= render :partial => 'roadmap/version_detail', :locals => {:versions_details => versions_details[version.id],:version => version} %>

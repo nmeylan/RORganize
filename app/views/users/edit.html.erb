@@ -5,12 +5,7 @@
 # File: edit.html.erb
 %>
 
-<div class="contextual">
-  <h1><%= t(:link_edit_user) %></h1>
-  <div class="splitcontentright">
-
-  </div>
-</div>
+<%= contextual t(:link_edit_user) %>
 
 <%= form_for @user, :url => user_path, :method => :put, :html => {:class => 'form'} do |f|%>
   <%= render :partial => 'users/form', :locals => {:f => f} %>

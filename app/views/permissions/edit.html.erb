@@ -5,9 +5,7 @@
 # File: edit.html.erb
 %>
 
-<div class="contextual">
-  <h1><%= t(:link_edit_permission) %></h1>
-  <div class="splitcontentright">
+<%= contextual t(:link_edit_permission) do %>
     <% if current_user.allowed_to?('destroy','Permissions')%>
       <% unless @permission.is_locked %>
         <%= link_to glyph(t(:link_delete), 'trashcan') ,permission_path(@permission.id), {:remote => true, :confirm =>  t(:text_delete_item ), :method => :delete} %>
@@ -15,8 +13,7 @@
             <span class="octicon octicon-lock"></span><%= t(:link_delete) %>
       <% end %>
     <% end %>
-  </div>
-</div>
+<% end %>
 <%= form_for @permission, :url => permission_path, :method => :put, :html => {:class => 'form'} do |f|%>
   <%= render :partial => 'permissions/form', :locals => {:f => f, :controllers => controllers} %>
   <%= submit_tag t(:button_save) %>

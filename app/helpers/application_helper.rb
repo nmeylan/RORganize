@@ -312,7 +312,15 @@ EOD
     attributes = model.attribute_names
     exclude_attributes = params[:exclude]
     attributes.delete_if { |attribute| exclude_attributes.include?(attribute.to_sym) }
-    puts attributes.inspect
+  end
+
+  def contextual(title)
+    content_for :contextual do
+      safe_concat content_tag :h1, title
+      safe_concat content_tag :div, class: 'splitcontentright', &Proc.new {
+        yield if block_given?
+      }
+    end
   end
 
 

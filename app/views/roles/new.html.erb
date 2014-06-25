@@ -5,9 +5,7 @@
 # File: new.html.erb
 %>
 
-<div class="contextual">
-  <h1><%= t(:link_new_role)%></h1>
-</div>
+<%= contextual t(:link_new_role)%>
 
 <%= form_for @role, :url => {:controller => 'roles'}, :html => {:class => 'form'} do |f|%>
   <%= render :partial => 'roles/form', :locals => {:f => f} %>

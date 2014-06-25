@@ -5,9 +5,7 @@
 # File: index.html.erb
 #Project overview
 %>
-<div class="contextual">
-  <h1><%= t(:label_overview) %></h1>
-</div>
+<%= contextual t(:label_overview) %>
 
 <div class="splitcontentleft" id="project_description">
   <%= raw textile_to_html(@project.description) %>

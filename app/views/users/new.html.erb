@@ -5,12 +5,7 @@
 # File: new.html.erb
 %>
 
-<div class="contextual">
-  <h1><%= t(:link_new_user) %></h1>
-  <div class="splitcontentright">
-
-  </div>
-</div>
+<%= contextual t(:link_new_user) %>
 
 <%= form_for @user, :url => {:controller => 'users'}, :html => {:class => 'form'} do |f|%>
   <%= render :partial => 'users/form', :locals => {:f => f} %>

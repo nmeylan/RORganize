@@ -4,10 +4,7 @@
 # Encoding: UTF-8
 # File: edit.html.erb
 %>
-
-<div class="contextual">
-  <h1><%= t(:link_edit_role)%></h1>
-</div>
+<%= contextual t(:link_edit_tracker)%>
 
 <%= form_for @tracker, :url => tracker_path, :method => :put, :html => {:class => 'form'} do |f|%>
   <%= render :partial => 'trackers/form', :locals => {:f => f} %>

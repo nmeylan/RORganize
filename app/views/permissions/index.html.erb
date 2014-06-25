@@ -5,13 +5,9 @@
 # File: index.html.erb
 %>
 
-<div class="contextual">
-  <h1><%= t(:link_permissions) %></h1>
-  <div class="splitcontentright">
-    <%= link_to_with_permissions(
-      glyph(t(:link_new_permission), 'plus'), new_permission_path, nil, {:method => :get}) %>
-  </div>
-</div>
+<%= contextual t(:link_permissions) do %>
+    <%= link_to_with_permissions(glyph(t(:link_new_permission), 'plus'), new_permission_path, nil, {:method => :get}) %>
+<% end %>
 
 <%= t(:text_choose_role) %>:
 

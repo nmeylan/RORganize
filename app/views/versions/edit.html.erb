@@ -5,9 +5,8 @@
 # File: version_edit.html.erb
 %>
 
-<div class="contextual">
-  <h1><%= t(:label_setting_plural) %> - <%= t(:link_versions) %></h1>
-</div>
+<%= contextual "#{t(:label_setting_plural)} - #{t(:link_versions)}" %>
+
 <%= form_for @version, :url => version_path, :method => :put, :html => {:class => 'form'} do |f|%>
 <%= render :partial => 'versions/form', :locals => {:f => f} %>
 <%= submit_tag t(:button_save) %>

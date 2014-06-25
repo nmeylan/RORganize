@@ -5,9 +5,7 @@
 # File: list.html.erb
 %>
 
-<div class="contextual">
-  <h1><%= t(:link_permissions) %> - <%= params[:role_name].gsub('_', ' ') %></h1>
-</div>
+<%= contextual "#{t(:link_permissions)} - #{params[:role_name].gsub('_', ' ')}" %>
 <%= form_tag({:action => 'update_permissions', :controller => 'permissions'}) %>
 <div class="box">
   <% permissions.sort { |x, y| x <=> y }.each do |k, v| %>

@@ -4,9 +4,7 @@ Author: Nicolas Meylan
 
 <%# Overview%>
 
-<div class="contextual">
-  <h1>Welcome <%= current_user.name %></h1>
-</div>
+<%= contextual "Welcome #{current_user.name}" %>
 
 <div class="splitcontentleft">
   <div class="box">

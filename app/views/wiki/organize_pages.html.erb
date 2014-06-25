@@ -4,9 +4,8 @@ Date: 27 juin 2013
 Encoding: UTF-8
 File: organize_pages
 %>
-<div class="contextual">
-  <h1><%= t(:link_pages) %></h1>
-</div>
+<%= contextual t(:link_pages) %>
+
 <%= render :partial => 'wiki/sidebar' %>
 <% if @wiki_pages.any? %>
   <div id="organize_pages">

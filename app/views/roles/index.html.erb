@@ -5,11 +5,8 @@
 # File: index.html.erb
 %>
 
-<div class="contextual">
-  <h1><%= t(:link_roles) %></h1>
-  <div class="splitcontentright">
+<%= contextual t(:link_roles) do%>
     <%= link_to_with_permissions(glyph(t(:link_new_role), 'plus'), new_role_path,  nil, {}) %>
-    </div>
-</div>
+<% end %>
 
 <%= render :partial => 'roles/list' %>

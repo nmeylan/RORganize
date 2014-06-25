@@ -1,6 +1,4 @@
-<div class="contextual">
-  <h1><%= t(:link_edit_status)%></h1>
-</div>
+<%= contextual t(:link_edit_status)%>
 <%= form_for @status, :url => issues_status_path, :html => {:class => 'form'} do |f|%>
   <%= render :partial => 'issues_statuses/form', :locals => {:f => f} %>
   <%= submit_tag t(:button_save) %>

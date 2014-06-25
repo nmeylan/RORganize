@@ -4,10 +4,7 @@
 # Encoding: UTF-8
 # File: new.html.erb
 %>
-
-<div class="contextual">
-  <h1><%= t(:link_new_document) %></h1>
-</div>
+<%= contextual t(:link_new_document) %>
 
 <%= form_for @document, :html => {:class => 'form',:multipart => true} do |f| %>
   <%= render :partial => 'documents/form', :locals => {:f => f}%>

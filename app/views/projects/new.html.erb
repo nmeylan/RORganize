@@ -4,7 +4,6 @@
 # Encoding: UTF-8
 # File: new.erb
 %>
-<div class="contextual">
-  <h1><%= t(:link_new_project) %></h1>
-</div>
+<%= contextual t(:link_new_project) %>
+
 <%= render :partial => 'projects/form' %>
