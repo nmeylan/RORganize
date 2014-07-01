@@ -6,7 +6,7 @@
 %>
 
 <%= contextual t(:label_documents) do %>
-    <%= link_to_with_permissions(glyph(t(:link_new_document), 'plus'), new_document_path(@project.slug), @project) %>
+    <%= @documents.new_link %>
 <% end %>
 <%= render :partial => 'documents/filter' %>
 <%= render :partial => 'documents/list' %>

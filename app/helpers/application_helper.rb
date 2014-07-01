@@ -35,6 +35,66 @@ module ApplicationHelper
     end
   end
 
+  #Define pagination for the given collection : session is the current selected per_page item, path is the path of the controller
+  def paginate(collection, session, path)
+    safe_concat will_paginate(collection, :renderer => 'RemoteLinkRenderer')
+    safe_concat content_tag :div, class: 'autocomplete-combobox nosearch per_page', &Proc.new {
+      safe_concat content_tag :label, t(:label_per_page), {for: 'per_page'}
+      safe_concat select_tag 'per_page', options_for_select([%w(25 25), %w(50 50), %w(100 100)], session), :class => 'chzn-select cbb-small', :id => 'per_page', :'data-link' => "#{path}"
+    }
+  end
+
+  #label : what is filtered (e.g : issues, documents)
+  #filtered_attributes : which attributes will be filtered (e.g : Document.filtered_attributes)
+  #submission_path : where the form must be send
+  def filter_tag(label, filtered_attributes, submission_path)
+    content_tag :fieldset, id: "#{label}_filter" do
+      safe_concat content_tag :legend, link_to(glyph(t(:link_filter), 'chevron-right'), '#', {:class => 'icon-collapsed toggle', :id => "#{label}"})
+      safe_concat content_tag :div, class: 'content', &Proc.new {
+        safe_concat form_tag submission_path, {:method => :get, :class => 'filter_form', :id => 'filter_form', :remote => true}, &Proc.new {
+          safe_concat radio_button_tag('type', 'all', true, {:align => 'center'})
+          safe_concat label_tag('type_all', t(:label_all))
+          safe_concat radio_button_tag 'type', 'filter', false
+          safe_concat label_tag 'type_filter', t(:link_filter)
+          safe_concat content_tag :div, class: 'autocomplete-combobox nosearch no-padding_left no-height', &Proc.new {
+            select_tag 'filters_list', options_for_select(filtered_attributes), :class => 'chzn-select cbb-verylarge', :id => 'filters_list', :multiple => true
+          }
+          safe_concat content_tag :table, nil, id: 'filter_content'
+          safe_concat submit_tag t(:button_apply), {:style => 'margin-left:0px'}
+        }
+      }
+    end
+  end
+
+  def toolbox_tag(toolbox)
+    form_tag toolbox.path, :remote => true, :id => 'toolbox_form', &Proc.new {
+      safe_concat(toolbox.menu.values.collect do |menu_item|
+        content_tag :li do
+          safe_concat link_to glyph(menu_item.caption, menu_item.glyph_name), '#', {:id => menu_item.name}
+          safe_concat content_tag :ul, class: "submenu #{menu_item.attribute_name}", &Proc.new {
+            if menu_item.all && menu_item.all.any?
+              safe_concat hidden_field_tag "value[#{menu_item.attribute_name}]"
+              safe_concat(menu_item.all.collect do |element|
+                content_tag :li do
+                  safe_concat link_to(conditional_glyph(element.caption, menu_item.currents.include?(element), 'check'), '#', {:'data-id' => element.id})
+                end
+              end.join.html_safe)
+              if menu_item.none_allowed
+                safe_concat content_tag :li, link_to(conditional_glyph('None', menu_item.currents.include?(nil), 'check'), '#', {:'data-id' => -1})
+              end
+            end
+          }
+        end
+      end.join.html_safe)
+      safe_concat(toolbox.extra_actions.collect do |action|
+        content_tag :li, action
+      end.join.html_safe)
+      safe_concat(toolbox.collection_ids.collect do |id|
+        hidden_field_tag 'ids[]', id
+      end.join.html_safe)
+    }
+  end
+
   #Here are define basic action into hash
   def find_action(action)
     basic_actions = {'update' => 'edit', 'create' => 'new'}
@@ -75,9 +135,9 @@ module ApplicationHelper
 
   def textile_to_html(text)
     t = RedCloth.new <<EOD
-#{text}
+          #{text}
 EOD
-    t.to_html
+    t.to_html.html_safe
   end
 
   def set_toolbar(id)
@@ -263,10 +323,11 @@ EOD
     end
   end
 
-#Params hash content:
-#method : possible values :post, :get , :put, :delete
-#target : possible values "nil" or "self", if self url will be '#' else will be path
-#html = {}
+  #TODO remove this code
+  #Params hash content:
+  #method : possible values :post, :get , :put, :delete
+  #target : possible values "nil" or "self", if self url will be '#' else will be path
+  #html = {}
   def link_to_with_permissions(label, path, project, params = {})
     routes = Rails.application.routes
     hash_path = routes.recognize_path(path, :method => params[:method])
@@ -300,6 +361,42 @@ EOD
         link_to(label, path, params)
       end
     end
+  end
+
+  def select_tag_versions(id, name, select_key)
+    #Don't use hash because, grouped_options will be sort asc : close before open
+    option_group_ary = []
+    open_ary = []
+    open = []
+    open << 'Open'
+    close_ary = []
+    close = []
+    close << 'Close'
+    versions = @project.versions
+    today = Date.current
+    select_tag = ''
+    versions.each do |version|
+      if version.target_date.nil? || (version.target_date && version.target_date > today)
+        open_ary << [version.name, version.id, version.target_date]
+      else
+        close_ary << [version.name, version.id, version.target_date]
+      end
+    end
+    open << open_ary
+    close << close_ary
+    option_group_ary << open
+    option_group_ary << close
+    select_tag += "<select class='chzn-select-deselect cbb-medium' tabindex='-1' id='#{id}' name='#{name}'>"
+    select_tag += "<option value=''></option>"
+    #    select_tag += grouped_options_for_select(option_group_ary, select_key)
+    option_group_ary.each do |opt_group|
+      select_tag += "<optgroup label='#{opt_group[0].to_s}'>"
+      opt_group[1].each do |options|
+        select_tag += "<option id='#{options[2]}' value='#{options[1]}' #{'selected="selected"' if options[1].eql?(select_key)}>"+options[0].to_s+'</option>'
+      end
+      select_tag += '</optgroup>'
+    end
+    select_tag += '</select>'
   end
 
 #Build rows for all entries from a given model

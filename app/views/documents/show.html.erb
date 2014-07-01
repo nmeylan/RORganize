@@ -6,31 +6,32 @@
 %>
 
 <%= contextual "#{t(:label_document)} ##{@document.id}" do -%>
-    <%= link_to_with_permissions(glyph(t(:link_new_document), 'plus'), new_document_path(@project.slug), @project) %>
-    <%= link_to_with_permissions(glyph(t(:link_edit), 'pencil'), edit_document_path(@project.slug, @document.id), @project) %>
-    <%= link_to_with_permissions(glyph(t(:link_delete), 'trashcan'), document_path(@project.slug, @document.id), @project, {:method => :delete, :remote => true, :confirm => t(:text_delete_item)}) %>
+    <%= @document.new_link %>
+    <%= @document.edit_link %>
+    <%= @document.delete_link %>
+
 <% end -%>
 
 <h2><%= @document.name %></h2>
 <p>
   <em>
-    <%= "#{t(:label_added)} #{distance_of_time_in_words(@document.created_at, Time.now)} #{t(:label_ago)}, #{t(:label_by)} #{journal_created.user.name}. #{(@document.created_at.eql?(@document.updated_at) ? '' : "#{t(:label_updated)} #{distance_of_time_in_words(@document.updated_at, Time.now)} #{t(:label_ago)}.").to_s}" %>
+    <%= @document.creation_info %>
   </em>
 </p>
 <table class="detail" style="width:100%">
   <tr>
     <th style="width:15%"><%= t(:field_version) %> :</th>
-    <td style="width:30%"><%= @document.version ? @document.version.name : '-' %></td>
+    <td style="width:30%"><%= @document.version %></td>
   </tr>
   <tr>
     <th style="width:15%"><%= t(:field_category) %> :</th>
-    <td style="width:30%"><%= @document.category ? @document.category.name : '-' %></td>
+    <td style="width:30%"><%= @document.category  %></td>
   </tr>
 </table>
 <br/>
 <hr/><br/>
 <h2><%= t(:field_description) %> :</h2>
-<%= raw !@document.description.eql?('') ? textile_to_html(@document.description) : '-' %>
+<%= @document.display_description %>
 
 <%#= ATTACHMENT %>
 <div id="attachments">

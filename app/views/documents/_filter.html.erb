@@ -5,21 +5,4 @@
 # File: _filter.html.erb
 %>
 
-<fieldset id="document_filter">
-  <legend><%= link_to glyph(t(:link_filter), 'chevron-right'), '#', {:class => 'icon-collapsed toggle', :id => 'document'} %></legend>
-  <div class="content">
-    <%= form_tag url_for(:controller => 'documents', :action => 'index'),{:method => :get, :class => 'filter_form', :id => 'filter_form', :remote => true} do -%>
-  <%#= Start of the form %>
-        <%= radio_button_tag 'type', 'all', true, {:align => 'center'} %><%= label_tag 'type_all', t(:label_all) %>
-        <%= radio_button_tag 'type', 'filter', false %><%= label_tag 'type_filter', t(:link_filter) %>
-      <div class="autocomplete-combobox nosearch no-padding_left no-height">
-        <%= select_tag 'filters_list', options_for_select(Document.filtered_attributes),:class => 'chzn-select cbb-verylarge', :id => 'filters_list', :multiple => true%>
-      </div>
-  <%#= Options for query, element will pop here %>
-      <table id="filter_content">
-
-      </table>
-      <%= submit_tag t(:button_apply), {:style => 'margin-left:0px'} %>
-    <% end -%>
-  </div>
-</fieldset>
+<%= render :partial => 'shared/filter', locals: {label: 'document', submission_path: documents_path(@project.slug), filtered_attributes: Document.filtered_attributes} %>

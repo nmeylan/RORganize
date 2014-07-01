@@ -10,7 +10,6 @@ class DocumentsController < ApplicationController
   before_filter { |c| c.menu_item(params[:controller]) }
   before_filter { |c| c.top_menu_item('projects') }
   include ApplicationHelper
-  include DocumentsHelper
   include Rorganize::RichController
   helper_method :sort_column, :sort_direction
   require 'will_paginate'
@@ -70,9 +69,9 @@ class DocumentsController < ApplicationController
   end
 
   def show
-    @document = Document.includes(:category, :version, :attachments).find(params[:id])
+    @document = Document.eager_load(:category, :version, :attachments).find(params[:id]).decorate
     respond_to do |format|
-      format.html { render :action => 'show', :locals => {:journals => @document.activities, :journal_created => @document.creation_info} }
+      format.html { render :action => 'show', :locals => {:journals => @document.activities} }
     end
   end
 
@@ -108,9 +107,8 @@ class DocumentsController < ApplicationController
     if !request.post?
       #loading toolbox
       @documents_toolbox = Document.where(:id => params[:ids]).includes(:version, :category)
-      menu = Document.toolbox_menu(@project, @documents_toolbox)
       respond_to do |format|
-        format.js { respond_to_js :locals => {:menu => menu, :documents => @documents_toolbox} }
+        format.js { respond_to_js :locals => {:documents => @documents_toolbox} }
       end
     elsif params[:delete_ids]
       #Multi delete
@@ -151,7 +149,7 @@ class DocumentsController < ApplicationController
     session['controller_documents_per_page'] = params[:per_page] ?  params[:per_page] :  (session['controller_documents_per_page'] ? session['controller_documents_per_page'] : 25)
     order = sort_column + ' ' + sort_direction
     filter = session["#{@project.slug}_controller_documents_filter"]
-    @documents = Document.paginated_documents(params[:page], session['controller_documents_per_page'],order, filter, @project.id)
+    @documents = Document.paginated_documents(params[:page], session['controller_documents_per_page'],order, filter, @project.id).decorate(context: {project: @project})
   end
 
   def document_params

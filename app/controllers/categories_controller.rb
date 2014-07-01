@@ -12,7 +12,7 @@ class CategoriesController < ApplicationController
   include ApplicationHelper
 
   def index
-    @categories = @project.categories
+    @categories = @project.categories.decorate(context: {project: @project})
     respond_to do |format|
       format.html
     end

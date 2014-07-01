@@ -3,7 +3,7 @@
  * Date: 30/11/13
  * Time: 08:39
  %>
-$("#documents_toolbox").html("<%= escape_javascript(render :partial => 'documents/toolbox', :locals => {:menu => menu})%>");
+$("#documents_toolbox").html("<%= escape_javascript(render :partial => 'documents/toolbox')%>");
 $('#delete_overlay').replaceWith("<%= escape_javascript(render :partial => 'documents/delete_overlay', :locals => {:documents => documents})%>");
 createOverlay("#delete_overlay", 150);
 

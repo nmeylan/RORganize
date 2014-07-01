@@ -6,33 +6,8 @@
 %>
 
 <div id="documents_content">
-  <% if @documents.any?  %>
-    <table class="document list" data-link="<%= toolbox_documents_path(@project.slug) %>">
-      <tr class="header">
-        <th><%= link_to glyph('', 'check'), '#', {:class => 'icon-checked', :id => 'check_all', 'cb_checked' => 'b'} %></th>
-        <th><%= sortable 'documents.id', '#'%></th>
-        <th><%= sortable 'documents.name', 'Name'%></th>
-        <th><%= sortable 'categories.name', 'Category' %></th>
-        <th><%= sortable 'versions.name', 'Target phase' %></th>
-      </tr>
-      <% @documents.each do |document| %>
-        <tr class="odd_even document_tr">
-          <td><%= check_box_tag 'document-'+document.id.to_s, document.id %></td>
-          <td class="list_center id"><%= document.id %></td>
-          <td class="name"><%= link_to document.name, {:action => 'show', :controller => 'documents', :id => document.id}, {:id => document.id} %></td>
-          <td class="list_center category"><%= document.category ? document.category.name : '-' %></td>
-          <td class="list_center version"><%= document.version ? document.version.name : '-' %></td>
-        </tr>
-      <%end%>
-    </table>
-    <%= will_paginate(@documents, :renderer => 'RemoteLinkRenderer')%>
-    <div class="autocomplete-combobox nosearch per_page">
-      <label for="per_page"><%=t(:label_per_page)%></label>
-      <%= select_tag 'per_page', options_for_select([%w(25 25), %w(50 50), %w(100 100)], session[:controller_documents_per_page]),:class => 'chzn-select cbb-small', :id => 'per_page', :'data-link' => "#{documents_path(@project.slug)}"%>
-    </div>
-  <% else %>
-    <h2><%= t(:text_no_data) %></h2>
-  <% end %>
+  <% @documents.display_collection  %>
+
 
   <ul id="documents_toolbox" class="jeegoocontext box toolbox">
     <% if @documents_toolbox %>

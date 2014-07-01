@@ -5,7 +5,7 @@
 # File: index.html.erb
 %>
 <%= contextual "#{t(:label_setting_plural)} - #{t(:link_categories)}" do -%>
-    <%= link_to_with_permissions(glyph(t(:link_new_category), 'plus'),new_category_path(@project.slug),@project) %>
+    <%= @categories.new_link %>
 <% end -%>
 
 <%= render :partial => 'categories/list' %>
