@@ -3,6 +3,7 @@
 # Encoding: UTF-8
 # File: wiki_page.rb
 class WikiPage < RorganizeActiveRecord
+  include Rorganize::AbstractModelCaption
   #Class variables
   assign_journalized_properties({'title' => 'Title',
       'content' => 'Content'})
@@ -24,6 +25,9 @@ class WikiPage < RorganizeActiveRecord
  
   validates :title, :presence => true, :uniqueness => true
 
+  def caption
+    self.title
+  end
   def self.permit_attributes
     [:parent_id, :title, :content]
   end

@@ -3,6 +3,7 @@
 # Encoding: UTF-8
 # File: issue.rb
 class Issue < RorganizeActiveRecord
+  include Rorganize::AbstractModelCaption
   #Class variables
   assign_journalized_properties({'status_id' => 'Status', 'category_id' => 'Category', 'assigned_to_id' => 'Assigned to', 'tracker_id' => 'Tracker', 'due_date' => 'Due date', 'start_date' => 'Start date', 'done' => 'Done', 'estimated_time' => 'Estimated time', 'version_id' => 'Version', 'predecessor_id' => 'Predecessor'})
   assign_foreign_keys({'status_id' => IssuesStatus, 'category_id' => Category, 'assigned_to_id' => User, 'tracker_id' => Tracker, 'version_id' => Version})
@@ -22,6 +23,9 @@ class Issue < RorganizeActiveRecord
   has_many :journals, -> { where :journalized_type => 'Issue' }, :as => :journalized, :dependent => :destroy
   has_many :time_entries, :dependent => :destroy
 
+  def caption
+    self.subject
+  end
   #triggers
   before_save :set_done_ratio
   before_update :set_done_ratio, :set_due_date
@@ -146,7 +150,7 @@ class Issue < RorganizeActiveRecord
     filtered_attributes = []
     unused_attributes = ['Project', 'Description', 'Estimated time', 'Predecessor', 'Checklist items count', 'Attachments count']
     attrs = Issue.attributes_formalized_names.delete_if { |attribute| unused_attributes.include?(attribute) }
-    attrs.each { |attribute| filtered_attributes << [attribute, attribute.gsub(/\s/, '_').downcase] }
+    attrs.each { |attribute| filtered_attributes << [attribute, attribute.gsub(/\s/, '_').downcase] }# TODO use map
     return filtered_attributes
   end
 

@@ -4,6 +4,7 @@
 # File: category.rb
 
 class Category < RorganizeActiveRecord
+  include Rorganize::AbstractModelCaption
   #Class variables
   assign_journalized_properties({'name' => 'Name'})
   assign_foreign_keys({})
@@ -18,6 +19,10 @@ class Category < RorganizeActiveRecord
 
   def self.permit_attributes
     [:name]
+  end
+
+  def caption
+    self.name
   end
   
 end

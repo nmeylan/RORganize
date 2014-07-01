@@ -37,7 +37,7 @@ module Rorganize
       Journal.create(:user_id => User.current.id,
         :journalized_id => self.id,
         :journalized_type => self.class.to_s,
-        :journalized_identifier => journalized_identifier,
+        :journalized_identifier => self.caption,
         :notes => '',
         :action_type => 'created',
         :project_id => p_id)
@@ -54,7 +54,7 @@ module Rorganize
         journal = Journal.create(:user_id => User.current.id,
           :journalized_id => self.id,
           :journalized_type => self.class.to_s,
-          :journalized_identifier => journalized_identifier,
+          :journalized_identifier => self.caption,
           :notes => notes,
           :action_type => 'updated',
           :project_id => p_id)
@@ -66,30 +66,11 @@ module Rorganize
       Journal.create(:user_id => User.current.id,
         :journalized_id => self.id,
         :journalized_type => self.class.to_s,
-        :journalized_identifier => journalized_identifier,
+        :journalized_identifier => self.caption,
         :notes => '',
         :action_type => 'deleted',
         :project_id => p_id)
     end
-    
-    def string_identifier_method
-      #Identify item with a user friendly id, select first of the following attribute
-      identifier_attribute_names = %w(slug name title identifier) # Or add more
-      identifier_attribute_names.each do |identifier_attribute_name|
-        if self.respond_to?(identifier_attribute_name)
-          return identifier_attribute_name
-        end
-      end
-      return nil
-    end
-    def journalized_identifier
-      identifier_attribute = string_identifier_method
-      unless identifier_attribute.nil? 
-        journalized_string_identifier = self.send(identifier_attribute)
-      else
-        journalized_string_identifier = self.id
-      end
-      return journalized_string_identifier
-    end
+
   end
 end

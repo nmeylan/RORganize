@@ -1,4 +1,5 @@
 class Project < ActiveRecord::Base
+  include Rorganize::AbstractModelCaption
   #SLug
   extend FriendlyId
   friendly_id :identifier, use: :slugged
@@ -24,6 +25,9 @@ class Project < ActiveRecord::Base
       :too_long => 'must have at most 255 words'
   }
 
+  def caption
+    self.slug
+  end
   def self.permit_attributes
     [:name, :description, :identifier, :new_attachment_attributes => Attachment.permit_attributes, :existing_attachment_attributes => Attachment.permit_attributes]
   end

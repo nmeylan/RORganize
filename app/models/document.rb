@@ -3,6 +3,7 @@
 # Encoding: UTF-8
 # File: document.rb
 class Document < RorganizeActiveRecord
+  include Rorganize::AbstractModelCaption
   #Class variables
   assign_journalized_properties({ 'name' => 'Name', 'category_id' => 'Category','version_id' => 'Version'})
   assign_foreign_keys({'category_id' => Category, 'version_id' => Version})
@@ -20,6 +21,10 @@ class Document < RorganizeActiveRecord
   after_create :create_journal
   after_destroy :destroy_journal
   #methods
+
+  def caption
+    self.name
+  end
 
   def self.paginated_documents(page, per_page, order, filter, project_id)
     Document.where("#{filter} documents.project_id = #{project_id}").includes([:version, :category]).paginate(:page => page, :per_page => per_page).order(order)
@@ -63,24 +68,6 @@ class Document < RorganizeActiveRecord
     end
   end
 
-  #Return a hash with the content requiered for the filter's construction
-  #Can define 2 type of filters:
-  #Radio : with values : all - equal/contains - different/not contains
-  #Select : for attributes which only defined values : e.g : version => [1,2,3]
-  def self.filter_content_hash(project)
-    content_hash = {}
-    content_hash['hash_for_select'] = {}
-    content_hash['hash_for_radio'] = Hash.new { |k, v| k[v] = [] }
-    content_hash['hash_for_radio']['name'] = ['all', 'contains', 'not contains']
-    content_hash['hash_for_select']['category'] = project.categories.collect { |category| [category.name, category.id] }
-    content_hash['hash_for_radio']['category'] = %w(all equal different)
-    content_hash['hash_for_radio']['created'] = %w(all equal superior inferior today)
-    content_hash['hash_for_select']['version'] = project.versions.collect { |version| [version.name, version.id] }
-    content_hash['hash_for_select']['version'] << %w(Unplanned NULL)
-    content_hash['hash_for_radio']['version'] = %w(all equal different)
-    content_hash['hash_for_radio']['updated'] = %w(all equal superior inferior today)
-    return content_hash
-  end
 
   #Return an array with all attribute that can be filtered
   def self.filtered_attributes
@@ -99,20 +86,6 @@ class Document < RorganizeActiveRecord
   #Get creation date and author
   def creation_info
     Journal.includes(:user).where(:action_type => 'created', :journalized_id => self.id, :journalized_type => self.class.to_s).first
-  end
-
-  #Get toolbox menu for document class.
-  def self.toolbox_menu(project, documents)
-    menu = {}
-    # Toolbox menu content
-    menu['versions'] = project.versions.collect { |version| version }
-    menu['categories'] = project.categories.collect { |category| category }
-    #documents current states for each fields
-    current_states = Hash.new {}
-    current_states['version'] = documents.collect { |document| document.version }.uniq
-    current_states['category'] = documents.collect { |document| document.category }.uniq
-    menu['current_states'] = current_states
-    menu
   end
 
   def self.bulk_edit(doc_ids, value_param)

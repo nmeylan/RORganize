@@ -4,6 +4,7 @@
 # File: query.rb
 
 class Query < ActiveRecord::Base
+  include Rorganize::AbstractModelCaption
   extend FriendlyId
   friendly_id :name, use: :slugged
 
@@ -14,6 +15,9 @@ class Query < ActiveRecord::Base
 
   def self.permit_attributes
     [:is_for_all, :is_public, :name, :description, :object_type, :id]
+  end
+  def caption
+    self.name
   end
 
   def self.issues_queries(project_id)

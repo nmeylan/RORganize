@@ -1,4 +1,5 @@
 class Version < RorganizeActiveRecord
+  include Rorganize::AbstractModelCaption
   #Class variables
   assign_journalized_properties({'name' => 'Name',
                                  'target_date' => 'Due date', 'start_date' => 'Start date'})
@@ -19,6 +20,10 @@ class Version < RorganizeActiveRecord
 
   def self.permit_attributes
     [:name, :target_date, :description, :start_date, :is_done]
+  end
+
+  def caption
+    self.name
   end
 
   def update_issues_due_date

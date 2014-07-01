@@ -1,7 +1,12 @@
 class Enumeration < ActiveRecord::Base
+  include Rorganize::AbstractModelCaption
   before_save :inc_position
   after_destroy :dec_position_on_destroy
   validates :name, :presence => true
+
+  def caption
+    self.name
+  end
 
   def self.permit_attributes
     [:opt, :name, :position]

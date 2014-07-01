@@ -4,6 +4,8 @@
 # File: IssueStatus.rb
 
 class IssuesStatus < ActiveRecord::Base
+  include Rorganize::AbstractModelCaption
+
   has_and_belongs_to_many :roles, :class_name => 'Role'
   belongs_to :enumeration, :class_name => 'Enumeration', :dependent => :destroy
   has_many :issues, :class_name => 'Issue', :foreign_key => :status_id, :dependent => :nullify
@@ -16,6 +18,9 @@ class IssuesStatus < ActiveRecord::Base
     [:is_closed, :default_done_ratio]
   end
 
+  def caption
+    self.enumeration.caption
+  end
   #Change position
   def change_position(operator)
     enumerations = Enumeration.where(opt: 'ISTS').order('position ASC')

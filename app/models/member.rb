@@ -4,6 +4,7 @@
 # File: member.rb
 
 class Member < RorganizeActiveRecord
+  include Rorganize::AbstractModelCaption
   #Constants
   assign_journalized_properties({'role_id' => 'Role'})
   assign_foreign_keys({'role_id' => Role})
@@ -19,8 +20,8 @@ class Member < RorganizeActiveRecord
   after_update :update_journal
   after_destroy :destroy_journal
   #Methods
-  def name
-    return self.user.name
+  def caption
+    self.user.name
   end
   
   def create_journal

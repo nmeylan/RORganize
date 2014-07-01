@@ -1,4 +1,5 @@
 class User < RorganizeActiveRecord
+  include Rorganize::AbstractModelCaption
   include ProjectHelper
   include Rorganize::PermissionManager::PermissionManagerHelper
   include Rorganize::ModuleManager::ModuleManagerHelper
@@ -32,6 +33,10 @@ class User < RorganizeActiveRecord
   after_create :create_journal
   after_update :update_journal
   after_destroy :destroy_journal
+
+  def caption
+    self.name
+  end
 
   def self.permit_attributes
     [:name, :login, :email, :password, :admin, :retype_password]
@@ -153,10 +158,15 @@ class User < RorganizeActiveRecord
   #Get all coworkers for each project
   def coworkers_per_project
     coworkers = Hash.new { |h, k| h[k] = [] }
-    self.members.includes(:role, :project => [:members => [:user, :role]]).each do |member|
-      if self.allowed_to?('display_activities', 'Coworkers', member.project)
-        coworkers[member.project.name] = member.project.members.where(['members.user_id NOT LIKE ?', self.id])
-      end
+    if self.is_admin? && self.act_as_admin?
+      condition = ['users.id = ?', self.id]
+    else
+      condition = ['users.id = ? AND `permissions`.`action` = ? AND `permissions`.`controller` = ?', self.id, 'display_activities', 'Coworkers']
+    end
+    project_ids = Project.joins(members: [:user, role: :permissions]).where(condition).group('1').pluck('projects.id')
+    members = Member.eager_load(:user, :role, :project).where('project_id IN (?) AND user_id <> ?', project_ids.to_a, self.id)
+    members.each do |member|
+      coworkers[member.project.name] << member
     end
     coworkers
   end
