@@ -1,6 +1,6 @@
 class User < RorganizeActiveRecord
   include Rorganize::AbstractModelCaption
-  include ProjectHelper
+  include ProjectsHelper
   include Rorganize::PermissionManager::PermissionManagerHelper
   include Rorganize::ModuleManager::ModuleManagerHelper
   #Class variables
@@ -36,6 +36,18 @@ class User < RorganizeActiveRecord
 
   def caption
     self.name
+  end
+
+
+  #Override devise
+  def self.serialize_from_session(key, salt)
+    record =  self.eager_load(members: :role).where(id: key)[0]
+    record if record && record.authenticatable_salt == salt
+  end
+
+  #Override devise
+  def self.find_for_authentication(tainted_conditions)
+    self.eager_load(members: :role).find_first_by_auth_conditions(tainted_conditions)
   end
 
   def self.permit_attributes
