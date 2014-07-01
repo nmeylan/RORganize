@@ -6,6 +6,31 @@
 module Rorganize
   module PermissionManager
 
+    module PermissionHandler
+      #Params hash content:
+      #method : possible values :post, :get , :put, :delete
+      #target : possible values "nil" or "self", if self url will be '#' else will be path
+      #html = {}
+      def link_to_with_permissions(label, path, project, owner_id, params = {})
+        routes = Rails.application.routes
+        hash_path = routes.recognize_path(path, :method => params[:method])
+        unless params[:confirm].nil?
+          params[:data] ||= {}
+          params[:data][:confirm] = params[:confirm].clone
+          params[:confirm] = nil
+        end
+        if (owner_id.nil? && User.current.allowed_to?(hash_path[:action], hash_path[:controller], project)) || (!owner_id.nil? && (User.current.allowed_to?(hash_path[:action], hash_path[:controller], project) && owner_id.eql?(User.current.id) ||
+            User.current.allowed_to?("#{hash_path[:action]}_not_owner", hash_path[:controller], project)))
+          if params[:target] && params[:target].eql?('self')
+            h.link_to(label, '#', params)
+          else
+            h.link_to(label, path, params)
+          end
+        end
+      end
+
+    end
+
     module PermissionManagerHelper
       def permission_manager_allowed_to?(role_id,action, controller)
         return Rorganize::PermissionManager.permissions[role_id].any?{|permission| permission[:action] == action && permission[:controller] == controller}
@@ -14,6 +39,7 @@ module Rorganize
       def reload_permission(role_id)
         Rorganize::PermissionManager.load_permissions_spec_role(role_id)
       end
+
     end
 
     class << self
