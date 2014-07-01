@@ -6,3 +6,4 @@
 unless $0.end_with?('rake')
   require 'rorganize'
 end
+

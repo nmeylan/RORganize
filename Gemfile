@@ -11,7 +11,7 @@ gem 'friendly_id'
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
-  gem 'sass-rails'
+  gem 'sass-rails', '~> 4.0.1'
   gem 'coffee-rails'
   gem 'uglifier'
 end
@@ -27,6 +27,7 @@ gem 'nokogiri'
 gem 'gon'
 gem 'tzinfo-data', platforms: [:mingw, :mswin]
 gem 'mime-types'
+gem 'draper'
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
