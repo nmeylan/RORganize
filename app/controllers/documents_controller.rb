@@ -3,13 +3,14 @@
 # Encoding: UTF-8
 # File: document_controller.rb
 class DocumentsController < ApplicationController
-  before_filter :find_project
+  before_filter :find_project, except: [:index, :new, :edit]
+  before_filter :find_project_with_associations, only: [:index, :new, :edit]
   before_filter :load_documents, :only => [:index]
   before_filter :check_permission, :except => [:download_attachment, :toolbox]
   before_filter { |c| c.menu_context :project_menu }
   before_filter { |c| c.menu_item(params[:controller]) }
   before_filter { |c| c.top_menu_item('projects') }
-  include ApplicationHelper
+  include DocumentsHelper
   include Rorganize::RichController
   helper_method :sort_column, :sort_direction
   require 'will_paginate'
@@ -62,14 +63,14 @@ class DocumentsController < ApplicationController
         flash[:notice] = t(:successful_update)
         format.html { redirect_to document_path(@project.slug, @document.id) }
       else
-        format.html { render :action => 'new'
-        }
+        format.html { render :action => 'edit'}
       end
     end
   end
 
   def show
-    @document = Document.eager_load(:category, :version, :attachments).find(params[:id]).decorate
+    #this always return 1 result. Don't use .first(AR method) because it generate two query (due to ActiveRecord::FinderMethods::apply_join_dependency(..))
+    @document = Document.eager_load(:category, :version, :attachments).where(id: params[:id])[0].decorate
     respond_to do |format|
       format.html { render :action => 'show', :locals => {:journals => @document.activities} }
     end
@@ -135,7 +136,7 @@ class DocumentsController < ApplicationController
   private
 
   def sort_column
-    session['controller_documents_sort'] = params[:sort] ? params[:sort] :(session['controller_documents_sort'] ? session['controller_documents_sort'] : 'id')
+    session['controller_documents_sort'] = params[:sort] ? params[:sort] :(session['controller_documents_sort'] ? session['controller_documents_sort'] : 'documents.id')
   end
 
   def sort_direction
@@ -158,5 +159,9 @@ class DocumentsController < ApplicationController
 
   def value_params
     params.require(:value).permit(Document.permit_bulk_edit_values)
+  end
+
+  def find_project_with_associations
+    @project = Project.eager_load(:attachments, :versions, :categories, :members).where(slug: params[:project_id])[0]
   end
 end

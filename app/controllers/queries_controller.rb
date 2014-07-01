@@ -8,7 +8,6 @@ class QueriesController < ApplicationController
   before_filter :check_permission
   before_filter :check_query_permission, :only => [:show, :edit, :destroy, :update]
   before_filter { |c| c.top_menu_item('administration') }
-  include ApplicationHelper
 
   def index
     respond_to do |format|

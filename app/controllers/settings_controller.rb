@@ -10,7 +10,6 @@ class SettingsController < ApplicationController
   before_filter { |c| c.menu_context :project_menu }
   before_filter { |c| c.menu_item(params[:controller]) }
   before_filter {|c| c.top_menu_item('projects')}
-  include ApplicationHelper
   include Rorganize::ModuleManager::ModuleManagerHelper
   #GET project/:project_identifier/settings/
   def index

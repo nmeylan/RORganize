@@ -1,5 +1,7 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
+  helper :application
+  include ApplicationHelper
   helper Rorganize::MenuManager::MenuHelper
   helper Rorganize::PermissionManager::PermissionManagerHelper
   before_filter :authenticate, :smart_js_loader
@@ -31,7 +33,8 @@ class ApplicationController < ActionController::Base
   end
 
   def find_project
-    @project = Project.includes(:attachments).find_by_slug(params[:project_id])
+    @project = Project.includes(:attachments).references(:attachments).where(slug: params[:project_id]) #this always return 1 result. Don't use .first(AR) because it generate two query (due to ActiveRecord::FinderMethods::apply_join_dependency(..))
+    @project = @project.to_a.first
     render_404 if @project.nil?
   end
 

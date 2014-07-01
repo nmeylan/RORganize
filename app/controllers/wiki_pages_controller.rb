@@ -12,7 +12,7 @@ class WikiPagesController < ApplicationController
   before_filter { |c| c.top_menu_item('projects') }
   before_filter :find_project
   before_filter :find_wiki
-  include ApplicationHelper
+  include WikiHelper
 
   def new
     new_form

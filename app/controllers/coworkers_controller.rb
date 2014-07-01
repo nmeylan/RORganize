@@ -4,10 +4,8 @@
 # File: coworkers_controller.rb
 
 class CoworkersController < ApplicationController
-  
   before_filter :check_permission, :except => [:index]
   before_filter {|c| c.top_menu_item('coworkers')}
-  include ApplicationHelper
 
   def index
     @coworkers = current_user.coworkers_per_project

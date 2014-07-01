@@ -5,7 +5,6 @@
 
 class PermissionsController < ApplicationController
   before_filter :check_permission, :except => [:update_permissions]
-  include ApplicationHelper
   include PermissionsHelper
   include Rorganize::PermissionManager::PermissionManagerHelper
   before_filter { |c| c.menu_context :admin_menu }

@@ -11,7 +11,7 @@ class UsersController < ApplicationController
   before_filter { |c| c.menu_item(params[:controller]) }
   before_filter { |c| c.top_menu_item('administration') }
 
-  include ApplicationHelper
+  include UsersHelper
   require 'will_paginate'
   #GET /administration/users
   def index

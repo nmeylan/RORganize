@@ -9,7 +9,7 @@ class AdministrationController < ApplicationController
   before_filter { |c| c.menu_context :admin_menu }
   before_filter { |c| c.menu_item(params[:controller], params[:action]) }
   before_filter {|c| c.top_menu_item('administration')}
-  include ApplicationHelper
+  include AdministrationHelper
 
   def index
     respond_to do |format|

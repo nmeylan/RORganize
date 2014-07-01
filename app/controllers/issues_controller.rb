@@ -10,7 +10,6 @@ class IssuesController < ApplicationController
   before_filter { |c| c.menu_context :project_menu }
   before_filter { |c| c.menu_item(params[:controller]) }
   before_filter { |c| c.top_menu_item('projects') }
-  include ApplicationHelper
   include IssuesHelper
   include Rorganize::RichController
   helper_method :sort_column, :sort_direction

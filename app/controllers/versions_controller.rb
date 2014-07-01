@@ -9,7 +9,7 @@ class VersionsController < ApplicationController
   before_filter { |c| c.menu_context :project_menu }
   before_filter { |c| c.menu_item('settings') }
   before_filter { |c| c.top_menu_item('projects') }
-  include ApplicationHelper
+  include VersionsHelper
 
   def index
     @versions = @project.versions.order(:position)

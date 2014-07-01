@@ -3,7 +3,6 @@ class IssuesStatusesController < ApplicationController
   before_filter { |c| c.menu_context :admin_menu }
   before_filter { |c| c.menu_item(params[:controller]) }
   before_filter { |c| c.top_menu_item('administration') }
-  include ApplicationHelper
 
   def index
     get_statuses

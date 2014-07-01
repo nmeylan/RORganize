@@ -10,7 +10,7 @@ class WikiController < ApplicationController
   before_filter { |c| c.menu_context :project_menu }
   before_filter { |c| c.menu_item(params[:controller])}
   before_filter {|c| c.top_menu_item('projects')}
-  include ApplicationHelper
+  include WikiHelper
   
   def index
     @wiki = Wiki.where(:project_id => @project.id).includes(:home_page).first

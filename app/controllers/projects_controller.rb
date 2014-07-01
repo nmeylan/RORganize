@@ -1,6 +1,4 @@
 class ProjectsController < ApplicationController
-  helper :application
-  include ApplicationHelper
   before_filter :find_project, :except => [:index, :new, :create, :destroy, :archive, :filter]
   before_filter :check_permission, :except => [:create, :load_journal_activity, :filter, :activity_filter]
   before_filter { |c| c.menu_context :project_menu }

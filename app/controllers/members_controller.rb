@@ -9,7 +9,7 @@ class MembersController < ApplicationController
   before_filter { |c| c.menu_context :project_menu }
   before_filter { |c| c.menu_item('settings') }
   before_filter {|c| c.top_menu_item('projects')}
-  include ApplicationHelper
+  include MembersHelper
   #GET /projects/
   def index
     members_roles = Member.find_members_and_roles_by_project_id(@project.id)

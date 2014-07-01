@@ -1,4 +1,4 @@
-module ProjectHelper
+module ProjectsHelper
 
   def project_archive_permissions(action, controller)
     permissions = Hash.new { |h, k| h[k] = [] }
