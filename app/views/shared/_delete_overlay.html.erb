@@ -6,11 +6,11 @@
 %>
 <div class="overlayOuter" id="delete_overlay">
   <div class="overlayInner">
-    <% if documents %>
+    <% if collection %>
       <%= form_tag({},:remote => true, :methode => :delete) do -%>
-        <% documents.each do |document| %>
-          <%= "##{document.id} -" %><%= link_to document.name, {:action => 'show', :id => document.id} %>
-          <%= hidden_field_tag 'delete_ids[]', document.id%>
+        <% collection.each do |item| %>
+          <%= "##{item.id} -" %><%= link_to item.name, {:action => 'show', :id => item.id} %>
+          <%= hidden_field_tag 'delete_ids[]', item.id%>
           <br/>
         <% end %>
         <div class="overlayButtons">

@@ -41,8 +41,8 @@ module DocumentsHelper
     form_hash.to_json
   end
 
-  def document_toolbox
-    toolbox_tag(DocumentToolbox.new(@documents_toolbox, @project, current_user))
+  def document_toolbox(documents_toolbox)
+    toolbox_tag(DocumentToolbox.new(documents_toolbox, @project, current_user))
   end
 
   def documents_filter_js_tag

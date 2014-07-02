@@ -11,8 +11,8 @@
 
   <ul id="documents_toolbox" class="jeegoocontext box toolbox">
     <% if @documents_toolbox %>
-      <%= render :partial => 'documents/toolbox' %>
+      <%= document_toolbox(@documents_toolbox) %>
     <% end %>
   </ul>
-  <%= render :partial => 'documents/delete_overlay', :locals => {:documents => @documents_toolbox} %>
+  <%= render :partial => 'shared/delete_overlay', :locals => {:collection => @documents_toolbox} %>
 </div>

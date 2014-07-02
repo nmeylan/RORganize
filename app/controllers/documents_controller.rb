@@ -18,7 +18,7 @@ class DocumentsController < ApplicationController
   def index
     respond_to do |format|
       format.html
-      format.js { respond_to_js }
+      format.js { respond_to_js action: 'index'}
     end
   end
 
@@ -63,7 +63,7 @@ class DocumentsController < ApplicationController
         flash[:notice] = t(:successful_update)
         format.html { redirect_to document_path(@project.slug, @document.id) }
       else
-        format.html { render :action => 'edit'}
+        format.html { render :action => 'edit' }
       end
     end
   end
@@ -82,7 +82,7 @@ class DocumentsController < ApplicationController
     if attachment.destroy
       respond_to do |format|
         format.html { redirect_to :action => 'show' }
-        format.js {respond_to_js :response_header => :success, :response_content => t(:successful_deletion), :locals =>{:id => attachment.id}}
+        format.js { respond_to_js :response_header => :success, :response_content => t(:successful_deletion), :locals => {:id => attachment.id} }
       end
     end
   end
@@ -105,25 +105,28 @@ class DocumentsController < ApplicationController
   #GET /project/:project_identifier/documents/toolbox
   def toolbox
     #Displaying toolbox with GET request
-      if !request.post?
-        #loading toolbox
-        @documents_toolbox = Document.where(:id => params[:ids]).eager_load(:version, :category)
-        respond_to do |format|
-          format.js { respond_to_js :locals => {:documents => @documents_toolbox} }
-        end
-      elsif params[:delete_ids]
-        #Multi delete
-        Document.destroy_all(:id => params[:delete_ids])
-        respond_to do |format|
-          load_documents
-          format.js { respond_to_js :action => :index, :response_header => :success, :response_content => t(:successful_deletion) }
-        end
-      else
-        Document.bulk_edit(params[:ids], value_params)
-        respond_to do |format|
-          load_documents
-          format.js { respond_to_js :action => :index, :response_header => :success, :response_content => t(:successful_update) }
-        end
+    if !request.post? && params[:ids]
+      #loading toolbox
+      @documents_toolbox = Document.where(:id => params[:ids]).eager_load(:version, :category)
+      respond_to do |format|
+        format.js { respond_to_js :locals => {:documents => @documents_toolbox} }
+      end
+    elsif !request.post?
+      load_documents
+      index
+    elsif params[:delete_ids]
+      #Multi delete
+      Document.destroy_all(:id => params[:delete_ids])
+      respond_to do |format|
+        load_documents
+        format.js { respond_to_js :action => :index, :response_header => :success, :response_content => t(:successful_deletion) }
+      end
+    else
+      Document.bulk_edit(params[:ids], value_params)
+      respond_to do |format|
+        load_documents
+        format.js { respond_to_js :action => :index, :response_header => :success, :response_content => t(:successful_update) }
+      end
     end
   end
 
@@ -136,21 +139,21 @@ class DocumentsController < ApplicationController
   private
 
   def sort_column
-    session['controller_documents_sort'] = params[:sort] ? params[:sort] :(session['controller_documents_sort'] ? session['controller_documents_sort'] : 'documents.id')
+    session['controller_documents_sort'] = params[:sort] ? params[:sort] : (session['controller_documents_sort'] ? session['controller_documents_sort'] : 'documents.id')
   end
 
   def sort_direction
-   session['controller_documents_direction'] = params[:direction] ? params[:direction] :(session['controller_documents_direction'] ? session['controller_documents_direction'] : 'desc')
+    session['controller_documents_direction'] = params[:direction] ? params[:direction] : (session['controller_documents_direction'] ? session['controller_documents_direction'] : 'desc')
   end
 
   def load_documents
     filter
     gon.DOM_filter = view_context.documents_generics_form_to_json
     gon.DOM_persisted_filter = session["#{@project.slug}_controller_documents_filter_params"].to_json
-    session['controller_documents_per_page'] = params[:per_page] ?  params[:per_page] :  (session['controller_documents_per_page'] ? session['controller_documents_per_page'] : 25)
+    session['controller_documents_per_page'] = params[:per_page] ? params[:per_page] : (session['controller_documents_per_page'] ? session['controller_documents_per_page'] : 25)
     order = sort_column + ' ' + sort_direction
     filter = session["#{@project.slug}_controller_documents_filter"]
-    @documents = Document.paginated_documents(params[:page], session['controller_documents_per_page'],order, filter, @project.id).decorate(context: {project: @project})
+    @documents = Document.paginated_documents(params[:page], session['controller_documents_per_page'], order, filter, @project.id).decorate(context: {project: @project})
   end
 
   def document_params
