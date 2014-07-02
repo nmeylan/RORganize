@@ -10,6 +10,14 @@ class ApplicationDecorator < Draper::Decorator
     h.content_tag :span, content, {class: 'disabled_field'}
   end
 
+  def display_history(journals)
+    if journals.any? && !journals.none? {|journal| journal.details.any?}
+      h.content_tag :div, id: 'history' do
+        h.history_render(journals)
+      end
+    end
+  end
+
   def edit_link(label, path, project = nil, owner = nil, options = {})
     link_to_with_permissions(h.glyph(label, 'pencil'), path ,project, owner, options)
   end
@@ -21,6 +29,15 @@ class ApplicationDecorator < Draper::Decorator
   def delete_link(label, path, project = nil, owner = nil, options = {})
     default_options = {:method => :delete, :remote => true, :confirm => h.t(:text_delete_item)}
     link_to_with_permissions(h.glyph(label, 'trashcan'), path ,project, owner, default_options.merge(options))
+  end
+
+
+  def delete_attachment_link(path, project)
+    link_to_with_permissions h.glyph(h.t(:link_delete),'trashcan'), path, project, nil, {:remote => true, :confirm => h.t(:text_delete_item ), :method => :delete}
+  end
+
+  def download_attachment_link(attachment, path)
+    link_to h.glyph(attachment.file_file_name, attachment.icon_type), path
   end
 
 end

@@ -35,11 +35,8 @@
 
 <%#= ATTACHMENT %>
 <div id="attachments">
-  <%= render :partial => 'documents/show_attachments', :locals => {:attachments => @document.attachments} %>
+  <%= render :partial => 'shared/show_attachments', :locals => {:attachments => @document.attachments, :object => @document} %>
 </div>
 
-<% if journals.any? %>
-    <div id="history">
-      <%= raw history_render(journals) %>
-    </div>
-<% end %>
+<%= @document.display_history(journals) %>
+

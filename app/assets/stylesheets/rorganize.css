@@ -2247,7 +2247,7 @@ html > body .form p {
   margin: 0 0 10px 0;
   color: #484848; }
 
-.contextual {
+#contextual {
   background: white;
   padding-top: 15px;
   padding-bottom: 15px;
@@ -2368,7 +2368,7 @@ html > body .form p {
 /*
 *  CONTEXTUAL
 */
-.contextual .splitcontentright {
+#contextual .splitcontentright {
   text-align: right;
   margin-top: -28px; }
 

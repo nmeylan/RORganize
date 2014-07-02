@@ -4,7 +4,7 @@
 # Encoding: UTF-8
 # File: _show_attachments.erb
 %>
-<% if @document.attachments .any? %>
+<% if attachments .any? %>
   <div class="separator"></div>
   <h2><%= t(:field_attachments) %> :</h2>
   <% for attachment in attachments %>
@@ -12,9 +12,9 @@
       <% if attachment.file_content_type.include?('image')  %>
         <a href="<%=attachment.file.url(:large)%>" class="lightbox"><%= image_tag attachment.file.url(:thumb) %></a>
       <% else %>
-        <%= link_to glyph(attachment.file_file_name, attachment.icon_type),{:action => 'download_attachment', :controller => 'documents', :path => attachment.file.path}, {} %>
+        <%= object.download_attachment_link(attachment) %>
       <% end %>
-      <%= link_to_with_permissions glyph(t(:link_delete),'trashcan'), delete_attachment_documents_path(@project.slug,attachment.id), @project, {:remote => true, :confirm => t(:text_delete_item ), :method => :delete}%>
+      <%= object.delete_attachment_link(attachment) %>
     </p>
   <% end %>
 <% end %>

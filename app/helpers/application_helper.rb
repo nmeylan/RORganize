@@ -226,8 +226,8 @@ EOD
     end
   end
 
-  def add_attachments_link(name)
-    content = escape_once(render :partial => 'attachments', :locals => {:attachments => Attachment.new})
+  def add_attachments_link(name, object, type)
+    content = escape_once(render :partial => 'shared/attachments', locals: {attachments: Attachment.new, object: object, type: type})
     link_to name, '#', {:class => 'add_attachment_link', 'data-content' => content}
   end
 

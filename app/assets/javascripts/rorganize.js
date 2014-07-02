@@ -791,3 +791,4 @@ function save_edit_filter(link_id, form_id) {
 
     })
 }
+

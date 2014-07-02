@@ -15,6 +15,10 @@ class DocumentDecorator < ApplicationDecorator
     end
   end
 
+  def display_history(journals)
+   super(journals)
+  end
+
   def category
     model.category ? model.category.name : '-'
   end
@@ -28,11 +32,19 @@ class DocumentDecorator < ApplicationDecorator
   end
 
   def edit_link
-    super(h.t(:link_edit_document), h.edit_document_path(model.project.slug, model.id), model.project)
+    super(h.t(:link_edit), h.edit_document_path(model.project.slug, model.id), model.project)
   end
 
   def delete_link
     super(h.t(:link_delete), h.document_path(model.project.slug, model.id), model.project)
+  end
+
+  def delete_attachment_link(attachment)
+    super(h.delete_attachment_documents_path(model.project.slug,attachment.id), model.project)
+  end
+
+  def download_attachment_link(attachment)
+    super(attachment, h.download_attachment_documents_path(model.project.slug))
   end
 
 end

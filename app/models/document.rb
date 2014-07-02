@@ -27,7 +27,7 @@ class Document < RorganizeActiveRecord
   end
 
   def self.paginated_documents(page, per_page, order, filter, project_id)
-    Document.where("#{filter} documents.project_id = #{project_id}").includes([:version, :category]).paginate(:page => page, :per_page => per_page).order(order)
+    Document.where("#{filter} documents.project_id = #{project_id}").eager_load([:version, :category]).paginate(:page => page, :per_page => per_page).order(order)
   end
 
   def self.permit_attributes
@@ -80,12 +80,12 @@ class Document < RorganizeActiveRecord
 
   #Get all document activities
   def activities
-    Journal.where(:journalized_type => self.class.to_s, :journalized_id => self.id).includes([:details, :user])
+    Journal.eager_load([:details, :user]).where(:journalized_type => self.class.to_s, :journalized_id => self.id)
   end
 
   #Get creation date and author
   def creation_info
-    Journal.includes(:user).where(:action_type => 'created', :journalized_id => self.id, :journalized_type => self.class.to_s).first
+    Journal.eager_load(:user).where(:action_type => 'created', :journalized_id => self.id, :journalized_type => self.class.to_s)[0]
   end
 
   def self.bulk_edit(doc_ids, value_param)

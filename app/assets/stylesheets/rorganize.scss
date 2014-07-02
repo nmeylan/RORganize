@@ -73,7 +73,7 @@
   color: $default-h1-color;
 }
 
-.contextual {
+#contextual {
   background: $default-background-color;
   padding-top: 15px;
   padding-bottom: 15px;
@@ -219,7 +219,7 @@
 /*
 *  CONTEXTUAL
 */
-.contextual .splitcontentright {
+#contextual .splitcontentright {
   text-align: right;
   margin-top: -28px;
 }

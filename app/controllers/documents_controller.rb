@@ -3,8 +3,8 @@
 # Encoding: UTF-8
 # File: document_controller.rb
 class DocumentsController < ApplicationController
-  before_filter :find_project, except: [:index, :new, :edit]
-  before_filter :find_project_with_associations, only: [:index, :new, :edit]
+  before_filter :find_project, except: [:index, :new, :edit, :toolbox]
+  before_filter :find_project_with_associations, only: [:index, :new, :edit, :toolbox]
   before_filter :load_documents, :only => [:index]
   before_filter :check_permission, :except => [:download_attachment, :toolbox]
   before_filter { |c| c.menu_context :project_menu }
@@ -23,7 +23,7 @@ class DocumentsController < ApplicationController
   end
 
   def new
-    @document = Document.new
+    @document = Document.new.decorate
     @document.attachments.build
     respond_to do |format|
       format.html
@@ -31,7 +31,7 @@ class DocumentsController < ApplicationController
   end
 
   def create
-    @document = Document.new(document_params)
+    @document = Document.new(document_params).decorate
     @document.project_id = @project.id
     @document.created_at = Time.now.to_formatted_s(:db)
     respond_to do |format|
@@ -45,14 +45,14 @@ class DocumentsController < ApplicationController
   end
 
   def edit
-    @document = Document.find(params[:id])
+    @document = Document.find(params[:id]).decorate
     respond_to do |format|
       format.html
     end
   end
 
   def update
-    @document = Document.find(params[:id])
+    @document = Document.find(params[:id]).decorate
     @document.attributes = document_params
     respond_to do |format|
       if !@document.changed? &&
@@ -105,25 +105,25 @@ class DocumentsController < ApplicationController
   #GET /project/:project_identifier/documents/toolbox
   def toolbox
     #Displaying toolbox with GET request
-    if !request.post?
-      #loading toolbox
-      @documents_toolbox = Document.where(:id => params[:ids]).includes(:version, :category)
-      respond_to do |format|
-        format.js { respond_to_js :locals => {:documents => @documents_toolbox} }
-      end
-    elsif params[:delete_ids]
-      #Multi delete
-      Document.destroy_all(:id => params[:delete_ids])
-      respond_to do |format|
-        load_documents
-        format.js { respond_to_js :action => :index, :response_header => :success, :response_content => t(:successful_deletion) }
-      end
-    else
-      Document.bulk_edit(params[:ids], value_params)
-      respond_to do |format|
-        load_documents
-        format.js { respond_to_js :action => :index, :response_header => :success, :response_content => t(:successful_update) }
-      end
+      if !request.post?
+        #loading toolbox
+        @documents_toolbox = Document.where(:id => params[:ids]).eager_load(:version, :category)
+        respond_to do |format|
+          format.js { respond_to_js :locals => {:documents => @documents_toolbox} }
+        end
+      elsif params[:delete_ids]
+        #Multi delete
+        Document.destroy_all(:id => params[:delete_ids])
+        respond_to do |format|
+          load_documents
+          format.js { respond_to_js :action => :index, :response_header => :success, :response_content => t(:successful_deletion) }
+        end
+      else
+        Document.bulk_edit(params[:ids], value_params)
+        respond_to do |format|
+          load_documents
+          format.js { respond_to_js :action => :index, :response_header => :success, :response_content => t(:successful_update) }
+        end
     end
   end
 

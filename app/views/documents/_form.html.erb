@@ -29,10 +29,9 @@
   <div id="attachments">
     <p>
       <label><%= t(:field_attachments) %></label>
-
-      <%= add_attachments_link 'Add a file' %>
+      <%= add_attachments_link 'Add a file', @document, 'document' %>
     </p>
-    <%= render :partial => 'documents/attachments', :collection => @document.attachments %>
+    <%= render :partial => 'shared/attachments', collection: @document.attachments, locals: {object: @document, type: 'document'}%>
   </div>
 
 </div>
