@@ -8,7 +8,7 @@ module Rorganize
     class CaptionNotImplementedError < NoMethodError
     end
     def caption
-      raise CaptionNotImplementedError("You must override 'caption' method!")
+      raise CaptionNotImplementedError.new("You must override 'caption' method! in your #{self.class} model", 'Caption must be override')
     end
   end
 end

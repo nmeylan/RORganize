@@ -62,6 +62,7 @@ module Rorganize
       end
     end
     def destroy_journal
+      p self
       p_id = self.respond_to?('project_id') ? self.project_id : nil
       Journal.create(:user_id => User.current.id,
         :journalized_id => self.id,

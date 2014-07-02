@@ -4,7 +4,6 @@
 # File: journal.rb
 
 class Journal < ActiveRecord::Base
-
   has_many :details, :class_name => 'JournalDetail', :dependent => :destroy
   belongs_to :journalized, :polymorphic => true
   belongs_to :issue, foreign_key: 'journalized_id'
@@ -12,14 +11,6 @@ class Journal < ActiveRecord::Base
 
   belongs_to :project
 
-  def deprecated_detail_insertion(updated_attributes, journalized_property)
-    updated_attrs = updated_attributes
-    updated_attrs.each do |attribute, old_new_value|
-      old_value = old_new_value[0]
-      new_value = old_new_value[1]
-      JournalDetail.create(:journal_id => self.id,:property => journalized_property[attribute], :property_key => attribute, :old_value => old_value, :value => new_value)
-    end
-  end
 
   def detail_insertion(updated_attrs, journalized_property, foreign_key_value = {})
     #Remove attributes that won't be considarate in journal update
@@ -40,25 +31,6 @@ class Journal < ActiveRecord::Base
     end
   end
 
-  def journalized_identifier_method
-    if self.journalized
-      self.journalized.string_identifier_method
-    end
-  end
-
-  #Get the value of the journal identifier object.
-  def identifier_value
-    if self.journalized_identifier
-      self.journalized_identifier
-    else
-      method = self.journalized_identifier_method
-      if method.nil?
-        return self.journalized_id
-      else
-        return self.journalized.send(self.journalized_identifier_method)
-      end
-    end
-  end
 
   def self.edit_note(journal_id, owner_id, content)
     journal = Journal.find_by_id(journal_id)

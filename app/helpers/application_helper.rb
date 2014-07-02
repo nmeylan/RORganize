@@ -295,7 +295,7 @@ EOD
         safe_concat content_tag :span, nil, {class: 'octicon octicon-diff-added'} if journal.action_type.eql?('created')
         safe_concat "#{user} #{t(:label_updated_lower_case)} "
         if journal.journalized
-          safe_concat content_tag :b, "#{journal.journalized_type} : #{journal.identifier_value}"
+          safe_concat content_tag :b, "#{journal.journalized_type} : #{journal.journalized_identifier}"
         else
           safe_concat content_tag :b, "#{journal.journalized_type} : unknown"
         end
@@ -306,7 +306,7 @@ EOD
       elsif journal.action_type.eql?('deleted')
         safe_concat content_tag :span, nil, {class: 'octicon octicon-trashcan'}
         safe_concat "#{user} #{t(:label_deleted_lower_case)} "
-        safe_concat content_tag :b, "#{journal.journalized_type} : #{journal.identifier_value}"
+        safe_concat content_tag :b, "#{journal.journalized_type} : #{journal.journalized_identifier}"
         if journal.project_id && is_not_in_project
           safe_concat "#{t(:label_at)} "
           safe_concat content_tag :b, "#{journal.project_id}"
