@@ -1,8 +1,0 @@
-<%#
-# Author: Nicolas Meylan
-# Date: 31 oct. 2012
-# Encoding: UTF-8
-# File: _filter.html.erb
-%>
-
-<%= render :partial => 'shared/filter', locals: {label: 'document', submission_path: documents_path(@project.slug), filtered_attributes: Document.filtered_attributes} %>

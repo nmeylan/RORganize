@@ -8,5 +8,5 @@
 <%= contextual t(:label_documents) do %>
     <%= @documents.new_link %>
 <% end %>
-<%= render :partial => 'documents/filter' %>
+<%= render :partial => 'shared/filter', locals: {label: 'document', submission_path: documents_path(@project.slug), filtered_attributes: Document.filtered_attributes} %>
 <%= render :partial => 'documents/list' %>

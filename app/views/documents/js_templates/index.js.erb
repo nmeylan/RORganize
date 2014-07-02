@@ -6,12 +6,13 @@
 jQuery('#delete_overlay').overlay();
 jQuery('#delete_overlay').overlay().close();
 on_replace_effect("#documents_content", "<%= escape_javascript(render :partial => 'documents/list')%>");
-on_replace_effect("#document_filter", "<%= escape_javascript(render :partial => 'documents/filter')%>");
+on_replace_effect("#document_filter", "<%= escape_javascript(render :partial => 'shared/filter', locals: {label: 'document', submission_path: documents_path(@project.slug), filtered_attributes: Document.filtered_attributes})%>");
 
 
 uniq_toogle("#document.toggle", ".content");
 documents_index({dom_persisted_filter:"<%= json_escape escape_javascript(session["#{@project.slug}_controller_documents_filter_params"].to_json.html_safe)%>"});
-
+<% if params[:filter] %>
 $('#document.toggle').switchClass('icon-collapsed', 'icon-expanded');
 $('#document.toggle .octicon-chevron-right').switchClass('octicon-chevron-right', 'octicon-chevron-down');
 $('#document_filter .content').show();
+<% end %>
