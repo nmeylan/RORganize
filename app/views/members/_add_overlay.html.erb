@@ -7,7 +7,7 @@
 
 <div class="overlayOuter" id="add_member_overlay">
   <div class="overlayInner">
-    <%if users && users.any? %>
+    <%if users && users.to_a.any? %>
       <%= form_tag(members_path,:remote => true) do -%>
         <p>
           <label for="users"><%=t(:field_user)%></label>
