@@ -38,6 +38,9 @@ class User < RorganizeActiveRecord
     self.name
   end
 
+  def should_generate_new_friendly_id?
+    name_changed?
+  end
 
   #Override devise
   def self.serialize_from_session(key, salt)
