@@ -9,7 +9,7 @@
     <% if collection %>
       <%= form_tag({},:remote => true, :methode => :delete) do -%>
         <% collection.each do |item| %>
-          <%= "##{item.id} -" %><%= link_to item.name, {:action => 'show', :id => item.id} %>
+          <%= "##{item.id} -" %><%= link_to item.caption, {:action => 'show', :id => item.id} %>
           <%= hidden_field_tag 'delete_ids[]', item.id%>
           <br/>
         <% end %>

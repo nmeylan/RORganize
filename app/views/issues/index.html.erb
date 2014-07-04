@@ -5,10 +5,10 @@
 # File: index.html.erb
 %>
 <%= contextual t(:label_issue_plural) do %>
-    <%= link_to_with_permissions(glyph(t(:link_new_issue), 'plus'), new_issue_path(@project.slug), @project) %>
+    <%= @issues.new_link %>
 <% end %>
 
-  <%= render :partial => 'issues/filter' %>
+<%= filter_tag('issue', Issue.filtered_attributes, issues_path(@project.slug), true, {user: current_user, project: @project, filter_content: session["#{@project.slug}_controller_issues_filter"]}) %>
   <%= render :partial => 'issues/list' %>
   <%= render :partial => 'issues/sidebar' %>
 

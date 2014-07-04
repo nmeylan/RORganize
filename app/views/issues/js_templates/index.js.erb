@@ -6,13 +6,14 @@
 jQuery('#delete_overlay').overlay();
 jQuery('#delete_overlay').overlay().close();
 on_replace_effect("#issues_content", "<%= escape_javascript(render :partial => 'issues/list')%>");
-on_replace_effect("#issue_filter", "<%= escape_javascript(render :partial => 'issues/filter')%>");
+on_replace_effect("#issue_filter", "<%= escape_javascript(filter_tag('issue', Issue.filtered_attributes, issues_path(@project.slug),true, {user: current_user, project: @project, filter_content: session["#{@project.slug}_controller_issues_filter"]}))%>");
 
 
 uniq_toogle("#issue.toggle", ".content");
-issues_index({dom_persisted_filter:"<%= json_escape escape_javascript(session["#{@project.slug}_controller_issues_filter_params"].to_json.html_safe)%>"});
+issues_index({dom_persisted_filter: "<%= json_escape escape_javascript(session["#{@project.slug}_controller_issues_filter_params"].to_json.html_safe)%>"});
 
-
+<% if params[:filter] %>
 $('#issue.toggle').switchClass('icon-collapsed', 'icon-expanded');
 $('#issue.toggle .octicon-chevron-right').switchClass('octicon-chevron-right', 'octicon-chevron-down');
 $('#issue_filter .content').show();
+<% end %>

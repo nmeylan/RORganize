@@ -8,33 +8,25 @@
 <h2><%= t(:label_predecessor) %> :</h2>
 
 <% if @issue.parent.nil? %>
-  <% if current_user.allowed_to?('add_predecessor','Issues',@project) %>
-    <%= form_for(@issue, :url => add_predecessor_issues_path(@project.slug, @issue.id), :method => 'post',:html => {:remote => true,:class => 'form'}) do |f|%>
-      <p>
-        <label><%= t(:label_predecessor) %> : #</label>
-        <%= f.text_field :predecessor_id, :size => 10%>
-        <%= submit_tag t(:button_save) %>
-      </p>
-    <% end %>
-  <% else %>
-    <% if @issue.parent.nil? %>
-      <p>-</p>
+    <% if current_user.allowed_to?('add_predecessor', 'Issues', @project) %>
+        <%= form_for(@issue, :url => add_predecessor_issues_path(@project.slug, @issue.id), :method => 'post', :html => {:remote => true, :class => 'form'}) do |f| %>
+            <p>
+              <label><%= t(:label_predecessor) %> : #</label>
+              <%= f.text_field :predecessor_id, :size => 10 %>
+              <%= submit_tag t(:button_save) %>
+            </p>
+        <% end %>
     <% else %>
-      <p>#<%= @issue.predecessor_id %> : <%= link_to @issue.parent.subject, {:action => 'show', :controller => 'issues', :id => @issue.predecessor_id}%></p>
+        <p>-</p>
     <% end %>
-  <% end %>
 <% else %>
-  <% if current_user.allowed_to?('delete_predecessor','Issues',@project) %>
-    <p>
-      #<%= @issue.predecessor_id %> :
-      <%= link_to @issue.parent.subject, {:action => 'show', :controller => 'issues', :id => @issue.predecessor_id}%>
-      <%= link_to glyph(t(:link_delete), 'trashcan'), del_predecessor_issues_path(@project.slug, @issue.id), {:remote => true, :confirm => t(:text_delete_item), :method => :delete}  %>
-    </p>
-  <% else %>
-    <% if @issue.parent.nil? %>
-      <p>-</p>
+    <% if current_user.allowed_to?('del_predecessor', 'Issues', @project) %>
+        <p>
+          #<%= @issue.predecessor_id %> :
+          <%= link_to @issue.parent.subject, {:action => 'show', :controller => 'issues', :id => @issue.predecessor_id} %>
+          <%= link_to glyph(t(:link_delete), 'trashcan'), del_predecessor_issues_path(@project.slug, @issue.id), {:remote => true, :confirm => t(:text_delete_item), :method => :delete} %>
+        </p>
     <% else %>
-      <p>#<%= @issue.predecessor_id %> : <%= link_to @issue.parent.subject, {:action => 'show', :controller => 'issues', :id => @issue.predecessor_id}%></p>
+        <p>#<%= @issue.predecessor_id %> : <%= link_to @issue.parent.caption, issue_path(@project.slug, @issue.parent.id) %></p>
     <% end %>
-  <% end %>
 <% end %>

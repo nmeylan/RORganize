@@ -5,7 +5,7 @@
 # File: _custom_queries.erb
 %>
 
-<% if @custom_queries && @custom_queries.any? && current_user.allowed_to?('apply_custom_query','Issues',@project)  %>
+<% if @custom_queries && @custom_queries.to_a.any? && current_user.allowed_to?('apply_custom_query','Issues',@project)  %>
   <h2><%= t(:label_queries) %></h2>
   <ul>
     <% @custom_queries.each do |query| %>

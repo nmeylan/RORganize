@@ -59,17 +59,16 @@
       <%= f.text_field :estimated_time, :size => 6 %>
     </p>
   </div>
-  <div style="clear:both"></div>
-  <div style="clear:both"></div>
+  <%= clear_both %>
   <% if current_user.allowed_to?('delete_attachment', 'Issues', @project) %>
       <div id="attachments">
         <p>
           <label><%= t(:field_attachments) %></label>
 
-          <%= add_attachments_link 'Add a file' %>
+          <%= add_attachments_link 'Add a file', @issue, 'issue' %>
         </p>
 
-        <%= render :partial => 'issues/attachments', :collection => @issue.attachments %>
+        <%= render :partial => 'shared/attachments', :collection => @issue.attachments, locals: {object: @issue, type: 'issue'} %>
       </div>
 
   <% end %>

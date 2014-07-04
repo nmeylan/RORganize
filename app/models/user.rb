@@ -108,7 +108,7 @@ class User < RorganizeActiveRecord
   end
 
   def allowed_statuses(project)
-    self.members.to_a.select { |member| member.project_id == project.id }.first.role.issues_statuses.sort { |x, y| x.enumeration.position <=> y.enumeration.position }
+    self.members.to_a.select { |member| member.project_id == project.id }.first.role.issues_statuses.eager_load(:enumeration).sort { |x, y| x.enumeration.position <=> y.enumeration.position }
   end
 
   def allowed_to?(action, controller, project = nil)
@@ -130,9 +130,6 @@ class User < RorganizeActiveRecord
         return false
       end
     end
-
-
-    #    return self.members.role.permission(action, controller)
   end
 
   def self.paginated_users(page, per_page, order)

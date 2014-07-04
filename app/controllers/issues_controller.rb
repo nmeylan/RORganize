@@ -4,7 +4,8 @@
 # File: issues_controller.rb
 
 class IssuesController < ApplicationController
-  before_filter :find_project
+  before_filter :find_project, except: [:index, :new, :edit, :toolbox, :apply_custom_query, :show]
+  before_filter :find_project_with_associations, only: [:index, :new, :edit, :toolbox, :apply_custom_query, :show]
   before_filter :check_permission, :except => [:save_checklist, :show_checklist_items, :toolbox, :download_attachment, :edit_note, :delete_note, :start_today]
   before_filter :check_not_owner_permission, :only => [:edit, :update, :destroy]
   before_filter { |c| c.menu_context :project_menu }
@@ -28,18 +29,18 @@ class IssuesController < ApplicationController
   end
 
   def show
-    display_issue_object = Issue.display_issue_object(params[:id])
-    @issue = display_issue_object[:issue]
+    display_issue_object = Issue.display_issue_object(params[:id], @project)
+    @issue = display_issue_object[:issue].decorate(context: {project: @project})
     @checklist_statuses = display_issue_object[:checklist_statuses]
     gon.checklist_statuses = @checklist_statuses.to_json
     respond_to do |format|
-      format.html { render :action => 'show', :locals => {:journals => display_issue_object[:journals], :done_ratio => display_issue_object[:done_ratio], :allowed_statuses => display_issue_object[:allowed_statuses], :checklist_items => display_issue_object[:checklist_items]} }
+      format.html { render :action => 'show', :locals => {:journals => @issue.journals, :done_ratio => display_issue_object[:done_ratio], :allowed_statuses => display_issue_object[:allowed_statuses], :checklist_items => display_issue_object[:checklist_items]} }
     end
   end
 
   #GET /project/:project_identifier/issues/new
   def new
-    @issue = Issue.new
+    @issue = Issue.new.decorate(context: {project: @project})
     @issue.attachments.build
     respond_to do |format|
       format.html { render :action => 'new', :locals => {:form_content => form_content} }
@@ -48,7 +49,7 @@ class IssuesController < ApplicationController
 
   #POST/project/:project_identifier/issues/
   def create
-    @issue = Issue.new(issue_params)
+    @issue = Issue.new(issue_params).decorate(context: {project: @project})
     @issue.created_at = Time.now.to_formatted_s(:db)
     @issue.updated_at = Time.now.to_formatted_s(:db)
     @issue.project_id = @project.id
@@ -127,7 +128,7 @@ class IssuesController < ApplicationController
   end
 
   def start_today
-    @issue = Issue.find_by_id(params[:id])
+    @issue = Issue.find_by_id(params[:id]).decorate(context: {project: @project})
     @issue.start_date = Date.current
 
     respond_to do |format|
@@ -163,10 +164,9 @@ class IssuesController < ApplicationController
     #Displaying toolbox with GET request
     if !request.post?
       #loading toolbox
-      @issues_toolbox = Issue.where(:id => params[:ids]).includes(:version, :assigned_to, :category, :status => [:enumeration])
-      menu = Issue.toolbox_menu(@project, @issues_toolbox)
+      @issues_toolbox = Issue.where(:id => params[:ids]).eager_load(:version, :assigned_to, :category, :status => [:enumeration])
       respond_to do |format|
-        format.js { respond_to_js :locals => {:menu => menu, :issues => @issues_toolbox} }
+        format.js { respond_to_js :locals => {:issues => @issues_toolbox} }
       end
     elsif params[:delete_ids]
       #Multi delete
@@ -223,7 +223,7 @@ class IssuesController < ApplicationController
   #Private methods
   private
   def set_predecessor(predecessor_id)
-    @issue = Issue.find(params[:id])
+    @issue = Issue.find(params[:id]).decorate(context: {project: @project})
     result = @issue.set_predecessor(predecessor_id)
     respond_to do |format|
       format.js do
@@ -234,8 +234,7 @@ class IssuesController < ApplicationController
 
   #Check if current user is owner of issue
   def check_issue_owner
-
-    @issue = Issue.find_by_id(params[:id])
+    @issue = Issue.eager_load(:attachments).where(id: params[:id])[0].decorate(context: {project: @project})
     @issue.author_id.eql?(current_user.id)
   end
 
@@ -277,14 +276,14 @@ class IssuesController < ApplicationController
     session['controller_issues_per_page'] = params[:per_page] ? params[:per_page] : (session['controller_issues_per_page'] ? session['controller_issues_per_page'] : 25)
     order = sort_column + ' ' + sort_direction
     filter = session["#{@project.slug}_controller_issues_filter"]
-    @issues = Issue.paginated_issues(params[:page], session['controller_issues_per_page'],order, filter, @project.id)
+    @issues = Issue.paginated_issues(params[:page], session['controller_issues_per_page'],order, filter, @project.id).decorate(context: {project: @project})
   end
 
   def form_content
     form_content = {}
     form_content['allowed_statuses'] = current_user.allowed_statuses(@project).collect { |status| [status.enumeration.name, status.id] }
     form_content['done_ratio'] = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
-    form_content['members'] = @project.members.includes(:user).collect { |member| [member.user.name, member.user.id] }
+    form_content['members'] = @project.members.collect { |member| [member.user.name, member.user.id] }
     form_content['categories'] = @project.categories.collect { |category| [category.name, category.id] }
     form_content['trackers'] = @project.trackers.collect { |tracker| [tracker.name, tracker.id] }
     form_content
@@ -297,6 +296,11 @@ class IssuesController < ApplicationController
   def value_params
     params.require(:value).permit(Issue.permit_bulk_edit_values)
   end
+
+  def find_project_with_associations
+    @project = Project.eager_load(:attachments, :versions, :categories, :trackers, members: :user).where(slug: params[:project_id])[0]
+  end
+
 
 
 end

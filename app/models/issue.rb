@@ -23,9 +23,6 @@ class Issue < RorganizeActiveRecord
   has_many :journals, -> { where :journalized_type => 'Issue' }, :as => :journalized, :dependent => :destroy
   has_many :time_entries, :dependent => :destroy
 
-  def caption
-    self.subject
-  end
   #triggers
   before_save :set_done_ratio
   before_update :set_done_ratio, :set_due_date
@@ -37,9 +34,15 @@ class Issue < RorganizeActiveRecord
 
   validates :subject, :tracker_id, :status_id, :presence => true
   validate :validate_start_date, :validate_predecessor
+
   #  validates :due_date, :format =>
   def self.paginated_issues(page, per_page, order, filter, project_id)
     Issue.where("#{filter} issues.project_id = #{project_id}").eager_load([:tracker, :version, :assigned_to, :category, :attachments, :status => [:enumeration]]).paginate(:page => page, :per_page => per_page).order(order)
+  end
+
+
+  def caption
+    self.subject
   end
 
   #Assigned open requests on any open project
@@ -67,13 +70,13 @@ class Issue < RorganizeActiveRecord
 
   #  Custom validator
   def validate_start_date
-    if !((self.due_date && self.start_date) ? self.start_date <= self.due_date : true)
+    unless (self.due_date && self.start_date) ? self.start_date <= self.due_date : true
       errors.add(:start_date, 'must be inferior than due date')
     end
   end
 
   def validate_predecessor
-    if !self.predecessor_id.nil?
+    unless self.predecessor_id.nil?
       issue = Issue.find(self.predecessor_id)
       if !issue.nil? && !issue.project_id.eql?(self.project_id) || issue.nil?
         errors.add(:predecessor, 'not exist in this project')
@@ -112,39 +115,6 @@ class Issue < RorganizeActiveRecord
     end
   end
 
-  #Return a hash with the content requiered for the filter's construction
-  #Can define 2 type of filters:
-  #Radio : with values : all - equal/contains - different/not contains
-  #Select : for attributes which only defined values : e.g : version => [1,2,3]
-  def self.filter_content_hash(project)
-    content_hash = {}
-    members = project.members
-    content_hash['hash_for_select'] = {}
-    content_hash['hash_for_radio'] = Hash.new { |k, v| k[v] = [] }
-    content_hash['hash_for_select']['assigned'] = members.collect { |member| [member.user.name, member.user.id] }
-    content_hash['hash_for_radio']['assigned'] = %w(all equal different)
-    content_hash['hash_for_select']['assigned'] << %w(Nobody NULL)
-    content_hash['hash_for_select']['author'] = members.collect { |member| [member.user.name, member.user.id] }
-    content_hash['hash_for_radio']['author'] = %w(all equal different)
-    content_hash['hash_for_select']['category'] = project.categories.collect { |category| [category.name, category.id] }
-    content_hash['hash_for_radio']['category'] = %w(all equal different)
-    content_hash['hash_for_radio']['created'] = %w(all equal superior inferior today)
-    content_hash['hash_for_radio']['done'] = %w(all equal superior inferior)
-    content_hash['hash_for_select']['done'] = [[0, 0], [10, 10], [20, 20], [30, 30], [40, 40], [50, 50], [60, 60], [70, 70], [80, 80], [90, 90], [100, 100]]
-    content_hash['hash_for_radio']['due_date'] = %w(all equal superior inferior today)
-    content_hash['hash_for_select']['status'] = IssuesStatus.select('*').includes(:enumeration).collect { |status| [status.enumeration.name, status.id] }
-    content_hash['hash_for_radio']['status'] = %w(all equal different open close)
-    content_hash['hash_for_radio']['start'] = %w(all equal superior inferior today)
-    content_hash['hash_for_radio']['subject'] = ['all', 'contains', 'not contains']
-    content_hash['hash_for_select']['tracker'] = project.trackers.collect { |tracker| [tracker.name, tracker.id] }
-    content_hash['hash_for_radio']['tracker'] = %w(all equal different)
-    content_hash['hash_for_select']['version'] = project.versions.collect { |version| [version.name, version.id] }
-    content_hash['hash_for_select']['version'] << %w(Unplanned NULL)
-    content_hash['hash_for_radio']['version'] = %w(all equal different)
-    content_hash['hash_for_radio']['updated'] = %w(all equal superior inferior today)
-    return content_hash
-  end
-
   #Return an array with all attribute that can be filtered
   def self.filtered_attributes
     filtered_attributes = []
@@ -154,14 +124,13 @@ class Issue < RorganizeActiveRecord
     return filtered_attributes
   end
 
-  def self.display_issue_object(issue_id)
+  def self.display_issue_object(issue_id, project)
     object = {}
-    object[:issue] = Issue.eager_load([:version, :assigned_to, :category, :attachments, :parent]).joins([:tracker, :status]).find(issue_id)
-    object[:journals] = Journal.where(:journalized_type => 'Issue', :journalized_id => issue_id).includes([:details, :user])
-    object[:allowed_statuses] = User.current.allowed_statuses(object[:issue].project)
+    object[:issue] = Issue.eager_load([:tracker, :version, :assigned_to, :category, :attachments, :parent, :journals => [:details, :user]], status: [:enumeration]).where(id: issue_id)[0]
+    object[:allowed_statuses] = User.current.allowed_statuses(project)
     object[:done_ratio] = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
     object[:checklist_statuses] = Enumeration.where(:opt => 'CLIS')
-    object[:checklist_items] = ChecklistItem.where(:issue_id => issue_id).includes([:enumeration]).order(:position)
+    object[:checklist_items] = ChecklistItem.where(:issue_id => issue_id).eager_load([:enumeration]).order(:position)
     object
   end
 
@@ -172,24 +141,6 @@ class Issue < RorganizeActiveRecord
     {:saved => saved, :journals => journals}
   end
 
-  #Get toolbox menu for issue class.
-  def self.toolbox_menu(project, issues)
-    menu = {}
-    menu['allowed_statuses'] = User.current.allowed_statuses(project).collect { |status| status }
-    menu['done_ratio'] = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
-    menu['versions'] = project.versions.collect { |version| version }
-    menu['members'] = project.members.joins(:user).collect { |member| member.user }
-    menu['categories'] = project.categories.collect { |category| category }
-    #collecting informations from selected issues
-    current_states = Hash.new {}
-    current_states['member'] = issues.collect { |issue| issue.assigned_to }.uniq
-    current_states['version'] = issues.collect { |issue| issue.version }.uniq
-    current_states['status'] = issues.collect { |issue| issue.status }.uniq
-    current_states['done'] = issues.collect { |issue| issue.done }.uniq
-    current_states['category'] = issues.collect { |issue| issue.category }.uniq
-    menu['current_states'] = current_states
-    menu
-  end
 
   def self.bulk_edit(issue_ids, value_param)
     issues_toolbox = Issue.where(:id => issue_ids).includes(:tracker, :version, :assigned_to, :category, :status => [:enumeration])

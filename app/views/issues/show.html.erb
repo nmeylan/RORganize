@@ -5,96 +5,82 @@
 # File: show.html.erb
 %>
 
-<%= contextual (@issue.tracker ? @issue.tracker.name : '-')+' : #'+@issue.id.to_s do %>
-
-<%#= New link %>
-    <%= link_to_with_permissions(glyph(t(:link_new_issue), 'plus'), new_issue_path(@project.slug), @project) %>
-<%#= Edit link %>
-    <%= link_to_with_not_owner_permissions(glyph(t(:link_edit), 'pencil'), edit_issue_path(@project.slug, @issue.id), @project, @issue.author_id) %>
-<%#= Start date link %>
-    <%= link_to glyph(t(:link_start_today), 'today'), start_today_issues_path(@project.slug, @issue.id),
-                {:id => 'start_today', :data => {:confirm => t(:text_set_start_date_today)},
-                 :method => :post, :remote => true} %>
-<%#= Update link %>
-    <%= link_to glyph(t(:link_update), 'comment'), '#update_issue', {:class => 'icon icon-update_issue', :id => 'update_issue_link'} %>
-<%#= Checklist link %>
-    <%= link_to_with_permissions(glyph(t(:link_checklist), 'checklist'), checklist_issues_path(@project.slug), @project, {:class => 'open_checklist_overlay'}) %>
-<%#= Log time link %>
-    <%= link_to glyph(t(:link_log_time), 'clock'), fill_overlay_time_entries_path(@issue.id), {:id => 'log_time'} %>
-<%#= Delete link %>
-    <%= link_to_with_not_owner_permissions(glyph(t(:link_delete), 'trashcan'), issue_path(@project.slug, @issue.id), @project, @issue.author_id,
-                                           {:method => :delete, :remote => true, :confirm => t(:text_delete_item)}) %>
+<%= contextual (@issue.tracker)+' : #'+@issue.id.to_s do %>
+    <%= @issue.new_link %>
+    <%= @issue.edit_link %>
+    <%= @issue.start_today_link %>
+    <%= @issue.update_link %>
+    <%= @issue.checklist_link %>
+    <%= @issue.log_time_link %>
+    <%= @issue.delete_link %>
 <% end %>
 
 <h2><%= @issue.subject %></h2>
 <p>
   <em>
-    <%= "#{t(:label_added)}
-        #{distance_of_time_in_words(@issue.created_at, Time.now)}
-        #{t(:label_ago)}, #{t(:label_by)} #{@issue.author ? @issue.author.name : t(:label_unknown)}. #{(@issue.created_at.eql?(@issue.updated_at) ? '' :
-            "#{t(:label_updated)} #{distance_of_time_in_words(@issue.updated_at, Time.now)}
-            #{t(:label_ago)}.").to_s}" %>
+    <%= @issue.creation_info(journals) %>
   </em>
 </p>
 <table class="detail" style="width:100%">
   <tr>
     <th style="width:15%"><%= t(:field_status) %> :</th>
-    <td style="width:30%"><%= @issue.status ? @issue.status.enumeration.name : '-' %></td>
+    <td style="width:30%"><%= @issue.status.caption %></td>
     <th style="width:15%"><%= t(:field_start_date) %> :</th>
-    <td style="width:30%"><%= @issue.start_date ? @issue.start_date : '-' %></td>
+    <td style="width:30%"><%= @issue.start_date %></td>
   </tr>
   <tr>
     <th style="width:15%"><%= t(:field_assigned_to) %> :</th>
-    <td style="width:30%"><%= @issue.assigned_to ? @issue.assigned_to.name : '-' %></td>
+    <td style="width:30%"><%= @issue.assigned_to %></td>
     <th style="width:15%"><%= t(:field_due_date) %> :</th>
-    <td style="width:30%"><%= @issue.due_date ? @issue.due_date : '-' %></td>
+    <td style="width:30%"><%= @issue.due_date %></td>
   </tr>
   <tr>
     <th style="width:15%"><%= t(:field_version) %> :</th>
-    <td style="width:30%"><%= @issue.version ? @issue.version.name : '-' %></td>
+    <td style="width:30%"><%= @issue.version %></td>
     <th style="width:15%"><%= t(:field_estimated_time) %> :</th>
-    <td style="width:30%"><%= @issue.estimated_time ? @issue.estimated_time.to_s+'h' : '-' %></td>
+    <td style="width:30%"><%= @issue.estimated_time %></td>
   </tr>
   <tr>
     <th style="width:15%"><%= t(:field_category) %> :</th>
-    <td style="width:30%"><%= @issue.category ? @issue.category.name : '-' %></td>
+    <td style="width:30%"><%= @issue.category %></td>
     <th style="width:15%"><%= t(:field_done) %> :</th>
-    <td style="width:30%"><%= @issue.done ? @issue.done.to_s+'%' : '-' %></td>
+    <td style="width:30%"><%= @issue.done %></td>
   </tr>
 </table>
 <br/>
 <hr/><br/>
 <h2><%= t(:field_description) %> :</h2>
-<%= raw !@issue.description.eql?('') ? textile_to_html(@issue.description) : '-' %>
+<%= @issue.display_description %>
 
 <div class="separator"></div>
 <h2>Checklist :</h2>
 <ul class="checklist" id="ck_refresh">
   <%= render :partial => 'issues/checklist_items', :locals => {:checklist_items => checklist_items} %>
 </ul>
-<span><%= link_to_with_permissions(glyph(t(:link_checklist), 'checklist'), checklist_issues_path(@project.slug), @project, {:class => 'icon icon-checklist open_checklist_overlay'}) %>
- </span>
+
+<span><%= @issue.checklist_link %></span>
+
 <div class="separator"></div>
+
 <%= link_to glyph('', 'chevron-right'), '#', {:class => 'icon icon-collapsed toggle right', :style => 'float:right', :id => 'gantt_informations'} %>
-<div style="clear:both "></div>
+<%= clear_both %>
 <div class="content gantt_informations">
   <div id="predecessor">
     <%= render :partial => 'issues/predecessor' %>
   </div>
   <hr/>
   <div id="children">
-
     <%= render :partial => 'issues/children' %>
   </div>
 </div>
+
 <%#= ATTACHMENT %>
 <div id="attachments">
-  <%= render :partial => 'issues/show_attachments', :locals => {:attachments => @issue.attachments} %>
+  <%= render :partial => 'shared/show_attachments', :locals => {:attachments => @issue.attachments, :object => @issue} %>
 </div>
 
-<% if journals.any? %>
-    <%= render :partial => 'issues/history', :locals => {:journals => journals} %>
-<% end %>
+<%= @issue.display_history(journals) %>
+
 <div id="update_issue">
   <div class="separator"></div>
   <h2><%= t(:link_update) %></h2>
@@ -104,4 +90,4 @@
   </div>
 </div>
 <%= render :partial => 'issues/checklist_overlay', :locals => {:checklist_items => checklist_items} %>
-<%= render :partial => 'time_entries/log_issue_spent_time', :locals => {:issue_id => @issue.id, :tracker_name => @issue.tracker.name} %>
+<%= render :partial => 'time_entries/log_issue_spent_time', :locals => {:issue_id => @issue.id, :tracker_name => @issue.tracker} %>

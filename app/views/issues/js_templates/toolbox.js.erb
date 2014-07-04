@@ -3,8 +3,8 @@
  * Date: 30/11/13
  * Time: 08:39
  %>
-$("#issues_toolbox").html("<%= escape_javascript(render :partial => 'issues/toolbox', :locals => {:menu => menu})%>");
-$('#delete_overlay').replaceWith("<%= escape_javascript(render :partial => 'issues/delete_overlay', :locals => {:issues => issues})%>");
+$("#issues_toolbox").html("<%= escape_javascript(issue_toolbox(issues))%>");
+$('#delete_overlay').replaceWith("<%= escape_javascript(render :partial => 'shared/delete_overlay', :locals => {:collection => issues})%>");
 createOverlay("#delete_overlay", 150);
 
 bind_menu_actions("#issues_toolbox");
