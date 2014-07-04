@@ -76,7 +76,6 @@ module Rorganize
           end
           inc_condition_item_ary = 0
         end
-        #    query_str += "#{'AND' if hash.size != 0} issues.project_id = #{project_id}"
         query_str += "#{'AND' if hash.size != 0}"
         return query_str
       end
