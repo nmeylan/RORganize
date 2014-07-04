@@ -18,7 +18,7 @@ class ApplicationCollectionDecorator < Draper::CollectionDecorator
     end
   end
 
-  def new_link(label, path, project = nil)
-    link_to_with_permissions(h.glyph(label, 'plus'), path ,project, nil)
+  def new_link(label, path, project = nil, options = {})
+    link_to_with_permissions(h.glyph(label, 'plus'), path ,project, nil, options)
   end
 end

@@ -5,32 +5,6 @@
 # File: _list.html.erb
 %>
 <div id="members_content">
-  <table class="member list">
-    <tr class="header">
-      <th>Name</th>
-      <th class="list_left">Role</th>
-      <th></th>
-    </tr>
-    <% @members.each do |member| %>
-      <tr class="odd_even" id="<%=member.id%>">
-        <td class="list_center name"><%= member.user.name %></td>
-        <td class="list role">
-          <div class="autocomplete-combobox cbb-medium nosearch">
-            <% if current_user.allowed_to?('change_role','Members',@project) %>
-              <%= select_tag('roles_'+member.id.to_s,
-                options_from_collection_for_select(roles, 'id', 'name',member.role ? member.role.id.to_s : ''),
-                {:class => 'chzn-select cbb-medium', :include_blank => true, 'data-link' => change_role_members_path(@project.slug, member.id)} )%>
-            <% else %>
-              <%= member.role.name %>
-            <% end %>
-          </div>
-        </td>
-        <td class="action">
-          <%= link_to_with_permissions(glyph(t(:link_delete), 'trashcan'), member_path(@project.slug, member.id),  @project,
-            {:method => :delete,:remote => true,:confirm => t(:text_delete_item)}) %>
-        </td>
-      </tr>
-    <%end%>
-  </table>
-  <%= render :partial => 'members/add_overlay', :locals => {:roles => roles, :users => users} %>
+  <%= @members.display_collection %>
+  <%= render :partial => 'members/add_overlay', :locals => {:roles => @members.context[:role], :users => users} %>
 </div>

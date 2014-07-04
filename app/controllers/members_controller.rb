@@ -9,14 +9,13 @@ class MembersController < ApplicationController
   before_filter { |c| c.menu_context :project_menu }
   before_filter { |c| c.menu_item('settings') }
   before_filter {|c| c.top_menu_item('projects')}
-  include MembersHelper
   #GET /projects/
   def index
-    members_roles = Member.find_members_and_roles_by_project_id(@project.id)
-    @members = members_roles[:members]
-    roles = members_roles[:roles]
+    p @project
+    @members = Member.eager_load(:role, :user).where(:project_id =>  @project.id).decorate(context: {project: @project, roles:
+        Role.select('*')})
     respond_to do |format|
-      format.html{render :action => 'index', :locals => {:roles => roles, :users => nil}}
+      format.html{render :action => 'index', :locals => { :users => nil}}
     end
   end
 
@@ -30,22 +29,21 @@ class MembersController < ApplicationController
   end
 
   def new
-    members_roles = Member.find_members_and_roles_by_project_id(@project.id)
-    ids = members_roles[:members].collect{|member| member.user.id}
+    members = Member.eager_load(:user).where(:project_id =>  @project.id)
+    ids = members.collect{|member| member.user.id}
     users = User.where('id NOT IN (?)', ids)
     @member = Member.new
     respond_to do |format|
-      format.js {respond_to_js :locals => {:roles => members_roles[:roles], :users => users, :new => true}}
+      format.js {respond_to_js :locals => {:roles => Role.select('*'), :users => users, :new => true}}
     end
   end
 
   def create
     success = Member.create(:project_id => @project.id, :role_id => params[:role], :user_id => params[:user])
-    members_roles = Member.find_members_and_roles_by_project_id(@project.id)
-    @members = members_roles[:members]
-    roles = members_roles[:roles]
+    @members = Member.eager_load(:user).where(:project_id =>  @project.id).decorate(context: {project: @project, roles:
+        Role.select('*')})
     respond_to do |format|
-      format.js {respond_to_js :action => :new, :locals => {:roles => roles, :users => nil, :new => false},:response_header => :success, :response_content => t(:successful_creation)}
+      format.js {respond_to_js :action => :new, :locals => {:users => nil, :new => false},:response_header => :success, :response_content => t(:successful_creation)}
     end
   end
   #Others method

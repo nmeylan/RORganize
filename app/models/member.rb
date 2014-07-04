@@ -45,14 +45,8 @@ class Member < RorganizeActiveRecord
   #Change a member's role
   def change_role(value)
     success = self.update_attribute(:role_id, value)
-    members = Member.where(:project_id => self.project.id).includes(:role, :user)
+    members = Member.where(:project_id => self.project.id).eager_load(:role, :user)
     {:saved => success, :members => members}
-  end
-
-  def self.find_members_and_roles_by_project_id(project_id)
-    members = Member.where(:project_id => project_id).includes(:role, :user)
-    roles = Role.select('*')
-    {:members => members, :roles => roles}
   end
 
   def set_project_position

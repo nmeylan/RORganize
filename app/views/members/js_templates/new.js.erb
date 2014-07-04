@@ -9,5 +9,5 @@
     jQuery('#add_member_overlay').overlay().load();
 <% else %>
     jQuery('#add_member_overlay').overlay().close();
-    on_replace_effect("#members_content","<%= escape_javascript(render :partial => 'members/list', :locals => {:roles => roles, :users => users}) %>");
+    on_replace_effect("#members_content","<%= escape_javascript(render :partial => 'members/list', :locals => {:users => users}) %>");
 <% end %>

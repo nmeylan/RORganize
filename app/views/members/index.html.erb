@@ -5,8 +5,8 @@
 # File: index.html.erb
 %>
 <%= contextual "#{t(:label_setting_plural)} - #{t(:link_members)}" do %>
-    <%= link_to_with_permissions(glyph(t(:link_add_member), 'plus'),new_member_path(@project.slug), @project, {:method => :get, :remote => true, :id => 'add_members'})%>
+    <%= @members.new_link %>
 <% end %>
 <%= render :partial => 'settings/sidebar' %>
-<%= render :partial => 'members/list', :locals => {:roles => roles, :users => users} %>
+<%= render :partial => 'members/list', :locals => {:users => users} %>
 
