@@ -6,7 +6,7 @@
 jQuery('#delete_overlay').overlay();
 jQuery('#delete_overlay').overlay().close();
 on_replace_effect("#documents_content", "<%= escape_javascript(render :partial => 'documents/list')%>");
-on_replace_effect("#document_filter", "<%= escape_javascript(render :partial => 'shared/filter', locals: {label: 'document', submission_path: documents_path(@project.slug), filtered_attributes: Document.filtered_attributes})%>");
+on_replace_effect("#document_filter", "<%= escape_javascript(filter_tag('document', Document.filtered_attributes, documents_path(@project.slug)) )%>");
 
 
 uniq_toogle("#document.toggle", ".content");

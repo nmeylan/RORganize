@@ -3,6 +3,7 @@
 # Encoding: UTF-8
 # File: documents_helper.rb
 require 'documents/document_filter'
+require 'documents/document_toolbox'
 module DocumentsHelper
 
   def list(collection)

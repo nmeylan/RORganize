@@ -7,7 +7,7 @@ class ApplicationCollectionDecorator < Draper::CollectionDecorator
   include Rorganize::PermissionManager::PermissionHandler
 
   def display_collection
-    if object.any?
+    if object.to_a.any?
       if block_given?
         yield
       else

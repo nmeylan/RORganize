@@ -47,7 +47,8 @@ module ApplicationHelper
   #label : what is filtered (e.g : issues, documents)
   #filtered_attributes : which attributes will be filtered (e.g : Document.filtered_attributes)
   #submission_path : where the form must be send
-  def filter_tag(label, filtered_attributes, submission_path)
+  #options are :
+  def filter_tag(label, filtered_attributes, submission_path, can_save = false, save_button_options = {})
     content_tag :fieldset, id: "#{label}_filter" do
       safe_concat content_tag :legend, link_to(glyph(t(:link_filter), 'chevron-right'), '#', {:class => 'icon-collapsed toggle', :id => "#{label}"})
       safe_concat content_tag :div, class: 'content', &Proc.new {
@@ -61,8 +62,19 @@ module ApplicationHelper
           }
           safe_concat content_tag :table, nil, id: 'filter_content'
           safe_concat submit_tag t(:button_apply), {:style => 'margin-left:0px'}
+          if can_save
+            safe_concat content_tag :span, save_filter_button_tag(save_button_options[:filter_content],save_button_options[:user], save_button_options[:project]), {id:'save_query_button'}
+          end
         }
       }
+    end
+  end
+
+  def save_filter_button_tag(filter_content, user, project)
+    if !filter_content.eql?('') && user.allowed_to?('new', 'Queries', project) && params[:query_id].nil?
+      link_to t(:button_save), new_project_query_queries_path(project.slug, 'Issue'), {:remote => true}
+    elsif !filter_content.eql?('') && user.allowed_to?('new', 'Queries', project) && !params[:query_id].nil?
+      link_to t(:button_save), edit_query_filter_queries_path(params[:query_id]), {:id => 'filter_edit_save'}
     end
   end
 
@@ -76,7 +88,9 @@ module ApplicationHelper
               safe_concat hidden_field_tag "value[#{menu_item.attribute_name}]"
               safe_concat(menu_item.all.collect do |element|
                 content_tag :li do
-                  safe_concat link_to(conditional_glyph(element.caption, menu_item.currents.include?(element), 'check'), '#', {:'data-id' => element.id})
+                  caption = element.respond_to?(:caption) ? element.caption : element.to_s
+                  id = element.respond_to?(:id) ? element.id : element
+                  safe_concat link_to(conditional_glyph(caption , menu_item.currents.include?(element), 'check'), '#', {:'data-id' => id})
                 end
               end.join.html_safe)
               if menu_item.none_allowed
@@ -135,7 +149,7 @@ module ApplicationHelper
 
   def textile_to_html(text)
     t = RedCloth.new <<EOD
-          #{text}
+#{text}
 EOD
     t.to_html.html_safe
   end

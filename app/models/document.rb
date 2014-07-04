@@ -122,12 +122,13 @@ class Document < RorganizeActiveRecord
 
   def self.conditions_string(hash)
     #attributes from db: get real attribute name to build query
+    table = self.table_name
     attributes = {
-        'category' => 'category_id',
-        'created_at' => 'created_at',
-        'name' => 'name',
-        'version' => 'version_id',
-        'updated_at' => 'updated_at'
+        'category' => table + '.category_id',
+        'created_at' => table + '.created_at',
+        'name' => table + '.name',
+        'version' => table + '.version_id',
+        'updated_at' => table + '.updated_at'
     }
     Rorganize::MagicFilter.generics_filter(hash, attributes)
   end

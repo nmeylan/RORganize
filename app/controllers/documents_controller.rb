@@ -167,4 +167,7 @@ class DocumentsController < ApplicationController
   def find_project_with_associations
     @project = Project.eager_load(:attachments, :versions, :categories, :members).where(slug: params[:project_id])[0]
   end
+
+
+
 end
