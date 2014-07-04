@@ -1,5 +1,5 @@
 <%= contextual t(:label_issues_statuses) do %>
-    <%= link_to_with_permissions(glyph(t(:link_new_issue), 'plus'), new_issues_status_path, nil, {:method => :get}) %>
+    <%= @issues_statuses.new_link %>
 <% end %>
 
 <%= render :partial => 'issues_statuses/list' %>

@@ -21,9 +21,14 @@ class IssuesStatus < ActiveRecord::Base
   def caption
     self.enumeration.caption
   end
+
+  def position
+    self.enumeration.position
+  end
   #Change position
   def change_position(operator)
     enumerations = Enumeration.where(opt: 'ISTS').order('position ASC')
+    p self.enumeration
     Rorganize::SmartRecords.change_position(enumerations, self.enumeration, operator)
   end
 

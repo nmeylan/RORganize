@@ -102,8 +102,7 @@ class IssuesStatusesController < ApplicationController
   end
 
   def get_statuses
-    @issues_statuses = IssuesStatus.includes(:enumeration).order('enumerations.position')
-    @max = @issues_statuses.count
+    @issues_statuses = IssuesStatus.eager_load(:enumeration).order('enumerations.position').decorate
   end
 
 end
