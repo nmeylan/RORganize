@@ -83,11 +83,6 @@ class Document < RorganizeActiveRecord
     Journal.eager_load([:details, :user]).where(:journalized_type => self.class.to_s, :journalized_id => self.id)
   end
 
-  #Get creation date and author
-  def creation_info
-    Journal.eager_load(:user).where(:action_type => 'created', :journalized_id => self.id, :journalized_type => self.class.to_s)[0]
-  end
-
   def self.bulk_edit(doc_ids, value_param)
     #Editing with toolbox
     documents_toolbox = Document.where(:id => doc_ids)

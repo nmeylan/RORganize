@@ -11,7 +11,7 @@ class ApplicationDecorator < Draper::Decorator
   end
 
   def display_history(journals)
-    if journals.any? && !journals.none? {|journal| journal.details.any?}
+    if journals && journals.to_a.any? && !journals.none? {|journal| journal.details.any?}
       h.content_tag :div, id: 'history' do
         h.history_render(journals)
       end

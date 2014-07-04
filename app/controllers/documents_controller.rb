@@ -23,7 +23,7 @@ class DocumentsController < ApplicationController
   end
 
   def new
-    @document = Document.new.decorate
+    @document = Document.new.decorate(context: {project: @project})
     @document.attachments.build
     respond_to do |format|
       format.html
@@ -31,7 +31,7 @@ class DocumentsController < ApplicationController
   end
 
   def create
-    @document = Document.new(document_params).decorate
+    @document = Document.new(document_params).decorate(context: {project: @project})
     @document.project_id = @project.id
     @document.created_at = Time.now.to_formatted_s(:db)
     respond_to do |format|
@@ -45,14 +45,14 @@ class DocumentsController < ApplicationController
   end
 
   def edit
-    @document = Document.find(params[:id]).decorate
+    @document = Document.find(params[:id]).decorate(context: {project: @project})
     respond_to do |format|
       format.html
     end
   end
 
   def update
-    @document = Document.find(params[:id]).decorate
+    @document = Document.find(params[:id]).decorate(context: {project: @project})
     @document.attributes = document_params
     respond_to do |format|
       if !@document.changed? &&
@@ -70,9 +70,9 @@ class DocumentsController < ApplicationController
 
   def show
     #this always return 1 result. Don't use .first(AR method) because it generate two query (due to ActiveRecord::FinderMethods::apply_join_dependency(..))
-    @document = Document.eager_load(:category, :version, :attachments).where(id: params[:id])[0].decorate
+    @document = Document.eager_load(:category, :version, :attachments).where(id: params[:id])[0].decorate(context: {project: @project})
     respond_to do |format|
-      format.html { render :action => 'show', :locals => {:journals => @document.activities} }
+      format.html { render :action => 'show', :locals => {:journals => @document.activities.to_a} }
     end
   end
 
