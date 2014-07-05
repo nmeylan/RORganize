@@ -18,6 +18,6 @@ class PermissionDecorator < ApplicationDecorator
 
   def is_critical?
     critical_permissions = %w(destroy delete remove public)
-    critical_permissions.include?(model.caption)
+    critical_permissions.include?(model.action.downcase)
   end
 end

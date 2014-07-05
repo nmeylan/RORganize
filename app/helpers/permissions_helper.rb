@@ -17,7 +17,7 @@ module PermissionsHelper
           safe_concat content_tag :fieldset, &Proc.new {
             safe_concat content_tag :legend, &Proc.new {
               safe_concat(link_to glyph('', 'check'), '#', {:id => 'check_all_'+controller.to_s, 'cb_checked' => 'b', :title => 'check all'})
-              safe_concat(content_tag :span, nil, {class: 'octicon octicon-flame'}) if critical_controllers(controller)
+              safe_concat(content_tag :span, nil, {class: 'octicon octicon-alert'}) if critical_controllers(controller)
               safe_concat(link_to controller, '#', {:class => 'icon icon-expanded toggle', :id => controller})
             }
             safe_concat content_tag :div, class: "content #{controller}", &Proc.new {
