@@ -4,6 +4,7 @@
 # File: Role.rb
 
 class Role < ActiveRecord::Base
+  include Rorganize::AbstractModelCaption
   has_many :members, :class_name => 'Member', :dependent => :nullify
   has_and_belongs_to_many :issues_statuses, -> {includes([:enumeration])}, :class_name => 'IssuesStatus'
   has_and_belongs_to_many :permissions, :class_name => 'Permission'
@@ -12,6 +13,10 @@ class Role < ActiveRecord::Base
 
   def self.permit_attributes
     [:name]
+  end
+
+  def caption
+    self.name
   end
 
   def update_permissions(permissions_param)

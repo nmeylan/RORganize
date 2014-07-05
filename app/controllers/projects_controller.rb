@@ -1,17 +1,16 @@
 class ProjectsController < ApplicationController
-  before_filter :find_project, :except => [:index, :new, :create, :destroy, :archive, :filter]
+  before_filter :find_project, :except => [:index, :new, :create, :destroy, :archive, :filter, :overview, :show]
+  before_filter :find_project_with_associations, :only => [:overview, :show]
   before_filter :check_permission, :except => [:create, :load_journal_activity, :filter, :activity_filter]
   before_filter { |c| c.menu_context :project_menu }
   before_filter { |c| c.menu_item(params[:controller], params[:action]) }
   before_filter { |c| c.top_menu_item('projects') }
+  helper VersionsHelper
   #GET /project/:project_id
   #Project overview
   def overview
-    last_requests = Issue.where(:project_id => @project).order('id desc').limit(5)
-    versions = @project.current_versions
-    version_overviews = @project.current_versions_overview
     respond_to do |format|
-      format.html { render :action => 'overview', :locals => {:members => @project.members_overview, :last_requests => last_requests, versions: versions, versions_details: version_overviews} }
+      format.html { render :action => 'overview'}
     end
   end
 
@@ -34,8 +33,7 @@ class ProjectsController < ApplicationController
   end
 
   def load_journal_activity
-  #  @issue = Issue.select('id').where(:id => params[:item_id])
-    @journals = Journal.includes([:details, :user]).where(:journalized_type => 'Issue', :journalized_id => params[:item_id]).where('DATE(`journals`.`created_at`) = ?', params[:date])
+    @journals = Journal.eager_load([:details, :user]).where(:journalized_type => 'Issue', :journalized_id => params[:item_id]).where('DATE(`journals`.`created_at`) = ?', params[:date])
     respond_to do |format|
       format.html
       format.js { respond_to_js }
@@ -45,7 +43,7 @@ class ProjectsController < ApplicationController
 
   #GET /project/new
   def new
-    @project = Project.new
+    @project = Project.new.decorate
     @project.attachments.build
     respond_to do |format|
       format.html
@@ -54,7 +52,7 @@ class ProjectsController < ApplicationController
 
   #POST /project/new
   def create
-    @project = Project.new(project_params)
+    @project = Project.new(project_params).decorate
     @project.created_by = current_user.id
     respond_to do |format|
       if @project.save
@@ -125,10 +123,10 @@ class ProjectsController < ApplicationController
     if session['project_selection_filter'].nil?
       session['project_selection_filter'] = 'all'
     end
-    projects = current_user.owned_projects(session['project_selection_filter'])
+    @projects = current_user.owned_projects(session['project_selection_filter']).decorate(context: {allow_to_star: false})
     respond_to do |format|
-      format.html { render :action => 'index', :locals => {:projects => projects} }
-      format.js { respond_to_js :action => 'index', :locals => {:projects => projects} }
+      format.html { render :action => 'index' }
+      format.js { respond_to_js :action => 'index'}
     end
   end
 
@@ -143,6 +141,10 @@ class ProjectsController < ApplicationController
 
   def project_params
     params.require(:project).permit(Project.permit_attributes)
+  end
+
+  def find_project_with_associations
+    @project = Project.eager_load(:attachments, members: [:user, :role]).where(slug: params[:project_id])[0].decorate
   end
 
 

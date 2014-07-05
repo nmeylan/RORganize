@@ -52,46 +52,28 @@ module ProjectsHelper
     end
   end
 
-  def project_members(members_hash)
-    project_members = ''
-    members_hash.each do |role, members|
-      members_list = ''
-      if members.any?
-        members_list += '<ul>'
-        members.each do |member|
-          members_list += '<li>'+member.user.name+'</li>'
-        end
-        members_list += '</ul>'
-        project_members += role.to_s+': '+members_list
-      end
+  def members_list(members_hash)
+    content_tag :div do
+      members_hash.collect do |role, members|
+        safe_concat content_tag :h4, role
+        safe_concat content_tag :ul, members.collect { |member| content_tag :li, member.caption }.join.html_safe
+      end.join.html_safe
     end
-    project_members.html_safe
   end
 
 
-
-  def project_list(projects, allow_to_star)
-    content_tag :div, id: 'projects' do
-      if  projects && projects.any?
-        content_tag :ul, class: "project_list #{allow_to_star ? 'sortable' : '' }" do
-          projects.collect do |project|
-            last_activity = project.last_activity
-            content_tag :li, class: "#{project.is_archived ? 'archived' : ''} project", id: project.id do
-              safe_concat project_stats(project).html_safe
-              safe_concat link_to mega_glyph(project.name, 'repo'), overview_projects_path(project.slug)
-              safe_concat content_tag :p, class: 'project_last_activity', &Proc.new {
-                unless last_activity.nil?
-                  %Q(#{t(:text_last_activity)} #{distance_of_time_in_words(last_activity.created_at.to_formatted_s, Time.now)} #{t(:label_ago)},
-                   #{t(:label_by)} #{last_activity.user ? last_activity.user.name : t(:label_unknown)}.)
-                end
-              }
-              project_list_star_button(project) if allow_to_star
-            end
-          end.join.html_safe
+  def list(projects, allow_to_star)
+    content_tag :ul, class: "project_list #{allow_to_star ? 'sortable' : '' }" do
+      projects.collect do |project|
+        content_tag :li, class: "#{project.is_archived ? 'archived' : ''} project", id: project.id do
+          safe_concat project_stats(project).html_safe
+          safe_concat link_to mega_glyph(project.name, 'repo'), overview_projects_path(project.slug)
+          safe_concat content_tag :p, class: 'project_last_activity', &Proc.new {
+            project.last_activity_info
+          }
+          project_list_star_button(project) if allow_to_star
         end
-      else
-        t(:text_no_data)
-      end
+      end.join.html_safe
     end
   end
 
@@ -114,5 +96,6 @@ module ProjectsHelper
       }
     }
   end
+
 
 end

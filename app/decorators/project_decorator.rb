@@ -1,13 +1,41 @@
 class ProjectDecorator < ApplicationDecorator
   delegate_all
 
-  # Define presentation-specific methods here. Helpers are accessed through
-  # `helpers` (aka `h`). You can override attributes, for example:
-  #
-  #   def created_at
-  #     helpers.content_tag :span, class: 'time' do
-  #       object.created_at.strftime("%a %m/%d/%y")
-  #     end
-  #   end
+  def delete_attachment_link(attachment)
+    super(h.delete_attachment_settings_path(self.slug,attachment.id), self)
+  end
+
+  def last_activity_info
+    last_activity = model.journals[0]
+    unless last_activity.nil?
+      %Q(#{h.t(:text_last_activity)} #{h.distance_of_time_in_words(last_activity.created_at.to_formatted_s, Time.now)} #{h.t(:label_ago)}, #{h.t(:label_by)} #{last_activity.user ? last_activity.user.name : t(:label_unknown)}.)
+    end
+  end
+
+  def display_members
+    members_hash = Hash.new { |h, k| h[k] = [] }
+    self.members.each do |member|
+      members_hash[member.role.caption] << member
+    end
+    h.members_list(members_hash)
+  end
+
+  def display_version_overview
+    versions = model.current_versions
+    condition = %Q(`versions`.`id` IN (#{current_versions.collect { |version| version.id}.join(',')})) if versions.to_a.any?
+    versions_overviews = Version.overviews(self.id, condition)
+    structure = Hash.new { |k, v| k[v] = {} }
+    versions_overviews.each do |version_overview|
+      structure[version_overview.first] = {
+          percent: version_overview[3], closed_issues_count:version_overview[2], opened_issues_count: version_overview[1]
+      }
+    end
+    if versions.to_a.any?
+      h.versions_list_overview(versions, structure)
+    else
+      h.content_tag :div, h.t(:text_no_running_versions), class: 'no-data'
+    end
+
+  end
 
 end

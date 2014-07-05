@@ -27,7 +27,7 @@
       <p>
         <label><%= t(:field_attachments) %></label>
       </p>
-      <%= render :partial => 'projects/attachments', :collection => @project.attachments %>
+      <%= render :partial => 'shared/attachments', :collection => @project.attachments, locals: {object: @project, type: 'project'} %>
     </div>
   </div>
   <%= submit_tag t(:button_create) %>

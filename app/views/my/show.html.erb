@@ -11,7 +11,7 @@
 <div class="splitcontentleft">
   <div class="box">
     <div class="header"><h2><%= t(:text_my_favorites_projects) %></h2></div>
-    <%= render :partial => 'projects/list', :locals => {:allow_to_star => false, :projects => projects}  %>
+    <%= @projects.display_collection  %>
   </div>
 </div>
 <div class="splitcontentright">

@@ -78,6 +78,9 @@ module ApplicationHelper
     end
   end
 
+  def box_header_tag(title)
+    content_tag :div, content_tag(:h2, title), class: 'header'
+  end
   def toolbox_tag(toolbox)
     form_tag toolbox.path, :remote => true, :id => 'toolbox_form', &Proc.new {
       safe_concat(toolbox.menu.values.collect do |menu_item|

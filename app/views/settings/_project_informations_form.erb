@@ -22,7 +22,7 @@
       <%= f.text_area :description, :class => 'fancyEditor' %>
     </p>
     <div id="attachments">
-      <%= render :partial => 'projects/show_attachments', :locals => {:attachments => @project.attachments} %>
+      <%= render :partial => 'shared/show_attachments', locals: {object: @project, type: 'project', :attachments => @project.attachments} %>
     </div>
   </div>
   <p>

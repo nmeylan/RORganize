@@ -95,15 +95,6 @@ class Project < ActiveRecord::Base
     [issue_activities, activities]
   end
 
-  #Return a member hash for project overview
-  def members_overview
-    members = Member.where(:project_id => self.id).includes([:user])
-    roles = Role.all
-    members_hash = Hash.new { |h, k| h[k] = [] }
-    roles.each { |role| members_hash[role.name] = members.select { |member| member.role_id == role.id } }
-    members_hash
-  end
-
   def update_info(params, trackers)
     self.attributes = params
     tracker_ids = trackers.values
@@ -130,19 +121,6 @@ class Project < ActiveRecord::Base
 
   def current_versions
     self.versions.where('start_date <= ? AND is_done = false', Date.today)
-  end
-
-  def current_versions_overview
-    versions = current_versions
-    condition = %Q(`versions`.`id` IN (#{current_versions.collect { |version| version.id}.join(',')})) if versions.any?
-    versions_overviews = Version.overviews(self.id, condition)
-    structure = Hash.new { |k, v| k[v] = {} }
-    versions_overviews.each do |version_overview|
-      structure[version_overview.first] = {
-          percent: version_overview[3], closed_issues_count:version_overview[2], opened_issues_count: version_overview[1]
-      }
-    end
-    structure
   end
 
   def roadmap

@@ -16,7 +16,7 @@
 <div id="top_menu"><%= render :partial => 'layouts/top_menu' %></div>
 <div id="header">
   <h1>
-    <% if @project && @project.attachments.any? %>
+    <% if @project && @project.attachments.to_a.any? && !@project.attachments.first.id.nil? %>
         <%= image_tag @project.attachments.first.file.url(:logo), {:align => :left, :id => 'project_logo'} %>
     <% end %>
     <%= @project ? @project.name : 'RORganize' %><%# Here what you want %>

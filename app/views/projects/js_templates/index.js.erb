@@ -3,4 +3,4 @@
  * Date: 14/12/13
  * Time: 14:43
  %>
-on_replace_effect("#projects", "<%= escape_javascript(render :partial => 'projects/list', :locals => {:allow_to_star => false, :projects => projects}) %>");
+on_replace_effect("#projects", "<%= escape_javascript(@projects.display_collection) %>");

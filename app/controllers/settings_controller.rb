@@ -17,7 +17,7 @@ class SettingsController < ApplicationController
     if @project.attachments.empty?
       @project.attachments.build
     end
-
+    @project = @project.decorate
     @trackers = Tracker.all
     respond_to do |format|
       format.html

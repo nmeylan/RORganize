@@ -21,11 +21,9 @@ class User < RorganizeActiveRecord
   #attr_accessible :id, :login, :email, :name, :password, :password_confirmation, :remember_me
   #Relations
   has_many :members, :class_name => 'Member', :dependent => :destroy
-  has_many :members_archived, -> {where({'projects.is_archived' => true}).includes([:project])}, :class_name => 'Member'
-  has_many :members_opened, -> {where({'projects.is_archived' => false}).includes([:project])}, :class_name => 'Member'
   has_many :issues, :class_name => 'Issue', :foreign_key => :author_id, :dependent => :nullify
   has_many :issues, :class_name => 'Issue', :foreign_key => :assigned_to_id, :dependent => :nullify
-  has_many :journals, -> {where :journalized_type => 'User'}, :as => :journalized, :dependent => :nullify
+  has_many :journals, -> { where :journalized_type => 'User' }, :as => :journalized, :dependent => :nullify
 
   validates :login, :presence => true, :length => 4..50, :uniqueness => true
   validates :name, :presence => true, :length => 4..50
@@ -44,7 +42,7 @@ class User < RorganizeActiveRecord
 
   #Override devise
   def self.serialize_from_session(key, salt)
-    record =  self.eager_load(members: :role).where(id: key)[0]
+    record = self.eager_load(members: :role).where(id: key)[0]
     record if record && record.authenticatable_salt == salt
   end
 
@@ -90,26 +88,6 @@ class User < RorganizeActiveRecord
     TimeEntry.where('user_id = ? AND spent_on >= ? AND spent_on <= ?', self.id, start_of_month, end_of_month).includes(:project)
   end
 
-  def projects
-    members = self.members.includes(:project => [:attachments]).order(:project_position)
-    members.collect { |member| member.project }
-  end
-
-  def starred_projects
-    members = self.members.where(:is_project_starred => 1).includes(:project => [:attachments]).order(:project_position)
-    members.collect { |member| member.project }
-  end
-
-  def archived_projects
-    members= self.members_archived.includes(:project => [:attachments]).order(:project_position)
-    members.collect { |member| member.project }
-  end
-
-  def opened_projects
-    members= self.members_opened.includes(:project => [:attachments]).order(:project_position)
-    members.collect { |member| member.project }
-  end
-
   def allowed_statuses(project)
     self.members.to_a.select { |member| member.project_id == project.id }.first.role.issues_statuses.eager_load(:enumeration).sort { |x, y| x.enumeration.position <=> y.enumeration.position }
   end
@@ -136,35 +114,26 @@ class User < RorganizeActiveRecord
   end
 
   def self.paginated_users(page, per_page, order)
-    User.all.paginate(:page => page,
-             :per_page => per_page).order(order)
+    User.all.paginate(:page => page, :per_page => per_page).order(order)
   end
 
   #Get owned projects with filters
   def owned_projects(filter)
-    if self.act_as_admin?
-      case filter
-        when 'opened'
-          projects = Project.where(:is_archived => false)
-        when 'archived'
-          projects = Project.where(:is_archived => true)
-        when 'starred'
-          projects = self.starred_projects
-        else
-          projects = Project.select('*')
-      end
-    else
-      case filter
-        when 'opened'
-          projects = self.opened_projects
-        when 'archived'
-          projects = self.archived_projects
-        when 'starred'
-          projects = self.starred_projects
-        else
-          projects = self.projects
-      end
+    case filter
+      when 'opened'
+        conditions = 'projects.is_archived = false '
+      when 'archived'
+        conditions = 'projects.is_archived = true '
+      when 'starred'
+        conditions = 'members.is_project_starred = true '
+      else
+        conditions = '1 = 1 '
     end
+    unless self.act_as_admin?
+      conditions += "AND members.user_id = #{self.id} "
+    end
+    conditions += 'AND journals.id = (SELECT max(j.id) FROM journals j WHERE j.project_id = projects.id)'
+    Project.eager_load([:members, [journals: :user]]).where(conditions).group('1')
   end
 
   #Get all coworkers for each project

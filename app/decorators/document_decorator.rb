@@ -5,17 +5,6 @@ class DocumentDecorator < ApplicationDecorator
     "#{h.t(:label_added)} #{h.distance_of_time_in_words(model.created_at, Time.now)} #{h.t(:label_ago)}, #{h.t(:label_by)} #{journals.first.user.name}. #{(model.created_at.eql?(model.updated_at) ? '' : "#{h.t(:label_updated)} #{h.distance_of_time_in_words(model.updated_at, Time.now)} #{h.t(:label_ago)}.").to_s}"
   end
 
-  def display_description
-    if model.description.eql?('')
-      '-'
-    else
-      super do
-        model.description
-      end
-    end
-  end
-
-
   def display_history(journals)
    super(journals)
   end

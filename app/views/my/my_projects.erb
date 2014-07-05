@@ -8,7 +8,7 @@
 <%= contextual t(:link_my_projects) %>
 
 <em>Drag and drop projects to order. <br/>Click on star to add project as favorite.</em>
-<%= render :partial => 'projects/list', :locals => {:allow_to_star => true, :projects => projects} %>
+<%= @projects.display_collection %>
 <%= submit_tag t(:button_save), {:id => 'save_position', 'data-link' => save_project_position_my_index_path} %>
 
 <%= render :partial => 'my/sidebar'  %>

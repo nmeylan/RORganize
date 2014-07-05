@@ -3,7 +3,11 @@ class ApplicationDecorator < Draper::Decorator
 
 
   def display_description
-    h.textile_to_html(yield)
+    if model.description.eql?('')
+      '-'
+    else
+        h.textile_to_html(model.description)
+    end
   end
 
   def disabled_field(content)
