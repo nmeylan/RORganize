@@ -1,5 +1,4 @@
 module ApplicationHelper
-  include Rorganize::PermissionManager::PermissionHandler
   def sidebar_content?
     content_for?(:sidebar)
   end
@@ -343,23 +342,23 @@ EOD
   #method : possible values :post, :get , :put, :delete
   #target : possible values "nil" or "self", if self url will be '#' else will be path
   #html = {}
-  # def link_to_with_permissions(label, path, project, params = {})
-  #   ActiveSupport::Deprecation.warn 'This method is deprecated and will be removed.'
-  #   routes = Rails.application.routes
-  #   hash_path = routes.recognize_path(path, :method => params[:method])
-  #   unless params[:confirm].nil?
-  #     params[:data] ||= {}
-  #     params[:data][:confirm] = params[:confirm].clone
-  #     params[:confirm] = nil
-  #   end
-  #   if current_user.allowed_to?(hash_path[:action], hash_path[:controller], project)
-  #     if params[:target] && params[:target].eql?('self')
-  #       link_to(label, '#', params)
-  #     else
-  #       link_to(label, path, params)
-  #     end
-  #   end
-  # end
+  def link_to_with_permissions(label, path, project, params = {})
+    ActiveSupport::Deprecation.warn 'This method is deprecated and will be removed.'
+    routes = Rails.application.routes
+    hash_path = routes.recognize_path(path, :method => params[:method])
+    unless params[:confirm].nil?
+      params[:data] ||= {}
+      params[:data][:confirm] = params[:confirm].clone
+      params[:confirm] = nil
+    end
+    if current_user.allowed_to?(hash_path[:action], hash_path[:controller], project)
+      if params[:target] && params[:target].eql?('self')
+        link_to(label, '#', params)
+      else
+        link_to(label, path, params)
+      end
+    end
+  end
 
   def link_to_with_not_owner_permissions(label, path, project, owner_id, params = {})
     ActiveSupport::Deprecation.warn 'This method is deprecated and will be removed.'
