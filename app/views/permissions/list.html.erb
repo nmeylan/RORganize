@@ -5,28 +5,8 @@
 # File: list.html.erb
 %>
 
-<%= contextual "#{t(:link_permissions)} - #{params[:role_name].gsub('_', ' ')}" %>
-<%= form_tag({:action => 'update_permissions', :controller => 'permissions'}) %>
-<div class="box">
-  <% permissions.sort { |x, y| x <=> y }.each do |k, v| %>
-      <fieldset>
-        <legend>
-          <%= link_to glyph('', 'check'), '#',
-                      {:id => 'check_all_'+k.to_s, 'cb_checked' => 'b', :title => 'check all'} %>
+<%= contextual "#{t(:link_permissions)} - #{params[:role_name].gsub('_', ' ')}" do -%>
+    <%= @permissions.new_link %>
+<% end -%>
 
-          <% content_tag :span, nil, {class: 'octicon octicon-flame'} if critical_controllers(k) %>
-          <%= link_to k, '#', {:class => 'icon icon-expanded toggle', :id => k} %>
-        </legend>
-        <div class="content <%= k %>">
-          <% v.each do |key, value| %>
-              <%= check_box_tag "[permissions][#{key}]", value, selected_permissions.include?(value) %>
-              <label>
-                <%= link_to conditional_glyph(key,critical_permissions(key), 'flame') , edit_permission_path(value),{} %>
-              </label>
-
-          <% end %>
-        </div>
-      </fieldset>
-  <% end %>
-</div>
-<%= submit_tag 'save' %>
+<%= @permissions.display_collection %>

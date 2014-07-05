@@ -5,9 +5,7 @@
 # File: index.html.erb
 %>
 
-<%= contextual t(:link_permissions) do %>
-    <%= link_to_with_permissions(glyph(t(:link_new_permission), 'plus'), new_permission_path, nil, {:method => :get}) %>
-<% end %>
+<%= contextual t(:link_permissions) %>
 
 <%= t(:text_choose_role) %>:
 

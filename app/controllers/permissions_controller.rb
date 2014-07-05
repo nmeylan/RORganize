@@ -4,9 +4,11 @@
 # File: permissions_controller.rb
 
 class PermissionsController < ApplicationController
+  include Rorganize::RichController
   before_filter :check_permission, :except => [:update_permissions]
   include PermissionsHelper
   include Rorganize::PermissionManager::PermissionManagerHelper
+
   before_filter { |c| c.menu_context :admin_menu }
   before_filter { |c| c.menu_item(params[:controller])}
   before_filter {|c| c.top_menu_item('administration')}
@@ -21,15 +23,15 @@ class PermissionsController < ApplicationController
 
   #GET administration/permission/new
   def new
-    @permission = Permission.new
+    @permission = Permission.new.decorate
     respond_to do |format|
-      format.html {render :action => 'new', :locals =>{:controllers =>  Permission.controller_list}}
+      format.html {render :action => 'new', :locals =>{:controllers =>  load_controller_list}}
     end
   end
 
   #POST administration/permission/new
   def create
-    @permission = Permission.new(permission_params)
+    @permission = Permission.new(permission_params).decorate
     respond_to do |format|
       if @permission.save
         flash[:notice] = t(:successful_creation)
@@ -47,16 +49,15 @@ class PermissionsController < ApplicationController
 
   #GET administration/permission/edit/:id
   def edit
-    @permission = Permission.find_by_id(params[:id])
-    controllers = Permission.controller_list
+    @permission = Permission.find_by_id(params[:id]).decorate
     respond_to do |format|
-      format.html {render :action => 'edit', :locals =>{:controllers => controllers}}
+      format.html {render :action => 'edit', :locals =>{:controllers => load_controller_list}}
     end
   end
 
   #PUT administration/permission/:id
   def update
-    @permission = Permission.find(params[:id])
+    @permission = Permission.find(params[:id]).decorate
     respond_to do |format|
       if @permission.update_attributes(permission_params)
         flash[:notice] = t(:successful_update)
@@ -65,7 +66,7 @@ class PermissionsController < ApplicationController
           :status => :created, :location => @permission}
       else
 
-        format.html  {render :action => 'edit', :locals =>{:controllers =>  Permission.controller_list}}
+        format.html  {render :action => 'edit', :locals =>{:controllers =>  load_controller_list}}
         format.json  { render :json => @permission.errors,
           :status => :unprocessable_entity }
       end
@@ -84,9 +85,9 @@ class PermissionsController < ApplicationController
   end
   #Other methods
   def list
-    permissions = Permission.permission_list(params[:role_name])
+    @permissions = Permission.select('*').decorate(context: {role_name: params[:role_name], controller_list: load_controller_list})
     respond_to do |format|
-      format.html {render :action => 'list', :locals => {:permissions => permissions[:permission_hash],:selected_permissions => permissions[:selected_permissions]}}
+      format.html {render :action => 'list'}
     end
   end
 

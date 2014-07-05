@@ -7,6 +7,7 @@ class MyController < ApplicationController
   before_filter :authenticate_user!
   before_filter :find_user
   helper_method :sort_column, :sort_direction
+  helper ProjectsHelper
   include MyHelper
 
   def show

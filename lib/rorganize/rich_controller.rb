@@ -46,5 +46,14 @@ module Rorganize
       [session_json, session_sql]
     end
 
+    def load_controller_list
+      controllers = Rails.application.routes.routes.collect { |route| route.defaults[:controller] }
+      unused_controller = %w(rorganize my)
+      controllers = controllers.uniq!.select { |controller_name| controller_name && !controller_name.match(/.*\/.*/) && !unused_controller.include?(controller_name) }
+      controllers.collect do |controller|
+        controller.capitalize
+      end
+    end
+
   end
 end

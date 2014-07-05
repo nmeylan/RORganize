@@ -5,24 +5,31 @@
 
 module PermissionsHelper
 
-  def critical_permissions(permission_name)
-    #Contains array with critical actions
-    critical_permissions = %w(destroy delete remove public)
-    critical_permissions.each do |permission|
-      if permission_name.include?(permission) || permission_name.include?(permission.capitalize)
-        return true
-      end
-    end
-    return false
-  end
-
   def critical_controllers(controller_name)
     critical_controllers = %w(administration permissions roles settings trackers)
-    critical_controllers.each do |controller|
-      if controller_name.eql?(controller) || controller_name.eql?(controller.capitalize)
-        return true
+    critical_controllers.include?(controller_name.downcase)
+  end
+
+  def list(permissions_hash, selected_permissions)
+    safe_concat(form_tag({:action => 'update_permissions', :controller => 'permissions'}) do
+      content_tag :div, class: 'box' do
+        permissions_hash.sort { |x, y| x <=> y }.collect do |controller, permissions|
+          safe_concat content_tag :fieldset, &Proc.new {
+            safe_concat content_tag :legend, &Proc.new {
+              safe_concat(link_to glyph('', 'check'), '#', {:id => 'check_all_'+controller.to_s, 'cb_checked' => 'b', :title => 'check all'})
+              safe_concat(content_tag :span, nil, {class: 'octicon octicon-flame'}) if critical_controllers(controller)
+              safe_concat(link_to controller, '#', {:class => 'icon icon-expanded toggle', :id => controller})
+            }
+            safe_concat content_tag :div, class: "content #{controller}", &Proc.new {
+              permissions.collect do |permission|
+                safe_concat check_box_tag "[permissions][#{permission.name}]", permission.id, selected_permissions.include?(permission.id)
+                safe_concat content_tag :label, permission.edit_link
+              end.join.html_safe
+            }
+          }
+        end.join.html_safe
       end
-    end
-    return false
+    end)
+    submit_tag 'save'
   end
 end

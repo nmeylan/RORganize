@@ -4,5 +4,5 @@
 # File: my_helper.rb
 
 module MyHelper
-  
+
 end
