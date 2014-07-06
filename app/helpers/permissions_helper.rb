@@ -11,8 +11,8 @@ module PermissionsHelper
   end
 
   def list(permissions_hash, selected_permissions)
-    safe_concat(form_tag({:action => 'update_permissions', :controller => 'permissions'}) do
-      content_tag :div, class: 'box' do
+    form_tag({:action => 'update_permissions', :controller => 'permissions'}) do
+      safe_concat content_tag :div, class: 'box', &Proc.new {
         permissions_hash.sort { |x, y| x <=> y }.collect do |controller, permissions|
           safe_concat content_tag :fieldset, &Proc.new {
             safe_concat content_tag :legend, &Proc.new {
@@ -28,8 +28,8 @@ module PermissionsHelper
             }
           }
         end.join.html_safe
-      end
-    end)
-    submit_tag 'save'
+      }
+      safe_concat submit_tag 'save'
+    end
   end
 end

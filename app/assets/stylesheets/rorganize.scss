@@ -133,6 +133,17 @@
   clear: both;
 }
 
+.help{
+  border: 1px solid #97c1da;
+  border-radius: 4px;
+  color: #264c72;
+  background-color: #d0e3ef;
+  background-image: -moz-linear-gradient(#d8ebf8, #d0e3ef);
+  background-image: -webkit-linear-gradient(#d8ebf8, #d0e3ef);
+  background-image: linear-gradient(#d8ebf8, #d0e3ef);
+  padding: 4px;
+}
+
 /*
 *  FLASH MESSAGE
 */

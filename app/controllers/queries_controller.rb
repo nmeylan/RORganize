@@ -4,7 +4,6 @@
 # File: queries_controller.rb
 
 class QueriesController < ApplicationController
-  #  before_filter :find_project
   before_filter :check_permission
   before_filter :check_query_permission, :only => [:show, :edit, :destroy, :update]
   before_filter { |c| c.top_menu_item('administration') }
@@ -112,7 +111,7 @@ class QueriesController < ApplicationController
   end
 
   def check_query_permission
-    @query = Query.find_by_id(params[:id])
+    @query = Query.find_by_id(params[:id]).decorate
     if (@query.is_public && !current_user.allowed_to?('public_queries', 'Queries', @project)) ||
         (!@query.is_public && !@query.author_id.eql?(current_user.id))
       render_403

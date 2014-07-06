@@ -51,6 +51,10 @@
         $(".chzn-select-deselect").chosen({allow_single_deselect: true});
 
 
+        //bind info tag
+        bind_info_tag();
+
+
     });
     jQuery(document).ajaxSend(function (e, xhr, options) {
         jQuery("#loading").show();
@@ -128,7 +132,6 @@
                     this.checked = false;
             }
         });
-
     }
 
     //Override jquery-rails confirm behaviour.
@@ -144,8 +147,7 @@
             }
         });
         return false;
-    }
-
+    };
 
 })(jQuery);
 
@@ -156,7 +158,7 @@ function display_flash() {
         el = jQuery(this);
         if (el.text().trim() != "") {
             el.css("display", "block");
-            el.find(".close_flash").click(function(e){
+            el.find(".close_flash").click(function (e) {
                 jQuery(this).parent().fadeOut();
             });
         } else {
@@ -419,7 +421,7 @@ function multi_toogle(selector) {
         if (self_element.hasClass('icon-collapsed')) {
             self_element.switchClass('icon-collapsed', 'icon-expanded');
             self_element.find("> .octicon").switchClass('octicon-chevron-right', 'octicon-chevron-down');
-        }else {
+        } else {
             self_element.switchClass('icon-expanded', 'icon-collapsed');
             self_element.find("> .octicon").switchClass('octicon-chevron-down', 'octicon-chevron-right');
         }
@@ -790,5 +792,19 @@ function save_edit_filter(link_id, form_id) {
         })
 
     })
+}
+
+function bind_info_tag() {
+    jQuery("span.octicon-info").click(function (e) {
+        e.preventDefault();
+        var el = jQuery(this);
+
+        if (el.next().length == 0)
+            el.parent().append("<span class='help'>" + el.attr('title') + "</span>");
+        else
+            el.next().fadeOut(function () {
+                this.remove()
+            });
+    });
 }
 

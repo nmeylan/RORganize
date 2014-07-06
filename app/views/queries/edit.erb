@@ -22,6 +22,7 @@
       <p>
         <%= f.label :is_public %>
         <%= f.check_box :is_public%>
+        <%= info_tag t(:text_query_is_public) %>
       </p>
     <% else %>
       <%= hidden_field :query, :is_public, {:value => false} %>
@@ -29,6 +30,7 @@
     <p>
       <%= f.label :is_for_all %>
       <%= f.check_box :is_for_all%>
+      <%= info_tag t(:text_query_is_for_all) %>
     </p>
     <%= hidden_field :query, :object_type%>
   </div>

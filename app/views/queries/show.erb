@@ -5,7 +5,7 @@
 # File: show.erb
 %>
 <%= contextual "#{t(:label_query)} : # #{@query.id}" do %>
-    <%= link_to_with_permissions(glyph(t(:link_edit), 'pencil'), edit_query_path(@query.id), nil, {:class => 'icon icon-edit'}) %>
+    <%= @query.edit_link %>
 <% end %>
 <table class="detail" style="width:100%">
   <tr>
@@ -25,4 +25,4 @@
 <br/>
 <hr/><br/>
 <h2><%= t(:field_description) %> :</h2>
-<%= raw !@query.description.eql?('') ? textile_to_html(@query.description) : '-' %>
+<%= @query.display_description %>

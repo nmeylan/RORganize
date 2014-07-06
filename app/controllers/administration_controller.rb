@@ -9,7 +9,7 @@ class AdministrationController < ApplicationController
   before_filter { |c| c.menu_context :admin_menu }
   before_filter { |c| c.menu_item(params[:controller], params[:action]) }
   before_filter {|c| c.top_menu_item('administration')}
-  include AdministrationHelper
+  helper QueriesHelper
 
   def index
     respond_to do |format|
@@ -18,7 +18,7 @@ class AdministrationController < ApplicationController
   end
 
   def public_queries
-    @queries = Query.where('is_public = ? AND is_for_all = ?', true, true)
+    @queries = Query.where('is_public = ? AND is_for_all = ?', true, true).decorate
     respond_to do |format|
       format.html
     end

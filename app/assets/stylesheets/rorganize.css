@@ -27,6 +27,9 @@ a:hover .medium-octicon, a:hover .mega-octicon, a:hover .octicon {
 a .octicon:hover {
   color: #484848; }
 
+.octicon-info:hover {
+  cursor: pointer; }
+
 .mega-octicon {
   font: normal normal 32px octicons;
   line-height: 1;
@@ -2297,6 +2300,16 @@ html > body .form p {
 
 .clear-both {
   clear: both; }
+
+.help {
+  border: 1px solid #97c1da;
+  border-radius: 4px;
+  color: #264c72;
+  background-color: #d0e3ef;
+  background-image: -moz-linear-gradient(#d8ebf8, #d0e3ef);
+  background-image: -webkit-linear-gradient(#d8ebf8, #d0e3ef);
+  background-image: linear-gradient(#d8ebf8, #d0e3ef);
+  padding: 4px; }
 
 /*
 *  FLASH MESSAGE

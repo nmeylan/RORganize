@@ -10,6 +10,7 @@ class SettingsController < ApplicationController
   before_filter { |c| c.menu_context :project_menu }
   before_filter { |c| c.menu_item(params[:controller]) }
   before_filter {|c| c.top_menu_item('projects')}
+  helper QueriesHelper
   include Rorganize::ModuleManager::ModuleManagerHelper
   #GET project/:project_identifier/settings/
   def index
@@ -35,7 +36,7 @@ class SettingsController < ApplicationController
   end
 
   def public_queries
-    @queries = Query.public_queries(@project.id)
+    @queries = Query.public_queries(@project.id).decorate
     respond_to do |format|
       format.html
     end
@@ -74,7 +75,7 @@ class SettingsController < ApplicationController
   private
 
   def check_queries_permission
-    unless current_user.allowed_to?(params[:action], 'Queries', @project)
+    unless current_user.allowed_to?('index', 'Queries', @project)
       render_403
     end
   end

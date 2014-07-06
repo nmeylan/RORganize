@@ -8,7 +8,7 @@ class MyController < ApplicationController
   before_filter :find_user
   helper_method :sort_column, :sort_direction
   helper ProjectsHelper
-  include MyHelper
+  helper QueriesHelper
 
   def show
     order = sort_column + ' ' + sort_direction
@@ -69,7 +69,7 @@ class MyController < ApplicationController
   end
 
   def custom_queries
-    @queries = Query.where(['author_id = ? AND is_public = ?', current_user.id, false])
+    @queries = Query.where(['author_id = ? AND is_public = ?', current_user.id, false]).decorate
     respond_to do |format|
       format.html {}
     end
