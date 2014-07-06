@@ -11,7 +11,6 @@ class MembersController < ApplicationController
   before_filter {|c| c.top_menu_item('projects')}
   #GET /projects/
   def index
-    p @project
     @members = Member.eager_load(:role, :user).where(:project_id =>  @project.id).decorate(context: {project: @project, roles:
         Role.select('*')})
     respond_to do |format|

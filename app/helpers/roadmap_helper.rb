@@ -36,7 +36,7 @@ module RoadmapHelper
         end
         xml.childtasks{
           issue.children.each do |child|
-            if child.start_date <= issue.due_date
+            if child.start_date && child.start_date <= issue.due_date
               issues.delete(child)
               task_builder(xml,child,issues)
             end

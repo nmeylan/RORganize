@@ -5,6 +5,7 @@
 
 
 class RoadmapController < ApplicationController
+  helper VersionsHelper
   include RoadmapHelper
   before_filter :find_project
   before_filter { |c| c.menu_context :project_menu }
@@ -12,10 +13,10 @@ class RoadmapController < ApplicationController
   before_filter { |c| c.top_menu_item('projects') }
   #GET/project/:project_id/roadmap
   def index
-    @versions = @project.versions.order(:position).to_a << Version.new(name: 'Unplanned')
-    data = @project.roadmap
+    @versions = Version.where(project_id: @project.id).order(:position).decorate
+    @versions.to_a << Version.new(name: 'Unplanned').decorate
     respond_to do |format|
-      format.html { render :action => 'index', :locals => {:versions_details => data} }
+      format.html { render :action => 'index'}
     end
   end
 
@@ -34,6 +35,11 @@ class RoadmapController < ApplicationController
   def gantt
     @data = gantt_hash(Version.define_gantt_data(@project))
     gon.Gantt_XML = @data
+  end
+
+  private
+  def find_project
+    @project = Project.eager_load(:versions, :attachments).where(slug: params[:project_id])[0].decorate
   end
 
 end

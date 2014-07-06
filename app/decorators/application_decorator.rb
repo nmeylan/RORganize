@@ -1,12 +1,15 @@
 class ApplicationDecorator < Draper::Decorator
   include Rorganize::PermissionManager::PermissionHandler
 
+  def description?
+    model.description && !model.description.eql?('')
+  end
 
   def display_description
-    if model.description.eql?('')
-      '-'
+    if description?
+      h.textile_to_html(model.description)
     else
-        h.textile_to_html(model.description)
+      '-'
     end
   end
 
@@ -56,7 +59,7 @@ class ApplicationDecorator < Draper::Decorator
     if model.position < collection_size
       h.link_to h.glyph('', 'arrow-down'), path, {:class => 'icon icon-down_arrow change_position inc'}
     else
-      h.link_to h.glyph('', 'arrow-down', 'disabled'), '#' ,  {:class => 'icon icon-disabled_down_arrow'}
+      h.link_to h.glyph('', 'arrow-down', 'disabled'), '#', {:class => 'icon icon-disabled_down_arrow'}
     end
   end
 

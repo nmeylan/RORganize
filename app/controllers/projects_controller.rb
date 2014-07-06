@@ -144,7 +144,8 @@ class ProjectsController < ApplicationController
   end
 
   def find_project_with_associations
-    @project = Project.eager_load(:attachments, members: [:user, :role]).where(slug: params[:project_id])[0].decorate
+    id = params[:project_id] ? params[:project_id] : params[:id]
+    @project = Project.eager_load(:attachments, members: [:user, :role]).where(slug: id)[0].decorate
   end
 
 

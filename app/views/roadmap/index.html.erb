@@ -7,10 +7,5 @@
 
 <%= contextual t(:label_roadmap) %>
 
-<% @versions.each do |version| %>
-  <%= render :partial => 'roadmap/version_detail', :locals => {:versions_details => versions_details[version.id],:version => version} %>
-  <br />
-  <hr />
-  <br />
-<% end %>
+<%= @project.display_roadmap(@versions) %>
   <%= render :partial => 'roadmap/sidebar' %>

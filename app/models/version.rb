@@ -81,7 +81,7 @@ class Version < RorganizeActiveRecord
     data = Hash.new { |h, k| h[k] = [] }
     versions = project.versions
     versions.each do |version|
-      data[version] = version.issues.includes(:parent, :children)
+      data[version] = version.issues.eager_load(:parent, :children)
     end
     data
   end
