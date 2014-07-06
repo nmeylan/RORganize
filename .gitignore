@@ -20,6 +20,7 @@
 config/database.yml
 config/database.yml
 
+
 /public/assets
 /public/system
 /public/.htaccess
@@ -29,3 +30,4 @@ config/initializers/secret_token.rb
 /vendor/*
 
 /.idea/*
+/app/assets/stylesheets/rorganize.css
