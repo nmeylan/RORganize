@@ -18,7 +18,7 @@ module VersionsHelper
       safe_concat version.display_description
       safe_concat content_tag :fieldset, class: 'margin_fieldset', &Proc.new {
         safe_concat content_tag :legend, &Proc.new {
-          link_to glyph(t(:link_related_request), 'chevron-down'), '#', {:class => 'icon icon-expanded toggle', :id => "version-#{version.diplay_id}"}
+          link_to glyph(t(:link_related_request), 'chevron-down'), '#', {:class => 'icon icon-expanded toggle', :id => "version-#{version.display_id}"}
         }
         safe_concat content_tag :div, class: "content version-#{version.id}", &Proc.new {
           content_tag :ul do
@@ -34,7 +34,7 @@ module VersionsHelper
 
   def version_overview(version, closed_issues_count, opened_issues_count, percent)
     content_tag :div, class: 'version_overview' do
-      safe_concat content_tag :h1, version.name, id: "v-#{version.diplay_id}"
+      safe_concat content_tag :h1, version.name, id: "v-#{version.display_id}"
       safe_concat content_tag :div, version.target_date, {class: 'version_due_date'}
       safe_concat clear_both
       safe_concat content_tag :span, class: 'progress_bar', &Proc.new {

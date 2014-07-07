@@ -62,7 +62,7 @@ module ProjectsHelper
   end
 
 
-  def list(projects, allow_to_star)
+  def project_list(projects, allow_to_star)
     content_tag :ul, class: "project_list #{allow_to_star ? 'sortable' : '' }" do
       projects.collect do |project|
         content_tag :li, class: "#{project.is_archived ? 'archived' : ''} project", id: project.id do

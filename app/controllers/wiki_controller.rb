@@ -43,6 +43,7 @@ class WikiController < ApplicationController
   def create
     @wiki = Wiki.new
     @wiki.project_id = @project.id
+    @wiki.home_page = WikiPage.new
     respond_to do |format|
       if @wiki.save
         flash[:notice] = t(:successful_creation)

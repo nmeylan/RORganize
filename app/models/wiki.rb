@@ -4,6 +4,7 @@
 # File: wiki.rb
 
 class Wiki < RorganizeActiveRecord
+  include Rorganize::AbstractModelCaption
 
   #Relations
   belongs_to :home_page, :class_name => 'WikiPage', :foreign_key => :home_page_id
@@ -14,6 +15,10 @@ class Wiki < RorganizeActiveRecord
   #Triggers
   after_create :create_journal 
   after_destroy :destroy_journal
+
+  def caption
+    self.home_page.caption
+  end
 
   def self.organize_pages(organization)
     page_ids = organization.keys

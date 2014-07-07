@@ -21,7 +21,7 @@ class ProjectDecorator < ApplicationDecorator
   end
 
   def display_version_overview
-    versions = model.current_versions
+    versions = model.current_versions.decorate
     condition = %Q(`versions`.`id` IN (#{current_versions.collect { |version| version.id }.join(',')})) if versions.to_a.any?
     versions_overviews = Version.overviews(self.id, condition)
     structure = Hash.new { |k, v| k[v] = {} }

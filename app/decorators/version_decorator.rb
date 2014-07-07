@@ -9,7 +9,7 @@ class VersionDecorator < ApplicationDecorator
     end
   end
 
-  def diplay_id
+  def display_id
     model.id ? model.id : 'unplanned'
   end
 end
