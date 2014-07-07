@@ -6,7 +6,7 @@
 %>
 
 <%= contextual t(:link_roles) do%>
-    <%= link_to_with_permissions(glyph(t(:link_new_role), 'plus'), new_role_path,  nil, {}) %>
+    <%= @roles.new_link %>
 <% end %>
 
 <%= render :partial => 'roles/list' %>

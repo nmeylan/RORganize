@@ -11,7 +11,7 @@ class RolesController < ApplicationController
 
   #Get /administration/roles
   def index
-    @roles = Role.select('*')
+    @roles = Role.select('*').decorate
     respond_to do |format|
       format.html
     end
