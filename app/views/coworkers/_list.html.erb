@@ -33,7 +33,7 @@
           <tr class="odd_even member_tr <%= project.gsub(' ', '_') %>" data-link="<%= display_activities_coworkers_path(coworker.id) %>">
             <td><%= check_box_tag 'user-'+coworker.user.id.to_s, coworker.user.id %></td>
             <td class="list_center name"><%= coworker.id %></td>
-            <td class="list_center name"><%= coworker.name %></td>
+            <td class="list_center name"><%= coworker.caption %></td>
             <td class="list_center name"><%= project %></td>
             <td class="list_center name"><%= coworker.role.name %></td>
           </tr>
