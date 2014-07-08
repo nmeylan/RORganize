@@ -66,9 +66,9 @@ class SettingsController < ApplicationController
       reload_enabled_module(@project.id)
     end
     @modules = Rorganize::ModuleManager.modules(:project).module_items
-    @checked_modules = @project.enabled_modules.collect{|mod| mod.name}
+    enabled_modules = @project.enabled_modules.collect{|mod| mod.name}
     respond_to do |format|
-      format.html
+      format.html {render action: 'modules', locals: {enabled_modules: enabled_modules}}
     end
   end
   #Private methods

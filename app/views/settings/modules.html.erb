@@ -15,9 +15,7 @@
     <% @modules.each do |mod| %>
       <li>
         <label>
-          <%= check_box_tag 'modules[name][]',
-            "#{mod.controller}_#{mod.action}_#{mod.name}",
-            @checked_modules.include?(mod.name.to_s) %>
+          <%= check_box_tag 'modules[name][]',"#{mod.controller}_#{mod.action}_#{mod.name}", enabled_modules.include?(mod.name.to_s) %>
           <%= mod.name.capitalize %>
         </label>
       </li>

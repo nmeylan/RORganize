@@ -1,18 +1,18 @@
 # Author: Nicolas Meylan
 # Date: 2 févr. 2013
 # Encoding: UTF-8
-# File: roadmap_controller.rb
+# File: roadmaps_controller.rb
 
 
-class RoadmapController < ApplicationController
+class RoadmapsController < ApplicationController
   helper VersionsHelper
-  include RoadmapHelper
+  include RoadmapsHelper
   before_filter :find_project
   before_filter { |c| c.menu_context :project_menu }
   before_filter { |c| c.menu_item(params[:controller]) }
   before_filter { |c| c.top_menu_item('projects') }
-  #GET/project/:project_id/roadmap
-  def index
+  #GET/project/:project_id/roadmaps
+  def show
     @versions = Version.where(project_id: @project.id).order(:position).decorate
     @versions.to_a << Version.new(name: 'Unplanned').decorate
     respond_to do |format|

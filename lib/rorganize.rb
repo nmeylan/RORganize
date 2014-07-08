@@ -16,7 +16,7 @@ unless $0.end_with?('rake')
     #Client id must be declare as following: menu_controller_action
     menu.add(:overview, I18n.t(:label_overview), {:controller => 'projects', :action => 'overview'}, {:id => 'menu_projects_overview'})
     menu.add(:activity, I18n.t(:label_activity), {:controller => 'projects', :action => 'activity'}, {:id => 'menu_projects_activity'})
-    menu.add(:roadmap, I18n.t(:label_roadmap), {:controller => 'roadmap', :action => 'index'}, {:id => 'menu_roadmap'})
+    menu.add(:roadmaps, I18n.t(:label_roadmap), {:controller => 'roadmaps', :action => 'show'}, {:id => 'menu_roadmaps'})
     menu.add(:requests, I18n.t(:label_request_plural), {:controller => 'issues', :action => 'index'}, {:id => 'menu_issues'})
     menu.add(:wiki, I18n.t(:label_wiki), {:controller => 'wiki', :action => 'index'}, {:id => 'menu_wiki'})
     #  menu.add(t(:label_test_plural), "#")

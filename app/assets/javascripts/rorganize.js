@@ -30,7 +30,7 @@
             case 'projects' :
                 on_load_projects_scripts();
                 break;
-            case 'roadmap' :
+            case 'roadmaps' :
                 on_load_roadmap_scripts();
                 break;
             case 'users' :

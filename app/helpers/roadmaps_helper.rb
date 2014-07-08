@@ -1,8 +1,8 @@
 # Author: Nicolas Meylan
 # Date: 2 févr. 2013
 # Encoding: UTF-8
-# File: roadmap_helper.rb
-module RoadmapHelper
+# File: roadmaps_helper.rb
+module RoadmapsHelper
   require 'nokogiri'
   require 'open-uri'
   def gantt_hash(hash)

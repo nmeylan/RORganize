@@ -54,7 +54,7 @@ RORganize::Application.routes.draw do
         post 'toolbox'
       end
     end
-    resources :roadmap do
+    resource :roadmap do
       collection do
         get 'calendar'
         get 'version_description', :path => 'version_description/:id'
