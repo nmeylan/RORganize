@@ -113,6 +113,29 @@ module IssuesHelper
     paginate(collection, session[:controller_issues_per_page], issues_path(@project.slug))
   end
 
+  def simple_list(collection)
+    content_tag :table, {class: 'issue list'}, &Proc.new {
+      safe_concat content_tag :tr, class: 'header', &Proc.new {
+        safe_concat content_tag :th, '#'
+        safe_concat content_tag :th, 'Tracker'
+        safe_concat content_tag :th, 'Project'
+        safe_concat content_tag :th, 'Subject'
+        safe_concat content_tag :th, 'Status'
+        safe_concat content_tag :th, 'Done'
+      }
+      safe_concat(collection.collect do |issue|
+        content_tag :tr, class: "odd_even issue_tr #{'close' if issue.status.is_closed?}" do
+          safe_concat content_tag :td, issue.id, class: 'list_center id'
+          safe_concat content_tag :td, issue.tracker, class: 'list_center tracker'
+          safe_concat content_tag :td, link_to(issue.project.name, overview_projects_path(issue.project.slug)), class: 'list_center project'
+          safe_concat content_tag :td, link_to(issue.caption, issue_path(issue.project.slug, issue.id)), {class: 'name', id: issue.id}
+          safe_concat content_tag :td, issue.status.caption, class: 'list_center status'
+          safe_concat content_tag :td, issue.done, class: 'list_center done'
+        end
+      end.join.html_safe)
+    }
+  end
+
   def issue_toolbox(issues_toolbox)
     toolbox_tag(IssueToolbox.new(issues_toolbox, @project, current_user))
   end

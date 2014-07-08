@@ -156,7 +156,7 @@ class User < RorganizeActiveRecord
   def latest_assigned_issues(order, limit)
     Issue.select('issues.*')
     .where('issues.id IN (?)', Issue.select('issues.id').where('assigned_to_id = ?', self.id).order('issues.id DESC'))
-    .includes(:tracker, :project, :status => [:enumeration])
+    .eager_load(:tracker, :project, :status => [:enumeration])
     .order(order).limit(limit)
   end
 

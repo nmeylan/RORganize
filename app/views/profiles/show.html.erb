@@ -1,0 +1,9 @@
+<%#
+# Author: Nicolas Meylan
+# Date: 26 janv. 2013
+# Encoding: UTF-8
+# File: show.html.erb
+%>
+
+<%= render :partial => 'profiles/sidebar' %>
+<%= render partial: 'profiles/overview', locals: {issues: issues, activities: activities, projects: projects} %>

@@ -18,8 +18,8 @@
             case 'members' :
                 on_load_members_scripts();
                 break;
-            case 'my' :
-                on_load_my_scripts();
+            case 'profiles' :
+                on_load_profiles_scripts();
                 break;
             case 'issues_statuses' :
                 on_load_issues_statuses_scripts();

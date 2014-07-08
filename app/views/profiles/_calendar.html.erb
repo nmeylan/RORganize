@@ -7,9 +7,9 @@
 <div id="calendar_header">
   <p>
 
-    <%= link_to "<< #{t(:link_prev_month)}", my_spent_time_my_index_path(current_user.slug), {:style => 'float:left', :class => 'change_month ', :id => "#{@date.prev_month}"} %>
+    <%= link_to "<< #{t(:link_prev_month)}", spent_time_profile_path, {:style => 'float:left', :class => 'change_month ', :id => "#{@date.prev_month}"} %>
     <%= @date.strftime('%B, %Y') %>
-    <%= link_to "#{t(:link_next_month)} >>", my_spent_time_my_index_path(current_user.slug), {:style => 'float:right', :class => 'change_month', :id => "#{@date.next_month}"} %>
+    <%= link_to "#{t(:link_next_month)} >>", spent_time_profile_path, {:style => 'float:right', :class => 'change_month', :id => "#{@date.next_month}"} %>
   </p>
 
 </div>

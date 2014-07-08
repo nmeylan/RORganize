@@ -6,33 +6,36 @@
 %>
 
 <%= form_for(@project, :url => {:controller => 'settings', :action => 'update_project_informations', :project_id => @project.slug},
-  :html => {:class => 'form', :multipart => true}, :method => :put) do |f|%>
-  <%= raw error_messages(@project.errors.full_messages) %>
-  <div class="box">
-    <p>
-      <label for="project_name"><%=t(:field_name)%><span class ="required"> *</span></label>
-      <%= f.text_field :name, :size => 80 %>
-    </p>
-    <p>
-      <label for="project_identifier"><%=t(:field_identifier)%><span class ="required"> *</span></label>
-      <%= f.text_field :identifier, :size => 80 %>
-    </p>
-    <p>
-      <%= f.label :description, t(:field_description) %>
-      <%= f.text_area :description, :class => 'fancyEditor' %>
-    </p>
-    <div id="attachments">
-      <%= render :partial => 'shared/show_attachments', locals: {object: @project, type: 'project', :attachments => @project.attachments} %>
-    </div>
-  </div>
-  <p>
-  <fieldset class="settings" >
-    <legend><%= t(:link_trackers)%></legend>
+             :html => {:class => 'form', :multipart => true}, :method => :put) do |f| %>
+    <%= raw error_messages(@project.errors.full_messages) %>
+    <div class="box">
+      <p>
+        <label for="project_name"><%= t(:field_name) %><span class="required"> *</span></label>
+        <%= f.text_field :name, :size => 80 %>
+      </p>
 
-    <% @trackers.each do |tracker| %>
-      <label class="normal_label"><%= tracker.name %></label><%= check_box_tag "[trackers][#{tracker.name}]", tracker.id, @tracker_ids.include?(tracker.id)%>
-    <% end %>
-  </fieldset>
-  </p>
-  <%= submit_tag t(:button_save) %>
+      <p>
+        <label for="project_identifier"><%= t(:field_identifier) %><span class="required"> *</span></label>
+        <%= f.text_field :identifier, :size => 80 %>
+      </p>
+
+      <p>
+        <%= f.label :description, t(:field_description) %>
+        <%= f.text_area :description, :class => 'fancyEditor' %>
+      </p>
+
+      <div id="attachments">
+        <%= render :partial => 'shared/show_attachments', locals: {object: @project, type: 'project', :attachments => @project.attachments} %>
+      </div>
+    </div>
+    <p>
+    <fieldset class="settings">
+      <legend><%= t(:link_trackers) %></legend>
+
+      <% @trackers.each do |tracker| %>
+          <label class="normal_label"><%= tracker.name %></label><%= check_box_tag "[trackers][#{tracker.name}]", tracker.id, @tracker_ids.include?(tracker.id) %>
+      <% end %>
+    </fieldset>
+    </p>
+    <%= submit_tag t(:button_save) %>
 <% end %>

@@ -1,8 +1,8 @@
 # Author: Nicolas Meylan
 # Date: 1 mars 2013
 # Encoding: UTF-8
-# File: my_helper.rb
+# File: profiles_helper.rb
 
-module MyHelper
+module ProfilesHelper
 
 end

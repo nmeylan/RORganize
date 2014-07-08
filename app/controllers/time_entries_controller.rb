@@ -62,7 +62,7 @@ class TimeEntriesController < ApplicationController
     success = trusted && @time_entry.destroy
     respond_to do |format|
       format.js do
-        js_redirect_to url_for(:controller => :my, :action => :my_spent_time, :id => current_user.slug, :date => params[:date])
+        js_redirect_to url_for(:controller => :profiles, :action => :spent_time, :id => current_user.slug, :date => params[:date])
         trusted ? (success ? flash[:notice] = t(:successful_deletion):  flash[:alert] = t(:failure_deletion)) : flash[:alert] = t(:text_time_entry_not_owner_deletion)
       end
     end

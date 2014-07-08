@@ -46,17 +46,17 @@ class Issue < RorganizeActiveRecord
   end
 
   #Assigned open requests on any open project
-  def self.current_user_assigned_issues(order)
+  def self.user_assigned_issues(user, order)
     return Issue.eager_load([:tracker, :version, :assigned_to, :category, :project, :status => [:enumeration]])
-    .where(:assigned_to_id => User.current.id, :status_id => IssuesStatus.opened_statuses_id, :project_id => Project.opened_projects_id)
+    .where(:assigned_to_id => user.id, :status_id => IssuesStatus.opened_statuses_id, :project_id => Project.opened_projects_id)
     .order(order)
 
   end
 
   #Created open requests on any open project
-  def self.current_user_submitted_issues(order)
-    return Issue.includes([:tracker, :version, :assigned_to, :category, :status => [:enumeration]])
-    .where(:author_id => User.current.id, :status_id => IssuesStatus.opened_statuses_id, :project_id => Project.opened_projects_id)
+  def self.user_submitted_issues(user, order)
+    return Issue.eager_load([:tracker, :version, :assigned_to, :category, :project, :status => [:enumeration]])
+    .where(:author_id => user.id, :status_id => IssuesStatus.opened_statuses_id, :project_id => Project.opened_projects_id)
     .order(order)
 
   end

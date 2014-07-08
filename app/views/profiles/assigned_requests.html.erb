@@ -5,11 +5,11 @@ Encoding: UTF-8
 File: my_assigned_requests
 %>
 
-<%= render :partial => 'my/sidebar' %>
+<%= render :partial => 'profiles/sidebar' %>
 <%= contextual t(:link_my_assigned_requests) %>
 <% if issues %>
     <div class="my">
-      <%= render :partial => 'issues/list_per_project', :locals => {:issues => issues} %>
+      <%= issues.display_simple_list %>
     </div>
 <% else %>
 <% end %>

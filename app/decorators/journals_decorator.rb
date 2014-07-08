@@ -1,0 +1,4 @@
+class JournalsDecorator < ApplicationCollectionDecorator
+
+
+end

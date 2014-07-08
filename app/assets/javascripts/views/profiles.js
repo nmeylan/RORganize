@@ -3,14 +3,14 @@
  * Date: 14/12/13
  * Time: 17:08
  */
-function on_load_my_scripts() {
+function on_load_profiles_scripts() {
 
-    my_spent_time();
+    profiles_spent_time();
 
-    my_project();
+    profiles_project();
 }
 
-function my_spent_time(){
+function profiles_spent_time(){
     bind_calendar_button();
     jQuery('.log_time').click(function (e) {
         e.preventDefault();
@@ -21,7 +21,7 @@ function my_spent_time(){
     });
 }
 
-function my_project(){
+function profiles_project(){
     jQuery(".sortable").sortable();
     bind_save_project_position();
     bind_star_project();

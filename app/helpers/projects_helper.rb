@@ -89,9 +89,9 @@ module ProjectsHelper
     safe_concat content_tag :div, class: 'star_project', &Proc.new {
       button_tag &Proc.new {
         if project.starred?
-          link_to(glyph(t(:link_unstar), 'star'), star_project_my_index_path(project.id), {:class => 'icon icon-fav starred star', :method => :post, :remote => true})
+          link_to(glyph(t(:link_unstar), 'star'), star_project_profile_path(project.id), {:class => 'icon icon-fav starred star', :method => :post, :remote => true})
         else
-          link_to(glyph(t(:link_star), 'star'), star_project_my_index_path(project.id), {:class => 'icon icon-fav-off star', :method => :post, :remote => true})
+          link_to(glyph(t(:link_star), 'star'), star_project_profile_path(project.id), {:class => 'icon icon-fav-off star', :method => :post, :remote => true})
         end
       }
     }

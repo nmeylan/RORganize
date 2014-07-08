@@ -1,50 +1,46 @@
 # Author: Nicolas Meylan
 # Date: 10 oct. 2012
 # Encoding: UTF-8
-# File: my_controller.rb
+# File: profiles_controller.rb
 
-class MyController < ApplicationController
+class ProfilesController < ApplicationController
   before_filter :authenticate_user!
   before_filter :find_user
   helper_method :sort_column, :sort_direction
   helper ProjectsHelper
+  helper IssuesHelper
   helper QueriesHelper
 
   def show
     order = sort_column + ' ' + sort_direction
     #Load favorites projects
-    @projects = current_user.owned_projects(nil).decorate(context: {allow_to_star: false})
+    projects = @user.owned_projects('starred').decorate(context: {allow_to_star: false})
     #Load latest assigned requests
-    issues = current_user.latest_assigned_issues(order, 5)
+    issues = @user.latest_assigned_issues(order, 5).decorate
     #Load latest activities
-    activities =  current_user.latest_activities(5)
+    activities =  @user.latest_activities(5)
     respond_to do |format|
-      format.html { render :action => 'show', :locals => {:issues => issues, :activities => activities} }
-      format.js do
-        render :update do |page|
-          page.replace 'issues_content', :partial => 'issues/list_per_project', :locals => {:issues => issues}
-        end
-      end
+      format.html { render :action => 'show', :locals => {issues: issues, activities: activities, projects: projects} }
     end
   end
 
-  def my_assigned_requests
+  def assigned_requests
     order = sort_column + ' ' + sort_direction
-    issues = Issue.current_user_assigned_issues(order)
+    issues = Issue.user_assigned_issues(@user, order).decorate
     respond_to do |format|
-      format.html { render :action => 'my_assigned_requests', :locals => {:issues => issues} }
+      format.html { render :action => 'assigned_requests', :locals => {:issues => issues} }
     end
   end
 
-  def my_activities
+  def activities
 
   end
 
-  def my_submitted_requests
+  def submitted_requests
     order = sort_column + ' ' + sort_direction
-    issues = Issue.current_user_submitted_issues(order)
+    issues = Issue.user_submitted_issues(@user, order).decorate
     respond_to do |format|
-      format.html { render :action => 'my_submitted_requests', :locals => {:issues => issues} }
+      format.html { render :action => 'submitted_requests', :locals => {:issues => issues} }
     end
   end
 
@@ -69,21 +65,21 @@ class MyController < ApplicationController
   end
 
   def custom_queries
-    @queries = Query.where(['author_id = ? AND is_public = ?', current_user.id, false]).decorate
+    @queries = Query.where(['author_id = ? AND is_public = ?', @user.id, false]).decorate
     respond_to do |format|
       format.html {}
     end
   end
 
-  def my_projects
-    @projects = current_user.owned_projects(nil).decorate(context: {allow_to_star: true})
+  def projects
+    @projects = @user.owned_projects(nil).decorate(context: {allow_to_star: true})
     respond_to do |format|
-      format.html { render :action => 'my_projects' }
+      format.html { render :action => 'projects' }
     end
   end
 
   def star_project
-    members= current_user.members
+    members= @user.members
     member = members.select { |member| member.project_id.eql?(params[:project_id].to_i) }.first
     member.is_project_starred = !member.is_project_starred
     member.save
@@ -94,7 +90,7 @@ class MyController < ApplicationController
   end
 
   def save_project_position
-    members= current_user.members
+    members= @user.members
     project_ids = params[:ids]
     members.each do |member|
       member.project_position = project_ids.index(member.project_id.to_s)
@@ -105,13 +101,13 @@ class MyController < ApplicationController
     end
   end
 
-  def my_spent_time
+  def spent_time
     if params[:date]
       @date = params[:date].to_date
     else
       @date = Date.today
     end
-    time_entries = current_user.time_entries_for_month(@date.year, @date.month)
+    time_entries = @user.time_entries_for_month(@date.year, @date.month)
     @time_entries = Hash.new{|h, k| h[k] = []}
     time_entries.each do |time_entry|
       @time_entries[time_entry.spent_on] << time_entry
@@ -125,7 +121,7 @@ class MyController < ApplicationController
   #OTHER METHODS
   def act_as
     session['act_as'].eql?('User') ? session['act_as'] = 'Admin' : session['act_as'] = 'User'
-    current_user.act_as_admin(session['act_as'])
+    @user.act_as_admin(session['act_as'])
     respond_to do |format|
       format.html { redirect_to :back }
     end

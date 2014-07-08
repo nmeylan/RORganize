@@ -9,6 +9,6 @@
 
 <em>Drag and drop projects to order. <br/>Click on star to add project as favorite.</em>
 <%= @projects.display_collection %>
-<%= submit_tag t(:button_save), {:id => 'save_position', 'data-link' => save_project_position_my_index_path} %>
+<%= submit_tag t(:button_save), {:id => 'save_position', 'data-link' => save_project_position_profile_path} %>
 
-<%= render :partial => 'my/sidebar'  %>
+<%= render :partial => 'profiles/sidebar' %>

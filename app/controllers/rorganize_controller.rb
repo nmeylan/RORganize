@@ -10,18 +10,13 @@ class RorganizeController < ApplicationController
       order = sort_column + ' ' + sort_direction
       #Load favorites projects
       #Load favorites projects
-      @projects = current_user.owned_projects('starred').decorate(context: {allow_to_star: false})
+      projects = current_user.owned_projects('starred').decorate(context: {allow_to_star: false})
       #Load latest assigned requests
-      issues = current_user.latest_assigned_issues(order, 5)
+      issues = current_user.latest_assigned_issues(order, 5).decorate
       #Load latest activities
       activities =  current_user.latest_activities(5)
       respond_to do |format|
-        format.html {render :action => 'index', :locals => {:issues => issues, :activities => activities}}
-        format.js do
-          render :update do |page|
-            page.replace 'issues_content', :partial => 'issues/list_per_project',:locals => {:issues => issues}
-          end
-        end
+        format.html {render :action => 'index', :locals => {issues: issues, activities: activities, projects: projects}}
       end
     else
       redirect_to new_user_session_path
