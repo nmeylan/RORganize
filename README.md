@@ -1,10 +1,7 @@
 ## Welcome to my project management tool
-### Started on June 20, 2012 - Last update : April 28, 2014
-_Only stable release are push on this repo._
+### Started on June 20, 2012 - Last update : July 09, 2014
 
-_Project is currently in stand by until June 2014, I will only work on refactoring and unit testing until June because I don't have time to develop feature._
-
-Run with Rails 4.1
+Run with Rails 4.1.X
 
 # Overview
 
@@ -52,6 +49,7 @@ _All previous stuff is available in version 0.5.2_
 ##Quality
 * A better test coverage.
 * SQL optimisations.
+* Implement decorater pattern (with draper) 
 
 ##Features
 * Repository integration (integrate your repository to update your issues' progress)
