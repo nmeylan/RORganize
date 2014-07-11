@@ -253,7 +253,7 @@ permissions_042:
   is_locked: 1
 permissions_043:
   id: 43
-  name: View project roadmap
+  name: View project roadmaps
   action: rodmap
   controller: Project
   is_locked: 1
@@ -565,7 +565,7 @@ permissions_094:
   is_locked: 1
 permissions_095:
   id: 199
-  name: View project roadmap
+  name: View project roadmaps
   action: rodmap
   controller: Project
   is_locked: 1
@@ -727,7 +727,7 @@ permissions_121:
   is_locked: 1
 permissions_122:
   id: 235
-  name: View roadmap
+  name: View roadmaps
   action: index
   controller: Roadmap
   is_locked: 1
@@ -763,7 +763,7 @@ permissions_127:
   is_locked: 1
 permissions_128:
   id: 241
-  name: view roadmap
+  name: view roadmaps
   action: index
   controller: Roadmap
   is_locked: 1

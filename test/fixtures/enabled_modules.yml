@@ -13,9 +13,9 @@ enabled_modules_002:
   project_id: 5
 enabled_modules_003:
   id: 9
-  name: roadmap
+  name: roadmaps
   action: index
-  controller: roadmap
+  controller: roadmaps
   project_id: 5
 enabled_modules_004:
   id: 10
@@ -37,9 +37,9 @@ enabled_modules_006:
   project_id: 6
 enabled_modules_007:
   id: 13
-  name: roadmap
+  name: roadmaps
   action: index
-  controller: roadmap
+  controller: roadmaps
   project_id: 6
 enabled_modules_008:
   id: 14
@@ -61,9 +61,9 @@ enabled_modules_010:
   project_id: 7
 enabled_modules_011:
   id: 71
-  name: roadmap
+  name: roadmaps
   action: index
-  controller: roadmap
+  controller: roadmaps
   project_id: 7
 enabled_modules_012:
   id: 72
@@ -103,9 +103,9 @@ enabled_modules_017:
   project_id: 1
 enabled_modules_018:
   id: 85
-  name: roadmap
+  name: roadmaps
   action: index
-  controller: roadmap
+  controller: roadmaps
   project_id: 1
 enabled_modules_019:
   id: 86
