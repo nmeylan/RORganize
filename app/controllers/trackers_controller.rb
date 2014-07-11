@@ -11,7 +11,7 @@ class TrackersController < ApplicationController
 
   #Get /administration/trackers
   def index
-    @trackers = Tracker.select('*')
+    @trackers = Tracker.select('*').decorate
     respond_to do |format|
       format.html
     end
