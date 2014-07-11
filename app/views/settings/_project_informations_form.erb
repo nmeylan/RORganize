@@ -29,13 +29,7 @@
       </div>
     </div>
     <p>
-    <fieldset class="settings">
-      <legend><%= t(:link_trackers) %></legend>
-
-      <% @trackers.each do |tracker| %>
-          <label class="normal_label"><%= tracker.name %></label><%= check_box_tag "[trackers][#{tracker.name}]", tracker.id, @tracker_ids.include?(tracker.id) %>
-      <% end %>
-    </fieldset>
+    <%= @trackers.settings_list %>
     </p>
     <%= submit_tag t(:button_save) %>
 <% end %>

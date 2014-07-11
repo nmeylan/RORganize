@@ -11,15 +11,16 @@ class SettingsController < ApplicationController
   before_filter { |c| c.menu_item(params[:controller]) }
   before_filter {|c| c.top_menu_item('projects')}
   helper QueriesHelper
+  helper TrackersHelper
   include Rorganize::ModuleManager::ModuleManagerHelper
   #GET project/:project_identifier/settings/
   def index
-    @tracker_ids = @project.trackers.collect{|tracker| tracker.id}
+    tracker_ids = @project.trackers.collect{|tracker| tracker.id}
     if @project.attachments.empty?
       @project.attachments.build
     end
     @project = @project.decorate
-    @trackers = Tracker.all
+    @trackers = Tracker.all.decorate(context: {checked_ids: tracker_ids})
     respond_to do |format|
       format.html
     end

@@ -18,4 +18,14 @@ module TrackersHelper
       end.join.html_safe)
     end
   end
+
+  def project_tracker_list(collection, checked_ids)
+    content_tag :fieldset, class: 'settings' do
+      content_tag :legend, t(:link_trackers)
+      collection.collect do |tracker|
+        safe_concat label_tag "[trackers][#{tracker.name}]", tracker.caption, {class: 'normal_label'}
+        safe_concat check_box_tag "[trackers][#{tracker.name}]", tracker.id, checked_ids.include?(tracker.id)
+      end.join.html_safe
+    end
+  end
 end
