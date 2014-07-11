@@ -85,7 +85,7 @@ class User < RorganizeActiveRecord
     dt = Date.new(year, month)
     start_of_month = dt.beginning_of_month
     end_of_month = dt.end_of_month
-    TimeEntry.where('user_id = ? AND spent_on >= ? AND spent_on <= ?', self.id, start_of_month, end_of_month).includes(:project)
+    TimeEntry.where('user_id = ? AND spent_on >= ? AND spent_on <= ?', self.id, start_of_month, end_of_month).eager_load(:project)
   end
 
   def allowed_statuses(project)

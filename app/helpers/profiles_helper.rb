@@ -4,5 +4,7 @@
 # File: profiles_helper.rb
 
 module ProfilesHelper
+  def spent_time_calendar
 
+  end
 end
