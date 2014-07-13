@@ -26,6 +26,5 @@ module IssuesStatusesHelper
         end
       end.join.html_safe)
     }
-
   end
 end

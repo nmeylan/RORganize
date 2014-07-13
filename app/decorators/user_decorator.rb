@@ -3,7 +3,7 @@ class UserDecorator < ApplicationDecorator
 
   def show_link
     link =  link_to_with_permissions(model.caption , h.user_path(model.slug), nil, nil)
-    link ? link : model.caption
+    link ? link : disabled_field(model.caption)
   end
 
   def sign_in

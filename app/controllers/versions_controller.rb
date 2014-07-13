@@ -12,8 +12,7 @@ class VersionsController < ApplicationController
   include VersionsHelper
 
   def index
-    @versions = @project.versions.order(:position)
-    @max = @versions.count
+    @versions = @project.versions.order(:position).decorate
     respond_to do |format|
       format.html
     end
@@ -74,8 +73,7 @@ class VersionsController < ApplicationController
   end
 
   def destroy
-    @versions = @project.versions
-    @max = @versions.count
+    @versions = @project.versions.decorate
     @version = Version.find(params[:id])
     success = @version.destroy
     respond_to do |format|
@@ -90,8 +88,7 @@ class VersionsController < ApplicationController
   def change_position
     @version = Version.find_by_id(params[:id])
     saved = @version.change_position(@project, params[:operator])
-    @versions = @project.versions.order(:position)
-    @max = @versions.count
+    @versions = @project.versions.order(:position).decorate
     respond_to do |format|
       if saved
         format.js { respond_to_js :response_header => :success, :response_content => t(:successful_update) }

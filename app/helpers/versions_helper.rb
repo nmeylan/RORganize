@@ -4,6 +4,33 @@
 # File: versions_helper.rb
 
 module VersionsHelper
+
+  def list(collection)
+    content_tag :table, {class: 'version list'}, &Proc.new {
+      safe_concat content_tag :tr, class: 'header', &Proc.new {
+        safe_concat content_tag :th, 'Name'
+        safe_concat content_tag :th, 'Start date'
+        safe_concat content_tag :th, 'Target date'
+        safe_concat content_tag :th, 'Is done'
+        safe_concat content_tag :th, nil
+        safe_concat content_tag :th, nil
+      }
+      safe_concat(collection.collect do |version|
+        content_tag :tr, {class: 'odd_even', id: version.id} do
+          safe_concat content_tag :td, version.edit_link, {class: 'list_left name'}
+          safe_concat content_tag :td, version.start_date, {class: 'list_center start_date'}
+          safe_concat content_tag :td, version.target_date, {class: 'list_center version'}
+          safe_concat content_tag :td, version.is_done, {class: 'list_center is_done'}
+          safe_concat content_tag :td, {class: 'action'}, &Proc.new{
+            safe_concat version.inc_position_link
+            safe_concat version.dec_position_link(collection.size)
+          }
+          safe_concat content_tag :td, version.delete_link,{class: 'action'}
+        end
+      end.join.html_safe)
+    }
+  end
+
   def versions_list_overview(collection, collection_detail)
     collection.collect do |version|
       version_overview(version, collection_detail[version.id][:closed_issues_count], collection_detail[version.id][:opened_issues_count], collection_detail[version.id][:percent])

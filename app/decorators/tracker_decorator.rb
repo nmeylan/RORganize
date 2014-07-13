@@ -2,8 +2,8 @@ class TrackerDecorator < ApplicationDecorator
   delegate_all
 
   def edit_link
-    link = link_to_with_permissions(model.name, h.edit_tracker_path(model.id), nil, nil)
-    link ? link : disabled_field(model.name)
+    link = link_to_with_permissions(model.caption, h.edit_tracker_path(model.id), nil, nil)
+    link ? link : disabled_field(model.caption)
   end
 
   def delete_link
