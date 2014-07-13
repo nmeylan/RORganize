@@ -6,35 +6,5 @@
 %>
 
 <div id="users_content">
-  <table class="user list">
-    <tr class="header">
-      <th><%= sortable 'users.id', '#'%></th>
-      <th><%= sortable 'users.login', 'Login' %></th>
-      <th><%= sortable 'users.name', 'Name'%></th>
-      <th><%= sortable 'users.email', 'Email' %></th>
-      <th><%= sortable 'users.admin', 'Administrator' %></th>
-      <th><%= sortable 'users.last_sign_in_at ', 'Last sign in' %></th>
-    </tr>
-    <% @users.each do |user| %>
-      <tr class="odd_even issue_tr">
-        <td class="list_center id"><%= user.id %></td>
-        <td class="list_center login"><%= user.login%></td>
-        <td class="list_center name">
-          <% if current_user.allowed_to?('show','users') %>
-            <%= link_to user.name, {:action => 'show', :id => user.id} %>
-          <% else %>
-            <%= user.name %>
-          <% end %>
-        </td>
-        <td class="list_center email"><%= user.email%></td>
-        <td class="list_center admin"><%= user.admin.to_s%></td>
-        <td class="list_center last_sign_in"><%= user.last_sign_in_at ? user.last_sign_in_at.time.to_formatted_s(:short) : '-' %></td>
-      </tr>
-    <%end%>
-  </table>
-  <%= will_paginate(@issues, :renderer => 'RemoteLinkRenderer')%>
-  <div class="autocomplete-combobox nosearch per_page">
-    <label for="per_page"><%=t(:label_per_page)%></label>
-    <%= select_tag 'per_page', options_for_select([%w(25 25), %w(50 50), %w(100 100)], session[:controller_users_per_page]), :class => 'chzn-select cbb-small', :id => 'per_page', 'data-link' => users_path%>
-  </div>
+  <%= @users.display_collection %>
 </div>

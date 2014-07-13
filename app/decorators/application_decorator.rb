@@ -13,6 +13,14 @@ class ApplicationDecorator < Draper::Decorator
     end
   end
 
+  def created_at
+    model.created_at ? model.created_at.to_formatted_s(:short) : '-'
+  end
+
+  def updated_at
+    model.updated_at ? model.updated_at.to_formatted_s(:short) : '-'
+  end
+
   def disabled_field(content)
     h.content_tag :span, content, {class: 'disabled_field'}
   end

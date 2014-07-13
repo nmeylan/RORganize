@@ -6,8 +6,8 @@
 %>
 
 <%= contextual "#{t(:label_user)} : #{@user.name}" do %>
-    <%= link_to_with_permissions(glyph(t(:link_edit), 'pencil'), edit_user_path(@user.id), nil) %>
-    <%= link_to_with_permissions(glyph(t(:link_delete), 'trashcan'), user_path(@user.id), nil, {:method => :delete, :remote => true, :confirm => t(:text_delete_item)}) %>
+    <%= @user.edit_link %>
+    <%= @user.delete_link %>
 
  <% end %>
 
@@ -16,27 +16,24 @@
     <th style="width:15%"><%= t(:field_login) %> :</th>
     <td style="width:30%"><%= @user.login %></td>
     <th style="width:15%"><%= t(:label_created_at) %> :</th>
-    <td style="width:30%"><%= @user.created_at.to_formatted_s(:short) %></td>
+    <td style="width:30%"><%= @user.created_at %></td>
   </tr>
   <tr>
     <th style="width:15%"><%= t(:field_name) %> :</th>
-    <td style="width:30%"><%= @user.name %></td>
+    <td style="width:30%"><%= @user.caption %></td>
     <th style="width:15%"><%= t(:label_current_sign_in) %> :</th>
-    <td style="width:30%"><%= @user.current_sign_in_at ? @user.current_sign_in_at.time.to_formatted_s(:short) : '-' %></td>
+    <td style="width:30%"><%= @user.current_sign_in%></td>
   </tr>
   <tr>
     <th style="width:15%"><%= t(:field_email) %> :</th>
     <td style="width:30%"><%= @user.email %></td>
     <th style="width:15%"><%= t(:label_last_sign_in) %> :</th>
-    <td style="width:30%"><%= @user.last_sign_in_at ? @user.last_sign_in_at.time.to_formatted_s(:short) : '-' %></td>
+    <td style="width:30%"><%= @user.sign_in %></td>
   </tr>
   <tr>
     <th style="width:15%"><%= t(:field_administrator) %> :</th>
-    <td style="width:30%"><%= @user.admin.to_s %></td>
+    <td style="width:30%"><%= @user.display_is_admin %></td>
   </tr>
 </table>
-<% if @journals.any? %>
-    <div id="history">
-      <%= raw history_render(@journals) %>
-    </div>
-<% end %>
+
+<%= @user.display_history(@journals) %>

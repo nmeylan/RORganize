@@ -6,7 +6,7 @@
 %>
 
 <%= contextual t(:label_users) do %>
-    <%= link_to_with_permissions(glyph(t(:link_new_user), 'plus'), new_user_path, nil,{}) %>
+    <%= @users.new_link %>
  <% end %>
 
 <% if @users.any? %>

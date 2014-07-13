@@ -16,7 +16,7 @@ class UsersController < ApplicationController
   #GET /administration/users
   def index
     session['controller_users_per_page'] = params[:per_page] ? params[:per_page] : (session['controller_users_per_page'] ? session['controller_users_per_page'] : 25)
-    @users = User.paginated_users(params[:page], session['controller_users_per_page'], sort_column + ' ' + sort_direction)
+    @users = User.paginated_users(params[:page], session['controller_users_per_page'], sort_column + ' ' + sort_direction).decorate
     respond_to do |format|
       format.html
       format.js { respond_to_js }
@@ -53,7 +53,7 @@ class UsersController < ApplicationController
 
   #Get /administration/users/edit/:id
   def edit
-    @user = User.find(params[:id])
+    @user = User.find_by_slug(params[:id])
     respond_to do |format|
       format.html
     end
@@ -61,7 +61,7 @@ class UsersController < ApplicationController
 
   #Put /administration/users/edit/:id
   def update
-    @user = User.find(params[:id])
+    @user = User.find_by_slug(params[:id])
     @user.admin = (user_params[:admin].eql?('1'))
     user_params[:updated_at] = Time.now.to_formatted_s(:db)
     @user.attributes = user_params
@@ -85,8 +85,8 @@ class UsersController < ApplicationController
 
   #Get /administration/users/:id
   def show
-    @user = User.friendly.find(params[:id])
-    @journals = Journal.where(:journalized_type => @user.class.to_s, :journalized_id => @user).includes([:details])
+    @user = User.find_by_slug(params[:id]).decorate
+    @journals = Journal.where(:journalized_type => 'User', :journalized_id => @user.id).eager_load([:details])
     respond_to do |format|
       format.html
     end
@@ -94,7 +94,7 @@ class UsersController < ApplicationController
 
   #DELETE /administration/users/:id
   def destroy
-    @user = User.find(params[:id])
+    @user = User.find_by_slug(params[:id])
     @user.destroy
     flash[:notice] = t(:successful_deletion)
     respond_to do |format|
