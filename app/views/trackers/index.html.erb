@@ -6,7 +6,7 @@
 %>
 
 <%= contextual t(:link_trackers) do %>
-    <%= link_to_with_permissions(glyph(t(:link_new_tracker), 'plus'), new_tracker_path, nil) %>
+    <%= @trackers.new_link %>
 <% end %>
 
 <%= render :partial => 'trackers/list' %>

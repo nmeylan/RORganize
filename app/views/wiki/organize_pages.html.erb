@@ -7,13 +7,5 @@ File: organize_pages
 <%= contextual t(:link_pages) %>
 
 <%= render :partial => 'wiki/sidebar' %>
-<% if @wiki_pages.any? %>
-  <div id="organize_pages">
-    <%= display_pages(@wiki_pages, nil) %>
-    <p>Drag an empty element out to remove it!</p>
-
-  </div>
-<% else %>
-  <h2><%= t(:text_no_data) %></h2>
-<% end %>
+<%= @wiki.display_pages %>
 <%= button_tag t(:button_save),:id => 'serialize', :type => 'button', 'data-link' => set_organization_wiki_index_path(@project.slug)%>

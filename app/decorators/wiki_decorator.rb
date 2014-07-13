@@ -15,6 +15,16 @@ class WikiDecorator < ApplicationDecorator
     end
   end
 
+  def organize_pages_link
+    if h.current_user.allowed_to?('set_organization', 'Wiki', context[:project])
+      h.link_to h.glyph(h.t(:link_organize_pages), 'list-ordered'), h.organize_pages_wiki_index_path(context[:project].slug)
+    end
+  end
+
+  def new_page_link
+    link_to_with_permissions(h.glyph(h.t(:link_new_page), 'file-text'), h.new_wiki_page_path(context[:project].slug), context[:project], nil, {:method => :get})
+  end
+
   def home_page
     unless model.new_record?
       if model.home_page.nil?
@@ -23,6 +33,14 @@ class WikiDecorator < ApplicationDecorator
         model.home_page = model.home_page.decorate
         model.home_page.display_page
       end
+    end
+  end
+
+  def display_pages
+    if model.pages && model.pages.to_a.any?
+      h.display_pages(model.pages)
+    else
+      h.content_tag :div, h.t(:text_no_data), class: 'no-data'
     end
   end
 end

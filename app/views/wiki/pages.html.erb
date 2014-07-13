@@ -7,17 +7,9 @@ File: pages.html
 
 
 <%= contextual t(:link_pages) do %>
-    <% if current_user.allowed_to?('set_organization', 'Wiki', @project) %>
-        <%= link_to glyph(t(:link_organize_pages), 'list-ordered'), organize_pages_wiki_index_path(@project.identifier) %>
-    <% end %>
-    <%= link_to_with_permissions(glyph(t(:link_new_page), 'file-text'), new_wiki_page_path(@project.slug), @project, {:method => :get}) %>
+    <%= @wiki.organize_pages_link %>
+    <%= @wiki.new_page_link %>
 <% end %>
 <%= render :partial => 'wiki/sidebar' %>
-<% if @wiki_pages.any? %>
-    <div id="wiki_pages">
-      <%= display_pages(@wiki_pages, nil) %>
-    </div>
-<% else %>
-    <h2><%= t(:text_no_data) %></h2>
-<% end %>
+<%= @wiki.display_pages %>
 

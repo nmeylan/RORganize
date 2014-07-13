@@ -5,6 +5,7 @@
 
 class WikiController < ApplicationController
   before_filter :find_project
+  before_filter :find_wiki, except: [:new, :create, :set_organization]
   before_filter :check_permission, :except => [:organize_pages]
   before_filter :check_organize_pages_permission, :only => [:organize_pages]
   before_filter { |c| c.menu_context :project_menu }
@@ -14,8 +15,6 @@ class WikiController < ApplicationController
   helper WikiPagesHelper
 
   def index
-    @wiki = Wiki.where(:project_id => @project.id).eager_load(home_page: :author)[0]
-    @wiki = @wiki ? @wiki.decorate(context: {project: @project}) : Wiki.new.decorate(context: {project: @project})
     respond_to do |format|
       format.html
     end
@@ -33,7 +32,6 @@ class WikiController < ApplicationController
   end
 
   def destroy
-    @wiki = Wiki.find(params[:id])
     @wiki.destroy
     flash[:notice] = t(:successful_deletion)
     respond_to do |format|
@@ -55,7 +53,6 @@ class WikiController < ApplicationController
   end
 
   def pages
-    @wiki_pages = WikiPage.select('*').eager_load(:sub_pages, :parent).where(:wiki_id => Wiki.find_by_project_id(@project.id), :parent_id => nil)
     respond_to do |format|
       format.html {}
     end
@@ -63,7 +60,6 @@ class WikiController < ApplicationController
 
 
   def organize_pages
-    @wiki_pages = WikiPage.select('*').where(:wiki_id => Wiki.find_by_project_id(@project.id), :parent_id => nil)
     respond_to do |format|
       format.html {}
     end
@@ -81,6 +77,11 @@ class WikiController < ApplicationController
     unless current_user.allowed_to?('set_organization', 'Wiki', @project)
       render_403
     end
+  end
+
+  def find_wiki
+    @wiki = Wiki.where(:project_id => @project.id).eager_load([[pages: [:author, :sub_pages, :parent]],  [home_page: :author]])[0]
+    @wiki = @wiki ? @wiki.decorate(context: {project: @project}) : Wiki.new.decorate(context: {project: @project})
   end
 
   def pages_organization_params

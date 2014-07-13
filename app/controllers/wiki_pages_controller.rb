@@ -11,9 +11,8 @@ class WikiPagesController < ApplicationController
   before_filter { |c| c.menu_item('wiki') }
   before_filter { |c| c.top_menu_item('projects') }
   before_filter :find_project
-  before_filter :find_wiki
-  include WikiHelper
-
+  before_filter :find_page, except: [:new, :new_home_page, :new_sub_page, :create]
+  helper WikiHelper
   def new
     new_form
   end
@@ -28,7 +27,7 @@ class WikiPagesController < ApplicationController
 
   def create
     @wiki_page = WikiPage.new(wiki_page_params)
-    wiki = @wiki
+    wiki = Wiki.find_by_project_id(@project.id)
     @wiki_page.wiki_id = wiki.id
     @wiki_page.author_id = current_user.id
     if params[:wiki_page][:parent_id]
@@ -58,22 +57,18 @@ class WikiPagesController < ApplicationController
   end
 
   def show
-    @wiki_page = WikiPage.joins(:sub_pages).includes(:sub_pages).find_by_slug(params[:id])
-    @wiki_page ||= WikiPage.find_by_slug(params[:id])
     respond_to do |format|
       format.html
     end
   end
 
   def edit
-    @wiki_page = WikiPage.find_by_slug(params[:id])
     respond_to do |format|
       format.html
     end
   end
 
   def update
-    @wiki_page = WikiPage.friendly.find(params[:id])
     @wiki_page.attributes = wiki_page_params
     respond_to do |format|
       if !@wiki_page.changed?
@@ -88,7 +83,6 @@ class WikiPagesController < ApplicationController
   end
 
   def destroy
-    @wiki_page = WikiPage.find_by_slug(params[:id])
     respond_to do |format|
       if @wiki_page.destroy
         flash[:notice] = t(:successful_deletion)
@@ -100,11 +94,6 @@ class WikiPagesController < ApplicationController
   end
 
   private
-  def find_wiki
-    @wiki = Wiki.find_by_project_id(@project.id)
-    render_404 if @wiki.nil?
-  end
-
   def new_form
     @wiki_page = WikiPage.new
     respond_to do |format|
@@ -118,9 +107,12 @@ class WikiPagesController < ApplicationController
     end
   end
 
+  def find_page
+    @wiki_page = WikiPage.eager_load(:sub_pages, :author).where(slug: params[:id])[0].decorate(context: {project: @project})
+  end
+
   def check_page_owner
-    @wiki_page = WikiPage.find_by_slug(params[:id])
-    return @wiki_page.author_id.eql?(current_user.id)
+    @wiki_page.author_id.eql?(current_user.id)
   end
 
   def check_not_owner_permission

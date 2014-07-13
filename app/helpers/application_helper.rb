@@ -345,48 +345,6 @@ EOD
     end
   end
 
-  #TODO remove this code
-  #Params hash content:
-  #method : possible values :post, :get , :put, :delete
-  #target : possible values "nil" or "self", if self url will be '#' else will be path
-  #html = {}
-  def link_to_with_permissions(label, path, project, params = {})
-    ActiveSupport::Deprecation.warn 'This method is deprecated and will be removed.'
-    routes = Rails.application.routes
-    hash_path = routes.recognize_path(path, :method => params[:method])
-    unless params[:confirm].nil?
-      params[:data] ||= {}
-      params[:data][:confirm] = params[:confirm].clone
-      params[:confirm] = nil
-    end
-    if current_user.allowed_to?(hash_path[:action], hash_path[:controller], project)
-      if params[:target] && params[:target].eql?('self')
-        link_to(label, '#', params)
-      else
-        link_to(label, path, params)
-      end
-    end
-  end
-
-  def link_to_with_not_owner_permissions(label, path, project, owner_id, params = {})
-    ActiveSupport::Deprecation.warn 'This method is deprecated and will be removed.'
-    routes = Rails.application.routes
-    hash_path = routes.recognize_path(path, :method => params[:method])
-    unless params[:confirm].nil?
-      params[:data] ||= {}
-      params[:data][:confirm] = params[:confirm]
-      params[:confirm] = nil
-    end
-    if current_user.allowed_to?(hash_path[:action], hash_path[:controller], project) && owner_id.eql?(current_user.id) ||
-        current_user.allowed_to?("#{hash_path[:action]}_not_owner", hash_path[:controller], project)
-      if params[:target] && params[:target].eql?('self')
-        link_to(label, '#', params)
-      else
-        link_to(label, path, params)
-      end
-    end
-  end
-
   def select_tag_versions(id, name, select_key)
     #Don't use hash because, grouped_options will be sort asc : close before open
     option_group_ary = []
@@ -435,12 +393,28 @@ EOD
     attributes.delete_if { |attribute| exclude_attributes.include?(attribute.to_sym) }
   end
 
+  def contextual_with_breadcrumb(title, breadcrumb)
+    content_for :contextual do
+      safe_concat content_tag :h1, title
+      safe_concat breadcrumb
+      safe_concat content_tag :div, class: 'splitcontentright', &Proc.new {
+        yield if block_given?
+      }
+    end
+  end
+
   def contextual(title)
     content_for :contextual do
       safe_concat content_tag :h1, title
       safe_concat content_tag :div, class: 'splitcontentright', &Proc.new {
         yield if block_given?
       }
+    end
+  end
+
+  def breadcrumb(content)
+    content_tag :div, class: 'breadcrumb' do
+      content
     end
   end
 

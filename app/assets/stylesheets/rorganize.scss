@@ -143,6 +143,16 @@
   background-image: linear-gradient(#d8ebf8, #d0e3ef);
   padding: 4px;
 }
+.breadcrumb .mega-octicon{
+  vertical-align: middle;
+
+}
+.breadcrumb h1{
+  display: inline;
+  a{
+    font-size: inherit;
+  }
+}
 
 /*
 *  FLASH MESSAGE
@@ -610,19 +620,21 @@ ul.project_list{
 /*
     WIKI
 */
-
-#organize_pages li {
+#wiki_pages li{
+  list-style-type: none;
+}
+#wiki_pages.organize li {
   padding: 5px;
   margin: 5px;
 }
 
-#organize_pages ul {
+#wiki_pages.organize ul {
   min-height: 40px;
   border: 1px dashed #D7D7D7;
   margin: 10px;
 }
 
-#organize_pages ul.trash {
+#wiki_pages.organize ul.trash {
   margin: 0px;
   padding: 0px;
 }

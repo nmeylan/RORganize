@@ -9,4 +9,10 @@ module WikiPagesHelper
     safe_concat content_tag :em, page.creation_info
     content_tag :p, page.content
   end
+
+
+  #
+  def display_parent_breadcrumb(page, project)
+      breadcrumb page.parents.collect { |parent| content_tag :h1, link_to(parent.title, wiki_page_path(project.slug, parent.slug)) }.join(mega_glyph('', 'chevron-right')).html_safe
+  end
 end
