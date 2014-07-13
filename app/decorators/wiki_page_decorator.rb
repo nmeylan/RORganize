@@ -1,0 +1,30 @@
+class WikiPageDecorator < ApplicationDecorator
+  delegate_all
+
+  def creation_info
+    "#{h.t(:label_created)} #{h.distance_of_time_in_words(model.created_at, Time.now)} #{h.t(:label_ago)}, #{h.t(:label_by)} #{self.author_name}. #{self.update_info}"
+  end
+
+  def update_info
+    unless model.created_at.eql?(model.updated_at)
+      "#{h.t(:label_updated)} #{h.distance_of_time_in_words(model.updated_at, Time.now)}  #{h.t(:label_ago)}."
+    end
+  end
+
+  def author_name
+    model.author ? model.author.name : h.t(:label_unknown)
+  end
+
+  def content
+    if model.content && !model.content.empty?
+      h.textile_to_html(model.content)
+    else
+      h.content_tag :div, h.t(:text_no_data), class: 'no-data'
+    end
+  end
+
+  def display_page
+    h.display_page(self)
+  end
+
+end

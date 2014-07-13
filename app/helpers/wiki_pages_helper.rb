@@ -1,0 +1,12 @@
+# Author: Nicolas Meylan
+# Date: 13.07.14
+# Encoding: UTF-8
+# File: wiki_pages_helper.rb
+
+module WikiPagesHelper
+  def display_page(page)
+    safe_concat content_tag :h1, page.caption
+    safe_concat content_tag :em, page.creation_info
+    content_tag :p, page.content
+  end
+end

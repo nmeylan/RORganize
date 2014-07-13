@@ -6,7 +6,7 @@
 %>
 
 <%= contextual "#{t(:label_setting_plural)} - #{t(:link_versions)}" do %>
-    <%= link_to_with_permissions(glyph(t(:link_new_version), 'plus'), new_version_path(@project.slug), @project, {:class => 'icon icon-add'}) %>
+    <%= @versions.new_link %>
 <% end %>
 <%= render :partial => 'versions/list' %>
 <%= render :partial => 'settings/sidebar' %>

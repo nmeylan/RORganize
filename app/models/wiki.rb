@@ -17,7 +17,7 @@ class Wiki < RorganizeActiveRecord
   after_destroy :destroy_journal
 
   def caption
-    self.home_page.caption
+    'Wiki'
   end
 
   def self.organize_pages(organization)
