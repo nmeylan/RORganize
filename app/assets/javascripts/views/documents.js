@@ -32,8 +32,6 @@ function documents_index(options){
     listTrClick(".list .document_tr");
     checkboxToolbox(".list");
     init_toolbox('.document.list .document_tr', 'documents_toolbox', {list: '.document.list'});
-//Paginate
-    per_page();
     initialize_filters(options);
 }
 

@@ -3,5 +3,6 @@
  * Date: 15/12/13
  * Time: 02:01
  %>
-on_addition_effect("#users_content", "<%= escape_javascript(render :partial => 'users/list')%>");
+replace_list_content("<%= escape_javascript(@users.display_collection) %>");
+per_page();
 on_load_users_scripts();

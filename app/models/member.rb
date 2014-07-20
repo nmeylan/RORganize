@@ -20,6 +20,8 @@ class Member < ActiveRecord::Base
   after_create :create_journal
   after_update :update_journal
   after_destroy :destroy_journal
+  #Scopes
+  scope :fetch_dependencies, -> { eager_load(:role, :user) }
   #Methods
   def caption
     self.user.name

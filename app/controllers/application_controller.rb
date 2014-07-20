@@ -4,9 +4,11 @@ class ApplicationController < ActionController::Base
   include ApplicationHelper
   helper Rorganize::MenuManager::MenuHelper
   helper Rorganize::PermissionManager::PermissionManagerHelper
-  before_filter :authenticate, :smart_js_loader
-  around_filter :set_current_user
+  helper_method :sort_column, :sort_direction
 
+  before_filter :authenticate, :smart_js_loader, :set_sessions
+  around_filter :set_current_user
+  after_filter :set_sessions
   def menu_context(context)
     @menu_context ||= []
     @menu_context << context
@@ -30,6 +32,12 @@ class ApplicationController < ActionController::Base
     if !user_signed_in?
       authenticate_user!
     end
+  end
+
+  def set_sessions
+    session[controller_name.to_sym] ||= {}
+    @sessions = session[controller_name.to_sym]
+    p @sessions
   end
 
   def find_project

@@ -13,4 +13,8 @@ class QueryDecorator < ApplicationDecorator
     link = link_to_with_permissions(model.caption, h.query_path(model.id), nil, nil)
     link ? link : model.caption
   end
+
+  def author
+    model.user.caption
+  end
 end

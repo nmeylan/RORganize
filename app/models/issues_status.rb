@@ -10,6 +10,8 @@ class IssuesStatus < ActiveRecord::Base
   belongs_to :enumeration, :class_name => 'Enumeration', :dependent => :destroy
   has_many :issues, :class_name => 'Issue', :foreign_key => :status_id, :dependent => :nullify
 
+  scope :fetch_dependencies, -> { eager_load(:enumeration) }
+
   def self.opened_statuses_id
     return IssuesStatus.where(:is_closed => false).pluck('id')
   end

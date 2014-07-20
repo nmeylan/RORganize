@@ -36,7 +36,6 @@ function on_load_issues_scripts(options) {
 
 function issues_index(options) {
     //Paginate
-    per_page();
     //Checkboxes
     checkAll("#check_all", ".list");
     listTrClick(".list .issue_tr");

@@ -10,10 +10,7 @@ class DocumentsController < ApplicationController
   before_filter { |c| c.menu_context :project_menu }
   before_filter { |c| c.menu_item(params[:controller]) }
   before_filter { |c| c.top_menu_item('projects') }
-  include DocumentsHelper
   include Rorganize::RichController
-  helper_method :sort_column, :sort_direction
-  require 'will_paginate'
 
   def index
     respond_to do |format|
@@ -131,29 +128,18 @@ class DocumentsController < ApplicationController
   end
 
   def filter
-    session_json = "#{@project.slug}_controller_documents_filter_params"
-    session_sql = "#{@project.slug}_controller_documents_filter"
-    session[session_json], session[session_sql] = apply_filter(Document, params, session[session_json], session[session_sql])
+    @sessions[@project.slug] ||= {}
+    apply_filter(Document, params, @sessions[@project.slug])
   end
 
   private
 
-  def sort_column
-    session['controller_documents_sort'] = params[:sort] ? params[:sort] : (session['controller_documents_sort'] ? session['controller_documents_sort'] : 'documents.id')
-  end
-
-  def sort_direction
-    session['controller_documents_direction'] = params[:direction] ? params[:direction] : (session['controller_documents_direction'] ? session['controller_documents_direction'] : 'desc')
-  end
-
   def load_documents
     filter
     gon.DOM_filter = view_context.documents_generics_form_to_json
-    gon.DOM_persisted_filter = session["#{@project.slug}_controller_documents_filter_params"].to_json
-    session['controller_documents_per_page'] = params[:per_page] ? params[:per_page] : (session['controller_documents_per_page'] ? session['controller_documents_per_page'] : 25)
-    order = sort_column + ' ' + sort_direction
-    filter = session["#{@project.slug}_controller_documents_filter"]
-    @documents = Document.filter(filter, @project.id).paginated(params[:page], session['controller_documents_per_page'], order).fetch_dependencies.decorate(context: {project: @project})
+    gon.DOM_persisted_filter = @sessions[@project.slug][:json_filter].to_json
+    filter = @sessions[@project.slug][:sql_filter]
+    @documents = Document.filter(filter, @project.id).paginated(@sessions[:current_page], @sessions[:per_page], order('documents.id')).fetch_dependencies.decorate(context: {project: @project})
   end
 
   def document_params

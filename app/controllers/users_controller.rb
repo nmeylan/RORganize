@@ -5,18 +5,15 @@
 # Comment: For administrator panel
 
 class UsersController < ApplicationController
-  helper_method :sort_column, :sort_direction
+  include Rorganize::RichController
   before_filter :check_permission
   before_filter { |c| c.menu_context :admin_menu }
   before_filter { |c| c.menu_item(params[:controller]) }
   before_filter { |c| c.top_menu_item('administration') }
 
-  include UsersHelper
-  require 'will_paginate'
   #GET /administration/users
   def index
-    session['controller_users_per_page'] = params[:per_page] ? params[:per_page] : (session['controller_users_per_page'] ? session['controller_users_per_page'] : 25)
-    @users = User.paginated_users(params[:page], session['controller_users_per_page'], sort_column + ' ' + sort_direction).decorate
+    @users = User.paginated(@sessions[:current_page], @sessions[:per_page], order('users.name')).decorate
     respond_to do |format|
       format.html
       format.js { respond_to_js }
@@ -105,13 +102,6 @@ class UsersController < ApplicationController
 
 
   private
-  def sort_column
-    session['controller_users_sort'] = params[:sort] ? params[:sort] : (session['controller_users_sort'] ? session['controller_users_sort'] : 'id')
-  end
-
-  def sort_direction
-    session['controller_users_direction'] = params[:direction] ? params[:direction] : (session['controller_users_direction'] ? session['controller_users_direction'] : 'desc')
-  end
 
   def user_params
     params.require(:user).permit(User.permit_attributes)

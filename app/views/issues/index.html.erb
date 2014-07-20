@@ -9,7 +9,19 @@
 <% end %>
 
 <%= filter_tag('issue', Issue.filtered_attributes, issues_path(@project.slug), true, {user: current_user, project: @project, filter_content: session["#{@project.slug}_controller_issues_filter"]}) %>
-  <%= render :partial => 'issues/list' %>
-  <%= render :partial => 'issues/sidebar' %>
+
+
+<%= @issues.display_collection %>
+<ul id="issues_toolbox" class="jeegoocontext box toolbox">
+  <% if @issues_toolbox %>
+      <%= issue_toolbox(@issues_toolbox) %>
+  <% end %>
+</ul>
+<%# OVERLAY renderer %>
+<%= render :partial => 'shared/delete_overlay', :locals => {:collection => @issues_toolbox} %>
+<%= render :partial => 'queries/create_overlay' %>
+<%= render :partial => 'issues/show_checklist', :locals => {:checklist_items => nil} %>
+
+<%= render :partial => 'issues/sidebar' %>
 
 

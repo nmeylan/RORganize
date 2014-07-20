@@ -49,11 +49,11 @@
         //BIND_CHZN-SELECT
         $(".chzn-select").chosen();
         $(".chzn-select-deselect").chosen({allow_single_deselect: true});
-
+        //Paginate
+        per_page();
 
         //bind info tag
         bind_info_tag();
-
 
     });
     jQuery(document).ajaxSend(function (e, xhr, options) {
@@ -745,6 +745,10 @@ function on_addition_effect(element_id, content) {
 
 function on_replace_effect(element_id, content) {
     $(element_id).replaceWith(content).fadeIn(500);
+}
+
+function replace_list_content(content){
+    on_replace_effect("#"+gon.controller+"_content", content);
 }
 
 function initialize_filters(options) {

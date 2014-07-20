@@ -4,6 +4,7 @@
 # File: versions_controller.rb
 
 class VersionsController < ApplicationController
+  include Rorganize::RichController
   before_filter :find_project
   before_filter :check_permission
   before_filter { |c| c.menu_context :project_menu }
@@ -11,9 +12,10 @@ class VersionsController < ApplicationController
   before_filter { |c| c.top_menu_item('projects') }
 
   def index
-    @versions = @project.versions.order(:position).decorate(context: {project: @project})
+    @versions = @project.versions.paginated(@sessions[:current_page], @sessions[:per_page], 'versions.position').decorate(context: {project: @project})
     respond_to do |format|
       format.html
+      format.js { respond_to_js }
     end
   end
 

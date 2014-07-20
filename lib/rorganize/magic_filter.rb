@@ -12,7 +12,7 @@ module Rorganize
         #attributes from db: get real attribute name to build query
         attributes = attr
         #noinspection RubyStringKeysInHashInspection,RubyStringKeysInHashInspection
-        operators = {'equal' => '<=>', 'different' => '<>', 'superior' => '>=', 'inferior' => '<=', 'contains' => 'LIKE', 'not contains' => 'NOT LIKE', 'today' => '<=>', 'open' => '<=>', 'close' => '<=>'}
+        operators = {'equal' => '<=>', 'different' => '<>', 'superior' => '>=', 'inferior' => '<=', 'contains' => 'LIKE', 'not_contains' => 'NOT LIKE', 'today' => '<=>', 'open' => '<=>', 'close' => '<=>'}
         #noinspection RubyStringKeysInHashInspection
         null_operators = {'different' => 'IS NOT', 'equal' => 'IS'}
         #Specific link between query if there different value for a same attributes: e.g status_id <> 4 AND status_id <> 3

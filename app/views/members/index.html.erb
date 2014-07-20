@@ -8,5 +8,6 @@
     <%= @members.new_link %>
 <% end %>
 <%= render :partial => 'settings/sidebar' %>
-<%= render :partial => 'members/list', :locals => {:users => users} %>
+<%= @members.display_collection %>
+<%= render :partial => 'members/add_overlay', :locals => {:roles => @members.context[:role], :users => users} %>
 

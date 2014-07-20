@@ -9,8 +9,5 @@
     <%= @users.new_link %>
  <% end %>
 
-<% if @users.any? %>
-  <%= render :partial => 'users/list' %>
-<% else %>
-  <h2><%= t(:text_no_data) %></h2>
-<% end %>
+
+<%= @users.display_collection %>

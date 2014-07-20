@@ -108,10 +108,6 @@ class User < ActiveRecord::Base
     end
   end
 
-  def self.paginated_users(page, per_page, order)
-    User.all.paginate(:page => page, :per_page => per_page).order(order)
-  end
-
   #Get owned projects with filters
   def owned_projects(filter)
     case filter

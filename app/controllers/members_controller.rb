@@ -4,6 +4,7 @@
 # File: members_controller.rb
 
 class MembersController < ApplicationController
+  include Rorganize::RichController
   before_filter :find_project
   before_filter :check_permission, :except => [:create]
   before_filter { |c| c.menu_context :project_menu }
@@ -11,10 +12,11 @@ class MembersController < ApplicationController
   before_filter {|c| c.top_menu_item('projects')}
   #GET /projects/
   def index
-    @members = Member.eager_load(:role, :user).where(:project_id =>  @project.id).decorate(context: {project: @project, roles:
+    @members = Member.where(:project_id =>  @project.id).paginated(@sessions[:current_page], @sessions[:per_page], order('users.name')).fetch_dependencies.decorate(context: {project: @project, roles:
         Role.select('*')})
     respond_to do |format|
       format.html{render :action => 'index', :locals => { :users => nil}}
+      format.js { respond_to_js }
     end
   end
 

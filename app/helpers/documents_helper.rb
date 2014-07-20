@@ -7,7 +7,7 @@ require 'documents/document_toolbox'
 module DocumentsHelper
 
   def list(collection)
-    safe_concat content_tag :table, {class: 'document list', 'data-link' => toolbox_documents_path(@project.slug)}, &Proc.new {
+    content_tag :table, {class: 'document list', 'data-link' => toolbox_documents_path(@project.slug)}, &Proc.new {
       safe_concat content_tag :tr, class: 'header', &Proc.new {
         safe_concat content_tag :th, link_to(glyph('', 'check'), '#', {:class => 'icon-checked', :id => 'check_all', 'cb_checked' => 'b'})
         safe_concat content_tag :th, sortable('documents.id', '#')
@@ -25,7 +25,6 @@ module DocumentsHelper
         end
       end.join.html_safe)
     }
-    paginate(collection, session[:controller_documents_per_page], documents_path(@project.slug))
   end
 
   def documents_generics_form_to_json

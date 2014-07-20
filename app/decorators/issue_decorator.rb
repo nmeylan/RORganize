@@ -62,7 +62,7 @@ class IssueDecorator < ApplicationDecorator
   end
 
   def link_checklist_overlay
-    h.link_to h.glyph('', 'checklist'), h.show_checklist_items_issues_path(context[:project].slug, model.id), {:remote => true} if model.checklist_items.size > 0
+    h.link_to h.glyph('', 'checklist'), h.show_checklist_items_issues_path(context[:project].slug, model.id), {:remote => true} if model.checklist_items.to_a.any?
   end
 
 

@@ -6,7 +6,7 @@ class ProjectsDecorator < ApplicationCollectionDecorator
 
   def display_collection
     h.content_tag :div, id: 'projects' do
-      super do
+      super true do
         h.project_list(self, context[:allow_to_star])
       end
     end

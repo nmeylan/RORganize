@@ -4,19 +4,20 @@
 # File: profiles_controller.rb
 
 class ProfilesController < ApplicationController
+  include Rorganize::RichController
   before_filter :authenticate_user!
   before_filter :find_user
+  before_filter :set_pagination, only: [:custom_queries]
   helper_method :sort_column, :sort_direction
   helper ProjectsHelper
   helper IssuesHelper
   helper QueriesHelper
 
   def show
-    order = sort_column + ' ' + sort_direction
     #Load favorites projects
     projects = @user.owned_projects('starred').decorate(context: {allow_to_star: false})
     #Load latest assigned requests
-    issues = @user.latest_assigned_issues(order, 5).decorate
+    issues = @user.latest_assigned_issues('issues.id DESC', 5).decorate
     #Load latest activities
     activities =  @user.latest_activities(5)
     respond_to do |format|
@@ -25,7 +26,6 @@ class ProfilesController < ApplicationController
   end
 
   def assigned_requests
-    order = sort_column + ' ' + sort_direction
     issues = Issue.assigned_issues_for_user(@user).fetch_dependencies.decorate
     respond_to do |format|
       format.html { render :action => 'assigned_requests', :locals => {:issues => issues} }
@@ -37,7 +37,6 @@ class ProfilesController < ApplicationController
   end
 
   def submitted_requests
-    order = sort_column + ' ' + sort_direction
     issues = Issue.submitted_issues_by_user(@user).fetch_dependencies.decorate
     respond_to do |format|
       format.html { render :action => 'submitted_requests', :locals => {:issues => issues} }
@@ -65,9 +64,10 @@ class ProfilesController < ApplicationController
   end
 
   def custom_queries
-    @queries = Query.created_by(@user).decorate
+    @queries = Query.created_by(@user).eager_load(:user).paginated(@sessions[:current_page], @sessions[:per_page], order('queries.name')).decorate(context: {queries_url: custom_queries_profile_path, action_name: 'custom_queries'})
     respond_to do |format|
       format.html {}
+      format.js { respond_to_js }
     end
   end
 
@@ -134,13 +134,6 @@ class ProfilesController < ApplicationController
   end
 
   private
-  def sort_column
-    params[:sort] ? params[:sort] : 'issues.id'
-  end
-
-  def sort_direction
-    params[:direction] ? params[:direction] : 'DESC'
-  end
 
   def user_params
     params.require(:user).permit(User.permit_attributes)

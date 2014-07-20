@@ -7,7 +7,7 @@ module TrackersHelper
   def list(collection)
     content_tag :table, class: 'tracker list' do
       safe_concat content_tag :tr, class: 'header', &Proc.new {
-        safe_concat content_tag :td, t(:field_name)
+        safe_concat content_tag :td, sortable('trackers.name', t(:field_name))
         safe_concat content_tag :td, nil
       }
       safe_concat(collection.collect do |tracker|

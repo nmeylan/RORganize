@@ -34,7 +34,7 @@ class IssueFilter
     content_hash['hash_for_select']['status'] = IssuesStatus.eager_load(:enumeration).collect { |status| [status.enumeration.name, status.id] }
     content_hash['hash_for_radio']['status'] = %w(all equal different open close)
     content_hash['hash_for_radio']['start'] = %w(all equal superior inferior today)
-    content_hash['hash_for_radio']['subject'] = ['all', 'contains', 'not contains']
+    content_hash['hash_for_radio']['subject'] = ['all', 'contains', 'not_contains']
     content_hash['hash_for_select']['tracker'] = @project.trackers.collect { |tracker| [tracker.name, tracker.id] }
     content_hash['hash_for_radio']['tracker'] = %w(all equal different)
     content_hash['hash_for_select']['version'] = @project.versions.collect { |version| [version.name, version.id] }

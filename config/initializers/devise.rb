@@ -7,7 +7,7 @@ Devise.setup do |config|
   config.mailer_sender = "please-change-me-at-config-initializers-devise@example.com"
   
   #SECRET KEY
-  config.secret_key = 'your_token'
+  config.secret_key = 'e57e80aa836840976551907eef3a99231f7f8849d34c7eea023d0eb154f94503e814ab28c7fbba3ccaef4fca11542af5befefb5c3fcdc223b1fc67be169674d4'
   # Configure the class responsible to send e-mails.
   # config.mailer = "Devise::Mailer"
 

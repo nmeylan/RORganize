@@ -7,8 +7,8 @@ module MembersHelper
   def list(collection, roles)
     content_tag :table, {class: 'member list'}, &Proc.new {
       safe_concat content_tag :tr, class: 'header', &Proc.new {
-        safe_concat content_tag :th, 'Name'
-        safe_concat content_tag :th, 'Role'
+        safe_concat content_tag :th, sortable('users.name', 'Name')
+        safe_concat content_tag :th, sortable('roles.name', 'Role')
         safe_concat content_tag :th, nil
       }
       safe_concat(collection.collect do |member|

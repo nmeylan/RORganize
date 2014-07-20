@@ -5,7 +5,7 @@
 
 module UsersHelper
   def list(collection)
-    safe_concat content_tag :table, {class: 'user list'}, &Proc.new {
+    content_tag :table, {class: 'user list'}, &Proc.new {
       safe_concat content_tag :tr, class: 'header', &Proc.new {
         safe_concat content_tag :th, sortable('users.id', '#')
         safe_concat content_tag :th, sortable('users.login', 'Login')
@@ -25,6 +25,5 @@ module UsersHelper
         end
       end.join.html_safe)
     }
-    paginate(collection, session[:controller_users_per_page], users_path)
   end
 end

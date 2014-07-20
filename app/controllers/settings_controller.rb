@@ -4,6 +4,8 @@
 # File: settings_controller.rb
 
 class SettingsController < ApplicationController
+  include Rorganize::RichController
+  before_filter :set_pagination, :only => [:public_queries]
   before_filter :find_project
   before_filter :check_queries_permission, :only => [:public_queries]
   before_filter :check_permission, :except => [:public_queries, :delete_attachment, :update]
@@ -37,9 +39,10 @@ class SettingsController < ApplicationController
   end
 
   def public_queries
-    @queries = Query.public_queries(@project.id).decorate
+    @queries = Query.public_queries(@project.id).eager_load(:user).paginated(@sessions[:current_page], @sessions[:per_page], order('queries.name')).decorate(context: {queries_url: public_queries_settings_path(@project.slug), action_name: 'public_queries'})
     respond_to do |format|
       format.html
+      format.js { respond_to_js }
     end
   end
 

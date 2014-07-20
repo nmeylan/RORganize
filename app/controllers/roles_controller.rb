@@ -4,6 +4,7 @@
 # File: roles_controller.rb
 
 class RolesController < ApplicationController
+  include Rorganize::RichController
   before_filter :check_permission
   before_filter { |c| c.menu_context :admin_menu }
   before_filter { |c| c.menu_item(params[:controller])}
@@ -11,9 +12,10 @@ class RolesController < ApplicationController
 
   #Get /administration/roles
   def index
-    @roles = Role.select('*').decorate
+    @roles = Role.select('*').paginated(@sessions[:current_page], @sessions[:per_page], order('roles.name')).decorate
     respond_to do |format|
       format.html
+      format.js { respond_to_js }
     end
   end
 

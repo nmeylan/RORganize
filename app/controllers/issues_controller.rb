@@ -11,9 +11,7 @@ class IssuesController < ApplicationController
   before_filter { |c| c.menu_context :project_menu }
   before_filter { |c| c.menu_item(params[:controller]) }
   before_filter { |c| c.top_menu_item('projects') }
-  include IssuesHelper
   include Rorganize::RichController
-  helper_method :sort_column, :sort_direction
   require 'will_paginate'
 
   #RESTFULL CRUD Methods
@@ -188,8 +186,8 @@ class IssuesController < ApplicationController
   def apply_custom_query
     query = Query.friendly.find(params[:query_id])
     if query
-      session[@project.slug+'_controller_issues_filter'] = query.stringify_query
-      session[@project.slug+'_controller_issues_filter_params'] = eval(query.stringify_params)
+      @sessions[@project.slug][:sql_filter] = query.stringify_query
+      @sessions[@project.slug][:json_filter] = eval(query.stringify_params)
     end
     index
   end
@@ -251,18 +249,9 @@ class IssuesController < ApplicationController
     end
   end
 
-  def sort_column
-    session['controller_issues_sort'] = params[:sort] ? params[:sort] : (session['controller_issues_sort'] ? session['controller_issues_sort'] :'issues.id')
-  end
-
-  def sort_direction
-    session['controller_issues_direction'] = params[:direction] ? params[:direction] : (session['controller_issues_direction'] ? session['controller_issues_direction'] :'desc')
-  end
-
   def filter
-    session_json = "#{@project.slug}_controller_issues_filter_params"
-    session_sql = "#{@project.slug}_controller_issues_filter"
-    session[session_json], session[session_sql] = apply_filter(Issue, params, session[session_json], session[session_sql])
+    @sessions[@project.slug] ||= {}
+    apply_filter(Issue, params, @sessions[@project.slug])
   end
 
   #Find custom queries
@@ -272,11 +261,9 @@ class IssuesController < ApplicationController
 
   def load_issues
     gon.DOM_filter = view_context.issues_generics_form_to_json
-    gon.DOM_persisted_filter = session["#{@project.slug}_controller_issues_filter_params"].to_json
-    session['controller_issues_per_page'] = params[:per_page] ? params[:per_page] : (session['controller_issues_per_page'] ? session['controller_issues_per_page'] : 25)
-    order = sort_column + ' ' + sort_direction
-    filter = session["#{@project.slug}_controller_issues_filter"]
-    @issues = Issue.filter(filter, @project.id).paginated(params[:page], session['controller_issues_per_page'], order).fetch_dependencies.decorate(context: {project: @project})
+    gon.DOM_persisted_filter = @sessions[@project.slug][:json_filter].to_json
+    filter = @sessions[@project.slug][:sql_filter]
+    @issues = Issue.filter(filter, @project.id).paginated(@sessions[:current_page], @sessions[:per_page], order('issues.id')).fetch_dependencies.decorate(context: {project: @project})
   end
 
   def form_content

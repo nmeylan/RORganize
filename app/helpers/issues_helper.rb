@@ -18,7 +18,7 @@ module IssuesHelper
     form_hash['tracker'] = generic_filter(:simple_select, 'Tracker', 'tracker', hash_for_radio['tracker'], hash_for_select['tracker'])
     form_hash['version'] = generic_filter(:simple_select, 'Version', 'version', hash_for_radio['version'], hash_for_select['version'])
     form_hash['updated_at'] = generic_filter(:date, 'Updated at', 'updated_at', hash_for_radio['updated'])
-    form_hash.each { |k, v| v.gsub(/"/, "'").gsub(/\n/, '') }
+    form_hash.each { |_, v| v.gsub(/"/, "'").gsub(/\n/, '') }
     form_hash.to_json
   end
 
@@ -53,7 +53,7 @@ module IssuesHelper
 
 
   def list(collection)
-    safe_concat content_tag :table, {class: 'issue list', 'data-link' => toolbox_issues_path(@project.slug)}, &Proc.new {
+    content_tag :table, {class: 'issue list', 'data-link' => toolbox_issues_path(@project.slug)}, &Proc.new {
       safe_concat content_tag :tr, class: 'header', &Proc.new {
         safe_concat content_tag :th, link_to(glyph('', 'check'), '#', {:class => 'icon-checked', :id => 'check_all', 'cb_checked' => 'b'})
         safe_concat content_tag :th, sortable('issues.id', '#')
@@ -85,7 +85,6 @@ module IssuesHelper
         end
       end.join.html_safe)
     }
-    paginate(collection, session[:controller_issues_per_page], issues_path(@project.slug))
   end
 
   def simple_list(collection)

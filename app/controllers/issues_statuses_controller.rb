@@ -1,4 +1,5 @@
 class IssuesStatusesController < ApplicationController
+  include Rorganize::RichController
   before_filter :check_permission
   before_filter { |c| c.menu_context :admin_menu }
   before_filter { |c| c.menu_item(params[:controller]) }
@@ -8,6 +9,7 @@ class IssuesStatusesController < ApplicationController
     get_statuses
     respond_to do |format|
       format.html
+      format.js { respond_to_js }
     end
   end
 
@@ -102,7 +104,7 @@ class IssuesStatusesController < ApplicationController
   end
 
   def get_statuses
-    @issues_statuses = IssuesStatus.eager_load(:enumeration).order('enumerations.position').decorate
+    @issues_statuses = IssuesStatus.paginated(@sessions[:current_page], @sessions[:per_page], order('enumerations.position')).fetch_dependencies.decorate
   end
 
 end

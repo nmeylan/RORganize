@@ -3,6 +3,7 @@ module ApplicationHelper
     content_for?(:sidebar)
   end
 
+
   def clear_both
     content_tag :div, nil, {class: 'clear-both'}
   end
@@ -40,7 +41,7 @@ module ApplicationHelper
     safe_concat will_paginate(collection, :renderer => 'RemoteLinkRenderer')
     content_tag :div, class: 'autocomplete-combobox nosearch per_page', &Proc.new {
       safe_concat content_tag :label, t(:label_per_page), {for: 'per_page'}
-      safe_concat select_tag 'per_page', options_for_select([%w(25 25), %w(50 50), %w(100 100)], session), :class => 'chzn-select cbb-small', :id => 'per_page', :'data-link' => "#{path}"
+      safe_concat select_tag 'per_page', options_for_select([%w(25 25), %w(50 50), %w(100 100)], session[:per_page]), :class => 'chzn-select cbb-small', :id => 'per_page', :'data-link' => "#{path}"
     }
   end
 
@@ -303,7 +304,7 @@ EOD
     content_tag :span do
       ary.each do |v|
         safe_concat radio_button_tag %Q(filter[#{name}][operator]), v, v.eql?('all'), {class: name, id: %Q(#{name}_#{v.gsub(' ', '_')}), align: 'center'}
-        safe_concat label_tag %Q(#{name}_#{v}), v.capitalize
+        safe_concat label_tag %Q(#{name}_#{v}), v.gsub('_', ' ').capitalize
       end
     end
   end

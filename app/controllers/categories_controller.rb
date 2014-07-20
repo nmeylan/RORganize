@@ -9,12 +9,13 @@ class CategoriesController < ApplicationController
   before_filter { |c| c.menu_context :project_menu }
   before_filter { |c| c.menu_item('settings') }
   before_filter {|c| c.top_menu_item('projects')}
-  include CategoriesHelper
+  include Rorganize::RichController
 
   def index
-    @categories = @project.categories.decorate(context: {project: @project})
+    @categories = @project.categories.paginated(@sessions[:current_page], @sessions[:per_page], order('categories.name')).decorate(context: {project: @project})
     respond_to do |format|
       format.html
+      format.js { respond_to_js }
     end
   end
 

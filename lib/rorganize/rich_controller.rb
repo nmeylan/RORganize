@@ -6,6 +6,10 @@
 
 module Rorganize
   module RichController
+
+    def self.included(base)
+      base.before_filter :set_pagination, only: [:index]
+    end
     # Klazz : type of the filtered content, e.g : Issue
     #Criterias : HASH criteria, e.g : {"subject"=>{"operator"=>"contains", "value"=>"test"}}
     #Filter type : are content filtered? then value is filter (to filter content) or all (to display all result)
@@ -14,7 +18,7 @@ module Rorganize
     # session_json : serialized dom filter in json
     # session_sql : sql filter
     #Return : An array (size 2), first index -> sql filter, second index -> HASH criteria
-    def apply_filter(klazz, params, session_json, session_sql)
+    def apply_filter(klazz, params, sessions)
       criteria = params[:filter]
       filter_type = params[:type]
       filters_list = params[:filters_list]
@@ -30,20 +34,19 @@ module Rorganize
         filter = klazz.conditions_string(criteria)
       elsif commit
         #filter SQL content
-        session_sql = nil
+        sessions[:sql_filter] = nil
         #filter DOM content
-        session_json = nil
+        sessions[:json_filter] = nil
       end
       #When page is reloading, user don't loose his filters
       if filter_type && filter_type.eql?('filter')
-        session_json = filter_params
+        sessions[:json_filter] = filter_params
       end
       if filter
-        session_sql = filter
-      elsif !session_sql
-        session_sql = ''
+        sessions[:sql_filter] = filter
+      elsif !sessions[:sql_filter]
+        sessions[:sql_filter] = ''
       end
-      [session_json, session_sql]
     end
 
     def load_controller_list
@@ -53,6 +56,32 @@ module Rorganize
       controllers.collect do |controller|
         controller.capitalize
       end
+    end
+
+    def set_current_page
+      # @sessions[:current_page] = params[:page] ? params[:page] : (@sessions[:current_page] ? @sessions[:current_page] : 1)
+      @sessions[:current_page] = params[:page]
+    end
+
+    def set_per_page
+      @sessions[:per_page] = params[:per_page] ? params[:per_page] : (@sessions[:per_page] ? @sessions[:per_page] : 25)
+    end
+
+    def order(default_column)
+      sort_column(default_column) + ' ' + sort_direction
+    end
+
+    def sort_column(default_column = nil)
+      @sessions[:sort] = params[:sort] ? params[:sort] : (@sessions[:sort] ? @sessions[:sort] : default_column)
+    end
+
+    def sort_direction
+      @sessions[:direction] = params[:direction] ? params[:direction] : (@sessions[:direction] ? @sessions[:direction] :'desc')
+    end
+
+    def set_pagination
+      set_current_page
+      set_per_page
     end
 
   end

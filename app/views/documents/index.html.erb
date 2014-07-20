@@ -9,4 +9,13 @@
     <%= @documents.new_link %>
 <% end %>
 <%= filter_tag('document', Document.filtered_attributes, documents_path(@project.slug)) %>
-<%= render :partial => 'documents/list' %>
+
+<%= @documents.display_collection %>
+
+
+<ul id="documents_toolbox" class="jeegoocontext box toolbox">
+  <% if @documents_toolbox %>
+      <%= document_toolbox(@documents_toolbox) %>
+  <% end %>
+</ul>
+<%= render :partial => 'shared/delete_overlay', :locals => {:collection => @documents_toolbox} %>

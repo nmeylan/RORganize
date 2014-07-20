@@ -4,6 +4,7 @@
 # File: trackers_controller.rb
 
 class TrackersController < ApplicationController
+  include Rorganize::RichController
   before_filter :check_permission
   before_filter { |c| c.menu_context :admin_menu }
   before_filter { |c| c.menu_item(params[:controller])}
@@ -11,9 +12,10 @@ class TrackersController < ApplicationController
 
   #Get /administration/trackers
   def index
-    @trackers = Tracker.select('*').decorate
+    @trackers = Tracker.paginated(@sessions[:current_page], @sessions[:per_page], order('trackers.name')).decorate
     respond_to do |format|
       format.html
+      format.js { respond_to_js }
     end
   end
 

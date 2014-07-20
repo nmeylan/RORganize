@@ -7,7 +7,7 @@ module CategoriesHelper
   def list(collection)
     content_tag :table, class: 'category list' do
       safe_concat content_tag :tr, class: 'header', &Proc.new {
-        safe_concat content_tag :td, t(:field_name)
+        safe_concat content_tag :td, sortable('categories.name', t(:field_name))
         safe_concat content_tag :td, nil
       }
       safe_concat(collection.collect do |category|
