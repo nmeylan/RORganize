@@ -3,7 +3,8 @@
  * Date: 30/11/13
  * Time: 08:14
  %>
-
+jQuery('#delete_overlay').overlay();
+jQuery('#delete_overlay').overlay().close();
 on_replace_effect("#documents_content", "<%= escape_javascript(@documents.display_collection)%>");
 on_replace_effect("#document_filter", "<%= escape_javascript(filter_tag('document', Document.filtered_attributes, documents_path(@project.slug)) )%>");
 per_page();
