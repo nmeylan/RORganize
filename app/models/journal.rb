@@ -4,25 +4,21 @@
 # File: journal.rb
 
 class Journal < ActiveRecord::Base
+
   has_many :details, :class_name => 'JournalDetail', :dependent => :destroy
   belongs_to :journalized, :polymorphic => true
   belongs_to :issue, foreign_key: 'journalized_id'
   belongs_to :user, :class_name => 'User'
-
   belongs_to :project
 
+  scope :document_activities, ->(document_id) { eager_load([:details, :user]).where(journalized_type: 'Document', journalized_id: document_id) }
 
   def detail_insertion(updated_attrs, journalized_property, foreign_key_value = {})
     #Remove attributes that won't be considarate in journal update
     updated_attrs.each do |attribute, old_new_value|
       if foreign_key_value[attribute]
-        if foreign_key_value[attribute].eql?(IssuesStatus)
-          old_value = foreign_key_value[attribute].find(old_new_value[0]).enumeration.name
-          new_value = foreign_key_value[attribute].find(old_new_value[1]).enumeration.name
-        else
-          old_value = old_new_value[0] && !foreign_key_value[attribute].nil? ? foreign_key_value[attribute].select(:name).where(:id => old_new_value[0]).first.name : nil
-          new_value = old_new_value[1] && !old_new_value[1].eql?('') ? foreign_key_value[attribute].select(:name).where(:id => old_new_value[1]).first.name : ''
-        end
+        old_value = old_new_value[0] && !foreign_key_value[attribute].nil? ? foreign_key_value[attribute].where(:id => old_new_value[0]).first.caption : nil
+        new_value = old_new_value[1] && !old_new_value[1].eql?('') ? foreign_key_value[attribute].where(:id => old_new_value[1]).first.caption : ''
       else
         old_value = old_new_value[0]
         new_value = old_new_value[1]

@@ -3,11 +3,12 @@
 # Encoding: UTF-8
 # File: category.rb
 
-class Category < RorganizeActiveRecord
+class Category < ActiveRecord::Base
   include Rorganize::AbstractModelCaption
+  include Rorganize::SmartRecords
+  include Rorganize::JounalsManager
   #Class variables
-  assign_journalized_properties({'name' => 'Name'})
-  assign_foreign_keys({})
+  assign_journalized_properties({name: 'Name'})
   #Relations
   belongs_to :project, :class_name => 'Project'
   has_many :issues, :class_name => 'Issue', :dependent => :nullify

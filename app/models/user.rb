@@ -1,12 +1,12 @@
-class User < RorganizeActiveRecord
+class User < ActiveRecord::Base
   include Rorganize::AbstractModelCaption
+  include Rorganize::JounalsManager
   include ProjectsHelper
   include Rorganize::PermissionManager::PermissionManagerHelper
   include Rorganize::ModuleManager::ModuleManagerHelper
   #Class variables
   #noinspection RubyStringKeysInHashInspection
-  assign_journalized_properties({'name' => 'Name', 'admin' => 'Administrator', 'email' => 'Email', 'login' => 'Login'})
-  assign_foreign_keys({})
+  assign_journalized_properties({name: 'Name', admin: 'Administrator', email: 'Email', login: 'Login'})
   #SLug
   extend FriendlyId
   friendly_id :name, use: :slugged

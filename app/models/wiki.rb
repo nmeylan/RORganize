@@ -3,9 +3,9 @@
 # Encoding: UTF-8
 # File: wiki.rb
 
-class Wiki < RorganizeActiveRecord
+class Wiki < ActiveRecord::Base
   include Rorganize::AbstractModelCaption
-
+  include Rorganize::JounalsManager
   #Relations
   belongs_to :home_page, :class_name => 'WikiPage', :foreign_key => :home_page_id
   has_many :pages, :class_name => 'WikiPage', :foreign_key => :wiki_id, :dependent => :destroy

@@ -5,6 +5,7 @@
 
 class IssuesStatus < ActiveRecord::Base
   include Rorganize::AbstractModelCaption
+  include Rorganize::SmartRecords
 
   has_and_belongs_to_many :roles, :class_name => 'Role'
   belongs_to :enumeration, :class_name => 'Enumeration', :dependent => :destroy
@@ -28,8 +29,7 @@ class IssuesStatus < ActiveRecord::Base
   #Change position
   def change_position(operator)
     enumerations = Enumeration.where(opt: 'ISTS').order('position ASC')
-    p self.enumeration
-    Rorganize::SmartRecords.change_position(enumerations, self.enumeration, operator)
+    apply_change_position(enumerations, self.enumeration, operator)
   end
 
 end

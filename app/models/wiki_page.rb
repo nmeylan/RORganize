@@ -2,12 +2,11 @@
 # Date: 19 mai 2013
 # Encoding: UTF-8
 # File: wiki_page.rb
-class WikiPage < RorganizeActiveRecord
+class WikiPage < ActiveRecord::Base
   include Rorganize::AbstractModelCaption
+  include Rorganize::JounalsManager
   #Class variables
-  assign_journalized_properties({'title' => 'Title',
-      'content' => 'Content'})
-  assign_foreign_keys({})
+  assign_journalized_properties({title: 'Title', content: 'Content'})
   #Slug
   extend FriendlyId
   friendly_id :title, use: :slugged

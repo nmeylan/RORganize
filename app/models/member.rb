@@ -3,11 +3,12 @@
 # Encoding: UTF-8
 # File: member.rb
 
-class Member < RorganizeActiveRecord
+class Member < ActiveRecord::Base
   include Rorganize::AbstractModelCaption
+  include Rorganize::JounalsManager
   #Constants
-  assign_journalized_properties({'role_id' => 'Role'})
-  assign_foreign_keys({'role_id' => Role})
+  assign_journalized_properties({role_id: 'Role'})
+  assign_foreign_keys({role_id: Role})
   #Relations
   belongs_to :project, :class_name => 'Project', counter_cache: true
   

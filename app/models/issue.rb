@@ -2,11 +2,12 @@
 # Date: 13 juil. 2012
 # Encoding: UTF-8
 # File: issue.rb
-class Issue < RorganizeActiveRecord
+class Issue < ActiveRecord::Base
   include Rorganize::AbstractModelCaption
+  include Rorganize::JounalsManager
   #Class variables
-  assign_journalized_properties({'status_id' => 'Status', 'category_id' => 'Category', 'assigned_to_id' => 'Assigned to', 'tracker_id' => 'Tracker', 'due_date' => 'Due date', 'start_date' => 'Start date', 'done' => 'Done', 'estimated_time' => 'Estimated time', 'version_id' => 'Version', 'predecessor_id' => 'Predecessor'})
-  assign_foreign_keys({'status_id' => IssuesStatus, 'category_id' => Category, 'assigned_to_id' => User, 'tracker_id' => Tracker, 'version_id' => Version})
+  assign_journalized_properties({status_id: 'Status', category_id: 'Category', assigned_to_id: 'Assigned to', tracker_id: 'Tracker', due_date: 'Due date', start_date: 'Start date', done: 'Done', estimated_time: 'Estimated time', version_id: 'Version', predecessor_id: 'Predecessor'})
+  assign_foreign_keys({status_id: IssuesStatus, category_id: Category, assigned_to_id: User, tracker_id: Tracker, version_id: Version})
   attr_accessor :notes
   #Relations
   belongs_to :project, :class_name => 'Project', counter_cache: true

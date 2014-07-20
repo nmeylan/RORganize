@@ -1,9 +1,9 @@
-class Version < RorganizeActiveRecord
+class Version < ActiveRecord::Base
   include Rorganize::AbstractModelCaption
+  include Rorganize::SmartRecords
+  include Rorganize::JounalsManager
   #Class variables
-  assign_journalized_properties({'name' => 'Name',
-                                 'target_date' => 'Due date', 'start_date' => 'Start date'})
-  assign_foreign_keys({})
+  assign_journalized_properties({name: 'Name', target_date: 'Due date', start_date: 'Start date'})
   #Relations
   belongs_to :project, :class_name => 'Project'
   has_many :issues, :class_name => 'Issue', :dependent => :nullify
@@ -88,6 +88,6 @@ class Version < RorganizeActiveRecord
 
   def change_position(project, operator)
     versions = project.versions.order(:position)
-    Rorganize::SmartRecords.change_position(versions, self, operator)
+    apply_change_position(versions, self, operator)
   end
 end

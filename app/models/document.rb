@@ -2,15 +2,17 @@
 # Date: 06 avri. 2013
 # Encoding: UTF-8
 # File: document.rb
-class Document < RorganizeActiveRecord
+class Document < ActiveRecord::Base
+  include Rorganize::JounalsManager
   include Rorganize::AbstractModelCaption
+  include Rorganize::SmartRecords
   #Class variables
-  assign_journalized_properties({ 'name' => 'Name', 'category_id' => 'Category','version_id' => 'Version'})
-  assign_foreign_keys({'category_id' => Category, 'version_id' => Version})
+  assign_journalized_properties({name: 'Name', category_id: 'Category', version_id: 'Version'})
+  assign_foreign_keys({category_id: Category, version_id: Version})
   #Relations
   belongs_to :version
   belongs_to :category
-  has_many :attachments, -> {where :object_type => 'Document'}, :foreign_key => 'object_id', :dependent => :destroy
+  has_many :attachments, -> { where :object_type => 'Document' }, :foreign_key => 'object_id', :dependent => :destroy
   belongs_to :project
   has_many :journals, -> { where :journalized_type => 'Document' }, :as => :journalized, :dependent => :destroy
   #Validators
@@ -20,22 +22,22 @@ class Document < RorganizeActiveRecord
   after_update :save_attachments, :update_journal
   after_create :create_journal
   after_destroy :destroy_journal
+  #Scopes
+  scope :filtered, ->(filter, project_id) { where("#{filter} documents.project_id = #{project_id}").eager_load([:version, :category]) }
   #methods
 
   def caption
     self.name
   end
 
-  def self.paginated_documents(page, per_page, order, filter, project_id)
-    Document.where("#{filter} documents.project_id = #{project_id}").eager_load([:version, :category]).paginate(:page => page, :per_page => per_page).order(order)
+  def self.permit_attributes
+    [:name, :description, :version_id, :category_id, {:new_attachment_attributes => Attachment.permit_attributes}, {:edit_attachment_attributes => Attachment.permit_attributes}]
   end
 
-  def self.permit_attributes
-    [:name, :description, :version_id, :category_id, {:new_attachment_attributes => Attachment.permit_attributes},{:edit_attachment_attributes => Attachment.permit_attributes}]
-  end
   def self.permit_bulk_edit_values
     [:version_id, :category_id]
   end
+
   #Attributes name without id
   def self.attributes_formalized_names
     names = []
@@ -76,11 +78,6 @@ class Document < RorganizeActiveRecord
     attrs = Document.attributes_formalized_names.delete_if { |attribute| unused_attributes.include?(attribute) }
     attrs.each { |attribute| filtered_attributes << [attribute, attribute.gsub(/\s/, '_').downcase] }
     return filtered_attributes
-  end
-
-  #Get all document activities
-  def activities
-    Journal.eager_load([:details, :user]).where(:journalized_type => self.class.to_s, :journalized_id => self.id)
   end
 
   def self.bulk_edit(doc_ids, value_param)
