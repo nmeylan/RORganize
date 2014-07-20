@@ -18,7 +18,7 @@ class ApplicationCollectionDecorator < Draper::CollectionDecorator
         else
           h.safe_concat h.list(self)
         end
-        h.safe_concat h.paginate(object, h.session[h.controller_name.to_sym], pagination_path) unless no_pagination
+        h.safe_concat(h.paginate(object, h.session[h.controller_name.to_sym], pagination_path)) unless no_pagination || (object.to_a.size < 25 && h.session[h.controller_name.to_sym][:current_page].to_i < 2)
       else
         h.content_tag :div, h.t(:text_no_data), class: 'no-data'
       end
