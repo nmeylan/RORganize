@@ -1,31 +1,6 @@
 require 'issues/issue_filter'
 require 'issues/issue_toolbox'
 module IssuesHelper
-  #Insert updated attributes in journal detail
-  def issues_journal_insertion(updated_attrs, journal, journalized_property, foreign_key_value = {})
-    #Remove attributes that won't be considarate in journal update
-    updated_attrs.each do |attribute, old_new_value|
-      if foreign_key_value[attribute]
-        if foreign_key_value[attribute].eql?(IssuesStatus)
-          old_value = foreign_key_value[attribute].find(old_new_value[0]).enumeration.name
-          new_value = foreign_key_value[attribute].find(old_new_value[1]).enumeration.name
-        else
-          old_value = old_new_value[0] && !foreign_key_value[attribute].nil? ? foreign_key_value[attribute].select(:name).where(:id => old_new_value[0]).first.name : nil
-          new_value = old_new_value[1] && !old_new_value[1].eql?('') ? foreign_key_value[attribute].select(:name).where(:id => old_new_value[1]).first.name : ''
-        end
-      else
-        old_value = old_new_value[0]
-        new_value = old_new_value[1]
-      end
-      JournalDetail.create(:journal_id => journal.id,
-                           :property => journalized_property[attribute],
-                           :property_key => attribute,
-                           :old_value => old_value,
-                           :value => new_value)
-    end
-  end
-
-
   def issues_generics_form_to_json
     form_hash = {}
     filter_content_hash = IssueFilter.new(@project).content
