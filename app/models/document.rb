@@ -4,7 +4,6 @@
 # File: document.rb
 class Document < ActiveRecord::Base
   include Rorganize::JounalsManager
-  include Rorganize::AbstractModelCaption
   include Rorganize::SmartRecords
   #Class variables
   assign_journalized_properties({name: 'Name', category_id: 'Category', version_id: 'Version'})
@@ -23,7 +22,7 @@ class Document < ActiveRecord::Base
   after_create :create_journal
   after_destroy :destroy_journal
   #Scopes
-  scope :filtered, ->(filter, project_id) { where("#{filter} documents.project_id = #{project_id}").eager_load([:version, :category]) }
+  scope :fetch_dependencies, -> { eager_load([:version, :category]) }
   #methods
 
   def caption

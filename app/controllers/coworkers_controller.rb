@@ -18,10 +18,10 @@ class CoworkersController < ApplicationController
     if params[:getAct].eql?('true')
       @coworker = Member.find_by_id(params[:id])
     end
-
+    activities = @coworker ? Journal.member_activities(@coworker) : []
     respond_to do |format|
       format.html
-      format.js{ respond_to_js :locals => {:activities => @coworker.activities} }
+      format.js{ respond_to_js :locals => {:activities => activities} }
     end
   end
 

@@ -1,5 +1,6 @@
 class Enumeration < ActiveRecord::Base
-  include Rorganize::AbstractModelCaption
+  include Rorganize::SmartRecords
+
   before_save :inc_position
   after_destroy :dec_position_on_destroy
   validates :name, :presence => true

@@ -19,7 +19,7 @@ module DocumentsHelper
         content_tag :tr, class: 'odd_even document_tr' do
           safe_concat content_tag :td, check_box_tag("document-#{document.id.to_s}", document.id)
           safe_concat content_tag :td, document.id, class: 'list_center id'
-          safe_concat content_tag :td, link_to(document.name, document_path(@project.slug, document.id)), {class: 'name', id: document.id}
+          safe_concat content_tag :td, link_to(document.caption, document_path(@project.slug, document.id)), {class: 'name', id: document.id}
           safe_concat content_tag :td, document.category, class: 'list_center category'
           safe_concat content_tag :td, document.version, class: 'list_center version'
         end

@@ -4,7 +4,7 @@
 # File: member.rb
 
 class Member < ActiveRecord::Base
-  include Rorganize::AbstractModelCaption
+  include Rorganize::SmartRecords
   include Rorganize::JounalsManager
   #Constants
   assign_journalized_properties({role_id: 'Role'})
@@ -34,13 +34,6 @@ class Member < ActiveRecord::Base
       :action_type => 'created',
       :project_id => self.project_id)
     journal.detail_insertion(created_journalized_attributes, self.class.journalized_properties, self.class.foreign_keys)
-  end
-
-  #Get activities for a project member
-  def activities
-    Journal.where(:user_id => self.user_id, :project_id => self.project_id)
-    .includes(:details, :project, :user, :journalized)
-    .order('created_at DESC')
   end
 
   #Change a member's role

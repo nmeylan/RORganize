@@ -4,7 +4,8 @@
 # File: Role.rb
 
 class Role < ActiveRecord::Base
-  include Rorganize::AbstractModelCaption
+  include Rorganize::SmartRecords
+
   has_many :members, :class_name => 'Member', :dependent => :nullify
   has_and_belongs_to_many :issues_statuses, -> {includes([:enumeration])}, :class_name => 'IssuesStatus'
   has_and_belongs_to_many :permissions, :class_name => 'Permission'

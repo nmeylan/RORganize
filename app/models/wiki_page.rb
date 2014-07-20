@@ -3,7 +3,7 @@
 # Encoding: UTF-8
 # File: wiki_page.rb
 class WikiPage < ActiveRecord::Base
-  include Rorganize::AbstractModelCaption
+  include Rorganize::SmartRecords
   include Rorganize::JounalsManager
   #Class variables
   assign_journalized_properties({title: 'Title', content: 'Content'})

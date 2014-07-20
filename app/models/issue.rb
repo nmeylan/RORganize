@@ -3,7 +3,7 @@
 # Encoding: UTF-8
 # File: issue.rb
 class Issue < ActiveRecord::Base
-  include Rorganize::AbstractModelCaption
+  include Rorganize::SmartRecords
   include Rorganize::JounalsManager
   #Class variables
   assign_journalized_properties({status_id: 'Status', category_id: 'Category', assigned_to_id: 'Assigned to', tracker_id: 'Tracker', due_date: 'Due date', start_date: 'Start date', done: 'Done', estimated_time: 'Estimated time', version_id: 'Version', predecessor_id: 'Predecessor'})
@@ -23,7 +23,6 @@ class Issue < ActiveRecord::Base
   has_many :attachments, -> { where :object_type => 'Issue' }, :foreign_key => 'object_id', :dependent => :destroy
   has_many :journals, -> { where :journalized_type => 'Issue' }, :as => :journalized, :dependent => :destroy
   has_many :time_entries, :dependent => :destroy
-
   #triggers
   before_save :set_done_ratio
   before_update :set_done_ratio, :set_due_date
@@ -32,34 +31,15 @@ class Issue < ActiveRecord::Base
   after_destroy :destroy_journal
   #Validators
   validates_associated :attachments
-
   validates :subject, :tracker_id, :status_id, :presence => true
   validate :validate_start_date, :validate_predecessor
-
-  #  validates :due_date, :format =>
-  def self.paginated_issues(page, per_page, order, filter, project_id)
-    Issue.where("#{filter} issues.project_id = #{project_id}").eager_load([:tracker, :version, :assigned_to, :category, :attachments, :status => [:enumeration]]).paginate(:page => page, :per_page => per_page).order(order)
-  end
-
+  #Scopes
+  scope :fetch_dependencies, -> { eager_load([:tracker, :version, :assigned_to, :category, :attachments, :status => [:enumeration]]) }
+  scope :assigned_issues_for_user, ->(user) { where(:assigned_to_id => user.id, :status_id => IssuesStatus.opened_statuses_id, :project_id => Project.opened_projects_id).eager_load(:project) }
+  scope :submitted_issues_by_user, ->(user) { where(:author_id => user.id, :status_id => IssuesStatus.opened_statuses_id, :project_id => Project.opened_projects_id).eager_load(:project) }
 
   def caption
     self.subject
-  end
-
-  #Assigned open requests on any open project
-  def self.user_assigned_issues(user, order)
-    return Issue.eager_load([:tracker, :version, :assigned_to, :category, :project, :status => [:enumeration]])
-    .where(:assigned_to_id => user.id, :status_id => IssuesStatus.opened_statuses_id, :project_id => Project.opened_projects_id)
-    .order(order)
-
-  end
-
-  #Created open requests on any open project
-  def self.user_submitted_issues(user, order)
-    return Issue.eager_load([:tracker, :version, :assigned_to, :category, :project, :status => [:enumeration]])
-    .where(:author_id => user.id, :status_id => IssuesStatus.opened_statuses_id, :project_id => Project.opened_projects_id)
-    .order(order)
-
   end
 
   #Attributes name without id
@@ -121,7 +101,7 @@ class Issue < ActiveRecord::Base
     filtered_attributes = []
     unused_attributes = ['Project', 'Description', 'Estimated time', 'Predecessor', 'Checklist items count', 'Attachments count']
     attrs = Issue.attributes_formalized_names.delete_if { |attribute| unused_attributes.include?(attribute) }
-    attrs.each { |attribute| filtered_attributes << [attribute, attribute.gsub(/\s/, '_').downcase] }# TODO use map
+    attrs.each { |attribute| filtered_attributes << [attribute, attribute.gsub(/\s/, '_').downcase] } # TODO use map
     return filtered_attributes
   end
 
@@ -189,7 +169,7 @@ class Issue < ActiveRecord::Base
                   'version' => 'issues.version_id',
                   'updated_at' => 'issues.updated_at'
     }
-    hash.each do |k, v|
+    hash.each do |_, v|
       if v['operator'].eql?('open')
         v['value'] = IssuesStatus.where(:is_closed => 0).collect { |status| status.id }
       elsif v['operator'].eql?('close')

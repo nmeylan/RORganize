@@ -4,14 +4,17 @@
 # File: journal.rb
 
 class Journal < ActiveRecord::Base
+  include Rorganize::SmartRecords
 
   has_many :details, :class_name => 'JournalDetail', :dependent => :destroy
   belongs_to :journalized, :polymorphic => true
   belongs_to :issue, foreign_key: 'journalized_id'
   belongs_to :user, :class_name => 'User'
   belongs_to :project
-
+  #Scopes
+  scope :fetch_dependencies, -> { eager_load(:details, :project, :user, :journalized) }
   scope :document_activities, ->(document_id) { eager_load([:details, :user]).where(journalized_type: 'Document', journalized_id: document_id) }
+  scope :member_activities, ->(member) { where(:user_id => member.user_id, :project_id => member.project_id).order('created_at DESC') }
 
   def detail_insertion(updated_attrs, journalized_property, foreign_key_value = {})
     #Remove attributes that won't be considarate in journal update

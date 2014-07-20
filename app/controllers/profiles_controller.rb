@@ -26,7 +26,7 @@ class ProfilesController < ApplicationController
 
   def assigned_requests
     order = sort_column + ' ' + sort_direction
-    issues = Issue.user_assigned_issues(@user, order).decorate
+    issues = Issue.assigned_issues_for_user(@user).fetch_dependencies.decorate
     respond_to do |format|
       format.html { render :action => 'assigned_requests', :locals => {:issues => issues} }
     end
@@ -38,7 +38,7 @@ class ProfilesController < ApplicationController
 
   def submitted_requests
     order = sort_column + ' ' + sort_direction
-    issues = Issue.user_submitted_issues(@user, order).decorate
+    issues = Issue.submitted_issues_by_user(@user).fetch_dependencies.decorate
     respond_to do |format|
       format.html { render :action => 'submitted_requests', :locals => {:issues => issues} }
     end
@@ -65,7 +65,7 @@ class ProfilesController < ApplicationController
   end
 
   def custom_queries
-    @queries = Query.where(['author_id = ? AND is_public = ?', @user.id, false]).decorate
+    @queries = Query.created_by(@user).decorate
     respond_to do |format|
       format.html {}
     end

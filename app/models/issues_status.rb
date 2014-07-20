@@ -4,7 +4,6 @@
 # File: IssueStatus.rb
 
 class IssuesStatus < ActiveRecord::Base
-  include Rorganize::AbstractModelCaption
   include Rorganize::SmartRecords
 
   has_and_belongs_to_many :roles, :class_name => 'Role'
@@ -12,7 +11,7 @@ class IssuesStatus < ActiveRecord::Base
   has_many :issues, :class_name => 'Issue', :foreign_key => :status_id, :dependent => :nullify
 
   def self.opened_statuses_id
-    return IssuesStatus.select('id').where(:is_closed => false).collect { |status| status.id }
+    return IssuesStatus.where(:is_closed => false).pluck('id')
   end
 
   def self.permit_attributes

@@ -4,6 +4,8 @@
 # File: checklist_item.rb
 
 class ChecklistItem < ActiveRecord::Base
+  include Rorganize::SmartRecords
+
   belongs_to :issue, :class_name => 'Issue', :counter_cache => true
   belongs_to :enumeration, :class_name => 'Enumeration'
 
@@ -23,5 +25,9 @@ class ChecklistItem < ActiveRecord::Base
     else
       ChecklistItem.delete_all(['issue_id = ?', issue_id])
     end
+  end
+
+  def caption
+    self.name
   end
 end

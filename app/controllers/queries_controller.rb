@@ -106,10 +106,6 @@ class QueriesController < ApplicationController
     render_404 if @project.nil?
   end
 
-  def find_custom_queries
-    @custom_queries = Query.project_queries(@project.id, current_user.id)
-  end
-
   def check_query_permission
     @query = Query.find_by_id(params[:id]).decorate
     if (@query.is_public && !current_user.allowed_to?('public_queries', 'Queries', @project)) ||

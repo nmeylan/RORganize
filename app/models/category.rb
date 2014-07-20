@@ -4,7 +4,6 @@
 # File: category.rb
 
 class Category < ActiveRecord::Base
-  include Rorganize::AbstractModelCaption
   include Rorganize::SmartRecords
   include Rorganize::JounalsManager
   #Class variables

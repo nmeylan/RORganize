@@ -1,22 +1,17 @@
 class User < ActiveRecord::Base
-  include Rorganize::AbstractModelCaption
+  include Rorganize::SmartRecords
   include Rorganize::JounalsManager
-  include ProjectsHelper
   include Rorganize::PermissionManager::PermissionManagerHelper
   include Rorganize::ModuleManager::ModuleManagerHelper
-  #Class variables
-  #noinspection RubyStringKeysInHashInspection
-  assign_journalized_properties({name: 'Name', admin: 'Administrator', email: 'Email', login: 'Login'})
-  #SLug
   extend FriendlyId
+
+  assign_journalized_properties({name: 'Name', admin: 'Administrator', email: 'Email', login: 'Login'})
+  #Slug
   friendly_id :name, use: :slugged
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable,
   # :lockable, :timeoutable and :omniauthable
-  devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable
-
-
+  devise :database_authenticatable, :registerable, :recoverable, :rememberable, :trackable, :validatable
   # Setup accessible (or protected) attributes for your model
   #attr_accessible :id, :login, :email, :name, :password, :password_confirmation, :remember_me
   #Relations
@@ -24,7 +19,7 @@ class User < ActiveRecord::Base
   has_many :issues, :class_name => 'Issue', :foreign_key => :author_id, :dependent => :nullify
   has_many :issues, :class_name => 'Issue', :foreign_key => :assigned_to_id, :dependent => :nullify
   has_many :journals, -> { where :journalized_type => 'User' }, :as => :journalized, :dependent => :nullify
-
+  #Validators
   validates :login, :presence => true, :length => 4..50, :uniqueness => true
   validates :name, :presence => true, :length => 4..50
   #Triggers

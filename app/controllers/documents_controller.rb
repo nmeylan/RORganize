@@ -72,7 +72,7 @@ class DocumentsController < ApplicationController
     #this always return 1 result. Don't use .first(AR method) because it generate two query (due to ActiveRecord::FinderMethods::apply_join_dependency(..))
     @document = Document.eager_load(:category, :version, :attachments).where(id: params[:id])[0].decorate(context: {project: @project})
     respond_to do |format|
-      format.html { render :action => 'show', :locals => {:journals => @document.activities.to_a} }
+      format.html { render :action => 'show', :locals => {:journals => Journal.document_activities(@document.id)}}
     end
   end
 
@@ -153,7 +153,7 @@ class DocumentsController < ApplicationController
     session['controller_documents_per_page'] = params[:per_page] ? params[:per_page] : (session['controller_documents_per_page'] ? session['controller_documents_per_page'] : 25)
     order = sort_column + ' ' + sort_direction
     filter = session["#{@project.slug}_controller_documents_filter"]
-    @documents = Document.paginated_documents(params[:page], session['controller_documents_per_page'], order, filter, @project.id).decorate(context: {project: @project})
+    @documents = Document.filter(filter, @project.id).paginated(params[:page], session['controller_documents_per_page'], order).fetch_dependencies.decorate(context: {project: @project})
   end
 
   def document_params

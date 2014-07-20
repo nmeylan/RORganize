@@ -1,5 +1,5 @@
 class Project < ActiveRecord::Base
-  include Rorganize::AbstractModelCaption
+  include Rorganize::SmartRecords
   #SLug
   extend FriendlyId
   friendly_id :identifier, use: :slugged
@@ -44,7 +44,7 @@ class Project < ActiveRecord::Base
   end
 
   def self.opened_projects_id
-    return Project.select('id').where(:is_archived => false).collect { |p| p.id }
+    return Project.where(:is_archived => false).pluck('id')
   end
 
   #ATTACHMENT METHODS

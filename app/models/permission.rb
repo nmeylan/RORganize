@@ -4,7 +4,8 @@
 # File: permission.rb
 
 class Permission < ActiveRecord::Base
-  include Rorganize::AbstractModelCaption
+  include Rorganize::SmartRecords
+
   has_and_belongs_to_many :roles, :class_name => 'Role'
 
   validates :name, :controller, :action, :presence => true

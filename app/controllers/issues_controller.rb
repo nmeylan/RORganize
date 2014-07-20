@@ -267,7 +267,7 @@ class IssuesController < ApplicationController
 
   #Find custom queries
   def find_custom_queries
-    @custom_queries = Query.issues_queries(@project.id)
+    @custom_queries = Query.available_for(current_user, @project.id)
   end
 
   def load_issues
@@ -276,7 +276,7 @@ class IssuesController < ApplicationController
     session['controller_issues_per_page'] = params[:per_page] ? params[:per_page] : (session['controller_issues_per_page'] ? session['controller_issues_per_page'] : 25)
     order = sort_column + ' ' + sort_direction
     filter = session["#{@project.slug}_controller_issues_filter"]
-    @issues = Issue.paginated_issues(params[:page], session['controller_issues_per_page'],order, filter, @project.id).decorate(context: {project: @project})
+    @issues = Issue.filter(filter, @project.id).paginated(params[:page], session['controller_issues_per_page'], order).fetch_dependencies.decorate(context: {project: @project})
   end
 
   def form_content

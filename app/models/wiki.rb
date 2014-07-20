@@ -4,7 +4,7 @@
 # File: wiki.rb
 
 class Wiki < ActiveRecord::Base
-  include Rorganize::AbstractModelCaption
+  include Rorganize::SmartRecords
   include Rorganize::JounalsManager
   #Relations
   belongs_to :home_page, :class_name => 'WikiPage', :foreign_key => :home_page_id

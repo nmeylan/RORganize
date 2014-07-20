@@ -4,6 +4,8 @@
 # File: attachment.rb
 
 class Attachment < ActiveRecord::Base
+  include Rorganize::SmartRecords
+
   has_attached_file :file, :styles => {
       :logo => '40x40',
       :thumb => '100x100>',
@@ -26,5 +28,9 @@ class Attachment < ActiveRecord::Base
     else
       'octicon-file-media'
     end
+  end
+
+  def caption
+    self.name
   end
 end
