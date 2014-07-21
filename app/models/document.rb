@@ -15,7 +15,6 @@ class Document < ActiveRecord::Base
   belongs_to :project
   has_many :journals, -> { where :journalized_type => 'Document' }, :as => :journalized, :dependent => :destroy
   #Validators
-  validates_associated :attachments
   validates :name, :presence => true
   #triggers
   after_update :save_attachments, :update_journal
@@ -43,32 +42,6 @@ class Document < ActiveRecord::Base
     Document.attribute_names.each { |attribute| !attribute.eql?('id') ? names << attribute.gsub(/_id/, '').gsub(/id/, '').gsub(/_/, ' ').capitalize : '' }
     return names
   end
-
-  #ATTACHMENT METHODS
-  def new_attachment_attributes=(attachment_attributes)
-    attachment_attributes.each do |attributes|
-      attributes['object_type'] = 'Document'
-      attachments.build(attributes)
-    end
-  end
-
-  def existing_attachment_attributes=(attachment_attributes)
-    attachments.reject(&:new_record?).each do |attachment|
-      attributes = attachment_attributes[attachment.id.to_s]
-      if attributes
-        attachment.attributes = attributes
-      else
-        attachment.delete
-      end
-    end
-  end
-
-  def save_attachments
-    attachments.each do |attachment|
-      attachment.save(:validation => false)
-    end
-  end
-
 
   #Return an array with all attribute that can be filtered
   def self.filtered_attributes

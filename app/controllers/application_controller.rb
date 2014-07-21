@@ -37,7 +37,6 @@ class ApplicationController < ActionController::Base
   def set_sessions
     session[controller_name.to_sym] ||= {}
     @sessions = session[controller_name.to_sym]
-    p @sessions
   end
 
   def find_project

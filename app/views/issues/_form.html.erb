@@ -4,7 +4,6 @@
 # Encoding: UTF-8
 # File: _form.html.erb
 %>
-
 <%= raw error_messages(@issue.errors.full_messages) %>
 <div class="box">
   <div class="autocomplete-combobox cbb-medium nosearch">
@@ -68,7 +67,7 @@
           <%= add_attachments_link 'Add a file', @issue, 'issue' %>
         </p>
 
-        <%= render :partial => 'shared/attachments', :collection => @issue.attachments, locals: {object: @issue, type: 'issue'} %>
+        <%= render :partial => 'shared/attachments', :collection => @issue.attachments, locals: {object: @issue, type: 'Issue'} %>
       </div>
 
   <% end %>

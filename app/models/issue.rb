@@ -71,30 +71,6 @@ class Issue < ActiveRecord::Base
     errors.add(:predecessor, 'not found')
   end
 
-  #ATTACHMENT METHODS
-  def new_attachment_attributes=(attachment_attributes)
-    attachment_attributes.each do |attributes|
-      attributes['object_type'] = 'Issue'
-      attachments.build(attributes)
-    end
-  end
-
-  def existing_attachment_attributes=(attachment_attributes)
-    attachments.reject(&:new_record?).each do |attachment|
-      attributes = attachment_attributes[attachment.id.to_s]
-      if attributes
-        attachment.attributes = attributes
-      else
-        attachment.delete
-      end
-    end
-  end
-
-  def save_attachments
-    attachments.each do |attachment|
-      attachment.save(:validation => false)
-    end
-  end
 
   #Return an array with all attribute that can be filtered
   def self.filtered_attributes

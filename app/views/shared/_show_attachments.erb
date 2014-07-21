@@ -7,16 +7,12 @@
 <% if attachments.any? %>
     <div class="separator"></div>
     <h2><%= t(:field_attachments) %> :</h2>
-    <% for attachment in attachments %>
-        <p id="<%= attachment.id %>">
-          <% if attachment.file_content_type %>
-              <% if attachment.file_content_type.include?('image') %>
-                  <a href="<%= attachment.file.url(:large) %>" class="lightbox"><%= image_tag attachment.file.url(:thumb) %></a>
-              <% else %>
-                  <%= link_to glyph(attachment.file_file_name, attachment.icon_type), attachment.file.url, {target: 'blank'} %>
-              <% end %>
-              <%= object.delete_attachment_link(attachment) %>
-          <% end %>
-        </p>
+    <% images = attachments.select { |attachment| !attachment.file_content_type.match(/\Aimage/).nil? } %>
+    <% non_images = attachments.select { |attachment| attachment.file_content_type.match(/\Aimage/).nil? }.sort { |x, y| x.file_content_type <=> y.file_content_type } %>
+    <% images.each do |attachment| %>
+        <%= render partial: 'shared/attachment', locals: {object: object, attachment: attachment} %>
+    <% end %>
+    <% non_images.each do |attachment| %>
+        <%= render partial: 'shared/attachment', locals: {object: object, attachment: attachment} %>
     <% end %>
 <% end %>

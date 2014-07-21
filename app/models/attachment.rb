@@ -19,10 +19,10 @@ class Attachment < ActiveRecord::Base
 
   before_post_process :skip_non_image
 
-  validates_attachment_content_type :file, :content_type => /\Aimage|application/
+  validates_attachment_content_type :file, {content_type: /\Aimage|application\/pdf|text/, message: 'Errors'}
   # Validate filename
   validates_attachment_size :file, :in => 0..2.megabytes
-  validates_attachment_file_name :file, :not => /.exe/
+  validates_attachment_file_name :file, {:not => /.exe/, message: 'Errors'}
 
   def self.permit_attributes
     [:file, :tempfile, :original_filename, :content_type, :headers, :form_data, :name]
@@ -49,4 +49,5 @@ class Attachment < ActiveRecord::Base
   def custom_uri
     "/system/:class/#{self.object_type}/:id/:style/:hash.:extension"
   end
+
 end
