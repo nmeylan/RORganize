@@ -3,6 +3,9 @@ module ApplicationHelper
     content_for?(:sidebar)
   end
 
+  def title_tag
+    (@project ? @project.slug.capitalize : 'RORganize') + " #{controller_name.capitalize}"
+  end
 
   def clear_both
     content_tag :div, nil, {class: 'clear-both'}

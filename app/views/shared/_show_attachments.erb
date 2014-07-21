@@ -4,17 +4,19 @@
 # Encoding: UTF-8
 # File: _show_attachments.erb
 %>
-<% if attachments .any? %>
-  <div class="separator"></div>
-  <h2><%= t(:field_attachments) %> :</h2>
-  <% for attachment in attachments %>
-    <p id="<%= attachment.id %>">
-      <% if attachment.file_content_type.include?('image')  %>
-        <a href="<%=attachment.file.url(:large)%>" class="lightbox"><%= image_tag attachment.file.url(:thumb) %></a>
-      <% else %>
-        <%= object.download_attachment_link(attachment) %>
-      <% end %>
-      <%= object.delete_attachment_link(attachment) %>
-    </p>
-  <% end %>
+<% if attachments.any? %>
+    <div class="separator"></div>
+    <h2><%= t(:field_attachments) %> :</h2>
+    <% for attachment in attachments %>
+        <p id="<%= attachment.id %>">
+          <% if attachment.file_content_type %>
+              <% if attachment.file_content_type.include?('image') %>
+                  <a href="<%= attachment.file.url(:large) %>" class="lightbox"><%= image_tag attachment.file.url(:thumb) %></a>
+              <% else %>
+                  <%= object.download_attachment_link(attachment) %>
+              <% end %>
+              <%= object.delete_attachment_link(attachment) %>
+          <% end %>
+        </p>
+    <% end %>
 <% end %>

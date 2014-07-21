@@ -25,11 +25,15 @@
       </p>
 
       <div id="attachments">
-        <%= render :partial => 'shared/show_attachments', locals: {object: @project, type: 'project', :attachments => @project.attachments} %>
+        <% if @project.attachments[0].new_record? %>
+            <%= render :partial => 'shared/attachments', :collection => @project.attachments, locals: {object: @project, type: 'project'} %>
+        <% else %>
+            <%= render :partial => 'shared/show_attachments', locals: {object: @project, type: 'project', :attachments => @project.attachments} %>
+        <% end %>
       </div>
+      <p>
+        <% @trackers.settings_list %>
+      </p>
     </div>
-    <p>
-    <%= @trackers.settings_list %>
-    </p>
     <%= submit_tag t(:button_save) %>
 <% end %>

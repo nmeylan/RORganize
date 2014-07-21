@@ -21,11 +21,11 @@ module VersionsHelper
           safe_concat content_tag :td, version.start_date, {class: 'list_center start_date'}
           safe_concat content_tag :td, version.target_date, {class: 'list_center version'}
           safe_concat content_tag :td, version.is_done, {class: 'list_center is_done'}
-          safe_concat content_tag :td, {class: 'action'}, &Proc.new{
+          safe_concat content_tag :td, {class: 'action'}, &Proc.new {
             safe_concat version.inc_position_link
             safe_concat version.dec_position_link(collection.size)
           }
-          safe_concat content_tag :td, version.delete_link,{class: 'action'}
+          safe_concat content_tag :td, version.delete_link, {class: 'action'}
         end
       end.join.html_safe)
     }
@@ -40,21 +40,24 @@ module VersionsHelper
 
   def draw_roadmap(collection, collection_detail)
     collection.collect do |version|
-      safe_concat version_overview(version, collection_detail[version.id][:closed_issues_count],
-                                   collection_detail[version.id][:opened_issues_count], collection_detail[version.id][:percent])
-      safe_concat version.display_description
-      safe_concat content_tag :fieldset, class: 'margin_fieldset', &Proc.new {
-        safe_concat content_tag :legend, &Proc.new {
-          link_to glyph(t(:link_related_request), 'chevron-down'), '#', {:class => 'icon icon-expanded toggle', :id => "version-#{version.display_id}"}
+
+      if collection_detail[version.id][:issues]
+        safe_concat version_overview(version, collection_detail[version.id][:closed_issues_count],
+                                     collection_detail[version.id][:opened_issues_count], collection_detail[version.id][:percent])
+        safe_concat version.display_description
+        safe_concat content_tag :fieldset, class: 'margin_fieldset', &Proc.new {
+          safe_concat content_tag :legend, &Proc.new {
+            link_to glyph(t(:link_related_request), 'chevron-down'), '#', {:class => 'icon icon-expanded toggle', :id => "version-#{version.display_id}"}
+          }
+          safe_concat content_tag :div, class: "content version-#{version.id}", &Proc.new {
+            content_tag :ul do
+              collection_detail[version.id][:issues].collect do |issue|
+                content_tag :li, "#{issue.tracker.name} ##{issue.id} : #{issue.caption}", class: "#{'close' if issue.status.is_closed?}"
+              end.join.html_safe
+            end
+          }
         }
-        safe_concat content_tag :div, class: "content version-#{version.id}", &Proc.new {
-          content_tag :ul do
-            collection_detail[version.id][:issues].collect do |issue|
-              content_tag :li, "#{issue.tracker.name} ##{issue.id} : #{issue.caption}", class: "#{'close' if issue.status.is_closed?}"
-            end.join.html_safe
-          end
-        }
-      }
+      end
       content_tag :span, nil
     end.join.html_safe
   end

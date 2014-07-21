@@ -23,10 +23,12 @@ class Attachment < ActiveRecord::Base
   end
 
   def icon_type
-    if self.file_content_type.gsub(/\//, '-').eql?('pdf')
-      'octicon-file-pdf'
-    else
-      'octicon-file-media'
+    if self.file_content_type
+      if self.file_content_type.gsub(/\//, '-').eql?('pdf')
+        'octicon-file-pdf'
+      else
+        'octicon-file-media'
+      end
     end
   end
 

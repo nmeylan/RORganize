@@ -28,8 +28,9 @@ class Project < ActiveRecord::Base
   def caption
     self.slug
   end
+
   def self.permit_attributes
-    [:name, :description, :identifier, :new_attachment_attributes => Attachment.permit_attributes, :existing_attachment_attributes => Attachment.permit_attributes]
+    [:name, :description, :identifier, :trackers, :new_attachment_attributes => Attachment.permit_attributes, :existing_attachment_attributes => Attachment.permit_attributes]
   end
 
   def create_member
@@ -97,12 +98,14 @@ class Project < ActiveRecord::Base
 
   def update_info(params, trackers)
     self.attributes = params
-    tracker_ids = trackers.values
-    trackers = Tracker.where(:id => tracker_ids)
     self.trackers.clear
-    tracker_ids.each do |id|
-      tracker = trackers.select { |track| track.id == id.to_i }
-      self.trackers << tracker
+    unless trackers.nil?
+      tracker_ids = trackers.values
+      trackers = Tracker.where(:id => tracker_ids)
+      tracker_ids.each do |id|
+        tracker = trackers.select { |track| track.id == id.to_i }
+        self.trackers << tracker
+      end
     end
     self.save
   end
@@ -129,7 +132,7 @@ class Project < ActiveRecord::Base
     issues_array = Issue.eager_load(:status, :tracker).includes(:version).where(project_id: self.id).to_a
     versions_overviews.each do |version_overview|
       structure[version_overview.first] = {
-          percent: version_overview[3], closed_issues_count:version_overview[2], opened_issues_count: version_overview[1], issues: issues_array.select{|issue| issue.version_id.eql?(version_overview.first)}
+          percent: version_overview[3], closed_issues_count: version_overview[2], opened_issues_count: version_overview[1], issues: issues_array.select { |issue| issue.version_id.eql?(version_overview.first) }
       }
     end
     structure

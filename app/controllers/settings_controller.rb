@@ -48,9 +48,10 @@ class SettingsController < ApplicationController
 
   def delete_attachment
     attachment = Attachment.find(params[:id])
-    @project.attachments.delete_if{|attach| attach.id == attachment.id}
     if attachment.destroy
+      @project.attachments.clear
       @project.attachments.build
+      @project = @project.decorate
       respond_to do |format|
         format.html { redirect_to :action => 'index', :controller => 'settings'}
         format.js {respond_to_js :response_header => :success, :response_content => t(:successful_deletion)}
