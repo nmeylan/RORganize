@@ -13,7 +13,7 @@
               <% if attachment.file_content_type.include?('image') %>
                   <a href="<%= attachment.file.url(:large) %>" class="lightbox"><%= image_tag attachment.file.url(:thumb) %></a>
               <% else %>
-                  <%= object.download_attachment_link(attachment) %>
+                  <%= link_to glyph(attachment.file_file_name, attachment.icon_type), attachment.file.url, {target: 'blank'} %>
               <% end %>
               <%= object.delete_attachment_link(attachment) %>
           <% end %>

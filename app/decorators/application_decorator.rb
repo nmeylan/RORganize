@@ -51,8 +51,9 @@ class ApplicationDecorator < Draper::Decorator
     link_to_with_permissions h.glyph(h.t(:link_delete), 'trashcan'), path, project, nil, {:remote => true, :confirm => h.t(:text_delete_item), :method => :delete}
   end
 
-  def download_attachment_link(attachment)
-    link_to h.glyph(attachment.file_file_name, attachment.icon_type), h.url_for({controller: h.controller_name, action: 'download_attachment'})
+  def download_attachment_link(attachment, path = nil)
+    path ||= h.url_for({controller: h.controller_name, action: 'download_attachment', id: attachment.id})
+    h.link_to h.glyph(attachment.file_file_name, attachment.icon_type), path
   end
 
   def inc_position_link(path)

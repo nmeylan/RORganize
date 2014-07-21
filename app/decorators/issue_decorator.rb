@@ -74,6 +74,6 @@ class IssueDecorator < ApplicationDecorator
     super(h.delete_attachment_issues_path(context[:project].slug,attachment.id), context[:project])
   end
   def download_attachment_link(attachment)
-    super(attachment, h.download_attachment_issues_path(context[:project].slug))
+    super(attachment)
   end
 end

@@ -34,7 +34,7 @@ class Issue < ActiveRecord::Base
   validates :subject, :tracker_id, :status_id, :presence => true
   validate :validate_start_date, :validate_predecessor
   #Scopes
-  scope :fetch_dependencies, -> { eager_load([:tracker, :version, :assigned_to, :category, :attachments, :status => [:enumeration]]) }
+  scope :fetch_dependencies, -> { eager_load([:tracker, :version, :assigned_to, :category, :attachments, :checklist_items, :status => [:enumeration]]) }
   scope :assigned_issues_for_user, ->(user) { where(:assigned_to_id => user.id, :status_id => IssuesStatus.opened_statuses_id, :project_id => Project.opened_projects_id).eager_load(:project) }
   scope :submitted_issues_by_user, ->(user) { where(:author_id => user.id, :status_id => IssuesStatus.opened_statuses_id, :project_id => Project.opened_projects_id).eager_load(:project) }
 

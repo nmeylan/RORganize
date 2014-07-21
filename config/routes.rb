@@ -35,7 +35,7 @@ RORganize::Application.routes.draw do
         post 'toolbox'
         get 'show_checklist_items', :path => 'show_checklist_items/:id'
         delete 'delete_attachment', :path => 'delete_attachment/:id'
-        get 'download_attachment'
+        get 'download_attachment', :path => 'download_attachment/:id'
         post 'save_checklist'
         get 'checklist'
         post 'edit_note', :path => 'edit_note/:note_id'
@@ -49,7 +49,7 @@ RORganize::Application.routes.draw do
     resources :documents do
       collection do
         delete 'delete_attachment', :path => 'delete_attachment/:id'
-        get 'download_attachment'
+        get 'download_attachment', :path => 'download_attachment/:id'
         get 'toolbox'
         post 'toolbox'
       end
