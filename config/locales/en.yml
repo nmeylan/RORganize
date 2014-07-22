@@ -154,6 +154,7 @@ en:
   link_my_spent_time: My spent time
   link_star: Star
   link_unstar: Unstar
+  link_new_comment: New comment
  #FORM
   field_name: Name
   field_description: Description

@@ -520,7 +520,7 @@ ul.project_list {
     /* Opera */
     left: -o-calc(50% - 100px);
     /* Standard */
-    left:  calc(50% - 100px);
+    left: calc(50% - 100px);
     display: block;
     width: 200px;
     height: 200px;
@@ -551,34 +551,62 @@ ul.project_list {
   .activity {
     position: relative;
     clear: both;
-
     overflow-y: hidden;
     width: 50%;
-    span{
-      margin-left: 5Px;
+
+    a.toggle{
+      font-size: 11px;
     }
-    span.author{
+    span.author {
       font-weight: bold;
+      margin-right: 5px;
     }
-    span.date{
+    span.action_type, span.object_type{
+      margin-right: 5px;
+    }
+    span.date {
       font-style: italic;
+    }
+    div.journal_details {
+      color: $default-smooth-color;
+      font-size: 10px;
+      ul {
+        margin: 0;
+        padding: 0;
+        list-style-type: none;
+      }
+    }
+    div.journal_details.more.hide{
+      display: none;
+    }
+    div.detail.more{
+      margin: 0px 0px 10px 0px !important;
     }
   }
   .activity.odd {
     float: left;
     text-align: right;
     border-right: 10px solid $default-border-color;
-    p{
+    p, div, a.toggle{
       margin-right: 20px !important;
+      span.date {
+        float: right;
+        margin-left: 5px;
+      }
     }
+
   }
   .activity.even {
     float: right;
     text-align: left;
     border-left: 10px solid $default-border-color;
     margin-right: -10px;
-    p{
-      margin-left: 20px !important;;
+    p, div, a.toggle {
+      margin-left: 20px !important;
+      span.date {
+        float: left;
+        margin-right: 5px;
+      }
     }
   }
 }
