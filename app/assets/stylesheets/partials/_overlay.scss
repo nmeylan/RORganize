@@ -1,15 +1,18 @@
-
+@import 'utilities/_variables';
 /*
 *  OVERLAY
 */
 
 .overlayOuter {
-  background: white;
+  background: $overlay-background-color;
   border: 1px solid #fff;
-  box-shadow: 0px 3px 7px #333;
-  -moz-box-shadow: 0px 3px 7px #333;
-  -webkit-box-shadow: 0px 3px 7px #333;
-  position: absolute;
+  box-shadow: $overlay-box-shadow;
+  -moz-box-shadow: $overlay-box-shadow;
+  -webkit-box-shadow: $overlay-box-shadow;
+  -moz-border-radius: $overlay-border-radius;
+  -webkit-border-radius: $overlay-border-radius;
+  border-radius: $overlay-border-radius;
+  -khtml-border-radius: $overlay-border-radius;
   z-index: 99999999;
   min-width: 200px;
   min-height: 50px;
