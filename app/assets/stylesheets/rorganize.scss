@@ -325,18 +325,22 @@
 */
 
 #loading {
-  width: 170px;
-  height: 50px;
+  width: 190px;
   position: fixed;
   top: 200px;
   left: 45%;
   display: none;
-  background-color: #E5E3DE;
-  border: 1px solid #D7D7D7;
-  box-shadow: 0 0 3px #CCC;
-  -webkit-box-shadow: 0 0px 6px rgba(0, 0, 0, 0.3);
-  -moz-box-shadow: 0 0 3px #ccc;
-  color: #888;
+  //background-color: #EEE;
+  border: 1px solid #ddd;
+  color: $default-color;
+  font-weight: bold;
+  font-size: 12px;
+  background: url(asset_path('loading.gif')) 10px 50% no-repeat #eee;
+  //background: url("/images/spinners/octocat-spinner-16px.gif?c7d371d8") 10px 50% no-repeat #eee;
+  border-radius: 5px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  z-index: 20;
 }
 
 #loading p {
