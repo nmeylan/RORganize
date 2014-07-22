@@ -20,12 +20,7 @@ class ProjectsController < ApplicationController
 
   #GET/project/:project_id/activity
   def activity
-    if session['project_activities_filter'].nil?
-      session['project_activities_filter'] = [Time.now.to_date.months_ago(1), 'tm']
-    end
-    activities_ary = @project.activities(session['project_activities_filter'])
-    @issue_activities = activities_ary[0]
-    @activities = activities_ary[1]
+    @activities = @project.activities(%w(Issue))
     respond_to do |format|
       format.html
       format.js { respond_to_js :action => 'activity' }

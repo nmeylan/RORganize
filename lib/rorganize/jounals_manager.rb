@@ -39,7 +39,7 @@ module Rorganize
                      :journalized_type => self.class.to_s,
                      :journalized_identifier => self.caption,
                      :notes => '',
-                     :action_type => 'created',
+                     :action_type => Journal::ACTION_CREATE,
                      :project_id => p_id)
     end
 
@@ -57,7 +57,7 @@ module Rorganize
                                  :journalized_type => self.class.to_s,
                                  :journalized_identifier => self.caption,
                                  :notes => notes,
-                                 :action_type => 'updated',
+                                 :action_type => Journal::ACTION_UPDATE,
                                  :project_id => p_id)
         journal.detail_insertion(updated_journalized_attributes, properties, foreign_keys)
       end
@@ -70,7 +70,7 @@ module Rorganize
                      :journalized_type => self.class.to_s,
                      :journalized_identifier => self.caption,
                      :notes => '',
-                     :action_type => 'deleted',
+                     :action_type => Journal::ACTION_DELETE,
                      :project_id => p_id)
     end
   end

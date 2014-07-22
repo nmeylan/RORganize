@@ -301,22 +301,23 @@
   outline: none;
 }
 
-.attachment_title{
+.attachment_title {
   padding-right: 20px;
 }
+
 .attachment_box {
   table {
     margin-left: 60px !important;
   }
 }
 
-.box div#attachments{
+.box div#attachments {
   table {
     margin-left: 180px;
   }
 }
 
-.has_context_menu{
+.has_context_menu {
   cursor: context-menu;
 }
 
@@ -496,6 +497,88 @@ ul.project_list {
       position: relative;
       margin-top: -30px;
       float: right;
+    }
+  }
+}
+
+#activities {
+  width: 100%;
+  position: relative;
+  overflow-y: hidden;
+}
+
+.activities {
+  width: 100%;
+  overflow-y: hidden;
+  .date_circle {
+    float: left;
+    position: relative;
+    /* Firefox */
+    left: -moz-calc(50% - 100px);
+    /* WebKit */
+    left: -webkit-calc(50% - 100px);
+    /* Opera */
+    left: -o-calc(50% - 100px);
+    /* Standard */
+    left:  calc(50% - 100px);
+    display: block;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    border: 1px solid $default-border-color;
+    font-size: 20px;
+    line-height: 200px;
+    text-align: center;
+    vertical-align: middle;
+    text-decoration: none;
+    background: $default-border-color;
+    .inner_circle {
+      width: 160px;
+      height: 160px;
+      border-radius: 50%;
+      font-size: 20px;
+      color: $default-color;
+      line-height: 160px;
+      text-align: center;
+      vertical-align: middle;
+      text-decoration: none;
+      background: $default-background-color;
+      position: absolute;
+      margin-top: 20px;
+      margin-left: 20px;
+    }
+  }
+  .activity {
+    position: relative;
+    clear: both;
+
+    overflow-y: hidden;
+    width: 50%;
+    span{
+      margin-left: 5Px;
+    }
+    span.author{
+      font-weight: bold;
+    }
+    span.date{
+      font-style: italic;
+    }
+  }
+  .activity.odd {
+    float: left;
+    text-align: right;
+    border-right: 10px solid $default-border-color;
+    p{
+      margin-right: 20px !important;
+    }
+  }
+  .activity.even {
+    float: right;
+    text-align: left;
+    border-left: 10px solid $default-border-color;
+    margin-right: -10px;
+    p{
+      margin-left: 20px !important;;
     }
   }
 }

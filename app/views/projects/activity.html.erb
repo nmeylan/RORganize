@@ -6,21 +6,6 @@
 %>
 
 <%= contextual t(:label_activity) %>
-<div class="splitcontentleft">
-
-  <div id="issues_activities">
-    <%= render :partial => 'projects/issues_activities' %>
-  </div>
+<div id="activities">
+  <%= display_activities(@activities) %>
 </div>
-
-<div class="splitcontentright">
-  <div class="box slim">
-    <div class="header"><h2><%=t(:text_other_activities)%></h2></div>
-    <div id="others_activities">
-      <%= render :partial => 'projects/activities' %>
-    </div>
-  </div>
-</div>
-<div style="clear:both">
-</div>
-<%= render :partial => 'projects/activity_overlay' %>

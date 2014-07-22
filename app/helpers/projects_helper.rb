@@ -52,6 +52,77 @@ module ProjectsHelper
     end
   end
 
+  def display_activities(activities)
+    content_tag :div, class: 'activities', &Proc.new {
+      activities.each do |date, item|
+        safe_concat activities_date(date)
+        journals_render(item.compact)
+        safe_concat clear_both
+      end
+    }
+  end
+
+  def activities_date(date)
+    content_tag :div, class: 'date_circle', &Proc.new {
+      content_tag :div, date, class: 'inner_circle'
+    }
+  end
+
+  #Render all journals
+  def journals_render(journals)
+    i = 0
+    journals.each do |journal|
+      safe_concat journal_render(journal.at(0), i)
+      i += 1
+    end
+  end
+
+  #Render one journal
+  def journal_render(journal, nth)
+    content_tag :div, class: "activity #{nth % 2 == 0 ? 'odd' : 'even'}", &Proc.new {
+      content_tag :p do
+        journal_content_render(journal, nth)
+      end
+    }
+  end
+
+  #Render journal content
+  def journal_content_render(journal, nth)
+    user = (journal.user ? journal.user.caption : t(:label_unknown))
+    if nth % 2 == 0
+      safe_concat content_tag :span, user, class: 'author'
+      safe_concat content_tag :span, journal_action_type(journal.action_type), class: 'action_type'
+      safe_concat content_tag :span, journal_object_type(journal), class: 'object_type'
+      safe_concat content_tag :span, journal.created_at.strftime("%H:%M"), class: 'date'
+    else
+      safe_concat content_tag :span, journal.created_at.strftime("%H:%M"), class: 'date'
+      safe_concat content_tag :span, user, class: 'author'
+      safe_concat content_tag :span, journal_action_type(journal.action_type), class: 'action_type'
+      safe_concat content_tag :span, journal_object_type(journal), class: 'object_type'
+    end
+  end
+
+  #Give journal action type
+  def journal_action_type(action_type)
+    if action_type.eql?(Journal::ACTION_CREATE)
+      t(:label_created_lower_case)
+    elsif action_type.eql?(Journal::ACTION_UPDATE)
+      t(:label_updated_lower_case)
+    elsif action_type.eql?(Journal::ACTION_DELETE)
+      t(:label_deleted_lower_case)
+    end
+  end
+
+  def journal_object_type(journal)
+    type = journal.journalized_type
+    if type.eql?('Issue') && !journal.action_type.eql?(Journal::ACTION_DELETE)
+      "#{journal.issue.tracker.caption} "
+      link_to journal.issue.caption, issue_path(journal.project.slug, journal.journalized_id)
+    else
+      "#{type} ##{journal.journalized_identifier}"
+    end
+  end
+
   def members_list(members_hash)
     content_tag :div do
       members_hash.collect do |role, members|

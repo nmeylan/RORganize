@@ -49,26 +49,13 @@ class Project < ActiveRecord::Base
   end
 
   #Build an array containing project issues activities and misc activities
-  def activities(filter)
-    #Structure of the hash is
-    # {:date => [journal]}
-    issue_activities = Hash.new { |hash, key| hash[key] = [] }
-    journals =(
-    filter[0].eql?('all') ?
-        Journal.includes([:journalized, :details, :user, :project, :issue => [:tracker]]).where(:project_id => self.id).order('journals.created_at DESC') :
-        Journal.includes([:journalized, :details, :user, :project, :issue => [:tracker]]).where(['journals.project_id = ? AND journals.created_at > ?', self.id,
-                                                                                                 filter[0]]).order('journals.created_at DESC')
-    )
-    activities = Hash.new { |hash, key| hash[key] = [] }
-    journals.each do |journal|
-      if journal.journalized_type.eql?('Issue')
-        issue_activities[journal.created_at.to_formatted_s(:db).to_date.to_s] << journal
-      else
-        activities[journal.created_at.to_date.to_s] << journal
-      end
+  def activities(journalized_types)
+    activity_hash = Hash.new { |h, k| h[k] = [] }
+    Journal.activities(journalized_types, "project_id = #{self.id}").each do |journal|
+      activity_hash[journal.created_at.to_date.to_s][journal.journalized_id] ||= []
+      activity_hash[journal.created_at.to_date.to_s][journal.journalized_id] << journal
     end
-    issue_activities.values.each { |ary| ary.uniq! { |act| act.journalized_id } }
-    [issue_activities, activities]
+    activity_hash
   end
 
   def update_info(params, trackers)
