@@ -306,7 +306,13 @@
 }
 .attachment_box {
   table {
-    margin-left: 60px;
+    margin-left: 60px !important;
+  }
+}
+
+.box div#attachments{
+  table {
+    margin-left: 180px;
   }
 }
 

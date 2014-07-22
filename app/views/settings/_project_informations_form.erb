@@ -24,16 +24,20 @@
         <%= f.text_area :description, :class => 'fancyEditor' %>
       </p>
 
-      <div id="attachments">
-        <% if @project.attachments[0].new_record? %>
-            <%= render :partial => 'shared/attachments', :collection => @project.attachments, locals: {object: @project, type: 'project'} %>
-        <% else %>
-            <%= render :partial => 'shared/show_attachments', locals: {object: @project, type: 'project', :attachments => @project.attachments} %>
-        <% end %>
-      </div>
       <p>
         <% @trackers.settings_list %>
       </p>
+
+      <div id="attachments">
+        <p>
+          <label><%= t(:field_attachments) %></label>
+          <% if @project.attachments[0].new_record? %>
+              <%= render :partial => 'shared/attachments', :collection => @project.attachments, locals: {object: @project, type: 'project'} %>
+          <% else %>
+              <%= render :partial => 'shared/show_attachments', locals: {object: @project, type: 'project', :attachments => @project.attachments, no_header: true} %>
+          <% end %>
+        </p>
+      </div>
     </div>
     <%= submit_tag t(:button_save) %>
 <% end %>
