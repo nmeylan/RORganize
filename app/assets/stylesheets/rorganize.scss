@@ -316,6 +316,10 @@
   }
 }
 
+.has_context_menu:hover{
+  cursor: context-menu;
+}
+
 /*
 *  AJAX loading
 */

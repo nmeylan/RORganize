@@ -16,7 +16,7 @@ module DocumentsHelper
         safe_concat content_tag :th, sortable('versions.name', 'Target phase')
       }
       safe_concat(collection.collect do |document|
-        content_tag :tr, class: 'odd_even document_tr' do
+        content_tag :tr, class: 'odd_even document_tr has_context_menu' do
           safe_concat content_tag :td, check_box_tag("document-#{document.id.to_s}", document.id)
           safe_concat content_tag :td, document.id, class: 'list_center id'
           safe_concat content_tag :td, link_to(document.caption, document_path(@project.slug, document.id)), {class: 'name', id: document.id}

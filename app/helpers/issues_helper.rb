@@ -69,7 +69,7 @@ module IssuesHelper
         safe_concat content_tag :th, nil
       }
       safe_concat(collection.collect do |issue|
-        content_tag :tr, class: "odd_even issue_tr #{'close' if issue.status.is_closed?}" do
+        content_tag :tr, class: "has_context_menu odd_even issue_tr #{'close' if issue.status.is_closed?}" do
           safe_concat content_tag :td, check_box_tag("issue-#{issue.id.to_s}", issue.id)
           safe_concat content_tag :td, issue.id, class: 'list_center id'
           safe_concat content_tag :td, issue.tracker, class: 'list_center tracker'
