@@ -52,8 +52,9 @@ class Project < ActiveRecord::Base
   def activities(journalized_types)
     activity_hash = Hash.new { |h, k| h[k] = [] }
     Journal.activities(journalized_types, "project_id = #{self.id}").each do |journal|
-      activity_hash[journal.created_at.to_date.to_s][journal.journalized_id] ||= []
-      activity_hash[journal.created_at.to_date.to_s][journal.journalized_id] << journal
+      date = journal.created_at.to_date.strftime("%a. %-d %b.")
+      activity_hash[date][journal.journalized_id] ||= []
+      activity_hash[date][journal.journalized_id] << journal
     end
     activity_hash
   end

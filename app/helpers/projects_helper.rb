@@ -95,9 +95,9 @@ module ProjectsHelper
       safe_concat content_tag :span, user, class: 'author'
       safe_concat content_tag :span, journal_action_type(journal.action_type), class: 'action_type'
       safe_concat content_tag :span, journal_object_type(journal), class: 'object_type'
-      safe_concat content_tag :span, journal.created_at.strftime("%H:%M"), class: 'date'
+      safe_concat content_tag :span, journal.created_at.strftime("%I:%M%p"), class: 'date'
     else
-      safe_concat content_tag :span, journal.created_at.strftime("%H:%M"), class: 'date'
+      safe_concat content_tag :span, journal.created_at.strftime("%I:%M%p"), class: 'date'
       safe_concat content_tag :span, nil, class: "#{journal_action_type_icon(journal.action_type)}"
       safe_concat content_tag :span, user, class: 'author'
       safe_concat content_tag :span, journal_action_type(journal.action_type), class: 'action_type'
@@ -119,7 +119,7 @@ module ProjectsHelper
           if journal.details.to_a.any?
             safe_concat content_tag :div, class: 'detail more', &Proc.new {
               safe_concat content_tag :span, link_to(t(:link_new_comment), '#'), class: 'detail comment octicon octicon-comment' unless journal.notes.empty?
-              safe_concat content_tag :span, journal.created_at.strftime("%H:%M"), class: 'date'
+              safe_concat content_tag :span, journal.created_at.strftime("%I:%M%p"), class: 'date'
               safe_concat content_tag(:ul, (journal.details.collect { |detail| history_detail_render(detail) }).join.html_safe)
             }
           end

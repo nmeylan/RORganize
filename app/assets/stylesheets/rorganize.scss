@@ -470,6 +470,12 @@ ul#items {
   padding-bottom: 30px;
 }
 
+.history_date{
+  margin-left: 5px;
+  font-size: 12px;
+  font-style: italic;
+}
+
 /*
 * PROJECTS
 */
@@ -525,13 +531,13 @@ ul.project_list {
     width: 200px;
     height: 200px;
     border-radius: 50%;
-    border: 1px solid $default-border-color;
+    border: 1px solid $default-box-header-background-color;
     font-size: 20px;
     line-height: 200px;
     text-align: center;
     vertical-align: middle;
     text-decoration: none;
-    background: $default-border-color;
+    background: $default-box-header-background-color;
     .inner_circle {
       width: 160px;
       height: 160px;
@@ -586,7 +592,9 @@ ul.project_list {
   .activity.odd {
     float: left;
     text-align: right;
-    border-right: 10px solid $default-border-color;
+    border-right: 10px solid $default-box-header-background-color;
+
+    margin-left: -3px;
     p, div, a.toggle{
       margin-right: 20px !important;
       span.date {
@@ -599,8 +607,8 @@ ul.project_list {
   .activity.even {
     float: right;
     text-align: left;
-    border-left: 10px solid $default-border-color;
-    margin-right: -10px;
+    border-left: 10px solid $default-box-header-background-color;
+    margin-right: -7px;
     p, div, a.toggle {
       margin-left: 20px !important;
       span.date {
