@@ -30,7 +30,6 @@ class Issue < ActiveRecord::Base
   after_create :create_journal
   after_destroy :destroy_journal
   #Validators
-  validates_associated :attachments
   validates :subject, :tracker_id, :status_id, :presence => true
   validate :validate_start_date, :validate_predecessor
   #Scopes

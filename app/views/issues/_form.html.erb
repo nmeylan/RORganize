@@ -61,13 +61,16 @@
   <%= clear_both %>
   <% if current_user.allowed_to?('delete_attachment', 'Issues', @project) %>
       <div id="attachments">
-        <p>
-          <label><%= t(:field_attachments) %></label>
+        <div class="splitcontentleft">
+          <p>
+            <label><%= t(:field_attachments) %></label>
 
-          <%= add_attachments_link 'Add a file', @issue, 'issue' %>
-        </p>
-
-        <%= render :partial => 'shared/attachments', :collection => @issue.attachments, locals: {object: @issue, type: 'Issue'} %>
+            <%= add_attachments_link 'Add a file', @issue, 'issue' %>
+          </p>
+          <%= render :partial => 'shared/attachments', :collection => @issue.attachments, locals: {object: @issue, type: 'issue'} %>
+        </div>
+        <div class="splitcontentright attachment_box"><%= render :partial => 'shared/show_attachments', :locals => {:attachments => @issue.attachments, :object => @issue, no_header: true} %></div>
+        <%= clear_both %>
       </div>
 
   <% end %>

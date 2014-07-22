@@ -5,14 +5,19 @@
 # File: _show_attachments.erb
 %>
 <% if attachments.any? %>
-    <div class="separator"></div>
-    <h2><%= t(:field_attachments) %> :</h2>
-    <% images = attachments.select { |attachment| !attachment.file_content_type.match(/\Aimage/).nil? } %>
-    <% non_images = attachments.select { |attachment| attachment.file_content_type.match(/\Aimage/).nil? }.sort { |x, y| x.file_content_type <=> y.file_content_type } %>
-    <% images.each do |attachment| %>
-        <%= render partial: 'shared/attachment', locals: {object: object, attachment: attachment} %>
+    <% no_header ||= false %>
+    <% unless no_header %>
+        <div class="separator"></div>
+        <h2><%= t(:field_attachments) %> :</h2>
     <% end %>
-    <% non_images.each do |attachment| %>
-        <%= render partial: 'shared/attachment', locals: {object: object, attachment: attachment} %>
-    <% end %>
+    <table>
+      <% images = attachments.select { |attachment| !attachment.file_content_type.match(/\Aimage/).nil? } %>
+      <% non_images = attachments.select { |attachment| attachment.file_content_type.match(/\Aimage/).nil? }.sort { |x, y| x.file_content_type <=> y.file_content_type } %>
+      <% images.each do |attachment| %>
+          <%= render partial: 'shared/attachment', locals: {object: object, attachment: attachment} %>
+      <% end %>
+      <% non_images.each do |attachment| %>
+          <%= render partial: 'shared/attachment', locals: {object: object, attachment: attachment} %>
+      <% end %>
+    </table>
 <% end %>

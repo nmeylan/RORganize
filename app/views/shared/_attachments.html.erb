@@ -4,24 +4,16 @@
 # Encoding: UTF-8
 # File: _attachments.html.erb
 %>
+<% if attachments.new_record? %>
+    <div class="attachments" id="<%= attachments.id %>">
+      <% new_or_existing = attachments.new_record? ? 'new' : 'existing' %>
+      <% prefix = "#{type}[#{new_or_existing}_attachment_attributes][]" %>
+      <%= fields_for prefix, attachments do |attachment_form| -%>
+          <p>
 
-<div class="attachments" id="<%= attachments.id %>">
-  <% new_or_existing = attachments.new_record? ? 'new' : 'existing' %>
-  <% prefix = "#{type}[#{new_or_existing}_attachment_attributes][]" %>
-  <%= fields_for prefix, attachments do |attachment_form| -%>
-      <p>
-        <% if attachments.new_record? %>
             <%= attachment_form.file_field :file %>
             <%= link_to glyph(t(:link_delete), 'trashcan'), '#', {class: 'remove_attachment_field_link'} %>
-        <% else %>
-
-            <% if attachments.file_content_type.include?('image') %>
-                <%= image_tag attachments.file.url(:thumb) %>
-            <% else %>
-                <%= link_to glyph(attachments.file_file_name, attachments.icon_type) %>
-            <% end %>
-            <%= object.delete_attachment_link(attachments) %>
-      <% end %>
-      </p>
-  <% end -%>
-</div>
+          </p>
+      <% end -%>
+    </div>
+<% end %>
