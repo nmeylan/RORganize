@@ -15,48 +15,15 @@ module ProjectsHelper
     true
   end
 
-  def activities_ary(issues_activity)
-    activity_hash = Hash.new { |h, k| h[k] = [] }
-    issues_activity.each do |k, v|
-      v.each do |journal|
-        user = (journal.user ? journal.user.name : t(:label_unknown))
-        item_id = journal.journalized_id
-        project_id = journal.project.slug
-        activity_hash[k] << content_tag(:li) do
-          if journal.action_type.eql?('updated') || journal.action_type.eql?('created')
-            safe_concat "#{journal.issue.tracker.name} ##{item_id} "
-            safe_concat link_to journal.issue.subject, issue_path(project_id, item_id)
-            safe_concat ' '
-            if journal.action_type.eql?('updated')
-              if journal.details.any?
-                safe_concat link_to t(:label_updated_lower_case), load_journal_activity_projects_path(project_id, item_id, k), {:remote => true, :method => :get, :class => 'open_overlay'}
-              else
-                safe_concat t(:label_updated_lower_case)
-              end
-            else #Created
-              safe_concat content_tag :b, t(:label_created_lower_case)
-            end
-          elsif journal.action_type.eql?('deleted')
-            safe_concat "Issue ##{journal.journalized_id} "
-            safe_concat content_tag :b, t(:label_deleted_lower_case)
-          end
-          safe_concat " #{t(:label_by)} #{user}"
-        end
-      end
-    end
-    content_tag :div do
-      issues_activity.each do |k, _|
-        safe_concat content_tag :h2, k
-        safe_concat content_tag :ul, activity_hash[k].uniq.collect { |activity| activity }.join.html_safe
-      end
-    end
-  end
-
   def display_activities(activities)
     content_tag :div, class: 'activities', &Proc.new {
+      i = 0
       activities.each do |date, item|
+        i += 1
         safe_concat activities_date(date)
-        journals_render(item.compact.sort { |x, y| y.at(0).created_at <=> x.at(0).created_at })
+        safe_concat content_tag :div, class: "journals", &Proc.new {
+          journals_render(item.compact.sort { |x, y| y.at(0).created_at <=> x.at(0).created_at })
+        }
         safe_concat clear_both
       end
     }
@@ -113,7 +80,7 @@ module ProjectsHelper
     }
     journals.delete_at(0)
     if journals.size > 0
-      safe_concat link_to 'view more', '#', {class: 'toggle', id: "#{first_journal.journalized_id}_#{first_journal.created_at}"}
+      safe_concat link_to 'view more', '#', {class: 'toggle'}
       safe_concat content_tag :div, class: 'journal_details hide more', &Proc.new {
         journals.each do |journal|
           if journal.details.to_a.any?
