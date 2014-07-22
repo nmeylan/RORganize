@@ -510,13 +510,14 @@ ul.project_list {
 #activities {
   width: 100%;
   position: relative;
-  overflow-y: hidden;
+  overflow-x: hidden;
 }
 
 .activities {
   width: 100%;
-  overflow-y: hidden;
+  overflow-x: hidden;
   .date_circle {
+    cursor: pointer;
     float: left;
     position: relative;
     /* Firefox */
@@ -552,6 +553,9 @@ ul.project_list {
       position: absolute;
       margin-top: 20px;
       margin-left: 20px;
+    }
+    .inner_circle:hover{
+      background-color: $default-table-tr-hover-background-color;
     }
   }
   .activity {

@@ -15,4 +15,14 @@ function project_activities(){
         e.preventDefault();
         jQuery(this).next('.journal_details.more').slideToggle();
     });
+
+    jQuery('.date_circle').click(function(e){
+        e.preventDefault();
+        var el = jQuery(this);
+        var next = el.next('.journals');
+        if(next.is(':visible')){
+            next.fadeOut();
+        }else
+            next.fadeIn();
+    })
 }
