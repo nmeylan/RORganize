@@ -136,6 +136,19 @@
   clear: both;
 }
 
+.no-data {
+  position: relative;
+  padding: 30px;
+  text-align: center;
+  background-color: #fafafa;
+  border: 1px solid #e5e5e5;
+  //border-radius: 3px;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.05);
+  margin-top: 20px;
+  font-size: 16px;
+  font-weight: bold;
+}
+
 .help {
   border: 1px solid #97c1da;
   border-radius: 4px;
@@ -470,7 +483,7 @@ ul#items {
   padding-bottom: 30px;
 }
 
-.history_date{
+.history_date {
   margin-left: 5px;
   font-size: 12px;
   font-style: italic;
@@ -532,13 +545,13 @@ ul.project_list {
     width: 200px;
     height: 200px;
     border-radius: 50%;
-    border: 1px solid $default-box-header-background-color;
+    border: 1px solid $activity-color;
     font-size: 20px;
     line-height: 200px;
     text-align: center;
     vertical-align: middle;
     text-decoration: none;
-    background: $default-box-header-background-color;
+    background: $activity-color;
     .inner_circle {
       width: 160px;
       height: 160px;
@@ -554,9 +567,14 @@ ul.project_list {
       margin-top: 20px;
       margin-left: 20px;
     }
-    .inner_circle:hover{
-      background-color: $default-table-tr-hover-background-color;
-    }
+  }
+  .date_circle:hover {
+    background-color: $activity-color-hover;
+    border: 1px solid $activity-color-hover;
+  }
+  .date_circle.collasped_circle{
+    background-color: $activity-color-collapsed;
+    border: 1px solid $activity-color-collapsed;
   }
   .activity {
     position: relative;
@@ -564,14 +582,14 @@ ul.project_list {
     overflow-y: hidden;
     width: 50%;
 
-    a.toggle{
+    a.toggle {
       font-size: 11px;
     }
     span.author {
       font-weight: bold;
       margin-right: 5px;
     }
-    span.action_type, span.object_type{
+    span.action_type, span.object_type {
       margin-right: 5px;
     }
     span.date {
@@ -586,20 +604,26 @@ ul.project_list {
         list-style-type: none;
       }
     }
-    div.journal_details.more.hide{
+    div.journal_details.more.hide {
       display: none;
     }
-    div.detail.more{
+    div.detail.more {
       margin: 0px 0px 10px 0px !important;
     }
+  }
+  div.journals.hover .activity.odd{
+    border-right: 10px solid $activity-color-hover;
+  }
+  div.journals.hover .activity.even{
+    border-left: 10px solid $activity-color-hover;
   }
   .activity.odd {
     float: left;
     text-align: right;
-    border-right: 10px solid $default-box-header-background-color;
+    border-right: 10px solid $activity-color;
 
     margin-left: -3px;
-    p, div, a.toggle{
+    p, div, a.toggle {
       margin-right: 20px !important;
       span.date {
         float: right;
@@ -611,7 +635,7 @@ ul.project_list {
   .activity.even {
     float: right;
     text-align: left;
-    border-left: 10px solid $default-box-header-background-color;
+    border-left: 10px solid $activity-color;
     margin-right: -7px;
     p, div, a.toggle {
       margin-left: 20px !important;

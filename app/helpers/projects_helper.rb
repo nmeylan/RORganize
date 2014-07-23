@@ -17,14 +17,18 @@ module ProjectsHelper
 
   def display_activities(activities)
     content_tag :div, class: 'activities', &Proc.new {
-      i = 0
-      activities.each do |date, item|
-        i += 1
-        safe_concat activities_date(date)
-        safe_concat content_tag :div, class: "journals", &Proc.new {
-          journals_render(item.compact.sort { |x, y| y.at(0).created_at <=> x.at(0).created_at })
-        }
-        safe_concat clear_both
+      if activities.to_a.any?
+        i = 0
+        activities.each do |date, item|
+          i += 1
+          safe_concat activities_date(date)
+          safe_concat content_tag :div, class: "journals", &Proc.new {
+            journals_render(item.compact.sort { |x, y| y.at(0).created_at <=> x.at(0).created_at })
+          }
+          safe_concat clear_both
+        end
+      else
+        content_tag :div, t(:text_no_data), class: 'no-data'
       end
     }
   end
@@ -119,10 +123,10 @@ module ProjectsHelper
   def journal_object_type(journal)
     type = journal.journalized_type
     if type.eql?('Issue') && !journal.action_type.eql?(Journal::ACTION_DELETE)
-      "#{journal.issue.tracker.caption} "
+      safe_concat content_tag :b,"#{journal.issue.tracker.caption.downcase} "
       link_to journal.issue.caption, issue_path(journal.project.slug, journal.journalized_id)
     else
-      content_tag :b, "#{type} #{journal.journalized_identifier}"
+      content_tag :b, "#{type.downcase} #{journal.journalized_identifier}"
     end
   end
 
