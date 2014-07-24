@@ -36,7 +36,6 @@ unless $0.end_with?('rake')
   Rorganize::MenuManager.map :top_menu do |menu|
     menu.add(:projects, I18n.t(:label_project_plural), {:controller => 'projects', :action => 'index'}, {:id => 'menu_projects'})
     menu.add(:administration, I18n.t(:link_administration), {:controller => 'administration', :action => 'index'}, {:id => 'menu_administration'})
-    menu.add(:coworkers, I18n.t(:link_coworkers), {:controller => 'coworkers', :action => 'index'}, {:id => 'menu_coworkers'})
   end
 
 
