@@ -12,8 +12,6 @@ class PermissionsDecorator < ApplicationCollectionDecorator
     controllers.each do |controller|
       permission_hash[controller] = self.select { |permission| permission.controller.eql?(controller) }
     end
-    super do
-      h.list(permission_hash, selected_permissions)
-    end
+    h.list(permission_hash, selected_permissions)
   end
 end
