@@ -27,7 +27,7 @@ class Journal < ActiveRecord::Base
 
   def self.activities_eager_load(journalized_types, period, date, conditions)
     periods = ACTIVITIES_PERIODS
-    date = date.to_date
+    date = date.to_date + 1
     date_range = (date - periods[period.to_sym])..date
     query = self.activities(journalized_types, date_range, conditions)
     query = query.fetch_dependencies_issues if journalized_types.include?('Issue')
