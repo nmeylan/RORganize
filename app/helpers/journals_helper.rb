@@ -6,21 +6,21 @@
 module JournalsHelper
   def display_activities(activities, to, from)
     activities_range(to, from) +
-    (content_tag :div, class: 'activities', &Proc.new {
-      if activities.to_a.any?
-        i = 0
-        activities.each do |date, item|
-          i += 1
-          safe_concat activities_date(date)
-          safe_concat content_tag :div, class: "journals", &Proc.new {
-            journals_render(item.compact.sort { |x, y| y.at(0).created_at <=> x.at(0).created_at })
-          }
-          safe_concat clear_both
-        end
-      else
-        content_tag :div, t(:text_no_data), class: 'no-data'
-      end
-    })
+        (content_tag :div, class: 'activities', &Proc.new {
+          if activities.to_a.any?
+            i = 0
+            activities.each do |date, item|
+              i += 1
+              safe_concat activities_date(date)
+              safe_concat content_tag :div, class: "journals", &Proc.new {
+                journals_render(item.compact.sort { |x, y| y.at(0).created_at <=> x.at(0).created_at })
+              }
+              safe_concat clear_both
+            end
+          else
+            content_tag :div, t(:text_no_data), class: 'no-data'
+          end
+        })
   end
 
   def activities_range(to, from)
@@ -53,7 +53,7 @@ module JournalsHelper
     content_tag :div, class: "activity #{nth % 2 == 0 ? 'odd' : 'even'}", &Proc.new {
       content_tag :p do
         journal_content_render(journal, nth)
-        journal_detail_render(journals)
+        journal_detail_render(journals, nth)
       end
     }
   end
@@ -76,7 +76,7 @@ module JournalsHelper
     end
   end
 
-  def journal_detail_render(journals)
+  def journal_detail_render(journals, nth)
     first_journal = journals.at(0)
     safe_concat content_tag :div, class: 'journal_details', &Proc.new {
       safe_concat content_tag :span, link_to(t(:link_new_comment), '#'), class: 'detail comment octicon octicon-comment' unless first_journal.notes.empty?
@@ -87,13 +87,18 @@ module JournalsHelper
       safe_concat link_to 'view more', '#', {class: 'toggle'}
       safe_concat content_tag :div, class: 'journal_details hide more', &Proc.new {
         journals.each do |journal|
-          if journal.details.to_a.any?
-            safe_concat content_tag :div, class: 'detail more', &Proc.new {
-              safe_concat content_tag :span, link_to(t(:link_new_comment), '#'), class: 'detail comment octicon octicon-comment' unless journal.notes.empty?
-              safe_concat content_tag :span, journal.created_at.strftime("%I:%M%p"), class: 'date'
-              safe_concat content_tag(:ul, (journal.details.collect { |detail| history_detail_render(detail) }).join.html_safe)
+          safe_concat content_tag :div, class: 'detail more', &Proc.new {
+            safe_concat content_tag :span, link_to(t(:link_new_comment), '#'), class: 'detail comment octicon octicon-comment' unless journal.notes.empty?
+            safe_concat content_tag :span, class: 'date', &Proc.new {
+              safe_concat journal.created_at.strftime("%I:%M%p")
             }
-          end
+            safe_concat content_tag :span, journal.user.caption, class: 'author'
+            if journal.action_type.eql?(Journal::ACTION_UPDATE) && journal.details.to_a.any?
+              safe_concat content_tag(:ul, (journal.details.collect { |detail| history_detail_render(detail) }).join.html_safe)
+            elsif journal.action_type.eql?(Journal::ACTION_CREATE)
+              safe_concat t(:text_created_this_issue)
+            end
+          }
         end
       }
     end
@@ -152,4 +157,5 @@ module JournalsHelper
       }
     end
   end
+
 end
