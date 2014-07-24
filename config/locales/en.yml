@@ -249,6 +249,7 @@ en:
   text_query_is_public: Make this query usable for everybody.
   text_query_is_for_all: Make this query usable in all projects.
   text_empty_page: Empty page
+  text_created_this_issue: submitted this request
 
   password: "Password"
   field_steps: "Steps"
