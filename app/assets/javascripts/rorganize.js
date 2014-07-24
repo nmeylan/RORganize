@@ -318,7 +318,7 @@ function checkAll(selector, context) {
 }
 
 function checkboxToolbox(selector) {
-    jQuery(selector + " input[type=checkbox]").click(function () {
+    jQuery(selector + " input[type=checkbox]").change(function () {
         if (jQuery(this).is(':checked'))
             jQuery(this).parent("td").parent("tr").addClass("toolbox_selection");
         else
@@ -326,33 +326,23 @@ function checkboxToolbox(selector) {
     });
 }
 
-function listTrClick(selector) {
-    jQuery(selector).click(function () {
-        if (jQuery(this).find("input[type=checkbox]").is(':checked')) {
-            jQuery(this).find("input[type=checkbox]").attr('checked', false);
-            jQuery(this).removeClass("toolbox_selection");
+function listTrClick(selector, uniq) {
+    uniq || (uniq = false);
+    jQuery(selector).click(function (e) {
+        var el = jQuery(this);
+        console.log(uniq);
+        if (el.find("input[type=checkbox]").is(':checked')) {
+            el.find("input[type=checkbox]").attr('checked', false);
+            el.removeClass("toolbox_selection");
         }
         else {
-            jQuery(this).find("input[type=checkbox]").attr('checked', true);
-            jQuery(this).addClass("toolbox_selection");
+            el.find("input[type=checkbox]").attr('checked', true);
+            el.addClass("toolbox_selection");
+
         }
     });
 }
 
-function listUniqTrClick(selector) {
-    jQuery(selector).click(function () {
-        if (jQuery(this).find("input[type=checkbox]").is(':checked')) {
-            jQuery(this).find("input[type=checkbox]").attr('checked', false);
-            jQuery(this).removeClass("toolbox_selection");
-        }
-        else {
-            jQuery(selector).find("input[type=checkbox]").attr('checked', false);
-            jQuery(selector).removeClass("toolbox_selection");
-            jQuery(this).find("input[type=checkbox]").attr('checked', true);
-            jQuery(this).addClass("toolbox_selection");
-        }
-    });
-}
 
 //initializer with optional hash: options are:
 // list needed to get checkboxes.
@@ -745,8 +735,8 @@ function on_replace_effect(element_id, content) {
     $(element_id).replaceWith(content).fadeIn(500);
 }
 
-function replace_list_content(content){
-    on_replace_effect("#"+gon.controller+"_content", content);
+function replace_list_content(content) {
+    on_replace_effect("#" + gon.controller + "_content", content);
 }
 
 function initialize_filters(options) {

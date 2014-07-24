@@ -1,5 +1,5 @@
 function on_load_coworkers_scripts(){
-    listUniqTrClick(".list .member_tr");
+    listTrClick(".list .member_tr", true);
     checkboxToolbox(".list");
     bind_tr_ajax(".member_tr");
     bind_coworker_radio_filter(".radio_filter", ".list")
