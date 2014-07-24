@@ -319,26 +319,41 @@ function checkAll(selector, context) {
 
 function checkboxToolbox(selector) {
     jQuery(selector + " input[type=checkbox]").change(function () {
-        if (jQuery(this).is(':checked'))
-            jQuery(this).parent("td").parent("tr").addClass("toolbox_selection");
+        var row = jQuery(this).parent("td").parent("tr");
+        if (jQuery(this).is(':checked')) {
+            jQuery(".toolbox_selection").removeClass("toolbox_last");
+            row.addClass("toolbox_selection").addClass("toolbox_last");
+        }
         else
-            jQuery(this).parent("td").parent("tr").removeClass("toolbox_selection");
+            row.removeClass("toolbox_selection").removeClass("toolbox_last");
     });
 }
 
-function listTrClick(selector, uniq) {
-    uniq || (uniq = false);
-    jQuery(selector).click(function (e) {
+function listTrClick(rows_selector) {
+    var rows = jQuery(rows_selector);
+    rows.click(function (e) {
         var el = jQuery(this);
-        console.log(uniq);
-        if (el.find("input[type=checkbox]").is(':checked')) {
-            el.find("input[type=checkbox]").attr('checked', false);
-            el.removeClass("toolbox_selection");
-        }
-        else {
+        var target = e.target || e.srcElement;
+        if (!e.shiftKey && !$(target).is('input') && !e.ctrlKey && !e.metaKey) {
+            rows.find("input[type=checkbox]").attr('checked', false);
+            rows.removeClass("toolbox_selection").removeClass("toolbox_last");
             el.find("input[type=checkbox]").attr('checked', true);
-            el.addClass("toolbox_selection");
-
+            el.addClass("toolbox_selection").addClass("toolbox_last");
+        } else if (e.shiftKey) {
+            e.preventDefault();
+            var last_selected_row = $('.toolbox_last');
+            if (last_selected_row.length > 0) {
+                var between_rows = last_selected_row[0].rowIndex > el[0].rowIndex ? $('.toolbox_last').prevUntil(el[0]) : $('.toolbox_last').nextUntil(el[0]);
+                rows.removeClass("toolbox_last");
+                between_rows.find("input[type=checkbox]").attr('checked', true);
+                between_rows.addClass("toolbox_selection").addClass("toolbox_last");
+            }
+            el.find("input[type=checkbox]").attr('checked', true);
+            el.addClass("toolbox_selection").addClass("toolbox_last");
+        } else if (e.ctrlKey || e.metaKey) {
+            rows.removeClass("toolbox_last");
+            el.find("input[type=checkbox]").attr('checked', true);
+            el.addClass("toolbox_selection").addClass("toolbox_last");
         }
     });
 }
