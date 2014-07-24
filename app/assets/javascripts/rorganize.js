@@ -358,9 +358,7 @@ function listUniqTrClick(selector) {
 // list needed to get checkboxes.
 function init_toolbox(selector, id, options) {
     var self_element = jQuery(selector);
-    self_element.jeegoocontext(id, {
-        livequery: true
-    });
+    self_element.jeegoocontext(id);
     self_element.mousedown(function (e) {
             if (e.which == 3) {
                 var self_element = jQuery(this);
