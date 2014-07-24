@@ -82,6 +82,17 @@ en:
   label_is_done: Is done
   label_running_versions: Running versions
   label_plural_day: days
+  label_activity_type_issue: Issues
+  label_activity_type_category: Categories
+  label_activity_type_version: Versions
+  label_activity_type_member: Members
+  label_activity_type_document: Documents
+  label_activity_type_wiki: Wiki
+  label_activity_type_wiki_page: Wiki Pages
+  label_activity_period_one_day: 1 day
+  label_activity_period_three_days: 3 days
+  label_activity_period_one_week: 1 week
+  label_activity_period_one_month: 1 month
 # LINK
   link_new_project: New project
   link_new_issue: New issue

@@ -524,6 +524,25 @@ ul.project_list {
   width: 100%;
   position: relative;
   overflow-x: hidden;
+  .activities_range{
+    color: $default-smooth-color;
+    font-style: italic;
+    span{
+      color: $default-color;
+      font-weight: bold;
+    }
+  }
+}
+
+#activities_filter {
+  #date {
+    float: left;
+  }
+  #period_select{
+    float: right;
+    margin-right: 40px;
+    margin-top: -2px;
+  }
 }
 
 .activities {
@@ -547,7 +566,6 @@ ul.project_list {
     border-radius: 50%;
     border: 1px solid $activity-color;
     font-size: 20px;
-    line-height: 200px;
     text-align: center;
     vertical-align: middle;
     text-decoration: none;
@@ -558,21 +576,24 @@ ul.project_list {
       border-radius: 50%;
       font-size: 20px;
       color: $default-color;
-      line-height: 160px;
       text-align: center;
+      line-height: 40px;
       vertical-align: middle;
       text-decoration: none;
       background: $default-background-color;
       position: absolute;
       margin-top: 20px;
       margin-left: 20px;
+      p {
+        padding-top: 50px;
+      }
     }
   }
   .date_circle:hover {
     background-color: $activity-color-hover;
     border: 1px solid $activity-color-hover;
   }
-  .date_circle.collasped_circle{
+  .date_circle.collasped_circle {
     background-color: $activity-color-collapsed;
     border: 1px solid $activity-color-collapsed;
   }
@@ -611,10 +632,10 @@ ul.project_list {
       margin: 0px 0px 10px 0px !important;
     }
   }
-  div.journals.hover .activity.odd{
+  div.journals.hover .activity.odd {
     border-right: 10px solid $activity-color-hover;
   }
-  div.journals.hover .activity.even{
+  div.journals.hover .activity.even {
     border-left: 10px solid $activity-color-hover;
   }
   .activity.odd {

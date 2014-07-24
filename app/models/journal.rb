@@ -8,21 +8,31 @@ class Journal < ActiveRecord::Base
   ACTION_CREATE = 'created'
   ACTION_UPDATE = 'updated'
   ACTION_DELETE = 'deleted'
+  ACTIVITIES_PERIODS = {ONE_DAY: 1, THREE_DAYS: 3, ONE_WEEK: 7, ONE_MONTH: 31}
   has_many :details, :class_name => 'JournalDetail', :dependent => :destroy
   belongs_to :journalized, :polymorphic => true
   belongs_to :issue, foreign_key: 'journalized_id'
   belongs_to :user, :class_name => 'User'
+  belongs_to :category
   belongs_to :project
   #Scopes
   scope :fetch_dependencies, -> { eager_load(:details, :project, :user, :journalized) }
   scope :document_activities, ->(document_id) { eager_load([:details, :user]).where(journalized_type: 'Document', journalized_id: document_id) }
   scope :member_activities, ->(member) { where(:user_id => member.user_id, :project_id => member.project_id).order('created_at DESC') }
-  scope :activities, ->(journalized_types, conditions = '1 = 1') {
-    includes([:journalized, :details, :user, :project]).where("journalized_type IN (?) AND #{conditions}", journalized_types.join(',')).order('created_at DESC')
-    .fetch_dependencies_issues if journalized_types.include?('Issue')
+  scope :activities, ->(journalized_types, date_range, conditions = '1 = 1') {
+    includes([:details, :user, :project]).where("journalized_type IN (?) AND #{conditions}", journalized_types).where(created_at: date_range).order('created_at DESC')
   }
-  scope :fetch_dependencies_issues, -> {includes(issue: :tracker)}
+  scope :fetch_dependencies_issues, -> { includes(issue: :tracker) }
+  scope :fetch_dependencies_categories, -> { includes(:category) }
 
+  def self.activities_eager_load(journalized_types, period, date, conditions)
+    periods = ACTIVITIES_PERIODS
+    date = date.to_date
+    date_range = (date - periods[period.to_sym])..date
+    query = self.activities(journalized_types, date_range, conditions)
+    query = query.fetch_dependencies_issues if journalized_types.include?('Issue')
+    query
+  end
 
   def detail_insertion(updated_attrs, journalized_property, foreign_key_value = {})
     #Remove attributes that won't be considarate in journal update

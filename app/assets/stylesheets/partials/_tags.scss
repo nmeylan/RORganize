@@ -100,7 +100,9 @@ input {
 input[type=checkbox] {
   height: auto;
 }
-
+input[type=date]{
+  width: 130px;
+}
 input:focus {
   border: 1px solid #e4e4e4;
   /*   -webkit-border-radius: 5px;*/

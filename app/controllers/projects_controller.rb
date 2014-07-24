@@ -1,16 +1,17 @@
 class ProjectsController < ApplicationController
   before_filter :find_project, :except => [:index, :new, :create, :destroy, :archive, :filter, :overview, :show]
   before_filter :find_project_with_associations, :only => [:overview, :show]
-  before_filter :check_permission, :except => [:create, :load_journal_activity, :filter, :activity_filter]
+  before_filter :check_permission, :except => [:create, :filter, :activity_filter]
   before_filter { |c| c.menu_context :project_menu }
   before_filter { |c| c.menu_item(params[:controller], params[:action]) }
   before_filter { |c| c.top_menu_item('projects') }
   helper VersionsHelper
+  include Rorganize::ActivityManager
   #GET /project/:project_id
   #Project overview
   def overview
     respond_to do |format|
-      format.html { render :action => 'overview'}
+      format.html { render :action => 'overview' }
     end
   end
 
@@ -18,20 +19,17 @@ class ProjectsController < ApplicationController
     overview
   end
 
-  #GET/project/:project_id/activity
   def activity
-    @activities = @project.activities(%w(Issue))
-    respond_to do |format|
-      format.html
-      format.js { respond_to_js :action => 'activity' }
+    init_activities_sessions
+    locals = selected_filters
+    if @sessions[:activities][:types].include?('NIL')
+      @activities = []
+    else
+      @activities = @project.activities(@sessions[:activities][:types], @sessions[:activities][:period], @sessions[:activities][:from_date], nil)
     end
-  end
-
-  def load_journal_activity
-    @journals = Journal.eager_load([:details, :user]).where(:journalized_type => 'Issue', :journalized_id => params[:item_id]).where('DATE(`journals`.`created_at`) = ?', params[:date])
     respond_to do |format|
-      format.html
-      format.js { respond_to_js }
+      format.html { render action: 'activity', locals: locals }
+      format.js { respond_to_js action: 'activity', locals: locals }
     end
   end
 
@@ -99,20 +97,6 @@ class ProjectsController < ApplicationController
     end
   end
 
-  def activity_filter
-    date = Time.now.to_date
-    filter_type = {
-        'tm' => date.months_ago(1),
-        'lsm' => date.months_ago(6),
-        'ltm' => date.months_ago(3),
-        'ty' => date.prev_year,
-        'all' => 'all'
-    }
-    #    session stock conditions and filter_code
-    session['project_activities_filter'] = [filter_type[params[:type]], params[:type]]
-    activity
-  end
-
   #GET /projects/
   def index
     if session['project_selection_filter'].nil?
@@ -121,7 +105,7 @@ class ProjectsController < ApplicationController
     @projects = current_user.owned_projects(session['project_selection_filter']).decorate(context: {allow_to_star: false})
     respond_to do |format|
       format.html { render :action => 'index' }
-      format.js { respond_to_js :action => 'index'}
+      format.js { respond_to_js :action => 'index' }
     end
   end
 

@@ -5,7 +5,8 @@
 # File: activity.erb
 %>
 
-<%= contextual t(:label_activity) %>
+<%= contextual "#{t(:label_activities)}" %>
 <div id="activities">
-  <%= display_activities(@activities) %>
+  <%= display_activities(@activities, selected_date, from_date) %>
 </div>
+<%= render partial: 'shared/activity_sidebar', locals: {types: types, selected_types: selected_types, selected_period: selected_period, selected_date: selected_date} %>

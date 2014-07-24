@@ -1,4 +1,5 @@
 module ProjectsHelper
+  include JournalsHelper
 
   def project_archive_permissions(action, controller)
     permissions = Hash.new { |h, k| h[k] = [] }
@@ -15,120 +16,7 @@ module ProjectsHelper
     true
   end
 
-  def display_activities(activities)
-    content_tag :div, class: 'activities', &Proc.new {
-      if activities.to_a.any?
-        i = 0
-        activities.each do |date, item|
-          i += 1
-          safe_concat activities_date(date)
-          safe_concat content_tag :div, class: "journals", &Proc.new {
-            journals_render(item.compact.sort { |x, y| y.at(0).created_at <=> x.at(0).created_at })
-          }
-          safe_concat clear_both
-        end
-      else
-        content_tag :div, t(:text_no_data), class: 'no-data'
-      end
-    }
-  end
 
-  def activities_date(date)
-    content_tag :div, class: 'date_circle', &Proc.new {
-      content_tag :div, date, class: 'inner_circle'
-    }
-  end
-
-  #Render all journals
-  def journals_render(journals)
-    i = 0
-    journals.each do |journal|
-      safe_concat one_journal_render(journal, journal.at(0), i)
-      i += 1
-    end
-  end
-
-  #Render one journal for same journalized items. if two or more journals exists for one item the same day, they will be compact into one.
-  def one_journal_render(journals, journal, nth)
-    content_tag :div, class: "activity #{nth % 2 == 0 ? 'odd' : 'even'}", &Proc.new {
-      content_tag :p do
-        journal_content_render(journal, nth)
-        journal_detail_render(journals)
-      end
-    }
-  end
-
-  #Render journal content
-  def journal_content_render(journal, nth)
-    user = (journal.user ? journal.user.caption : t(:label_unknown))
-    if nth % 2 == 0
-      safe_concat content_tag :span, nil, class: "#{journal_action_type_icon(journal.action_type)}"
-      safe_concat content_tag :span, user, class: 'author'
-      safe_concat content_tag :span, journal_action_type(journal.action_type), class: 'action_type'
-      safe_concat content_tag :span, journal_object_type(journal), class: 'object_type'
-      safe_concat content_tag :span, journal.created_at.strftime("%I:%M%p"), class: 'date'
-    else
-      safe_concat content_tag :span, journal.created_at.strftime("%I:%M%p"), class: 'date'
-      safe_concat content_tag :span, nil, class: "#{journal_action_type_icon(journal.action_type)}"
-      safe_concat content_tag :span, user, class: 'author'
-      safe_concat content_tag :span, journal_action_type(journal.action_type), class: 'action_type'
-      safe_concat content_tag :span, journal_object_type(journal), class: 'object_type'
-    end
-  end
-
-  def journal_detail_render(journals)
-    first_journal = journals.at(0)
-    safe_concat content_tag :div, class: 'journal_details', &Proc.new {
-      safe_concat content_tag :span, link_to(t(:link_new_comment), '#'), class: 'detail comment octicon octicon-comment' unless first_journal.notes.empty?
-      safe_concat content_tag(:ul, (first_journal.details.collect { |detail| history_detail_render(detail) }).join.html_safe)
-    }
-    journals.delete_at(0)
-    if journals.size > 0
-      safe_concat link_to 'view more', '#', {class: 'toggle'}
-      safe_concat content_tag :div, class: 'journal_details hide more', &Proc.new {
-        journals.each do |journal|
-          if journal.details.to_a.any?
-            safe_concat content_tag :div, class: 'detail more', &Proc.new {
-              safe_concat content_tag :span, link_to(t(:link_new_comment), '#'), class: 'detail comment octicon octicon-comment' unless journal.notes.empty?
-              safe_concat content_tag :span, journal.created_at.strftime("%I:%M%p"), class: 'date'
-              safe_concat content_tag(:ul, (journal.details.collect { |detail| history_detail_render(detail) }).join.html_safe)
-            }
-          end
-        end
-      }
-    end
-  end
-
-  #Give journal action type
-  def journal_action_type(action_type)
-    if action_type.eql?(Journal::ACTION_CREATE)
-      t(:label_created_lower_case)
-    elsif action_type.eql?(Journal::ACTION_UPDATE)
-      t(:label_updated_lower_case)
-    elsif action_type.eql?(Journal::ACTION_DELETE)
-      t(:label_deleted_lower_case)
-    end
-  end
-
-  def journal_action_type_icon(action_type)
-    if action_type.eql?(Journal::ACTION_CREATE)
-      'octicon octicon-plus'
-    elsif action_type.eql?(Journal::ACTION_UPDATE)
-      'octicon octicon-pencil'
-    elsif action_type.eql?(Journal::ACTION_DELETE)
-      'octicon octicon-trashcan'
-    end
-  end
-
-  def journal_object_type(journal)
-    type = journal.journalized_type
-    if type.eql?('Issue') && !journal.action_type.eql?(Journal::ACTION_DELETE)
-      safe_concat content_tag :b,"#{journal.issue.tracker.caption.downcase} "
-      link_to journal.issue.caption, issue_path(journal.project.slug, journal.journalized_id)
-    else
-      content_tag :b, "#{type.downcase} #{journal.journalized_identifier}"
-    end
-  end
 
   def members_list(members_hash)
     content_tag :div do

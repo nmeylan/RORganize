@@ -7,6 +7,7 @@ RORganize::Application.routes.draw do
       post 'filter', :path => ':filter'
       get 'overview', :path => ':project_id/overview'
       get 'activity', :path => ':project_id/activity'
+      post 'activity_filter', :path => ':project_id/activity_filter'
       get 'load_journal_activity', :path => ':project_id/load_journal_activity/:item_id/:date'
       post 'archive', :path => 'archive/:id'
       post 'activity_filter', :path => ':project_id/activity_filter/:type'

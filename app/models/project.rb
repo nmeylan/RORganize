@@ -3,9 +3,9 @@ class Project < ActiveRecord::Base
   #SLug
   extend FriendlyId
   friendly_id :identifier, use: :slugged
-  after_create :create_member
-  after_update :save_attachments
-
+  #Constants
+  JOURNALIZED_ITEMS = %w(Issue Category Member Document Version Wiki WikiPage)
+  #Relations
   belongs_to :author, :class_name => 'User', :foreign_key => 'created_by'
   has_many :members, :class_name => 'Member', :dependent => :destroy
   has_and_belongs_to_many :trackers, :class_name => 'Tracker'
@@ -16,7 +16,10 @@ class Project < ActiveRecord::Base
   has_many :enabled_modules, :dependent => :destroy
   has_many :documents, :dependent => :destroy
   has_many :journals, :dependent => :destroy
-
+  #Triggers
+  after_create :create_member
+  after_update :save_attachments
+  #Validators
   validates_associated :attachments
   validates :name, :identifier, :presence => true, :uniqueness => true
   validates :name, :length => {
@@ -49,10 +52,11 @@ class Project < ActiveRecord::Base
   end
 
   #Build an array containing project issues activities and misc activities
-  def activities(journalized_types)
+  def activities(journalized_types, period, from_date, conditions)
     activity_hash = Hash.new { |h, k| h[k] = [] }
-    Journal.activities(journalized_types, "project_id = #{self.id}").each do |journal|
-      date = journal.created_at.to_date.strftime("%a. %-d %b.")
+    current_year = Date.today.year
+    Journal.activities_eager_load(journalized_types, period, from_date, "project_id = #{self.id}").each do |journal|
+      date = journal.created_at.year.eql?(current_year) ? journal.created_at.strftime("%a. %-d %b.") : journal.created_at.strftime("%a. %-d %b. %Y")
       activity_hash[date][journal.journalized_id] ||= []
       activity_hash[date][journal.journalized_id] << journal
     end
