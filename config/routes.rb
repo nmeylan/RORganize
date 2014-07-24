@@ -127,12 +127,6 @@ RORganize::Application.routes.draw do
     end
   end
 
-  resources :coworkers do
-    collection do
-      get 'display_activities', :path => 'display_activities/:id'
-    end
-  end
-
   resources :time_entries do
     collection do
       get 'fill_overlay', :path => 'fill_overlay/:issue_id'
