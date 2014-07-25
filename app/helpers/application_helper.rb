@@ -4,7 +4,24 @@ module ApplicationHelper
   end
 
   def title_tag
-    (@project ? @project.slug.capitalize : 'RORganize') + " #{controller_name.capitalize}"
+    title = ''
+    if @project
+      title += @project.slug.capitalize + ' '
+    elsif controller_name.eql?('profiles')
+      title += current_user.login + " (#{current_user.caption}) "
+    else
+      title += 'RORganize '
+    end
+    if action_name.eql?('activity')
+      title += t(:label_activity)
+    elsif action_name.eql?('overview')
+      title += t(:label_overview)
+    elsif controller_name.eql?('rorganize')
+      title += t(:home)
+    elsif !controller_name.eql?('profiles')
+      title += controller_name.capitalize
+    end
+    title
   end
 
   def clear_both
@@ -67,7 +84,7 @@ module ApplicationHelper
           safe_concat content_tag :table, nil, id: 'filter_content'
           safe_concat submit_tag t(:button_apply), {:style => 'margin-left:0px'}
           if can_save
-            safe_concat content_tag :span, save_filter_button_tag(save_button_options[:filter_content],save_button_options[:user], save_button_options[:project]), {id:'save_query_button'}
+            safe_concat content_tag :span, save_filter_button_tag(save_button_options[:filter_content], save_button_options[:user], save_button_options[:project]), {id: 'save_query_button'}
           end
         }
       }
@@ -102,7 +119,7 @@ module ApplicationHelper
                 content_tag :li do
                   caption = element.respond_to?(:caption) ? element.caption : element.to_s
                   id = element.respond_to?(:id) ? element.id : element
-                  safe_concat link_to(conditional_glyph(caption , menu_item.currents.include?(element), 'check'), '#', {:'data-id' => id})
+                  safe_concat link_to(conditional_glyph(caption, menu_item.currents.include?(element), 'check'), '#', {:'data-id' => id})
                 end
               end.join.html_safe)
               if menu_item.none_allowed
@@ -240,7 +257,7 @@ EOD
   def journal_render(journal, show)
     user = (journal.user ? journal.user.name : t(:label_unknown))
     content_tag :div, class: 'history_block' do
-      safe_concat content_tag :h3, &Proc.new{
+      safe_concat content_tag :h3, &Proc.new {
         safe_concat "#{t(:label_updated)} #{distance_of_time_in_words(journal.created_at, Time.now)} #{t(:label_ago)}, #{t(:label_by)} #{user}. "
         safe_concat content_tag :span, journal.created_at.strftime('%a. %-d %b. %I:%M %p.'), {class: 'history_date'}
       }
