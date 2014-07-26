@@ -156,24 +156,8 @@ module ApplicationHelper
 
   def error_messages(object)
     if object.any?
-      error_explanation = ''
-      errors = ''
-      error_explanation += "<script type='text/javascript'>"
-      errors += '<ul>'
-      object.each do |error|
-        errors += '<li>'+error+'</li>'
-      end
-      errors += '</ul>'
-      error_explanation += "error_explanation(\""+errors+"\");"
-      error_explanation += '</script>'
-      object.clear
-      return error_explanation.to_s
+      javascript_tag("error_explanation('#{content_tag :ul, object.collect { |error| content_tag :li, error }.join.html_safe}')")
     end
-  end
-
-  def decimal_zero_removing(decimal)
-    removed_zero = decimal.gsub(/^*[.][0]$/, '')
-    removed_zero ? removed_zero : decimal
   end
 
   def textile_to_html(text)
@@ -181,13 +165,6 @@ module ApplicationHelper
 #{text}
 EOD
     t.to_html.html_safe
-  end
-
-  def set_toolbar(id)
-    javascript_tag(
-        "jQuery(document).ready(function() {
-        jQuery('##{id}').markItUp(mySettings);
-      });")
   end
 
   def sortable(column, title = nil, default_action = nil)
@@ -199,15 +176,15 @@ EOD
   end
 
   def mega_glyph(body, *names)
-    content_tag(:span, nil, :class => names.map { |name| "octicon-#{name.to_s.gsub('_', '-')}" }.push('mega-octicon')) + body #TODO find a better way
+    content_tag(:span, nil, :class => names.map { |name| "octicon-#{name.to_s.gsub('_', '-')}" }.push('mega-octicon')) + body
   end
 
   def medium_glyph(body, *names)
-    content_tag(:span, nil, :class => names.map { |name| "octicon-#{name.to_s.gsub('_', '-')}" }.push('medium-octicon')) + body #TODO find a better way
+    content_tag(:span, nil, :class => names.map { |name| "octicon-#{name.to_s.gsub('_', '-')}" }.push('medium-octicon')) + body
   end
 
   def glyph(body, *names)
-    content_tag(:span, nil, :class => names.map { |name| "octicon-#{name.to_s.gsub('_', '-')}" }.push('octicon')) + body #TODO find a better way
+    content_tag(:span, nil, :class => names.map { |name| "octicon-#{name.to_s.gsub('_', '-')}" }.push('octicon')) + body
   end
 
   def conditional_glyph(body, bool, *names)
