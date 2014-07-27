@@ -23,7 +23,7 @@
   <div class="splitcontentleft">
     <div class="autocomplete-combobox cbb-medium nosearch">
       <label for="issue_version"><%= t(:field_version) %></label>
-      <%= raw select_tag_versions('issue_version_id', 'issue[version_id]', @issue.version_id) %>
+      <%= select_tag_versions('issue_version_id', 'issue[version_id]', @issue.version_id) %>
     </div>
     <div class="autocomplete-combobox cbb-medium nosearch">
       <label for="issue_status"><%= t(:field_status) %><span class="required"> *</span></label>
