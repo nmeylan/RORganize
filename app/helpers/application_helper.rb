@@ -350,38 +350,13 @@ EOD
 
   def select_tag_versions(id, name, select_key)
     #Don't use hash because, grouped_options will be sort asc : close before open
-    option_group_ary = []
-    open_ary = []
-    open = []
-    open << 'Open'
-    close_ary = []
-    close = []
-    close << 'Close'
     versions = @project.versions
-    today = Date.current
-    select_tag = ''
-    versions.each do |version|
-      if version.target_date.nil? || (version.target_date && version.target_date > today)
-        open_ary << [version.name, version.id, version.target_date]
-      else
-        close_ary << [version.name, version.id, version.target_date]
-      end
+    hash = {Open: [], Close: []}
+    versions.each do |v|
+      key = v.closed? ? :Close : :Open
+      hash[key] << [v.caption, v.id, {'data-date' => v.target_date}]
     end
-    open << open_ary
-    close << close_ary
-    option_group_ary << open
-    option_group_ary << close
-    select_tag += "<select class='chzn-select-deselect cbb-medium' tabindex='-1' id='#{id}' name='#{name}'>"
-    select_tag += "<option value=''></option>"
-    #    select_tag += grouped_options_for_select(option_group_ary, select_key)
-    option_group_ary.each do |opt_group|
-      select_tag += "<optgroup label='#{opt_group[0].to_s}'>"
-      opt_group[1].each do |options|
-        select_tag += "<option id='#{options[2]}' value='#{options[1]}' #{'selected="selected"' if options[1].eql?(select_key)}>"+options[0].to_s+'</option>'
-      end
-      select_tag += '</optgroup>'
-    end
-    select_tag += '</select>'
+    select_tag name, grouped_options_for_select(hash, select_key), {class: 'chzn-select-deselect cbb-medium', id: id}
   end
 
 #Build rows for all entries from a given model

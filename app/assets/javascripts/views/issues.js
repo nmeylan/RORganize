@@ -88,7 +88,7 @@ function issues_form() {
     jQuery("#issue_version_id").change(function (e) {
         e.preventDefault();
         var self = this;
-        var date = jQuery('#issue_version_id option:selected').attr("id");
+        var date = jQuery('#issue_version_id option:selected').data("date");
         if (date != "")
             jQuery('#calendar').val(date)
     });
