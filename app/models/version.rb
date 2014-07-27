@@ -25,6 +25,10 @@ class Version < ActiveRecord::Base
     self.name
   end
 
+  def closed?
+    !self.target_date.nil? && (self.target_date && self.target_date < Date.today)
+  end
+
   def update_issues_due_date
     issues = Issue.where(:version_id => self.id)
     Issue.transaction do
