@@ -17,6 +17,14 @@ class CommentsController < ApplicationController
     end
   end
 
+  def show
+    @comment = Comment.find_by_id(params[:id])
+    @comments = Comment.where(commentable_type: @comment.commentable_type, commentable_id: @comment.commentable_id).decorate(context: {selected_comment: @comment})
+    respond_to do |format|
+      format.js { respond_to_js action: 'show', locals: {comments: @comments}}
+    end
+  end
+
   private
   def comment_params
     params.require(:comment).permit(Comment.permit_attributes)

@@ -255,6 +255,7 @@ en:
   text_created_this_issue: submitted this request
   text_created_this: created this
   text_added_a: added a
+  text_added_comment: added a comment
 
   password: "Password"
   field_steps: "Steps"

@@ -37,7 +37,8 @@ class CommentDecorator < ApplicationDecorator
   def render_details
     h.content_tag :span, class: 'comment' do
       h.safe_concat h.content_tag :span, nil, class: "octicon octicon-comment"
-      render_header
+      h.safe_concat h.content_tag :span, h.t(:text_added_a).capitalize + ' '
+      h.safe_concat h.content_tag :span, self.remote_show_link
     end
   end
 
