@@ -9,7 +9,6 @@
     <%= @issue.new_link %>
     <%= @issue.edit_link %>
     <%= @issue.start_today_link %>
-    <%= @issue.update_link %>
     <%= @issue.new_comment_link %>
     <%= @issue.checklist_link %>
     <%= @issue.log_time_link %>
@@ -82,14 +81,6 @@
 
 <%= @issue.display_history(journals) %>
 
-<div id="update_issue">
-  <div class="separator"></div>
-  <h2><%= glyph(t(:link_update), 'x') %></h2>
-
-  <div class="box">
-    <%= render :partial => 'issues/update_form', :locals => {:allowed_statuses => allowed_statuses, :done_ratio => done_ratio} %>
-  </div>
-</div>
 <%= comments.display_collection %>
 <%= @issue.add_comment_block %>
 <%= render :partial => 'issues/checklist_overlay', :locals => {:checklist_items => checklist_items} %>

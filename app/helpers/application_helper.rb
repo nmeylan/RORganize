@@ -224,7 +224,7 @@ EOD
       safe_concat content_tag :div, nil, class: 'separator'
       safe_concat content_tag :h2, t(:label_history)
       journals.to_a.compact.collect do |journal|
-        if !journal.nil? && journal.details.any? || (!journal.notes.eql?('') && journal.action_type.eql?('updated'))
+        if !journal.nil? && journal.details.any?
           safe_concat journal_render(journal, show).html_safe
         end
       end.join.html_safe
@@ -238,16 +238,8 @@ EOD
         safe_concat "#{t(:label_updated)} #{distance_of_time_in_words(journal.created_at, Time.now)} #{t(:label_ago)}, #{t(:label_by)} #{user}. "
         safe_concat content_tag :span, journal.created_at.strftime(Rorganize::TIME_FORMAT), {class: 'history_date'}
       }
-
       safe_concat clear_both
       safe_concat content_tag(:ul, (journal.details.collect { |detail| history_detail_render(detail) }).join.html_safe)
-      unless journal.notes.eql?('')
-        if journal.user_id.eql?(current_user.id) && show
-          safe_concat link_to(glyph(t(:link_delete), 'trashcan'), delete_note_issues_path(@project.slug, journal.id), {:class => 'right', :remote => true, :method => :delete, :confirm => t(:text_delete_item)})
-          safe_concat link_to(glyph(t(:link_edit), 'pencil'), edit_note_issues_path(@project.slug, journal.id), {:id => "link_edit_note_#{journal.id}", :class => 'right edit_notes'})
-        end
-        safe_concat content_tag :div, (textile_to_html(journal.notes).html_safe), {class: 'box_notes'}
-      end
     end
   end
 
