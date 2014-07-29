@@ -1,3 +1,4 @@
+require 'shared/activities'
 class ProjectsController < ApplicationController
   before_filter :find_project, :except => [:index, :new, :create, :destroy, :archive, :filter, :overview, :show]
   before_filter :find_project_with_associations, :only => [:overview, :show]
@@ -23,9 +24,9 @@ class ProjectsController < ApplicationController
     init_activities_sessions
     locals = selected_filters
     if @sessions[:activities][:types].include?('NIL')
-      @activities = []
+      @activities =  Activities.new([])
     else
-      @activities = @project.activities(@sessions[:activities][:types], @sessions[:activities][:period], @sessions[:activities][:from_date], nil)
+      @activities = Activities.new(@project.activities(@sessions[:activities][:types], @sessions[:activities][:period], @sessions[:activities][:from_date], nil))
     end
     respond_to do |format|
       format.html { render action: 'activity', locals: locals }

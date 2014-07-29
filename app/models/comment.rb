@@ -24,5 +24,9 @@ class Comment < ActiveRecord::Base
     [:commentable_id, :commentable_type, :content, :parent_id]
   end
 
+  def polymorphic_identifier
+    "#{self.commentable_type}_#{self.commentable_id}".to_sym
+  end
+
 
 end

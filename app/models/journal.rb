@@ -73,5 +73,9 @@ class Journal < ActiveRecord::Base
     {:destroyed => destroyed, :journals => journals}
   end
 
+  def polymorphic_identifier
+    "#{self.journalized_type}_#{self.journalized_id}".to_sym
+  end
+
 
 end

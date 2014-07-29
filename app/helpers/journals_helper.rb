@@ -7,13 +7,13 @@ module JournalsHelper
   def display_activities(activities, to, from)
     activities_range(to, from) +
         (content_tag :div, class: 'activities', &Proc.new {
-          if activities.to_a.any?
+          if activities.content.to_a.any?
             i = 0
-            activities.each do |date, item|
+            activities.content.each do |date, objects|
               i += 1
               safe_concat activities_date(date)
               safe_concat content_tag :div, class: "journals", &Proc.new {
-                journals_render(item.compact.sort { |x, y| y.at(0).created_at <=> x.at(0).created_at })
+                activities_render(activities, date, objects)
               }
               safe_concat clear_both
             end
@@ -40,10 +40,11 @@ module JournalsHelper
   end
 
   #Render all journals
-  def journals_render(journals)
+  def activities_render(activities, date, objects)
     i = 0
-    journals.each do |journal|
-      safe_concat one_journal_render(journal, journal.at(0), i)
+    objects.keys.each do |polymorphic_identifier|
+      act = activities.content_for(date, polymorphic_identifier)
+      safe_concat one_journal_render(act, act.at(0), i)
       i += 1
     end
   end
@@ -64,14 +65,14 @@ module JournalsHelper
     if nth % 2 == 0
       safe_concat content_tag :span, nil, class: "#{journal_action_type_icon(journal.action_type)}"
       safe_concat content_tag :span, user, class: 'author'
-      safe_concat content_tag :span, journal_action_type(journal.action_type), class: 'action_type'
+      safe_concat content_tag :span, journal.journal_action_type, class: 'action_type'
       safe_concat content_tag :span, journal_object_type(journal), class: 'object_type'
       safe_concat content_tag :span, journal.created_at.strftime("%I:%M%p"), class: 'date'
     else
       safe_concat content_tag :span, journal.created_at.strftime("%I:%M%p"), class: 'date'
       safe_concat content_tag :span, nil, class: "#{journal_action_type_icon(journal.action_type)}"
       safe_concat content_tag :span, user, class: 'author'
-      safe_concat content_tag :span, journal_action_type(journal.action_type), class: 'action_type'
+      safe_concat content_tag :span, journal.journal_action_type, class: 'action_type'
       safe_concat content_tag :span, journal_object_type(journal), class: 'object_type'
     end
   end

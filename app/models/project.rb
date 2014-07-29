@@ -53,14 +53,7 @@ class Project < ActiveRecord::Base
 
   #Build an array containing project issues activities and misc activities
   def activities(journalized_types, period, from_date, conditions)
-    activity_hash = Hash.new { |h, k| h[k] = [] }
-    current_year = Date.today.year
-    Journal.activities_eager_load(journalized_types, period, from_date, "project_id = #{self.id}").each do |journal|
-      date = journal.created_at.year.eql?(current_year) ? journal.created_at.strftime("%a. %-d %b.") : journal.created_at.strftime("%a. %-d %b. %Y")
-      activity_hash[date][journal.journalized_id] ||= []
-      activity_hash[date][journal.journalized_id] << journal
-    end
-    activity_hash
+    Journal.activities_eager_load(journalized_types, period, from_date, "project_id = #{self.id}")
   end
 
   def update_info(params, trackers)
