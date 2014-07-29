@@ -61,19 +61,19 @@ module JournalsHelper
 
   #Render journal content
   def journal_content_render(journal, nth)
-    user = (journal.user ? journal.user.caption : t(:label_unknown))
+    user = journal.display_author
     if nth % 2 == 0
-      safe_concat content_tag :span, nil, class: "#{journal_action_type_icon(journal.action_type)}"
+      safe_concat content_tag :span, nil, class: "#{journal.display_action_type_icon}"
       safe_concat content_tag :span, user, class: 'author'
-      safe_concat content_tag :span, journal.journal_action_type, class: 'action_type'
-      safe_concat content_tag :span, journal_object_type(journal), class: 'object_type'
-      safe_concat content_tag :span, journal.created_at.strftime("%I:%M%p"), class: 'date'
+      safe_concat content_tag :span, journal.display_action_type, class: 'action_type'
+      safe_concat content_tag :span, journal.display_object_type, class: 'object_type'
+      safe_concat content_tag :span, journal.display_creation_at, class: 'date'
     else
-      safe_concat content_tag :span, journal.created_at.strftime("%I:%M%p"), class: 'date'
-      safe_concat content_tag :span, nil, class: "#{journal_action_type_icon(journal.action_type)}"
+      safe_concat content_tag :span, journal.display_creation_at, class: 'date'
+      safe_concat content_tag :span, nil, class: "#{journal.display_action_type_icon}"
       safe_concat content_tag :span, user, class: 'author'
-      safe_concat content_tag :span, journal.journal_action_type, class: 'action_type'
-      safe_concat content_tag :span, journal_object_type(journal), class: 'object_type'
+      safe_concat content_tag :span, journal.display_action_type, class: 'action_type'
+      safe_concat content_tag :span, journal.display_object_type, class: 'object_type'
     end
   end
 
@@ -91,9 +91,9 @@ module JournalsHelper
           safe_concat content_tag :div, class: 'detail more', &Proc.new {
             safe_concat content_tag :span, link_to(t(:link_new_comment), '#'), class: 'detail comment octicon octicon-comment' unless journal.notes.empty?
             safe_concat content_tag :span, class: 'date', &Proc.new {
-              safe_concat journal.created_at.strftime("%I:%M%p")
+              safe_concat journal.display_creation_at
             }
-            safe_concat content_tag :span, journal.user.caption, class: 'author'
+            safe_concat content_tag :span, journal.display_author, class: 'author'
             if journal.action_type.eql?(Journal::ACTION_UPDATE) && journal.details.to_a.any?
               safe_concat content_tag(:ul, (journal.details.collect { |detail| history_detail_render(detail) }).join.html_safe)
             elsif journal.action_type.eql?(Journal::ACTION_CREATE)
@@ -102,37 +102,6 @@ module JournalsHelper
           }
         end
       }
-    end
-  end
-
-  #Give journal action type
-  def journal_action_type(action_type)
-    if action_type.eql?(Journal::ACTION_CREATE)
-      t(:label_created_lower_case)
-    elsif action_type.eql?(Journal::ACTION_UPDATE)
-      t(:label_updated_lower_case)
-    elsif action_type.eql?(Journal::ACTION_DELETE)
-      t(:label_deleted_lower_case)
-    end
-  end
-
-  def journal_action_type_icon(action_type)
-    if action_type.eql?(Journal::ACTION_CREATE)
-      'octicon octicon-plus'
-    elsif action_type.eql?(Journal::ACTION_UPDATE)
-      'octicon octicon-pencil'
-    elsif action_type.eql?(Journal::ACTION_DELETE)
-      'octicon octicon-trashcan'
-    end
-  end
-
-  def journal_object_type(journal)
-    type = journal.journalized_type
-    if type.eql?('Issue') && !journal.action_type.eql?(Journal::ACTION_DELETE)
-      safe_concat content_tag :b, "#{journal.issue.tracker.caption.downcase} "
-      link_to journal.issue.caption, issue_path(journal.project.slug, journal.journalized_id)
-    else
-      content_tag :b, "#{type.downcase} #{journal.journalized_identifier}"
     end
   end
 
