@@ -166,6 +166,8 @@ en:
   link_star: Star
   link_unstar: Unstar
   link_new_comment: New comment
+  link_comment: Comment
+  link_view_comment: View comment
  #FORM
   field_name: Name
   field_description: Description
@@ -214,6 +216,7 @@ en:
   successful_deletion: Successful deletion
   failure_deletion: Deletion failed
   failure_update: Update failed
+  failure_creation: Creation failed
   failure_operation: Operation failed
   successful_time_entry_creation: Your time spent on this issue was successfully logged
   successful_time_entry_update: Your time spent on this issue was successfully updated
@@ -250,6 +253,8 @@ en:
   text_query_is_for_all: Make this query usable in all projects.
   text_empty_page: Empty page
   text_created_this_issue: submitted this request
+  text_created_this: created this
+  text_added_a: added a
 
   password: "Password"
   field_steps: "Steps"

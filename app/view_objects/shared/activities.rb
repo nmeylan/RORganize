@@ -7,8 +7,8 @@ class Activities
   attr_reader :content
 
   def initialize(journals, comments = [])
-    @journals = journals
-    @comments = comments
+    @journals = journals.decorate
+    @comments = comments.decorate
     @content = Hash.new { |h, k| h[k] = {} } #e.g  {date: {type_id: [journal, journal, comment, journal]}}
     crunch_data if @journals.any? || @comments.any?
   end
@@ -21,10 +21,10 @@ class Activities
   def crunch_data
     tmp_hash = Hash.new { |h, k| h[k] = {} }
     fruit_salad = []
-    fruit_salad += @journals.decorate.flatten
+    fruit_salad += @journals.flatten
     fruit_salad += @comments.flatten
     current_year = Date.today.year
-    fruit_salad.each do |element|
+    fruit_salad.sort { |x, y| y.created_at <=> x.created_at }.each do |element|
       el_date = element.created_at
       date = el_date.year.eql?(current_year) ? el_date.strftime("%a. %-d %b.") : el_date.strftime("%a. %-d %b. %Y")
       tmp_hash[date][element.polymorphic_identifier] ||= []

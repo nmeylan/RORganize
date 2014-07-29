@@ -8,6 +8,7 @@ class CreateComments < ActiveRecord::Migration
       t.string :commentable_type
       t.integer :user_id
       t.integer :parent_id
+      t.integer :project_id
     end
     add_index :comments, :commentable_id
   end

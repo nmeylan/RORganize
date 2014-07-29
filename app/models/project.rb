@@ -51,9 +51,12 @@ class Project < ActiveRecord::Base
     return Project.where(:is_archived => false).pluck('id')
   end
 
-  #Build an array containing project issues activities and misc activities
-  def activities(journalized_types, period, from_date, conditions)
+  def activities(journalized_types, period, from_date)
     Journal.activities_eager_load(journalized_types, period, from_date, "project_id = #{self.id}")
+  end
+
+  def comments(journalized_types, period, from_date)
+    Comment.comments_eager_load(journalized_types, period, from_date, "project_id = #{self.id}")
   end
 
   def update_info(params, trackers)

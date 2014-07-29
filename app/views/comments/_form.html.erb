@@ -10,6 +10,7 @@
         <%= form_for model.new_comment, url: comments_path, html: {class: 'form', remote: true} do |f| %>
             <%= f.hidden_field :commentable_id, value: model.new_comment.commentable_id %>
             <%= f.hidden_field :commentable_type, value: model.new_comment.commentable_type %>
+            <%= f.hidden_field :project_id, value: model.project.id %>
             <p>
               <%= f.label :content do %>
                 <%= t(:field_content) %>

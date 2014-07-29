@@ -112,6 +112,9 @@
       span.author{
         color: $default-color;
       }
+      span.comment{
+        display: block;
+      }
     }
   }
   div.journals.hover .activity.odd {

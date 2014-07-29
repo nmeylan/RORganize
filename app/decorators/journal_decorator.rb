@@ -23,6 +23,18 @@ class JournalDecorator < ApplicationDecorator
     end
   end
 
+  def render_details
+    if model.action_type.eql?(Journal::ACTION_UPDATE) && model.details.to_a.any?
+      h.content_tag(:ul, (model.details.collect { |detail| h.history_detail_render(detail) }).join.html_safe)
+    elsif model.action_type.eql?(Journal::ACTION_CREATE)
+      if model.journalized_type.eql?('Issue')
+        h.t(:text_created_this_issue)
+      else
+        h.t(:text_created_this) + ' ' + model.journalized_type.downcase
+      end
+    end
+  end
+
   def display_action_type_icon
     if self.action_type.eql?(Journal::ACTION_CREATE)
       'octicon octicon-plus'

@@ -44,25 +44,29 @@ module JournalsHelper
     i = 0
     objects.keys.each do |polymorphic_identifier|
       act = activities.content_for(date, polymorphic_identifier)
-      safe_concat one_journal_render(act, act.at(0), i)
+      safe_concat activity_render(act, act.at(0), i)
       i += 1
     end
   end
 
   #Render one journal for same journalized items. if two or more journals exists for one item the same day, they will be compact into one.
-  def one_journal_render(journals, journal, nth)
+  def activity_render(activities, activity, nth)
     content_tag :div, class: "activity #{nth % 2 == 0 ? 'odd' : 'even'}", &Proc.new {
       content_tag :p do
-        journal_content_render(journal, nth)
-        journal_detail_render(journals, nth)
+        if activity.is_a?(Journal)
+          journal_header_render(activity, nth)
+        elsif activity.is_a?(Comment)
+          comment_header_render(activity, nth)
+        end
+        activity_detail_render(activities, nth)
       end
     }
   end
 
   #Render journal content
-  def journal_content_render(journal, nth)
+  def journal_header_render(journal, nth)
     user = journal.display_author
-    if nth % 2 == 0
+    if nth % 2 == 0 #Render is depending on the parity
       safe_concat content_tag :span, nil, class: "#{journal.display_action_type_icon}"
       safe_concat content_tag :span, user, class: 'author'
       safe_concat content_tag :span, journal.display_action_type, class: 'action_type'
@@ -77,28 +81,38 @@ module JournalsHelper
     end
   end
 
-  def journal_detail_render(journals, nth)
-    first_journal = journals.at(0)
+  def comment_header_render(comment, nth)
+    if nth % 2 == 0 #Render is depending on the parity
+      safe_concat content_tag :span, nil, class: "octicon octicon-comment"
+      safe_concat content_tag :span, comment.display_author, class: 'author'
+      safe_concat comment.render_header
+      safe_concat content_tag :span, comment.display_creation_at, class: 'date'
+    else
+      safe_concat content_tag :span, comment.display_creation_at, class: 'date'
+      safe_concat content_tag :span, nil, class: "octicon octicon-comment"
+      safe_concat content_tag :span, comment.display_author, class: 'author'
+      safe_concat comment.render_header
+    end
+  end
+
+  def activity_detail_render(activities, nth)
+    first_activity = activities.at(0)
     safe_concat content_tag :div, class: 'journal_details', &Proc.new {
-      safe_concat content_tag :span, link_to(t(:link_new_comment), '#'), class: 'detail comment octicon octicon-comment' unless first_journal.notes.empty?
-      safe_concat content_tag(:ul, (first_journal.details.collect { |detail| history_detail_render(detail) }).join.html_safe)
+      if first_activity.is_a?(Journal)
+        safe_concat content_tag(:ul, (first_activity.details.collect { |detail| history_detail_render(detail) }).join.html_safe)
+      end
     }
-    journals.delete_at(0)
-    if journals.size > 0
+    activities.delete_at(0)
+    if activities.size > 0
       safe_concat link_to 'view more', '#', {class: 'toggle'}
       safe_concat content_tag :div, class: 'journal_details hide more', &Proc.new {
-        journals.each do |journal|
+        activities.each do |activity|
           safe_concat content_tag :div, class: 'detail more', &Proc.new {
-            safe_concat content_tag :span, link_to(t(:link_new_comment), '#'), class: 'detail comment octicon octicon-comment' unless journal.notes.empty?
             safe_concat content_tag :span, class: 'date', &Proc.new {
-              safe_concat journal.display_creation_at
+              safe_concat activity.display_creation_at
             }
-            safe_concat content_tag :span, journal.display_author, class: 'author'
-            if journal.action_type.eql?(Journal::ACTION_UPDATE) && journal.details.to_a.any?
-              safe_concat content_tag(:ul, (journal.details.collect { |detail| history_detail_render(detail) }).join.html_safe)
-            elsif journal.action_type.eql?(Journal::ACTION_CREATE)
-              safe_concat t(:text_created_this_issue)
-            end
+            safe_concat content_tag :span, activity.display_author, class: 'author'
+            safe_concat activity.render_details
           }
         end
       }
