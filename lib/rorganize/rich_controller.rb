@@ -6,6 +6,8 @@
 
 module Rorganize
   module RichController
+    include Rorganize::RichController::Pagination
+    include Rorganize::RichController::Commentable
 
     def self.included(base)
       base.before_filter :set_pagination, only: [:index]
@@ -58,31 +60,6 @@ module Rorganize
       end
     end
 
-    def set_current_page
-      # @sessions[:current_page] = params[:page] ? params[:page] : (@sessions[:current_page] ? @sessions[:current_page] : 1)
-      @sessions[:current_page] = params[:page]
-    end
-
-    def set_per_page
-      @sessions[:per_page] = params[:per_page] ? params[:per_page] : (@sessions[:per_page] ? @sessions[:per_page] : 25)
-    end
-
-    def order(default_column)
-      sort_column(default_column) + ' ' + sort_direction
-    end
-
-    def sort_column(default_column = nil)
-      @sessions[:sort] = params[:sort] ? params[:sort] : (@sessions[:sort] ? @sessions[:sort] : default_column)
-    end
-
-    def sort_direction
-      @sessions[:direction] = params[:direction] ? params[:direction] : (@sessions[:direction] ? @sessions[:direction] :'desc')
-    end
-
-    def set_pagination
-      set_current_page
-      set_per_page
-    end
 
   end
 end

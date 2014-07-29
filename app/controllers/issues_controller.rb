@@ -32,7 +32,7 @@ class IssuesController < ApplicationController
     @checklist_statuses = display_issue_object[:checklist_statuses]
     gon.checklist_statuses = @checklist_statuses.to_json
     respond_to do |format|
-      format.html { render :action => 'show', :locals => {:journals => @issue.journals, :done_ratio => display_issue_object[:done_ratio], :allowed_statuses => display_issue_object[:allowed_statuses], :checklist_items => display_issue_object[:checklist_items]} }
+      format.html { render :action => 'show', :locals => {:journals => @issue.journals, :done_ratio => display_issue_object[:done_ratio], :allowed_statuses => display_issue_object[:allowed_statuses], :checklist_items => display_issue_object[:checklist_items], comments: @issue.comments} }
     end
   end
 

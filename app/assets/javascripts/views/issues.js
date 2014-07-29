@@ -64,6 +64,10 @@ function issues_show() {
         containerResizeSpeed: 350
     });
     jQuery('#update_issue').hide();
+    jQuery('#update_issue h2').click(function(e){
+        e.preventDefault();
+        jQuery('#update_issue').fadeOut();
+    });
     createOverlay("#checklist_overlay", 150);
     createOverlay("#spent_time_overlay", 150);
     jQuery(".open_checklist_overlay").click(function (e) {

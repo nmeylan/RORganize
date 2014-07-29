@@ -13,6 +13,11 @@ RORganize::Application.routes.draw do
       post 'activity_filter', :path => ':project_id/activity_filter/:type'
     end
   end
+
+  resources :comments do
+
+  end
+
   scope 'administration/' do
     resources :users
     resources :permissions do

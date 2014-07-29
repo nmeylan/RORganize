@@ -6,6 +6,11 @@
 require 'rorganize/menu_manager'
 require 'rorganize/module_manager'
 require 'rorganize/permission_manager'
+
+module Rorganize
+  TIME_FORMAT = '%a. %-d %b. %I:%M %p.'
+end
+
 unless $0.end_with?('rake')
   I18n.load_path += Dir[Rails.root.join('config', 'locales', '**', '*.{rb,yml}')]
   Rorganize::MenuManager.map :project_menu do |menu|

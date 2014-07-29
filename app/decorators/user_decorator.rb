@@ -25,4 +25,8 @@ class UserDecorator < ApplicationDecorator
   def delete_link
     super(h.t(:link_delete), h.user_path(model.slug))
   end
+
+  def user_link
+    model.caption
+  end
 end

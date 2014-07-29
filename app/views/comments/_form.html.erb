@@ -1,0 +1,23 @@
+<%#=
+ * User: nmeylan
+ * Date: 27.07.14
+ * Time: 17:04
+%>
+<%= content_tag :div, {id: 'comment_block'} do %>
+    <div class="separator"></div>
+    <h2><%= glyph(t(:link_comment), 'x') %></h2>
+    <%= content_tag :div, class: 'box' do %>
+        <%= form_for model.new_comment, url: comments_path, html: {class: 'form', remote: true} do |f| %>
+            <%= f.hidden_field :commentable_id, value: model.new_comment.commentable_id %>
+            <%= f.hidden_field :commentable_type, value: model.new_comment.commentable_type %>
+            <p>
+              <%= f.label :content do %>
+                <%= t(:field_content) %>
+                <%= content_tag :span, '*', class: 'required' %>
+              <% end %>
+              <%= f.text_area :content, :rows => 12, :class => 'fancyEditor' %>
+            </p>
+            <%= submit_tag t(:button_submit) %>
+        <% end -%>
+    <% end %>
+<% end %>

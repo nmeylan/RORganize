@@ -5,6 +5,7 @@
 class Issue < ActiveRecord::Base
   include Rorganize::SmartRecords
   include Rorganize::JounalsManager
+  include Rorganize::CommentsManager
   #Class variables
   assign_journalized_properties({status_id: 'Status', category_id: 'Category', assigned_to_id: 'Assigned to', tracker_id: 'Tracker', due_date: 'Due date', start_date: 'Start date', done: 'Done', estimated_time: 'Estimated time', version_id: 'Version', predecessor_id: 'Predecessor'})
   assign_foreign_keys({status_id: IssuesStatus, category_id: Category, assigned_to_id: User, tracker_id: Tracker, version_id: Version})
@@ -82,7 +83,7 @@ class Issue < ActiveRecord::Base
 
   def self.display_issue_object(issue_id, project)
     object = {}
-    object[:issue] = Issue.eager_load([:tracker, :version, :assigned_to, :category, :attachments, :parent, :journals => [:details, :user]], status: [:enumeration]).where(id: issue_id)[0]
+    object[:issue] = Issue.eager_load([:tracker, :version, :assigned_to, :category, :attachments, :parent, :journals => [:details, :user]], status: [:enumeration], comments: [:author]).where(id: issue_id)[0]
     object[:allowed_statuses] = User.current.allowed_statuses(project)
     object[:done_ratio] = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
     object[:checklist_statuses] = Enumeration.where(:opt => 'CLIS')

@@ -1,4 +1,5 @@
 class IssueDecorator < ApplicationDecorator
+  decorates_association :comments
   delegate_all
 
   def creation_info(journals)
@@ -46,7 +47,7 @@ class IssueDecorator < ApplicationDecorator
   end
 
   def update_link
-    h.link_to h.glyph(h.t(:link_update), 'comment'), '#update_issue', {:class => 'icon icon-update_issue', :id => 'update_issue_link'}
+    h.link_to h.glyph(h.t(:link_update), 'file-symlink-file'), '#update_issue', {:class => 'icon icon-update_issue', :id => 'update_issue_link'}
   end
 
   def checklist_link

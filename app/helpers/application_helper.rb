@@ -236,7 +236,7 @@ EOD
     content_tag :div, class: 'history_block' do
       safe_concat content_tag :h3, &Proc.new {
         safe_concat "#{t(:label_updated)} #{distance_of_time_in_words(journal.created_at, Time.now)} #{t(:label_ago)}, #{t(:label_by)} #{user}. "
-        safe_concat content_tag :span, journal.created_at.strftime('%a. %-d %b. %I:%M %p.'), {class: 'history_date'}
+        safe_concat content_tag :span, journal.created_at.strftime(Rorganize::TIME_FORMAT), {class: 'history_date'}
       }
 
       safe_concat clear_both

@@ -1,6 +1,7 @@
 require 'issues/issue_filter'
 require 'issues/issue_toolbox'
 module IssuesHelper
+  include CommentsHelper
   def issues_generics_form_to_json
     form_hash = {}
     filter_content_hash = IssueFilter.new(@project).content

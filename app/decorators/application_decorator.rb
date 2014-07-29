@@ -47,15 +47,6 @@ class ApplicationDecorator < Draper::Decorator
   end
 
 
-  def delete_attachment_link(path, project)
-    link_to_with_permissions h.glyph(h.t(:link_delete), 'trashcan'), path, project, nil, {:remote => true, :confirm => h.t(:text_delete_item), :method => :delete}
-  end
-
-  def download_attachment_link(attachment, path = nil)
-    path ||= h.url_for({controller: h.controller_name, action: 'download_attachment', id: attachment.id})
-    h.link_to h.glyph(attachment.file_file_name, attachment.icon_type), path
-  end
-
   def inc_position_link(path)
     if model.position > 1
       h.link_to(h.glyph('', 'arrow-up'), path, {:class => 'icon icon-up_arrow change_position dec'})
@@ -70,6 +61,32 @@ class ApplicationDecorator < Draper::Decorator
     else
       h.link_to h.glyph('', 'arrow-down', 'disabled'), '#', {:class => 'icon icon-disabled_down_arrow'}
     end
+  end
+
+  #Commentable model
+  def new_comment_link
+    if User.current.allowed_to?('comment', h.controller_name, model.project)
+      h.link_to h.glyph(h.t(:link_comment), 'comment'), '#add_comment', {id: 'new_comment_link'}
+    end
+  end
+  def new_comment
+    Comment.new({commentable_type: model.class, commentable_id: model.id})
+  end
+
+  def add_comment_block
+    if User.current.allowed_to?('comment', h.controller_name, model.project)
+      h.render partial: 'comments/form', locals: {model: self}
+    end
+  end
+
+  #Attachable model
+  def delete_attachment_link(path, project)
+    link_to_with_permissions h.glyph(h.t(:link_delete), 'trashcan'), path, project, nil, {:remote => true, :confirm => h.t(:text_delete_item), :method => :delete}
+  end
+
+  def download_attachment_link(attachment, path = nil)
+    path ||= h.url_for({controller: h.controller_name, action: 'download_attachment', id: attachment.id})
+    h.link_to h.glyph(attachment.file_file_name, attachment.icon_type), path
   end
 
 end
