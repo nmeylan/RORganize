@@ -28,7 +28,7 @@ class Member < ActiveRecord::Base
   end
   
   def create_journal
-    created_journalized_attributes = {'role_id' => [nil, self.role_id]}
+    created_journalized_attributes = {:role_id => [nil, self.role_id]}
     journal = Journal.create(:user_id => User.current.id,
       :journalized_id => self.id,
       :journalized_type => self.class.to_s,
