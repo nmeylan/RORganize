@@ -123,6 +123,7 @@
         padding: 0;
         list-style-type: none;
         display: inline-block;
+        vertical-align: top;
         li {
           text-align: left;
         }
@@ -130,12 +131,20 @@
     }
     div.journal_details.more.hide {
       display: none;
+      vertical-align: top;
     }
     div.detail.more {
       margin: 10px 0px 20px 0px !important;
+      vertical-align: top;
       span.author {
         color: $default-color;
         vertical-align: top;
+      }
+      span{
+        vertical-align: top;
+        a{
+          vertical-align: top;
+        }
       }
       span.comment {
         display: block;
