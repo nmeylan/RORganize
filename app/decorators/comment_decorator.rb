@@ -10,8 +10,12 @@ class CommentDecorator < ApplicationDecorator
     model.created_at.strftime("%I:%M%p")
   end
 
-  def display_author
-    model.author ? model.author.decorate.user_link : h.t(:label_unknown)
+  def display_author(avatar = true)
+    model.author ? model.author.decorate.user_link(avatar) : h.t(:label_unknown)
+  end
+
+  def author_avatar
+    model.author ? model.author.decorate.avatar.avatar : ''
   end
 
   def edit_link

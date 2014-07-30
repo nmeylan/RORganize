@@ -2,7 +2,7 @@ class UserDecorator < ApplicationDecorator
   delegate_all
 
   def show_link
-    link =  link_to_with_permissions(model.caption , h.user_path(model.slug), nil, nil)
+    link = link_to_with_permissions(model.caption, h.user_path(model.slug), nil, nil)
     link ? link : disabled_field(model.caption)
   end
 
@@ -26,7 +26,10 @@ class UserDecorator < ApplicationDecorator
     super(h.t(:link_delete), h.user_path(model.slug))
   end
 
-  def user_link
-    h.link_to model.caption, h.view_profile_path(model.slug)
+  def user_link(avatar = true)
+    h.content_tag :span, class: 'avatar' do
+      h.safe_concat h.image_tag user.avatar.avatar.url(:very_small), {class: 'small_avatar'} if avatar
+      h.safe_concat h.link_to model.caption, h.view_profile_path(model.slug)
+    end
   end
 end

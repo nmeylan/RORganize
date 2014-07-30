@@ -11,6 +11,11 @@ $comment-header-background: #f7f7f7;
     background-color: #ffffff;
     margin-top: 10px;
     margin-bottom: 10px;
+    img{
+      float: left;
+      margin-left: -50px;
+      margin-top: 4px;
+    }
   }
   .comment_block:before, .comment_block:after{
     position: absolute;
@@ -61,5 +66,11 @@ $comment-header-background: #f7f7f7;
   .comment_content{
     padding: 15px;
 
+  }
+}
+
+#comments_overlay_content{
+  #comments_block{
+    margin-left: 40px;
   }
 }

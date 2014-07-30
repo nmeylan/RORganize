@@ -56,8 +56,8 @@ class JournalDecorator < ApplicationDecorator
     model.created_at
   end
 
-  def display_author
-    self.user.user_link
+  def display_author(avatar = true)
+    self.user ? self.user.user_link(avatar) : h.t(:label_unknown)
   end
 
 

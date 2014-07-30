@@ -17,7 +17,7 @@ group :assets do
 end
 
 gem 'jquery-rails'
-
+gem 'identicon'
 gem 'cocaine'
 gem 'paperclip'
 gem 'RedCloth'

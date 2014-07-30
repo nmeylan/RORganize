@@ -24,6 +24,7 @@ module ApplicationHelper
     title
   end
 
+
   def clear_both
     content_tag :div, nil, {class: 'clear-both'}
   end
@@ -205,15 +206,16 @@ EOD
         if activity.is_a?(Journal)
           safe_concat history_block_render(activity).html_safe
         else
-          comment_block_render(activity).html_safe
+          comment_block_render(activity, nil, false).html_safe
         end
       end.join.html_safe
     }
   end
 
   def history_block_render(journal)
-    user = journal.display_author
+    user = journal.display_author(false)
     content_tag :div, class: 'history_block' do
+      safe_concat image_tag journal.user.avatar.avatar.url(:thumb)
       safe_concat content_tag :div, class: 'history_header', &Proc.new {
         safe_concat content_tag :span, user, {class: 'author'}
         safe_concat " #{t(:label_updated).downcase} #{t(:text_this)} "
