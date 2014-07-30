@@ -22,7 +22,7 @@ class Issue < ActiveRecord::Base
   belongs_to :parent, :foreign_key => 'predecessor_id', :class_name => 'Issue'
   has_many :checklist_items, :class_name => 'ChecklistItem', :dependent => :destroy
   has_many :attachments, -> { where :object_type => 'Issue' }, :foreign_key => 'object_id', :dependent => :destroy
-  has_many :journals, -> { where :journalized_type => 'Issue' }, :as => :journalized, :dependent => :destroy
+  has_many :journals, -> { (where :journalized_type => 'Issue').eager_load(:details, :user, :project) }, :as => :journalized, :dependent => :destroy
   has_many :time_entries, :dependent => :destroy
   #triggers
   before_save :set_done_ratio
@@ -84,8 +84,6 @@ class Issue < ActiveRecord::Base
   def self.display_issue_object(issue_id, project)
     object = {}
     object[:issue] = Issue.eager_load([:tracker, :version, :assigned_to, :category, :attachments, :parent, :journals => [:details, :user]], status: [:enumeration], comments: [:author]).where(id: issue_id)[0]
-    object[:allowed_statuses] = User.current.allowed_statuses(project)
-    object[:done_ratio] = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
     object[:checklist_statuses] = Enumeration.where(:opt => 'CLIS')
     object[:checklist_items] = ChecklistItem.where(:issue_id => issue_id).eager_load([:enumeration]).order(:position)
     object

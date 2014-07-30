@@ -10,13 +10,13 @@
     <li class="settings_index"><%= link_to t(:link_update_informations),settings_path(@project.slug)%></li>
     <% if current_user.allowed_to?('index','Versions',@project) %>
       <li class="versions">
-        <%= link_to glyph(t(:link_versions), 'clippy'),
+        <%= link_to glyph(t(:link_versions), Rorganize::ACTION_ICON[:version_id]),
          versions_path(@project.slug)%>
       </li>
     <% end %>
     <% if current_user.allowed_to?('index','Categories',@project) %>
       <li class="categories">
-        <%= link_to glyph(t(:link_categories), 'package'),
+        <%= link_to glyph(t(:link_categories), Rorganize::ACTION_ICON[:category_id]),
           categories_path(@project.slug)%>
       </li>
     <% end %>

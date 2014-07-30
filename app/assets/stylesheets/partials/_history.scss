@@ -1,0 +1,64 @@
+@import 'utilities/_variables';
+
+$history-header-background: #f7f7f7;
+#history_blocks {
+  position: relative;
+  padding-left: 40px;
+
+  .history_block {
+    width: 78%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    ul {
+      list-style-type: none;
+      li {
+        position: relative;
+        margin-bottom: 25px;
+        margin-top: 25px;
+        .activity_icon {
+          top: -4px;
+          left: -17px;
+        }
+        .detail{
+          margin-left: 25px;
+        }
+      }
+    }
+  }
+  .comment_block {
+    width: 78%;
+
+  }
+  .history_date {
+    margin-left: 5px;
+    font-size: 12px;
+    font-style: italic;
+  }
+
+  .history_header {
+    padding: 15px;
+    color: #999;
+    border: 1px solid #ddd;
+    background-color: $history-header-background;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+
+
+    .author{
+      color: $default-color;
+      font-weight: bold;
+    }
+  }
+}
+
+#history_blocks:before {
+  display: block;
+  content: "";
+  position: absolute;
+  top: 46px;
+  bottom: 0;
+  left: 79px;
+  width: 2px;
+  background-color: #f3f3f3;
+  z-index: -1;
+}

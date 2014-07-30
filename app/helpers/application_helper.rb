@@ -195,51 +195,55 @@ EOD
     end
   end
 
-  def history_detail_render(detail)
-    if detail.old_value && (detail.value.nil? || detail.value.eql?(''))
-      content_tag :li do
-        safe_concat content_tag :b, "#{detail.property} #{detail.old_value.to_s} "
-        safe_concat "#{t(:text_deleted)}"
-      end
-    elsif detail.old_value && detail.value
-      content_tag :li do
-        safe_concat content_tag :b, "#{detail.property} #{t(:text_changed)} "
-        safe_concat "#{t(:text_from)} "
-        safe_concat content_tag :b, "#{detail.old_value.to_s} "
-        safe_concat "#{t(:text_to)} "
-        safe_concat content_tag :b, "#{detail.value.to_s}"
-      end
-    else
-      content_tag :li do
-        safe_concat content_tag :b, "#{detail.property} "
-        safe_concat "#{t(:text_set_at)} "
-        safe_concat content_tag :b, "#{detail.value.to_s}"
-      end
-    end
-  end
 
   #generic journal renderer
-  def history_render(journals, show = true) #If come from show action
-    content_tag :div, class: 'history_blocks' do
-      safe_concat content_tag :div, nil, class: 'separator'
-      safe_concat content_tag :h2, t(:label_history)
-      journals.to_a.compact.collect do |journal|
-        if !journal.nil? && journal.details.any?
-          safe_concat journal_render(journal, show).html_safe
+  def history_render(history) #If come from show action
+    safe_concat content_tag :div, nil, class: 'separator'
+    safe_concat content_tag :h2, t(:label_history)
+    safe_concat content_tag :div, id: 'history_blocks', &Proc.new {
+      history.content.collect do |activity|
+        if activity.is_a?(Journal)
+          safe_concat history_block_render(activity).html_safe
+        else
+          comment_block_render(activity).html_safe
         end
       end.join.html_safe
-    end
+    }
   end
 
-  def journal_render(journal, show)
-    user = (journal.user ? journal.user.name : t(:label_unknown))
+  def history_block_render(journal)
+    user = journal.display_author
     content_tag :div, class: 'history_block' do
-      safe_concat content_tag :h3, &Proc.new {
-        safe_concat "#{t(:label_updated)} #{distance_of_time_in_words(journal.created_at, Time.now)} #{t(:label_ago)}, #{t(:label_by)} #{user}. "
+      safe_concat content_tag :div, class: 'history_header', &Proc.new {
+        safe_concat content_tag :span, user, {class: 'author'}
+        safe_concat " #{t(:label_updated).downcase} #{t(:text_this)} "
+        safe_concat "#{distance_of_time_in_words(journal.created_at, Time.now)} #{t(:label_ago)}. "
         safe_concat content_tag :span, journal.created_at.strftime(Rorganize::TIME_FORMAT), {class: 'history_date'}
       }
       safe_concat clear_both
       safe_concat content_tag(:ul, (journal.details.collect { |detail| history_detail_render(detail) }).join.html_safe)
+    end
+  end
+
+  def history_detail_render(detail, no_icon = false)
+    content_tag :li do
+      safe_concat content_tag :span, nil, class: "octicon octicon-#{Rorganize::ACTION_ICON[detail.property_key.to_sym]} activity_icon" unless no_icon
+      safe_concat content_tag :span, class: 'detail', &Proc.new {
+        if detail.old_value && (detail.value.nil? || detail.value.eql?(''))
+          safe_concat content_tag :b, "#{detail.property} #{detail.old_value.to_s} "
+          safe_concat "#{t(:text_deleted)}"
+        elsif detail.old_value && detail.value
+          safe_concat content_tag :b, "#{detail.property} #{t(:text_changed)} "
+          safe_concat "#{t(:text_from)} "
+          safe_concat content_tag :b, "#{detail.old_value.to_s} "
+          safe_concat "#{t(:text_to)} "
+          safe_concat content_tag :b, "#{detail.value.to_s}"
+        else
+          safe_concat content_tag :b, "#{detail.property} "
+          safe_concat "#{t(:text_set_at)} "
+          safe_concat content_tag :b, "#{detail.value.to_s}"
+        end
+      }
     end
   end
 
@@ -249,11 +253,11 @@ EOD
   end
 
 
-  #Filter type : (simple_select date text)
-  # Field label
-  # Field name
-  # Options for radio button selection
-  # Filter arguments (depending on type of filter)
+#Filter type : (simple_select date text)
+# Field label
+# Field name
+# Options for radio button selection
+# Filter arguments (depending on type of filter)
   def generic_filter(filter_type, label, name, options_for_radio, *args)
     types = %w(:simple_select :date :text)
     label ||= name.capitalize

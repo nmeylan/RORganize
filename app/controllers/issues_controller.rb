@@ -2,7 +2,7 @@
 # Date: 8 juil. 2012
 # Encoding: UTF-8
 # File: issues_controller.rb
-
+require 'shared/history'
 class IssuesController < ApplicationController
   before_filter :find_project, except: [:index, :new, :edit, :toolbox, :apply_custom_query, :show]
   before_filter :find_project_with_associations, only: [:index, :new, :edit, :toolbox, :apply_custom_query, :show]
@@ -32,7 +32,7 @@ class IssuesController < ApplicationController
     @checklist_statuses = display_issue_object[:checklist_statuses]
     gon.checklist_statuses = @checklist_statuses.to_json
     respond_to do |format|
-      format.html { render :action => 'show', :locals => {:journals => @issue.journals, :done_ratio => display_issue_object[:done_ratio], :allowed_statuses => display_issue_object[:allowed_statuses], :checklist_items => display_issue_object[:checklist_items], comments: @issue.comments} }
+      format.html { render :action => 'show', :locals => {:history => History.new(@issue.journals, @issue.comments), :done_ratio => display_issue_object[:done_ratio], :allowed_statuses => display_issue_object[:allowed_statuses], :checklist_items => display_issue_object[:checklist_items]} }
     end
   end
 

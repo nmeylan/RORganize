@@ -8,23 +8,24 @@ module CommentsHelper
     content_tag :div, id: 'comments_block' do
       collection.collect do |comment|
         if selected_comment
-          render_single_comment(comment, selected_comment.id)
+          comment_block_render(comment, selected_comment.id)
         else
-          render_single_comment(comment)
+          comment_block_render(comment)
         end
       end.join.html_safe
     end
   end
 
-  def render_single_comment(comment, selected_comment_id = nil)
-    css_class = comment.id.eql?(selected_comment_id) ? 'comment selected' : 'comment'
-    safe_concat content_tag :div, {id: "comment_#{comment.id}", class: css_class}, &Proc.new {
-      safe_concat content_tag :h3, class: 'header', &Proc.new {
+  def comment_block_render(comment, selected_comment_id = nil)
+    css_class = comment.id.eql?(selected_comment_id) ? 'comment_content selected' : 'comment_content'
+    safe_concat content_tag :div, {id: "comment_#{comment.id}", class: 'comment_block'}, &Proc.new {
+      safe_concat content_tag :div, class: 'comment_header', &Proc.new {
         safe_concat content_tag :span, comment.display_author + ' ', class: 'author'
-        safe_concat content_tag :span, t(:text_added_comment) + '. ', class: 'text'
-        safe_concat content_tag :span, comment.creation_date, class: 'history_date'
+        safe_concat content_tag :span, t(:text_added_comment) + ' ', class: 'text'
+        safe_concat "#{distance_of_time_in_words(comment.created_at, Time.now)} #{t(:label_ago)}. "
+        safe_concat content_tag :span, comment.created_at.strftime(Rorganize::TIME_FORMAT), {class: 'history_date'}
       }
-      safe_concat content_tag :div, class: 'content', &Proc.new {
+      safe_concat content_tag :div, class: css_class, &Proc.new {
         textile_to_html comment.content
       }
     }

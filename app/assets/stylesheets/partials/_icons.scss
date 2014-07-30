@@ -41,6 +41,19 @@ a{
   cursor: pointer;
 }
 
+.activity_icon{
+  width: 32px;
+  height: 32px;
+  margin-top: -4px;
+  line-height: 28px;
+  color: #666666;
+  text-align: center;
+  background-color: #f3f3f3;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  position: absolute;
+}
+
 .mega-octicon {
   font: normal normal 32px octicons;
   line-height: 1;

@@ -19,8 +19,8 @@ class DocumentToolbox < Toolbox
       @menu[:versions].caption = h.t(:field_version)
       @menu[:categories].caption = h.t(:field_category)
       #Menu item glyphs
-      @menu[:versions].glyph_name = 'clippy'
-      @menu[:categories].glyph_name = 'package'
+      @menu[:versions].glyph_name = Rorganize::ACTION_ICON[:version_id]
+      @menu[:categories].glyph_name = Rorganize::ACTION_ICON[:category_id]
       #Menu item content
       @menu[:versions].all = @project.versions.collect { |version| version }
       @menu[:categories].all = @project.categories.collect { |category| category }

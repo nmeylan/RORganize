@@ -18,7 +18,7 @@
 <h2><%= @issue.subject %></h2>
 <p>
   <em>
-    <%= @issue.creation_info(journals) %>
+    <%= @issue.creation_info(history.journals) %>
   </em>
 </p>
 <table class="detail" style="width:100%">
@@ -79,9 +79,8 @@
   <%= render :partial => 'shared/show_attachments', :locals => {:attachments => @issue.attachments, :object => @issue} %>
 </div>
 
-<%= @issue.display_history(journals) %>
+<%= @issue.display_history(history) %>
 
-<%= comments.display_collection %>
 <%= @issue.add_comment_block %>
 <%= render :partial => 'issues/checklist_overlay', :locals => {:checklist_items => checklist_items} %>
 <%= render :partial => 'time_entries/log_issue_spent_time', :locals => {:issue_id => @issue.id, :tracker_name => @issue.tracker} %>

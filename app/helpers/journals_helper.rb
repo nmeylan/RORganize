@@ -99,7 +99,7 @@ module JournalsHelper
     first_activity = activities.at(0)
     safe_concat content_tag :div, class: 'journal_details', &Proc.new {
       if first_activity.is_a?(Journal)
-        safe_concat content_tag(:ul, (first_activity.details.collect { |detail| history_detail_render(detail) }).join.html_safe)
+        safe_concat content_tag(:ul, (first_activity.details.collect { |detail| history_detail_render(detail, true) }).join.html_safe)
       end
     }
     activities.delete_at(0)

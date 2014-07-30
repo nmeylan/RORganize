@@ -1,5 +1,4 @@
 class IssueDecorator < ApplicationDecorator
-  decorates_association :comments
   delegate_all
 
   def creation_info(journals)

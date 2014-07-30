@@ -25,10 +25,10 @@ class ApplicationDecorator < Draper::Decorator
     h.content_tag :span, content, {class: 'disabled_field'}
   end
 
-  def display_history(journals)
-    if journals && journals.to_a.any? && !journals.none? { |journal| journal.details.any? }
+  def display_history(history)
+    if history && history.content.to_a.any?
       h.content_tag :div, id: 'history' do
-        h.history_render(journals)
+        h.history_render(history)
       end
     end
   end
