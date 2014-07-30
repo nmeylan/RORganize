@@ -227,7 +227,9 @@ EOD
 
   def history_detail_render(detail, no_icon = false)
     content_tag :li do
-      safe_concat content_tag :span, nil, class: "octicon octicon-#{Rorganize::ACTION_ICON[detail.property_key.to_sym]} activity_icon" unless no_icon
+      icon = Rorganize::ACTION_ICON[detail.property_key.to_sym]
+      icon ||= 'pencil'
+      safe_concat content_tag :span, nil, class: "octicon octicon-#{icon} activity_icon" unless no_icon
       safe_concat content_tag :span, class: 'detail', &Proc.new {
         if detail.old_value && (detail.value.nil? || detail.value.eql?(''))
           safe_concat content_tag :b, "#{detail.property} #{detail.old_value.to_s} "

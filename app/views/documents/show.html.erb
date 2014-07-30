@@ -15,7 +15,7 @@
 <h2><%= @document.name %></h2>
 <p>
   <em>
-    <%= @document.creation_info(journals) %>
+    <%= @document.creation_info(history.journals) %>
   </em>
 </p>
 <table class="detail" style="width:100%">
@@ -38,5 +38,5 @@
   <%= render :partial => 'shared/show_attachments', :locals => {:attachments => @document.attachments, :object => @document} %>
 </div>
 
-<%= @document.display_history(journals) %>
+<%= @document.display_history(history) %>
 

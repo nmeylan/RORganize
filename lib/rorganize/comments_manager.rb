@@ -7,7 +7,7 @@ module Rorganize
     extend ActiveSupport::Concern
     included do |base|
       p base
-      has_many :comments, -> { where commentable_type: base }, as: :commentable, dependent: :destroy
+      has_many :comments, -> { (where commentable_type: base).eager_load(:project, :author) }, as: :commentable, dependent: :destroy
     end
 
   end

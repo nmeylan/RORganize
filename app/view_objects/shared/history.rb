@@ -8,7 +8,7 @@ class History
 
   def initialize(journals, comments = [])
     @journals = journals.decorate
-    @comments = comments.decorate
+    @comments = comments.any? ? comments.decorate : []
     @content = []
     crunch_data if @journals.any? || @comments.any?
   end

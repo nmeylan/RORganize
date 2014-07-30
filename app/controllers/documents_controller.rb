@@ -2,6 +2,7 @@
 # Date: 6 avr. 2013
 # Encoding: UTF-8
 # File: document_controller.rb
+require 'shared/history'
 class DocumentsController < ApplicationController
   before_filter :find_project, except: [:index, :new, :edit, :toolbox]
   before_filter :find_project_with_associations, only: [:index, :new, :edit, :toolbox]
@@ -69,7 +70,7 @@ class DocumentsController < ApplicationController
     #this always return 1 result. Don't use .first(AR method) because it generate two query (due to ActiveRecord::FinderMethods::apply_join_dependency(..))
     @document = Document.eager_load(:category, :version, :attachments).where(id: params[:id])[0].decorate(context: {project: @project})
     respond_to do |format|
-      format.html { render :action => 'show', :locals => {:journals => Journal.document_activities(@document.id)}}
+      format.html { render :action => 'show', :locals => {:history => History.new(Journal.document_activities(@document.id))}}
     end
   end
 

@@ -4,6 +4,7 @@
 # File: users_controller.rb
 # Comment: For administrator panel
 
+require 'shared/history'
 class UsersController < ApplicationController
   include Rorganize::RichController
   before_filter :check_permission
@@ -83,7 +84,7 @@ class UsersController < ApplicationController
   #Get /administration/users/:id
   def show
     @user = User.find_by_slug(params[:id]).decorate
-    @journals = Journal.where(:journalized_type => 'User', :journalized_id => @user.id).eager_load([:details])
+    @history = History.new(Journal.where(:journalized_type => 'User', :journalized_id => @user.id).eager_load([:details]))
     respond_to do |format|
       format.html
     end
