@@ -16,7 +16,7 @@ class JournalDecorator < ApplicationDecorator
   def display_object_type
     type = self.journalized_type
     if type.eql?('Issue') && !self.action_type.eql?(Journal::ACTION_DELETE)
-      h.safe_concat h.content_tag :b, "#{self.issue.tracker.caption.downcase} "
+      h.safe_concat h.content_tag :b, "#{self.issue.tracker.caption.downcase} ##{self.issue.id} "
       h.link_to self.issue.caption, h.issue_path(self.project.slug, self.journalized_id)
     else
       h.content_tag :b, "#{type.downcase} #{self.journalized_identifier}"
@@ -24,9 +24,12 @@ class JournalDecorator < ApplicationDecorator
   end
 
   def render_details
+    h.safe_concat h.content_tag :span, self.display_author, class: 'author'
     if model.action_type.eql?(Journal::ACTION_UPDATE) && model.details.to_a.any?
-      h.content_tag(:ul, (model.details.collect { |detail| h.history_detail_render(detail) }).join.html_safe)
+      h.safe_concat h.content_tag :span, nil, class: "octicon octicon-pencil activity_icon"
+      h.content_tag(:ul, (model.details.collect { |detail| h.activity_history_detail_render(detail) }).join.html_safe)
     elsif model.action_type.eql?(Journal::ACTION_CREATE)
+      h.safe_concat h.content_tag :span, nil, class: "octicon octicon-plus activity_icon"
       if model.journalized_type.eql?('Issue')
         h.t(:text_created_this_issue)
       else
@@ -37,11 +40,11 @@ class JournalDecorator < ApplicationDecorator
 
   def display_action_type_icon
     if self.action_type.eql?(Journal::ACTION_CREATE)
-      'octicon octicon-plus'
+      'octicon octicon-plus activity_icon'
     elsif self.action_type.eql?(Journal::ACTION_UPDATE)
-      'octicon octicon-pencil'
+      'octicon octicon-pencil activity_icon'
     elsif self.action_type.eql?(Journal::ACTION_DELETE)
-      'octicon octicon-trashcan'
+      'octicon octicon-trashcan activity_icon'
     end
   end
 

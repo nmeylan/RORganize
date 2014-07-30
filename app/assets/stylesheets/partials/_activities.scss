@@ -11,6 +11,30 @@
       font-weight: bold;
     }
   }
+  .activity_icon{
+    width: 32px;
+    height: 32px;
+    margin-top: -4px;
+    line-height: 28px;
+    color: #666666;
+    text-align: center;
+    background-color: #f3f3f3;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    position: absolute;
+  }
+
+}
+#activities:before{
+  display: block;
+  content: "";
+  position: absolute;
+  top: 20px;
+  bottom: 0;
+  left: 50%;
+  width: 10px;
+  background-color: #f3f3f3;
+  z-index: -1;
 }
 
 #activities_filter {
@@ -29,16 +53,15 @@
   overflow-x: hidden;
   .date_circle {
     cursor: pointer;
-    float: left;
     position: relative;
     /* Firefox */
-    left: -moz-calc(50% - 100px);
+    left: -moz-calc(50% - 97px);
     /* WebKit */
-    left: -webkit-calc(50% - 100px);
+    left: -webkit-calc(50% - 97px);
     /* Opera */
-    left: -o-calc(50% - 100px);
+    left: -o-calc(50% - 97px);
     /* Standard */
-    left: calc(50% - 100px);
+    left: calc(50% - 97px);
     display: block;
     width: 200px;
     height: 200px;
@@ -80,7 +103,7 @@
     position: relative;
     clear: both;
     overflow-y: hidden;
-    width: 50%;
+    margin-bottom: 10px;
 
     a.toggle {
       font-size: 11px;
@@ -102,53 +125,78 @@
         margin: 0;
         padding: 0;
         list-style-type: none;
+        display: inline-block;
+        li{
+          text-align: left;
+        }
       }
     }
     div.journal_details.more.hide {
       display: none;
     }
     div.detail.more {
-      margin: 0px 0px 10px 0px !important;
+      margin: 10px 0px 20px 0px !important;
       span.author{
         color: $default-color;
+        vertical-align: top;
       }
       span.comment{
         display: block;
       }
     }
   }
-  div.journals.hover .activity.odd {
-    border-right: 10px solid $activity-color-hover;
-  }
-  div.journals.hover .activity.even {
-    border-left: 10px solid $activity-color-hover;
-  }
   .activity.odd {
     float: left;
     text-align: right;
-    border-right: 10px solid $activity-color;
+    /* Firefox */
+    width: -moz-calc(50% + 29px);
+    /* WebKit */
+    width: -webkit-calc(50% + 29px);
+    /* Opera */
+    width: -o-calc(50% + 29px);
+    /* Standard */
+    width: calc(50% + 29px);
 
-    margin-left: -3px;
     p, div, a.toggle {
-      margin-right: 20px !important;
+      margin-right: 45px !important;
       span.date {
         float: right;
         margin-left: 5px;
       }
+    }
+    div.journal_details.more{
+//      border-right: 1px solid #f5f5f5;
+//      padding-right: 5px;
+    }
+    .activity_icon{
+      right: 0%;
     }
 
   }
   .activity.even {
     float: right;
     text-align: left;
-    border-left: 10px solid $activity-color;
-    margin-right: -7px;
+    /* Firefox */
+    width: -moz-calc(50% + 13px);
+    /* WebKit */
+    width: -webkit-calc(50% + 13px);
+    /* Opera */
+    width: -o-calc(50% + 13px);
+    /* Standard */
+    width: calc(50% + 13px);
     p, div, a.toggle {
-      margin-left: 20px !important;
+      margin-left: 45px !important;
       span.date {
         float: left;
         margin-right: 5px;
       }
+    }
+    div.journal_details.more{
+//      border-left: 1px solid #f5f5f5;
+//      padding-left: 5px;
+    }
+    .activity_icon{
+      left: 0%;
     }
   }
 }

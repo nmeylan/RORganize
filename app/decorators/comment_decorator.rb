@@ -29,14 +29,15 @@ class CommentDecorator < ApplicationDecorator
   def display_object_type
     type = self.commentable_type
     if type.eql?('Issue')
-      h.safe_concat h.content_tag :b, "#{self.issue.tracker.caption.downcase} "
+      h.safe_concat h.content_tag :b, "#{self.issue.tracker.caption.downcase}  ##{self.issue.id} "
       h.link_to self.issue.caption, h.issue_path(self.project.slug, self.commentable_id)
     end
   end
 
   def render_details
     h.content_tag :span, class: 'comment' do
-      h.safe_concat h.content_tag :span, nil, class: "octicon octicon-comment"
+      h.safe_concat h.content_tag :span, nil, class: "octicon octicon-comment activity_icon"
+      h.safe_concat h.content_tag :span, self.display_author, class: 'author'
       h.safe_concat h.content_tag :span, h.t(:text_added_a).capitalize + ' '
       h.safe_concat h.content_tag :span, self.remote_show_link
     end

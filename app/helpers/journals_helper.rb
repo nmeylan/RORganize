@@ -73,8 +73,8 @@ module JournalsHelper
       safe_concat content_tag :span, journal.display_object_type, class: 'object_type'
       safe_concat content_tag :span, journal.display_creation_at, class: 'date'
     else
-      safe_concat content_tag :span, journal.display_creation_at, class: 'date'
       safe_concat content_tag :span, nil, class: "#{journal.display_action_type_icon}"
+      safe_concat content_tag :span, journal.display_creation_at, class: 'date'
       safe_concat content_tag :span, user, class: 'author'
       safe_concat content_tag :span, journal.display_action_type, class: 'action_type'
       safe_concat content_tag :span, journal.display_object_type, class: 'object_type'
@@ -83,13 +83,13 @@ module JournalsHelper
 
   def comment_header_render(comment, nth)
     if nth % 2 == 0 #Render is depending on the parity
-      safe_concat content_tag :span, nil, class: "octicon octicon-comment"
+      safe_concat content_tag :span, nil, class: "octicon octicon-comment activity_icon"
       safe_concat content_tag :span, comment.display_author, class: 'author'
       safe_concat comment.render_header
       safe_concat content_tag :span, comment.display_creation_at, class: 'date'
     else
+      safe_concat content_tag :span, nil, class: "octicon octicon-comment activity_icon"
       safe_concat content_tag :span, comment.display_creation_at, class: 'date'
-      safe_concat content_tag :span, nil, class: "octicon octicon-comment"
       safe_concat content_tag :span, comment.display_author, class: 'author'
       safe_concat comment.render_header
     end
@@ -111,11 +111,34 @@ module JournalsHelper
             safe_concat content_tag :span, class: 'date', &Proc.new {
               safe_concat activity.display_creation_at
             }
-            safe_concat content_tag :span, activity.display_author, class: 'author'
             safe_concat activity.render_details
           }
         end
       }
+    end
+  end
+
+  def activity_history_detail_render(detail)
+    if detail.old_value && (detail.value.nil? || detail.value.eql?(''))
+      content_tag :li do
+        safe_concat "#{t(:text_deleted)}"
+        safe_concat content_tag :b, "#{detail.property} #{detail.old_value.to_s} "
+      end
+    elsif detail.old_value && detail.value
+      content_tag :li do
+        safe_concat t(:text_changed)
+        safe_concat content_tag :b, " #{detail.property} "
+        safe_concat "#{t(:text_from)} "
+        safe_concat content_tag :b, "#{detail.old_value.to_s} "
+        safe_concat "#{t(:text_to)} "
+        safe_concat content_tag :b, "#{detail.value.to_s}"
+      end
+    else
+      content_tag :li do
+        safe_concat "#{t(:text_set_at)} "
+        safe_concat content_tag :b, "#{detail.property} "
+        safe_concat content_tag :b, "#{detail.value.to_s}"
+      end
     end
   end
 
