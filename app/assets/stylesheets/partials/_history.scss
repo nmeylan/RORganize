@@ -3,10 +3,10 @@
 $history-header-background: #f7f7f7;
 #history_blocks {
   position: relative;
-  padding-left: 40px;
+  padding-left: 80px;
 
   .history_block {
-    width: 78%;
+    position: relative;
     margin-top: 10px;
     margin-bottom: 10px;
     ul {
@@ -25,25 +25,46 @@ $history-header-background: #f7f7f7;
       }
     }
   }
-  .comment_block {
-    width: 78%;
-
-  }
   .history_date {
     margin-left: 5px;
     font-size: 12px;
     font-style: italic;
   }
 
+
+
+  .history_header:before, .history_header:after{
+    position: absolute;
+    top: 16px;
+    left: -15px;
+    right: 100%;
+    width: 0;
+    height: 0;
+    display: block;
+    content: " ";
+    border-color: transparent;
+    border-style: solid solid outset;
+    pointer-events: none;
+
+  }
+  .history_header:before{
+    border-right-color: #dddddd;
+    border-width: 8px;
+  }
+  .history_header:after{
+
+    border-width: 7px;
+    border-right-color: #f7f7f7;
+    margin-top: 1px;
+    margin-left: 2px;
+  }
   .history_header {
     padding: 15px;
     color: #999;
-    border: 1px solid #ddd;
     background-color: $history-header-background;
     border-top-left-radius: 3px;
     border-top-right-radius: 3px;
-
-
+    border: 1px solid #ddd;
     .author{
       color: $default-color;
       font-weight: bold;
@@ -57,7 +78,7 @@ $history-header-background: #f7f7f7;
   position: absolute;
   top: 46px;
   bottom: 0;
-  left: 79px;
+  left: 119px;
   width: 2px;
   background-color: #f3f3f3;
   z-index: -1;

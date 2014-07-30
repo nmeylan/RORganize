@@ -23,6 +23,10 @@ class RorganizeController < ApplicationController
     end
   end
 
+  def view_profile
+    @user = User.find_by_slug(params[:user])
+  end
+
   def about
     respond_to do |format|
       format.html

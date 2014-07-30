@@ -20,7 +20,7 @@ class Journal < ActiveRecord::Base
   scope :document_activities, ->(document_id) { eager_load([:details, :user]).where(journalized_type: 'Document', journalized_id: document_id) }
   scope :member_activities, ->(member) { where(:user_id => member.user_id, :project_id => member.project_id).order('created_at DESC') }
   scope :activities, ->(journalized_types, date_range, conditions = '1 = 1') {
-    includes([:details, :user, :project]).where("journalized_type IN (?) AND #{conditions}", journalized_types).where(created_at: date_range).order('created_at DESC')
+    includes([:details, :project, user: :avatar]).where("journalized_type IN (?) AND #{conditions}", journalized_types).where(created_at: date_range).order('created_at DESC')
   }
   scope :fetch_dependencies_issues, -> { includes(issue: :tracker) }
   scope :fetch_dependencies_categories, -> { includes(:category) }

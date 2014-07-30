@@ -4,17 +4,18 @@
   width: 100%;
   position: relative;
   overflow-x: hidden;
-  .activities_range{
+  .activities_range {
     color: $default-smooth-color;
     font-style: italic;
-    span{
+    span {
       color: $default-color;
       font-weight: bold;
     }
   }
 
 }
-#activities:before{
+
+#activities:before {
   display: block;
   content: "";
   position: absolute;
@@ -30,7 +31,7 @@
   #date {
     float: left;
   }
-  #period_select{
+  #period_select {
     float: right;
     margin-right: 40px;
     margin-top: -2px;
@@ -100,6 +101,12 @@
     span.author {
       font-weight: bold;
       margin-right: 5px;
+      a {
+        color: $default-smooth-color;
+      }
+      a:hover {
+        color: $default-color;
+      }
     }
     span.action_type, span.object_type {
       margin-right: 5px;
@@ -115,7 +122,7 @@
         padding: 0;
         list-style-type: none;
         display: inline-block;
-        li{
+        li {
           text-align: left;
         }
       }
@@ -125,11 +132,11 @@
     }
     div.detail.more {
       margin: 10px 0px 20px 0px !important;
-      span.author{
+      span.author {
         color: $default-color;
         vertical-align: top;
       }
-      span.comment{
+      span.comment {
         display: block;
       }
     }
@@ -153,7 +160,7 @@
         margin-left: 5px;
       }
     }
-    .activity_icon{
+    .activity_icon {
       right: 0%;
     }
 
@@ -176,7 +183,7 @@
         margin-right: 5px;
       }
     }
-    .activity_icon{
+    .activity_icon {
       left: 0%;
     }
   }

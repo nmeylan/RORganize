@@ -83,7 +83,7 @@ class Issue < ActiveRecord::Base
 
   def self.display_issue_object(issue_id, project)
     object = {}
-    object[:issue] = Issue.eager_load([:tracker, :version, :assigned_to, :category, :attachments, :parent, :journals => [:details, :user]], status: [:enumeration], comments: [:author]).where(id: issue_id)[0]
+    object[:issue] = Issue.eager_load([:tracker, :version, :assigned_to, :category, :attachments, :parent, :journals => [:details, user: :avatar]], status: [:enumeration], comments: [author: :avatar]).where(id: issue_id)[0]
     object[:checklist_statuses] = Enumeration.where(:opt => 'CLIS')
     object[:checklist_items] = ChecklistItem.where(:issue_id => issue_id).eager_load([:enumeration]).order(:position)
     object

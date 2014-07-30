@@ -27,6 +27,6 @@ class UserDecorator < ApplicationDecorator
   end
 
   def user_link
-    model.caption
+    h.link_to model.caption, h.view_profile_path(model.slug)
   end
 end

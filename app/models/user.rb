@@ -19,6 +19,7 @@ class User < ActiveRecord::Base
   has_many :issues, :class_name => 'Issue', :foreign_key => :author_id, :dependent => :nullify
   has_many :issues, :class_name => 'Issue', :foreign_key => :assigned_to_id, :dependent => :nullify
   has_many :journals, -> { where :journalized_type => 'User' }, :as => :journalized, :dependent => :nullify
+  has_one :avatar, -> { where :object_type => 'User' },class_name: 'Attachment', :foreign_key => 'object_id', :dependent => :destroy
   #Validators
   validates :login, :presence => true, :length => 4..50, :uniqueness => true
   validates :name, :presence => true, :length => 4..50
@@ -26,6 +27,8 @@ class User < ActiveRecord::Base
   after_create :create_journal
   after_update :update_journal
   after_destroy :destroy_journal
+  #Scope
+  default_scope { eager_load(:avatar)}
 
   def caption
     self.name

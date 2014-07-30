@@ -2,6 +2,8 @@ RORganize::Application.routes.draw do
 
 
   get 'rorganize/:action', :controller => 'rorganize'
+  get ':user', controller: 'rorganize', action: 'view_profile', as: 'view_profile'
+
   resources :projects do
     collection do
       post 'filter', :path => ':filter'

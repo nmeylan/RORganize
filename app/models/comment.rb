@@ -11,7 +11,7 @@ class Comment < ActiveRecord::Base
   belongs_to :issue, foreign_key: 'commentable_id'
   belongs_to :project
 
-  scope :comments, ->(commentable_type, date_range, conditions = '1 = 1') { eager_load(:author).where("commentable_type IN (?) AND #{conditions}", commentable_type).where(created_at: date_range).order('comments.created_at DESC')}
+  scope :comments, ->(commentable_type, date_range, conditions = '1 = 1') { eager_load(author: :avatar).where("commentable_type IN (?) AND #{conditions}", commentable_type).where(created_at: date_range).order('comments.created_at DESC')}
 
   validates :content, presence: true
   before_update :update_date

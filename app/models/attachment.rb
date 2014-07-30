@@ -10,6 +10,10 @@ class Attachment < ActiveRecord::Base
                             :hash_secret => RORganize::Application.config.secret_attachment_key,
                             :styles => { :logo => '40x40', :thumb => '100x100>', :small => '150x150>', :medium => '300x300>', :large => '800x800>'}}
 
+  has_attached_file :avatar, {:url => "/system/:class/:object_type/:object_id/:id/:style/:hash.:extension",
+                            :hash_secret => RORganize::Application.config.secret_attachment_key,
+                            :styles => { :logo => '40x40', :thumb => '100x100>', :small => '150x150>', :medium => '300x300>', :large => '800x800>'}}
+
   Paperclip.interpolates :object_type do |attachment, _|
     attachment.instance.object_type.pluralize
   end
@@ -23,6 +27,9 @@ class Attachment < ActiveRecord::Base
   # Validate filename
   validates_attachment_size :file, :in => 0..2.megabytes
   validates_attachment_file_name :file, {:not => /.exe/, message: 'Errors'}
+
+  validates_attachment_size :avatar, :in => 0..2.megabytes
+  validates_attachment_file_name :avatar, {:not => /.exe/, message: 'Errors'}
 
   def self.permit_attributes
     [:file, :tempfile, :original_filename, :content_type, :headers, :form_data, :name]
