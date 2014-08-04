@@ -2,7 +2,7 @@ class Version < ActiveRecord::Base
   include Rorganize::SmartRecords
   include Rorganize::Journalizable
   #Class variables
-  assign_journalized_properties({name: 'Name', target_date: 'Due date', start_date: 'Start date'})
+  assign_journalizable_properties({name: 'Name', target_date: 'Due date', start_date: 'Start date'})
   #Relations
   belongs_to :project, :class_name => 'Project'
   has_many :issues, :class_name => 'Issue', :dependent => :nullify
@@ -32,7 +32,7 @@ class Version < ActiveRecord::Base
     Issue.transaction do
       issues.each do |issue|
         if !self.target_date.nil? && (issue.due_date.nil? || issue.due_date > self.target_date)
-          journal = Journal.create(:user_id => User.current.id, :journalized_id => issue.id, :journalized_type => issue.class.to_s, :created_at => Time.now.to_formatted_s(:db), :notes => '', :action_type => 'updated', :project_id => issue.project.id)
+          journal = Journal.create(:user_id => User.current.id, :journalizable_id => issue.id, :journalizable_type => issue.class.to_s, :created_at => Time.now.to_formatted_s(:db), :notes => '', :action_type => 'updated', :project_id => issue.project.id)
           #Create an entry for the journalizable
           JournalDetail.create(:journal_id => journal.id, :property => 'Due date', :property_key => :due_date, :old_value => issue.due_date, :value => self.target_date)
           issue.update_column('due_date', self.target_date)

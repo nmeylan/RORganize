@@ -52,7 +52,7 @@ checklist_items_009:
   enumeration_id: 10
   issue_id: 39
   position: 1
-  name: Corriger bug création journal
+  name: Corriger bug création journalizable
 checklist_items_010:
   id: 46
   enumeration_id: 10

@@ -22,14 +22,14 @@ class IssueTest < ActiveSupport::TestCase
   end
 
   test "Journal creation on issue create" do
-    journal = Journal.find_by_journalized_id_and_journalized_type(@issue.id, 'Issue')
+    journal = Journal.find_by_journalizable_id_and_journalizable_type(@issue.id, 'Issue')
     assert_not_nil(journal)
   end
 
   test "Journal creation on issue update" do
     @issue.attributes = {tracker_id: 2}
     @issue.save
-    journal = Journal.where(journalized_id: @issue.id, journalized_type: 'Issue').order('id desc').first
+    journal = Journal.where(journalizable_id: @issue.id, journalizable_type: 'Issue').order('id desc').first
     journal_details = journal.details.to_a
     assert_equal(1, journal_details.size)
     assert_equal('tracker_id', journal_details.first.property_key)

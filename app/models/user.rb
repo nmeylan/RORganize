@@ -6,7 +6,7 @@ class User < ActiveRecord::Base
   include Rorganize::Attachable::AvatarType
   extend FriendlyId
 
-  assign_journalized_properties({name: 'Name', admin: 'Administrator', email: 'Email', login: 'Login'})
+  assign_journalizable_properties({name: 'Name', admin: 'Administrator', email: 'Email', login: 'Login'})
   #Slug
   friendly_id :name, use: :slugged
   # Include default devise modules. Others available are:
@@ -154,7 +154,7 @@ class User < ActiveRecord::Base
   end
 
   def latest_activities(limit)
-    Journal.select('journals.*').where(:user_id => self.id).includes(:details, :project, :user, :journalized).limit(limit).order('created_at DESC')
+    Journal.select('journals.*').where(:user_id => self.id).includes(:details, :project, :user, :journalizable).limit(limit).order('created_at DESC')
   end
 
   def generate_default_avatar

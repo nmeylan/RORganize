@@ -14,12 +14,12 @@ class JournalDecorator < ApplicationDecorator
   end
 
   def display_object_type
-    type = self.journalized_type
+    type = self.journalizable_type
     if type.eql?('Issue') && !self.action_type.eql?(Journal::ACTION_DELETE)
       h.safe_concat h.content_tag :b, "#{self.issue.tracker.caption.downcase} ##{self.issue.id} "
-      h.link_to self.issue.caption, h.issue_path(self.project.slug, self.journalized_id)
+      h.link_to self.issue.caption, h.issue_path(self.project.slug, self.journalizable_id)
     else
-      h.content_tag :b, "#{type.downcase} #{self.journalized_identifier}"
+      h.content_tag :b, "#{type.downcase} #{self.journalizable_identifier}"
     end
   end
 
@@ -34,10 +34,10 @@ class JournalDecorator < ApplicationDecorator
       h.content_tag(:ul, (model.details.collect { |detail| h.activity_history_detail_render(detail) }).join.html_safe)
     elsif model.action_type.eql?(Journal::ACTION_CREATE)
       h.safe_concat h.content_tag :span, nil, class: "octicon octicon-plus activity_icon" unless no_icon
-      if model.journalized_type.eql?('Issue')
+      if model.journalizable_type.eql?('Issue')
         h.t(:text_created_this_issue)
       else
-        h.t(:text_created_this) + ' ' + model.journalized_type.downcase
+        h.t(:text_created_this) + ' ' + model.journalizable_type.downcase
       end
     end
   end

@@ -34,8 +34,8 @@ module IssuesHelper
           safe_concat content_tag :span, nil, {class: 'octicon octicon-diff-added'} if journal.action_type.eql?('created')
           safe_concat "#{journal.user.name} #{t(:label_updated_lower_case)} "
         end
-        safe_concat content_tag :b, "#{journal.journalized_type} "
-        safe_concat link_to(journal.journalized_id, issue_path(journal.project.slug, journal.journalized_id))
+        safe_concat content_tag :b, "#{journal.journalizable_type} "
+        safe_concat link_to(journal.journalizable_id, issue_path(journal.project.slug, journal.journalizable_id))
         if journal.project_id && specified_project
           safe_concat " #{t(:label_at)} "
           safe_concat content_tag :b, link_to(journal.project.slug, overview_projects_path(journal.project.slug))
@@ -43,7 +43,7 @@ module IssuesHelper
       elsif journal.action_type.eql?('deleted')
         safe_concat content_tag :span, nil, {class: 'octicon octicon-trashcan'}
         safe_concat "##{journal.user.name} #{t(:label_deleted_lower_case)} "
-        safe_concat content_tag :b, "#{journal.journalized_type} ##{journal.journalized_id}"
+        safe_concat content_tag :b, "#{journal.journalizable_type} ##{journal.journalizable_id}"
         if journal.project_id && specified_project
           safe_concat "#{t(:label_at)} "
           safe_concat content_tag :b, link_to(journal.project.slug, overview_projects_path(journal.project.slug))

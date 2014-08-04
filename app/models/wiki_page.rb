@@ -6,7 +6,7 @@ class WikiPage < ActiveRecord::Base
   include Rorganize::SmartRecords
   include Rorganize::Journalizable
   #Class variables
-  assign_journalized_properties({title: 'Title', content: 'Content'})
+  assign_journalizable_properties({title: 'Title', content: 'Content'})
   #Slug
   extend FriendlyId
   friendly_id :title, use: :slugged

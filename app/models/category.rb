@@ -7,7 +7,7 @@ class Category < ActiveRecord::Base
   include Rorganize::SmartRecords
   include Rorganize::Journalizable
   #Class variables
-  assign_journalized_properties({name: 'Name'})
+  assign_journalizable_properties({name: 'Name'})
   #Relations
   belongs_to :project, :class_name => 'Project'
   has_many :issues, :class_name => 'Issue', :dependent => :nullify

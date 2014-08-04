@@ -7,7 +7,7 @@ class Member < ActiveRecord::Base
   include Rorganize::SmartRecords
   include Rorganize::Journalizable
   #Constants
-  assign_journalized_properties({role_id: 'Role'})
+  assign_journalizable_properties({role_id: 'Role'})
   assign_foreign_keys({role_id: Role})
   #Relations
   belongs_to :project, :class_name => 'Project', counter_cache: true
@@ -24,14 +24,14 @@ class Member < ActiveRecord::Base
   end
   
   def create_journal
-    created_journalized_attributes = {:role_id => [nil, self.role_id]}
+    created_journalizable_attributes = {:role_id => [nil, self.role_id]}
     journal = Journal.create(:user_id => User.current.id,
-      :journalized_id => self.id,
-      :journalized_type => self.class.to_s,
+      :journalizable_id => self.id,
+      :journalizable_type => self.class.to_s,
       :notes => '',
       :action_type => 'created',
       :project_id => self.project_id)
-    journal.detail_insertion(created_journalized_attributes, self.class.journalized_properties, self.class.foreign_keys)
+    journal.detail_insertion(created_journalizable_attributes, self.class.journalizable_properties, self.class.foreign_keys)
   end
 
   #Change a member's role

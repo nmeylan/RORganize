@@ -576,7 +576,7 @@ issues_028:
 issues_029:
   id: 88
   subject: Erreur edition description et titre des issues
-  description: Corriger l'insertion dans le journal lorsqu'un attribut est changé.
+  description: Corriger l'insertion dans le journalizable lorsqu'un attribut est changé.
   created_at: 2012-10-20 18:23:17.000000000 Z
   updated_at: 2013-02-16 14:56:30.000000000 Z
   due_date: 
@@ -1422,7 +1422,7 @@ issues_070:
   id: 242
   subject: Issue edit via toolbox
   description: Lorsque l'on édite une issue, depuis la toolbox, avec la même valeur,
-    une requête est quand même envoyé et le journal est créé.
+    une requête est quand même envoyé et le journalizable est créé.
   created_at: 2013-02-16 15:55:31.000000000 Z
   updated_at: 2013-05-19 14:35:37.000000000 Z
   due_date: 2013-03-17

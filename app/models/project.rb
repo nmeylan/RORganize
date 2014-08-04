@@ -5,7 +5,7 @@ class Project < ActiveRecord::Base
   extend FriendlyId
   friendly_id :identifier, use: :slugged
   #Constants
-  JOURNALIZED_ITEMS = %w(Issue Category Member Document Version Wiki WikiPage)
+  JOURNALIZABLE_ITEMS = %w(Issue Category Member Document Version Wiki WikiPage)
   #Relations
   belongs_to :author, :class_name => 'User', :foreign_key => 'created_by'
   has_many :members, :class_name => 'Member', :dependent => :destroy
@@ -51,12 +51,12 @@ class Project < ActiveRecord::Base
     return Project.where(:is_archived => false).pluck('id')
   end
 
-  def activities(journalized_types, period, from_date)
-    Journal.activities_eager_load(journalized_types, period, from_date, "journals.project_id = #{self.id}")
+  def activities(journalizable_types, period, from_date)
+    Journal.activities_eager_load(journalizable_types, period, from_date, "journals.project_id = #{self.id}")
   end
 
-  def comments(journalized_types, period, from_date)
-    Comment.comments_eager_load(journalized_types, period, from_date, "comments.project_id = #{self.id}")
+  def comments(journalizable_types, period, from_date)
+    Comment.comments_eager_load(journalizable_types, period, from_date, "comments.project_id = #{self.id}")
   end
 
   def update_info(params, trackers)

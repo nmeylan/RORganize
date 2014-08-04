@@ -10,31 +10,31 @@ class Journal < ActiveRecord::Base
   ACTION_DELETE = 'deleted'
   ACTIVITIES_PERIODS = {ONE_DAY: 1, THREE_DAYS: 3, ONE_WEEK: 7, ONE_MONTH: 31}
   has_many :details, :class_name => 'JournalDetail', :dependent => :destroy
-  belongs_to :journalized, :polymorphic => true
-  belongs_to :issue, foreign_key: 'journalized_id'
+  belongs_to :journalizable, :polymorphic => true
+  belongs_to :issue, foreign_key: 'journalizable_id'
   belongs_to :user, :class_name => 'User'
   belongs_to :category
   belongs_to :project
   #Scopes
-  scope :fetch_dependencies, -> { eager_load(:details, :project, :user, :journalized) }
-  scope :document_activities, ->(document_id) { eager_load([:details, :user]).where(journalized_type: 'Document', journalized_id: document_id) }
+  scope :fetch_dependencies, -> { eager_load(:details, :project, :user, :journalizable) }
+  scope :document_activities, ->(document_id) { eager_load([:details, :user]).where(journalizable_type: 'Document', journalizable_id: document_id) }
   scope :member_activities, ->(member) { where(:user_id => member.user_id, :project_id => member.project_id).order('created_at DESC') }
-  scope :activities, ->(journalized_types, date_range, conditions = '1 = 1') {
-    includes([:details, :project, user: :avatar]).where("journalized_type IN (?) AND #{conditions}", journalized_types).where(created_at: date_range).order('created_at DESC')
+  scope :activities, ->(journalizable_types, date_range, conditions = '1 = 1') {
+    includes([:details, :project, user: :avatar]).where("journalizable_type IN (?) AND #{conditions}", journalizable_types).where(created_at: date_range).order('created_at DESC')
   }
   scope :fetch_dependencies_issues, -> { includes(issue: :tracker) }
   scope :fetch_dependencies_categories, -> { includes(:category) }
 
-  def self.activities_eager_load(journalized_types, period, date, conditions)
+  def self.activities_eager_load(journalizable_types, period, date, conditions)
     periods = ACTIVITIES_PERIODS
     date = date.to_date + 1
     date_range = (date - periods[period.to_sym])..date
-    query = self.activities(journalized_types, date_range, conditions)
-    query = query.fetch_dependencies_issues if journalized_types.include?('Issue')
+    query = self.activities(journalizable_types, date_range, conditions)
+    query = query.fetch_dependencies_issues if journalizable_types.include?('Issue')
     query
   end
 
-  def detail_insertion(updated_attrs, journalized_property, foreign_key_value = {})
+  def detail_insertion(updated_attrs, journalizable_property, foreign_key_value = {})
     #Remove attributes that won't be considarate in journalizable update
     updated_attrs.each do |attribute, old_new_value|
       if foreign_key_value[attribute]
@@ -44,7 +44,7 @@ class Journal < ActiveRecord::Base
         old_value = old_new_value[0]
         new_value = old_new_value[1]
       end
-      JournalDetail.create(:journal_id => self.id, :property => journalized_property[attribute], :property_key => attribute, :old_value => old_value, :value => new_value)
+      JournalDetail.create(:journal_id => self.id, :property => journalizable_property[attribute], :property_key => attribute, :old_value => old_value, :value => new_value)
     end
   end
 
@@ -55,7 +55,7 @@ class Journal < ActiveRecord::Base
     if journal && journal.user_id.eql?(owner_id)
       saved = journal.update_column(:notes, content)
     end
-    journals = Journal.where(:journalized_type => 'Issue', :journalized_id => journal.journalized_id).includes([:details, :user])
+    journals = Journal.where(:journalizable_type => 'Issue', :journalizable_id => journal.journalizable_id).includes([:details, :user])
     {:saved => saved, :journals => journals}
   end
 
@@ -69,12 +69,12 @@ class Journal < ActiveRecord::Base
         destroyed = journal.update_column(:notes, '')
       end
     end
-    journals = Journal.where(:journalized_type => 'Issue', :journalized_id => journal.journalized_id).includes([:details, :user])
+    journals = Journal.where(:journalizable_type => 'Issue', :journalizable_id => journal.journalizable_id).includes([:details, :user])
     {:destroyed => destroyed, :journals => journals}
   end
 
   def polymorphic_identifier
-    "#{self.journalized_type}_#{self.journalized_id}".to_sym
+    "#{self.journalizable_type}_#{self.journalizable_id}".to_sym
   end
 
 

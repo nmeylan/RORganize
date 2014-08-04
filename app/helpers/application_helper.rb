@@ -319,10 +319,10 @@ EOD
         safe_concat content_tag :span, nil, {class: 'octicon octicon-pencil'} if journal.action_type.eql?('updated')
         safe_concat content_tag :span, nil, {class: 'octicon octicon-diff-added'} if journal.action_type.eql?('created')
         safe_concat "#{user} #{t(:label_updated_lower_case)} "
-        if journal.journalized
-          safe_concat content_tag :b, "#{journal.journalized_type} : #{journal.journalized_identifier}"
+        if journal.journalizable
+          safe_concat content_tag :b, "#{journal.journalizable_type} : #{journal.journalizable_identifier}"
         else
-          safe_concat content_tag :b, "#{journal.journalized_type} : unknown"
+          safe_concat content_tag :b, "#{journal.journalizable_type} : unknown"
         end
         if journal.project_id && is_not_in_project
           safe_concat "#{t(:label_at)} "
@@ -331,7 +331,7 @@ EOD
       elsif journal.action_type.eql?('deleted')
         safe_concat content_tag :span, nil, {class: 'octicon octicon-trashcan'}
         safe_concat "#{user} #{t(:label_deleted_lower_case)} "
-        safe_concat content_tag :b, "#{journal.journalized_type} : #{journal.journalized_identifier}"
+        safe_concat content_tag :b, "#{journal.journalizable_type} : #{journal.journalizable_identifier}"
         if journal.project_id && is_not_in_project
           safe_concat "#{t(:label_at)} "
           safe_concat content_tag :b, "#{journal.project_id}"
@@ -341,7 +341,7 @@ EOD
   end
 
   def activities_text_builder(journal, specified_project = true)
-    if journal.journalized_type.eql?('Issue')
+    if journal.journalizable_type.eql?('Issue')
       issues_activities_text_builder(journal, specified_project).html_safe
     else
       generics_activities_text_builder(journal, '', specified_project).html_safe
