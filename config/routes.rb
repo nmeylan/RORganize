@@ -2,7 +2,6 @@ RORganize::Application.routes.draw do
 
 
   get 'rorganize/:action', :controller => 'rorganize'
-  get ':user', controller: 'rorganize', action: 'view_profile', as: 'view_profile'
 
   resources :projects do
     collection do
@@ -142,6 +141,7 @@ RORganize::Application.routes.draw do
   end
 
   get '/projects', :controller => :projects, :action => :index
+  get ':user', controller: 'rorganize', action: 'view_profile', as: 'view_profile'
 
   #MOUNT PLUGINS
   mount Scenarios::Engine => '/', :as => 'scenarios_route' #/scenarios
