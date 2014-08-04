@@ -32,7 +32,7 @@ class MembersController < ApplicationController
   def new
     members = Member.eager_load(:user).where(:project_id =>  @project.id)
     ids = members.collect{|member| member.user.id}
-    users = User.where('id NOT IN (?)', ids)
+    users = User.where('users.id NOT IN (?)', ids)
     @member = Member.new
     respond_to do |format|
       format.js {respond_to_js :locals => {:roles => Role.select('*'), :users => users, :new => true}}
