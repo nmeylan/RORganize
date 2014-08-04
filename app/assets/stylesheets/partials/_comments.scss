@@ -31,11 +31,11 @@ $comment-header-background: #f7f7f7;
     pointer-events: none;
 
   }
-  .comment_block:before{
+  .comment_block.display_avatar:before{
     border-right-color: #dddddd;
     border-width: 8px;
   }
-  .comment_block:after{
+  .comment_block.display_avatar:after{
 
     border-width: 7px;
     border-right-color: #f7f7f7;

@@ -52,11 +52,11 @@ $history-header-background: #f7f7f7;
     pointer-events: none;
 
   }
-  .history_header:before{
+  .history_header.display_avatar:before{
     border-right-color: #dddddd;
     border-width: 8px;
   }
-  .history_header:after{
+  .history_header.display_avatar:after{
 
     border-width: 7px;
     border-right-color: #f7f7f7;
@@ -69,6 +69,8 @@ $history-header-background: #f7f7f7;
     background-color: $history-header-background;
     border-top-left-radius: 3px;
     border-top-right-radius: 3px;
+    border-bottom-left-radius: 3px;
+    border-bottom-right-radius: 3px;
     border: 1px solid #ddd;
     .author{
       color: $default-color;

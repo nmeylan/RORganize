@@ -19,8 +19,8 @@ module CommentsHelper
   def comment_block_render(comment, selected_comment_id = nil, avatar = true)
     css_class = comment.id.eql?(selected_comment_id) ? 'comment_content selected' : 'comment_content'
     safe_concat content_tag :div, {id: "comment_#{comment.id}", class: 'comment_block'}, &Proc.new {
-      safe_concat image_tag comment.author_avatar.url(:thumb) unless avatar
-      safe_concat content_tag :div, class: 'comment_header', &Proc.new {
+      safe_concat comment.author_avatar unless avatar
+      safe_concat content_tag :div, class: "comment_header #{'display_avatar' if comment.author_avatar?}", &Proc.new {
         safe_concat content_tag :span, comment.display_author(avatar) + ' ', class: 'author'
         safe_concat content_tag :span, t(:text_added_comment) + ' ', class: 'text'
         safe_concat "#{distance_of_time_in_words(comment.created_at, Time.now)} #{t(:label_ago)}. "

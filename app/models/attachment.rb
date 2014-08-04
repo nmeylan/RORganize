@@ -8,12 +8,12 @@ class Attachment < ActiveRecord::Base
 
   has_attached_file :avatar, {:url => "/system/:class/:object_type/:object_id/:id/:style/:hash.:extension",
                               :hash_secret => RORganize::Application.config.secret_attachment_key,
-                              :styles => {:thumb => '40x40', :very_small => '16x16>', :small => '100x100>', :medium => '150x150>'},
-                              convert_options: {very_small: "\\( +clone  -alpha extract " +
+                              :styles => {:thumb => '50x50', :very_small => '16x16>', :small => '100x100>', :medium => '150x150>'},
+                              convert_options: "\\( +clone  -alpha extract " +
                                   "-draw 'fill black polygon 0,0 0,#{5} #{5},0 fill white circle #{5},#{5} #{5},0' " +
                                   "\\( +clone -flip \\) -compose Multiply -composite " +
                                   "\\( +clone -flop \\) -compose Multiply -composite " +
-                                  "\\) -alpha off -compose CopyOpacity -composite "}}
+                                  "\\) -alpha off -compose CopyOpacity -composite "}
   has_attached_file :file, {:url => "/system/:class/:object_type/:object_id/:id/:style/:hash.:extension",
                             :hash_secret => RORganize::Application.config.secret_attachment_key,
                             :styles => {:logo => '40x40', :thumb => '100x100>', :small => '150x150>', :medium => '300x300>', :large => '800x800>'}}

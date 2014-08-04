@@ -215,8 +215,8 @@ EOD
   def history_block_render(journal)
     user = journal.display_author(false)
     content_tag :div, class: 'history_block' do
-      safe_concat image_tag journal.user.avatar.avatar.url(:thumb)
-      safe_concat content_tag :div, class: 'history_header', &Proc.new {
+      safe_concat journal.display_author_avatar
+      safe_concat content_tag :div, class: "history_header #{'display_avatar' if journal.user_avatar?}", &Proc.new {
         safe_concat content_tag :span, user, {class: 'author'}
         safe_concat " #{t(:label_updated).downcase} #{t(:text_this)} "
         safe_concat "#{distance_of_time_in_words(journal.created_at, Time.now)} #{t(:label_ago)}. "

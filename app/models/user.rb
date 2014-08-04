@@ -16,15 +16,13 @@ class User < ActiveRecord::Base
   #attr_accessible :id, :login, :email, :name, :password, :password_confirmation, :remember_me
   #Relations
   has_many :members, :class_name => 'Member', :dependent => :destroy
-  has_many :issues, :class_name => 'Issue', :foreign_key => :author_id, :dependent => :nullify
-  has_many :issues, :class_name => 'Issue', :foreign_key => :assigned_to_id, :dependent => :nullify
   has_many :journals, -> { where :journalized_type => 'User' }, :as => :journalized, :dependent => :nullify
-  has_one :avatar, -> { where :object_type => 'User' }, class_name: 'Attachment', :foreign_key => 'object_id', :dependent => :destroy
+  has_one :avatar, -> { where :object_type => 'User' }, class_name: 'Attachment', foreign_key: :object_id, :dependent => :destroy
   #Validators
   validates :login, :presence => true, :length => 4..50, :uniqueness => true
   validates :name, :presence => true, :length => 4..50
   #Triggers
-  after_create :create_journal
+  after_create :create_journal, :generate_default_avatar
   after_update :update_journal
   after_destroy :destroy_journal
   #Scope
@@ -158,5 +156,15 @@ class User < ActiveRecord::Base
     Journal.select('journals.*').where(:user_id => self.id).includes(:details, :project, :user, :journalized).limit(limit).order('created_at DESC')
   end
 
+  def generate_default_avatar
+    path = "#{Rails.root}/public/system/identicons/#{self.slug}_avatar.png"
+    Identicon.file_for self.slug, path
+    file = File.open(path)
+    self.avatar = Attachment.new({object_type: self.class.to_s})
+    self.avatar.avatar = file
+    avatar = self.avatar
+    avatar.save(validation: false)
+    file.close
+  end
 
 end

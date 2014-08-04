@@ -23,6 +23,10 @@ class JournalDecorator < ApplicationDecorator
     end
   end
 
+  def user_avatar?
+    model.user && model.user.avatar
+  end
+
   def render_details(no_icon = false)
     h.safe_concat h.content_tag :span, self.display_author, class: 'author'
     if model.action_type.eql?(Journal::ACTION_UPDATE) && model.details.to_a.any?
@@ -58,6 +62,10 @@ class JournalDecorator < ApplicationDecorator
 
   def display_author(avatar = true)
     self.user ? self.user.user_link(avatar) : h.t(:label_unknown)
+  end
+
+  def display_author_avatar
+    user_avatar? ? h.image_tag(self.user.avatar.avatar.url(:thumb)) : ''
   end
 
 

@@ -1,6 +1,6 @@
 class CommentDecorator < ApplicationDecorator
-  decorates_association :author, with: :user
   delegate_all
+  decorates_association :author
 
   def creation_date
     model.created_at.strftime(Rorganize::TIME_FORMAT)
@@ -11,11 +11,16 @@ class CommentDecorator < ApplicationDecorator
   end
 
   def display_author(avatar = true)
-    model.author ? model.author.decorate.user_link(avatar) : h.t(:label_unknown)
+    model.author = model.author.decorate unless model.author.decorated?
+    model.author ? model.author.user_link(avatar) : h.t(:label_unknown)
   end
 
   def author_avatar
-    model.author ? model.author.decorate.avatar.avatar : ''
+    author_avatar? ? h.image_tag(model.author.avatar.avatar.url(:thumb)) : ''
+  end
+
+  def author_avatar?
+    model.author && model.author.avatar
   end
 
   def edit_link
