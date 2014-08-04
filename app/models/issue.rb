@@ -5,7 +5,8 @@
 class Issue < ActiveRecord::Base
   include Rorganize::SmartRecords
   include Rorganize::JounalsManager
-  include Rorganize::CommentsManager
+  include Rorganize::Commentable
+  include Rorganize::Attachable::AttachmentType
   #Class variables
   assign_journalized_properties({status_id: 'Status', category_id: 'Category', assigned_to_id: 'Assigned to', tracker_id: 'Tracker', due_date: 'Due date', start_date: 'Start date', done: 'Done', estimated_time: 'Estimated time', version_id: 'Version', predecessor_id: 'Predecessor'})
   assign_foreign_keys({status_id: IssuesStatus, category_id: Category, assigned_to_id: User, tracker_id: Tracker, version_id: Version})
@@ -21,7 +22,6 @@ class Issue < ActiveRecord::Base
   has_many :children, :foreign_key => 'predecessor_id', :class_name => 'Issue'
   belongs_to :parent, :foreign_key => 'predecessor_id', :class_name => 'Issue'
   has_many :checklist_items, :class_name => 'ChecklistItem', :dependent => :destroy
-  has_many :attachments, -> { where :object_type => 'Issue' }, :foreign_key => 'object_id', :dependent => :destroy
   has_many :journals, -> { (where :journalized_type => 'Issue').eager_load(:details, :user, :project) }, :as => :journalized, :dependent => :destroy
   has_many :time_entries, :dependent => :destroy
   #triggers

@@ -1,0 +1,15 @@
+# Author: Nicolas Meylan
+# Date: 04.08.14
+# Encoding: UTF-8
+# File: avatar.rb
+module Rorganize
+  module Attachable
+    module AvatarType
+      include Rorganize::Attachable
+      extend ActiveSupport::Concern
+      included do |base|
+        has_one :avatar, -> { where attachable_type: base }, foreign_key: :attachable_id, class_name: 'Attachment', :dependent => :destroy
+      end
+    end
+  end
+end

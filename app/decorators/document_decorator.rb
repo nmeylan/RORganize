@@ -30,6 +30,7 @@ class DocumentDecorator < ApplicationDecorator
   end
 
   def delete_attachment_link(attachment)
+    p attachment
     super(h.delete_attachment_documents_path(context[:project].slug,attachment.id), context[:project])
   end
 

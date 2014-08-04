@@ -1,5 +1,6 @@
 class Project < ActiveRecord::Base
   include Rorganize::SmartRecords
+  include Rorganize::Attachable::AttachmentType
   #SLug
   extend FriendlyId
   friendly_id :identifier, use: :slugged
@@ -12,7 +13,6 @@ class Project < ActiveRecord::Base
   has_many :versions, :class_name => 'Version'
   has_many :categories, :class_name => 'Category', :dependent => :destroy
   has_many :issues, :class_name => 'Issue', :dependent => :destroy
-  has_many :attachments, -> { where :object_type => 'Project' }, :foreign_key => 'object_id', :dependent => :destroy
   has_many :enabled_modules, :dependent => :destroy
   has_many :documents, :dependent => :destroy
   has_many :journals, :dependent => :destroy

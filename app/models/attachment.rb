@@ -6,18 +6,18 @@
 class Attachment < ActiveRecord::Base
   include Rorganize::SmartRecords
 
-  has_attached_file :avatar, {:url => "/system/:class/:object_type/:object_id/:id/:style/:hash.:extension",
+  has_attached_file :avatar, {:url => "/system/:class/:attachable_type/:attachable_id/:id/:style/:hash.:extension",
                               :hash_secret => RORganize::Application.config.secret_attachment_key,
                               :styles => {:thumb => '50x50', :very_small => '16x16>', :small => '100x100>', :medium => '150x150>'}}
-  has_attached_file :file, {:url => "/system/:class/:object_type/:object_id/:id/:style/:hash.:extension",
+  has_attached_file :file, {:url => "/system/:class/:attachable_type/:attachable_id/:id/:style/:hash.:extension",
                             :hash_secret => RORganize::Application.config.secret_attachment_key,
                             :styles => {:logo => '40x40', :thumb => '100x100>', :small => '150x150>', :medium => '300x300>', :large => '800x800>'}}
 
-  Paperclip.interpolates :object_type do |attachment, _|
-    attachment.instance.object_type.pluralize
+  Paperclip.interpolates :attachable_type do |attachment, _|
+    attachment.instance.attachable_type.pluralize
   end
-  Paperclip.interpolates :object_id do |attachment, _|
-    attachment.instance.object_id
+  Paperclip.interpolates :attachable_id do |attachment, _|
+    attachment.instance.attachable_id
   end
 
   before_post_process :skip_non_image
@@ -78,7 +78,7 @@ class Attachment < ActiveRecord::Base
   end
 
   def custom_uri
-    "/system/:class/#{self.object_type}/:id/:style/:hash.:extension"
+    "/system/:class/#{self.attachable_type}/:id/:style/:hash.:extension"
   end
 
 end

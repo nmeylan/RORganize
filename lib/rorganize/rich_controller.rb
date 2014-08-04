@@ -7,7 +7,6 @@
 module Rorganize
   module RichController
     include Rorganize::RichController::Pagination
-    include Rorganize::RichController::Commentable
 
     def self.included(base)
       base.before_filter :set_pagination, only: [:index]

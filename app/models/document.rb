@@ -5,13 +5,13 @@
 class Document < ActiveRecord::Base
   include Rorganize::JounalsManager
   include Rorganize::SmartRecords
+  include Rorganize::Attachable::AttachmentType
   #Class variables
   assign_journalized_properties({name: 'Name', category_id: 'Category', version_id: 'Version'})
   assign_foreign_keys({category_id: Category, version_id: Version})
   #Relations
   belongs_to :version
   belongs_to :category
-  has_many :attachments, -> { where :object_type => 'Document' }, :foreign_key => 'object_id', :dependent => :destroy
   belongs_to :project
   has_many :journals, -> { where :journalized_type => 'Document' }, :as => :journalized, :dependent => :destroy
   #Validators

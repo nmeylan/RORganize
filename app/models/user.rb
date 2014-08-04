@@ -3,6 +3,7 @@ class User < ActiveRecord::Base
   include Rorganize::JounalsManager
   include Rorganize::PermissionManager::PermissionManagerHelper
   include Rorganize::ModuleManager::ModuleManagerHelper
+  include Rorganize::Attachable::AvatarType
   extend FriendlyId
 
   assign_journalized_properties({name: 'Name', admin: 'Administrator', email: 'Email', login: 'Login'})
@@ -17,7 +18,6 @@ class User < ActiveRecord::Base
   #Relations
   has_many :members, :class_name => 'Member', :dependent => :destroy
   has_many :journals, -> { where :journalized_type => 'User' }, :as => :journalized, :dependent => :nullify
-  has_one :avatar, -> { where :object_type => 'User' }, class_name: 'Attachment', foreign_key: :object_id, :dependent => :destroy
   #Validators
   validates :login, :presence => true, :length => 4..50, :uniqueness => true
   validates :name, :presence => true, :length => 4..50
@@ -27,6 +27,10 @@ class User < ActiveRecord::Base
   after_destroy :destroy_journal
   #Scope
   default_scope { eager_load(:avatar)}
+
+  def self.attachments_type
+    :avatar
+  end
 
   def caption
     self.name
