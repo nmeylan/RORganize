@@ -13,11 +13,10 @@ $comment-header-background: #f7f7f7;
     margin-bottom: 10px;
     img{
       float: left;
-      margin-left: -50px;
-      margin-top: 4px;
+      margin-left: -65px;
     }
   }
-  .comment_block:before, .comment_block:after{
+  .comment_header.display_avatar:before, .comment_header.display_avatar:after{
     position: absolute;
     top: 16px;
     left: -16px;
@@ -31,11 +30,11 @@ $comment-header-background: #f7f7f7;
     pointer-events: none;
 
   }
-  .comment_block.display_avatar:before{
+  .comment_header.display_avatar:before{
     border-right-color: #dddddd;
     border-width: 8px;
   }
-  .comment_block.display_avatar:after{
+  .comment_header.display_avatar:after{
 
     border-width: 7px;
     border-right-color: #f7f7f7;

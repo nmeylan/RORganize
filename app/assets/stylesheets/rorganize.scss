@@ -179,7 +179,12 @@
 .avatar a{
   vertical-align: top;
 }
-
+img.avatar{
+  border-radius: 5px;
+}
+img.small_avatar{
+  border-radius: 3px;
+}
 /*
 *  FLASH MESSAGE
 */

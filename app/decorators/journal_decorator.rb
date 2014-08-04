@@ -65,7 +65,7 @@ class JournalDecorator < ApplicationDecorator
   end
 
   def display_author_avatar
-    user_avatar? ? h.image_tag(self.user.avatar.avatar.url(:thumb)) : ''
+    user_avatar? ? h.image_tag(self.user.avatar.avatar.url(:thumb), {class: 'avatar'}) : ''
   end
 
 

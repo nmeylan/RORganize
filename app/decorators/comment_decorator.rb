@@ -16,7 +16,7 @@ class CommentDecorator < ApplicationDecorator
   end
 
   def author_avatar
-    author_avatar? ? h.image_tag(model.author.avatar.avatar.url(:thumb)) : ''
+    author_avatar? ? h.image_tag(model.author.avatar.avatar.url(:thumb), {class: 'avatar'}) : ''
   end
 
   def author_avatar?
