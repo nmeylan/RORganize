@@ -5,7 +5,7 @@
 
 class Member < ActiveRecord::Base
   include Rorganize::SmartRecords
-  include Rorganize::JounalsManager
+  include Rorganize::Journalizable
   #Constants
   assign_journalized_properties({role_id: 'Role'})
   assign_foreign_keys({role_id: Role})
@@ -14,12 +14,8 @@ class Member < ActiveRecord::Base
   
   belongs_to :user, :class_name => 'User'
   belongs_to :role, :class_name => 'Role'
-  has_many :journals, -> { where :journalized_type => 'Member'}, :dependent => :destroy, :as => :journalized
   #Triggers
   before_create :set_project_position
-  after_create :create_journal
-  after_update :update_journal
-  after_destroy :destroy_journal
   #Scopes
   scope :fetch_dependencies, -> { eager_load(:role, :user) }
   #Methods

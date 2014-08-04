@@ -2,7 +2,7 @@ class JournalDecorator < ApplicationDecorator
   decorates_association :user
   delegate_all
 
-  #Give journal action type
+  #Give journalizable action type
   def display_action_type
     if self.action_type.eql?(Journal::ACTION_CREATE)
       h.t(:label_created_lower_case)

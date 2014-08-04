@@ -4,12 +4,13 @@
 # File: comment.rb
 
 class Comment < ActiveRecord::Base
-  include Rorganize::JounalsManager
   ACTIVITIES_PERIODS = {ONE_DAY: 1, THREE_DAYS: 3, ONE_WEEK: 7, ONE_MONTH: 31}
+
   belongs_to :author, class_name: 'User', foreign_key: :user_id
   belongs_to :commentable, :polymorphic => true
   belongs_to :issue, foreign_key: 'commentable_id'
   belongs_to :project
+
   scope :fetch_dependencies_issues, -> { includes(issue: :tracker) }
   scope :comments, ->(commentable_type, date_range, conditions = '1 = 1') { eager_load(author: :avatar).where("commentable_type IN (?) AND #{conditions}", commentable_type).where(created_at: date_range).order('comments.created_at DESC')}
 

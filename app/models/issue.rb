@@ -4,7 +4,7 @@
 # File: issue.rb
 class Issue < ActiveRecord::Base
   include Rorganize::SmartRecords
-  include Rorganize::JounalsManager
+  include Rorganize::Journalizable
   include Rorganize::Commentable
   include Rorganize::Attachable::AttachmentType
   #Class variables
@@ -22,14 +22,11 @@ class Issue < ActiveRecord::Base
   has_many :children, :foreign_key => 'predecessor_id', :class_name => 'Issue'
   belongs_to :parent, :foreign_key => 'predecessor_id', :class_name => 'Issue'
   has_many :checklist_items, :class_name => 'ChecklistItem', :dependent => :destroy
-  has_many :journals, -> { (where :journalized_type => 'Issue').eager_load(:details, :user, :project) }, :as => :journalized, :dependent => :destroy
   has_many :time_entries, :dependent => :destroy
   #triggers
   before_save :set_done_ratio
   before_update :set_done_ratio, :set_due_date
-  after_update :save_attachments, :update_journal
-  after_create :create_journal
-  after_destroy :destroy_journal
+  after_update :save_attachments
   #Validators
   validates :subject, :tracker_id, :status_id, :presence => true
   validate :validate_start_date, :validate_predecessor

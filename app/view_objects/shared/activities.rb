@@ -9,7 +9,7 @@ class Activities
   def initialize(journals, comments = [])
     @journals = journals.decorate
     @comments = comments.decorate
-    @content = Hash.new { |h, k| h[k] = {} } #e.g  {date: {type_id: [journal, journal, comment, journal]}}
+    @content = Hash.new { |h, k| h[k] = {} } #e.g  {date: {type_id: [journalizable, journalizable, comment, journalizable]}}
     crunch_data if @journals.any? || @comments.any?
   end
 

@@ -5,7 +5,7 @@
 
 class Wiki < ActiveRecord::Base
   include Rorganize::SmartRecords
-  include Rorganize::JounalsManager
+  include Rorganize::Journalizable
   #Relations
   belongs_to :home_page, :class_name => 'WikiPage', :foreign_key => :home_page_id
   has_many :pages, :class_name => 'WikiPage', :foreign_key => :wiki_id, :dependent => :destroy
@@ -13,8 +13,6 @@ class Wiki < ActiveRecord::Base
   #Validations
   validates :project_id, :uniqueness => true
   #Triggers
-  after_create :create_journal 
-  after_destroy :destroy_journal
 
   def caption
     'Wiki'

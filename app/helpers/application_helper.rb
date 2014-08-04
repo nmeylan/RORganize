@@ -197,7 +197,7 @@ EOD
   end
 
 
-  #generic journal renderer
+  #generic journalizable renderer
   def history_render(history) #If come from show action
     safe_concat content_tag :div, nil, class: 'separator'
     safe_concat content_tag :h2, t(:label_history)
@@ -311,7 +311,7 @@ EOD
     end
   end
 
-#Build text from a specific journal
+#Build text from a specific journalizable
   def generics_activities_text_builder(journal, activity_icon, is_not_in_project = true)
     user = (journal.user ? journal.user.name : t(:label_unknown))
     content_tag :p do

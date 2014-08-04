@@ -50,7 +50,7 @@ module Rorganize
       foreign_keys = self.class.foreign_keys
       journalized_attributes = properties.keys
       updated_journalized_attributes = self.changes.delete_if { |attribute, _| !journalized_attributes.include?(attribute.to_sym) }.inject({}) { |memo, (k, v)| memo[k.to_sym] = v; memo }
-      #Create journal only if a relevant attribute has been updated
+      #Create journalizable only if a relevant attribute has been updated
       if updated_journalized_attributes.any? || (!notes.nil? && !notes.eql?(''))
         journal = Journal.create(:user_id => User.current.id,
                                  :journalized_id => self.id,

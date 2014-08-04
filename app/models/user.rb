@@ -1,6 +1,6 @@
 class User < ActiveRecord::Base
   include Rorganize::SmartRecords
-  include Rorganize::JounalsManager
+  include Rorganize::Journalizable
   include Rorganize::PermissionManager::PermissionManagerHelper
   include Rorganize::ModuleManager::ModuleManagerHelper
   include Rorganize::Attachable::AvatarType
@@ -17,14 +17,11 @@ class User < ActiveRecord::Base
   #attr_accessible :id, :login, :email, :name, :password, :password_confirmation, :remember_me
   #Relations
   has_many :members, :class_name => 'Member', :dependent => :destroy
-  has_many :journals, -> { where :journalized_type => 'User' }, :as => :journalized, :dependent => :nullify
   #Validators
   validates :login, :presence => true, :length => 4..50, :uniqueness => true
   validates :name, :presence => true, :length => 4..50
   #Triggers
-  after_create :create_journal, :generate_default_avatar
-  after_update :update_journal
-  after_destroy :destroy_journal
+  after_create :generate_default_avatar
   #Scope
   default_scope { eager_load(:avatar)}
 

@@ -4,7 +4,7 @@
 # File: wiki_page.rb
 class WikiPage < ActiveRecord::Base
   include Rorganize::SmartRecords
-  include Rorganize::JounalsManager
+  include Rorganize::Journalizable
   #Class variables
   assign_journalized_properties({title: 'Title', content: 'Content'})
   #Slug
@@ -13,8 +13,6 @@ class WikiPage < ActiveRecord::Base
   #Triggers
   before_create :inc_position
   after_destroy :dec_position,:destroy_journal
-  after_create :create_journal 
-  after_update :update_journal
   #Relations
   has_one :wiki_home_page, :class_name => 'Wiki', :foreign_key => 'home_page_id', :dependent => :nullify
   belongs_to :author, :class_name => 'User', :foreign_key => 'author_id'

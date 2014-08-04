@@ -49,7 +49,7 @@ module JournalsHelper
     end
   end
 
-  #Render one journal for same journalized items. if two or more journals exists for one item the same day, they will be compact into one.
+  #Render one journalizable for same journalized items. if two or more journals exists for one item the same day, they will be compact into one.
   def activity_render(activities, activity, nth)
     content_tag :div, class: "activity #{nth % 2 == 0 ? 'odd' : 'even'}", &Proc.new {
       content_tag :p do
@@ -63,7 +63,7 @@ module JournalsHelper
     }
   end
 
-  #Render journal content
+  #Render journalizable content
   def journal_header_render(journal, nth)
     user = journal.display_author
     if nth % 2 == 0 #Render is depending on the parity

@@ -1,7 +1,7 @@
 # Author: Nicolas Meylan
 # Date: 28 juil. 2012
 # Encoding: UTF-8
-# File: journal.rb
+# File: journalizable.rb
 
 class Journal < ActiveRecord::Base
   include Rorganize::SmartRecords
@@ -35,7 +35,7 @@ class Journal < ActiveRecord::Base
   end
 
   def detail_insertion(updated_attrs, journalized_property, foreign_key_value = {})
-    #Remove attributes that won't be considarate in journal update
+    #Remove attributes that won't be considarate in journalizable update
     updated_attrs.each do |attribute, old_new_value|
       if foreign_key_value[attribute]
         old_value = old_new_value[0] && !foreign_key_value[attribute].nil? ? foreign_key_value[attribute].where(:id => old_new_value[0]).first.caption : nil

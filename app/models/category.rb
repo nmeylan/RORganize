@@ -5,17 +5,12 @@
 
 class Category < ActiveRecord::Base
   include Rorganize::SmartRecords
-  include Rorganize::JounalsManager
+  include Rorganize::Journalizable
   #Class variables
   assign_journalized_properties({name: 'Name'})
   #Relations
   belongs_to :project, :class_name => 'Project'
   has_many :issues, :class_name => 'Issue', :dependent => :nullify
-  has_many :journals, ->  {where :journalized_type => 'Category'}, :as => :journalized, :dependent => :destroy
-  #Triggers
-  after_create :create_journal 
-  after_update :update_journal
-  after_destroy :destroy_journal
 
   def self.permit_attributes
     [:name]

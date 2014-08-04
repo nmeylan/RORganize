@@ -3,7 +3,7 @@
 # Encoding: UTF-8
 # File: document.rb
 class Document < ActiveRecord::Base
-  include Rorganize::JounalsManager
+  include Rorganize::Journalizable
   include Rorganize::SmartRecords
   include Rorganize::Attachable::AttachmentType
   #Class variables
@@ -13,13 +13,10 @@ class Document < ActiveRecord::Base
   belongs_to :version
   belongs_to :category
   belongs_to :project
-  has_many :journals, -> { where :journalized_type => 'Document' }, :as => :journalized, :dependent => :destroy
   #Validators
   validates :name, :presence => true
   #triggers
-  after_update :save_attachments, :update_journal
-  after_create :create_journal
-  after_destroy :destroy_journal
+  after_update :save_attachments
   #Scopes
   scope :fetch_dependencies, -> { eager_load([:version, :category]) }
   #methods

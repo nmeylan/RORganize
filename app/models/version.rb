@@ -1,21 +1,19 @@
 class Version < ActiveRecord::Base
   include Rorganize::SmartRecords
-  include Rorganize::JounalsManager
+  include Rorganize::Journalizable
   #Class variables
   assign_journalized_properties({name: 'Name', target_date: 'Due date', start_date: 'Start date'})
   #Relations
   belongs_to :project, :class_name => 'Project'
   has_many :issues, :class_name => 'Issue', :dependent => :nullify
-  has_many :journals, -> { where :journalized_type => 'Version' }, :as => :journalized, :dependent => :destroy
   validates :name, :presence => true, :length => 2..20
   validates :start_date, :presence => true
   validate :validate_start_date
   include IssuesHelper
   #Triggers
   before_create :inc_position
-  after_create :create_journal
-  after_update :update_journal, :update_issues_due_date
-  after_destroy :destroy_journal, :dec_position_on_destroy
+  after_update :update_issues_due_date
+  after_destroy :dec_position_on_destroy
 
   def self.permit_attributes
     [:name, :target_date, :description, :start_date, :is_done]
@@ -35,7 +33,7 @@ class Version < ActiveRecord::Base
       issues.each do |issue|
         if !self.target_date.nil? && (issue.due_date.nil? || issue.due_date > self.target_date)
           journal = Journal.create(:user_id => User.current.id, :journalized_id => issue.id, :journalized_type => issue.class.to_s, :created_at => Time.now.to_formatted_s(:db), :notes => '', :action_type => 'updated', :project_id => issue.project.id)
-          #Create an entry for the journal
+          #Create an entry for the journalizable
           JournalDetail.create(:journal_id => journal.id, :property => 'Due date', :property_key => :due_date, :old_value => issue.due_date, :value => self.target_date)
           issue.update_column('due_date', self.target_date)
         end
