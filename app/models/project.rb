@@ -52,11 +52,11 @@ class Project < ActiveRecord::Base
   end
 
   def activities(journalized_types, period, from_date)
-    Journal.activities_eager_load(journalized_types, period, from_date, "project_id = #{self.id}")
+    Journal.activities_eager_load(journalized_types, period, from_date, "journals.project_id = #{self.id}")
   end
 
   def comments(journalized_types, period, from_date)
-    Comment.comments_eager_load(journalized_types, period, from_date, "project_id = #{self.id}")
+    Comment.comments_eager_load(journalized_types, period, from_date, "comments.project_id = #{self.id}")
   end
 
   def update_info(params, trackers)

@@ -10,7 +10,7 @@ class Comment < ActiveRecord::Base
   belongs_to :commentable, :polymorphic => true
   belongs_to :issue, foreign_key: 'commentable_id'
   belongs_to :project
-
+  scope :fetch_dependencies_issues, -> { includes(issue: :tracker) }
   scope :comments, ->(commentable_type, date_range, conditions = '1 = 1') { eager_load(author: :avatar).where("commentable_type IN (?) AND #{conditions}", commentable_type).where(created_at: date_range).order('comments.created_at DESC')}
 
   validates :content, presence: true
@@ -22,6 +22,7 @@ class Comment < ActiveRecord::Base
     date_range = (date - periods[period.to_sym])..date
 
     query = self.comments(commentable_types, date_range, conditions)
+    query = query.fetch_dependencies_issues if commentable_types.include?('Issue')
     query
   end
 
