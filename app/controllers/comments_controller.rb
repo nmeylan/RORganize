@@ -12,7 +12,8 @@ class CommentsController < ApplicationController
     @comment.author = current_user
     respond_to do |format|
       if @comment.save
-        format.js { respond_to_js action: 'do_nothing', :response_header => :success, :response_content => t(:successful_creation) }
+        @comment = @comment.decorate
+        format.js { respond_to_js :response_header => :success, :response_content => t(:successful_creation) }
       else
         format.js { respond_to_js action: 'do_nothing', :response_header => :failure, :response_content => "#{t(:failure_creation)} : #{@comment.errors.full_messages.join(', ')}" }
       end

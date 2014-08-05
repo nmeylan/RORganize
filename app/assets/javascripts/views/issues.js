@@ -77,8 +77,6 @@ function issues_show() {
     jQuery("#update_issue_link").click(function () {
         jQuery('#update_issue').show();
     });
-
-    edit_notes();
     jQuery('#log_time').click(function (e) {
         e.preventDefault();
         fill_log_issue_time_overlay(jQuery(this).attr('href'), this);

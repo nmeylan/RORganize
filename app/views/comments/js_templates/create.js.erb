@@ -3,4 +3,5 @@
  * Date: 28.07.14
  * Time: 06:48
  %>
-on_addition_effect();
+on_append_effect('#history_blocks', "<%= escape_javascript(comment_block_render(@comment, nil, false)) %>");
+$('#add_comment_form').fadeOut();

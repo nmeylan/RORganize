@@ -8,9 +8,9 @@ module CommentsHelper
     content_tag :div, id: 'comments_block' do
       collection.collect do |comment|
         if selected_comment
-          comment_block_render(comment, selected_comment.id, avatar)
+          safe_concat comment_block_render(comment, selected_comment.id, avatar)
         else
-          comment_block_render(comment, nil, avatar)
+          safe_concat comment_block_render(comment, nil, avatar)
         end
       end.join.html_safe
     end
@@ -18,7 +18,7 @@ module CommentsHelper
 
   def comment_block_render(comment, selected_comment_id = nil, avatar = true)
     css_class = comment.id.eql?(selected_comment_id) ? 'comment_content selected' : 'comment_content'
-    safe_concat content_tag :div, {id: "comment_#{comment.id}", class: 'comment_block'}, &Proc.new {
+    content_tag :div, {id: "comment_#{comment.id}", class: 'comment_block'}, &Proc.new {
       safe_concat comment.author_avatar unless avatar
       safe_concat content_tag :div, class: "comment_header #{'display_avatar' if comment.author_avatar?}", &Proc.new {
         safe_concat content_tag :span, comment.display_author(avatar) + ' ', class: 'author'

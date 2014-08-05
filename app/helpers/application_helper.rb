@@ -208,7 +208,7 @@ EOD
         if activity.is_a?(Journal)
           safe_concat history_block_render(activity).html_safe
         else
-          comment_block_render(activity, nil, false).html_safe
+          safe_concat comment_block_render(activity, nil, false).html_safe
         end
       end.join.html_safe
     }

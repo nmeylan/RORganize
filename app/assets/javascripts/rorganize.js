@@ -54,6 +54,7 @@
 
         //bind info tag
         bind_info_tag();
+        bind_commentable();
 
     });
     jQuery(document).ajaxSend(function (e, xhr, options) {
@@ -745,6 +746,9 @@ function on_deletion_effect(element_id) {
 function on_addition_effect(element_id, content) {
     $(element_id).hide().html(content).fadeIn(500);
 }
+function on_append_effect(element_id, content) {
+    $(element_id).append(content).fadeIn(500);
+}
 
 function on_replace_effect(element_id, content) {
     $(element_id).replaceWith(content).fadeIn(500);
@@ -815,3 +819,12 @@ function bind_info_tag() {
     });
 }
 
+function bind_commentable(){
+    $('#add_comment_form .octicon-x').click(function(e){
+       $('#add_comment_form').fadeOut();
+    });
+    $('#new_comment_link').click(function(e){
+        $('#add_comment_form').show();
+    });
+    new_comment_link
+}

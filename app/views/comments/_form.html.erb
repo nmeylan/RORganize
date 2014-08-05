@@ -3,9 +3,9 @@
  * Date: 27.07.14
  * Time: 17:04
 %>
-<%= content_tag :div, {id: 'comment_block'} do %>
+<%= content_tag :div, {id: 'add_comment_form'} do %>
     <div class="separator"></div>
-    <h2><%= glyph(t(:link_comment), 'x') %></h2>
+    <h2 id="add_comment"><%= glyph(t(:link_comment), 'x') %></h2>
     <%= content_tag :div, class: 'box' do %>
         <%= post_comment_form(model) %>
     <% end %>
