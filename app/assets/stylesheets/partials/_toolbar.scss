@@ -21,112 +21,6 @@
   margin-top: -5px;
 }
 
-.markItUpContainer {
-  font: 11px Verdana, Arial, Helvetica, sans-serif;
-}
-
-.markItUpPreviewFrame {
-  overflow: auto;
-  background-color: #FFF;
-  width: 99.9%;
-  height: 300px;
-  margin: 5px 0;
-}
-
-.markItUpFooter {
-  width: 100%;
-}
-
-.markItUpResizeHandle {
-  overflow: hidden;
-  width: 22px;
-  height: 5px;
-  margin-left: auto;
-  margin-right: auto;
-  //  background-image: url(asset_path('handle.png'));
-  cursor: n-resize;
-}
-
-/***************************************************************************************/
-/* first row of buttons */
-.markItUpHeader ul li {
-  list-style: none;
-  float: left;
-  position: relative;
-}
-
-.markItUpHeader ul li:hover > ul {
-  display: block;
-}
-
-.markItUpHeader ul .markItUpDropMenu {
-  //  background: transparent url(asset_path('menu.png')) no-repeat 115% 50%;
-  margin-right: 5px;
-}
-
-.markItUpHeader ul .markItUpDropMenu li {
-  margin-right: 0px;
-}
-
-/* next rows of buttons */
-.markItUpHeader ul ul {
-  display: none;
-  position: absolute;
-  top: 18px;
-  left: 0px;
-  background: #FFF;
-  border: 1px solid #000;
-}
-
-.markItUpHeader ul ul li {
-  float: none;
-  border-bottom: 1px solid #000;
-}
-
-.markItUpHeader ul ul .markItUpDropMenu {
-  //  background: #FFF url(asset_path('submenu.png')) no-repeat 100% 50%;
-}
-
-.markItUpHeader ul .markItUpSeparator {
-  margin: 0 3px;
-  width: 1px;
-  height: 16px;
-  overflow: hidden;
-  background-color: #CCC;
-}
-
-/* next rows of buttons */
-.markItUpHeader ul ul ul {
-  position: absolute;
-  top: -1px;
-  left: 150px;
-}
-
-.markItUpHeader ul ul ul li {
-  float: none;
-}
-
-.markItUpHeader ul a {
-  display: block;
-  width: 16px;
-  height: 16px;
-  text-indent: -10000px;
-  background-repeat: no-repeat;
-  padding: 3px;
-}
-
-.markItUpHeader ul ul a {
-  display: block;
-  text-indent: 0;
-  width: 120px;
-  background-position: 2px 50%;
-}
-
-.markItUpHeader ul ul a:hover {
-  color: #FFF;
-  background-color: #000;
-}
-
 /**
   Icons
 */
@@ -154,15 +48,23 @@
   -webkit-appearance: none;
   padding: 0 10px;
   line-height: 24px;
+  margin-left: -1px;
   float: left;
   color: $link-hover-color !important;
   .octicon{
-
+    padding: 0px;
+    margin: 0px;
     color: $link-hover-color !important;
   }
 }
 .markItUp a:hover{
-
+  text-decoration: none;
+  background-color: #dddddd;
+  background-image: -moz-linear-gradient(#eee, #ddd);
+  background-image: -webkit-linear-gradient(#eee, #ddd);
+  background-image: linear-gradient(#eee, #ddd);
+  background-repeat: repeat-x;
+  border-color: #ccc;
 }
 
 .markItUp .markItUpGroup a:last-child{

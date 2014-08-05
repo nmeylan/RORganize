@@ -82,9 +82,9 @@ td .autocomplete-combobox {
   background-image: -o-linear-gradient(top, #ffffff 20%, #f6f6f6 50%, #eeeeee 52%, #f4f4f4 100%);
   background-image: -ms-linear-gradient(top, #ffffff 20%, #f6f6f6 50%, #eeeeee 52%, #f4f4f4 100%);
   background-image: linear-gradient(top, #ffffff 20%, #f6f6f6 50%, #eeeeee 52%, #f4f4f4 100%);
-  /*  -webkit-border-radius: 5px;*/
-  /*  -moz-border-radius   : 5px;*/
-  /*  border-radius        : 5px;*/
+
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
   -moz-background-clip   : padding;
   -webkit-background-clip: padding-box;
   background-clip        : padding-box;
