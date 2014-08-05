@@ -37,7 +37,7 @@ class Journal < ActiveRecord::Base
   def detail_insertion(updated_attrs, journalizable_property, foreign_key_value = {})
     #Remove attributes that won't be considarate in journalizable update
     updated_attrs.each do |attribute, old_new_value|
-      if foreign_key_value[attribute]
+      if foreign_key_value && foreign_key_value[attribute]
         old_value = old_new_value[0] && !foreign_key_value[attribute].nil? ? foreign_key_value[attribute].where(:id => old_new_value[0]).first.caption : nil
         new_value = old_new_value[1] && !old_new_value[1].eql?('') ? foreign_key_value[attribute].where(:id => old_new_value[1]).first.caption : ''
       else
