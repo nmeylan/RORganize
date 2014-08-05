@@ -31,7 +31,7 @@ class WikiPageDecorator < ApplicationDecorator
 
   def content
     if model.content && !model.content.empty?
-      h.textile_to_html(model.content)
+      h.markdown_to_html(model.content)
     else
       h.content_tag :div, h.t(:text_empty_page), class: 'no-data'
     end

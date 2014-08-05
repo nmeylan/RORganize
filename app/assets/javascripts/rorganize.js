@@ -45,7 +45,7 @@
         }
 
         //MarkItUp
-        jQuery('.fancyEditor').markItUp(mySettings);
+        jQuery('.fancyEditor').markItUp(markdownSettings);
         //BIND_CHZN-SELECT
         $(".chzn-select").chosen();
         $(".chzn-select-deselect").chosen({allow_single_deselect: true});
@@ -67,9 +67,10 @@
         //BIND_CHZN-SELECT
         $(".chzn-select").chosen();
         $(".chzn-select-deselect").chosen({allow_single_deselect: true});
-
+        var editors = jQuery('.fancyEditor');
         //MarkItUp
-        jQuery('.fancyEditor').markItUp(mySettings);
+        editors.markItUpRemove();
+        editors.markItUp(markdownSettings);
         $("#loading").hide();
         if (xhr.getResponseHeader('flash-message')) {
             $.jGrowl(xhr.getResponseHeader('flash-message'), {
@@ -819,12 +820,11 @@ function bind_info_tag() {
     });
 }
 
-function bind_commentable(){
-    $('#add_comment_form .octicon-x').click(function(e){
-       $('#add_comment_form').fadeOut();
+function bind_commentable() {
+    $('#add_comment_form .octicon-x').click(function (e) {
+        $('#add_comment_form').fadeOut();
     });
-    $('#new_comment_link').click(function(e){
+    $('#new_comment_link').click(function (e) {
         $('#add_comment_form').show();
     });
-    new_comment_link
 }

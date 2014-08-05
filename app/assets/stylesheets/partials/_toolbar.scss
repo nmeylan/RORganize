@@ -1,7 +1,5 @@
-/* -------------------------------------------------------------------
-// markItUp! Universal MarkUp Engine, JQuery plugin
-// By Jay Salvat - http://markitup.jaysalvat.com/
-// ------------------------------------------------------------------*/
+@import 'utilities/variables';
+
 .markItUp * {
   margin: 0px;
   padding: 0px;
@@ -16,6 +14,10 @@
 
 .markItUp {
   margin: 5px 0 5px 0;
+}
+
+.markItUpHeader{
+  margin-bottom: 10px;
 }
 
 .markItUpContainer {
@@ -92,7 +94,6 @@
   background-color: #CCC;
 }
 
-
 /* next rows of buttons */
 .markItUpHeader ul ul ul {
   position: absolute;
@@ -129,74 +130,59 @@
   Icons
 */
 .markItUp a {
-  width: 16px;
-  height: 16px;
-  margin: 0 3px;
-  margin-bottom: 3px;
-  padding: 0 !important;
-  background: url(asset_path('textile/textile-sprite.png')) 0 0 no-repeat;
+  position: relative;
+  display: inline-block;
+  font-size: 13px;
+  font-weight: bold;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.9);
+  white-space: nowrap;
+  vertical-align: middle;
+  cursor: pointer;
+  background-color: #eeeeee;
+  background-image: -moz-linear-gradient(#fcfcfc, #eee);
+  background-image: -webkit-linear-gradient(#fcfcfc, #eee);
+  background-image: linear-gradient(#fcfcfc, #eee);
+  background-repeat: repeat-x;
+  border: 1px solid #d5d5d5;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-appearance: none;
+  padding: 0 10px;
+  line-height: 24px;
+  float: left;
+  color: $link-hover-color !important;
+  .octicon{
+
+    color: $link-hover-color !important;
+  }
+}
+.markItUp a:hover{
+
 }
 
-.markItUp .markItUpButton1 a {
-  background-position: 0px 0px; //h1
+.markItUp .markItUpGroup a:last-child{
+  border-top-right-radius: 3px;
+  border-bottom-right-radius: 3px;
 }
 
-.markItUp .markItUpButton2 a {
-  background-position: -17px 0px; //h2
+.markItUp .markItUpGroup a:first-child{
+  border-top-left-radius: 3px;
+  border-bottom-left-radius: 3px;
 }
 
-.markItUp .markItUpButton3 a {
-  background-position: -34px 0px; //h3
+.markItUp .toolbar_h1 {
+  content: 'h1';
 }
 
-.markItUp .markItUpButton4 a {
-  background-position: -51px 0px; //h4
+.markItUp .toolbar_a a:before {
+  content: '\f05c';
 }
 
-.markItUp .markItUpButton5 a {
-  background-position: -68px 0px; //h5
-}
-
-.markItUp .markItUpButton6 a {
-  background-position: -85px 0px; //h6
-}
-
-.markItUp .markItUpButton7 a {
-  background-position: -68px -17px; //paragraph
-}
-
-.markItUp .markItUpButton8 a {
-  background-position: 0px -17px; // Bold
-}
-
-.markItUp .markItUpButton9 a {
-  background-position: -17px -17px; // Italic
-}
-
-.markItUp .markItUpButton10 a {
-  background-position: -17px -34px; // Stroke
-}
-
-.markItUp .markItUpButton11 a {
-  background-position: -34px -17px; // Unordered list
-}
-
-.markItUp .markItUpButton12 a {
-  background-position: -51px -17px; // Ordered list
-}
-
-.markItUp .markItUpButton13 a {
-  background-position: -85px -17px; // Picture
-}
-
-.markItUp .markItUpButton14 a {
-  background-position: -34px -34px; // link
-}
-
-.markItUp .markItUpButton15 a {
-  background-position: -51px -34px; // Quote
-}
-
-.markItUp .markItUpButton16 a {
-  background-position: -0px -34px; // Code
+.markItUpGroup{
+  margin-right: 10px;
+  display: inline-block;
 }

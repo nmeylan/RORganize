@@ -8,7 +8,7 @@
 //= require underscore-min
 //= require chosen.jquery.min
 //= require markitup.min
-//= require textile_toolbar
+//= require markdown_toolbar.js
 //= require jquery.jeegoocontext.min
 //= require apprise-1.5.min
 //= require jquery.lightbox-0.5.min

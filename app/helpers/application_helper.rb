@@ -32,7 +32,7 @@ module ApplicationHelper
   def render_404
     respond_to do |format|
       format.html { render :file => "#{Rails.root}/public/404.html.erb", :status => :not_found }
-      format.js {respond_to_js action: 'do_nothing', :response_header => :failure, :response_content => t(:error_404)}
+      format.js { respond_to_js action: 'do_nothing', :response_header => :failure, :response_content => t(:error_404) }
       format.xml { head :not_found }
       format.any { head :not_found }
     end
@@ -41,7 +41,7 @@ module ApplicationHelper
   def render_403
     respond_to do |format|
       format.html { render :file => "#{Rails.root}/public/403.html.erb", :status => :forbidden }
-      format.js {respond_to_js action: 'do_nothing', :response_header => :failure, :response_content => t(:error_403)}
+      format.js { respond_to_js action: 'do_nothing', :response_header => :failure, :response_content => t(:error_403) }
       format.xml { head :forbidden }
       format.any { head :forbidden }
     end
@@ -163,11 +163,11 @@ module ApplicationHelper
     end
   end
 
-  def textile_to_html(text)
-    t = RedCloth.new <<EOD
-#{text}
-EOD
-    t.to_html.html_safe
+  def markdown_to_html(text)
+    renderer = Redcarpet::Render::HTML
+    extensions = {quote: true, space_after_headers: true, autolink: true}
+    markdown = Redcarpet::Markdown.new(renderer, extensions)
+    markdown.render(text).html_safe
   end
 
   def sortable(column, title = nil, default_action = nil)

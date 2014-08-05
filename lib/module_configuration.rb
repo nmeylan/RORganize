@@ -13,6 +13,8 @@ always_enabled_module = [{:controller => 'settings', :action => 'index'},
   {:controller => 'projects', :action => 'archive'},
   {:controller => 'projects', :action => 'destroy'},
   {:controller => 'projects', :action => 'overview'},
+  {:controller => 'comments', :action => 'edit_comment_not_owner'},
+  {:controller => 'comments', :action => 'destroy_comment_not_owner'},
   {:controller => 'coworkers', :action => 'index'}
 ]
 

@@ -14,7 +14,7 @@
   </ul>
   <% if !activity.notes.nil? && !activity.notes.eql?('') %>
     <div class="box_notes" style="margin-left:30px">
-      <%= raw textile_to_html(activity.notes) %>
+      <%= raw markdown_to_html(activity.notes) %>
     </div>
   <% end %>
 
