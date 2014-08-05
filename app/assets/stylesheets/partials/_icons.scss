@@ -19,12 +19,15 @@
 .octicon {
   font: normal normal 16px octicons;
   line-height: 1;
-  margin-right: 6px;
   display: inline-block;
   color : $default-smooth-color;
   text-decoration: none;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+a .octicon {
+  margin-left: 5px;
+  margin-right: 4px;
 }
 a:hover{
   .medium-octicon, .mega-octicon, .octicon{

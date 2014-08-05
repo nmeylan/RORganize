@@ -10,8 +10,8 @@ $comment-header-background: #f7f7f7;
     box-sizing: border-box;
     border-radius: 3px;
     background-color: #ffffff;
-    margin-top: 10px;
-    margin-bottom: 10px;
+    margin-top: 15px;
+    margin-bottom: 15px;
     img{
       float: left;
       margin-left: -65px;
@@ -62,6 +62,9 @@ $comment-header-background: #f7f7f7;
       font-size: 12px;
       font-style: italic;
     }
+    .actions{
+      vertical-align: top;
+    }
   }
   .comment_content{
     padding: 15px;
@@ -70,6 +73,7 @@ $comment-header-background: #f7f7f7;
 }
 
 #comments_overlay_content{
+  padding: 10px 10px 10px 20px;
   #comments_block{
     margin-left: 40px;
   }
