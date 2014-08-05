@@ -9,7 +9,6 @@ class Permission < ActiveRecord::Base
   has_and_belongs_to_many :roles, :class_name => 'Role'
 
   validates :name, :controller, :action, :presence => true
-  validates :name, :uniqueness => true
 
   def self.permit_attributes
     [:name, :action, :controller]

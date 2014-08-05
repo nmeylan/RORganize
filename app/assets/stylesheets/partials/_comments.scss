@@ -65,6 +65,13 @@ $comment-header-background: #f7f7f7;
     .actions{
       vertical-align: top;
     }
+
+    .edited{
+      position: absolute;
+      left: 50%;
+      color : $default-smooth-color;
+      font-size: 12px;
+    }
   }
   .comment_content{
     padding: 15px;

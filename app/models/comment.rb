@@ -35,6 +35,10 @@ class Comment < ActiveRecord::Base
     self.created_at < self.updated_at
   end
 
+  def author?(user)
+    self.author.id.eql? user.id
+  end
+
   def self.permit_attributes
     [:commentable_id, :commentable_type, :content, :parent_id, :project_id]
   end

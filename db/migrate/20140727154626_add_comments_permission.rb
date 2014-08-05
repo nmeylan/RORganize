@@ -1,14 +1,11 @@
 class AddCommentsPermission < ActiveRecord::Migration
   def up
-    Permission.create(:controller => 'Documents', :action => 'comment', :name => 'Add Comment (edit and delete own comment)')
-    Permission.create(:controller => 'Issues', :action => 'comment', :name => 'Add Comment (edit and delete own comment)')
-    Permission.create(:controller => 'WikiPages', :action => 'comment', :name => 'Add Comment (edit and delete own comment)')
-    Permission.create(:controller => 'Documents', :action => 'edit_comment_not_owner', :name => 'Edit others comment')
-    Permission.create(:controller => 'Issues', :action => 'edit_comment_not_owner', :name => 'Edit others comment')
-    Permission.create(:controller => 'WikiPages', :action => 'edit_comment_not_owner', :name => 'Edit others comment')
-    Permission.create(:controller => 'Documents', :action => 'destroy_comment_not_owner', :name => 'Delete others comment')
-    Permission.create(:controller => 'Issues', :action => 'destroy_comment_not_owner', :name => 'Delete others comment')
-    Permission.create(:controller => 'WikiPages', :action => 'destroy_comment_not_owner', :name => 'Delete others comment')
+    Permission.create(controller: 'Issues', action: 'comment', name: 'Add Comments (edit and delete own comments)',  is_locked: true)
+    Permission.create(controller: 'Wiki_pages', action: 'comment', name: 'Add Comments (edit and delete own comments)',  is_locked: true)
+    Permission.create(controller: 'Documents', action: 'comment', name: 'Add Comments (edit and delete own comments)', is_locked: true)
+
+    Permission.create(controller: 'Comments', action: 'edit_comment_not_owner', name: 'Edit others comments',  is_locked: true)
+    Permission.create(controller: 'Comments', action: 'destroy_comment_not_owner', name: 'Delete others comments',  is_locked: true)
   end
 
   def down

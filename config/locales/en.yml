@@ -222,6 +222,9 @@ en:
   successful_time_entry_update: Your time spent on this issue was successfully updated
   successful_starred: was successfully starred.
   successful_unstarred: was successfully unstarred.
+  # HTTP errors
+  error_403: You don't have the required permissions to do this action
+  error_404: Seems that the object you are looking for doesn't exists
   #TEXT
   text_changed: changed
   text_from: from
@@ -257,6 +260,8 @@ en:
   text_added_a: added a
   text_added_comment: added a comment
   text_this: this
+  text_edited: Edited
+  text_on: on
 
   password: "Password"
   field_steps: "Steps"

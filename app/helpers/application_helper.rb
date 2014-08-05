@@ -32,6 +32,7 @@ module ApplicationHelper
   def render_404
     respond_to do |format|
       format.html { render :file => "#{Rails.root}/public/404.html.erb", :status => :not_found }
+      format.js {respond_to_js action: 'do_nothing', :response_header => :failure, :response_content => t(:error_404)}
       format.xml { head :not_found }
       format.any { head :not_found }
     end
@@ -40,6 +41,7 @@ module ApplicationHelper
   def render_403
     respond_to do |format|
       format.html { render :file => "#{Rails.root}/public/403.html.erb", :status => :forbidden }
+      format.js {respond_to_js action: 'do_nothing', :response_header => :failure, :response_content => t(:error_403)}
       format.xml { head :forbidden }
       format.any { head :forbidden }
     end
