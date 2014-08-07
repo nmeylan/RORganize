@@ -36,11 +36,12 @@ markdownSettings = {
             {name: 'Bulleted List', openWith: '- ', iconName: 'list-unordered'},
             {name: 'Numeric List', iconName: 'list-ordered', openWith: function (markItUp) {
                 return markItUp.line + '. ';
-            }}
+            }},
+            {name: 'Task List', openWith: '- [ ', closeWith: ']', iconName: 'checklist'},
         ],
         [
             {name: 'Picture', key: "P", replaceWith: '![[![Alternative text]!]]([![Url:!:http://]!] "[![Title]!]")', iconName: 'file-media'},
-            {name: 'Link', key: "L", openWith:'[', closeWith:']([![Url:!:http://]!] "[![Title]!]")', placeHolder:'Your text to link here...', iconName: 'link'},
+            {name: 'Link', key: "L", openWith: '[', closeWith: ']([![Url:!:http://]!] "[![Title]!]")', placeHolder: 'Your text to link here...', iconName: 'link'},
             {separator: '---------------'}
         ],
         [

@@ -125,3 +125,10 @@ textarea {
 input[type=radio] {
   height: 13px;
 }
+
+ul.task_list{
+  list-style-type: none;
+  li{
+    margin-left: -25px;
+  }
+}

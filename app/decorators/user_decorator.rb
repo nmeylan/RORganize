@@ -33,4 +33,10 @@ class UserDecorator < ApplicationDecorator
     end
   end
 
+  def role_render
+    h.content_tag :span, class: 'role' do
+
+    end
+  end
+
 end

@@ -1,3 +1,4 @@
+require 'rorganize/redcarpet/rorganize_markdown_renderer'
 module ApplicationHelper
   def sidebar_content?
     content_for?(:sidebar)
@@ -164,7 +165,7 @@ module ApplicationHelper
   end
 
   def markdown_to_html(text)
-    renderer = Redcarpet::Render::HTML
+    renderer = @project ? RorganizeMarkdownRenderer.new({issue_link_renderer: true}, {project_slug: @project.slug}) : RorganizeMarkdownRenderer.new
     extensions = {quote: true, space_after_headers: true, autolink: true}
     markdown = Redcarpet::Markdown.new(renderer, extensions)
     markdown.render(text).html_safe
