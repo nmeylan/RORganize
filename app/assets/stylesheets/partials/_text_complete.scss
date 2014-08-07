@@ -1,8 +1,13 @@
+@import 'utilities/_variables';
+
 /* Sample */
 
 .dropdown-menu {
   border: 1px solid #ddd;
   background-color: white;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
 }
 
 .dropdown-menu li {
@@ -12,13 +17,31 @@
 
 .dropdown-menu li:first-child {
   border-top: none;
+
+  -webkit-border-top-left-radius: 3px;
+  -moz-border-top-left-radius: 3px;
+  border-top-left-radius: 3px;
+  -webkit-border-top-right-radius: 3px;
+  -moz-border-top-right-radius: 3px;
+  border-top-right-radius: 3px;
+}
+.dropdown-menu li:last-child {
+  -webkit-border-bottom-left-radius: 3px;
+  -moz-border-bottom-left-radius: 3px;
+  border-bottom-left-radius: 3px;
+  -webkit-border-bottom-right-radius: 3px;
+  -moz-border-bottom-right-radius: 3px;
+  border-bottom-right-radius: 3px;
 }
 
 .dropdown-menu li:hover,
 .dropdown-menu .active {
-  background-color: rgb(110, 183, 219);
+  background-color: $combobox-hover;
 }
 
+.dropdown-menu li a{
+  color: $link-hover-color;
+}
 
 /* SHOULD not modify */
 
@@ -27,7 +50,9 @@
   padding: 0;
   margin: 0;
 }
-
+.dropdown-menu li:hover a,
+.dropdown-menu .active a,
 .dropdown-menu a:hover {
   cursor: pointer;
+  color: #fff;
 }

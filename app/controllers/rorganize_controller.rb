@@ -25,6 +25,7 @@ class RorganizeController < ApplicationController
 
   def view_profile
     @user = User.find_by_slug(params[:user])
+    render_404 if @user.nil?
   end
 
   def about
