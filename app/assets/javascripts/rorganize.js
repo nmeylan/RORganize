@@ -45,7 +45,7 @@
         }
 
         //MarkItUp
-        jQuery('.fancyEditor').markItUp(markdownSettings);
+        markdown_textarea();
         //BIND_CHZN-SELECT
         $(".chzn-select").chosen();
         $(".chzn-select-deselect").chosen({allow_single_deselect: true});
@@ -69,8 +69,7 @@
         $(".chzn-select-deselect").chosen({allow_single_deselect: true});
         var editors = jQuery('.fancyEditor');
         //MarkItUp
-        editors.markItUpRemove();
-        editors.markItUp(markdownSettings);
+        markdown_textarea();
         $("#loading").hide();
         if (xhr.getResponseHeader('flash-message')) {
             $.jGrowl(xhr.getResponseHeader('flash-message'), {
@@ -176,23 +175,37 @@ function error_explanation(message) {
     }
 
 }
-
-//bind action on delete button
-function button_delete_with_message(url, message) {
-    event.preventDefault();
-    apprise('' + message, {
-        'confirm': true
-    }, function (r) {
-        if (r) {
-            jQuery.ajax({
-                url: url,
-                type: 'DELETE',
-                dataType: 'script'
-            });
+function markdown_textarea() {
+    var el = jQuery('.fancyEditor');
+    var cacheResponse = [];
+    el.markItUpRemove().markItUp(markdownSettings);
+    el.textcomplete([
+        { // mention strategy
+            match: /(^|\s)@(\w*)$/,
+            search: function (term, callback) {
+                if ($.isEmptyObject(cacheResponse)) {
+                    $.getJSON('/projects/' + gon.project_id + '/members').done(function (response) {
+                        cacheResponse = response;
+                        callback($.map(cacheResponse, function (member) {
+                            return member.indexOf(term) === 0 ? member : null;
+                        }));
+                        console.log(2);
+                    });
+                } else {
+                    callback($.map(cacheResponse, function (member) {
+                        return member.indexOf(term) === 0 ? member : null;
+                    }));
+                }
+            },
+            replace: function (value) {
+                return '$1@' + value + ' ';
+            },
+            cache: true
         }
-    });
-}
+    ]);
+    el.focus();
 
+}
 function createOverlay(id, top) {
     jQuery(id).overlay({
         // custom top position
@@ -210,19 +223,6 @@ function createOverlay(id, top) {
         // load it immediately after the construction
         load: false
 
-    });
-}
-
-//Submit form with ajax
-function ajax_submit_form(form_id) {
-    var serialized_form = jQuery(form_id).serialize();
-    var action = jQuery(form_id).attr("action");
-    var method = jQuery(form_id).attr("method") ? jQuery(form_id).attr("method") : "POST";
-    jQuery.ajax({
-        url: action,
-        datatype: "script",
-        type: method,
-        data: serialized_form
     });
 }
 

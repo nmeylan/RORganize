@@ -2,7 +2,7 @@ require 'shared/activities'
 class ProjectsController < ApplicationController
   before_filter :find_project, :except => [:index, :new, :create, :destroy, :archive, :filter, :overview, :show]
   before_filter :find_project_with_associations, :only => [:overview, :show]
-  before_filter :check_permission, :except => [:create, :filter, :activity_filter]
+  before_filter :check_permission, :except => [:create, :filter, :activity_filter, :members]
   before_filter { |c| c.menu_context :project_menu }
   before_filter { |c| c.menu_item(params[:controller], params[:action]) }
   before_filter { |c| c.top_menu_item('projects') }
@@ -118,6 +118,13 @@ class ProjectsController < ApplicationController
       session['project_selection_filter'] = params[:filter]
     end
     index
+  end
+
+  def members
+    members = User.joins(:members).where('members.project_id' => @project.id).pluck('users.slug')
+    respond_to do |format|
+      format.json { render json: members}
+    end
   end
 
   private

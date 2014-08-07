@@ -12,6 +12,7 @@ RORganize::Application.routes.draw do
       get 'load_journal_activity', :path => ':project_id/load_journal_activity/:item_id/:date'
       post 'archive', :path => 'archive/:id'
       post 'activity_filter', :path => ':project_id/activity_filter/:type'
+      get 'members', path: ':project_id/members'
     end
   end
 

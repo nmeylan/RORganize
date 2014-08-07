@@ -287,6 +287,7 @@ class IssuesController < ApplicationController
 
   def find_project_with_associations
     @project = Project.eager_load(:attachments, :versions, :categories, :trackers, members: :user).where(slug: params[:project_id])[0]
+    gon.project_id = @project.slug
   end
 
 

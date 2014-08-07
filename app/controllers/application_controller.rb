@@ -42,6 +42,7 @@ class ApplicationController < ActionController::Base
   def find_project
     @project = Project.includes(:attachments).references(:attachments).where(slug: params[:project_id]) #this always return 1 result. Don't use .first(AR) because it generate two query (due to ActiveRecord::FinderMethods::apply_join_dependency(..))
     @project = @project.to_a.first
+    gon.project_id = @project.slug
     render_404 if @project.nil?
   end
 
