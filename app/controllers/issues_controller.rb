@@ -6,7 +6,7 @@ require 'shared/history'
 class IssuesController < ApplicationController
   before_filter :find_project, except: [:index, :new, :edit, :toolbox, :apply_custom_query, :show]
   before_filter :find_project_with_associations, only: [:index, :new, :edit, :toolbox, :apply_custom_query, :show]
-  before_filter :check_permission, :except => [:save_checklist, :show_checklist_items, :toolbox, :download_attachment, :edit_note, :delete_note, :start_today]
+  before_filter :check_permission, :except => [:save_checklist, :show_checklist_items, :toolbox, :download_attachment, :start_today]
   before_filter :check_not_owner_permission, :only => [:edit, :update, :destroy]
   before_filter { |c| c.menu_context :project_menu }
   before_filter { |c| c.menu_item(params[:controller]) }
@@ -27,12 +27,12 @@ class IssuesController < ApplicationController
   end
 
   def show
-    display_issue_object = Issue.display_issue_object(params[:id], @project)
+    display_issue_object = Issue.display_issue_object(params[:id])
     @issue = display_issue_object[:issue].decorate(context: {project: @project})
     @checklist_statuses = display_issue_object[:checklist_statuses]
     gon.checklist_statuses = @checklist_statuses.to_json
     respond_to do |format|
-      format.html { render :action => 'show', :locals => {:history => History.new(@issue.journals, @issue.comments), :done_ratio => display_issue_object[:done_ratio], :allowed_statuses => display_issue_object[:allowed_statuses], :checklist_items => display_issue_object[:checklist_items]} }
+      format.html { render :action => 'show', :locals => {:history => History.new(Journal.issue_activities(@issue.id), @issue.comments), :done_ratio => display_issue_object[:done_ratio], :allowed_statuses => display_issue_object[:allowed_statuses], :checklist_items => display_issue_object[:checklist_items]} }
     end
   end
 
@@ -191,24 +191,6 @@ class IssuesController < ApplicationController
       @sessions[@project.slug][:json_filter] = eval(query.stringify_params)
     end
     index
-  end
-
-  def edit_note
-    edit_result = Journal.edit_note(params[:journal_id],current_user.id, params[:notes])
-      respond_to do |format|
-        format.js do
-          respond_to_js :action => 'update_journal', :locals => {:journals => edit_result[:journals]}, :response_header => edit_result[:saved] ? :success : :failure, :response_content => edit_result[:saved] ? t(:successful_update) : t(:failure_update)
-          end
-      end
-  end
-
-  def delete_note
-    delete_result = Journal.delete_note(params[:note_id],current_user.id)
-      respond_to do |format|
-        format.js do
-          respond_to_js :action => 'update_journal', :locals => {:journals => delete_result[:journals]}, :response_header => delete_result[:destroyed] ? :success : :failure , :response_content =>  delete_result[:destroyed] ? t(:successful_deletion) : t(:failure_deletion)
-        end
-      end
   end
 
   def add_predecessor
