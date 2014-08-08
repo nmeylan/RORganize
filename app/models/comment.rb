@@ -12,8 +12,9 @@ class Comment < ActiveRecord::Base
   belongs_to :project
 
   scope :fetch_dependencies_issues, -> { includes(issue: :tracker) }
-  scope :comments, ->(commentable_type, date_range, conditions = '1 = 1') { eager_load(author: :avatar).where("commentable_type IN (?) AND #{conditions}", commentable_type).where(created_at: date_range).order('comments.created_at DESC')}
+  scope :comments, ->(commentable_type, date_range, conditions = '1 = 1') { eager_load(:project).where("commentable_type IN (?) AND #{conditions}", commentable_type).where(created_at: date_range).order('comments.created_at DESC')}
 
+  default_scope {eager_load(author: :avatar)}
   validates :content, presence: true
   before_update :update_date
 

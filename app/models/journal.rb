@@ -17,7 +17,8 @@ class Journal < ActiveRecord::Base
   belongs_to :project
   #Scopes
   scope :fetch_dependencies, -> { eager_load(:details, :project, :user, :journalizable) }
-  scope :document_activities, ->(document_id) { eager_load([:details, :user]).where(journalizable_type: 'Document', journalizable_id: document_id) }
+  scope :document_activities, ->(document_id) { eager_load([:details, user: :avatar]).where(journalizable_type: 'Document', journalizable_id: document_id) }
+  scope :issue_activities, ->(issuer_id) { eager_load([:details, user: :avatar]).where(journalizable_type: 'Issue', journalizable_id: issuer_id) }
   scope :member_activities, ->(member) { where(:user_id => member.user_id, :project_id => member.project_id).order('created_at DESC') }
   scope :activities, ->(journalizable_types, date_range, conditions = '1 = 1') {
     includes([:details, :project, user: :avatar]).where("journalizable_type IN (?) AND #{conditions}", journalizable_types).where(created_at: date_range).order('created_at DESC')

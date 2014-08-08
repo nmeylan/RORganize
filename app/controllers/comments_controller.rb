@@ -21,7 +21,7 @@ class CommentsController < ApplicationController
   end
 
   def show
-    @comments = Comment.where(commentable_type: @comment.commentable_type, commentable_id: @comment.commentable_id).decorate(context: {selected_comment: @comment})
+    @comments = Comment.eager_load(:project).where(commentable_type: @comment.commentable_type, commentable_id: @comment.commentable_id).decorate(context: {selected_comment: @comment})
     respond_to do |format|
       format.js { respond_to_js action: 'show', locals: {comments: @comments} }
     end

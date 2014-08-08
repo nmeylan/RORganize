@@ -84,7 +84,12 @@ $comment-header-background: #f7f7f7;
 
 #comments_overlay_content{
   padding: 10px 10px 10px 20px;
+  width: 800px;
   #comments_block{
     margin-left: 40px;
+  }
+  .edited{
+    display: none;
+    position: relative;
   }
 }
