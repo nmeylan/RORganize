@@ -65,7 +65,7 @@ class RorganizeMarkdownRenderer < Redcarpet::Render::HTML
 
   def user_link_renderer(document)
     document.gsub(USER_LINK_REGEX) do |user_link|
-      link_to user_link, url_for(controller: 'rorganize', action: 'view_profile', user: user_link.gsub(/@/, ''))
+      link_to user_link, url_for(controller: 'rorganize', action: 'view_profile', user: user_link.gsub(/@/, '')), {class: 'author_link'}
     end
   end
 
