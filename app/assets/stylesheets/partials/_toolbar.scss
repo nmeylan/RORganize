@@ -24,7 +24,7 @@
 /**
   Icons
 */
-.markItUp a {
+.markItUpButtons a {
   position: relative;
   display: inline-block;
   font-size: 13px;
@@ -57,7 +57,7 @@
     color: $link-hover-color !important;
   }
 }
-.markItUp a:hover{
+.markItUpButtons a:hover{
   text-decoration: none;
   background-color: #dddddd;
   background-image: -moz-linear-gradient(#eee, #ddd);
@@ -88,4 +88,8 @@
 .markItUpGroup{
   margin-right: 10px;
   display: inline-block;
+}
+
+div.markdown_preview p{
+  padding: 3px 0 3px 0;
 }

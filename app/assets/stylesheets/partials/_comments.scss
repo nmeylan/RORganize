@@ -4,7 +4,7 @@ $comment-header-background: #f7f7f7;
   display: none;
 }
 #comments_block, #history_blocks{
-  .selected{
+  .comment_content.selected{
     background-color: #e6f1f6;
   }
   .comment_block{

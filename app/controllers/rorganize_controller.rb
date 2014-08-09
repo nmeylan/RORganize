@@ -28,6 +28,12 @@ class RorganizeController < ApplicationController
     render_404 if @user.nil?
   end
 
+  def preview_markdown
+    respond_to do |format|
+      format.json {render json: markdown_to_html(params[:content])}
+    end
+  end
+
   def about
     respond_to do |format|
       format.html

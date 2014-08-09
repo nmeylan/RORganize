@@ -18,7 +18,7 @@
 // ----------------------------------------------------------------------------
 markdownSettings = {
     nameSpace: 'markdown', // Useful to prevent multi-instances CSS conflict
-    previewParserPath: '~/sets/markdown/preview.php',
+    previewParserPath: '/rorganize/preview_markdown',
     onShiftEnter: {keepDefault: false, openWith: '\n\n'},
     markupSet: [
         [

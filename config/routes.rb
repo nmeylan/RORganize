@@ -2,6 +2,7 @@ RORganize::Application.routes.draw do
 
 
   get 'rorganize/:action', :controller => 'rorganize'
+  post 'rorganize/:action', :controller => 'rorganize'
 
   resources :projects do
     collection do

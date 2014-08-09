@@ -67,9 +67,9 @@
         //BIND_CHZN-SELECT
         $(".chzn-select").chosen();
         $(".chzn-select-deselect").chosen({allow_single_deselect: true});
-        var editors = jQuery('.fancyEditor');
         //MarkItUp
-        markdown_textarea();
+        if (options.dataType !== 'JSON')
+            markdown_textarea();
         $("#loading").hide();
         if (xhr.getResponseHeader('flash-message')) {
             $.jGrowl(xhr.getResponseHeader('flash-message'), {

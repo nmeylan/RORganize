@@ -1,0 +1,36 @@
+@import 'utilities/variables';
+
+.tabnav {
+  margin: 0 0 15px;
+  border-bottom: 1px solid #ddd;
+  background: #f7f7f7;
+  padding: 6px 10px 0;
+  border: 1px solid #ddd;
+  border-radius: 3px 3px 0 0;
+
+}
+
+ul.tabnav-tabs{
+  display: inline-block;
+  li{
+    display: inline-block;
+    margin-bottom: -1px;
+  }
+}
+
+.tabnav-tab {
+  display: inline-block;
+  padding: 8px 12px 7px;
+  font-size: 14px;
+  line-height: 20px;
+  color: #666;
+  text-decoration: none;
+  border: 1px solid transparent;
+  border-bottom: 0;
+}
+.tabnav-tab.selected {
+  color: #333;
+  background-color: #fff;
+  border-color: #ddd;
+  border-radius: 3px 3px 0 0;
+}

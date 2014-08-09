@@ -12,7 +12,7 @@ class RorganizeMarkdownRenderer < Redcarpet::Render::HTML
   COMPLETE_TASK_REGEX = /-\s\[x\]\s.*/
   TASK_REGEX = /\s*-\s\[(\s|x)\]\s*/
   TASKS_LIST_REGEX = /(^(\s*-\s\[(\s|x)\]\s*.*\n?)+$)/
-  USER_LINK_REGEX= /@[^\s]*/
+  USER_LINK_REGEX= /@[^\s]+/
   LF ='\n'
 
   def initialize(options = {}, context = {})
@@ -30,8 +30,8 @@ class RorganizeMarkdownRenderer < Redcarpet::Render::HTML
       "<s>#{occurrence.gsub(/~~/, '')}</s>"
     end
 
-    document = task_list_renderer(document)
     document = user_link_renderer(document)
+    document = task_list_renderer(document)
     document = issue_link_renderer(document) if @options[:issue_link_renderer]
     document
   end
@@ -48,12 +48,15 @@ class RorganizeMarkdownRenderer < Redcarpet::Render::HTML
   end
 
   def task_list_renderer(document)
+    i = 0
     document.gsub(TASKS_LIST_REGEX) do |task_list|
       list = '<ul class="task_list">'
       list += task_list.gsub(COMPLETE_TASK_REGEX) do |complete_task|
-        '<li><input type="checkbox" class="task-list-item-checkbox" disabled="" checked="">'+complete_task.gsub(TASK_REGEX, '')+'</li>'
+        i += 1
+        '<li><input type="checkbox" class="task-list-item-checkbox" data-index='+i.to_s+' disabled="" checked="">'+complete_task.gsub(TASK_REGEX, '')+'</li>'
       end.gsub(EMPTY_TASK_REGEX) do |empty_task|
-        '<li><input type="checkbox" class="task-list-item-checkbox" disabled="">'+empty_task.gsub(TASK_REGEX, '')+'</li>'
+        i += 1
+        '<li><input type="checkbox" class="task-list-item-checkbox" data-index='+i.to_s+' disabled="">'+empty_task.gsub(TASK_REGEX, '')+'</li>'
       end
       list += '</ul>'
       list
