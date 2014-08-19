@@ -29,7 +29,7 @@ class VersionDecorator < ApplicationDecorator
     model.start_date ? model.start_date : '-'
   end
 
-  def target_date
+  def display_target_date
     model.target_date ? model.target_date : '-'
   end
 

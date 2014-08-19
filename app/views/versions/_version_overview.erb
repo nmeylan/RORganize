@@ -6,7 +6,7 @@
 
 <%= content_tag :div, class: 'version_overview' do -%>
     <%= content_tag :h1, version.name %>
-    <%= content_tag :div, version.target_date, {class: 'version_due_date'} %>
+    <%= content_tag :div, version.display_target_date, {class: 'version_due_date'} %>
     <%= clear_both %>
     <%= content_tag :span, class: 'progress_bar' do -%>
         <%= content_tag :span, "&nbsp".html_safe, {class: 'progress', style: "width:#{percent}%"} %>

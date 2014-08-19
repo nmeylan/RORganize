@@ -19,7 +19,7 @@ module VersionsHelper
         content_tag :tr, {class: 'odd_even', id: version.id} do
           safe_concat content_tag :td, version.edit_link, {class: 'list_left name'}
           safe_concat content_tag :td, version.start_date, {class: 'list_center start_date'}
-          safe_concat content_tag :td, version.target_date, {class: 'list_center version'}
+          safe_concat content_tag :td, version.display_target_date, {class: 'list_center version'}
           safe_concat content_tag :td, version.is_done, {class: 'list_center is_done'}
           safe_concat content_tag :td, {class: 'action'}, &Proc.new {
             safe_concat version.inc_position_link
@@ -65,7 +65,7 @@ module VersionsHelper
   def version_overview(version, closed_issues_count, opened_issues_count, percent)
     content_tag :div, class: 'version_overview' do
       safe_concat content_tag :h1, version.name, id: "v-#{version.display_id}"
-      safe_concat content_tag :div, version.target_date, {class: 'version_due_date'}
+      safe_concat content_tag :div, version.display_target_date, {class: 'version_due_date'}
       safe_concat clear_both
       safe_concat content_tag :span, class: 'progress_bar', &Proc.new {
         safe_concat content_tag :span, "&nbsp".html_safe, {class: 'progress', style: "width:#{percent}%"}
@@ -79,7 +79,7 @@ module VersionsHelper
         safe_concat content_tag :b, opened_issues_count.to_s + ' '
         safe_concat t(:label_opened) + '.'
       }
-      over_run = version.target_date.nil? || version.is_done ? 0 : (Date.today - version.target_date).to_i
+      over_run = (version.target_date.nil? || version.is_done) ? 0 : (Date.today - version.target_date).to_i
       if over_run > 0
         safe_concat content_tag :span, %Q(#{t(:text_past_due)} #{t(:label_by)} #{over_run} #{t(:label_plural_day)}), {class: 'over_run text-alert octicon octicon-alert'}
       end

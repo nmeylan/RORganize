@@ -27,7 +27,7 @@ class ProjectDecorator < ApplicationDecorator
     structure = Hash.new { |k, v| k[v] = {} }
     versions_overviews.each do |version_overview|
       structure[version_overview.first] = {
-          percent: version_overview[3], closed_issues_count: version_overview[2], opened_issues_count: version_overview[1]
+          percent: version_overview[3].truncate, closed_issues_count: version_overview[2], opened_issues_count: version_overview[1]
       }
     end
     if versions.to_a.any?
@@ -43,7 +43,7 @@ class ProjectDecorator < ApplicationDecorator
     structure = Hash.new { |k, v| k[v] = {} }
     versions_overviews.each do |version_overview|
       structure[version_overview.first] = {
-          percent: version_overview[3], closed_issues_count: version_overview[2], opened_issues_count: version_overview[1], issues: issues_array.select { |issue| issue.version_id.eql?(version_overview.first) }
+          percent: version_overview[3].truncate, closed_issues_count: version_overview[2], opened_issues_count: version_overview[1], issues: issues_array.select { |issue| issue.version_id.eql?(version_overview.first) }
       }
     end
     if versions.to_a.any?
