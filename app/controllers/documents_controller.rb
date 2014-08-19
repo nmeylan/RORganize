@@ -70,7 +70,7 @@ class DocumentsController < ApplicationController
     #this always return 1 result. Don't use .first(AR method) because it generate two query (due to ActiveRecord::FinderMethods::apply_join_dependency(..))
     @document = Document.eager_load(:category, :version, :attachments).where(id: params[:id])[0].decorate(context: {project: @project})
     respond_to do |format|
-      format.html { render :action => 'show', :locals => {:history => History.new(Journal.document_activities(@document.id))}}
+      format.html { render :action => 'show', :locals => {:history => History.new(Journal.document_activities(@document.id), @document.comments)}}
     end
   end
 

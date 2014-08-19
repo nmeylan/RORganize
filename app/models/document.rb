@@ -6,6 +6,7 @@ class Document < ActiveRecord::Base
   include Rorganize::Journalizable
   include Rorganize::SmartRecords
   include Rorganize::Attachable::AttachmentType
+  include Rorganize::Commentable
   #Class variables
   assign_journalizable_properties({name: 'Name', category_id: 'Category', version_id: 'Version'})
   assign_foreign_keys({category_id: Category, version_id: Version})

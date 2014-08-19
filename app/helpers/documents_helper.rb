@@ -5,6 +5,7 @@
 require 'documents/document_filter'
 require 'documents/document_toolbox'
 module DocumentsHelper
+  include CommentsHelper
 
   def list(collection)
     content_tag :table, {class: 'document list', 'data-link' => toolbox_documents_path(@project.slug)}, &Proc.new {

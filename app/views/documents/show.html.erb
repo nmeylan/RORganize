@@ -7,6 +7,7 @@
 
 <%= contextual "#{t(:label_document)} ##{@document.id}" do -%>
     <%= @document.new_link %>
+    <%= @document.new_comment_link %>
     <%= @document.edit_link %>
     <%= @document.delete_link %>
 
@@ -40,3 +41,4 @@
 
 <%= @document.display_history(history) %>
 
+<%= @document.add_comment_block %>
