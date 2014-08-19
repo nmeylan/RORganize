@@ -34,7 +34,7 @@ class VersionDecorator < ApplicationDecorator
   end
 
   def is_done
-    model.is_done.to_s
+    model.is_done
   end
 
   def edit_link
