@@ -189,7 +189,6 @@ function markdown_textarea() {
                         callback($.map(cacheResponse, function (member) {
                             return member.indexOf(term) === 0 ? member : null;
                         }));
-                        console.log(2);
                     });
                 } else {
                     callback($.map(cacheResponse, function (member) {
