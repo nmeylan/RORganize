@@ -7,7 +7,6 @@
 class RoadmapsController < ApplicationController
   helper VersionsHelper
   include RoadmapsHelper
-  before_filter :find_project
   before_filter { |c| c.menu_context :project_menu }
   before_filter { |c| c.menu_item(params[:controller]) }
   before_filter { |c| c.top_menu_item('projects') }

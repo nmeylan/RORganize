@@ -4,8 +4,6 @@
 # File: issues_controller.rb
 require 'shared/history'
 class IssuesController < ApplicationController
-  before_filter :find_project, except: [:index, :new, :edit, :toolbox, :apply_custom_query, :show]
-  before_filter :find_project_with_associations, only: [:index, :new, :edit, :toolbox, :apply_custom_query, :show]
   before_filter :check_permission, :except => [:save_checklist, :show_checklist_items, :toolbox, :download_attachment, :start_today]
   before_filter :check_not_owner_permission, :only => [:edit, :update, :destroy]
   before_filter { |c| c.menu_context :project_menu }
@@ -105,7 +103,7 @@ class IssuesController < ApplicationController
     flash[:notice] = t(:successful_deletion)
     respond_to do |format|
       format.html { redirect_to issues_path }
-      format.js {js_redirect_to issues_path}
+      format.js { js_redirect_to issues_path }
     end
   end
 
@@ -115,7 +113,7 @@ class IssuesController < ApplicationController
     if attachment.destroy
       respond_to do |format|
         format.html { redirect_to :action => 'show' }
-        format.js {respond_to_js :response_header => :success, :response_content => t(:successful_deletion), :locals =>{:id => attachment.id}}
+        format.js { respond_to_js :response_header => :success, :response_content => t(:successful_deletion), :locals => {:id => attachment.id} }
       end
     end
   end
@@ -175,11 +173,15 @@ class IssuesController < ApplicationController
         format.js { respond_to_js :action => :index, :response_header => :success, :response_content => t(:successful_deletion) }
       end
     else
-      #Editing with toolbox
-      Issue.bulk_edit(params[:ids], value_params)
-      load_issues
-      respond_to do |format|
-        format.js { respond_to_js :action => :index, :response_header => :success, :response_content => t(:successful_update) }
+      if User.current.allowed_to?('edit', 'issues', @project)
+        #Editing with toolbox
+        Issue.bulk_edit(params[:ids], value_params)
+        load_issues
+        respond_to do |format|
+          format.js { respond_to_js :action => :index, :response_header => :success, :response_content => t(:successful_update) }
+        end
+      else
+        render_403
       end
     end
   end
@@ -214,22 +216,9 @@ class IssuesController < ApplicationController
   end
 
   #Check if current user is owner of issue
-  def check_issue_owner
+  def check_owner
     @issue = Issue.eager_load(:attachments).where(id: params[:id])[0].decorate(context: {project: @project})
     @issue.author_id.eql?(current_user.id)
-  end
-
-  def check_not_owner_permission
-    if check_issue_owner
-      true
-    else
-      action = "#{find_action(params[:action].to_s)}_not_owner"
-      if current_user.allowed_to?(action, params[:controller], @project)
-        return true
-      else
-        render_403
-      end
-    end
   end
 
   def filter
@@ -267,11 +256,12 @@ class IssuesController < ApplicationController
     params.require(:value).permit(Issue.permit_bulk_edit_values)
   end
 
-  def find_project_with_associations
+  def find_project
     @project = Project.eager_load(:attachments, :versions, :categories, :trackers, members: :user).where(slug: params[:project_id])[0]
     gon.project_id = @project.slug
+  rescue => e
+    render_404
   end
-
 
 
 end

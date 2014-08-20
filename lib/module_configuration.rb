@@ -4,18 +4,18 @@
 # File: module_configuration.rb
 
 #These module can't be disabled.
-always_enabled_module = [{:controller => 'settings', :action => 'index'},
-  {:controller => 'members', :action => 'index'},
-  {:controller => 'categories', :action => 'index'},
-  {:controller => 'wiki_pages', :action => 'index'},
-  {:controller => 'versions', :action => 'index'},
-  {:controller => 'queries', :action => 'index'},
-  {:controller => 'projects', :action => 'archive'},
-  {:controller => 'projects', :action => 'destroy'},
-  {:controller => 'projects', :action => 'overview'},
-  {:controller => 'comments', :action => 'edit_comment_not_owner'},
-  {:controller => 'comments', :action => 'destroy_comment_not_owner'},
-  {:controller => 'coworkers', :action => 'index'}
+always_enabled_module = [{controller: 'settings', action: 'index'},
+  {controller: 'members', action: 'index'},
+  {controller: 'categories', action: 'index'},
+  {controller: 'wiki_pages', action: 'index'},
+  {controller: 'versions', action: 'index'},
+  {controller: 'queries', action: 'index'},
+  {controller: 'projects', action: 'archive'},
+  {controller: 'projects', action: 'destroy'},
+  {controller: 'projects', action: 'overview'},
+  {controller: 'comments', action: 'edit_comment_not_owner'},
+  {controller: 'comments', action: 'destroy_comment_not_owner'},
+  {controller: 'coworkers', action: 'index'}
 ]
 
 Rorganize::ModuleManager.initialize_modules(always_enabled_module)

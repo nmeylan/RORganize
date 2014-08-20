@@ -84,7 +84,8 @@
         var first_char = xhr.status.toString().charAt(0);
         var is_error = first_char == '5' || first_char == '4';
         if (is_error) {
-            $.jGrowl('An unexpected error occured, please try again!', {
+            var text = xhr.status.toString() === '403' ? "You don't have the required permissions to do this action": 'An unexpected error occured, please try again!';
+            $.jGrowl(text, {
                 theme: 'failure'
             });
         }

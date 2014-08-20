@@ -5,10 +5,11 @@
 
 class CommentsController < ApplicationController
   before_filter :find_comment, :only => [:update, :destroy, :edit, :show]
-  before_filter :check_permission, :only => [:update, :destroy]
+  before_filter :check_permission, :only => [:update, :destroy, :create]
 
   def create
     @comment = Comment.new(comment_params)
+    @comment.project = @project
     @comment.author = current_user
     respond_to do |format|
       if @comment.save
@@ -68,7 +69,9 @@ class CommentsController < ApplicationController
   end
 
   def check_permission
-    if action_name.eql?('update') && (User.current.allowed_to?('edit_comment_not_owner', 'comments', @project) || @comment.author?(User.current))
+    if action_name.eql?('create') && User.current.allowed_to?('comment', params[:comment][:commentable_type].pluralize, @project)
+      true
+    elsif action_name.eql?('update') && (User.current.allowed_to?('edit_comment_not_owner', 'comments', @project) || @comment.author?(User.current))
       true
     elsif action_name.eql?('destroy') && (User.current.allowed_to?('destroy_comment_not_owner', 'comments', @project) || @comment.author?(User.current))
       true

@@ -4,14 +4,13 @@
 # File: wiki_pages_controller.rb
 
 class WikiPagesController < ApplicationController
+  before_filter :find_page, except: [:new, :new_home_page, :new_sub_page, :create]
   before_filter :check_permission, :except => [:new_home_page, :new_sub_page]
   before_filter :check_new_permission, :only => [:new_home_page, :new_sub_page]
   before_filter :check_not_owner_permission, :only => [:edit, :update, :destroy]
   before_filter { |c| c.menu_context :project_menu }
   before_filter { |c| c.menu_item('wiki') }
   before_filter { |c| c.top_menu_item('projects') }
-  before_filter :find_project
-  before_filter :find_page, except: [:new, :new_home_page, :new_sub_page, :create]
   helper WikiHelper
   def new
     new_form
@@ -111,23 +110,9 @@ class WikiPagesController < ApplicationController
     @wiki_page = WikiPage.eager_load(:sub_pages, :author).where(slug: params[:id])[0].decorate(context: {project: @project})
   end
 
-  def check_page_owner
+  def check_owner
     @wiki_page.author_id.eql?(current_user.id)
   end
-
-  def check_not_owner_permission
-    if check_page_owner
-      return true
-    else
-      action = "#{find_action(params[:action].to_s)}_not_owner"
-      if current_user.allowed_to?(action, params[:controller], @project)
-        return true
-      else
-        render_403
-      end
-    end
-  end
-
   def wiki_page_params
     params.require(:wiki_page).permit(WikiPage.permit_attributes)
   end

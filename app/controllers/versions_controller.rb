@@ -5,7 +5,6 @@
 
 class VersionsController < ApplicationController
   include Rorganize::RichController
-  before_filter :find_project
   before_filter :check_permission
   before_filter { |c| c.menu_context :project_menu }
   before_filter { |c| c.menu_item('settings') }

@@ -23,7 +23,7 @@ class User < ActiveRecord::Base
   #Triggers
   after_create :generate_default_avatar
   #Scope
-  default_scope { eager_load(:avatar)}
+  default_scope { eager_load(:avatar) }
 
   def self.attachments_type
     :avatar
@@ -106,6 +106,20 @@ class User < ActiveRecord::Base
           end
         end
         return false
+      end
+    end
+  end
+
+  def allowed_to_do_actions_list(controller = nil, project = nil)
+    m = self.members
+    if project
+      member = m.to_a.select { |mb| mb.project_id == project.id }.first
+      puts "Current user is allowed to do following actions and has role #{mem.role.caption} for project #{project.slug}"
+      p allowed_to_actions_list(member.role.id.to_s, controller)
+    else
+      for mem in m do
+        puts "Current user is allowed to do following actions and has role #{mem.role.caption} for project #{mem.project.slug}"
+        p allowed_to_actions_list(mem.role.id.to_s, controller)
       end
     end
   end

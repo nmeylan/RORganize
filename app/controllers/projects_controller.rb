@@ -1,8 +1,7 @@
 require 'shared/activities'
 class ProjectsController < ApplicationController
-  before_filter :find_project, :except => [:index, :new, :create, :destroy, :archive, :filter, :overview, :show]
-  before_filter :find_project_with_associations, :only => [:overview, :show]
-  before_filter :check_permission, :except => [:create, :filter, :activity_filter, :members]
+  before_filter :find_project, :only => [:overview, :show, :activity, :activity_filter]
+  before_filter :check_permission, :except => [:filter, :members, :activity_filter]
   before_filter { |c| c.menu_context :project_menu }
   before_filter { |c| c.menu_item(params[:controller], params[:action]) }
   before_filter { |c| c.top_menu_item('projects') }
@@ -133,9 +132,8 @@ class ProjectsController < ApplicationController
     params.require(:project).permit(Project.permit_attributes)
   end
 
-  def find_project_with_associations
-    id = params[:project_id] ? params[:project_id] : params[:id]
-    @project = Project.eager_load(:attachments, members: [:user, :role]).where(slug: id)[0].decorate
+  def find_project
+    @project = Project.eager_load(:attachments, members: [:user, :role]).where(slug: params[:project_id])[0].decorate
   end
 
 

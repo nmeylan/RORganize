@@ -45,13 +45,16 @@ module CommentsHelper
     form_for model.new_comment, url: comments_path, html: {class: 'form', remote: true} do |f|
       safe_concat f.hidden_field :commentable_id, value: model.new_comment.commentable_id
       safe_concat f.hidden_field :commentable_type, value: model.new_comment.commentable_type
-      safe_concat f.hidden_field :project_id, value: model.project.id
+
+      safe_concat hidden_field_tag :project_id, model.project.slug
       comment_form_content(f)
     end
   end
 
   def put_comment_form(comment)
     form_for comment, html: {class: 'form', remote: true, method: :put} do |f|
+
+      safe_concat hidden_field_tag :project_id, comment.project.slug
       comment_form_content(f)
     end
   end

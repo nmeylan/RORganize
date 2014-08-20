@@ -2,10 +2,10 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
   helper :application
   include ApplicationHelper
+  include Rorganize::SecurityFilter
   helper Rorganize::MenuManager::MenuHelper
   helper Rorganize::PermissionManager::PermissionManagerHelper
   helper_method :sort_column, :sort_direction
-
   before_filter :authenticate, :smart_js_loader, :set_sessions
   around_filter :set_current_user
   after_filter :set_sessions
@@ -37,13 +37,6 @@ class ApplicationController < ActionController::Base
   def set_sessions
     session[controller_name.to_sym] ||= {}
     @sessions = session[controller_name.to_sym]
-  end
-
-  def find_project
-    @project = Project.includes(:attachments).references(:attachments).where(slug: params[:project_id]) #this always return 1 result. Don't use .first(AR) because it generate two query (due to ActiveRecord::FinderMethods::apply_join_dependency(..))
-    @project = @project.to_a.first
-    gon.project_id = @project.slug
-    render_404 if @project.nil?
   end
 
   def set_current_user

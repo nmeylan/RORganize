@@ -4,8 +4,6 @@
 # File: document_controller.rb
 require 'shared/history'
 class DocumentsController < ApplicationController
-  before_filter :find_project, except: [:index, :new, :edit, :toolbox]
-  before_filter :find_project_with_associations, only: [:index, :new, :edit, :toolbox]
   before_filter :load_documents, :only => [:index]
   before_filter :check_permission, :except => [:download_attachment, :toolbox]
   before_filter { |c| c.menu_context :project_menu }
@@ -16,7 +14,7 @@ class DocumentsController < ApplicationController
   def index
     respond_to do |format|
       format.html
-      format.js { respond_to_js action: 'index'}
+      format.js { respond_to_js action: 'index' }
     end
   end
 
@@ -70,7 +68,7 @@ class DocumentsController < ApplicationController
     #this always return 1 result. Don't use .first(AR method) because it generate two query (due to ActiveRecord::FinderMethods::apply_join_dependency(..))
     @document = Document.eager_load(:category, :version, :attachments).where(id: params[:id])[0].decorate(context: {project: @project})
     respond_to do |format|
-      format.html { render :action => 'show', :locals => {:history => History.new(Journal.document_activities(@document.id), @document.comments)}}
+      format.html { render :action => 'show', :locals => {:history => History.new(Journal.document_activities(@document.id), @document.comments)} }
     end
   end
 
@@ -120,10 +118,12 @@ class DocumentsController < ApplicationController
         format.js { respond_to_js :action => :index, :response_header => :success, :response_content => t(:successful_deletion) }
       end
     else
-      Document.bulk_edit(params[:ids], value_params)
-      respond_to do |format|
-        load_documents
-        format.js { respond_to_js :action => :index, :response_header => :success, :response_content => t(:successful_update) }
+      if User.current.allowed_to?('edit', 'documents', @project)
+        Document.bulk_edit(params[:ids], value_params)
+        respond_to do |format|
+          load_documents
+          format.js { respond_to_js :action => :index, :response_header => :success, :response_content => t(:successful_update) }
+        end
       end
     end
   end
@@ -151,11 +151,12 @@ class DocumentsController < ApplicationController
     params.require(:value).permit(Document.permit_bulk_edit_values)
   end
 
-  def find_project_with_associations
+  def find_project
     @project = Project.eager_load(:attachments, :versions, :categories, :members).where(slug: params[:project_id])[0]
     gon.project_id = @project.slug
+  rescue => e
+    render_404
   end
-
 
 
 end

@@ -32,18 +32,22 @@ module Rorganize
     end
 
     module PermissionManagerHelper
-      def permission_manager_allowed_to?(role_id,action, controller)
-        return Rorganize::PermissionManager.permissions[role_id].any?{|permission| permission[:action] == action && permission[:controller] == controller}
+      def permission_manager_allowed_to?(role_id, action, controller)
+        Rorganize::PermissionManager.permissions[role_id].any? { |permission| permission[:action] == action && permission[:controller] == controller }
       end
 
       def reload_permission(role_id)
         Rorganize::PermissionManager.load_permissions_spec_role(role_id)
       end
 
+      def allowed_to_actions_list(role_id, controller = nil)
+        controller ? Rorganize::PermissionManager.permissions[role_id].select { |permission| permission[:controller] == controller } : Rorganize::PermissionManager.permissions[role_id]
+      end
     end
 
     class << self
       attr_reader :permissions
+
       def initialize
         @permissions = load_permissions
       end
@@ -54,7 +58,7 @@ module Rorganize
 
       def load_permissions
         roles = Role.all
-        permissions = Hash.new{|h, k| h[k] = []}
+        permissions = Hash.new { |h, k| h[k] = [] }
         roles.each do |role|
           permissions[role.id.to_s] = []
           role.permissions.each do |permission|
@@ -68,7 +72,7 @@ module Rorganize
         role = Role.find(role_id)
         @permissions[role_id.to_s].clear
         role.permissions.each do |perm|
-           @permissions[role_id.to_s] << {:action => perm.action, :controller => perm.controller.downcase}
+          @permissions[role_id.to_s] << {:action => perm.action, :controller => perm.controller.downcase}
         end
       end
 

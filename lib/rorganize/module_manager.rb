@@ -19,7 +19,7 @@ module Rorganize
             break
           end
         end
-        return module_is_enabled
+        module_is_enabled
       end
 
       def reload_enabled_module(project_id)

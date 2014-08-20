@@ -6,7 +6,6 @@
 class SettingsController < ApplicationController
   include Rorganize::RichController
   before_filter :set_pagination, :only => [:public_queries]
-  before_filter :find_project
   before_filter :check_queries_permission, :only => [:public_queries]
   before_filter :check_permission, :except => [:public_queries, :delete_attachment, :update]
   before_filter { |c| c.menu_context :project_menu }

@@ -80,6 +80,7 @@ class CategoriesController < ApplicationController
       format.js {respond_to_js :locals => {:id => params[:id]}, :response_header => :success, :response_content => t(:successful_deletion)}
     end
   end
+
   private
   def category_params
     params.require(:category).permit(Category.permit_attributes)

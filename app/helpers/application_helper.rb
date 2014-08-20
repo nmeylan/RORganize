@@ -6,7 +6,7 @@ module ApplicationHelper
 
   def title_tag
     title = ''
-    if @project
+    if @project && !@project.new_record?
       title += @project.slug.capitalize + ' '
     elsif controller_name.eql?('profiles')
       title += current_user.login + " (#{current_user.caption}) "
@@ -44,7 +44,7 @@ module ApplicationHelper
       format.html { render :file => "#{Rails.root}/public/403.html.erb", :status => :forbidden }
       format.js { respond_to_js action: 'do_nothing', :response_header => :failure, :response_content => t(:error_403) }
       format.xml { head :forbidden }
-      format.any { head :forbidden }
+      format.all { respond_to_js action: 'do_nothing', :response_header => :failure, :response_content => t(:error_403) }
     end
   end
 
