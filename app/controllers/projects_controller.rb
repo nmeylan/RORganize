@@ -28,7 +28,7 @@ class ProjectsController < ApplicationController
       activities_types = @sessions[:activities][:types]
       activities_period = @sessions[:activities][:period]
       from_date = @sessions[:activities][:from_date]
-      @activities = Activities.new(@project.activities(activities_types, activities_period, from_date),@project.comments(activities_types, activities_period, from_date))
+      @activities = Activities.new(@project.activities(activities_types, activities_period, from_date), @project.comments(activities_types, activities_period, from_date))
     end
     respond_to do |format|
       format.html { render action: 'activity', locals: locals }

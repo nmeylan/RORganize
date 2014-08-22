@@ -3,4 +3,5 @@
  * Date: 30.07.14
  * Time: 18:24
 %>
-<%=@user.name %>
+
+<%= render partial: 'profiles/overview', locals: {user: @user} %>

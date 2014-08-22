@@ -12,16 +12,12 @@ class ProfilesController < ApplicationController
   helper ProjectsHelper
   helper IssuesHelper
   helper QueriesHelper
+  helper UsersHelper
 
   def show
-    #Load favorites projects
-    projects = @user.owned_projects('starred').decorate(context: {allow_to_star: false})
-    #Load latest assigned requests
-    issues = @user.latest_assigned_issues('issues.id DESC', 5).decorate
-    #Load latest activities
-    activities =  @user.latest_activities(5)
+    @user = User.eager_load([members: [:role, :project, :assigned_issues]]).find_by_slug(current_user.slug).decorate
     respond_to do |format|
-      format.html { render :action => 'show', :locals => {issues: issues, activities: activities, projects: projects} }
+      format.html { render :action => 'show' }
     end
   end
 

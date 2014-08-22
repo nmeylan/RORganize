@@ -7,11 +7,15 @@ class UserDecorator < ApplicationDecorator
   end
 
   def sign_in
-    model.last_sign_in_at ? model.last_sign_in_at.to_formatted_s(:short) : '-'
+    model.last_sign_in_at ? model.last_sign_in_at.to_formatted_s(:long_ordinal) : '-'
   end
 
   def current_sign_in
-    model.current_sign_in_at ? model.current_sign_in_at.to_formatted_s(:short) : '-'
+    model.current_sign_in_at ? model.current_sign_in_at.to_formatted_s(:long_ordinal) : '-'
+  end
+
+  def register_on
+    model.created_at.to_formatted_s(:long_ordinal)
   end
 
   def display_is_admin
@@ -31,6 +35,10 @@ class UserDecorator < ApplicationDecorator
       h.safe_concat h.image_tag user.avatar.avatar.url(:very_small), {class: 'small_avatar'} if avatar && user.avatar
       h.safe_concat h.link_to model.caption, h.view_profile_path(model.slug), {class: 'author_link'}
     end
+  end
+
+  def display_projects
+    h.projects(self)
   end
 
   def role_render

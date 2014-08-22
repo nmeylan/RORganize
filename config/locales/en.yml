@@ -8,6 +8,7 @@ en:
   label_project_plural: Projects
   label_about: About
   label_contact_plural: Contacts
+  label_register_on: Register on
   label_log_in: Log in
   label_log_out: Log out
   label_overview: Overview
@@ -262,6 +263,7 @@ en:
   text_this: this
   text_edited: Edited
   text_on: on
+  text_assigned_issues: assigned issues
 
   password: "Password"
   field_steps: "Steps"

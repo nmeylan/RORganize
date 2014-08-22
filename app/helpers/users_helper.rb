@@ -26,4 +26,15 @@ module UsersHelper
       end.join.html_safe)
     }
   end
+
+  def projects(user)
+    content_tag :ul do
+      user.members.collect do |member|
+        content_tag :li do
+          safe_concat link_to member.project.caption.capitalize, overview_projects_path(member.project.slug)
+          safe_concat " (#{member.role.caption}, #{link_to member.assigned_issues.size, issues_path(member.project.slug, {type: :filter, filter_list: :assigned_to, filter: {assigned_to: {operator: :equal, value: [user.id]}}}) } #{t(:text_assigned_issues)})"
+        end
+      end.join.html_safe
+    end
+  end
 end

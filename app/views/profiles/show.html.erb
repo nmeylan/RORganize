@@ -6,4 +6,4 @@
 %>
 
 <%= render :partial => 'profiles/sidebar' %>
-<%= render partial: 'profiles/overview', locals: {issues: issues, activities: activities, projects: projects} %>
+<%= render partial: 'profiles/overview', locals: {user: @user} %>

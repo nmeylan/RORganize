@@ -17,6 +17,7 @@ class User < ActiveRecord::Base
   #attr_accessible :id, :login, :email, :name, :password, :password_confirmation, :remember_me
   #Relations
   has_many :members, :class_name => 'Member', :dependent => :destroy
+  has_many :assigned_issues, foreign_key: :assigned_to_id, class_name: 'Issue'
   #Validators
   validates :login, :presence => true, :length => 4..50, :uniqueness => true
   validates :name, :presence => true, :length => 4..50

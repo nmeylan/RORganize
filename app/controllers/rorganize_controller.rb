@@ -1,6 +1,7 @@
 class RorganizeController < ApplicationController
   helper ProjectsHelper
   helper IssuesHelper
+  helper UsersHelper
   before_filter {|c| c.top_menu_item('home')}
   helper_method :sort_column, :sort_direction
 
@@ -24,7 +25,7 @@ class RorganizeController < ApplicationController
   end
 
   def view_profile
-    @user = User.find_by_slug(params[:user])
+    @user = User.eager_load([members: [:role, :project, :assigned_issues]]).find_by_slug(params[:user]).decorate
     render_404 if @user.nil?
   end
 

@@ -14,6 +14,7 @@ class Member < ActiveRecord::Base
   
   belongs_to :user, :class_name => 'User'
   belongs_to :role, :class_name => 'Role'
+  has_many :assigned_issues, -> { where('issues.project_id = members.project_id')},through: :user, class_name: 'Issue'
   #Triggers
   before_create :set_project_position
   #Scopes

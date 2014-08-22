@@ -1,0 +1,18 @@
+<%#=
+ * User: nmeylan
+ * Date: 08.07.14
+ * Time: 14:39
+%>
+<%= contextual "#{user.login} (#{user.name})" %>
+<div class="splitcontentleft">
+  <h2><%= t(:label_about) %></h2>
+  <ul>
+    <li><%= t(:field_email) %> : <%= user.email %></li>
+    <li><%= t(:label_last_sign_in)%> : <%= user.current_sign_in %></li>
+    <li><%= t(:label_register_on)%> : <%= user.register_on %></li>
+  </ul>
+  <h2><%= t(:label_project) %></h2>
+  <%= user.display_projects %>
+</div>
+<div class="splitcontentright"></div>
+<%= clear_both %>
