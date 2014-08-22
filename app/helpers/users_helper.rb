@@ -32,7 +32,7 @@ module UsersHelper
       user.members.collect do |member|
         content_tag :li do
           safe_concat link_to member.project.caption.capitalize, overview_projects_path(member.project.slug)
-          safe_concat " (#{member.role.caption}, #{link_to member.assigned_issues.size, issues_path(member.project.slug, {type: :filter, filter_list: :assigned_to, filter: {assigned_to: {operator: :equal, value: [user.id]}}}) } #{t(:text_assigned_issues)})"
+          safe_concat " (#{member.role.caption}, #{link_to member.assigned_issues.to_a.count{|issue| issue.open?}, issues_path(member.project.slug, {type: :filter, filters_list: [:assigned_to, :status], filter: {assigned_to: {operator: :equal, value: [user.id]}, status: {operator: :open}}}) } #{t(:text_assigned_issues)})"
         end
       end.join.html_safe
     end

@@ -6,8 +6,11 @@
 function on_load_profiles_scripts() {
 
     profiles_spent_time();
-
     profiles_project();
+    if (gon.action === 'show') {
+        bind_activities();
+        on_activities_load();
+    }
 }
 
 function profiles_spent_time(){
@@ -25,4 +28,8 @@ function profiles_project(){
     jQuery(".sortable").sortable();
     bind_save_project_position();
     bind_star_project();
+}
+
+function on_activities_load(){
+    createOverlay("#comments_overlay", 150);
 }

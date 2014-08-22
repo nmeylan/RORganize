@@ -38,6 +38,13 @@ class User < ActiveRecord::Base
     name_changed?
   end
 
+  def activities(journalizable_types, period, from_date)
+    Journal.activities_eager_load(journalizable_types, period, from_date, "journals.user_id = #{self.id}")
+  end
+  def comments(journalizable_types, period, from_date)
+    Comment.comments_eager_load(journalizable_types, period, from_date, "comments.user_id = #{self.id}")
+  end
+
   #Override devise
   def self.serialize_from_session(key, salt)
     record = self.eager_load(members: :role).where(id: key)[0]

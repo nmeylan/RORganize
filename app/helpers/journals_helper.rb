@@ -71,6 +71,7 @@ module JournalsHelper
       safe_concat content_tag :span, user, class: 'author'
       safe_concat content_tag :span, journal.display_action_type, class: 'action_type'
       safe_concat content_tag :span, journal.display_object_type, class: 'object_type'
+      journal.display_project_link(@project)
       safe_concat content_tag :span, journal.display_creation_at, class: 'date'
     else
       safe_concat content_tag :span, nil, class: "#{journal.display_action_type_icon}"
@@ -78,6 +79,7 @@ module JournalsHelper
       safe_concat content_tag :span, user, class: 'author'
       safe_concat content_tag :span, journal.display_action_type, class: 'action_type'
       safe_concat content_tag :span, journal.display_object_type, class: 'object_type'
+      journal.display_project_link(@project)
     end
   end
 
@@ -86,12 +88,14 @@ module JournalsHelper
       safe_concat content_tag :span, nil, class: "octicon octicon-comment activity_icon"
       safe_concat content_tag :span, comment.display_author, class: 'author'
       safe_concat comment.render_header
+      comment.display_project_link(@project)
       safe_concat content_tag :span, comment.display_creation_at, class: 'date'
     else
       safe_concat content_tag :span, nil, class: "octicon octicon-comment activity_icon"
       safe_concat content_tag :span, comment.display_creation_at, class: 'date'
       safe_concat content_tag :span, comment.display_author, class: 'author'
       safe_concat comment.render_header
+      comment.display_project_link(@project)
     end
   end
 
@@ -142,14 +146,14 @@ module JournalsHelper
     end
   end
 
-  def sidebar_types_selection(types, selected_types, period, date)
+  def sidebar_types_selection(types, selected_types, period, date, user = nil)
     labels = {'Issue' => t(:label_activity_type_issue), 'Category' => t(:label_activity_type_category), 'Document' => t(:label_activity_type_document),
               'Member' => t(:label_activity_type_member), 'Version' => t(:label_activity_type_version), 'Wiki' => t(:label_activity_type_wiki),
               'WikiPage' => t(:label_activity_type_wiki_page)}
     periods = {ONE_DAY: t(:label_activity_period_one_day), THREE_DAYS: t(:label_activity_period_three_days), ONE_WEEK: t(:label_activity_period_one_week), ONE_MONTH: t(:label_activity_period_one_month)}
     select_values = Hash[Journal::ACTIVITIES_PERIODS.keys.map { |period| [periods[period], period] }]
     project_id = @project ? @project.slug : nil
-    form_tag url_for({action: 'activity_filter', project_id: project_id}), {id: 'activities_filter', remote: true} do
+    form_tag url_for({action: 'activity_filter', project_id: project_id, user: user}), {id: 'activities_filter', remote: true} do
       safe_concat content_tag :ul, class: '', &Proc.new {
         types.collect do |type|
           content_tag :li, class: 'activities_filter' do

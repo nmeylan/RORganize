@@ -19,6 +19,19 @@ class CommentDecorator < ApplicationDecorator
     model.author ? model.author.user_link(avatar) : h.t(:label_unknown)
   end
 
+  def project_link
+    h.link_to model.project.caption, h.overview_projects_path(model.project.slug)
+  end
+
+  def display_project_link(project)
+    unless project
+      h.safe_concat h.content_tag :span, class: 'object_type', &Proc.new{
+        h.safe_concat 'on '
+        h.safe_concat project_link
+      }
+    end
+  end
+
   def author_avatar
     author_avatar? ? h.image_tag(model.author.avatar.avatar.url(:thumb), {class: 'avatar'}) : ''
   end

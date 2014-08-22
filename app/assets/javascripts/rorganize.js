@@ -30,6 +30,9 @@
             case 'projects' :
                 on_load_projects_scripts();
                 break;
+            case 'rorganize' :
+            on_load_rorganize_scripts();
+            break;
             case 'roadmaps' :
                 on_load_roadmap_scripts();
                 break;

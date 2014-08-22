@@ -4,7 +4,7 @@
  * Time: 14:39
 %>
 <%= contextual "#{user.login} (#{user.name})" %>
-<div class="splitcontentleft">
+<div class="splitcontentleft" style="width:30%">
   <h2><%= t(:label_about) %></h2>
   <ul>
     <li><%= t(:field_email) %> : <%= user.email %></li>
@@ -14,5 +14,14 @@
   <h2><%= t(:label_project) %></h2>
   <%= user.display_projects %>
 </div>
-<div class="splitcontentright"></div>
+<div class="splitcontentright" style="width:70%">
+  <div id="activities">
+    <%= display_activities(@activities, selected_date, from_date) %>
+    <%= content_for :sidebar do %>
+        <h2><%= t(:label_activities) %></h2>
+        <%= sidebar_types_selection(types, selected_types, selected_period, selected_date, user) %>
+    <% end %>
+  </div>
+</div>
+<%= render partial: 'comments/comments_overlay' %>
 <%= clear_both %>

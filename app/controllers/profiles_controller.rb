@@ -3,6 +3,7 @@
 # Encoding: UTF-8
 # File: profiles_controller.rb
 
+require 'shared/activities'
 class ProfilesController < ApplicationController
   include Rorganize::RichController
   before_filter :authenticate_user!
@@ -13,12 +14,28 @@ class ProfilesController < ApplicationController
   helper IssuesHelper
   helper QueriesHelper
   helper UsersHelper
+  include Rorganize::ActivityManager
 
   def show
-    @user = User.eager_load([members: [:role, :project, :assigned_issues]]).find_by_slug(current_user.slug).decorate
-    respond_to do |format|
-      format.html { render :action => 'show' }
+    @user = User.eager_load([members: [:role, :project, assigned_issues: :status]]).find_by_slug(current_user.slug).decorate
+    init_activities_sessions
+    activities_data = selected_filters
+    if @sessions[:activities][:types].include?('NIL')
+      @activities =  Activities.new([])
+    else
+      activities_types = @sessions[:activities][:types]
+      activities_period = @sessions[:activities][:period]
+      from_date = @sessions[:activities][:from_date]
+      @activities = Activities.new(@user.activities(activities_types, activities_period, from_date), @user.comments(activities_types, activities_period, from_date))
     end
+    respond_to do |format|
+      format.html { render :action => 'show', locals: activities_data }
+      format.js { respond_to_js action: 'activity', locals: activities_data }
+    end
+  end
+
+  def activity
+    show
   end
 
   def assigned_requests

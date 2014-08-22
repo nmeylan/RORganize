@@ -150,6 +150,10 @@ class Issue < ActiveRecord::Base
     Rorganize::MagicFilter.generics_filter(hash, attributes)
   end
 
+  def open?
+    !self.status.is_closed
+  end
+
   private
   def set_done_ratio
     unless self.status.nil?
