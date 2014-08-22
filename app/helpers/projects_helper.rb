@@ -1,23 +1,6 @@
 module ProjectsHelper
   include JournalsHelper
 
-  def project_archive_permissions(action, controller)
-    permissions = Hash.new { |h, k| h[k] = [] }
-    permissions['action'] = %w(new edit create update destroy delete checklist change)
-    permissions['controller'] = %w(Categories Versions)
-    if permissions['controller'].include?(controller)
-      return false
-    end
-    permissions['action'].each do |a|
-      if action.include?(a)
-        return false
-      end
-    end
-    true
-  end
-
-
-
   def members_list(members_hash)
     content_tag :div do
       members_hash.collect do |role, members|

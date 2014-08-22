@@ -43,6 +43,21 @@ module Rorganize
       def allowed_to_actions_list(role_id, controller = nil)
         controller ? Rorganize::PermissionManager.permissions[role_id].select { |permission| permission[:controller] == controller } : Rorganize::PermissionManager.permissions[role_id]
       end
+
+      def project_archive_permissions(action, controller)
+        permissions = Hash.new { |h, k| h[k] = [] }
+        permissions['action'] = %w(new edit create update destroy delete checklist change)
+        permissions['controller'] = %w(Categories Versions)
+        if permissions['controller'].include?(controller)
+          return false
+        end
+        permissions['action'].each do |a|
+          if action.include?(a)
+            return false
+          end
+        end
+        true
+      end
     end
 
     class << self
