@@ -57,7 +57,7 @@ module Rorganize
 
 
     def set_action_alias
-      @aliases = {update: :edit, create: :new, toolbox: :edit}
+      @aliases = {'update' => 'edit', 'create' => 'new', 'toolbox' => 'edit'}
     end
 
     def add_action_alias=(hash)
@@ -65,13 +65,11 @@ module Rorganize
     end
 
     def find_action_alias(action)
-      action = action.to_sym
       if @aliases.keys.include?(action)
         @aliases[action]
       else
         action
       end
-      action.to_s
     end
   end
 end
