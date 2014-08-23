@@ -36,6 +36,11 @@ module Rorganize
         Rorganize::PermissionManager.permissions[role_id].any? { |permission| permission[:action] == action && permission[:controller] == controller }
       end
 
+      def anonymous_permission_manager_allowed_to?(action, controller)
+        anonymous_role = Rorganize::PermissionManager.anonymous_role
+        Rorganize::PermissionManager.permissions[anonymous_role.id.to_s].any? { |permission| permission[:action] == action && permission[:controller] == controller }
+      end
+
       def reload_permission(role_id)
         Rorganize::PermissionManager.load_permissions_spec_role(role_id)
       end
@@ -61,10 +66,11 @@ module Rorganize
     end
 
     class << self
-      attr_reader :permissions
+      attr_reader :permissions, :anonymous_role
 
       def initialize
         @permissions = load_permissions
+        @anonymous_role = Role.find_by_name('Anonymous')
       end
 
       def reload_permissions
