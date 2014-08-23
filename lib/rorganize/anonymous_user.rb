@@ -4,11 +4,12 @@
 # File: anonymous_user.rb
 
 class AnonymousUser < User
+  ANON_ID = -666
   def initialize(arg)
     super(arg)
   end
 
-  @@instance = AnonymousUser.new({id: -666, name: 'Anonymous', slug: 'anonymous'})
+  @@instance = AnonymousUser.new({id: ANON_ID, name: 'Anonymous', slug: 'anonymous'})
 
   def self.instance
     return @@instance

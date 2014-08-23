@@ -105,27 +105,37 @@ class User < ActiveRecord::Base
 
   def allowed_to?(action, controller, project = nil)
     return true if self.is_admin? && act_as_admin? && (project && module_enabled?(project.id.to_s, action, controller) || !project)
-    m = self.members
-    if project
-      if project.is_public
+    if self.id.eql?(AnonymousUser::ANON_ID) #Concern unconnected users.
+      if project && project.is_public
         return (module_enabled?(project.id.to_s, action, controller) &&
             anonymous_permission_manager_allowed_to?(action.to_s, controller.downcase.to_s) &&
             (!project.is_archived? || (project.is_archived? && project_archive_permissions(action, controller))))
       else
-        member = m.to_a.select { |mb| mb.project_id == project.id }.first
-        return (member &&
-            module_enabled?(project.id.to_s, action, controller) &&
-            permission_manager_allowed_to?(member.role.id.to_s, action.to_s, controller.downcase.to_s) &&
-            (!project.is_archived? || (project.is_archived? && project_archive_permissions(action, controller))))
+        false
       end
     else
-      if m
-        for mem in m do
-          if permission_manager_allowed_to?(mem.role_id.to_s, action.to_s, controller.downcase.to_s)
-            return true
-          end
+      m = self.members
+      if project
+        if project.is_public
+          return (module_enabled?(project.id.to_s, action, controller) &&
+              non_member_permission_manager_allowed_to?(action.to_s, controller.downcase.to_s) &&
+              (!project.is_archived? || (project.is_archived? && project_archive_permissions(action, controller))))
+        else
+          member = m.to_a.select { |mb| mb.project_id == project.id }.first
+          return (member &&
+              module_enabled?(project.id.to_s, action, controller) &&
+              permission_manager_allowed_to?(member.role.id.to_s, action.to_s, controller.downcase.to_s) &&
+              (!project.is_archived? || (project.is_archived? && project_archive_permissions(action, controller))))
         end
-        return false
+      else
+        if m
+          for mem in m do
+            if permission_manager_allowed_to?(mem.role_id.to_s, action.to_s, controller.downcase.to_s)
+              return true
+            end
+          end
+          return false
+        end
       end
     end
   end

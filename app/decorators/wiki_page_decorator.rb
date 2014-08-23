@@ -42,7 +42,7 @@ class WikiPageDecorator < ApplicationDecorator
   end
 
   def new_subpage_link
-    if h.User.current.allowed_to?('new', 'Wiki_pages', @project)
+    if User.current.allowed_to?('new', 'Wiki_pages', @project)
       h.link_to h.glyph(h.t(:link_new_sub_page), 'sub-file'), h.new_sub_page_wiki_pages_path(context[:project].slug, model.slug)
     end
   end
