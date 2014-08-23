@@ -106,12 +106,20 @@ class User < ActiveRecord::Base
   def allowed_to?(action, controller, project = nil)
     return true if self.is_admin? && act_as_admin? && (project && module_enabled?(project.id.to_s, action, controller) || !project)
     if self.id.eql?(AnonymousUser::ANON_ID) #Concern unconnected users.
-      if project && project.is_public
-        return (module_enabled?(project.id.to_s, action, controller) &&
-            anonymous_permission_manager_allowed_to?(action.to_s, controller.downcase.to_s) &&
-            (!project.is_archived? || (project.is_archived? && project_archive_permissions(action, controller))))
+      if project
+        if project.is_public
+          (module_enabled?(project.id.to_s, action, controller) &&
+              anonymous_permission_manager_allowed_to?(action.to_s, controller.downcase.to_s) &&
+              (!project.is_archived? || (project.is_archived? && project_archive_permissions(action, controller))))
+        else
+          false
+        end
       else
-        false
+        if anonymous_permission_manager_allowed_to?(action.to_s, controller.downcase.to_s)
+          true
+        else
+          false
+        end
       end
     else
       m = self.members
@@ -128,13 +136,15 @@ class User < ActiveRecord::Base
               (!project.is_archived? || (project.is_archived? && project_archive_permissions(action, controller))))
         end
       else
-        if m
+        if m && m.any?
           for mem in m do
             if permission_manager_allowed_to?(mem.role_id.to_s, action.to_s, controller.downcase.to_s)
               return true
             end
           end
           return false
+        else
+          non_member_permission_manager_allowed_to?(action.to_s, controller.downcase.to_s)
         end
       end
     end

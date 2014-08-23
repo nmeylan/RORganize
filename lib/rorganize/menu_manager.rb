@@ -38,11 +38,11 @@ module Rorganize
       def render_project_menu(menu, project)
         content = ''
         menu.menu_items.each do |item|
-          if User.current.allowed_to?(item.url[:action], item.url[:controller],project)
+          if User.current.allowed_to?(item.url[:action], item.url[:controller], project)
             item.url[:project_id] = project.slug
             content += content_tag(:li,
-              link_to(item.label, item.url, {:id => item.params[:id]}),
-              :class => item.params[:id].eql?(@current_menu_item) ? 'selected' : '')
+                                   link_to(item.label, item.url, {:id => item.params[:id]}),
+                                   :class => item.params[:id].eql?(@current_menu_item) ? 'selected' : '')
           end
         end
         content_for :main_menu, content.html_safe
@@ -53,8 +53,8 @@ module Rorganize
         menu.menu_items.each do |item|
           if User.current.allowed_to?(item.url[:action], item.url[:controller])
             content += content_tag(:li,
-              link_to(item.label, item.url, {:id => item.params[:id]}),
-              :class => item.params[:id].eql?(@current_menu_item) ? 'selected' : '')
+                                   link_to(item.label, item.url, {:id => item.params[:id]}),
+                                   :class => item.params[:id].eql?(@current_menu_item) ? 'selected' : '')
           end
         end
         content_for :main_menu, content.html_safe
@@ -63,14 +63,15 @@ module Rorganize
       def render_top_menu
         menu = Rorganize::MenuManager.items(:top_menu)
         content = ''
-        content += content += content_tag(:li,
-          link_to(t(:home), :root, { :class => @current_top_menu_item.eql?('menu_home') ? 'selected square' : 'square'}))
-        menu.menu_items.each do |item|
-          if User.current && User.current.allowed_to?(item.url[:action], item.url[:controller])
-            content += content_tag(:li,
-              link_to(item.label, item.url, {:id => item.params[:id],
-                  :class => item.params[:id].eql?(@current_top_menu_item) ? 'selected square' : 'square'}
-              ))
+        content += content_tag(:li,link_to(t(:home), :root, {:class => @current_top_menu_item.eql?('menu_home') ? 'selected square' : 'square'}))
+        unless controller_name.eql?('sessions')
+          menu.menu_items.each do |item|
+            if User.current && User.current.allowed_to?(item.url[:action], item.url[:controller])
+              content += content_tag(:li,
+                                     link_to(item.label, item.url, {:id => item.params[:id],
+                                                                    :class => item.params[:id].eql?(@current_top_menu_item) ? 'selected square' : 'square'}
+                                     ))
+            end
           end
         end
         content_for :top_menu_items, content.html_safe
@@ -89,6 +90,7 @@ module Rorganize
           yield self.items(menu_name)
         end
       end
+
       def items(menu_name)
         @items[menu_name.to_sym]
       end
@@ -96,10 +98,12 @@ module Rorganize
     #Menu class
     class Menu
       attr_reader :menu, :menu_items
+
       def initialize(menu_name)
         @menu = menu_name
         @menu_items = []
       end
+
       #options are
       # id: for html element
       # before : to place an item before another one
@@ -131,6 +135,7 @@ module Rorganize
     #Menu item class
     class MenuItem
       attr_reader :name, :label, :url, :params, :controller, :action
+
       def initialize(name, label, url={}, options={})
         @name = name
         @label = label
