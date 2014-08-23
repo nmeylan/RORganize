@@ -58,7 +58,7 @@ class IssueDecorator < ApplicationDecorator
   end
 
   def delete_link
-    super(h.t(:link_delete), h.issue_path(context[:project].slug, model.id), context[:project])
+    super(h.t(:link_delete), h.issue_path(context[:project].slug, model.id), context[:project], model.author_id)
   end
 
   def link_checklist_overlay
