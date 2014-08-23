@@ -57,6 +57,7 @@ RORganize::Application.routes.draw do
         get 'apply_custom_query', :path => 'filter/:query_id'
         post 'add_predecessor', :path => ':id/add_predecessor'
         delete 'del_predecessor', :path => ':id/del_predecessor'
+        get 'overview'
       end
     end
     resources :documents do

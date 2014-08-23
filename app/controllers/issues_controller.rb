@@ -3,6 +3,7 @@
 # Encoding: UTF-8
 # File: issues_controller.rb
 require 'shared/history'
+require 'issues/issue_overview_hash'
 class IssuesController < ApplicationController
   before_filter :check_permission, :except => [:save_checklist, :show_checklist_items, :toolbox, :download_attachment, :start_today]
   before_filter :check_not_owner_permission, :only => [:edit, :update, :destroy]
@@ -141,7 +142,6 @@ class IssuesController < ApplicationController
     end
   end
 
-
   #Save checklist
   def save_checklist
     ChecklistItem.save_items(params[:items], params[:id])
@@ -201,6 +201,13 @@ class IssuesController < ApplicationController
 
   def del_predecessor
     set_predecessor(nil)
+  end
+
+  def overview
+    overview_object = IssueOverviewHash.new(Issue.where(project_id: @project.id).count, Issue.count_group_by_assigned(@project.id), Issue.count_group_by_status(@project.id), Issue.count_group_by_versions(@project.id), Issue.count_group_by_categories(@project.id))
+    respond_to do |format|
+      format.html { render action: :overview, locals: {overview: overview_object} }
+    end
   end
 
   #Private methods
