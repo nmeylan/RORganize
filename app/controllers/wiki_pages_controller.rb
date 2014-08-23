@@ -28,7 +28,7 @@ class WikiPagesController < ApplicationController
     @wiki_page = WikiPage.new(wiki_page_params)
     wiki = Wiki.find_by_project_id(@project.id)
     @wiki_page.wiki_id = wiki.id
-    @wiki_page.author_id = current_user.id
+    @wiki_page.author_id = User.current.id
     if params[:wiki_page][:parent_id]
       @wiki_page.parent_id = WikiPage.find_by_slug(params[:wiki_page][:parent_id]).id
     end
@@ -101,7 +101,7 @@ class WikiPagesController < ApplicationController
   end
 
   def check_new_permission
-    unless current_user.allowed_to?('new', 'Wiki_pages', @project)
+    unless User.current.allowed_to?('new', 'Wiki_pages', @project)
       render_403
     end
   end
@@ -111,7 +111,7 @@ class WikiPagesController < ApplicationController
   end
 
   def check_owner
-    @wiki_page.author_id.eql?(current_user.id)
+    @wiki_page.author_id.eql?(User.current.id)
   end
   def wiki_page_params
     params.require(:wiki_page).permit(WikiPage.permit_attributes)

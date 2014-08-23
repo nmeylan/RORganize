@@ -43,7 +43,7 @@ module DocumentsHelper
   end
 
   def document_toolbox(documents_toolbox)
-    toolbox_tag(DocumentToolbox.new(documents_toolbox, @project, current_user))
+    toolbox_tag(DocumentToolbox.new(documents_toolbox, @project, User.current))
   end
 
   def documents_filter_js_tag

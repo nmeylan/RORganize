@@ -31,7 +31,7 @@ class AdministrationController < ApplicationController
 
   private
   def check_queries_permission
-    unless current_user.allowed_to?(params[:action], 'Queries')
+    unless User.current.allowed_to?(params[:action], 'Queries')
       render_403
     end
   end

@@ -16,7 +16,7 @@ class WikiDecorator < ApplicationDecorator
   end
 
   def organize_pages_link
-    if h.current_user.allowed_to?('set_organization', 'Wiki', context[:project])
+    if h.User.current.allowed_to?('set_organization', 'Wiki', context[:project])
       h.link_to h.glyph(h.t(:link_organize_pages), 'list-ordered'), h.organize_pages_wiki_index_path(context[:project].slug)
     end
   end

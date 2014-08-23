@@ -8,31 +8,31 @@
 <%=  content_for :sidebar do %>
   <ul class="tabs">
     <li class="settings_index"><%= link_to t(:link_update_informations),settings_path(@project.slug)%></li>
-    <% if current_user.allowed_to?('index','Versions',@project) %>
+    <% if User.current.allowed_to?('index','Versions',@project) %>
       <li class="versions">
         <%= link_to glyph(t(:link_versions), Rorganize::ACTION_ICON[:version_id]),
          versions_path(@project.slug)%>
       </li>
     <% end %>
-    <% if current_user.allowed_to?('index','Categories',@project) %>
+    <% if User.current.allowed_to?('index','Categories',@project) %>
       <li class="categories">
         <%= link_to glyph(t(:link_categories), Rorganize::ACTION_ICON[:category_id]),
           categories_path(@project.slug)%>
       </li>
     <% end %>
-    <% if current_user.allowed_to?('index','Members',@project)%>
+    <% if User.current.allowed_to?('index','Members',@project)%>
       <li class="members">
         <%= link_to glyph(t(:link_members), 'organization'),
           members_path(@project.slug)%>
       </li>
     <% end %>
-    <% if current_user.allowed_to?('public_queries', 'Queries', @project) %>
+    <% if User.current.allowed_to?('public_queries', 'Queries', @project) %>
       <li class="settings_public_queries">
         <%= link_to glyph(t(:link_queries), 'database'),
           public_queries_settings_path(@project.slug) %>
       </li>
     <% end %>
-    <% if current_user.allowed_to?('modules', 'Settings', @project) %>
+    <% if User.current.allowed_to?('modules', 'Settings', @project) %>
       <li class="settings_modules">
         <%= link_to glyph(t(:link_modules), 'plug'),
           modules_settings_path(@project.slug) %>
@@ -40,13 +40,13 @@
     <% end %>
     <li class="settings_repository"><%= link_to glyph(t(:link_repository), 'repo-push'),'#' %></li>
 
-    <% if current_user.allowed_to?('archive', 'Projects', @project) %>
+    <% if User.current.allowed_to?('archive', 'Projects', @project) %>
       <li class="project_delete warning">
           <%= link_to !@project.is_archived ? glyph(t(:text_close_this_project), 'lock') : glyph(t(:text_open_this_project), 'unlock'), archive_projects_path(@project.id),
             {:remote => true, :data => {:confirm => !@project.is_archived ? t(:text_archive_project) : t(:text_open_project)}, :method => :post} %>
       </li>
     <% end %>
-    <% if current_user.allowed_to?('destroy', 'Projects', @project) %>
+    <% if User.current.allowed_to?('destroy', 'Projects', @project) %>
       <li class="project_delete alert">
         <%= link_to glyph(t(:text_delete_this_project), 'trashcan'),project_path(@project.id),
           {:remote => true, :data => {:confirm => t(:text_delete_project)}, :method => :delete} %>

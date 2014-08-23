@@ -17,7 +17,7 @@ class ProfilesController < ApplicationController
   include Rorganize::ActivityManager
 
   def show
-    @user = User.eager_load([members: [:role, :project, assigned_issues: :status]]).find_by_slug(current_user.slug).decorate
+    @user = User.eager_load([members: [:role, :project, assigned_issues: :status]]).find_by_slug(User.current.slug).decorate
     init_activities_sessions
     activities_data = selected_filters
     if @sessions[:activities][:types].include?('NIL')
@@ -142,7 +142,7 @@ class ProfilesController < ApplicationController
 
   private
   def find_user
-    @user = User.find(current_user.id)
+    @user = User.find(User.current.id)
     render_404 if @user.nil?
   end
 

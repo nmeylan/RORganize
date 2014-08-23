@@ -12,7 +12,7 @@
     <li><%= link_to 'Report', '#'%></li>
   </ul>
   <div id="custom_queries">
-    <%= render :partial => 'issues/custom_queries' if current_user.allowed_to?('apply_custom_query','Issues',@project)%>
+    <%= render :partial => 'issues/custom_queries' if User.current.allowed_to?('apply_custom_query','Issues',@project)%>
   </div>
 
 <% end %>

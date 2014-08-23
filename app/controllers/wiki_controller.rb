@@ -73,7 +73,7 @@ class WikiController < ApplicationController
 
   private
   def check_organize_pages_permission
-    unless current_user.allowed_to?('set_organization', 'Wiki', @project)
+    unless User.current.allowed_to?('set_organization', 'Wiki', @project)
       render_403
     end
   end

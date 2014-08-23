@@ -49,7 +49,7 @@ class IssuesController < ApplicationController
     @issue.created_at = Time.now.to_formatted_s(:db)
     @issue.updated_at = Time.now.to_formatted_s(:db)
     @issue.project_id = @project.id
-    @issue.author_id = current_user.id
+    @issue.author_id = User.current.id
     respond_to do |format|
       if date_valid?(params[:issue][:due_date]) && @issue.save
         flash[:notice] = t(:successful_creation)
@@ -88,7 +88,7 @@ class IssuesController < ApplicationController
         format.json { render :json => @issue,
                              :status => :created, :location => @issue }
       else
-        @allowed_statuses = current_user.allowed_statuses(@project)
+        @allowed_statuses = User.current.allowed_statuses(@project)
         @done_ratio = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
         format.html { render :action => 'edit', :locals => {:form_content => form_content} }
         format.json { render :json => @issue.errors,
@@ -218,7 +218,7 @@ class IssuesController < ApplicationController
   #Check if current user is owner of issue
   def check_owner
     @issue = Issue.eager_load(:attachments).where(id: params[:id])[0].decorate(context: {project: @project})
-    @issue.author_id.eql?(current_user.id)
+    @issue.author_id.eql?(User.current.id)
   end
 
   def filter
@@ -228,7 +228,7 @@ class IssuesController < ApplicationController
 
   #Find custom queries
   def find_custom_queries
-    @custom_queries = Query.available_for(current_user, @project.id)
+    @custom_queries = Query.available_for(User.current, @project.id)
   end
 
   def load_issues
@@ -240,7 +240,7 @@ class IssuesController < ApplicationController
 
   def form_content
     form_content = {}
-    form_content['allowed_statuses'] = current_user.allowed_statuses(@project).collect { |status| [status.enumeration.name, status.id] }
+    form_content['allowed_statuses'] = User.current.allowed_statuses(@project).collect { |status| [status.enumeration.name, status.id] }
     form_content['done_ratio'] = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
     form_content['members'] = @project.members.collect { |member| [member.user.name, member.user.id] }
     form_content['categories'] = @project.categories.collect { |category| [category.name, category.id] }

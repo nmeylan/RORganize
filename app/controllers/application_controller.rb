@@ -1,3 +1,4 @@
+require 'rorganize/anonymous_user'
 class ApplicationController < ActionController::Base
   protect_from_forgery
   helper :application
@@ -6,9 +7,12 @@ class ApplicationController < ActionController::Base
   helper Rorganize::MenuManager::MenuHelper
   helper Rorganize::PermissionManager::PermissionManagerHelper
   helper_method :sort_column, :sort_direction
-  before_filter :authenticate, :smart_js_loader, :set_sessions
+  before_filter :configure_permitted_parameters, if: :devise_controller?
+  before_filter :authenticate if !RORganize::Application.config.rorganize_anonymous_access
+  before_filter :smart_js_loader, :set_sessions
   around_filter :set_current_user
   after_filter :set_sessions
+
   def menu_context(context)
     @menu_context ||= []
     @menu_context << context
@@ -29,7 +33,7 @@ class ApplicationController < ActionController::Base
   end
 
   def authenticate
-    if !user_signed_in?
+    if !user_signed_in? && !RORganize::Application.config.rorganize_anonymous_access
       authenticate_user!
     end
   end
@@ -38,9 +42,10 @@ class ApplicationController < ActionController::Base
     session[controller_name.to_sym] ||= {}
     @sessions = session[controller_name.to_sym]
   end
-
   def set_current_user
-    unless current_user.nil?
+    if current_user.nil?
+      User.current = AnonymousUser.instance
+    else
       User.current = current_user
     end
     yield
@@ -81,5 +86,8 @@ class ApplicationController < ActionController::Base
 
   def js_redirect_to(path)
     render js: %(window.location.href='#{path}') and return
+  end
+  def configure_permitted_parameters
+    devise_parameter_sanitizer.for(:sign_up) << User.permit_attributes
   end
 end

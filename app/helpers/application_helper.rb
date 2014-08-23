@@ -9,7 +9,7 @@ module ApplicationHelper
     if @project && !@project.new_record?
       title += @project.slug.capitalize + ' '
     elsif controller_name.eql?('profiles')
-      title += current_user.login + " (#{current_user.caption}) "
+      title += User.current.login + " (#{User.current.caption}) "
     else
       title += 'RORganize '
     end
@@ -153,7 +153,7 @@ module ApplicationHelper
   end
 
   def check_permission
-    unless current_user.allowed_to?(find_action(params[:action]), params[:controller], @project)
+    unless User.current.allowed_to?(find_action(params[:action]), params[:controller], @project)
       render_403
     end
   end

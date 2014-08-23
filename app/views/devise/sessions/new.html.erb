@@ -2,17 +2,23 @@
   <h1><%= t(:link_sign_in) %></h1>
 </div>
 <%= form_for(resource, :as => resource_name, :url => session_path(resource_name), :html => {:class => 'form'}) do |f| %>
-  <div class="box">
-    <p><%= f.label :login %>
-      <%= f.text_field :login%></p>
+    <div class="box">
+      <p><%= f.label :login %>
+        <%= f.text_field :login %></p>
 
-    <p><%= f.label :password %>
-      <%= f.password_field :password %></p>
+      <p><%= f.label :password %>
+        <%= f.password_field :password %></p>
 
-    <% if devise_mapping.rememberable? -%>
-      <p><%= f.check_box :remember_me %> <%= f.label :remember_me %></p>
-    <% end -%>
+      <% if devise_mapping.rememberable? -%>
+          <p><%= f.check_box :remember_me %> <%= f.label :remember_me %></p>
+      <% end -%>
 
-  </div>
-  <div><%= f.submit 'Sign in' %></div>
+    </div>
+    <div>
+      <%= f.submit 'Sign in' %>
+      <% if  RORganize::Application.config.rorganize_allow_user_self_registration  %>
+      <%= link_to t(:devise_text_registration), new_user_registration_path %>
+      <% end %>
+    </div>
+
 <% end %>

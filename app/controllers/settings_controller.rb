@@ -79,7 +79,7 @@ class SettingsController < ApplicationController
   private
 
   def check_queries_permission
-    unless current_user.allowed_to?('index', 'Queries', @project)
+    unless User.current.allowed_to?('index', 'Queries', @project)
       render_403
     end
   end

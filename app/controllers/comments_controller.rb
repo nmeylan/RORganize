@@ -10,7 +10,7 @@ class CommentsController < ApplicationController
   def create
     @comment = Comment.new(comment_params)
     @comment.project = @project
-    @comment.author = current_user
+    @comment.author = User.current
     respond_to do |format|
       if @comment.save
         @comment = @comment.decorate

@@ -1,7 +1,7 @@
 require 'shared/activities'
 class ProjectsController < ApplicationController
   before_filter :find_project, :only => [:overview, :show, :activity, :activity_filter]
-  before_filter :check_permission, :except => [:filter, :members, :activity_filter]
+  before_filter :check_permission, :except => [:index, :filter, :members, :activity_filter]
   before_filter { |c| c.menu_context :project_menu }
   before_filter { |c| c.menu_item(params[:controller], params[:action]) }
   before_filter { |c| c.top_menu_item('projects') }
@@ -49,7 +49,7 @@ class ProjectsController < ApplicationController
   #POST /project/new
   def create
     @project = Project.new(project_params).decorate
-    @project.created_by = current_user.id
+    @project.created_by = User.current.id
     respond_to do |format|
       if @project.save
         flash[:notice] = t(:successful_creation)
@@ -105,7 +105,7 @@ class ProjectsController < ApplicationController
     if session['project_selection_filter'].nil?
       session['project_selection_filter'] = 'all'
     end
-    @projects = current_user.owned_projects(session['project_selection_filter']).decorate(context: {allow_to_star: false})
+    @projects = User.current.owned_projects(session['project_selection_filter']).decorate(context: {allow_to_star: false})
     respond_to do |format|
       format.html { render :action => 'index' }
       format.js { respond_to_js :action => 'index' }

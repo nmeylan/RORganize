@@ -8,7 +8,7 @@
 <h2><%= t(:label_predecessor) %> :</h2>
 
 <% if @issue.parent.nil? %>
-    <% if current_user.allowed_to?('add_predecessor', 'Issues', @project) %>
+    <% if User.current.allowed_to?('add_predecessor', 'Issues', @project) %>
         <%= form_for(@issue, :url => add_predecessor_issues_path(@project.slug, @issue.id), :method => 'post', :html => {:remote => true, :class => 'form'}) do |f| %>
             <p>
               <label><%= t(:label_predecessor) %> : #</label>
@@ -20,7 +20,7 @@
         <p>-</p>
     <% end %>
 <% else %>
-    <% if current_user.allowed_to?('del_predecessor', 'Issues', @project) %>
+    <% if User.current.allowed_to?('del_predecessor', 'Issues', @project) %>
         <p>
           #<%= @issue.predecessor_id %> :
           <%= link_to @issue.parent.subject, {:action => 'show', :controller => 'issues', :id => @issue.predecessor_id} %>

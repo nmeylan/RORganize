@@ -2,5 +2,8 @@
 Author: Nicolas Meylan
 %>
 
-
-<h1>Empty home page!</h1>
+<% if current_user.nil? %>
+    <%= render partial: 'rorganize/anonymous_home_page' %>
+<% else %>
+    <h1>Empty home page!</h1>
+<% end %>

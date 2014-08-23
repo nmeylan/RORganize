@@ -8,7 +8,7 @@
     <%= @issues.new_link %>
 <% end %>
 
-<%= filter_tag('issue', Issue.filtered_attributes, issues_path(@project.slug), true, {user: current_user, project: @project, filter_content: session["#{@project.slug}_controller_issues_filter"]}) %>
+<%= filter_tag('issue', Issue.filtered_attributes, issues_path(@project.slug), true, {user: User.current, project: @project, filter_content: session["#{@project.slug}_controller_issues_filter"]}) %>
 
 
 <%= @issues.display_collection %>

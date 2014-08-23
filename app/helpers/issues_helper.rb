@@ -112,6 +112,6 @@ module IssuesHelper
   end
 
   def issue_toolbox(issues_toolbox)
-    toolbox_tag(IssueToolbox.new(issues_toolbox, @project, current_user))
+    toolbox_tag(IssueToolbox.new(issues_toolbox, @project, User.current))
   end
 end

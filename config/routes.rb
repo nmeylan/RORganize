@@ -22,7 +22,11 @@ RORganize::Application.routes.draw do
   end
 
   scope 'administration/' do
-    resources :users
+    resources :users do
+      collection do
+        post 'register', path: 'register'
+      end
+    end
     resources :permissions do
       collection do
         get 'list', :path => ':role_name/list'

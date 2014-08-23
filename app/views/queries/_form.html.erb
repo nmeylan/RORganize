@@ -15,7 +15,7 @@
       <%= f.label :description %>
       <%= f.text_area :description, :rows => 12, :class => 'fancyEditor' %>
     </p>
-    <% if current_user.allowed_to?('public_queries','Queries',@project) %>
+    <% if User.current.allowed_to?('public_queries','Queries',@project) %>
       <p>
         <%= f.label :is_public %>
         <%= f.check_box :is_public%>

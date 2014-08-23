@@ -38,7 +38,7 @@ module Rorganize
       def render_project_menu(menu, project)
         content = ''
         menu.menu_items.each do |item|
-          if current_user.allowed_to?(item.url[:action], item.url[:controller],project)
+          if User.current.allowed_to?(item.url[:action], item.url[:controller],project)
             item.url[:project_id] = project.slug
             content += content_tag(:li,
               link_to(item.label, item.url, {:id => item.params[:id]}),
@@ -51,7 +51,7 @@ module Rorganize
       def render_admin_menu(menu)
         content = ''
         menu.menu_items.each do |item|
-          if current_user.allowed_to?(item.url[:action], item.url[:controller])
+          if User.current.allowed_to?(item.url[:action], item.url[:controller])
             content += content_tag(:li,
               link_to(item.label, item.url, {:id => item.params[:id]}),
               :class => item.params[:id].eql?(@current_menu_item) ? 'selected' : '')
@@ -66,7 +66,7 @@ module Rorganize
         content += content += content_tag(:li,
           link_to(t(:home), :root, { :class => @current_top_menu_item.eql?('menu_home') ? 'selected square' : 'square'}))
         menu.menu_items.each do |item|
-          if current_user && current_user.allowed_to?(item.url[:action], item.url[:controller])
+          if User.current && User.current.allowed_to?(item.url[:action], item.url[:controller])
             content += content_tag(:li,
               link_to(item.label, item.url, {:id => item.params[:id],
                   :class => item.params[:id].eql?(@current_top_menu_item) ? 'selected square' : 'square'}

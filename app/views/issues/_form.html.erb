@@ -59,7 +59,7 @@
     </p>
   </div>
   <%= clear_both %>
-  <% if current_user.allowed_to?('delete_attachment', 'Issues', @project) %>
+  <% if User.current.allowed_to?('delete_attachment', 'Issues', @project) %>
       <div id="attachments">
         <div class="splitcontentleft">
           <p>

@@ -14,7 +14,7 @@
 <body>
 <%# HACK quick and dirty =( %>
 <% session['act_as'] ||= 'User' %>
-<% current_user.act_as_admin(session['act_as']) if current_user && session['act_as'] != current_user.act_as_admin_session %>
+<% User.current.act_as_admin(session['act_as']) if User.current && session['act_as'] != User.current.act_as_admin_session %>
 <div id="top_menu"><%= render :partial => 'layouts/top_menu' %></div>
 <div id="header">
   <h1>

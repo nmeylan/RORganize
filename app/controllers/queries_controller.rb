@@ -27,7 +27,7 @@ class QueriesController < ApplicationController
   def create
     find_project
     @query = Query.new(query_params)
-    @query.author_id = current_user.id
+    @query.author_id = User.current.id
     @query.project_id = @project.id
     filter = @query.object_type.constantize.conditions_string(params[:filter])
     @query.stringify_query = filter
@@ -109,8 +109,8 @@ class QueriesController < ApplicationController
 
   def check_query_permission
     @query = Query.find_by_id(params[:id]).decorate
-    if (@query.is_public && !current_user.allowed_to?('public_queries', 'Queries', @project)) ||
-        (!@query.is_public && !@query.author_id.eql?(current_user.id))
+    if (@query.is_public && !User.current.allowed_to?('public_queries', 'Queries', @project)) ||
+        (!@query.is_public && !@query.author_id.eql?(User.current.id))
       render_403
     end
   end
