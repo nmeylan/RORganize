@@ -14,7 +14,7 @@ module ProjectsHelper
   def project_list(projects, allow_to_star)
     content_tag :ul, class: "project_list #{allow_to_star ? 'sortable' : '' }" do
       projects.collect do |project|
-        content_tag :li, class: "#{project.is_archived ? 'archived' : ''} project", id: project.id do
+        content_tag :li, class: "project #{project.is_archived ? 'archived' : ''}", id: project.slug do
           safe_concat project_stats(project).html_safe
           safe_concat link_to mega_glyph(project.name, 'repo'), overview_projects_path(project.slug)
           safe_concat content_tag :p, class: 'project_last_activity', &Proc.new {
@@ -38,9 +38,9 @@ module ProjectsHelper
     safe_concat content_tag :div, class: 'star_project', &Proc.new {
       button_tag &Proc.new {
         if project.starred?
-          link_to(glyph(t(:link_unstar), 'star'), star_project_profile_path(project.id), {:class => 'icon icon-fav starred star', :method => :post, :remote => true})
+          link_to(glyph(t(:link_unstar), 'star'), star_project_profile_path(project.slug), {:class => 'icon icon-fav starred star', :method => :post, :remote => true})
         else
-          link_to(glyph(t(:link_star), 'star'), star_project_profile_path(project.id), {:class => 'icon icon-fav-off star', :method => :post, :remote => true})
+          link_to(glyph(t(:link_star), 'star'), star_project_profile_path(project.slug), {:class => 'icon icon-fav-off star', :method => :post, :remote => true})
         end
       }
     }

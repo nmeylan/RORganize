@@ -33,7 +33,7 @@ class Project < ActiveRecord::Base
   end
 
   def self.permit_attributes
-    [:name, :description, :identifier, :trackers, :new_attachment_attributes => Attachment.permit_attributes, :existing_attachment_attributes => Attachment.permit_attributes]
+    [:name, :description, :identifier, :trackers, :is_public, :new_attachment_attributes => Attachment.permit_attributes, :existing_attachment_attributes => Attachment.permit_attributes]
   end
 
   def create_member
@@ -44,7 +44,7 @@ class Project < ActiveRecord::Base
   def starred?
     members = self.members
     member = members.to_a.select { |member| member.user_id == User.current.id }.first
-    member.is_project_starred
+    member ? member.is_project_starred : false
   end
 
   def self.opened_projects_id

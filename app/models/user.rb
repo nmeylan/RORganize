@@ -41,6 +41,7 @@ class User < ActiveRecord::Base
   def activities(journalizable_types, period, from_date)
     Journal.activities_eager_load(journalizable_types, period, from_date, "journals.user_id = #{self.id}")
   end
+
   def comments(journalizable_types, period, from_date)
     Comment.comments_eager_load(journalizable_types, period, from_date, "comments.user_id = #{self.id}")
   end
@@ -94,18 +95,29 @@ class User < ActiveRecord::Base
   end
 
   def allowed_statuses(project)
-    self.members.to_a.select { |member| member.project_id == project.id }.first.role.issues_statuses.eager_load(:enumeration).sort { |x, y| x.enumeration.position <=> y.enumeration.position }
+    member = self.members.to_a.select { |member| member.project_id == project.id }.first
+    if member
+      member.role.issues_statuses.eager_load(:enumeration).sort { |x, y| x.enumeration.position <=> y.enumeration.position }
+    else
+      Role.find_by_name('Anonymous').issues_statuses.eager_load(:enumeration).sort { |x, y| x.enumeration.position <=> y.enumeration.position }
+    end
   end
 
   def allowed_to?(action, controller, project = nil)
     return true if self.is_admin? && act_as_admin? && (project && module_enabled?(project.id.to_s, action, controller) || !project)
     m = self.members
     if project
-      member = m.to_a.select { |mb| mb.project_id == project.id }.first
-      return (member &&
-          module_enabled?(project.id.to_s, action, controller) &&
-          permission_manager_allowed_to?(member.role.id.to_s, action.to_s, controller.downcase.to_s) &&
-          (!project.is_archived? || (project.is_archived? && project_archive_permissions(action, controller))))
+      if project.is_public
+        return (module_enabled?(project.id.to_s, action, controller) &&
+            anonymous_permission_manager_allowed_to?(action.to_s, controller.downcase.to_s) &&
+            (!project.is_archived? || (project.is_archived? && project_archive_permissions(action, controller))))
+      else
+        member = m.to_a.select { |mb| mb.project_id == project.id }.first
+        return (member &&
+            module_enabled?(project.id.to_s, action, controller) &&
+            permission_manager_allowed_to?(member.role.id.to_s, action.to_s, controller.downcase.to_s) &&
+            (!project.is_archived? || (project.is_archived? && project_archive_permissions(action, controller))))
+      end
     else
       if m
         for mem in m do
@@ -118,6 +130,7 @@ class User < ActiveRecord::Base
     end
   end
 
+  #use to debug
   def allowed_to_do_actions_list(controller = nil, project = nil)
     m = self.members
     if project
@@ -145,7 +158,7 @@ class User < ActiveRecord::Base
         conditions = '1 = 1 '
     end
     unless self.act_as_admin?
-      conditions += "AND members.user_id = #{self.id} "
+      conditions += "AND (members.user_id = #{self.id} OR projects.is_public = true)"
     end
     conditions += 'AND journals.id = (SELECT max(j.id) FROM journals j WHERE j.project_id = projects.id)'
     Project.eager_load([:members, [journals: :user]]).where(conditions).group('1')

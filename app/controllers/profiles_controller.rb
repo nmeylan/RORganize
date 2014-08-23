@@ -92,8 +92,8 @@ class ProfilesController < ApplicationController
   end
 
   def star_project
-    members= @user.members
-    member = members.select { |member| member.project_id.eql?(params[:project_id].to_i) }.first
+    members = @user.members
+    member = members.select { |member| member.project.slug.eql?(params[:project_id]) }.first
     member.is_project_starred = !member.is_project_starred
     member.save
     message = "#{t(:text_project)} #{member.project.name} #{member.is_project_starred ? t(:successful_starred) : t(:successful_unstarred )}"
@@ -106,7 +106,7 @@ class ProfilesController < ApplicationController
     members= @user.members
     project_ids = params[:ids]
     members.each do |member|
-      member.project_position = project_ids.index(member.project_id.to_s)
+      member.project_position = project_ids.index(member.project.slug)
       member.save
     end
     respond_to do |format|

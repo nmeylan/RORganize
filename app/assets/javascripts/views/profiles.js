@@ -27,7 +27,6 @@ function profiles_spent_time(){
 function profiles_project(){
     jQuery(".sortable").sortable();
     bind_save_project_position();
-    bind_star_project();
 }
 
 function on_activities_load(){

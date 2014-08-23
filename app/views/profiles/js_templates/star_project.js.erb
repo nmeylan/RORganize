@@ -9,5 +9,4 @@ var link;
 <% else %>
     link = "<%= escape_javascript link_to(glyph(t(:link_star), 'star'), star_project_profile_path(id), {:class => 'icon icon-fav-off star', :method => :post, :remote => true})%>";
 <%end %>
-
-$(".project#<%= id%> button").html(link);
+$(".project#<%= id %> button").html(link);

@@ -605,12 +605,6 @@ function bind_calendar_button() {
     });
 }
 
-function bind_star_project() {
-    jQuery(".star").click(function (e) {
-        var self_element = jQuery(this);
-        self_element.hasClass("icon-fav-off") ? self_element.switchClass('icon-fav-off', 'icon-fav') : self_element.switchClass('icon-fav', 'icon-fav-off');
-    });
-}
 
 function bind_version_change_positions() {
     jQuery(".change_position").click(function (e) {
@@ -639,9 +633,10 @@ function bind_save_project_position() {
         e.preventDefault();
         var p_ids = [];
         var url = jQuery(this).data('link');
-        jQuery.each(jQuery(".project_list.sortable li"), function (project) {
+        jQuery.each(jQuery(".project_list.sortable li.project"), function (project) {
             p_ids.push(jQuery(this).attr("id"));
         });
+        console.log(p_ids);
         jQuery.ajax({
             url: url,
             type: "post",
