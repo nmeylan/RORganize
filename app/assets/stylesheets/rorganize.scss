@@ -528,6 +528,10 @@ ul.project_list {
       list-style-type: none;
       li {
         float: left;
+        margin-left: 10px;
+        .octicon:before{
+          margin-right: 2px;
+        }
       }
     }
     p.project_last_activity {

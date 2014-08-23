@@ -29,7 +29,7 @@ module ProjectsHelper
   def project_stats(project)
     content_tag :ul, class: 'project_stats' do
       safe_concat content_tag :li, (content_tag :span, project.members_count, class: 'octicon octicon-organization')
-      safe_concat content_tag :li, (content_tag :span, project.issues_count, class: 'octicon octicon-tag')
+      safe_concat content_tag :li, (content_tag :span, project.issues_count, class: 'octicon octicon-issue-opened')
       safe_concat content_tag :li, (content_tag :span, nil, class: 'octicon octicon-lock') if project.is_archived
     end
   end
