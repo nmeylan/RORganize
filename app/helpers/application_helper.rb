@@ -384,12 +384,16 @@ module ApplicationHelper
     end
   end
 
-  def contextual(title)
+  def contextual(title = nil)
     content_for :contextual do
-      safe_concat content_tag :h1, title
-      safe_concat content_tag :div, class: 'splitcontentright', &Proc.new {
+      if title
+        safe_concat content_tag :h1, title
+        safe_concat content_tag :div, class: 'splitcontentright', &Proc.new {
+          yield if block_given?
+        }
+      else
         yield if block_given?
-      }
+      end
     end
   end
 

@@ -3,13 +3,18 @@
  * Date: 08.07.14
  * Time: 14:39
 %>
-<%= contextual "#{user.login} (#{user.name})" %>
+<%= contextual nil do %>
+    <%= content_tag :h1, class: :avatar do %>
+        <%= user.display_avatar %>
+        <%= "#{user.login} (#{user.name})" %>
+    <% end %>
+<% end %>
 <div class="splitcontentleft" style="width:30%">
   <h2><%= t(:label_about) %></h2>
   <ul>
     <li><%= t(:field_email) %> : <%= user.email %></li>
-    <li><%= t(:label_last_sign_in)%> : <%= user.current_sign_in %></li>
-    <li><%= t(:label_register_on)%> : <%= user.register_on %></li>
+    <li><%= t(:label_last_sign_in) %> : <%= user.current_sign_in %></li>
+    <li><%= t(:label_register_on) %> : <%= user.register_on %></li>
   </ul>
   <h2><%= t(:label_project) %></h2>
   <%= user.display_projects %>

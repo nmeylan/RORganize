@@ -37,6 +37,10 @@ class UserDecorator < ApplicationDecorator
     end
   end
 
+  def display_avatar
+    h.image_tag user.avatar.avatar.url(:thumb), {class: 'user_profile avatar'} if avatar && user.avatar
+  end
+
   def display_projects
     h.projects(self)
   end

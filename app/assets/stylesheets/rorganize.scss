@@ -178,15 +178,21 @@
   }
 }
 
-.avatar a{
+.avatar a {
   vertical-align: top;
 }
-img.avatar{
+img.user_profile {
+  vertical-align: middle;
+}
+
+img.avatar {
   border-radius: 5px;
 }
-img.small_avatar{
+
+img.small_avatar {
   border-radius: 3px;
 }
+
 /*
 *  FLASH MESSAGE
 */
@@ -299,7 +305,7 @@ img.small_avatar{
 .right {
   float: right;
   margin-right: 5px;
-//  margin-top: 5px;
+  //  margin-top: 5px;
 }
 
 .box > .header {
@@ -466,11 +472,13 @@ ul#items {
 .roadmap .progress_bar {
   height: 20px;
 }
-.roadmap_version_block{
+
+.roadmap_version_block {
   margin-bottom: 30px;
   margin-top: 30px;
 }
-.roadmap_version_block .box{
+
+.roadmap_version_block .box {
   margin-left: 2px;
   margin-right: 2px;
 }
@@ -533,7 +541,6 @@ ul.project_list {
     }
   }
 }
-
 
 #project_description {
   min-height: 400px;
