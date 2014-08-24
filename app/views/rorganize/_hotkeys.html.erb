@@ -1,0 +1,56 @@
+<%#=
+ * User: nmeylan
+ * Date: 25.08.14
+ * Time: 00:29
+%>
+<div class="overlayOuter" id="hotkeys_overlay">
+  <div class="overlayInner">
+    <div class="splitcontentleft">
+      <h2><%= t(:label_global_hotkeys) %></h2>
+      <ul>
+        <li>
+          <span class="shortcut">/</span>
+          <%= t(:text_shortcut_slash) %>
+        </li>
+        <li>
+          <span class="shortcut">h</span>
+          <%= t(:text_shortcut_h) %>
+        </li>
+      </ul>
+    </div>
+    <div class="splitcontentright">
+      <h2><%= t(:label_editor_hotkeys) %></h2>
+      <ul>
+        <li>
+          <span class="shortcut">ctrl</span> +
+          <span class="shortcut">b</span>
+          <%= t(:text_shortcut_ctrl_b) %>
+        </li>
+        <li>
+          <span class="shortcut">ctrl</span> +
+          <span class="shortcut">i</span>
+          <%= t(:text_shortcut_ctrl_i) %>
+        </li>
+        <li>
+          <span class="shortcut">ctrl</span> +
+          <span class="shortcut">u</span>
+          <%= t(:text_shortcut_ctrl_u) %>
+        </li>
+        <li>
+          <span class="shortcut">ctrl</span> +
+          <span class="shortcut">1</span> or
+          <span class="shortcut">2</span> or
+          <span class="shortcut">3</span> or
+          <span class="shortcut">4</span>
+          <%= t(:text_shortcut_ctrl_1) %>
+        </li>
+        <li>
+        <span class="shortcut">ctrl</span> +
+        <span class="shortcut">l</span>
+          <%= t(:text_shortcut_ctrl_l) %>
+        </li>
+      </ul>
+    </div>
+    <%= clear_both %>
+  </div>
+</div>
