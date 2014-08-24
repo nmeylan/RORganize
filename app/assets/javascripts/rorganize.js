@@ -220,8 +220,8 @@ function highlight_search() {
         highlight_result(e, input)
     });
     $('html').keydown(function (e) {
-        var ctrl = e.ctrlKey, cmd = e.metaKey, f3_key = 114, f_key = 70;
-        if (e.keyCode === f3_key || ((ctrl || cmd) && e.keyCode === f_key)) {
+        var slash = 191;
+        if (e.keyCode === slash) {
             e.preventDefault();
             if (search_box.is(':visible')) {
                 close_highlight_search(search_box);
@@ -291,7 +291,8 @@ function createOverlay(id, top) {
             color: '#000',
             // load mask a little faster
             loadSpeed: 200,
-            opacity: 0.3
+            opacity: 0.3,
+            zIndex: 8
         },
         // disable this for modal dialog-type of overlays
         closeOnClick: false,
