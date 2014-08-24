@@ -50,6 +50,39 @@
 /*
 *  MAIN CONTENT
 */
+#highlight_search{
+  top: 56px;
+  position: fixed;
+  right: 0px;
+  display: none;
+  padding: 5px;
+  background-color: $default-background-color;
+  border-top-left-radius: 3px;
+  border-bottom-left-radius: 3px;
+  input{
+    width: 250px;
+    margin-bottom: 0px;
+  }
+  span#highlight_search_result_count{
+    position: absolute;
+    z-index: 1;
+    cursor: text;
+    pointer-events: none;
+    color: #999;
+    /* Input padding + input border */
+    padding: 7px;
+    /* Firefox does not respond well to different line heights. Use padding instead. */
+    line-height: 17px;
+    /* This gives a little gap between the cursor and the label */
+    right: 5px;
+  }
+}
+.highlight{
+  position: relative !important;
+  z-index: 20;
+  text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff !important;
+}
+
 #main.nosidebar #content {
   width: auto;
   float: inherit;
@@ -59,7 +92,6 @@
   float: right;
   width: 15%;
   position: relative;
-  z-index: 9;
   padding: 0;
   margin: 0;
 }

@@ -4,6 +4,9 @@
         // hide flash messages
         display_flash();
 
+        //Highlight text research
+        highlight_search();
+
         //BIND ACTIONS : depending on which controller is called
         switch (gon.controller) {
             case 'coworkers' :
@@ -31,8 +34,8 @@
                 on_load_projects_scripts();
                 break;
             case 'rorganize' :
-            on_load_rorganize_scripts();
-            break;
+                on_load_rorganize_scripts();
+                break;
             case 'roadmaps' :
                 on_load_roadmap_scripts();
                 break;
@@ -87,7 +90,7 @@
         var first_char = xhr.status.toString().charAt(0);
         var is_error = first_char == '5' || first_char == '4';
         if (is_error) {
-            var text = xhr.status.toString() === '403' ? "You don't have the required permissions to do this action": 'An unexpected error occured, please try again!';
+            var text = xhr.status.toString() === '403' ? "You don't have the required permissions to do this action" : 'An unexpected error occured, please try again!';
             $.jGrowl(text, {
                 theme: 'failure'
             });
@@ -156,7 +159,9 @@
 
 })(jQuery);
 
-
+jQuery.expr[':'].contains = function (a, i, m) {
+    return jQuery(a).text().toUpperCase().indexOf(m[3].toUpperCase()) >= 0;
+};
 function display_flash() {
     var el;
     jQuery(".flash").each(function () {
@@ -177,7 +182,6 @@ function error_explanation(message) {
     if (message != null) {
         el.append(message).css("display", "block");
     }
-
 }
 function markdown_textarea() {
     var el = jQuery('.fancyEditor');
@@ -207,8 +211,76 @@ function markdown_textarea() {
         }
     ]);
     el.focus();
-
 }
+
+function highlight_search() {
+    var search_box = $('#highlight_search');
+    var input = search_box.find('input');
+    search_box.keydown(function (e) {
+        highlight_result(e, input)
+    });
+    $('html').keydown(function (e) {
+        var ctrl = e.ctrlKey, cmd = e.metaKey, f3_key = 114, f_key = 70;
+        if (e.keyCode === f3_key || ((ctrl || cmd) && e.keyCode === f_key)) {
+            e.preventDefault();
+            if (search_box.is(':visible')) {
+                close_highlight_search(search_box);
+            } else {
+                $('html').append('<div id="searchMask" style="position: fixed; top: 0px; left: 0px; width: 100%; height: 100%; display: block; opacity: 0.3; z-index: 10; background-color: rgb(0, 0, 0);"></div>').keydown(function (e) {
+                    if (e.keyCode === 27) close_highlight_search(search_box);
+                });
+                search_box.css('display', 'block').css('z-index', ' 9999');
+                input.focus();
+                highlight_result(undefined, input);
+            }
+        }
+    });
+}
+
+function close_highlight_search(search_box) {
+    search_box.css('display', 'none');
+    $('#searchMask').remove();
+}
+
+function highlight_result(event, input) {
+    var c = '';
+    var typed_key = event !== undefined ? String.fromCharCode(event.which) : '_';
+    if (typed_key.match(/^[a-z0-9'^éàèüäö]+$/i)) {
+        c = typed_key;
+    }
+    var filter = input[0].value + c;
+    if (event !== undefined  && event.keyCode === 8) {
+        filter = filter.substring(0, filter.length - 1);
+    }
+    $('.highlight').removeClass('highlight');
+    $("#highlight_search_result_count").text('');
+
+    if (filter.trim() !== '') {
+        var count = 0;
+        var matches = $('* :contains("' + filter + '"):visible').filter(function (index) {
+            return $(this).children().length < 1;
+        });
+        var matches_size = matches.length;
+        if (matches_size > 0 && matches_size < 5000) {
+            matches.each(function (a) {
+                $(this).addClass('highlight');
+            });
+        }
+
+        matches = $('a:visible:contains("' + filter + '")');
+        matches_size = matches.length;
+        if (matches_size > 0 && matches_size < 5000) {
+            matches.each(function (a) {
+                $(this).addClass('highlight');
+            });
+        }
+        count = $('.highlight').length;
+        if(count > 0){
+            $("#highlight_search_result_count").text(count);
+        }
+    }
+}
+
 function createOverlay(id, top) {
     jQuery(id).overlay({
         // custom top position
@@ -348,7 +420,7 @@ function listTrClick(rows_selector) {
             e.preventDefault();
             var last_selected_row = $('.toolbox_last');
             if (last_selected_row.length > 0) {
-                var between_rows = last_selected_row[0].rowIndex > el[0].rowIndex ? $('.toolbox_last').prevUntil(el[0]) : $('.toolbox_last').nextUntil(el[0]);
+                var between_rows = last_selected_row[0].rowIndex > el[0].rowIndex ? last_selected_row.prevUntil(el[0]) : last_selected_row.nextUntil(el[0]);
                 rows.removeClass("toolbox_last");
                 between_rows.find("input[type=checkbox]").attr('checked', true);
                 between_rows.addClass("toolbox_selection").addClass("toolbox_last");
