@@ -95,6 +95,9 @@ en:
   label_activity_period_one_week: 1 week
   label_activity_period_one_month: 1 month
   label_percentage: Percentage
+  label_global_hotkeys: Global hotkeys
+  label_editor_hotkeys: Editor hotkeys
+  label_issues_hotkeys: Issues hotkeys
 # LINK
   link_new_project: New project
   link_new_issue: New issue
@@ -265,6 +268,13 @@ en:
   text_edited: Edited
   text_on: on
   text_assigned_issues: assigned issues
+  text_shortcut_slash: Search on page, with highlighted result
+  text_shortcut_h: Open help menu
+  text_shortcut_ctrl_b: Put selection in bold
+  text_shortcut_ctrl_i: Put selection in italic
+  text_shortcut_ctrl_u: Put selection underlined
+  text_shortcut_ctrl_1: Add a level 1, 2, 3 or 4 title
+  text_shortcut_ctrl_l: Add a link
 
   password: "Password"
   field_steps: "Steps"
@@ -280,5 +290,6 @@ en:
   #INFO
   info_version_is_done: Define that the mission is over on this phase. You won't be able to assign issues to this phase.
   info_public_project: Define if project is pubic or not. If project is public anyone can access to it, non member users have ANONYMOUS role.
+
 
   devise_text_registration: Click here to sign up.
