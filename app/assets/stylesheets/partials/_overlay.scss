@@ -19,6 +19,16 @@
   max-width: 75%;
   position: fixed;
   display: none;
+
+  span.close_button{
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    cursor: pointer;
+  }
+  span.close_button:hover{
+    color: $default-color;
+  }
 }
 
 .overlayInner {

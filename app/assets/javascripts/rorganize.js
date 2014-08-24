@@ -229,7 +229,18 @@ function createOverlay(id, top) {
         // disable this for modal dialog-type of overlays
         closeOnClick: false,
         // load it immediately after the construction
-        load: false
+        load: false,
+        onBeforeLoad: function(e){
+           var self = this;
+            var overlay = self.getOverlay();
+            overlay.find('.close_button').remove();
+            var close_button = $('<span class="medium-octicon octicon-x close_button"></span>');
+            close_button.click(function(e){
+                e.preventDefault();
+                self.close();
+            });
+            overlay.append(close_button);
+        }
 
     });
 }
