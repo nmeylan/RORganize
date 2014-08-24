@@ -94,6 +94,7 @@ en:
   label_activity_period_three_days: 3 days
   label_activity_period_one_week: 1 week
   label_activity_period_one_month: 1 month
+  label_percentage: Percentage
 # LINK
   link_new_project: New project
   link_new_issue: New issue
