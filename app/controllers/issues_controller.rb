@@ -5,6 +5,7 @@
 require 'shared/history'
 require 'issues/issue_overview_hash'
 class IssuesController < ApplicationController
+  before_filter { |c| c.add_action_alias= {'overview' => 'index'}}
   before_filter :check_permission, :except => [:save_checklist, :show_checklist_items, :toolbox, :download_attachment, :start_today]
   before_filter :check_not_owner_permission, :only => [:edit, :update, :destroy]
   before_filter { |c| c.menu_context :project_menu }
@@ -204,7 +205,7 @@ class IssuesController < ApplicationController
   end
 
   def overview
-    overview_object = IssueOverviewHash.new(Issue.where(project_id: @project.id).count, Issue.count_group_by_assigned(@project.id), Issue.count_group_by_status(@project.id), Issue.count_group_by_versions(@project.id), Issue.count_group_by_categories(@project.id))
+    overview_object = IssueOverviewHash.new(Issue.where(project_id: @project.id).fetch_dependencies)
     respond_to do |format|
       format.html { render action: :overview, locals: {overview: overview_object} }
     end

@@ -31,7 +31,7 @@ class Issue < ActiveRecord::Base
   validates :subject, :tracker_id, :status_id, :presence => true
   validate :validate_start_date, :validate_predecessor
   #Scopes
-  scope :fetch_dependencies, -> { eager_load([:tracker, :version, :assigned_to, :category, :attachments, :checklist_items, :status => [:enumeration]]) }
+  scope :fetch_dependencies, -> { eager_load([:tracker, :version, :assigned_to, :category, :attachments, :author, :checklist_items, :status => [:enumeration]]) }
   scope :assigned_issues_for_user, ->(user) { where(:assigned_to_id => user.id, :status_id => IssuesStatus.opened_statuses_id, :project_id => Project.opened_projects_id).eager_load(:project) }
   scope :submitted_issues_by_user, ->(user) { where(:author_id => user.id, :status_id => IssuesStatus.opened_statuses_id, :project_id => Project.opened_projects_id).eager_load(:project) }
 
@@ -122,22 +122,6 @@ class Issue < ActiveRecord::Base
         end
       end
     end
-  end
-
-  def self.count_group_by_assigned(project_id)
-    Issue.joins('LEFT OUTER JOIN members m ON issues.assigned_to_id = m.user_id LEFT OUTER JOIN users u ON m.user_id = u.id JOIN issues_statuses status ON issues.status_id = status.id').where('issues.project_id = ? AND status.is_closed = ?', project_id, false).group('1').pluck("DISTINCT u.name, count(distinct issues.id)")
-  end
-
-  def self.count_group_by_status(project_id)
-    Issue.joins('JOIN issues_statuses status ON issues.status_id = status.id JOIN enumerations e ON status.enumeration_id = e.id').where('issues.project_id = ?', project_id).group('1').pluck("DISTINCT e.name, count(distinct issues.id)")
-  end
-
-  def self.count_group_by_versions(project_id)
-    Issue.joins('JOIN issues_statuses status ON issues.status_id = status.id LEFT OUTER JOIN versions v on issues.version_id = v.id').where('issues.project_id = ? AND status.is_closed = ?', project_id, false).group('1').pluck("DISTINCT v.name, count(distinct issues.id)")
-  end
-
-  def self.count_group_by_categories(project_id)
-    Issue.joins('JOIN issues_statuses status ON issues.status_id = status.id LEFT OUTER JOIN categories c on issues.category_id = c.id').where('issues.project_id = ? AND status.is_closed = ?', project_id, false).group('1').pluck("DISTINCT c.name, count(distinct issues.id)")
   end
 
   def self.conditions_string(hash)

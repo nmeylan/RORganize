@@ -8,7 +8,7 @@ class ApplicationController < ActionController::Base
   helper Rorganize::PermissionManager::PermissionManagerHelper
   helper_method :sort_column, :sort_direction
   before_filter :configure_permitted_parameters, if: :devise_controller?
-  before_filter :authenticate if !RORganize::Application.config.rorganize_anonymous_access
+  before_filter :authenticate unless RORganize::Application.config.rorganize_anonymous_access
   before_filter :smart_js_loader, :set_sessions
   around_filter :set_current_user
   after_filter :set_sessions

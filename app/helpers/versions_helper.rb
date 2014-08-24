@@ -68,10 +68,7 @@ module VersionsHelper
       safe_concat content_tag :h1, version.name, id: "v-#{version.display_id}"
       safe_concat content_tag :div, version.display_target_date, {class: 'version_due_date'}
       safe_concat clear_both
-      safe_concat content_tag :span, class: 'progress_bar', &Proc.new {
-        safe_concat content_tag :span, "&nbsp".html_safe, {class: 'progress', style: "width:#{percent}%"}
-        safe_concat content_tag :span, "#{percent}%", {class: 'percent'}
-      }
+      safe_concat progress_bar_tag(percent)
       safe_concat content_tag :span, class: 'requests_stats', &Proc.new {
         safe_concat content_tag :b, version.issues_count.to_s + ' '
         safe_concat t(:label_request_plural) + ', '

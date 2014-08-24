@@ -5,14 +5,13 @@
 
 class AdministrationController < ApplicationController
   include Rorganize::RichController
-  cattr_accessor :exceptions
   before_filter :check_queries_permission, :only => [:public_queries]
   before_filter :check_permission, :except => [:public_queries]
   before_filter :set_pagination, only: [:public_queries]
   before_filter { |c| c.menu_context :admin_menu }
   before_filter { |c| c.menu_item(params[:controller], params[:action]) }
   before_filter {|c| c.top_menu_item('administration')}
-  @@exceptions = [:test]
+
   helper QueriesHelper
 
   def index

@@ -2,6 +2,7 @@ require 'issues/issue_filter'
 require 'issues/issue_toolbox'
 module IssuesHelper
   include CommentsHelper
+
   def issues_generics_form_to_json
     form_hash = {}
     filter_content_hash = IssueFilter.new(@project).content
@@ -114,4 +115,52 @@ module IssuesHelper
   def issue_toolbox(issues_toolbox)
     toolbox_tag(IssueToolbox.new(issues_toolbox, @project, User.current))
   end
+
+  def display_overview_groups(groups)
+    groups.collect do |group_hash|
+      group_hash.collect do |k, v|
+        title = k.eql?(:status) ? 'Issues' : 'Opened issues'
+        display_overview_group_by("#{title} : By #{k.to_s.capitalize.gsub(/_/, ' ')}", v, k, !k.eql?(:status))
+      end.join.html_safe
+    end.join.html_safe
+  end
+
+  def display_overview_group_by(title, group, group_name, only_opened_issues = true)
+    content_tag :div, class: 'issues_overview_group' do
+      safe_concat content_tag :h2, title, class: 'issues_overview_group title'
+      safe_concat content_tag :table, class: 'issues_overview_group', &Proc.new {
+        safe_concat content_tag :tr, class: 'issues_overview_group header', &Proc.new {
+          safe_concat content_tag :th, t(:field_name), class: 'caption'
+          safe_concat content_tag :th, t(:label_issue_plural), class: 'number'
+          safe_concat content_tag :th, t(:label_percentage), class: 'percentage'
+        }
+        na = nil
+        group.sort_by { |e| e[:caption] }.collect do |element|
+          if element[:id].eql?('NULL')
+            na = element
+          else
+            display_overview_row(element, group_name, only_opened_issues)
+          end
+        end.join.html_safe
+        display_overview_row(na, group_name, only_opened_issues) if na
+      }
+    end
+  end
+
+  def display_overview_row(element, group_name, only_opened_issues)
+    safe_concat content_tag :tr, class: 'issues_overview_group body', &Proc.new {
+      if only_opened_issues
+        safe_concat content_tag :td, filter_link(element[:caption], @project.slug, [group_name, :status], {group_name => {operator: :equal, value: [element[:id]]}, status: {operator: :open}}), class: 'caption'
+      else
+        safe_concat content_tag :td, filter_link(element[:caption], @project.slug, [group_name], {group_name => {operator: :equal, value: [element[:id]]}}), class: 'caption'
+      end
+      safe_concat content_tag :td, element[:count], class: 'number'
+      safe_concat content_tag :td, progress_bar_tag(element[:percent]), class: 'percentage'
+    }
+  end
+
+  def filter_link(label, project_slug, filter_list, filter)
+    link_to label, issues_path(project_slug, {type: :filter, filters_list: filter_list, filter: filter})
+  end
+
 end

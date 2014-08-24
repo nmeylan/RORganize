@@ -403,5 +403,12 @@ module ApplicationHelper
     end
   end
 
+  def progress_bar_tag(percent)
+    content_tag :span, class: 'progress_bar' do
+      safe_concat content_tag :span, "&nbsp".html_safe, {class: 'progress', style: "width:#{percent}%"}
+      safe_concat content_tag :span, "#{percent}%", {class: 'percent'}
+    end
+  end
+
 
 end
