@@ -26,7 +26,7 @@ class IssueOverviewHash
     @issues.each do |issue|
       attr = issue.send(attr_name)
       rows[attr ? attr.id : -1] ||= {caption: attr ? attr.caption : na_label(attr_name), id: attr ? attr.id : 'NULL', count: 0}
-      rows[attr ? attr.id : -1][:count] += 1
+      rows[attr ? attr.id : -1][:count] += 1 if attr_name.eql?(:status) || issue.open?
     end
     rows.values.map { |row| row[:percent] = ((row[:count].to_f / @issues_count) * 100).truncate; row }
   end
