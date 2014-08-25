@@ -4,8 +4,10 @@ module ProjectsHelper
   def members_list(members_hash)
     content_tag :div do
       members_hash.collect do |role, members|
-        safe_concat content_tag :h4, role
-        safe_concat content_tag :ul, members.collect { |member| content_tag :li, member.caption }.join.html_safe
+        content_tag :div, class: 'members_block' do
+          safe_concat content_tag :h4, "#{role} : "
+          safe_concat content_tag :span, members.collect { |member| member.user.decorate.user_link(true) }.join(', ').html_safe, class: 'members_grouped_by_role'
+        end
       end.join.html_safe
     end
   end

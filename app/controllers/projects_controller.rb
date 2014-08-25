@@ -133,7 +133,7 @@ class ProjectsController < ApplicationController
   end
 
   def find_project
-    @project = Project.eager_load(:attachments, members: [:user, :role]).where(slug: params[:project_id])[0].decorate
+    @project = Project.eager_load(:attachments, members: [[user: :avatar], :role]).where(slug: params[:project_id])[0].decorate
   end
 
 

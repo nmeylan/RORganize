@@ -47,19 +47,19 @@
   margin: 15px 15px 0px 15px;
 }
 
-#top_menu_logo{
+#top_menu_logo {
   width: 32px;
   height: 32px;
   display: inline-block;
   position: absolute;
   right: 50%;
-  top:3px;
+  top: 3px;
 }
 
 /*
 *  MAIN CONTENT
 */
-#highlight_search{
+#highlight_search {
   top: 56px;
   position: fixed;
   right: 0px;
@@ -68,11 +68,11 @@
   background-color: $default-background-color;
   border-top-left-radius: 3px;
   border-bottom-left-radius: 3px;
-  input{
+  input {
     width: 250px;
     margin-bottom: 0px;
   }
-  span#highlight_search_result_count{
+  span#highlight_search_result_count {
     position: absolute;
     z-index: 1;
     cursor: text;
@@ -86,13 +86,12 @@
     right: 5px;
   }
 }
-.highlight{
+
+.highlight {
   position: relative !important;
   z-index: 20;
   text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff !important;
 }
-
-
 
 #main.nosidebar #content {
   width: auto;
@@ -158,7 +157,7 @@
   text-align: center;
   margin: 10px;
   color: $default-smooth-color;
-  a{
+  a {
     font-size: 0.8em;
   }
 }
@@ -227,6 +226,7 @@
 .avatar a {
   vertical-align: top;
 }
+
 img.user_profile {
   vertical-align: middle;
 }
@@ -237,6 +237,22 @@ img.avatar {
 
 img.small_avatar {
   border-radius: 3px;
+}
+
+.members_block {
+  margin-bottom: 10px;
+  margin-top: 10px;
+  span.avatar {
+    a {
+      line-height: 20px;
+    }
+  }
+  span.members_grouped_by_role{
+    vertical-align: middle;
+  }
+  h4 {
+    display: inline;
+  }
 }
 
 /*
@@ -575,7 +591,7 @@ ul.project_list {
       li {
         float: left;
         margin-left: 10px;
-        .octicon:before{
+        .octicon:before {
           margin-right: 2px;
         }
       }
@@ -732,40 +748,46 @@ ul.project_list {
   float: right;
   height: 15px;
 }
-div.issues_overview_group{
+
+div.issues_overview_group {
   width: 49%;
   margin-bottom: 30px;
-  h2{
+  h2 {
     padding-bottom: 10px !important;
     border-bottom: solid 1px $default-border-color;
   }
 }
-table.issues_overview_group{
+
+table.issues_overview_group {
   width: 100%;
-  td.caption{
+  td.caption {
     width: 40%;
   }
-  td.number{
+  td.number {
     width: 20%;
     text-align: center;
   }
-  td.percentage{
+  td.percentage {
     width: 40%;
   }
-  th.number, th.percentage{
+  th.number, th.percentage {
     text-align: center;
   }
-  tr.issues_overview_group.body{
-    td{
+  tr.issues_overview_group.body {
+    td {
 
     }
   }
 }
-div.issues_overview_group:nth-child(odd){
-  float:right;
-}div.issues_overview_group:nth-child(even){
-   float:left;
- }
+
+div.issues_overview_group:nth-child(odd) {
+  float: right;
+}
+
+div.issues_overview_group:nth-child(even) {
+  float: left;
+}
+
 /*
     WIKI
 */
@@ -814,14 +836,14 @@ div.issues_overview_group:nth-child(odd){
 /*
 hotkeys_overlay
 */
-#hotkeys_overlay{
+#hotkeys_overlay {
   min-width: 700px;
   height: 400px;
-  li{
+  li {
     list-style-type: none;
     margin-bottom: 10px;
   }
-  .shortcut{
+  .shortcut {
     position: relative;
     display: inline-block;
     font-size: 13px;
