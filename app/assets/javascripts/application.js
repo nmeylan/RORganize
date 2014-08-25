@@ -13,5 +13,6 @@
 //= require apprise-1.5.min
 //= require jquery.lightbox-0.5.min
 //= require jquery.jgrowl_minimized
+//= require overlay.min
 //= require rorganize
 //= require_tree .

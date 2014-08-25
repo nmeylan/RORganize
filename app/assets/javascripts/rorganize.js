@@ -229,11 +229,26 @@ function bind_table_list_actions(){
     });
 }
 
+$.tools.overlay.addEffect("slide",
+    function(position, done) {
+        this.getOverlay().removeClass('animated bounceOutUp');
+        this.getOverlay().css(position).show().addClass('animated bounceInDown').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){$(this).removeClass('animated bounceInDown')});
+    },
+    // close function
+    function(done) {
+        // fade out the overlay
+        this.getOverlay().removeClass('animated bounceInDown');
+        this.getOverlay().addClass('animated bounceOutUp').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){$(this).removeClass('animated bounceOutUp').hide()});
+    }
+);
 function createOverlay(id, top) {
     jQuery(id).overlay({
         // custom top position
         top: top,
         // some mask tweaks suitable for facebox-looking dialogs
+        effect: 'slide',
+        speed : 'slow',
+
         mask: {
             // you might also consider a "transparent" color for the mask
             color: '#000',
@@ -249,6 +264,7 @@ function createOverlay(id, top) {
         onBeforeLoad: function(e){
            var self = this;
             var overlay = self.getOverlay();
+            $(self).removeClass('animated bounceInDown bounceOutUp');
             overlay.find('.close_button').remove();
             var close_button = $('<span class="medium-octicon octicon-x close_button"></span>');
             close_button.click(function(e){

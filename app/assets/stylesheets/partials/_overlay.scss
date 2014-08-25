@@ -19,6 +19,8 @@
   max-width: 75%;
   position: fixed;
   display: none;
+  -webkit-animation-duration: 0.5s;
+  animation-duration: 0.5s;
 
   span.close_button{
     position: absolute;
