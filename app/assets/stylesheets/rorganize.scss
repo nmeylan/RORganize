@@ -47,6 +47,15 @@
   margin: 15px 15px 0px 15px;
 }
 
+#top_menu_logo{
+  width: 32px;
+  height: 32px;
+  display: inline-block;
+  position: absolute;
+  right: 50%;
+  top:3px;
+}
+
 /*
 *  MAIN CONTENT
 */
@@ -148,7 +157,10 @@
   padding: 5px;
   text-align: center;
   margin: 10px;
-  color: #AAA;
+  color: $default-smooth-color;
+  a{
+    font-size: 0.8em;
+  }
 }
 
 #content li {

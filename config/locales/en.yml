@@ -98,6 +98,7 @@ en:
   label_global_hotkeys: Global hotkeys
   label_editor_hotkeys: Editor hotkeys
   label_issues_hotkeys: Issues hotkeys
+  label_hotkeys_list: Hotkeys list
 # LINK
   link_new_project: New project
   link_new_issue: New issue
