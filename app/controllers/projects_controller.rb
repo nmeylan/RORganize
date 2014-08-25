@@ -1,6 +1,6 @@
 require 'shared/activities'
 class ProjectsController < ApplicationController
-  before_filter :find_project, :only => [:overview, :show, :activity, :activity_filter]
+  before_filter :find_project, :only => [:overview, :show, :activity, :activity_filter, :members]
   before_filter :check_permission, :except => [:index, :filter, :members, :activity_filter]
   before_filter { |c| c.menu_context :project_menu }
   before_filter { |c| c.menu_item(params[:controller], params[:action]) }
