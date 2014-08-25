@@ -1,65 +1,41 @@
 ## Welcome to my project management tool
-### Started on June 20, 2012 - Last update : July 09, 2014
+### Started on June 20, 2012 - Last update : August 25, 2014
 
 Run with Rails 4.1.X
 
-# Overview
+# What is RORganize?
 
-RORganize is a web application based on Ruby on Rails framework.
-RORganize was inspired by the project management application: Redmine.
+RORganize is an easy to use project management application. Running on the latest Ruby on Rails framework with the latest Ruby version.
 
-RORganize is a bugs and issue-tracking app, which integrate lots of additional tools such as:
+RORganize is [open source](https://github.com/nmeylan/RORganize) and released under [MIT license](http://choosealicense.com/licenses/mit/).
 
-### Project creation
->You can easily create your project, add members and their role(PM, dev), versions. You can also set up all you need for your project as plugins activation, or which tracker you need for your project issues.
-	
-### Issue creation
->You can either create your requests with the minimum of information(title) or with a maximum of detail(starting date, required task..).
+# What can I do with this application?
 
->Your issues are created for a defined project, thus it is really easy to retrieve what you want. 
+RORganize offers a lots of features. Here are the mains features : 
 
->To browse requests, you can create your custom filters and save them (and share them to your team mate).
-	
-### Scenario creation (Plugin)
->The scenarios creation allows you to write your use cases story, detail each step and create/associate issues linked with your scenario. 
-	
-### Wiki pages for each project
->A simple wiki for each project
-	
-### Projects activities tracking
->In a simple page you can retrieve all activities of your project. 
-	
-### Gantt
->As issues can be set with precise informations, application can generate an effective gantt for each version of your project.
-	
-### Simple roles and permissions management 
->Application administrator can define for each role, which actions are allowed or not.
-	
-### Time tracking 
->All user can log his spent time on issues.
+*   Bugs and issues tracking.
+*   Easy to use filters system.
+*   Filters can be shared.
+*   Flexible permissions and roles management.
+*   Wiki for each project.
+*   Module management : you can define which feature you want to use for each projects.
+*   Clear projects/users activity browser.
+*   Documents sharing.
+*   Time logging.
+*   Effective Gantt generation.
+*   And more in progress...
 
-### Modulable feature
->To keep the tool easy to use, most of feature can be turn on/off for each project.
+# Documentation
 
->You can develop your own plugins and use them with rorganize.
-	
-_All previous stuff is available in version 0.5.2_	
-	
-#In next versions
-##Quality
-* A better test coverage.
-* SQL optimisations.
-* Implement decorater pattern (with draper) 
+For the moments there are not lots of documentations to run RORganize, but you can find the basis [here](https://github.com/nmeylan/RORganize/wiki).
 
-##Features
-* Repository integration (integrate your repository to update your issues' progress)
-* Activities notifications (follow in real time each project's activities)
-* Testing tool (test your developpment and update your issues with test's result)
+# About the development
 
-##Misc
-* Demo version
-* Devblog
-* Fill wiki
+RORganize is developed by me, [Nicolas Meylan](https://github.com/nmeylan) since 2012. 
+
+# Support
+
+If you find bugs or want a feature to be add please write an [issue](https://github.com/nmeylan/RORganize/issues/new). 
 
 #Licence
 RORganize is released under the [MIT License](http://www.opensource.org/licenses/MIT).
