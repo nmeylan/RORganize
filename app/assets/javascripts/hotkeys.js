@@ -89,6 +89,5 @@ function highlight_result(event, input) {
 }
 
 function help_overlay(e) {
-    createOverlay("#hotkeys_overlay", 150);
     $("#hotkeys_overlay").overlay().load();
 }

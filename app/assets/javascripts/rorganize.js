@@ -60,6 +60,13 @@
         bind_info_tag();
         bind_commentable();
 
+        //help overlay
+        createOverlay("#hotkeys_overlay", 150);
+        $('#open_hotkey_link').click(function(e){
+            e.preventDefault();
+            $("#hotkeys_overlay").overlay().load();
+        })
+
     });
     jQuery(document).ajaxSend(function (e, xhr, options) {
         jQuery("#loading").show();
