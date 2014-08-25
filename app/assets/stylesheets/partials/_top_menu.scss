@@ -19,6 +19,23 @@ $top-menu-font-size: 11px;
   border-bottom: 1px solid $default-border-color;
 }
 
+#top_menu_logo {
+  width: 32px;
+  height: 32px;
+  display: inline-block;
+  position: absolute;
+  right: 50%;
+  top: 1px;
+  border-radius: 50%;
+  padding: 2px;
+  box-shadow: 0 1px 2px #ccc;
+  -moz-box-shadow: 0 1px 2px #ccc;
+  -webkit-box-shadow: 0 1px 2px #ccc;
+  background-color: $default-background-color;
+  border: 1px solid #bbb;
+}
+
+
 #top_menu ul {
   padding: 0px;
   margin: 5px 0px;

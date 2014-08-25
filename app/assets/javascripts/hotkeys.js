@@ -7,6 +7,7 @@
 function bind_hotkeys() {
     Mousetrap.bind('/', function (e) {
         on_keydown_highlight_search(e);
+        return false;
     });
     Mousetrap.bind('h', function (e) {
         help_overlay();
@@ -38,11 +39,11 @@ function on_keydown_highlight_search(e) {
         close_highlight_search(search_box);
     } else {
         $('html').append('<div id="searchMask" style="position: fixed; top: 0px; left: 0px; width: 100%; height: 100%; display: block; opacity: 0.3; z-index: 10; background-color: rgb(0, 0, 0);"></div>').keydown(function (e) {
-            if (e.keyCode === 27) close_highlight_search(search_box);
+            if (e.keyCode === 27)
+                close_highlight_search(search_box);
         });
         search_box.css('display', 'block').css('z-index', ' 9999');
         input.focus();
-        highlight_result(undefined, input);
     }
 }
 
@@ -144,12 +145,12 @@ function line_upward() {
     }
 }
 
-function enter_actions(e){
+function enter_actions(e) {
     var list = $('table.list');
     if (list[0] !== undefined) {
         var row = list.find('tr.hover');
         var link = row.find('a:not(.delete_link)');
-        if(link[0] !== undefined){
+        if (link[0] !== undefined) {
             console.log(link);
             link[0].click();
         }
