@@ -275,6 +275,8 @@ en:
   text_shortcut_ctrl_u: Put selection underlined
   text_shortcut_ctrl_1: Add a level 1, 2, 3 or 4 title
   text_shortcut_ctrl_l: Add a link
+  text_shortcut_at: Open a menu that display project's members. Used to mention users.
+  text_shortcut_sharp: Followed by issue id will create a link to this issue.
 
   password: "Password"
   field_steps: "Steps"
