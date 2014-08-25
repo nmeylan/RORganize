@@ -868,5 +868,7 @@ hotkeys_overlay
     line-height: 24px;
     color: $link-hover-color !important;
     border-radius: 3px;
+    min-width: 16px;
+    text-align: center;
   }
 }

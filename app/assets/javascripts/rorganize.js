@@ -65,7 +65,8 @@
         $('#open_hotkey_link').click(function(e){
             e.preventDefault();
             $("#hotkeys_overlay").overlay().load();
-        })
+        });
+        bind_table_list_actions();
 
     });
     jQuery(document).ajaxSend(function (e, xhr, options) {
@@ -218,7 +219,15 @@ function markdown_textarea() {
     el.focus();
 }
 
-
+function bind_table_list_actions(){
+    var table_row = $('table.list tr');
+    table_row.hover(function(){
+        table_row.removeClass('hover');
+        $(this).addClass('hover');
+    }, function(){
+        $(this).removeClass('hover');
+    });
+}
 
 function createOverlay(id, top) {
     jQuery(id).overlay({

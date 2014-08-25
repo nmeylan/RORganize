@@ -63,7 +63,7 @@ li.close {
 }
 
 
-.issue_tr:hover {
+.list tr.hover:not(.header) {
   background-color: $default-table-tr-hover-background-color !important;
 }
 

@@ -3,26 +3,28 @@
  * Date: 25.08.14
  * Time: 00:31
  */
+
 function bind_hotkeys() {
-    var exclude_focus = ['TEXTAREA', 'INPUT'];
-    var key_codes = {
-        slash: 191,
-        h: 72
-    };
-    $('body').keydown(function (e) {
-        var focus = $(':focus')[0];
-        if (focus === undefined || exclude_focus.indexOf(focus.nodeName) === -1) {
-            switch (e.keyCode) {
-                case key_codes['slash'] :
-                    on_keydown_highlight_search(e);
-                    break;
-                case key_codes['h'] :
-                    help_overlay(e);
-                    break;
-                default :
-                    break;
-            }
-        }
+    Mousetrap.bind('/', function (e) {
+        on_keydown_highlight_search(e);
+    });
+    Mousetrap.bind('h', function (e) {
+        help_overlay();
+    });
+    Mousetrap.bind('g t', function (e) {
+        go_next_tab();
+    });
+    Mousetrap.bind('g T', function (e) {
+        go_previous_tab();
+    });
+    Mousetrap.bind('j', function (e) {
+        line_downward();
+    });
+    Mousetrap.bind('k', function (e) {
+        line_upward();
+    });
+    Mousetrap.bind('enter', function (e) {
+        enter_actions(e);
     });
 }
 function on_keydown_highlight_search(e) {
@@ -87,7 +89,69 @@ function highlight_result(event, input) {
         }
     }
 }
-
-function help_overlay(e) {
+//h
+function help_overlay() {
     $("#hotkeys_overlay").overlay().load();
+}
+//gt
+function go_next_tab() {
+    var current_tab = $("#main_menu").find('li.selected');
+    var next_tab = current_tab.next();
+    if (next_tab !== undefined) {
+        next_tab.find('a').get(0).click();
+    }
+
+}
+//gT
+function go_previous_tab() {
+    var current_tab = $("#main_menu").find('li.selected');
+    var prev_tab = current_tab.prev();
+    if (prev_tab !== undefined) {
+        prev_tab.find('a').get(0).click();
+    }
+}
+//j
+function line_downward() {
+    var list = $('table.list');
+    if (list[0] !== undefined) {
+        var row = list.find('tr.hover');
+        if (row[0] !== undefined) {
+            var next = row.next();
+            if (next[0] !== undefined) {
+                row.removeClass('hover');
+                next.addClass('hover');
+            }
+        } else {
+            list.find('tr:not(.header)').first().addClass('hover');
+        }
+    }
+}
+
+//k
+function line_upward() {
+    var list = $('table.list');
+    if (list[0] !== undefined) {
+        var row = list.find('tr.hover');
+        if (row[0] !== undefined) {
+            var prev = row.prev(':not(.header)');
+            if (prev[0] !== undefined) {
+                row.removeClass('hover');
+                prev.addClass('hover')
+            }
+        } else {
+            list.find('tr:not(.header)').last().addClass('hover');
+        }
+    }
+}
+
+function enter_actions(e){
+    var list = $('table.list');
+    if (list[0] !== undefined) {
+        var row = list.find('tr.hover');
+        var link = row.find('a:not(.delete_link)');
+        if(link[0] !== undefined){
+            console.log(link);
+            link[0].click();
+        }
+    }
 }

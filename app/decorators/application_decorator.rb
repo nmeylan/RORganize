@@ -42,7 +42,7 @@ class ApplicationDecorator < Draper::Decorator
   end
 
   def delete_link(label, path, project = nil, owner = nil, options = {})
-    default_options = {:method => :delete, :remote => true, :confirm => h.t(:text_delete_item)}
+    default_options = {:method => :delete, :remote => true, :confirm => h.t(:text_delete_item), class: 'delete_link'}
     link_to_with_permissions(h.glyph(label, 'trashcan'), path, project, owner, default_options.merge(options))
   end
 
