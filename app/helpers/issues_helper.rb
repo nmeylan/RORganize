@@ -117,12 +117,16 @@ module IssuesHelper
   end
 
   def display_overview_groups(groups)
-    groups.collect do |group_hash|
-      group_hash.collect do |k, v|
-        title = k.eql?(:status) ? 'Issues' : 'Opened issues'
-        display_overview_group_by("#{title} : By #{k.to_s.capitalize.gsub(/_/, ' ')}", v, k, !k.eql?(:status))
+    if groups.any?
+      groups.collect do |group_hash|
+        group_hash.collect do |k, v|
+          title = k.eql?(:status) ? 'Issues' : 'Opened issues'
+          display_overview_group_by("#{title} : By #{k.to_s.capitalize.gsub(/_/, ' ')}", v, k, !k.eql?(:status))
+        end.join.html_safe
       end.join.html_safe
-    end.join.html_safe
+    else
+      no_data
+    end
   end
 
   def display_overview_group_by(title, group, group_name, only_opened_issues = true)

@@ -30,6 +30,10 @@ module ApplicationHelper
     content_tag :div, nil, {class: 'clear-both'}
   end
 
+  def no_data
+    content_tag :div, t(:text_no_data), class: 'no-data'
+  end
+
   def render_404
     respond_to do |format|
       format.html { render :file => "#{Rails.root}/public/404.html.erb", :status => :not_found }
