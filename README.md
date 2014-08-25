@@ -1,4 +1,4 @@
-## Welcome to my project management tool
+#Welcome to RORganize
 ### Started on June 20, 2012 - Last update : August 25, 2014
 
 Run with Rails 4.1.X
