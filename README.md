@@ -35,7 +35,7 @@ RORganize is developed by me, [Nicolas Meylan](https://github.com/nmeylan) since
 
 # Support
 
-If you find bugs or want a feature to be add please write an [issue](https://github.com/nmeylan/RORganize/issues/new). 
+If you find bugs or want a feature to be added please write an [issue](https://github.com/nmeylan/RORganize/issues/new). 
 
 #Licence
 RORganize is released under the [MIT License](http://www.opensource.org/licenses/MIT).
