@@ -17,6 +17,7 @@ class Member < ActiveRecord::Base
   has_many :assigned_issues, -> { where('issues.project_id = members.project_id')},through: :user, class_name: 'Issue'
   #Triggers
   before_create :set_project_position
+  before_destroy :unassigned_issues
   #Scopes
   scope :fetch_dependencies, -> { eager_load(:role, :user) }
   #Methods
@@ -44,6 +45,10 @@ class Member < ActiveRecord::Base
 
   def set_project_position
     self.project_position = Member.where(:user_id => self.user_id).count
+  end
+
+  def unassigned_issues
+    Issue.where({assigned_to: self.user_id}).update_all({assigned_to_id: nil})
   end
   
 end
