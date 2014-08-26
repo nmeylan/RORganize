@@ -52,12 +52,16 @@ class Issue < ActiveRecord::Base
       errors.add(:start_date, "must be inferior than due date : #{self.due_date.to_formatted_s(:db)}")
     elsif (self.start_date && self.version && self.version.target_date) && self.start_date >= self.version.target_date
       errors.add(:start_date, "must be inferior than version due date : #{self.version.target_date.to_formatted_s(:db)}")
+    elsif (self.start_date && self.version) &&  self.start_date < self.version.start_date
+      errors.add(:start_date, "must be superior or equal to version start date : #{self.version.start_date.to_formatted_s(:db)}")
     end
   end
 
   def validate_due_date
     if(self.due_date && self.version && self.version.target_date) && self.due_date > self.version.target_date
       errors.add(:due_date, "must be inferior or equals to version due date : #{self.version.target_date.to_formatted_s(:db)}")
+    elsif (self.due_date && self.version) &&  self.due_date <= self.version.start_date
+      errors.add(:due_date, "must be superior than version start date : #{self.version.start_date.to_formatted_s(:db)}")
     end
   end
 
