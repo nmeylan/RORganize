@@ -218,7 +218,7 @@ class IssuesController < ApplicationController
     result = @issue.set_predecessor(predecessor_id)
     respond_to do |format|
       format.js do
-        respond_to_js :action => 'add_predecessor', :locals => {:journals => result[:journals], :success => result[:saved]}, :response_header => result[:saved] ? :success : :failure, :response_content => result[:saved] ? t(:successful_update) : @issue.errors.full_messages
+        respond_to_js :action => 'add_predecessor', :locals => {:journals => History.new(result[:journals]), :success => result[:saved]}, :response_header => result[:saved] ? :success : :failure, :response_content => result[:saved] ? t(:successful_update) : @issue.errors.full_messages
       end
     end
   end

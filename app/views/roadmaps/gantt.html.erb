@@ -5,10 +5,12 @@
 # File: gantt.html.erb
 %>
 <%= javascript_include_tag 'dhtmlxgantt' %>
-<%= javascript_include_tag 'dhtmlxcommon' %>
 <%= stylesheet_link_tag 'dhtmlxgantt' %>
 
 <%= contextual t(:label_gantt_chart) %>
+<input type="radio" id="scale2" name="scale" value="2" /><label for="scale2">Week scale</label><br>
+<input type="radio" id="scale3" name="scale" value="3" checked /><label for="scale3">Month scale</label><br>
+<input type="radio" id="scale4" name="scale" value="4" /><label for="scale4">Year scale</label><br>
 
 <div id="gantt_chart" style="height: 400px">
 

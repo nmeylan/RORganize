@@ -3,7 +3,7 @@
 # Encoding: UTF-8
 # File: roadmaps_controller.rb
 
-
+require 'roadmaps/gantt_object'
 class RoadmapsController < ApplicationController
   helper VersionsHelper
   include RoadmapsHelper
@@ -32,8 +32,8 @@ class RoadmapsController < ApplicationController
   end
 
   def gantt
-    @data = gantt_hash(Version.define_gantt_data(@project))
-    gon.Gantt_XML = @data
+  @gantt_object = GanttObject.new(@project.versions.eager_load(issues: [:parent, :children, :tracker, :assigned_to, :status]), @project)
+    gon.Gantt_JSON = @gantt_object.json_data
   end
 
   private

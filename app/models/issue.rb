@@ -29,7 +29,7 @@ class Issue < ActiveRecord::Base
   after_update :save_attachments
   #Validators
   validates :subject, :tracker_id, :status_id, :presence => true
-  validate :validate_start_date, :validate_predecessor
+  validate :validate_start_date, :validate_predecessor, :validate_due_date
   #Scopes
   scope :fetch_dependencies, -> { eager_load([:tracker, :version, :assigned_to, :category, :attachments, :author, :checklist_items, :status => [:enumeration]]) }
   scope :assigned_issues_for_user, ->(user) { where(:assigned_to_id => user.id, :status_id => IssuesStatus.opened_statuses_id, :project_id => Project.opened_projects_id).eager_load(:project) }
@@ -48,8 +48,16 @@ class Issue < ActiveRecord::Base
 
   #  Custom validator
   def validate_start_date
-    unless (self.due_date && self.start_date) ? self.start_date <= self.due_date : true
-      errors.add(:start_date, 'must be inferior than due date')
+    if (self.due_date && self.start_date) && self.start_date >= self.due_date
+      errors.add(:start_date, "must be inferior than due date : #{self.due_date.to_formatted_s(:db)}")
+    elsif (self.start_date && self.version && self.version.target_date) && self.start_date >= self.version.target_date
+      errors.add(:start_date, "must be inferior than version due date : #{self.version.target_date.to_formatted_s(:db)}")
+    end
+  end
+
+  def validate_due_date
+    if(self.due_date && self.version && self.version.target_date) && self.due_date > self.version.target_date
+      errors.add(:due_date, "must be inferior or equals to version due date : #{self.version.target_date.to_formatted_s(:db)}")
     end
   end
 
