@@ -18,11 +18,9 @@ function roadmap_calendar() {
 }
 
 function roadmap_gantt() {
-
     ajax_trigger("#gantt_version_select", 'change', 'get');
     if (gon.Gantt_JSON) {
         var scale_config = "3";
-
         function setScaleConfig(value) {
             var weekScaleTemplate = function (date) {
                 var dateToStr = gantt.date.date_to_str("%d %M, %Y");
@@ -78,17 +76,6 @@ function roadmap_gantt() {
                     break;
             }
         }
-
-//
-//        gantt.config.work_time = true;
-//
-//
-//        gantt.config.scale_unit = "day";
-//        gantt.config.date_scale = "%D, %d";
-//        gantt.config.min_column_width = 60;
-//        gantt.config.duration_unit = "day";
-//        gantt.config.scale_height = 20*3;
-//        gantt.config.row_height = 30;
 
         gantt.templates.task_cell_class = function (task, date) {
             var classes = "";

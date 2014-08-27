@@ -1,4 +1,7 @@
 class ApplicationDecorator < Draper::Decorator
+  include ActionView::Helpers::UrlHelper
+  include ActionDispatch::Routing
+  include Rails.application.routes.url_helpers
   include Rorganize::PermissionManager::PermissionHandler
 
   def description?

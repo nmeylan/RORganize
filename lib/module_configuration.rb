@@ -3,7 +3,8 @@
 # Encoding: UTF-8
 # File: module_configuration.rb
 
-#These module can't be disabled.
+#TODO refactor string by symboles
+#These module are always enabled.
 always_enabled_module = [{controller: 'settings', action: 'index'},
   {controller: 'members', action: 'index'},
   {controller: 'categories', action: 'index'},
@@ -14,8 +15,23 @@ always_enabled_module = [{controller: 'settings', action: 'index'},
   {controller: 'projects', action: 'destroy'},
   {controller: 'projects', action: 'overview'},
   {controller: 'comments', action: 'edit_comment_not_owner'},
-  {controller: 'comments', action: 'destroy_comment_not_owner'},
-  {controller: 'coworkers', action: 'index'}
+  {controller: 'comments', action: 'destroy_comment_not_owner'}
 ]
 
+
 Rorganize::ModuleManager.initialize_modules(always_enabled_module)
+
+#There is two cases for module activation :
+#General case : All actions from a same controller are associated to one MENU and MODULE.
+#This is the case when the "index" action (from controller) is used as root action for the controller.
+#E.g : issues_controller
+
+#Specifica case: Actions from a same controller are associated to different MENU and MODULE.
+#This is the case when an action (other than "index") is used as root action for controller.
+#E.g : show action from roadmaps_controller.
+#So we have to associated other actions (all excepted show (from previous example)) to a module.
+
+association_actions_module = {
+    'gantt' => {'roadmaps' => ['manage_gantt', 'gantt']}
+}
+Rorganize::ModuleManager.set_associations_actions_module(association_actions_module)

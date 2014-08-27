@@ -73,6 +73,8 @@ RORganize::Application.routes.draw do
         get 'calendar'
         get 'version_description', :path => 'version_description/:id'
         get 'gantt'
+        post 'manage_gantt'
+        get 'manage_gantt'
       end
     end
     resources :wiki do

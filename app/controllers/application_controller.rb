@@ -3,6 +3,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
   helper :application
   include ApplicationHelper
+  helper Rorganize::ModuleManager::ModuleManagerHelper
   include Rorganize::SecurityFilter
   helper Rorganize::MenuManager::MenuHelper
   helper Rorganize::PermissionManager::PermissionManagerHelper
@@ -13,11 +14,13 @@ class ApplicationController < ActionController::Base
   around_filter :set_current_user
   after_filter :set_sessions
 
+  #Define which menu it concern (:project_menu, :admin_menu)
   def menu_context(context)
     @menu_context ||= []
     @menu_context << context
   end
 
+  #Define which is the active(or selected) menu
   def menu_item(controller, action = nil)
     @current_menu_item = 'menu_'
     @current_menu_item+= "#{controller}"
@@ -29,8 +32,8 @@ class ApplicationController < ActionController::Base
   def top_menu_item(menu_name)
     @current_top_menu_item = 'menu_'
     @current_top_menu_item+= "#{menu_name}"
-
   end
+
 
   def authenticate
     if !user_signed_in? && !RORganize::Application.config.rorganize_anonymous_access
@@ -42,6 +45,7 @@ class ApplicationController < ActionController::Base
     session[controller_name.to_sym] ||= {}
     @sessions = session[controller_name.to_sym]
   end
+
   def set_current_user
     if current_user.nil?
       User.current = AnonymousUser.instance
@@ -87,6 +91,7 @@ class ApplicationController < ActionController::Base
   def js_redirect_to(path)
     render js: %(window.location.href='#{path}') and return
   end
+
   def configure_permitted_parameters
     devise_parameter_sanitizer.for(:sign_up) << User.permit_attributes
   end

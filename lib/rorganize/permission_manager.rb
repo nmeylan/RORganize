@@ -5,7 +5,6 @@
 
 module Rorganize
   module PermissionManager
-
     module PermissionHandler
       #Params hash content:
       #method : possible values :post, :get , :put, :delete
@@ -22,9 +21,10 @@ module Rorganize
         if (owner_id.nil? && User.current.allowed_to?(hash_path[:action], hash_path[:controller], project)) || (!owner_id.nil? && (User.current.allowed_to?(hash_path[:action], hash_path[:controller], project) && owner_id.eql?(User.current.id) ||
             User.current.allowed_to?("#{hash_path[:action]}_not_owner", hash_path[:controller], project)))
           if params[:target] && params[:target].eql?('self')
-            h.link_to(label, '#', params)
+            params.delete_if {|k, _| k.eql?(:method) && params[:remote].nil? || params[:target]}
+            link_to(label, '#', params)
           else
-            h.link_to(label, path, params)
+            link_to(label, path, params)
           end
         end
       end

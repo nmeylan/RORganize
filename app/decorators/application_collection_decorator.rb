@@ -4,6 +4,9 @@
 # File: application_collection_decorator.rb
 
 class ApplicationCollectionDecorator < Draper::CollectionDecorator
+  include ActionView::Helpers::UrlHelper
+  include ActionDispatch::Routing
+  include Rails.application.routes.url_helpers
   include Rorganize::PermissionManager::PermissionHandler
 
   def pagination_path

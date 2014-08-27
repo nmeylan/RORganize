@@ -13,8 +13,12 @@ module Rorganize
         end
         module_is_enabled = false
         Rorganize::ModuleManager.modules(:project).enabled_modules[project_id].each do |m|
-          module_is_enabled = (m[:controller].eql?(controller.downcase) && m[:action].eql?('index')) ||
-            (m[:controller].eql?(controller.downcase) && m[:action].eql?(action.downcase))
+          association = Rorganize::ModuleManager.associations[m[:name]]
+          controller = controller.downcase
+          action = action.downcase
+          module_is_enabled = (m[:controller].eql?(controller) && m[:action].eql?('index')) ||
+            (m[:controller].eql?(controller) && m[:action].eql?(action)) ||
+            (association && association[controller] && association[m[:controller]].include?(action))
           if module_is_enabled
             break
           end
@@ -28,6 +32,7 @@ module Rorganize
     end
 
     class << self
+      attr_reader :associations
       def map(module_panel_name)
         @modules ||= {}
         if !self.modules(module_panel_name)
@@ -39,6 +44,10 @@ module Rorganize
       end
       def modules(module_name)
         @modules[module_name.to_sym]
+      end
+
+      def set_associations_actions_module(associations_hash)
+        @associations = associations_hash
       end
 
       def initialize_modules(always_enabled_module)
@@ -73,7 +82,7 @@ module Rorganize
         projects = Project.all
         projects.each do |project|
           project.enabled_modules.each do |mod|
-            enabled_modules[project.id.to_s] << {:action => mod.action, :controller => mod.controller.downcase}
+            enabled_modules[project.id.to_s] << {:action => mod.action, :controller => mod.controller.downcase, :name => mod.name}
           end
         end
         return enabled_modules

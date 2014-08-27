@@ -128,7 +128,6 @@ class InsertPermissions < ActiveRecord::Migration
     #Permissions for project
     Permission.delete_all(:controller => 'Project', :action => 'overview', :name => 'View project overview')
     Permission.delete_all(:controller => 'Project', :action => 'activity', :name => 'View project activity')
-    Permission.delete_all(:controller => 'Project', :action => 'rodmap', :name => 'View project roadmap')
     Permission.delete_all(:controller => 'Project', :action => 'new', :name => 'Create projects')
     Permission.delete_all(:controller => 'Project', :action => 'show', :name => 'View project')
     #Permissions for roles

@@ -15,18 +15,22 @@ end
 unless $0.end_with?('rake')
   I18n.load_path += Dir[Rails.root.join('config', 'locales', '**', '*.{rb,yml}')]
   Rorganize::MenuManager.map :project_menu do |menu|
-    #menu.add(menu_name, menu_url, options)
-    #If you have one menu item per controller
-    #Client id must be declare as following: menu_controller
-    #If you have more than one item per controller
-    #Client id must be declare as following: menu_controller_action
+    #menu.add(module_name, menu_url, options)
+    #module_name : is the name of the associated module. Module need to be activate(at settings->module) to perform actions from controller.
+    #menu_url must be under hash format and not route_path(..)
+    #General case : If you have one menu item per controller
+    #   then Client id must be declare as following: menu_controller. All action from this controller will be activate when module module_name is activate.
+    #If you want a specific menu for differents actions from a same controller
+    #   then Client id must be declare as following: menu_controller_action. However, only these action will be activate(by default) when the module module_name is activate.
+    #Here same controller but a menu for both actions :
     menu.add(:overview, I18n.t(:label_overview), {:controller => 'projects', :action => 'overview'}, {:id => 'menu_projects_overview'})
     menu.add(:activity, I18n.t(:label_activity), {:controller => 'projects', :action => 'activity'}, {:id => 'menu_projects_activity'})
+    #Same here
     menu.add(:roadmaps, I18n.t(:label_roadmap), {:controller => 'roadmaps', :action => 'show'}, {:id => 'menu_roadmaps'})
+    #One menu for all action from issues_controller
     menu.add(:requests, I18n.t(:label_request_plural), {:controller => 'issues', :action => 'index'}, {:id => 'menu_issues'})
-    menu.add(:wiki, I18n.t(:label_wiki), {:controller => 'wiki', :action => 'index'}, {:id => 'menu_wiki'})
-    #  menu.add(t(:label_test_plural), "#")
     menu.add(:documents, I18n.t(:label_documents), {:controller => 'documents', :action => 'index'}, {:id => 'menu_documents'})
+    menu.add(:wiki, I18n.t(:label_wiki), {:controller => 'wiki', :action => 'index'}, {:id => 'menu_wiki'})
     menu.add(:settings, I18n.t(:label_setting_plural), {:controller => 'settings', :action => 'index'}, {:id => 'menu_settings'})
   end
 

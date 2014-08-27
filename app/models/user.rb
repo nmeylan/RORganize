@@ -155,7 +155,7 @@ class User < ActiveRecord::Base
     m = self.members
     if project
       member = m.to_a.select { |mb| mb.project_id == project.id }.first
-      puts "Current user is allowed to do following actions and has role #{mem.role.caption} for project #{project.slug}"
+      puts "Current user is allowed to do following actions and has role #{member.role.caption} for project #{project.slug}"
       p allowed_to_actions_list(member.role.id.to_s, controller)
     else
       for mem in m do
