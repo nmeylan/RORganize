@@ -61,7 +61,7 @@
 
         //help overlay
         createOverlay("#hotkeys_overlay", 150);
-        $('#open_hotkey_link').click(function(e){
+        $('#open_hotkey_link').click(function (e) {
             e.preventDefault();
             $("#hotkeys_overlay").overlay().load();
         });
@@ -167,9 +167,9 @@ jQuery.expr[':'].contains = function (a, i, m) {
     return jQuery(a).text().toUpperCase().indexOf(m[3].toUpperCase()) >= 0;
 };
 
-function initialize_chosen(){
+function initialize_chosen() {
     $(".chzn-select").chosen({disable_search_threshold: 5});
-    $(".chzn-select-deselect").chosen({allow_single_deselect: true, disable_search_threshold: 10});
+    $(".chzn-select-deselect").chosen({allow_single_deselect: true, disable_search_threshold: 5});
 }
 function display_flash() {
     var el;
@@ -222,26 +222,30 @@ function markdown_textarea() {
     el.focus();
 }
 
-function bind_table_list_actions(){
+function bind_table_list_actions() {
     var table_row = $('table.list tr');
-    table_row.hover(function(){
+    table_row.hover(function () {
         table_row.removeClass('hover');
         $(this).addClass('hover');
-    }, function(){
+    }, function () {
         $(this).removeClass('hover');
     });
 }
 
 $.tools.overlay.addEffect("slide",
-    function(position, done) {
+    function (position, done) {
         this.getOverlay().removeClass('animated bounceOutUp');
-        this.getOverlay().css(position).show().addClass('animated bounceInDown').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){$(this).removeClass('animated bounceInDown')});
+        this.getOverlay().css(position).show().addClass('animated bounceInDown').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function () {
+            $(this).removeClass('animated bounceInDown')
+        });
     },
     // close function
-    function(done) {
+    function (done) {
         // fade out the overlay
         this.getOverlay().removeClass('animated bounceInDown');
-        this.getOverlay().addClass('animated bounceOutUp').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){$(this).removeClass('animated bounceOutUp').hide()});
+        this.getOverlay().addClass('animated bounceOutUp').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function () {
+            $(this).removeClass('animated bounceOutUp').hide()
+        });
     }
 );
 function createOverlay(id, top) {
@@ -250,7 +254,7 @@ function createOverlay(id, top) {
         top: top,
         // some mask tweaks suitable for facebox-looking dialogs
         effect: 'slide',
-        speed : 'slow',
+        speed: 'slow',
 
         mask: {
             // you might also consider a "transparent" color for the mask
@@ -264,13 +268,13 @@ function createOverlay(id, top) {
         closeOnClick: false,
         // load it immediately after the construction
         load: false,
-        onBeforeLoad: function(e){
-           var self = this;
+        onBeforeLoad: function (e) {
+            var self = this;
             var overlay = self.getOverlay();
             $(self).removeClass('animated bounceInDown bounceOutUp');
             overlay.find('.close_button').remove();
             var close_button = $('<span class="medium-octicon octicon-x close_button"></span>');
-            close_button.click(function(e){
+            close_button.click(function (e) {
                 e.preventDefault();
                 self.close();
             });
@@ -859,14 +863,21 @@ function bind_info_tag() {
     jQuery("span.octicon-info").click(function (e) {
         e.preventDefault();
         var el = jQuery(this);
-
-        if (el.next().length == 0)
-            el.parent().append("<span class='help'>" + el.attr('title') + "</span>");
-        else
-            el.next().fadeOut(function () {
+        if (el.html() === "" || el.find('.help').css('display') === 'none') {
+            var info = $(write_info(el.attr('title')));
+            el.html(info);
+            info.hide().fadeIn();
+        }
+        else {
+            el.find('.help').fadeOut(function () {
                 this.remove()
             });
+        }
     });
+}
+
+function write_info(info){
+    return "<span class='help'>" + info + "</span>";
 }
 
 function bind_commentable() {

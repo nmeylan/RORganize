@@ -79,7 +79,7 @@ module IssuesHelper
           safe_concat content_tag :td, issue.assigned_to, class: 'list_center assigned_to'
           safe_concat content_tag :td, issue.status.caption, class: 'list_center status'
           safe_concat content_tag :td, issue.category, class: 'list_center category'
-          safe_concat content_tag :td, issue.version, class: 'list_center version'
+          safe_concat content_tag :td, issue.version_str, class: 'list_center version'
           safe_concat content_tag :td, issue.due_date, class: 'list_center due_date'
           safe_concat content_tag :td, issue.done, class: 'list_center done'
           safe_concat content_tag :td, issue.link_checklist_overlay

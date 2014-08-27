@@ -9,7 +9,7 @@ class IssueDecorator < ApplicationDecorator
     model.tracker ? model.tracker.caption : '-'
   end
 
-  def version
+  def version_str
     model.version ? model.version.caption : '-'
   end
 

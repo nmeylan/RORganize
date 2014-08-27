@@ -111,8 +111,9 @@ module ApplicationHelper
     content_tag :div, content_tag(:h2, title), class: 'header'
   end
 
-  def info_tag(info)
-    content_tag :span, nil, {class: 'octicon octicon-info', title: info}
+  def info_tag(info, options = {})
+    default_options = {class: 'octicon octicon-info', title: info}
+    content_tag :span, nil, default_options.merge(options)
   end
 
   def toolbox_tag(toolbox)
@@ -144,22 +145,6 @@ module ApplicationHelper
         hidden_field_tag 'ids[]', id
       end.join.html_safe)
     }
-  end
-
-  #Here are define basic action into hash
-  def find_action(action)
-    basic_actions = {'update' => 'edit', 'create' => 'new'}
-    if basic_actions.keys.include?(action)
-      basic_actions[action]
-    else
-      action
-    end
-  end
-
-  def check_permission
-    unless User.current.allowed_to?(find_action(params[:action]), params[:controller], @project)
-      render_403
-    end
   end
 
   def error_messages(object)
@@ -318,29 +303,18 @@ module ApplicationHelper
     end
   end
 
-
   def select_tag_versions(id, name, select_key)
-    #Don't use hash because, grouped_options will be sort asc : close before open
     versions = @project.versions
     hash = {Open: [], Close: []}
     versions.each do |v|
       key = v.closed? ? :Close : :Open
-      hash[key] << [v.caption, v.id, {'data-date' => v.target_date}]
+      version_info = "#{t(:info_version_start_date)} <b>#{v.start_date.strftime('%d %b. %Y')}</b> #{t(:text_to)} <b>#{v.target_date ? v.target_date.strftime('%d %b. %Y') : ' undetermined'}</b>"
+      hash[key] << [v.caption, v.id, {'data-target_date' => v.target_date, 'data-start_date'=> v.start_date, 'data-version_info' => version_info }]
     end
-    select_tag name, grouped_options_for_select(hash, select_key), {class: 'chzn-select-deselect  cbb-medium', id: id, include_blank: true}
+    select_tag name, grouped_options_for_select(hash, select_key), {class: 'chzn-select-deselect  cbb-medium search', id: id, include_blank: true}
   end
 
-#Build rows for all entries from a given model
-#Model : An activeRecord model
-#Params :
-# Exclude : all attributes exclude from model
-# Or Include : all attributes include from model
-#E.g: Display all users, exclude => [:password, :id]
-  def generics_list_builder(model, params = {:exclude => []})
-    attributes = model.attribute_names
-    exclude_attributes = params[:exclude]
-    attributes.delete_if { |attribute| exclude_attributes.include?(attribute.to_sym) }
-  end
+
 
   def contextual_with_breadcrumb(title, breadcrumb)
     content_for :contextual do
