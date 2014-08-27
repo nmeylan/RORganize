@@ -560,7 +560,7 @@ div.dhx_modal_cover {
   cursor: pointer; }
 
 .gantt_line_wrapper div {
-  background-color: #fcfce2; }
+  background-color: #4183c4; }
 
 .gantt_task_link:hover .gantt_line_wrapper div {
   box-shadow: 0 0 5px 0 #fcfce2; }
@@ -626,21 +626,21 @@ div.dhx_modal_cover {
 
 .gantt_link_arrow_right {
   border-width: 4px 0 4px 6px;
-  border-color: transparent transparent transparent #ffa011;
+  border-color: transparent transparent transparent #4183c4;
   margin-top: -1px; }
 
 .gantt_link_arrow_left {
   border-width: 4px 6px 4px 0;
   margin-top: -1px;
-  border-color: transparent #ffa011 transparent transparent; }
+  border-color: transparent #4183c4 transparent transparent; }
 
 .gantt_link_arrow_top {
   border-width: 0 4px 6px;
-  border-color: transparent transparent #ffa011; }
+  border-color: transparent transparent #4183c4; }
 
 .gantt_link_arrow_down {
   border-width: 4px 6px 0 4px;
-  border-color: #ffa011 transparent transparent; }
+  border-color: #4183c4 transparent transparent; }
 
 .gantt_task_drag, .gantt_task_progress_drag {
   cursor: w-resize;
@@ -1226,3 +1226,10 @@ div.dhx_modal_cover {
 .gantt_side_content {
   color: #484848;
   font-weight: bold; }
+
+.gantt_scale_menu input, .gantt_scale_menu label {
+  float: left; }
+
+#gantt_version_select_chzn {
+  margin-bottom: 10px;
+  margin-top: 10px; }

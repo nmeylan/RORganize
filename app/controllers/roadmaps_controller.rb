@@ -15,7 +15,7 @@ class RoadmapsController < ApplicationController
     @versions = Version.where(project_id: @project.id).order(:position).decorate
     @versions.to_a << Version.new(name: 'Unplanned').decorate
     respond_to do |format|
-      format.html { render :action => 'index'}
+      format.html { render :action => 'index' }
     end
   end
 
@@ -32,8 +32,13 @@ class RoadmapsController < ApplicationController
   end
 
   def gantt
-  @gantt_object = GanttObject.new(@project.versions.eager_load(issues: [:parent, :children, :tracker, :assigned_to, :status]), @project)
+    versions = params[:value] ? Version.eager_load(issues: [:parent, :children, :tracker, :assigned_to, :status]).where(id: params[:value]) : @project.versions.eager_load(issues: [:parent, :children, :tracker, :assigned_to, :status]).to_a.select{|version| !version.is_done}
+    @gantt_object = GanttObject.new(versions, @project)
     gon.Gantt_JSON = @gantt_object.json_data
+    respond_to do |format|
+      format.html { render action: 'gantt', locals: {versions: @project.versions, selected_versions: versions} }
+      format.js { respond_to_js action: 'gantt', locals: {json_data: @gantt_object.json_data}}
+    end
   end
 
   private

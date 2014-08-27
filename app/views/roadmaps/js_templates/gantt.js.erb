@@ -1,0 +1,9 @@
+<%#=
+ * User: nmeylan
+ * Date: 27.08.14
+ * Time: 18:45
+ %>
+gantt.clearAll();
+gantt.parse(<%= raw json_data.to_json %>, 'json');
+gantt.render();
+console.log(gantt.json.serialize());

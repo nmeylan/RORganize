@@ -29,13 +29,14 @@ class GanttObject
   end
 
   def build_json
-    output_hash = {data: []}
+    output_hash = {data: [], links: []}
     @versions_hash.each do |version, issues|
       duration = version.target_date ? (version.target_date - version.start_date) : (Date.today - version.start_date)
       if duration > 0
         output_hash[:data] << build_version_output(version, duration)
         issues.each do |issue|
           output_hash[:data] << build_issue_output(issue) if issue.start_date && issue.due_date && issue.due_date >= issue.start_date
+          output_hash[:links] << build_link(issue) unless issue.predecessor_id.nil?
         end
       end
     end
@@ -48,7 +49,7 @@ class GanttObject
         start_date: version.start_date.strftime(DATE_FORMAT),
         text: version.caption,
         parent: 0,
-        open: !version.is_done,
+        open: true,
         duration: duration.to_i,
         context: {
             type: 'version',
@@ -60,14 +61,12 @@ class GanttObject
   end
 
   def build_issue_output(issue)
-    predecessor = "version_#{issue.version_id}"
-    # predecessor = issue.predecessor_id ? issue.predecessor_id : "version_#{issue.version_id}"
     {
         id: issue.id,
         start_date: issue.start_date.strftime(DATE_FORMAT),
         text: issue.tracker.caption + ' #'+ issue.id.to_s,
-        parent: predecessor,
-        open: issue.open?,
+        parent: "version_#{issue.version_id}",
+        open: true,
         progress: issue.done / 100.0,
         duration: (issue.due_date - issue.start_date).to_i,
         context: {
@@ -78,6 +77,15 @@ class GanttObject
             due_date_str: issue.due_date.strftime(DATE_FORMAT_STR),
             start_date_str: issue.start_date.strftime(DATE_FORMAT_STR)
         }
+    }
+  end
+
+  def build_link(issue)
+    {
+        id: "#{issue.predecessor_id}_#{issue.id}",
+        source: issue.predecessor_id,
+        target: issue.id,
+        type: 0
     }
   end
 end

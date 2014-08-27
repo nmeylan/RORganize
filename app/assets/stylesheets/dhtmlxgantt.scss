@@ -679,7 +679,7 @@ div.dhx_modal_cover {
 }
 
 .gantt_line_wrapper div {
-  background-color: $selected-color;
+  background-color: $link-color;
 }
 
 .gantt_task_link:hover .gantt_line_wrapper div {
@@ -760,24 +760,24 @@ div.dhx_modal_cover {
 
 .gantt_link_arrow_right {
   border-width: 4px 0 4px 6px;
-  border-color: transparent transparent transparent #ffa011;
+  border-color: transparent transparent transparent $link-color;
   margin-top: -1px
 }
 
 .gantt_link_arrow_left {
   border-width: 4px 6px 4px 0;
   margin-top: -1px;
-  border-color: transparent #ffa011 transparent transparent
+  border-color: transparent $link-color transparent transparent;
 }
 
 .gantt_link_arrow_top {
   border-width: 0 4px 6px;
-  border-color: transparent transparent #ffa011
+  border-color: transparent transparent $link-color;
 }
 
 .gantt_link_arrow_down {
   border-width: 4px 6px 0 4px;
-  border-color: #ffa011 transparent transparent
+  border-color: $link-color transparent transparent;
 }
 
 .gantt_task_drag, .gantt_task_progress_drag {
@@ -1456,4 +1456,14 @@ div.dhx_modal_cover {
   color: $default-color;
   font-weight: bold;
 
+}
+
+.gantt_scale_menu {
+  input, label{
+    float: left;
+  }
+}
+#gantt_version_select_chzn{
+  margin-bottom: 10px;
+  margin-top: 10px;
 }

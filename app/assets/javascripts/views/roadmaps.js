@@ -18,6 +18,8 @@ function roadmap_calendar() {
 }
 
 function roadmap_gantt() {
+
+    ajax_trigger("#gantt_version_select", 'change', 'get');
     if (gon.Gantt_JSON) {
         var scale_config = "3";
 
@@ -25,6 +27,11 @@ function roadmap_gantt() {
             var weekScaleTemplate = function (date) {
                 var dateToStr = gantt.date.date_to_str("%d %M, %Y");
                 var endDate = gantt.date.add(gantt.date.add(date, 1, "week"), -1, "day");
+                return dateToStr(date) + " - " + dateToStr(endDate);
+            };
+            var monthScaleTemplate = function (date) {
+                var dateToStr = gantt.date.date_to_str("%M");
+                var endDate = gantt.date.add(date, 2, "month");
                 return dateToStr(date) + " - " + dateToStr(endDate);
             };
             switch (value) {
@@ -63,11 +70,6 @@ function roadmap_gantt() {
                     gantt.config.scale_height = 90;
                     gantt.templates.date_scale = null;
 
-                    var monthScaleTemplate = function (date) {
-                        var dateToStr = gantt.date.date_to_str("%M");
-                        var endDate = gantt.date.add(date, 2, "month");
-                        return dateToStr(date) + " - " + dateToStr(endDate);
-                    };
 
                     gantt.config.subscales = [
                         {unit: "month", step: 3, template: monthScaleTemplate},
