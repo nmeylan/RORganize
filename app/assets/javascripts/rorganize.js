@@ -51,8 +51,7 @@
         //MarkItUp
         markdown_textarea();
         //BIND_CHZN-SELECT
-        $(".chzn-select").chosen();
-        $(".chzn-select-deselect").chosen({allow_single_deselect: true});
+        initialize_chosen();
         //Paginate
         per_page();
 
@@ -77,8 +76,7 @@
 
     $(document).ajaxComplete(function (e, xhr, options) {
         //BIND_CHZN-SELECT
-        $(".chzn-select").chosen();
-        $(".chzn-select-deselect").chosen({allow_single_deselect: true});
+        initialize_chosen();
         //MarkItUp
         if (options.dataType !== 'JSON')
             markdown_textarea();
@@ -168,6 +166,11 @@
 jQuery.expr[':'].contains = function (a, i, m) {
     return jQuery(a).text().toUpperCase().indexOf(m[3].toUpperCase()) >= 0;
 };
+
+function initialize_chosen(){
+    $(".chzn-select").chosen({disable_search_threshold: 5});
+    $(".chzn-select-deselect").chosen({allow_single_deselect: true, disable_search_threshold: 10});
+}
 function display_flash() {
     var el;
     jQuery(".flash").each(function () {

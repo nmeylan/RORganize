@@ -327,7 +327,7 @@ module ApplicationHelper
       key = v.closed? ? :Close : :Open
       hash[key] << [v.caption, v.id, {'data-date' => v.target_date}]
     end
-    select_tag name, grouped_options_for_select(hash, select_key), {class: 'chzn-select-deselect cbb-medium', id: id}
+    select_tag name, grouped_options_for_select(hash, select_key), {class: 'chzn-select-deselect  cbb-medium', id: id, include_blank: true}
   end
 
 #Build rows for all entries from a given model

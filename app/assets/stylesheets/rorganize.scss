@@ -601,7 +601,7 @@ ul.project_list {
 }
 
 #project_description {
-  min-height: 400px;
+  min-height: 300px;
 }
 
 .version_overview {
@@ -621,6 +621,13 @@ ul.project_list {
   }
 }
 
+#add_member_overlay{
+  height: 300px;
+  width: 400px;
+  .overlayInner{
+    height: 100%;
+  }
+}
 /*
    CALENDAR
 */
