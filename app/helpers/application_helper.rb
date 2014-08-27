@@ -318,42 +318,6 @@ module ApplicationHelper
     end
   end
 
-#Build text from a specific journalizable
-  def generics_activities_text_builder(journal, activity_icon, is_not_in_project = true)
-    user = (journal.user ? journal.user.name : t(:label_unknown))
-    content_tag :p do
-      if journal.action_type.eql?('updated') || journal.action_type.eql?('created')
-        safe_concat content_tag :span, nil, {class: 'octicon octicon-pencil'} if journal.action_type.eql?('updated')
-        safe_concat content_tag :span, nil, {class: 'octicon octicon-diff-added'} if journal.action_type.eql?('created')
-        safe_concat "#{user} #{t(:label_updated_lower_case)} "
-        if journal.journalizable
-          safe_concat content_tag :b, "#{journal.journalizable_type} : #{journal.journalizable_identifier}"
-        else
-          safe_concat content_tag :b, "#{journal.journalizable_type} : unknown"
-        end
-        if journal.project_id && is_not_in_project
-          safe_concat "#{t(:label_at)} "
-          safe_concat content_tag :b, link_to(journal.project.slug, overview_projects_path(journal.project.slug))
-        end
-      elsif journal.action_type.eql?('deleted')
-        safe_concat content_tag :span, nil, {class: 'octicon octicon-trashcan'}
-        safe_concat "#{user} #{t(:label_deleted_lower_case)} "
-        safe_concat content_tag :b, "#{journal.journalizable_type} : #{journal.journalizable_identifier}"
-        if journal.project_id && is_not_in_project
-          safe_concat "#{t(:label_at)} "
-          safe_concat content_tag :b, "#{journal.project_id}"
-        end
-      end
-    end
-  end
-
-  def activities_text_builder(journal, specified_project = true)
-    if journal.journalizable_type.eql?('Issue')
-      issues_activities_text_builder(journal, specified_project).html_safe
-    else
-      generics_activities_text_builder(journal, '', specified_project).html_safe
-    end
-  end
 
   def select_tag_versions(id, name, select_key)
     #Don't use hash because, grouped_options will be sort asc : close before open
