@@ -1467,3 +1467,24 @@ div.dhx_modal_cover {
   margin-bottom: 10px;
   margin-top: 10px;
 }
+.gantt_task_progress{
+  text-align: left;
+}
+
+.gantt_task_line.issue.phantom_task{
+  background-color: $link-color;
+  background-image: -moz-linear-gradient($link-color, #3A7AB4);
+  background-image: -webkit-linear-gradient($link-color, #3A7AB4);
+  background-image: linear-gradient($link-color, #3A7AB4);
+  background-repeat: repeat-x;
+  color: white;
+  .gantt_task_progress{
+    background-color: $link-color;
+    background-image: -moz-linear-gradient($link-color, #3A7AB4);
+    background-image: -webkit-linear-gradient($link-color, #3A7AB4);
+    background-image: linear-gradient($link-color, #3A7AB4);
+    background-repeat: repeat-x;
+
+    color: white;
+  }
+}

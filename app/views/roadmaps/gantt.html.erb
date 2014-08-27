@@ -8,8 +8,9 @@
 <%= stylesheet_link_tag 'dhtmlxgantt' %>
 
 <%= contextual t(:label_gantt_chart) do %>
-    <%= link_to_with_permissions(glyph(t(:link_edit), 'pencil'), manage_gantt_roadmap_path(@project.slug), @project, nil, {target: 'self', method: 'get'})%>
+    <%= button_to_with_permissions(@sessions[:gantt][:edition] ? t(:link_switch_to_view) : t(:link_switch_to_edition), manage_gantt_roadmap_path(@project.slug, {mode:  @sessions[:gantt][:edition] ? 'view' : 'edition'}), @project, nil, {method: 'get', remote: true, id: 'switch_gantt_mode'})%>
 <% end %>
+<%= hidden_field_tag :gantt_mode, @sessions[:gantt][:edition] ? 'edition' : 'view' %>
 <div class="gantt_scale_menu">
   <input type="radio" id="scale2" name="scale" value="2"/><label for="scale2">Week scale</label>
   <input type="radio" id="scale3" name="scale" value="3" checked/><label for="scale3">Month scale</label>

@@ -175,6 +175,8 @@ en:
   link_new_comment: New comment
   link_comment: Comment
   link_view_comment: View comment
+  link_switch_to_edition: Switch to edition
+  link_switch_to_view: Switch to view
  #FORM
   field_name: Name
   field_description: Description

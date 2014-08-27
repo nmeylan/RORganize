@@ -34,18 +34,40 @@ class RoadmapsController < ApplicationController
   end
 
   def gantt
-    versions = params[:value] ? Version.eager_load(issues: [:parent, :children, :tracker, :assigned_to, :status]).where(id: params[:value]) : @project.versions.eager_load(issues: [:parent, :children, :tracker, :assigned_to, :status]).to_a.select{|version| !version.is_done}
-    @gantt_object = GanttObject.new(versions, @project)
+    @sessions[:gantt] ||= {}
+    @sessions[:gantt][:edition] ||= false
+    if params[:value]
+      @sessions[:gantt][:versions] = params[:value]
+    end
+    versions = @sessions[:gantt][:versions] ? Version.eager_load(issues: [:parent, :children, :tracker, :assigned_to, :status]).where(id: @sessions[:gantt][:versions]) : @project.versions.eager_load(issues: [:parent, :children, :tracker, :assigned_to, :status]).to_a.select { |version| !version.is_done }
+    if params[:mode]
+      @sessions[:gantt][:edition] = params[:mode].eql?('edition')
+    end
+    @gantt_object = GanttObject.new(versions, @project, @sessions[:gantt][:edition])
     gon.Gantt_JSON = @gantt_object.json_data
     respond_to do |format|
       format.html { render action: 'gantt', locals: {versions: @project.versions, selected_versions: versions} }
-      format.js { respond_to_js action: 'gantt', locals: {json_data: @gantt_object.json_data}}
+      format.js { respond_to_js action: 'gantt', locals: {json_data: @gantt_object.json_data} }
     end
   end
 
   def manage_gantt
+    if request.post?
+    else
+      if params[:mode] && params[:mode].eql?('edition')
+        @sessions[:gantt][:edition] = true
+        versions = @sessions[:gantt][:versions] ? Version.eager_load(issues: [:parent, :children, :tracker, :assigned_to, :status]).where(id: @sessions[:gantt][:versions]) : @project.versions.eager_load(issues: [:parent, :children, :tracker, :assigned_to, :status]).to_a.select { |version| !version.is_done }
+        @gantt_object = GanttObject.new(versions, @project, @sessions[:gantt][:edition])
+        respond_to do |format|
+          format.js { respond_to_js action: 'gantt', locals: {json_data: @gantt_object.json_data} }
+        end
+      else
+        gantt
+      end
 
+    end
   end
+
   private
   def find_project
     @project = Project.eager_load(:versions, :attachments).where(slug: params[:project_id])[0].decorate

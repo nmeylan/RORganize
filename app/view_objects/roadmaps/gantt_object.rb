@@ -13,9 +13,10 @@ class GanttObject
   DATE_FORMAT_STR = '%-d %b.'
   attr_reader :json_data
 
-  def initialize(versions, project)
+  def initialize(versions, project, edition = false)
     @versions = versions
     @project = project
+    @edition = edition
     @versions_hash = build_version_hash
     @json_data = build_json
   end
@@ -35,7 +36,11 @@ class GanttObject
       if duration > 0
         output_hash[:data] << build_version_output(version, duration)
         issues.each do |issue|
-          output_hash[:data] << build_issue_output(issue) if issue.start_date && issue.due_date && issue.due_date >= issue.start_date
+          if issue.start_date && issue.due_date && issue.due_date >= issue.start_date
+            output_hash[:data] << build_issue_output(issue, version, true)
+          elsif @edition
+            output_hash[:data] << build_issue_output(issue, version, false)
+          end
           output_hash[:links] << build_link(issue) unless issue.predecessor_id.nil?
         end
       end
@@ -60,22 +65,25 @@ class GanttObject
     }
   end
 
-  def build_issue_output(issue)
+  def build_issue_output(issue, version, are_data_provided)
+    start_date = issue.start_date ? issue.start_date : version.start_date
+    due_date = issue.due_date ? issue.due_date : (version.target_date ? version.target_date : Date.today)
     {
         id: issue.id,
-        start_date: issue.start_date.strftime(DATE_FORMAT),
+        start_date: start_date.strftime(DATE_FORMAT),
         text: issue.tracker.caption + ' #'+ issue.id.to_s,
         parent: "version_#{issue.version_id}",
         open: true,
         progress: issue.done / 100.0,
-        duration: (issue.due_date - issue.start_date).to_i,
+        duration: (due_date - start_date).to_i,
         context: {
             type: 'issue',
             link: link_to(issue.tracker.caption + ' #'+ issue.id.to_s, issue_path(@project, issue.id)),
-            due_date: issue.due_date,
+            due_date: due_date,
             assigne: issue.assigned_to ? issue.assigned_to.caption : nil,
-            due_date_str: issue.due_date.strftime(DATE_FORMAT_STR),
-            start_date_str: issue.start_date.strftime(DATE_FORMAT_STR)
+            due_date_str: due_date.strftime(DATE_FORMAT_STR),
+            start_date_str: start_date.strftime(DATE_FORMAT_STR),
+            are_data_provided: are_data_provided
         }
     }
   end

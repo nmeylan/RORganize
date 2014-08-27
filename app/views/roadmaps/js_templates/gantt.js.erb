@@ -3,7 +3,16 @@
  * Date: 27.08.14
  * Time: 18:45
  %>
+var switch_button = $('#switch_gantt_mode');
+switch_button.val("<%=  @sessions[:gantt][:edition] ? t(:link_switch_to_view) : t(:link_switch_to_edition)%>");
+$('#gantt_mode').val("<%=  @sessions[:gantt][:edition] ? 'edition' : 'view' %>");
+$(switch_button.parents('form').get(0)).attr('action', "<%= manage_gantt_roadmap_path(@project.slug, {mode:  @sessions[:gantt][:edition] ? 'view' : 'edition'}) %>");
+
+var edition = $('#gantt_mode').val() === 'edition';
+gantt.config.drag_progress = false;
+gantt.config.drag_move = edition;
+gantt.config.drag_resize = edition;
+gantt.config.drag_links = edition;
 gantt.clearAll();
 gantt.parse(<%= raw json_data.to_json %>, 'json');
 gantt.render();
-console.log(gantt.json.serialize());

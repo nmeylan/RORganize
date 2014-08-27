@@ -560,7 +560,7 @@ div.dhx_modal_cover {
   cursor: pointer; }
 
 .gantt_line_wrapper div {
-  background-color: #4183c4; }
+  background-color: #3a7ab4; }
 
 .gantt_task_link:hover .gantt_line_wrapper div {
   box-shadow: 0 0 5px 0 #fcfce2; }
@@ -626,21 +626,21 @@ div.dhx_modal_cover {
 
 .gantt_link_arrow_right {
   border-width: 4px 0 4px 6px;
-  border-color: transparent transparent transparent #4183c4;
+  border-color: transparent transparent transparent #3a7ab4;
   margin-top: -1px; }
 
 .gantt_link_arrow_left {
   border-width: 4px 6px 4px 0;
   margin-top: -1px;
-  border-color: transparent #4183c4 transparent transparent; }
+  border-color: transparent #3a7ab4 transparent transparent; }
 
 .gantt_link_arrow_top {
   border-width: 0 4px 6px;
-  border-color: transparent transparent #4183c4; }
+  border-color: transparent transparent #3a7ab4; }
 
 .gantt_link_arrow_down {
   border-width: 4px 6px 0 4px;
-  border-color: #4183c4 transparent transparent; }
+  border-color: #3a7ab4 transparent transparent; }
 
 .gantt_task_drag, .gantt_task_progress_drag {
   cursor: w-resize;
@@ -1233,3 +1233,21 @@ div.dhx_modal_cover {
 #gantt_version_select_chzn {
   margin-bottom: 10px;
   margin-top: 10px; }
+
+.gantt_task_progress {
+  text-align: left; }
+
+.gantt_task_line.issue.phantom_task {
+  background-color: #3a7ab4;
+  background-image: -moz-linear-gradient(#3a7ab4, #3a7ab4);
+  background-image: -webkit-linear-gradient(#3a7ab4, #3a7ab4);
+  background-image: linear-gradient(#3a7ab4, #3a7ab4);
+  background-repeat: repeat-x;
+  color: white; }
+  .gantt_task_line.issue.phantom_task .gantt_task_progress {
+    background-color: #3a7ab4;
+    background-image: -moz-linear-gradient(#3a7ab4, #3a7ab4);
+    background-image: -webkit-linear-gradient(#3a7ab4, #3a7ab4);
+    background-image: linear-gradient(#3a7ab4, #3a7ab4);
+    background-repeat: repeat-x;
+    color: white; }

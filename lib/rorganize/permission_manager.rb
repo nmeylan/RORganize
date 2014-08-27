@@ -11,6 +11,23 @@ module Rorganize
       #target : possible values "nil" or "self", if self url will be '#' else will be path
       #html = {}
       def link_to_with_permissions(label, path, project, owner_id, params = {})
+        permission_checker(path, project, owner_id, params) do
+          if params[:target] && params[:target].eql?('self')
+            params.delete_if {|k, _| k.eql?(:method) && params[:remote].nil? || params[:target]}
+            link_to(label, '#', params)
+          else
+            link_to(label, path, params)
+          end
+        end
+      end
+
+      def button_to_with_permissions(label, path, project, owner_id, params = {})
+        permission_checker(path, project, owner_id, params) do
+          button_to label, path, params
+        end
+      end
+
+      def permission_checker(path, project, owner_id, params = {})
         routes = Rails.application.routes
         hash_path = routes.recognize_path(path, :method => params[:method])
         unless params[:confirm].nil?
@@ -20,12 +37,7 @@ module Rorganize
         end
         if (owner_id.nil? && User.current.allowed_to?(hash_path[:action], hash_path[:controller], project)) || (!owner_id.nil? && (User.current.allowed_to?(hash_path[:action], hash_path[:controller], project) && owner_id.eql?(User.current.id) ||
             User.current.allowed_to?("#{hash_path[:action]}_not_owner", hash_path[:controller], project)))
-          if params[:target] && params[:target].eql?('self')
-            params.delete_if {|k, _| k.eql?(:method) && params[:remote].nil? || params[:target]}
-            link_to(label, '#', params)
-          else
-            link_to(label, path, params)
-          end
+          yield
         end
       end
 
