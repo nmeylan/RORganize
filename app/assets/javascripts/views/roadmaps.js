@@ -55,7 +55,7 @@ function roadmap_gantt() {
                     gantt.config.scale_unit = "month";
                     gantt.config.date_scale = "%F, %Y";
                     gantt.config.subscales = [
-                        {unit: "day", step: 4, date: "%D. %d" }
+                        {unit: "week", step: 1, date: "%W" }
                     ];
                     gantt.config.scale_height = 50;
                     gantt.config.scale_width = 50;
@@ -78,6 +78,7 @@ function roadmap_gantt() {
                     break;
             }
         }
+
         gantt.min_column_width = 50;
         gantt.templates.task_cell_class = function (task, date) {
             var classes = "";
@@ -162,6 +163,7 @@ function roadmap_gantt() {
             els[i].onclick = func;
         }
 
+
         function limitMoveLeft(task, limit) {
             var dur = task.end_date - task.start_date;
             task.end_date = new Date(limit.end_date);
@@ -208,35 +210,85 @@ function roadmap_gantt() {
             if (parent && +parent.start_date > +task.start_date) {
                 limitRight(task, parent);
             }
+            var drag = gantt._tasks_dnd.drag;
+            if (!(mode == modes.move || mode == modes.resize)) return;
 
             //check children constraints
             for (var i = 0; i < children.length; i++) {
                 var child = gantt.getTask(children[i]);
-                if (+task.end_date < +child.end_date) {
-                    child.end_date = task.end_date;
-                } else if (+task.start_date > +child.start_date) {
-                    child.start_date = task.start_date;
-                }
-                child.duration = gantt.calculateDuration(child.start_date, child.end_date);
-                gantt.refreshTask(child.id);
+                var diff = 0;
+//                if (mode == modes.resize) {
+//                    if (+task.end_date < +child.end_date) {
+//                        diff = drag.obj.duration - task.duration;
+//                        if(+task.start_date != +child.start_date && diff > 0){
+//                            diff = drag.obj.duration - task.duration;
+//                            child.start_date.setDate(child.start_date.getDate() - diff);
+//                        }
+//                        child.end_date = task.end_date;
+//                        child.hasChanged = true;
+//                    } else if (+task.start_date > +child.start_date) {
+//                        child.start_date = task.start_date;
+//                        child.hasChanged = true;
+//                    }
+//                } else if (mode == modes.move) {
+//
+//                }
+//                child.duration = gantt.calculateDuration(child.start_date, child.end_date);
+//                child.context.due_date = child.end_date;
+//                gantt.refreshTask(child.id);
             }
         });
-
-        __fix_dnd_scale_time = function (t, e) {
-            var n = gantt._tasks.unit, i = gantt._tasks.step;
+        gantt._fix_dnd_scale_time = __fix_dnd_scale_time = function (t, e) {
+            var n = 'day', i = 1;
             gantt.config.round_dnd_dates || (n = "minute", i = gantt.config.time_step), e.mode == gantt.config.drag_mode.resize ? e.left ? t.start_date = gantt._get_closest_date({date: t.start_date, unit: n, step: i}) : t.end_date = gantt._get_closest_date({date: t.end_date, unit: n, step: i}) : e.mode == gantt.config.drag_mode.move && (t.start_date = gantt._get_closest_date({date: t.start_date, unit: n, step: i}), t.end_date = gantt.calculateEndDate(t.start_date, t.duration, gantt.config.duration_unit));
             return t;
         };
 
         gantt.attachEvent("onAfterTaskDrag", function (id, mode, e) {
             var drag = gantt._tasks_dnd.drag;
+            var modes = gantt.config.drag_mode;
             var task = gantt.getTask(id);
             var children = gantt.getChildren(id);
             for (var i = 0; i < children.length; i++) {
                 var child = gantt.getTask(children[i]);
-                var t =  __fix_dnd_scale_time(child, drag);
-//                child.start_date = t.start_date;
-//                child.end_date = t.end_date;
+//                if (child.hasChanged)
+                    __fix_dnd_scale_time(child, drag);
+                if (mode == modes.resize) {
+                    if (+task.end_date < +child.end_date) {
+                        diff = drag.obj.duration - task.duration;
+                        if(+task.start_date != +child.start_date && diff > 0){
+                            diff = drag.obj.duration - task.duration;
+                            child.start_date.setDate(child.start_date.getDate() - diff);
+                            if (+task.start_date > +child.start_date) {
+                                child.start_date = task.start_date;
+                            }
+                        }
+                        child.end_date = task.end_date;
+                        child.hasChanged = true;
+                    } else if (+task.start_date > +child.start_date) {
+                        diff = drag.obj.duration - task.duration;
+                        if(+task.end_date != +child.end_date && diff > 0){
+                            diff = drag.obj.duration - task.duration;
+                            child.end_date.setDate(child.end_date.getDate() + diff);
+                            if (+task.end_date < +child.end_date) {
+                                child.end_date = task.end_date;
+                            }
+                        }
+                        child.start_date = task.start_date;
+                        child.hasChanged = true;
+                    }
+                } else if (mode == modes.move) {
+                    if (+task.end_date < +child.end_date) {
+                        diff = gantt.calculateDuration(task.end_date, child.end_date);
+                        child.start_date.setDate(child.start_date.getDate() - diff);
+                        child.end_date = task.end_date;
+                    } else if (+task.start_date > +child.start_date) {
+                        diff = gantt.calculateDuration(child.start_date, task.start_date);
+                        child.end_date.setDate(child.end_date.getDate() + diff);
+                        child.start_date = task.start_date;
+                    }
+                }
+
                 child.duration = gantt.calculateDuration(child.start_date, child.end_date);
                 gantt.refreshTask(child.id);
             }

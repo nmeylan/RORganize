@@ -854,7 +854,7 @@ window.dhtmlx || (dhtmlx = function (t) {
     var e = this.drag;
     if (e.mode && e.id) {
         var n = gantt.getTask(e.id);
-        if (gantt.config.work_time && gantt.config.correct_work_time && this._fix_working_times(n, e), this._fix_dnd_scale_time(n, e), gantt._init_task_timing(n), this._fireEvent("before_finish", e.mode, [e.id, e.mode, dhtmlx.copy(e.obj), t])) {
+        if (gantt.config.work_time && gantt.config.correct_work_time && this._fix_working_times(n, e), gantt._fix_dnd_scale_time(n, e), gantt._init_task_timing(n), this._fireEvent("before_finish", e.mode, [e.id, e.mode, dhtmlx.copy(e.obj), t])) {
             var i = e.id;
             gantt._init_task_timing(n), gantt.updateTask(n.id), this._fireEvent("after_finish", e.mode, [i, e.mode, t]), this.clear_drag_state()
         } else e.obj._dhx_changed = !1, dhtmlx.mixin(n, e.obj, !0), gantt.updateTask(n.id)
