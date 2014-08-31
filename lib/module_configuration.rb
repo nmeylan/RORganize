@@ -32,6 +32,6 @@ Rorganize::ModuleManager.initialize_modules(always_enabled_module)
 #So we have to associated other actions (all excepted show (from previous example)) to a module.
 
 association_actions_module = {
-    gantt: {'roadmaps' => ['manage_gantt', 'gantt']}
+    'roadmaps'=> {'roadmaps' => ['manage_gantt', 'gantt']}
 }
 Rorganize::ModuleManager.set_associations_actions_module(association_actions_module)
