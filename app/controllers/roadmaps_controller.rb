@@ -52,7 +52,15 @@ class RoadmapsController < ApplicationController
   end
 
   def manage_gantt
+    versions = @sessions[:gantt][:versions] ? Version.eager_load(issues: [:parent, :children, :tracker, :assigned_to, :status]).where(id: @sessions[:gantt][:versions]) : @project.versions.eager_load(issues: [:parent, :children, :tracker, :assigned_to, :status]).to_a.select { |version| !version.is_done }
+    @gantt_object = GanttObject.new(versions, @project, @sessions[:gantt][:edition])
     if request.post?
+      errors = persist_gantt(params[:gantt])
+      message = errors && errors.any? ? errors : t(:successful_update)
+      header = errors && errors.any? ? :failure : :success
+      respond_to do |format|
+        format.js { respond_to_js action: 'gantt', :response_header => header, :response_content => message , locals: {json_data: @gantt_object.json_data} }
+      end
     else
       if params[:mode] && params[:mode].eql?('edition')
         @sessions[:gantt][:edition] = true
@@ -71,6 +79,22 @@ class RoadmapsController < ApplicationController
   private
   def find_project
     @project = Project.eager_load(:versions, :attachments).where(slug: params[:project_id])[0].decorate
+  end
+
+  def persist_gantt(gantt)
+    version_changes = {}
+    issue_changes = {}
+    if gantt[:data]
+      gantt[:data].each do |_, task|
+        if task[:id].start_with?('version')
+          version_changes[task[:id].split('_').last] = {start_date: task[:start_date], target_date: task[:context][:due_date]}
+        else
+          issue_changes[task[:id]] = {start_date: task[:start_date], due_date: task[:context][:due_date]}
+        end
+      end
+      Version.gantt_edit(version_changes)
+      Issue.gantt_edit(issue_changes)
+    end
   end
 
 end

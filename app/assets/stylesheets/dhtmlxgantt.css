@@ -1232,7 +1232,8 @@ div.dhx_modal_cover {
 
 #gantt_version_select_chzn {
   margin-bottom: 10px;
-  margin-top: 10px; }
+  margin-top: 10px;
+  float: left; }
 
 .gantt_task_progress {
   text-align: left; }
@@ -1242,8 +1243,9 @@ div.dhx_modal_cover {
   background-image: -moz-linear-gradient(#3a7ab4, #3a7ab4);
   background-image: -webkit-linear-gradient(#3a7ab4, #3a7ab4);
   background-image: linear-gradient(#3a7ab4, #3a7ab4);
-  background-repeat: repeat-x;
-  color: white; }
+  background-repeat: repeat-x; }
+  .gantt_task_line.issue.phantom_task .gantt_task_content {
+    color: white; }
   .gantt_task_line.issue.phantom_task .gantt_task_progress {
     background-color: #3a7ab4;
     background-image: -moz-linear-gradient(#3a7ab4, #3a7ab4);
@@ -1251,3 +1253,6 @@ div.dhx_modal_cover {
     background-image: linear-gradient(#3a7ab4, #3a7ab4);
     background-repeat: repeat-x;
     color: white; }
+
+#save_gantt {
+  float: right; }

@@ -17,8 +17,10 @@ function roadmap_calendar() {
     bind_calendar_button();
 }
 
+var MONTHS = ['Jan', 'Feb', 'Mar', 'Avr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 function roadmap_gantt() {
     bind_gantt_filter();
+    bind_save_button();
     if (gon.Gantt_JSON) {
         var scale_config = "3";
 
@@ -98,11 +100,18 @@ function roadmap_gantt() {
         };
 
 
+        var edition = $('#gantt_mode').val() === 'edition';
+        var edit_tasks;
         gantt.attachEvent("onBeforeLightbox", function (id) {
             return false;
         });
+        edit_tasks = edition ? {name: "update", label: "<span class='octicon octicon-pencil'></span>", align: "center", width: 10,
+            template: function (item) {
+                return "<input type='checkbox' name='update_task[]' class='update_task' value='"+item.id+"'>";
+            }
+        } : {};
         gantt.config.columns = [
-            {name: "text", label: "Task name", tree: true, width: '*',
+            {name: "text", label: "Task name", tree: true, width: 100,
                 template: function (item) {
                     var context = item.context;
                     if (context.type === "issue") {
@@ -112,21 +121,22 @@ function roadmap_gantt() {
                     }
                 }
             },
-            {name: "start_date", label: "Start date", width: 80, align: "center",
+            {name: "start_date", label: "Start date", width: 60, align: "center",
                 template: function (item) {
                     return item.start_date;
                 }
             },
-            {name: "due_date", label: "Due date", width: 80, align: "center",
+            {name: "due_date", label: "Due date", width: 60, align: "center",
                 template: function (item) {
                     return item.context.due_date;
                 }
             },
-            {name: "duration", label: "Duration", align: "center", width: 100,
+            {name: "duration", label: "Duration", align: "center", width: 40,
                 template: function (item) {
                     return item.duration;
                 }
-            }
+            },
+            edit_tasks
         ];
         gantt.templates.rightside_text = function (start, end, task) {
             var assigne = task.context.assigne;
@@ -141,11 +151,12 @@ function roadmap_gantt() {
         gantt.templates.progress_text = function (start, end, task) {
             return "<span style='text-align:left;'>" + Math.round(task.progress * 100) + "% </span>";
         };
-        var edition = $('#gantt_mode').val() === 'edition';
         gantt.config.drag_progress = false;
         gantt.config.drag_move = edition;
         gantt.config.drag_resize = edition;
         gantt.config.drag_links = edition;
+        gantt.config.autosize = true;
+
         setScaleConfig(scale_config);
         gantt.init('gantt_chart');
         gantt.parse(gon.Gantt_JSON, 'json');
@@ -184,6 +195,10 @@ function roadmap_gantt() {
             task.start_date = new Date(limit.start_date)
         }
 
+        gantt.attachEvent("onTaskClick", function(id,e){
+            return !$(e.target).hasClass('update_task');
+        });
+
         gantt.attachEvent("onTaskDrag", function (id, mode, task, original, e) {
             var parent = task.parent ? gantt.getTask(task.parent) : null,
                 children = gantt.getChildren(id),
@@ -191,7 +206,6 @@ function roadmap_gantt() {
 
             var limitLeft = null,
                 limitRight = null;
-
 
             if (!(mode == modes.move || mode == modes.resize)) return;
 
@@ -210,33 +224,11 @@ function roadmap_gantt() {
             if (parent && +parent.start_date > +task.start_date) {
                 limitRight(task, parent);
             }
-            var drag = gantt._tasks_dnd.drag;
             if (!(mode == modes.move || mode == modes.resize)) return;
+            task.context.due_date = task.end_date;
+            task.context.due_date_str = task.context.due_date.getDate() + ' ' + MONTHS[task.context.due_date.getMonth()] + '.';
+            task.context.start_date_str = task.start_date.getDate() + ' ' + MONTHS[task.start_date.getMonth()] + '.';
 
-            //check children constraints
-            for (var i = 0; i < children.length; i++) {
-                var child = gantt.getTask(children[i]);
-                var diff = 0;
-//                if (mode == modes.resize) {
-//                    if (+task.end_date < +child.end_date) {
-//                        diff = drag.obj.duration - task.duration;
-//                        if(+task.start_date != +child.start_date && diff > 0){
-//                            diff = drag.obj.duration - task.duration;
-//                            child.start_date.setDate(child.start_date.getDate() - diff);
-//                        }
-//                        child.end_date = task.end_date;
-//                        child.hasChanged = true;
-//                    } else if (+task.start_date > +child.start_date) {
-//                        child.start_date = task.start_date;
-//                        child.hasChanged = true;
-//                    }
-//                } else if (mode == modes.move) {
-//
-//                }
-//                child.duration = gantt.calculateDuration(child.start_date, child.end_date);
-//                child.context.due_date = child.end_date;
-//                gantt.refreshTask(child.id);
-            }
         });
         gantt._fix_dnd_scale_time = __fix_dnd_scale_time = function (t, e) {
             var n = 'day', i = 1;
@@ -246,56 +238,74 @@ function roadmap_gantt() {
 
         gantt.attachEvent("onAfterTaskDrag", function (id, mode, e) {
             var drag = gantt._tasks_dnd.drag;
-            var modes = gantt.config.drag_mode;
             var task = gantt.getTask(id);
             var children = gantt.getChildren(id);
             for (var i = 0; i < children.length; i++) {
                 var child = gantt.getTask(children[i]);
-//                if (child.hasChanged)
-                    __fix_dnd_scale_time(child, drag);
-                if (mode == modes.resize) {
-                    if (+task.end_date < +child.end_date) {
-                        diff = drag.obj.duration - task.duration;
-                        if(+task.start_date != +child.start_date && diff > 0){
-                            diff = drag.obj.duration - task.duration;
-                            child.start_date.setDate(child.start_date.getDate() - diff);
-                            if (+task.start_date > +child.start_date) {
-                                child.start_date = task.start_date;
-                            }
-                        }
-                        child.end_date = task.end_date;
-                        child.hasChanged = true;
-                    } else if (+task.start_date > +child.start_date) {
-                        diff = drag.obj.duration - task.duration;
-                        if(+task.end_date != +child.end_date && diff > 0){
-                            diff = drag.obj.duration - task.duration;
-                            child.end_date.setDate(child.end_date.getDate() + diff);
-                            if (+task.end_date < +child.end_date) {
-                                child.end_date = task.end_date;
-                            }
-                        }
-                        child.start_date = task.start_date;
-                        child.hasChanged = true;
-                    }
-                } else if (mode == modes.move) {
-                    if (+task.end_date < +child.end_date) {
-                        diff = gantt.calculateDuration(task.end_date, child.end_date);
-                        child.start_date.setDate(child.start_date.getDate() - diff);
-                        child.end_date = task.end_date;
-                    } else if (+task.start_date > +child.start_date) {
-                        diff = gantt.calculateDuration(child.start_date, task.start_date);
-                        child.end_date.setDate(child.end_date.getDate() + diff);
-                        child.start_date = task.start_date;
-                    }
-                }
-
-                child.duration = gantt.calculateDuration(child.start_date, child.end_date);
-                gantt.refreshTask(child.id);
+                dnd_apply_constraints(mode, drag, task, child);
+                __fix_dnd_scale_time(child, drag);
             }
         });
-
-
     }
+}
+
+function dnd_apply_constraints(mode, drag, task, child) {
+    var modes = gantt.config.drag_mode;
+    if (mode == modes.resize) {
+        if (+task.end_date < +child.end_date) {
+            diff = drag.obj.duration - task.duration;
+            if (+task.start_date != +child.start_date && diff > 0) {
+                diff = drag.obj.duration - task.duration;
+                child.start_date.setDate(child.start_date.getDate() - diff);
+                if (+task.start_date > +child.start_date) {
+                    child.start_date = task.start_date;
+                }
+            }
+            child.end_date = task.end_date;
+            child.hasChanged = true;
+        } else if (+task.start_date > +child.start_date) {
+            diff = drag.obj.duration - task.duration;
+            if (+task.end_date != +child.end_date && diff > 0) {
+                diff = drag.obj.duration - task.duration;
+                child.end_date.setDate(child.end_date.getDate() + diff);
+                if (+task.end_date < +child.end_date) {
+                    child.end_date = task.end_date;
+                }
+            }
+            child.start_date = task.start_date;
+            child.hasChanged = true;
+        }
+    } else if (mode == modes.move) {
+        if (+task.end_date < +child.end_date) {
+            diff = gantt.calculateDuration(task.end_date, child.end_date);
+            child.start_date.setDate(child.start_date.getDate() - diff);
+            child.end_date = task.end_date;
+        } else if (+task.start_date > +child.start_date) {
+            diff = gantt.calculateDuration(child.start_date, task.start_date);
+            child.end_date.setDate(child.end_date.getDate() + diff);
+            child.start_date = task.start_date;
+        }
+    }
+    child.context.due_date = child.end_date;
+    child.context.due_date_str = child.context.due_date.getDate() + ' ' + MONTHS[child.context.due_date.getMonth()] + '.';
+    child.context.start_date_str = child.start_date.getDate() + ' ' + MONTHS[child.start_date.getMonth()] + '.';
+    child.duration = gantt.calculateDuration(child.start_date, child.end_date);
+    gantt.refreshTask(child.id);
+}
+
+function merge_gantt_data(json) {
+    var old_data = gantt.json.serialize();
+    var json = JSON.parse(json);
+    var new_data = json.data;
+    var tmp_old = old_data.data;
+    for (var i = 0; i < new_data.length; i++) {
+        for (var j = 0; j < tmp_old.length; j++) {
+            if (new_data[i].id === tmp_old[j].id) {
+                new_data[i] = tmp_old[j];
+            }
+        }
+    }
+    return json;
 }
 
 function bind_gantt_filter() {
@@ -309,4 +319,36 @@ function bind_gantt_filter() {
             data: {value: select.val(), mode: $('#gantt_mode').val()}
         });
     });
+}
+
+function bind_save_button(){
+    $('#save_gantt').click(function(e){
+        e.preventDefault();
+        var el = $(this);
+        var form = el.parents('form');
+        var updated_tasks = $('input.update_task:checked');
+        var ids = [];
+        var serialized_gantt = gantt.json.serialize();
+        var data = [];
+        for(var i = 0; i < updated_tasks.length; i++){
+           ids.push($(updated_tasks[i]).val());
+        }
+        var len = serialized_gantt.data.length;
+        for(var i = 0; i < len; i++){
+            if(ids.indexOf(serialized_gantt.data[i].id.toString()) != -1){
+                data.push(serialized_gantt.data[i]);
+            }else if(ids.indexOf(serialized_gantt.data[i].parent.toString())!= -1){
+
+                data.push(serialized_gantt.data[i]);
+            }
+        }
+        serialized_gantt.data = data;
+        console.log(serialized_gantt);
+        $.ajax({
+            url: form.attr('action'),
+            type: form.attr('method'),
+            dataType: 'script',
+            data : {gantt: serialized_gantt}
+        });
+    })
 }

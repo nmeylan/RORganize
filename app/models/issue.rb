@@ -52,15 +52,15 @@ class Issue < ActiveRecord::Base
       errors.add(:start_date, "must be inferior than due date : #{self.due_date.to_formatted_s(:db)}")
     elsif (self.start_date && self.version && self.version.target_date) && self.start_date >= self.version.target_date
       errors.add(:start_date, "must be inferior than version due date : #{self.version.target_date.to_formatted_s(:db)}")
-    elsif (self.start_date && self.version) &&  self.start_date < self.version.start_date
+    elsif (self.start_date && self.version) && self.start_date < self.version.start_date
       errors.add(:start_date, "must be superior or equal to version start date : #{self.version.start_date.to_formatted_s(:db)}")
     end
   end
 
   def validate_due_date
-    if(self.due_date && self.version && self.version.target_date) && self.due_date > self.version.target_date
+    if (self.due_date && self.version && self.version.target_date) && self.due_date > self.version.target_date
       errors.add(:due_date, "must be inferior or equals to version due date : #{self.version.target_date.to_formatted_s(:db)}")
-    elsif (self.due_date && self.version) &&  self.due_date <= self.version.start_date
+    elsif (self.due_date && self.version) && self.due_date <= self.version.start_date
       errors.add(:due_date, "must be superior than version start date : #{self.version.start_date.to_formatted_s(:db)}")
     end
   end
@@ -122,6 +122,23 @@ class Issue < ActiveRecord::Base
           issue.save
         end
       end
+    end
+  end
+
+  def self.gantt_edit(hash)
+    errors = []
+    Issue.transaction do
+      hash.each do |k, v|
+        issue = Issue.find_by_id(k)
+        if issue
+          issue.attributes = v
+          if issue.changed?
+            issue.save
+            errors << issue.errors.messages
+          end
+        end
+      end
+      errors
     end
   end
 

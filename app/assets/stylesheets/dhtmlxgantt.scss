@@ -1466,6 +1466,7 @@ div.dhx_modal_cover {
 #gantt_version_select_chzn{
   margin-bottom: 10px;
   margin-top: 10px;
+  float: left;
 }
 .gantt_task_progress{
   text-align: left;
@@ -1477,7 +1478,9 @@ div.dhx_modal_cover {
   background-image: -webkit-linear-gradient($link-color, #3A7AB4);
   background-image: linear-gradient($link-color, #3A7AB4);
   background-repeat: repeat-x;
-  color: white;
+  .gantt_task_content{
+    color: white;
+  }
   .gantt_task_progress{
     background-color: $link-color;
     background-image: -moz-linear-gradient($link-color, #3A7AB4);
@@ -1487,4 +1490,8 @@ div.dhx_modal_cover {
 
     color: white;
   }
+}
+
+#save_gantt{
+  float: right;
 }

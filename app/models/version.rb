@@ -37,6 +37,12 @@ class Version < ActiveRecord::Base
           JournalDetail.create(:journal_id => journal.id, :property => 'Due date', :property_key => :due_date, :old_value => issue.due_date, :value => self.target_date)
           issue.update_column('due_date', self.target_date)
         end
+        if !self.start_date.nil? && (issue.start_date.nil? || issue.start_date < self.start_date)
+          journal = Journal.create(:user_id => User.current.id, :journalizable_id => issue.id, :journalizable_type => issue.class.to_s, :created_at => Time.now.to_formatted_s(:db), :notes => '', :action_type => 'updated', :project_id => issue.project.id)
+          #Create an entry for the journalizable
+          JournalDetail.create(:journal_id => journal.id, :property => 'Due date', :property_key => :due_date, :old_value => issue.due_date, :value => self.target_date)
+          issue.update_column('start_date', self.start_date)
+        end
       end
     end
   end
@@ -86,6 +92,20 @@ class Version < ActiveRecord::Base
       data[version] = version.issues.eager_load(:parent, :children)
     end
     data
+  end
+
+  def self.gantt_edit(hash)
+    Version.transaction do
+      hash.each do |k, v|
+        version = Version.find_by_id(k)
+        if version
+          version.attributes = v
+          if version.changed?
+            version.save
+          end
+        end
+      end
+    end
   end
 
   def change_position(project, operator)
