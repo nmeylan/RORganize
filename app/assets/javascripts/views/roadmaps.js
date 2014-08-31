@@ -194,6 +194,7 @@ function roadmap_gantt() {
             task.context.due_date = task.end_date;
             task.context.due_date_str = task.context.due_date.getDate() + ' ' + MONTHS[task.context.due_date.getMonth()] + '.';
             task.context.start_date_str = task.start_date.getDate() + ' ' + MONTHS[task.start_date.getMonth()] + '.';
+            gantt.refreshTask(task.id);
 
         });
         gantt._fix_dnd_scale_time = __fix_dnd_scale_time = function (t, e) {
@@ -206,6 +207,11 @@ function roadmap_gantt() {
             var drag = gantt._tasks_dnd.drag;
             var task = gantt.getTask(id);
             var children = gantt.getChildren(id);
+            __fix_dnd_scale_time(task, drag);
+            task.context.due_date = task.end_date;
+            task.context.due_date_str = task.context.due_date.getDate() + ' ' + MONTHS[task.context.due_date.getMonth()] + '.';
+            task.context.start_date_str = task.start_date.getDate() + ' ' + MONTHS[task.start_date.getMonth()] + '.';
+            gantt.refreshTask(task.id);
             for (var i = 0; i < children.length; i++) {
                 var child = gantt.getTask(children[i]);
                 dnd_apply_constraints(mode, drag, task, child);
