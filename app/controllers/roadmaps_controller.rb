@@ -7,7 +7,7 @@ require 'roadmaps/gantt_object'
 class RoadmapsController < ApplicationController
   helper VersionsHelper
   include RoadmapsHelper
-  before_filter :check_permission, only: [:gantt, :show]
+  before_filter :check_permission, only: [:gantt, :manage_gantt, :show]
   before_filter { |c| c.menu_context :project_menu }
   before_filter { |c| c.menu_item(params[:controller]) }
   before_filter { |c| c.top_menu_item('projects') }

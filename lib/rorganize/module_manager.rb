@@ -16,6 +16,9 @@ module Rorganize
           association = Rorganize::ModuleManager.associations[m[:name]]
           controller = controller.downcase
           action = action.downcase
+          logger.warn action
+          logger.warn controller
+          logger.warn association.inspect if association
           module_is_enabled = (m[:controller].eql?(controller) && m[:action].eql?('index')) ||
             (m[:controller].eql?(controller) && m[:action].eql?(action)) ||
             (association && association[controller] && association[m[:controller]].include?(action))
