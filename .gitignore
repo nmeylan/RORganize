@@ -31,3 +31,4 @@ config/initializers/secret_token.rb
 
 /.idea/*
 /app/assets/stylesheets/rorganize.css
+/app/assets/stylesheets/dhtmlxgantt.css
