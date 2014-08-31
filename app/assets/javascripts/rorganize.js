@@ -88,7 +88,7 @@
         }
         if (xhr.getResponseHeader('flash-error-message')) {
             $.jGrowl(xhr.getResponseHeader('flash-error-message'), {
-                theme: 'failure'
+                theme: 'failure', sticky: true
             });
         }
         var first_char = xhr.status.toString().charAt(0);

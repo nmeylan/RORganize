@@ -19,7 +19,7 @@
 <%= clear_both %>
 <%= select_tag :versions, options_for_select(versions.collect { |version| [version.caption, version.id] }, selected_versions.collect { |v| v.id }), {class: 'chzn-select cbb-verylarge', multiple: true, id: 'gantt_version_select', 'data-link' => gantt_roadmap_path(@project.slug)} %>
 
-<%= button_to_with_permissions(t(:button_save), manage_gantt_roadmap_path(@project.slug), @project, nil, {method: 'post', remote: true, id: 'save_gantt'})%>
+<%= button_to_with_permissions(t(:button_save), manage_gantt_roadmap_path(@project.slug), @project, nil, {method: 'post', remote: true, id: 'save_gantt', style: "display:#{@sessions[:gantt][:edition] ? 'block' : 'none'}"})%>
 <%= clear_both %>
 <div id="gantt_chart" style="height: 600px">
 

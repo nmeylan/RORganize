@@ -101,43 +101,15 @@ function roadmap_gantt() {
 
 
         var edition = $('#gantt_mode').val() === 'edition';
-        var edit_tasks;
-        gantt.attachEvent("onBeforeLightbox", function (id) {
-            return false;
-        });
-        edit_tasks = edition ? {name: "update", label: "<span class='octicon octicon-pencil'></span>", align: "center", width: 10,
-            template: function (item) {
-                return "<input type='checkbox' name='update_task[]' class='update_task' value='"+item.id+"'>";
-            }
-        } : {};
-        gantt.config.columns = [
-            {name: "text", label: "Task name", tree: true, width: 100,
-                template: function (item) {
-                    var context = item.context;
-                    if (context.type === "issue") {
-                        return context.link
-                    } else {
-                        return item.text
-                    }
-                }
-            },
-            {name: "start_date", label: "Start date", width: 60, align: "center",
-                template: function (item) {
-                    return item.start_date;
-                }
-            },
-            {name: "due_date", label: "Due date", width: 60, align: "center",
-                template: function (item) {
-                    return item.context.due_date;
-                }
-            },
-            {name: "duration", label: "Duration", align: "center", width: 40,
-                template: function (item) {
-                    return item.duration;
-                }
-            },
-            edit_tasks
-        ];
+
+        gantt.config.drag_progress = false;
+        gantt.config.drag_move = edition;
+        gantt.config.drag_resize = edition;
+        gantt.config.drag_links = edition;
+        gantt.config.autosize = true;
+
+        config_column(edition);
+
         gantt.templates.rightside_text = function (start, end, task) {
             var assigne = task.context.assigne;
             return assigne !== undefined ? '<b>' + assigne + '</b>' : '';
@@ -148,15 +120,9 @@ function roadmap_gantt() {
             return scale_config === "2" ? task.duration + " days" : task.context.start_date_str + " <b>-</b> " + task.context.due_date_str;
         };
 
-        gantt.templates.progress_text = function (start, end, task) {
-            return "<span style='text-align:left;'>" + Math.round(task.progress * 100) + "% </span>";
-        };
-        gantt.config.drag_progress = false;
-        gantt.config.drag_move = edition;
-        gantt.config.drag_resize = edition;
-        gantt.config.drag_links = edition;
-        gantt.config.autosize = true;
-
+        gantt.attachEvent("onBeforeLightbox", function (id) {
+            return false;
+        });
         setScaleConfig(scale_config);
         gantt.init('gantt_chart');
         gantt.parse(gon.Gantt_JSON, 'json');
@@ -246,6 +212,7 @@ function roadmap_gantt() {
                 __fix_dnd_scale_time(child, drag);
             }
         });
+
     }
 }
 
@@ -333,22 +300,67 @@ function bind_save_button(){
         for(var i = 0; i < updated_tasks.length; i++){
            ids.push($(updated_tasks[i]).val());
         }
-        var len = serialized_gantt.data.length;
-        for(var i = 0; i < len; i++){
-            if(ids.indexOf(serialized_gantt.data[i].id.toString()) != -1){
-                data.push(serialized_gantt.data[i]);
-            }else if(ids.indexOf(serialized_gantt.data[i].parent.toString())!= -1){
+        if(ids.length == 0){
+            apprise('Before saving please select which elements you want to save.');
+        }else {
 
-                data.push(serialized_gantt.data[i]);
+            var len = serialized_gantt.data.length;
+            for (var i = 0; i < len; i++) {
+                if (ids.indexOf(serialized_gantt.data[i].id.toString()) != -1) {
+                    data.push(serialized_gantt.data[i]);
+                } else if (ids.indexOf(serialized_gantt.data[i].parent.toString()) != -1) {
+
+                    data.push(serialized_gantt.data[i]);
+                }
             }
+            serialized_gantt.data = data;
+            $.ajax({
+                url: form.attr('action'),
+                type: form.attr('method'),
+                dataType: 'script',
+                data: {gantt: serialized_gantt}
+            });
         }
-        serialized_gantt.data = data;
-        console.log(serialized_gantt);
-        $.ajax({
-            url: form.attr('action'),
-            type: form.attr('method'),
-            dataType: 'script',
-            data : {gantt: serialized_gantt}
-        });
     })
+}
+
+function config_column(edition){
+    var edit_tasks;
+    edit_tasks = edition ? {name: "update", label: "<span class='octicon octicon-pencil'></span>", align: "center", width: 10,
+        template: function (item) {
+            return "<input type='checkbox' name='update_task[]' class='update_task' value='"+item.id+"'>";
+        }
+    } : {name : '', label: '', width: 0, template : function(item){return ''}};
+    gantt.config.columns = [
+        {name: "text", label: "Task name", tree: true, width: 100,
+            template: function (item) {
+                var context = item.context;
+                if (context.type === "issue") {
+                    return context.link
+                } else {
+                    return item.text
+                }
+            }
+        },
+        {name: "start_date", label: "Start date", width: 60, align: "center",
+            template: function (item) {
+                return item.start_date;
+            }
+        },
+        {name: "due_date", label: "Due date", width: 60, align: "center",
+            template: function (item) {
+                return item.context.due_date;
+            }
+        },
+        {name: "duration", label: "Duration", align: "center", width: 40,
+            template: function (item) {
+                return item.duration;
+            }
+        },
+        edit_tasks
+    ];
+
+    gantt.templates.progress_text = function (start, end, task) {
+        return "<span style='text-align:left;'>" + Math.round(task.progress * 100) + "% </span>";
+    };
 }

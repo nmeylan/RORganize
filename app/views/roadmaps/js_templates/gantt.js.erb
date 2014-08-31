@@ -13,6 +13,9 @@ gantt.config.drag_progress = false;
 gantt.config.drag_move = edition;
 gantt.config.drag_resize = edition;
 gantt.config.drag_links = edition;
+
+$('#save_gantt').css('display', edition ? 'block' : 'none');
+config_column(edition);
 <% if @sessions[:gantt][:edition] %>
     var merge_result = merge_gantt_data(<%= raw json_data.to_json %>);
     gantt.clearAll();
