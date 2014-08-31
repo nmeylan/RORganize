@@ -134,7 +134,7 @@ class Issue < ActiveRecord::Base
           issue.attributes = v
           if issue.changed?
             issue.save
-            errors << issue.errors.messages
+            errors << issue.errors.messages if issue.errors.messages.any?
           end
         end
       end
