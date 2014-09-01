@@ -14,10 +14,10 @@ class RorganizeController < ApplicationController
       if current_user.nil?
         format.html { render :action => 'index' }
       else
-        projects = User.current.owned_projects('starred').decorate(context: {allow_to_star: false})
+        projects_decorator = User.current.owned_projects('starred').decorate(context: {allow_to_star: false})
         overview_object_assigned = IssueOverviewHash.new(Issue.where(assigned_to_id: User.current.id).fetch_dependencies, {project: :assigned_to})
         overview_object_submitted = IssueOverviewHash.new(Issue.where(author_id: User.current.id).fetch_dependencies, {project: :author})
-        format.html { render action: 'index', locals: {projects: projects, overview_object_assigned: overview_object_assigned, overview_object_submitted: overview_object_submitted} }
+        format.html { render action: 'index', locals: {projects_decorator: projects_decorator, overview_object_assigned: overview_object_assigned, overview_object_submitted: overview_object_submitted} }
       end
     end
   end

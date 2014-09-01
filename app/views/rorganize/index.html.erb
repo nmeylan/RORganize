@@ -5,5 +5,5 @@ Author: Nicolas Meylan
 <% if current_user.nil? %>
     <%= render partial: 'rorganize/anonymous_home_page' %>
 <% elsif user_signed_in? %>
-    <%= render partial: 'rorganize/logged_user_home_page', locals: {projects: projects, overview_object_assigned: overview_object_assigned, overview_object_submitted: overview_object_submitted} %>
+    <%= render partial: 'rorganize/logged_user_home_page', locals: {projects_decorator: projects_decorator, overview_object_assigned: overview_object_assigned, overview_object_submitted: overview_object_submitted} %>
 <% end %>
