@@ -69,8 +69,9 @@ class SettingsController < ApplicationController
       @project.save
       reload_enabled_module(@project.id)
     end
-    @modules = Rorganize::ModuleManager.modules(:project).module_items
-    enabled_modules = @project.enabled_modules.collect{|mod| mod.name}
+    always_enabled = Rorganize::ModuleManager.always_enabled_module
+    @modules = Rorganize::ModuleManager.modules(:project).module_items.delete_if{|mod| always_enabled.any?{|modules | modules[:controller].eql?(mod.controller) && modules[:action].eql?(mod.action)}}
+    enabled_modules = @project.enabled_modules.collect{|mod| mod.name }
     respond_to do |format|
       format.html {render action: 'modules', locals: {enabled_modules: enabled_modules}}
     end
