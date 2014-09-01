@@ -170,7 +170,7 @@ class User < ActiveRecord::Base
       when 'starred'
         conditions = "members.is_project_starred = true AND (members.user_id = #{self.id}) "
       else
-        conditions = self.act_as_admin? ? '1 = 1 ' : "(members.user_id = #{self.id}) "
+        conditions = self.act_as_admin? ? '1 = 1 ' : "(members.user_id = #{self.id} OR projects.is_public = true) "
     end
     conditions += 'AND journals.id = (SELECT max(j.id) FROM journals j WHERE j.project_id = projects.id)'
     Project.eager_load([:members, [journals: :user]]).where(conditions).group('1')
