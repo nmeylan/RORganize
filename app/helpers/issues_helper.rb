@@ -116,13 +116,13 @@ module IssuesHelper
     toolbox_tag(IssueToolbox.new(issues_toolbox, @project, User.current))
   end
 
-  def display_overview_groups(groups, title = nil, group_name = nil)
+  def display_overview_groups(groups, title = nil, group_name = nil, group_class_name = nil)
     if groups.any?
       groups.collect do |group_hash|
         group_hash.collect do |k, v|
           gn = group_name.nil? ? k.to_s.capitalize.gsub(/_/, ' ') : group_name
           t = title.nil? ? (k.eql?(:status) ? 'Issues' : 'Opened issues') : title
-          display_overview_group_by("#{t} : By #{gn}", v, k, !k.eql?(:status))
+          display_overview_group_by("#{t} : By #{gn}", v, k, !k.eql?(:status), group_class_name)
         end.join.html_safe
       end.join.html_safe
     else
@@ -130,11 +130,12 @@ module IssuesHelper
     end
   end
 
-  def display_overview_group_by(title, group, group_name, only_opened_issues = true)
-    content_tag :div, class: 'issues_overview_group' do
-      safe_concat content_tag :h2, title, class: 'issues_overview_group title'
-      safe_concat content_tag :table, class: 'issues_overview_group', &Proc.new {
-        safe_concat content_tag :tr, class: 'issues_overview_group header', &Proc.new {
+  def display_overview_group_by(title, group, group_name, only_opened_issues = true, group_class_name = nil)
+    class_name = group_class_name.nil? ? 'issues_overview_group': group_class_name
+    content_tag :div, class: class_name do
+      safe_concat content_tag :h2, title, class: "#{class_name} title"
+      safe_concat content_tag :table, class: class_name, &Proc.new {
+        safe_concat content_tag :tr, class: "#{class_name} header", &Proc.new {
           safe_concat content_tag :th, t(:field_name), class: 'caption'
           safe_concat content_tag :th, t(:label_issue_plural), class: 'number'
           safe_concat content_tag :th, t(:label_percentage), class: 'percentage'
