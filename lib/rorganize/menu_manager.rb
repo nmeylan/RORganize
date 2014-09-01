@@ -64,7 +64,8 @@ module Rorganize
         menu = Rorganize::MenuManager.items(:top_menu)
         content = ''
         content += content_tag(:li,link_to(t(:home), :root, {:class => @current_top_menu_item.eql?('menu_home') ? 'selected square' : 'square'}))
-        unless controller_name.eql?('sessions')
+        p controller_name
+        unless controller_name.eql?('sessions') || controller_name.eql?('registrations')
           menu.menu_items.each do |item|
             if User.current && User.current.allowed_to?(item.url[:action], item.url[:controller])
               content += content_tag(:li,
