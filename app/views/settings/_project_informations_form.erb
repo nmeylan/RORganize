@@ -5,7 +5,7 @@
 # File: _project_informations_form.erb
 %>
 
-<%= form_for(@project, :url => {:controller => 'settings', :action => 'update_project_informations', :project_id => @project.slug},
+<%= form_for(@project_decorator, :url => {:controller => 'settings', :action => 'update_project_informations', :project_id => @project_decorator.slug},
              :html => {:class => 'form', :multipart => true}, :method => :put) do |f| %>
     <%= raw error_messages(@project.errors.full_messages) %>
     <div class="box">
@@ -31,16 +31,16 @@
       </p>
 
       <p>
-        <% @trackers.settings_list %>
+        <% @trackers_decorator.settings_list %>
       </p>
 
       <div id="attachments">
         <p>
           <label><%= t(:field_attachments) %></label>
-          <% if @project.attachments[0].new_record? %>
-              <%= render :partial => 'shared/attachments', :collection => @project.attachments, locals: {object: @project, type: 'project'} %>
+          <% if @project_decorator.attachments[0].new_record? %>
+              <%= render :partial => 'shared/attachments', :collection => @project_decorator.attachments, locals: {object: @project_decorator, type: 'project'} %>
           <% else %>
-              <%= render :partial => 'shared/show_attachments', locals: {object: @project, type: 'project', :attachments => @project.attachments, no_header: true} %>
+              <%= render :partial => 'shared/show_attachments', locals: {object: @project_decorator, type: 'project', :attachments => @project_decorator.attachments, no_header: true} %>
           <% end %>
         </p>
       </div>

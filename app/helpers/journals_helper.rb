@@ -152,7 +152,7 @@ module JournalsHelper
               'WikiPage' => t(:label_activity_type_wiki_page)}
     periods = {ONE_DAY: t(:label_activity_period_one_day), THREE_DAYS: t(:label_activity_period_three_days), ONE_WEEK: t(:label_activity_period_one_week), ONE_MONTH: t(:label_activity_period_one_month)}
     select_values = Hash[Journal::ACTIVITIES_PERIODS.keys.map { |period| [periods[period], period] }]
-    project_id = @project ? @project.slug : nil
+    project_id = @project_decorator ? @project_decorator.slug : nil
     form_tag url_for({action: 'activity_filter', project_id: project_id, user: user}), {id: 'activities_filter', remote: true} do
       safe_concat content_tag :ul, class: '', &Proc.new {
         types.collect do |type|

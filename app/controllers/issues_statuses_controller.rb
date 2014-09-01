@@ -104,7 +104,7 @@ class IssuesStatusesController < ApplicationController
   end
 
   def get_statuses
-    @issues_statuses = IssuesStatus.paginated(@sessions[:current_page], @sessions[:per_page], order('enumerations.position')).fetch_dependencies.decorate
+    @issues_statuses_decorator = IssuesStatus.paginated(@sessions[:current_page], @sessions[:per_page], order('enumerations.position')).fetch_dependencies.decorate
   end
 
 end

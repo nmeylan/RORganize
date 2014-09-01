@@ -28,18 +28,18 @@ class IssuesController < ApplicationController
 
   def show
     display_issue_object = Issue.display_issue_object(params[:id])
-    @issue = display_issue_object[:issue].decorate(context: {project: @project})
+    @issue_decorator = display_issue_object[:issue].decorate(context: {project: @project})
     @checklist_statuses = display_issue_object[:checklist_statuses]
     gon.checklist_statuses = @checklist_statuses.to_json
     respond_to do |format|
-      format.html { render :action => 'show', :locals => {:history => History.new(Journal.issue_activities(@issue.id), @issue.comments), :done_ratio => display_issue_object[:done_ratio], :allowed_statuses => display_issue_object[:allowed_statuses], :checklist_items => display_issue_object[:checklist_items]} }
+      format.html { render :action => 'show', :locals => {:history => History.new(Journal.issue_activities(@issue_decorator.id), @issue_decorator.comments), :done_ratio => display_issue_object[:done_ratio], :allowed_statuses => display_issue_object[:allowed_statuses], :checklist_items => display_issue_object[:checklist_items]} }
     end
   end
 
   #GET /project/:project_identifier/issues/new
   def new
-    @issue = Issue.new.decorate(context: {project: @project})
-    @issue.attachments.build
+    @issue_decorator = Issue.new.decorate(context: {project: @project})
+    @issue_decorator.attachments.build
     respond_to do |format|
       format.html { render :action => 'new', :locals => {:form_content => form_content} }
     end
@@ -47,21 +47,21 @@ class IssuesController < ApplicationController
 
   #POST/project/:project_identifier/issues/
   def create
-    @issue = Issue.new(issue_params).decorate(context: {project: @project})
-    @issue.created_at = Time.now.to_formatted_s(:db)
-    @issue.updated_at = Time.now.to_formatted_s(:db)
-    @issue.project_id = @project.id
-    @issue.author_id = User.current.id
+    @issue_decorator = Issue.new(issue_params).decorate(context: {project: @project})
+    @issue_decorator.created_at = Time.now.to_formatted_s(:db)
+    @issue_decorator.updated_at = Time.now.to_formatted_s(:db)
+    @issue_decorator.project_id = @project.id
+    @issue_decorator.author_id = User.current.id
     respond_to do |format|
-      if date_valid?(params[:issue][:due_date]) && @issue.save
+      if date_valid?(params[:issue][:due_date]) && @issue_decorator.save
         flash[:notice] = t(:successful_creation)
-        format.html { redirect_to :action => 'show', :controller => 'issues', :id => @issue }
-        format.json { render :json => @issue,
-                             :status => :created, :location => @issue }
+        format.html { redirect_to :action => 'show', :controller => 'issues', :id => @issue_decorator }
+        format.json { render :json => @issue_decorator,
+                             :status => :created, :location => @issue_decorator }
       else
-        @issue.errors.add(:due_date, 'format is invalid') unless date_valid?(params[:issue][:due_date])
+        @issue_decorator.errors.add(:due_date, 'format is invalid') unless date_valid?(params[:issue][:due_date])
         format.html { render :action => 'new', :locals => {:form_content => form_content} }
-        format.json { render :json => @issue.errors,
+        format.json { render :json => @issue_decorator.errors,
                              :status => :unprocessable_entity }
       end
     end
@@ -76,24 +76,24 @@ class IssuesController < ApplicationController
 
   #PUT /project/:project_identifier/issues/:id
   def update
-    @issue.attributes = issue_params
-    @issue.notes = params[:notes]
+    @issue_decorator.attributes = issue_params
+    @issue_decorator.notes = params[:notes]
     respond_to do |format|
-      if  !@issue.changed? && (params[:notes].nil? || params[:notes].eql?('')) && (issue_params[:existing_attachment_attributes].nil? && issue_params[:new_attachment_attributes].nil?)
-        format.html { redirect_to :action => 'show', :controller => 'issues', :id => @issue.id }
-        format.json { render :json => @issue,
-                             :status => :created, :location => @issue }
+      if  !@issue_decorator.changed? && (params[:notes].nil? || params[:notes].eql?('')) && (issue_params[:existing_attachment_attributes].nil? && issue_params[:new_attachment_attributes].nil?)
+        format.html { redirect_to :action => 'show', :controller => 'issues', :id => @issue_decorator.id }
+        format.json { render :json => @issue_decorator,
+                             :status => :created, :location => @issue_decorator }
         #If attributes were updated
-      elsif @issue.save && @issue.save_attachments
+      elsif @issue_decorator.save && @issue_decorator.save_attachments
         flash[:notice] = t(:successful_update)
-        format.html { redirect_to :action => 'show', :controller => 'issues', :id => @issue.id }
-        format.json { render :json => @issue,
-                             :status => :created, :location => @issue }
+        format.html { redirect_to :action => 'show', :controller => 'issues', :id => @issue_decorator.id }
+        format.json { render :json => @issue_decorator,
+                             :status => :created, :location => @issue_decorator }
       else
         @allowed_statuses = User.current.allowed_statuses(@project)
         @done_ratio = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
         format.html { render :action => 'edit', :locals => {:form_content => form_content} }
-        format.json { render :json => @issue.errors,
+        format.json { render :json => @issue_decorator.errors,
                              :status => :unprocessable_entity }
       end
     end
@@ -101,7 +101,7 @@ class IssuesController < ApplicationController
 
   #DELETE /project/:project_identifier/issues/:id
   def destroy
-    @issue.destroy
+    @issue_decorator.destroy
     flash[:notice] = t(:successful_deletion)
     respond_to do |format|
       format.html { redirect_to issues_path }
@@ -127,18 +127,18 @@ class IssuesController < ApplicationController
   end
 
   def start_today
-    @issue = Issue.find_by_id(params[:id]).decorate(context: {project: @project})
-    @issue.start_date = Date.current
+    @issue_decorator = Issue.find_by_id(params[:id]).decorate(context: {project: @project})
+    @issue_decorator.start_date = Date.current
 
     respond_to do |format|
       format.html { redirect_to :action => 'show' }
       format.js do
-        if @issue.save
+        if @issue_decorator.save
           flash[:notice] = t(:successful_update)
         else
-          flash[:alert] = @issue.errors.full_messages
+          flash[:alert] = @issue_decorator.errors.full_messages
         end
-        js_redirect_to(issue_path(@project.slug, @issue.id))
+        js_redirect_to(issue_path(@project.slug, @issue_decorator.id))
       end
     end
   end
@@ -214,19 +214,19 @@ class IssuesController < ApplicationController
   #Private methods
   private
   def set_predecessor(predecessor_id)
-    @issue = Issue.find(params[:id]).decorate(context: {project: @project})
-    result = @issue.set_predecessor(predecessor_id)
+    @issue_decorator = Issue.find(params[:id]).decorate(context: {project: @project})
+    result = @issue_decorator.set_predecessor(predecessor_id)
     respond_to do |format|
       format.js do
-        respond_to_js :action => 'add_predecessor', :locals => {:journals => History.new(result[:journals]), :success => result[:saved]}, :response_header => result[:saved] ? :success : :failure, :response_content => result[:saved] ? t(:successful_update) : @issue.errors.full_messages
+        respond_to_js :action => 'add_predecessor', :locals => {:journals => History.new(result[:journals]), :success => result[:saved]}, :response_header => result[:saved] ? :success : :failure, :response_content => result[:saved] ? t(:successful_update) : @issue_decorator.errors.full_messages
       end
     end
   end
 
   #Check if current user is owner of issue
   def check_owner
-    @issue = Issue.eager_load(:attachments).where(id: params[:id])[0].decorate(context: {project: @project})
-    @issue.author_id.eql?(User.current.id)
+    @issue_decorator = Issue.eager_load(:attachments).where(id: params[:id])[0].decorate(context: {project: @project})
+    @issue_decorator.author_id.eql?(User.current.id)
   end
 
   def filter
@@ -243,7 +243,7 @@ class IssuesController < ApplicationController
     gon.DOM_filter = view_context.issues_generics_form_to_json
     gon.DOM_persisted_filter = @sessions[@project.slug][:json_filter].to_json
     filter = @sessions[@project.slug][:sql_filter]
-    @issues = Issue.filter(filter, @project.id).paginated(@sessions[:current_page], @sessions[:per_page], order('issues.id')).fetch_dependencies.decorate(context: {project: @project})
+    @issues_decorator = Issue.filter(filter, @project.id).paginated(@sessions[:current_page], @sessions[:per_page], order('issues.id')).fetch_dependencies.decorate(context: {project: @project})
   end
 
   def form_content

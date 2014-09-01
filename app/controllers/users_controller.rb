@@ -14,7 +14,7 @@ class UsersController < ApplicationController
 
   #GET /administration/users
   def index
-    @users = User.paginated(@sessions[:current_page], @sessions[:per_page], order('users.name')).decorate
+    @users_decorator = User.paginated(@sessions[:current_page], @sessions[:per_page], order('users.name')).decorate
     respond_to do |format|
       format.html
       format.js { respond_to_js }
@@ -83,8 +83,8 @@ class UsersController < ApplicationController
 
   #Get /administration/users/:id
   def show
-    @user = User.find_by_slug(params[:id]).decorate
-    @history = History.new(Journal.where(:journalizable_type => 'User', :journalizable_id => @user.id).eager_load([:details]))
+    @user_decorator = User.find_by_slug(params[:id]).decorate
+    @history = History.new(Journal.where(:journalizable_type => 'User', :journalizable_id => @user_decorator.id).eager_load([:details]))
     respond_to do |format|
       format.html
     end

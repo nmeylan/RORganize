@@ -4,7 +4,7 @@
 # Encoding: UTF-8
 # File: _form.html.erb
 %>
-<%= raw error_messages(@issue.errors.full_messages) %>
+<%= raw error_messages(@issue_decorator.errors.full_messages) %>
 <div class="box">
   <div class="autocomplete-combobox cbb-medium nosearch">
     <label for="issue_tracker"><%= t(:field_tracker) %><span class="required"> *</span></label>
@@ -23,7 +23,7 @@
   <div class="splitcontentleft">
     <div class="autocomplete-combobox">
       <label for="issue_version"><%= t(:field_version) %></label>
-      <%= select_tag_versions('issue_version_id', 'issue[version_id]', @issue.version_id) %>
+      <%= select_tag_versions('issue_version_id', 'issue[version_id]', @issue_decorator.version_id) %>
       <%= info_tag('', {id: 'version_info'}) %>
     </div>
 
@@ -67,11 +67,11 @@
           <p>
             <label><%= t(:field_attachments) %></label>
 
-            <%= add_attachments_link 'Add a file', @issue, 'issue' %>
+            <%= add_attachments_link 'Add a file', @issue_decorator, 'issue' %>
           </p>
-          <%= render :partial => 'shared/attachments', :collection => @issue.attachments, locals: {object: @issue, type: 'issue'} %>
+          <%= render :partial => 'shared/attachments', :collection => @issue_decorator.attachments, locals: {object: @issue_decorator, type: 'issue'} %>
         </div>
-        <div class="splitcontentright attachment_box"><%= render :partial => 'shared/show_attachments', :locals => {:attachments => @issue.attachments, :object => @issue, no_header: true} %></div>
+        <div class="splitcontentright attachment_box"><%= render :partial => 'shared/show_attachments', :locals => {:attachments => @issue_decorator.attachments, :object => @issue_decorator, no_header: true} %></div>
         <%= clear_both %>
       </div>
 

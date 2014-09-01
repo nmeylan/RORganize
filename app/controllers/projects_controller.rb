@@ -29,7 +29,7 @@ class ProjectsController < ApplicationController
       activities_types = @sessions[:activities][:types]
       activities_period = @sessions[:activities][:period]
       from_date = @sessions[:activities][:from_date]
-      @activities = Activities.new(@project.activities(activities_types, activities_period, from_date), @project.comments(activities_types, activities_period, from_date))
+      @activities = Activities.new(@project_decorator.activities(activities_types, activities_period, from_date), @project_decorator.comments(activities_types, activities_period, from_date))
     end
     respond_to do |format|
       format.html { render action: 'activity', locals: locals }
@@ -40,8 +40,8 @@ class ProjectsController < ApplicationController
 
   #GET /project/new
   def new
-    @project = Project.new.decorate
-    @project.attachments.build
+    @project_decorator = Project.new.decorate
+    @project_decorator.attachments.build
     respond_to do |format|
       format.html
     end
@@ -49,17 +49,17 @@ class ProjectsController < ApplicationController
 
   #POST /project/new
   def create
-    @project = Project.new(project_params).decorate
-    @project.created_by = User.current.id
+    @project_decorator = Project.new(project_params).decorate
+    @project_decorator.created_by = User.current.id
     respond_to do |format|
-      if @project.save
+      if @project_decorator.save
         flash[:notice] = t(:successful_creation)
         format.html { redirect_to :action => 'index', :controller => 'projects' }
-        format.json { render :json => @project,
-                             :status => :created, :location => @project }
+        format.json { render :json => @project_decorator,
+                             :status => :created, :location => @project_decorator }
       else
         format.html { render :action => 'new' }
-        format.json { render :json => @project.errors,
+        format.json { render :json => @project_decorator.errors,
                              :status => :unprocessable_entity }
       end
     end
@@ -106,7 +106,7 @@ class ProjectsController < ApplicationController
     if session['project_selection_filter'].nil?
       session['project_selection_filter'] = 'all'
     end
-    @projects = User.current.owned_projects(session['project_selection_filter']).decorate(context: {allow_to_star: false})
+    @projects_decorator = User.current.owned_projects(session['project_selection_filter']).decorate(context: {allow_to_star: false})
     respond_to do |format|
       format.html { render :action => 'index' }
       format.js { respond_to_js :action => 'index' }
@@ -121,7 +121,7 @@ class ProjectsController < ApplicationController
   end
 
   def members
-    members = User.joins(:members).where('members.project_id' => @project.id).pluck('users.slug')
+    members = User.joins(:members).where('members.project_id' => @project_decorator.id).pluck('users.slug')
     respond_to do |format|
       format.json { render json: members}
     end
@@ -135,7 +135,8 @@ class ProjectsController < ApplicationController
 
   def find_project
     id = action_name.eql?('show') ? params[:id] : params[:project_id]
-    @project = Project.eager_load(:attachments, members: [[user: :avatar], :role]).where(slug: id)[0].decorate
+    @project_decorator = Project.eager_load(:attachments, members: [[user: :avatar], :role]).where(slug: id)[0].decorate
+    @project = @project_decorator.model
   end
 
 

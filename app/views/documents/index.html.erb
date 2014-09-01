@@ -6,11 +6,11 @@
 %>
 
 <%= contextual t(:label_documents) do %>
-    <%= @documents.new_link %>
+    <%= @documents_decorator.new_link %>
 <% end %>
 <%= filter_tag('document', Document.filtered_attributes, documents_path(@project.slug)) %>
 
-<%= @documents.display_collection %>
+<%= @documents_decorator.display_collection %>
 
 
 <ul id="documents_toolbox" class="jeegoocontext box toolbox">

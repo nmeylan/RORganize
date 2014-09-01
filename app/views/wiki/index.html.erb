@@ -6,8 +6,8 @@
 %>
 
 <%= contextual t(:label_wiki) do %>
-    <%= @wiki.delete_link %>
+    <%= @wiki_decorator.delete_link %>
 <% end %>
 <%= render :partial => 'wiki/sidebar' %>
-<%= @wiki.new_link %>
-<%= @wiki.home_page %>
+<%= @wiki_decorator.new_link %>
+<%= @wiki_decorator.home_page %>

@@ -14,10 +14,10 @@
   <h2><%= t(:label_report_plural) %></h2>
   <ul>
     <li>
-      <%= link_to t(:label_calendar), {:controller => 'roadmaps', :action => 'calendar', :project_id => @project.slug} %>
+      <%= link_to t(:label_calendar), {:controller => 'roadmaps', :action => 'calendar', :project_id => @project_decorator.slug} %>
     </li>
     <li>
-      <%= link_to t(:label_gantt_chart), {:controller => 'roadmaps', :action => 'gantt', :project_id => @project.slug} %>
+      <%= link_to t(:label_gantt_chart), {:controller => 'roadmaps', :action => 'gantt', :project_id => @project_decorator.slug} %>
     </li>
   </ul>
 <% end %>

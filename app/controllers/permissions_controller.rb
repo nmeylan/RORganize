@@ -23,7 +23,7 @@ class PermissionsController < ApplicationController
 
   #GET administration/permission/new
   def new
-    @permission = Permission.new.decorate
+    @permission_decorator = Permission.new.decorate
     respond_to do |format|
       format.html {render :action => 'new', :locals =>{:controllers =>  load_controller_list}}
     end
@@ -31,17 +31,17 @@ class PermissionsController < ApplicationController
 
   #POST administration/permission/new
   def create
-    @permission = Permission.new(permission_params).decorate
+    @permission_decorator = Permission.new(permission_params).decorate
     respond_to do |format|
-      if @permission.save
+      if @permission_decorator.save
         flash[:notice] = t(:successful_creation)
         format.html { redirect_to :action => 'index', :controller => 'permissions'}
-        format.json  { render :json => @permission,
-          :status => :created, :location => @permission}
+        format.json  { render :json => @permission_decorator,
+          :status => :created, :location => @permission_decorator}
       else
         Permission.controller_list
         format.html  { render :action => 'new' }
-        format.json  { render :json => @permission.errors,
+        format.json  { render :json => @permission_decorator.errors,
           :status => :unprocessable_entity }
       end
     end
@@ -49,7 +49,7 @@ class PermissionsController < ApplicationController
 
   #GET administration/permission/edit/:id
   def edit
-    @permission = Permission.find_by_id(params[:id]).decorate
+    @permission_decorator = Permission.find_by_id(params[:id]).decorate
     respond_to do |format|
       format.html {render :action => 'edit', :locals =>{:controllers => load_controller_list}}
     end
@@ -57,17 +57,17 @@ class PermissionsController < ApplicationController
 
   #PUT administration/permission/:id
   def update
-    @permission = Permission.find(params[:id]).decorate
+    @permission_decorator = Permission.find(params[:id]).decorate
     respond_to do |format|
-      if @permission.update_attributes(permission_params)
+      if @permission_decorator.update_attributes(permission_params)
         flash[:notice] = t(:successful_update)
         format.html { redirect_to :action => 'index', :controller => 'permissions'}
-        format.json  { render :json => @permission,
-          :status => :created, :location => @permission}
+        format.json  { render :json => @permission_decorator,
+          :status => :created, :location => @permission_decorator}
       else
 
         format.html  {render :action => 'edit', :locals =>{:controllers =>  load_controller_list}}
-        format.json  { render :json => @permission.errors,
+        format.json  { render :json => @permission_decorator.errors,
           :status => :unprocessable_entity }
       end
     end
@@ -85,7 +85,7 @@ class PermissionsController < ApplicationController
   end
   #Other methods
   def list
-    @permissions = Permission.select('*').decorate(context: {role_name: params[:role_name], controller_list: load_controller_list})
+    @permissions_decorator = Permission.select('*').decorate(context: {role_name: params[:role_name], controller_list: load_controller_list})
     respond_to do |format|
       format.html {render :action => 'list'}
     end

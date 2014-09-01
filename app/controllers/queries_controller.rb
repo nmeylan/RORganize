@@ -5,6 +5,7 @@
 
 class QueriesController < ApplicationController
   before_filter {|c| c.add_action_alias = {new_project_query: :public_queries}}
+  before_filter :find_project, only: [:create]
   before_filter :check_permission
   before_filter :check_query_permission, :only => [:show, :edit, :destroy, :update]
   before_filter { |c| c.top_menu_item('administration') }
@@ -49,6 +50,7 @@ class QueriesController < ApplicationController
   end
 
   def show
+    @query_decorator = @query.decorate
     respond_to do |format|
       format.html
     end
@@ -103,13 +105,13 @@ class QueriesController < ApplicationController
 
   private
   def find_project
-    @project = Project.find_by_identifier(params[:project_id])
+    @project = Project.find_by_slug(params[:project_id])
     render_404 if @project.nil?
   end
 
   def check_query_permission
-    @query = Query.find_by_id(params[:id]).decorate
-    if (@query.is_public && !User.current.allowed_to?('public_queries', 'Queries', @project)) ||
+    @query = Query.find_by_id(params[:id])
+    if (@query.is_public && !User.current.allowed_to?('public_queries', 'Queries', Project.find_by_slug(params[:project_id]))) ||
         (!@query.is_public && !@query.author_id.eql?(User.current.id))
       render_403
     end

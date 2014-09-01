@@ -20,8 +20,8 @@ class SettingsController < ApplicationController
     if @project.attachments.empty?
       @project.attachments.build
     end
-    @project = @project.decorate
-    @trackers = Tracker.all.decorate(context: {checked_ids: tracker_ids})
+    @project_decorator = @project.decorate
+    @trackers_decorator = Tracker.all.decorate(context: {checked_ids: tracker_ids})
     respond_to do |format|
       format.html
     end
@@ -38,7 +38,7 @@ class SettingsController < ApplicationController
   end
 
   def public_queries
-    @queries = Query.public_queries(@project.id).eager_load(:user).paginated(@sessions[:current_page], @sessions[:per_page], order('queries.name')).decorate(context: {queries_url: public_queries_settings_path(@project.slug), action_name: 'public_queries'})
+    @queries_decorator = Query.public_queries(@project.id).eager_load(:user).paginated(@sessions[:current_page], @sessions[:per_page], order('queries.name')).decorate(context: {queries_url: public_queries_settings_path(@project.slug), action_name: 'public_queries'})
     respond_to do |format|
       format.html
       format.js { respond_to_js }
@@ -50,7 +50,7 @@ class SettingsController < ApplicationController
     if attachment.destroy
       @project.attachments.clear
       @project.attachments.build
-      @project = @project.decorate
+      @project_decorator = @project.decorate
       respond_to do |format|
         format.html { redirect_to :action => 'index', :controller => 'settings'}
         format.js {respond_to_js :response_header => :success, :response_content => t(:successful_deletion)}

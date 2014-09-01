@@ -13,7 +13,7 @@ module IssuesStatusesHelper
         safe_concat content_tag :th, nil
         safe_concat content_tag :th, nil
       }
-      safe_concat(collection.collect do |status|
+      safe_concat(collection.sort{|x,y| x.enumeration.position <=> y.enumeration.position}.collect do |status|
         content_tag :tr, {class: 'odd_even', id: status.id} do
           safe_concat content_tag :td, status.edit_link, {class: 'list_left name'}
           safe_concat content_tag :td, status.default_done_ratio, {class: 'list_center done_ratio'}

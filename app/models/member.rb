@@ -39,7 +39,7 @@ class Member < ActiveRecord::Base
   #Change a member's role
   def change_role(value)
     success = self.update_attribute(:role_id, value)
-    members = Member.where(:project_id => self.project.id).eager_load(:role, :user)
+    members = Member.where(:project_id => self.project_decorator.id).eager_load(:role, :user)
     {:saved => success, :members => members}
   end
 

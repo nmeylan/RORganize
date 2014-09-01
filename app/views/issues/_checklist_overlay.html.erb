@@ -12,7 +12,7 @@
       <%= link_to glyph('', 'plus'), '#', {:id => 'add_checklist_item'} %>
     </span>
     <div id="checklist">
-      <%= form_tag({:action => 'save_checklist', :id => @issue}, :id => 'checklist_form', :remote=>true ) do -%>
+      <%= form_tag({:action => 'save_checklist', :id => @issue_decorator}, :id => 'checklist_form', :remote=>true ) do -%>
         <ul id="items">
           <% checklist_items.each do |item| %>
             <div class='autocomplete-combobox nosearch no-padding_left' id="item-<%=item.name.gsub(/\s/,'')%>">

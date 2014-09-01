@@ -17,7 +17,7 @@ class ProfilesController < ApplicationController
   include Rorganize::ActivityManager
 
   def show
-    @user = User.eager_load([members: [:role, :project, assigned_issues: :status]]).find_by_slug(User.current.slug).decorate
+    @user_decorator = User.eager_load([members: [:role, :project, assigned_issues: :status]]).find_by_slug(User.current.slug).decorate
     init_activities_sessions
     activities_data = selected_filters
     if @sessions[:activities][:types].include?('NIL')
@@ -77,7 +77,7 @@ class ProfilesController < ApplicationController
   end
 
   def custom_queries
-    @queries = Query.created_by(@user).eager_load(:user).paginated(@sessions[:current_page], @sessions[:per_page], order('queries.name')).decorate(context: {queries_url: custom_queries_profile_path, action_name: 'custom_queries'})
+    @queries_decorator = Query.created_by(@user).eager_load(:user).paginated(@sessions[:current_page], @sessions[:per_page], order('queries.name')).decorate(context: {queries_url: custom_queries_profile_path, action_name: 'custom_queries'})
     respond_to do |format|
       format.html {}
       format.js { respond_to_js }
@@ -85,7 +85,7 @@ class ProfilesController < ApplicationController
   end
 
   def projects
-    @projects = @user.owned_projects(nil).decorate(context: {allow_to_star: true})
+    @projects_decorator = @user.owned_projects(nil).decorate(context: {allow_to_star: true})
     respond_to do |format|
       format.html { render :action => 'projects' }
     end

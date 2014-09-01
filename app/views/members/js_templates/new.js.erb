@@ -9,5 +9,5 @@
     jQuery('#add_member_overlay').overlay().load();
 <% else %>
     jQuery('#add_member_overlay').overlay().close();
-    on_replace_effect("#members_content","<%= escape_javascript(@members.display_collection) %>");
+    on_replace_effect("#members_content","<%= escape_javascript(@members_decorator.display_collection) %>");
 <% end %>

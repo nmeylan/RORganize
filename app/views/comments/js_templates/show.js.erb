@@ -3,5 +3,5 @@
  * Date: 29.07.14
  * Time: 18:34
  %>
-jQuery("#comments_overlay_content").html("<%= escape_javascript comments.display_collection %>");
+jQuery("#comments_overlay_content").html("<%= escape_javascript comments_decorator.display_collection %>");
 jQuery("#comments_overlay").overlay().load();

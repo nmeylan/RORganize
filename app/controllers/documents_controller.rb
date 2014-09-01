@@ -19,15 +19,15 @@ class DocumentsController < ApplicationController
   end
 
   def new
-    @document = Document.new.decorate(context: {project: @project})
-    @document.attachments.build
+    @document_decorator = Document.new.decorate(context: {project: @project})
+    @document_decorator.attachments.build
     respond_to do |format|
       format.html
     end
   end
 
   def create
-    @document = Document.new(document_params).decorate(context: {project: @project})
+    @document_decorator = Document.new(document_params).decorate(context: {project: @project})
     @document.project_id = @project.id
     @document.created_at = Time.now.to_formatted_s(:db)
     respond_to do |format|
@@ -41,14 +41,14 @@ class DocumentsController < ApplicationController
   end
 
   def edit
-    @document = Document.find(params[:id]).decorate(context: {project: @project})
+    @document_decorator = Document.find(params[:id]).decorate(context: {project: @project})
     respond_to do |format|
       format.html
     end
   end
 
   def update
-    @document = Document.find(params[:id]).decorate(context: {project: @project})
+    @document_decorator = Document.find(params[:id]).decorate(context: {project: @project})
     @document.attributes = document_params
     respond_to do |format|
       if !@document.changed? &&
@@ -66,9 +66,9 @@ class DocumentsController < ApplicationController
 
   def show
     #this always return 1 result. Don't use .first(AR method) because it generate two query (due to ActiveRecord::FinderMethods::apply_join_dependency(..))
-    @document = Document.eager_load(:category, :version, :attachments).where(id: params[:id])[0].decorate(context: {project: @project})
+    @document_decorator = Document.eager_load(:category, :version, :attachments).where(id: params[:id])[0].decorate(context: {project: @project})
     respond_to do |format|
-      format.html { render :action => 'show', :locals => {:history => History.new(Journal.document_activities(@document.id), @document.comments)} }
+      format.html { render :action => 'show', :locals => {:history => History.new(Journal.document_activities(@document_decorator.id), @document_decorator.comments)} }
     end
   end
 
@@ -140,7 +140,7 @@ class DocumentsController < ApplicationController
     gon.DOM_filter = view_context.documents_generics_form_to_json
     gon.DOM_persisted_filter = @sessions[@project.slug][:json_filter].to_json
     filter = @sessions[@project.slug][:sql_filter]
-    @documents = Document.filter(filter, @project.id).paginated(@sessions[:current_page], @sessions[:per_page], order('documents.id')).fetch_dependencies.decorate(context: {project: @project})
+    @documents_decorator = Document.filter(filter, @project.id).paginated(@sessions[:current_page], @sessions[:per_page], order('documents.id')).fetch_dependencies.decorate(context: {project: @project})
   end
 
   def document_params

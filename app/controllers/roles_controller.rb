@@ -12,7 +12,7 @@ class RolesController < ApplicationController
 
   #Get /administration/roles
   def index
-    @roles = Role.select('*').paginated(@sessions[:current_page], @sessions[:per_page], order('roles.name')).decorate
+    @roles_decorator = Role.select('*').paginated(@sessions[:current_page], @sessions[:per_page], order('roles.name')).decorate
     respond_to do |format|
       format.html
       format.js { respond_to_js }
@@ -73,7 +73,7 @@ class RolesController < ApplicationController
   def destroy
     @role = Role.find_by_id(params[:id])
     @role.destroy
-    @roles = Role.select('*')
+    @roles_decorator = Role.select('*').paginated(@sessions[:current_page], @sessions[:per_page], order('roles.name')).decorate
     respond_to do |format|
       format.html {redirect_to :action => 'index'}
       format.js {respond_to_js :response_header => :success, :response_content => t(:successful_deletion), :locals => { :id => @role.id}}

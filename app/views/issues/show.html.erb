@@ -5,52 +5,52 @@
 # File: show.html.erb
 %>
 
-<%= contextual (@issue.tracker)+' : #'+@issue.id.to_s do %>
-    <%= @issue.new_link %>
-    <%= @issue.edit_link %>
-    <%= @issue.start_today_link %>
-    <%= @issue.new_comment_link %>
-    <%= @issue.checklist_link %>
-    <%= @issue.log_time_link %>
-    <%= @issue.delete_link %>
+<%= contextual (@issue_decorator.tracker)+' : #'+@issue_decorator.id.to_s do %>
+    <%= @issue_decorator.new_link %>
+    <%= @issue_decorator.edit_link %>
+    <%= @issue_decorator.start_today_link %>
+    <%= @issue_decorator.new_comment_link %>
+    <%= @issue_decorator.checklist_link %>
+    <%= @issue_decorator.log_time_link %>
+    <%= @issue_decorator.delete_link %>
 <% end %>
 
-<h2><%= @issue.subject %></h2>
+<h2><%= @issue_decorator.subject %></h2>
 <p>
   <em>
-    <%= @issue.creation_info(history.journals) %>
+    <%= @issue_decorator.creation_info(history.journals) %>
   </em>
 </p>
 <table class="detail" style="width:100%">
   <tr>
     <th style="width:15%"><%= t(:field_status) %> :</th>
-    <td style="width:30%"><%= @issue.status.caption %></td>
+    <td style="width:30%"><%= @issue_decorator.status.caption %></td>
     <th style="width:15%"><%= t(:field_start_date) %> :</th>
-    <td style="width:30%"><%= @issue.start_date %></td>
+    <td style="width:30%"><%= @issue_decorator.start_date %></td>
   </tr>
   <tr>
     <th style="width:15%"><%= t(:field_assigned_to) %> :</th>
-    <td style="width:30%"><%= @issue.assigned_to %></td>
+    <td style="width:30%"><%= @issue_decorator.assigned_to %></td>
     <th style="width:15%"><%= t(:field_due_date) %> :</th>
-    <td style="width:30%"><%= @issue.due_date %></td>
+    <td style="width:30%"><%= @issue_decorator.due_date %></td>
   </tr>
   <tr>
     <th style="width:15%"><%= t(:field_version) %> :</th>
-    <td style="width:30%"><%= @issue.version_str %></td>
+    <td style="width:30%"><%= @issue_decorator.version_str %></td>
     <th style="width:15%"><%= t(:field_estimated_time) %> :</th>
-    <td style="width:30%"><%= @issue.estimated_time %></td>
+    <td style="width:30%"><%= @issue_decorator.estimated_time %></td>
   </tr>
   <tr>
     <th style="width:15%"><%= t(:field_category) %> :</th>
-    <td style="width:30%"><%= @issue.category %></td>
+    <td style="width:30%"><%= @issue_decorator.category %></td>
     <th style="width:15%"><%= t(:field_done) %> :</th>
-    <td style="width:30%"><%= @issue.done %></td>
+    <td style="width:30%"><%= @issue_decorator.done %></td>
   </tr>
 </table>
 <br/>
 <hr/><br/>
 <h2><%= t(:field_description) %> :</h2>
-<%= @issue.display_description %>
+<%= @issue_decorator.display_description %>
 
 <div class="separator"></div>
 <h2>Checklist :</h2>
@@ -58,7 +58,7 @@
   <%= render :partial => 'issues/checklist_items', :locals => {:checklist_items => checklist_items} %>
 </ul>
 
-<span><%= @issue.checklist_link %></span>
+<span><%= @issue_decorator.checklist_link %></span>
 
 <div class="separator"></div>
 
@@ -76,11 +76,11 @@
 
 <%#= ATTACHMENT %>
 <div id="attachments">
-  <%= render :partial => 'shared/show_attachments', :locals => {:attachments => @issue.attachments, :object => @issue} %>
+  <%= render :partial => 'shared/show_attachments', :locals => {:attachments => @issue_decorator.attachments, :object => @issue_decorator} %>
 </div>
 
-<%= @issue.display_history(history) %>
+<%= @issue_decorator.display_history(history) %>
 
-<%= @issue.add_comment_block %>
+<%= @issue_decorator.add_comment_block %>
 <%= render :partial => 'issues/checklist_overlay', :locals => {:checklist_items => checklist_items} %>
-<%= render :partial => 'time_entries/log_issue_spent_time', :locals => {:issue_id => @issue.id, :tracker_name => @issue.tracker} %>
+<%= render :partial => 'time_entries/log_issue_spent_time', :locals => {:issue_id => @issue_decorator.id, :tracker_name => @issue_decorator.tracker} %>

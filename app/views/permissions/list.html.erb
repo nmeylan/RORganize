@@ -6,7 +6,7 @@
 %>
 
 <%= contextual "#{t(:link_permissions)} - #{params[:role_name].gsub('_', ' ')}" do -%>
-    <%= @permissions.new_link %>
+    <%= @permissions_decorator.new_link %>
 <% end -%>
 
-<%= @permissions.display_collection %>
+<%= @permissions_decorator.display_collection %>

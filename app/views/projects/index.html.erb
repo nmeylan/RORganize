@@ -6,7 +6,7 @@
 #Projects list
 %>
 <%= contextual t(:label_project_plural) do %>
-    <%=  @projects.new_link %>
+    <%=  @projects_decorator.new_link %>
 <% end %>
 
 <%= link_to t(:link_all), filter_projects_path('all'),
@@ -22,4 +22,4 @@
             {:class => "project_selection_filter #{session['project_selection_filter'].eql?('archived') ? 'selected' : ''}",
              :id => 'archived', :remote => true, :method => :post} %>
 
-<%= @projects.display_collection  %>
+<%= @projects_decorator.display_collection  %>

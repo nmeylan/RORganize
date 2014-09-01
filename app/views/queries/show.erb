@@ -4,25 +4,25 @@
 # Encoding: UTF-8
 # File: show.erb
 %>
-<%= contextual "#{t(:label_query)} : # #{@query.id}" do %>
-    <%= @query.edit_link %>
+<%= contextual "#{t(:label_query)} : # #{@query_decorator.id}" do %>
+    <%= @query_decorator.edit_link %>
 <% end %>
 <table class="detail" style="width:100%">
   <tr>
     <th style="width:10%"><%= t(:field_name) %> :</th>
-    <td style="width:90%"><%= @query.name %></td>
+    <td style="width:90%"><%= @query_decorator.name %></td>
   </tr>
   <tr>
     <th style="width:10%"><%= t(:field_is_public) %> :</th>
-    <td style="width:90%"><%= @query.is_public %></td>
+    <td style="width:90%"><%= @query_decorator.is_public %></td>
   </tr>
   <tr>
     <th style="width:10%"><%= t(:field_is_for_all) %> :</th>
-    <td style="width:90%"><%= @query.is_for_all %></td>
+    <td style="width:90%"><%= @query_decorator.is_for_all %></td>
   </tr>
 </table>
 
 <br/>
 <hr/><br/>
 <h2><%= t(:field_description) %> :</h2>
-<%= @query.display_description %>
+<%= @query_decorator.display_description %>

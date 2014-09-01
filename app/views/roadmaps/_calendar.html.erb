@@ -8,9 +8,9 @@
 <div id="calendar_header">
   <p>
 
-    <%= link_to "<< #{t(:link_prev_month)}", calendar_roadmap_path(@project.slug), {:style => 'float:left', :class => 'change_month ', :id => "#{@date.prev_month}"} %>
+    <%= link_to "<< #{t(:link_prev_month)}", calendar_roadmap_path(@project_decorator.slug), {:style => 'float:left', :class => 'change_month ', :id => "#{@date.prev_month}"} %>
     <%= @date.strftime('%B, %Y') %>
-    <%= link_to "#{t(:link_next_month)} >>", calendar_roadmap_path(@project.slug), {:style => 'float:right', :class => 'change_month', :id => "#{@date.next_month}"} %>
+    <%= link_to "#{t(:link_next_month)} >>", calendar_roadmap_path(@project_decorator.slug), {:style => 'float:right', :class => 'change_month', :id => "#{@date.next_month}"} %>
   </p>
 
 </div>
@@ -25,7 +25,7 @@
         </div>
 
         <div class="calendar_item_body <%= 'target' if @versions_hash["#{date}"]%> <%= 'today' if Date.today.eql?(date)%>"
-             id=" <%=@versions_hash["#{date}"] ? @versions_hash["#{date}"].id : '' %>" data-url="<%= version_description_roadmap_path(@project.slug,@versions_hash["#{date}"].id) if @versions_hash["#{date}"]%>">
+             id=" <%=@versions_hash["#{date}"] ? @versions_hash["#{date}"].id : '' %>" data-url="<%= version_description_roadmap_path(@project_decorator.slug,@versions_hash["#{date}"].id) if @versions_hash["#{date}"]%>">
           <p>
             <% if @versions_hash["#{date}"] %>
               <%= @versions_hash["#{date}"].name %>

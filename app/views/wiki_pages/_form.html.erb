@@ -4,7 +4,7 @@
 # Encoding: UTF-8
 # File: _form.html.erb
 %>
-<%= raw error_messages(@wiki_page.errors.full_messages) %>
+<%= raw error_messages(@wiki_page_decorator.errors.full_messages) %>
 <div class="box">
 <p>
   <label for="wiki_page_title"><%=t(:field_title)%><span class ="required"> *</span></label>

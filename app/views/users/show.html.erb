@@ -5,35 +5,35 @@
 # File: show.html.erb
 %>
 
-<%= contextual "#{t(:label_user)} : #{@user.name}" do %>
-    <%= @user.edit_link %>
-    <%= @user.delete_link %>
+<%= contextual "#{t(:label_user)} : #{@user_decorator.name}" do %>
+    <%= @user_decorator.edit_link %>
+    <%= @user_decorator.delete_link %>
 
  <% end %>
 
 <table class="detail" style="width:100%">
   <tr>
     <th style="width:15%"><%= t(:field_login) %> :</th>
-    <td style="width:30%"><%= @user.login %></td>
+    <td style="width:30%"><%= @user_decorator.login %></td>
     <th style="width:15%"><%= t(:label_created_at) %> :</th>
-    <td style="width:30%"><%= @user.register_on %></td>
+    <td style="width:30%"><%= @user_decorator.register_on %></td>
   </tr>
   <tr>
     <th style="width:15%"><%= t(:field_name) %> :</th>
-    <td style="width:30%"><%= @user.caption %></td>
+    <td style="width:30%"><%= @user_decorator.caption %></td>
     <th style="width:15%"><%= t(:label_current_sign_in) %> :</th>
-    <td style="width:30%"><%= @user.current_sign_in%></td>
+    <td style="width:30%"><%= @user_decorator.current_sign_in%></td>
   </tr>
   <tr>
     <th style="width:15%"><%= t(:field_email) %> :</th>
-    <td style="width:30%"><%= @user.email %></td>
+    <td style="width:30%"><%= @user_decorator.email %></td>
     <th style="width:15%"><%= t(:label_last_sign_in) %> :</th>
-    <td style="width:30%"><%= @user.sign_in %></td>
+    <td style="width:30%"><%= @user_decorator.sign_in %></td>
   </tr>
   <tr>
     <th style="width:15%"><%= t(:field_administrator) %> :</th>
-    <td style="width:30%"><%= @user.display_is_admin %></td>
+    <td style="width:30%"><%= @user_decorator.display_is_admin %></td>
   </tr>
 </table>
 
-<%= @user.display_history(@history) %>
+<%= @user_decorator.display_history(@history) %>

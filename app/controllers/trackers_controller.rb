@@ -12,7 +12,7 @@ class TrackersController < ApplicationController
 
   #Get /administration/trackers
   def index
-    @trackers = Tracker.paginated(@sessions[:current_page], @sessions[:per_page], order('trackers.name')).decorate
+    @trackers_decorator = Tracker.paginated(@sessions[:current_page], @sessions[:per_page], order('trackers.name')).decorate
     respond_to do |format|
       format.html
       format.js { respond_to_js }

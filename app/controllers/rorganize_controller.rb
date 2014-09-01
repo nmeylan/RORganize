@@ -23,9 +23,9 @@ class RorganizeController < ApplicationController
   end
 
   def view_profile
-    @user = User.eager_load([members: [:role, :project, assigned_issues: :status]]).find_by_slug(params[:user])
-    if @user
-      @user = @user.decorate
+    @user_decorator = User.eager_load([members: [:role, :project, assigned_issues: :status]]).find_by_slug(params[:user])
+    if @user_decorator
+      @user_decorator = @user_decorator.decorate
       init_activities_sessions
       activities_data = selected_filters
       if @sessions[:activities][:types].include?('NIL')
@@ -34,7 +34,7 @@ class RorganizeController < ApplicationController
         activities_types = @sessions[:activities][:types]
         activities_period = @sessions[:activities][:period]
         from_date = @sessions[:activities][:from_date]
-        @activities = Activities.new(@user.activities(activities_types, activities_period, from_date), @user.comments(activities_types, activities_period, from_date))
+        @activities = Activities.new(@user_decorator.activities(activities_types, activities_period, from_date), @user_decorator.comments(activities_types, activities_period, from_date))
       end
       respond_to do |format|
         format.html { render :action => 'view_profile', locals: activities_data }

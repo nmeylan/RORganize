@@ -12,7 +12,7 @@ class CategoriesController < ApplicationController
   include Rorganize::RichController
 
   def index
-    @categories = @project.categories.paginated(@sessions[:current_page], @sessions[:per_page], order('categories.name')).decorate(context: {project: @project})
+    @categories_decorator = @project.categories.paginated(@sessions[:current_page], @sessions[:per_page], order('categories.name')).decorate(context: {project: @project})
     respond_to do |format|
       format.html
       format.js { respond_to_js }

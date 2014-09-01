@@ -25,26 +25,26 @@ class WikiPagesController < ApplicationController
   end
 
   def create
-    @wiki_page = WikiPage.new(wiki_page_params)
+    @wiki_page_decorator = WikiPage.new(wiki_page_params).decorate
     wiki = Wiki.find_by_project_id(@project.id)
-    @wiki_page.wiki_id = wiki.id
-    @wiki_page.author_id = User.current.id
+    @wiki_page_decorator.wiki_id = wiki.id
+    @wiki_page_decorator.author_id = User.current.id
     if params[:wiki_page][:parent_id]
-      @wiki_page.parent_id = WikiPage.find_by_slug(params[:wiki_page][:parent_id]).id
+      @wiki_page_decorator.parent_id = WikiPage.find_by_slug(params[:wiki_page][:parent_id]).id
     end
     respond_to do |format|
-      if @wiki_page.save
+      if @wiki_page_decorator.save
         if  params[:wiki] && params[:wiki][:home_page] && wiki.home_page_id.nil?
-          wiki.home_page_id = @wiki_page.id
+          wiki.home_page_id = @wiki_page_decorator.id
           if wiki.save
             flash[:notice] = t(:successful_creation)
-            format.html { redirect_to wiki_page_path(@project.slug, @wiki_page.slug) }
+            format.html { redirect_to wiki_page_path(@project.slug, @wiki_page_decorator.slug) }
           else
             format.html { render :action => 'new_home_page' }
           end
         end
         flash[:notice] = t(:successful_creation)
-        format.html { redirect_to wiki_page_path(@project.slug, @wiki_page.slug) }
+        format.html { redirect_to wiki_page_path(@project.slug, @wiki_page_decorator.slug) }
       else
         if params[:wiki] && params[:wiki][:home_page]
           format.html { render :action => 'new_home_page' }
@@ -68,13 +68,13 @@ class WikiPagesController < ApplicationController
   end
 
   def update
-    @wiki_page.attributes = wiki_page_params
+    @wiki_page_decorator.attributes = wiki_page_params
     respond_to do |format|
-      if !@wiki_page.changed?
-        format.html { redirect_to wiki_page_path(@project.slug, @wiki_page.slug) }
-      elsif @wiki_page.changed? && @wiki_page.save
+      if !@wiki_page_decorator.changed?
+        format.html { redirect_to wiki_page_path(@project.slug, @wiki_page_decorator.slug) }
+      elsif @wiki_page_decorator.changed? && @wiki_page_decorator.save
         flash[:notice] = t(:successful_update)
-        format.html { redirect_to wiki_page_path(@project.slug, @wiki_page.slug) }
+        format.html { redirect_to wiki_page_path(@project.slug, @wiki_page_decorator.slug) }
       else
         format.html { render :action => 'edit' }
       end
@@ -83,7 +83,7 @@ class WikiPagesController < ApplicationController
 
   def destroy
     respond_to do |format|
-      if @wiki_page.destroy
+      if @wiki_page_decorator.destroy
         flash[:notice] = t(:successful_deletion)
         format.js { js_redirect_to pages_wiki_index_path(@project.slug) }
       else
@@ -94,7 +94,7 @@ class WikiPagesController < ApplicationController
 
   private
   def new_form
-    @wiki_page = WikiPage.new
+    @wiki_page_decorator = WikiPage.new.decorate
     respond_to do |format|
       format.html
     end
@@ -107,11 +107,11 @@ class WikiPagesController < ApplicationController
   end
 
   def find_page
-    @wiki_page = WikiPage.eager_load(:sub_pages, :author).where(slug: params[:id])[0].decorate(context: {project: @project})
+    @wiki_page_decorator = WikiPage.eager_load(:sub_pages, :author).where(slug: params[:id])[0].decorate(context: {project: @project})
   end
 
   def check_owner
-    @wiki_page.author_id.eql?(User.current.id)
+    @wiki_page_decorator.author_id.eql?(User.current.id)
   end
   def wiki_page_params
     params.require(:wiki_page).permit(WikiPage.permit_attributes)

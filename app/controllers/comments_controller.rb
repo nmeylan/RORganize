@@ -22,9 +22,9 @@ class CommentsController < ApplicationController
   end
 
   def show
-    @comments = Comment.eager_load(:project).where(commentable_type: @comment.commentable_type, commentable_id: @comment.commentable_id).decorate(context: {selected_comment: @comment})
+    @comments_decorator = Comment.eager_load(:project).where(commentable_type: @comment.commentable_type, commentable_id: @comment.commentable_id).decorate(context: {selected_comment: @comment})
     respond_to do |format|
-      format.js { respond_to_js action: 'show', locals: {comments: @comments} }
+      format.js { respond_to_js action: 'show', locals: {comments_decorator: @comments_decorator} }
     end
   end
 
@@ -62,7 +62,7 @@ class CommentsController < ApplicationController
 
   def find_comment
     @comment = Comment.find_by_id(params[:id])
-    @project = @comment.project
+    @project = @comment.project_decorator
     unless @comment
       render_404
     end

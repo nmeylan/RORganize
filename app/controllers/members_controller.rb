@@ -11,7 +11,7 @@ class MembersController < ApplicationController
   before_filter {|c| c.top_menu_item('projects')}
   #GET /projects/
   def index
-    @members = Member.where(:project_id =>  @project.id).paginated(@sessions[:current_page], @sessions[:per_page], order('users.name')).fetch_dependencies.decorate(context: {project: @project, roles:
+    @members_decorator = Member.where(:project_id =>  @project.id).paginated(@sessions[:current_page], @sessions[:per_page], order('users.name')).fetch_dependencies.decorate(context: {project: @project, roles:
         Role.select('*')})
     respond_to do |format|
       format.html{render :action => 'index', :locals => { :users => nil}}
@@ -40,7 +40,7 @@ class MembersController < ApplicationController
 
   def create
     success = Member.create(:project_id => @project.id, :role_id => params[:role], :user_id => params[:user])
-    @members = Member.eager_load(:user).where(:project_id =>  @project.id).decorate(context: {project: @project, roles:
+    @members_decorator = Member.eager_load(:user).where(:project_id =>  @project.id).decorate(context: {project: @project, roles:
         Role.select('*')})
     respond_to do |format|
       format.js {respond_to_js :action => :new, :locals => {:users => nil, :new => false},:response_header => :success, :response_content => t(:successful_creation)}

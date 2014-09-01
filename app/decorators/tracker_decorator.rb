@@ -7,6 +7,6 @@ class TrackerDecorator < ApplicationDecorator
   end
 
   def delete_link
-    link_to_with_permissions(h.glyph(h.t(:link_delete), 'trashcan'), h.tracker_path(tracker.id), nil, {:method => :delete,:remote => true,:confirm => h.t(:text_delete_item)})
+    super(h.t(:link_delete), h.tracker_path(tracker.id), nil)
   end
 end

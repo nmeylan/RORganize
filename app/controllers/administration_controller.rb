@@ -21,7 +21,7 @@ class AdministrationController < ApplicationController
   end
 
   def public_queries
-    @queries = Query.where('is_public = ? AND is_for_all = ?', true, true).eager_load(:user).paginated(@sessions[:current_page], @sessions[:per_page], order('queries.name')).decorate(context: {queries_url: public_queries_administration_index_path, action_name: 'public_queries'})
+    @queries_decorator = Query.where('is_public = ? AND is_for_all = ?', true, true).eager_load(:user).paginated(@sessions[:current_page], @sessions[:per_page], order('queries.name')).decorate(context: {queries_url: public_queries_administration_index_path, action_name: 'public_queries'})
     respond_to do |format|
       format.html
       format.js { respond_to_js }

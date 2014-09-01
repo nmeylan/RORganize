@@ -55,7 +55,7 @@ class Version < ActiveRecord::Base
   end
 
   def inc_position
-    count = self.project.versions.count
+    count = self.project_decorator.versions.count
     self.position = count + 1
   end
 

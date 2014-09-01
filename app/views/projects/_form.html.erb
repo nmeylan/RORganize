@@ -4,9 +4,9 @@
 # Encoding: UTF-8
 # File: _form.erb.erb
 %>
-<%= form_for(@project, :url => projects_path, :html => {:class => 'form', :multipart => true}) do |f| %>
+<%= form_for(@project_decorator, :url => projects_path, :html => {:class => 'form', :multipart => true}) do |f| %>
     <%= %>
-    <%= raw error_messages(@project.errors.full_messages) %>
+    <%= raw error_messages(@project_decorator.errors.full_messages) %>
     <div class="box">
       <p>
         <label for="project_name"><%= t(:field_name) %><span class="required"> *</span></label>
@@ -34,7 +34,7 @@
         <p>
           <label><%= t(:field_attachments) %></label>
         </p>
-        <%= render :partial => 'shared/attachments', :collection => @project.attachments, locals: {object: @project, type: 'project'} %>
+        <%= render :partial => 'shared/attachments', :collection => @project_decorator.attachments, locals: {object: @project_decorator, type: 'project'} %>
       </div>
     </div>
     <%= submit_tag t(:button_create) %>

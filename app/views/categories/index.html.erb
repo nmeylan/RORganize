@@ -5,8 +5,8 @@
 # File: index.html.erb
 %>
 <%= contextual "#{t(:label_setting_plural)} - #{t(:link_categories)}" do -%>
-    <%= @categories.new_link %>
+    <%= @categories_decorator.new_link %>
 <% end -%>
 
-<%= @categories.display_collection %>
+<%= @categories_decorator.display_collection %>
 <%= render :partial => 'settings/sidebar' %>

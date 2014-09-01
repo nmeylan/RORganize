@@ -6,15 +6,15 @@ File: show
 %>
 
 
-<%= contextual @wiki_page.display_breadcrumb  do %>
-    <%= @wiki_page.new_subpage_link  %>
-    <%= @wiki_page.edit_link  %>
-    <%= @wiki_page.delete_link  %>
+<%= contextual @wiki_page_decorator.display_breadcrumb  do %>
+    <%= @wiki_page_decorator.new_subpage_link  %>
+    <%= @wiki_page_decorator.edit_link  %>
+    <%= @wiki_page_decorator.delete_link  %>
      <% end %>
 <%= render :partial => 'wiki/sidebar' %>
 
-<%= @wiki_page.display_page %>
+<%= @wiki_page_decorator.display_page %>
 
-<% if @wiki_page.sub_pages.any? %>
-  <%= render :partial => 'wiki_pages/sub_pages', :locals => {:page => @wiki_page} %>
+<% if @wiki_page_decorator.sub_pages.any? %>
+  <%= render :partial => 'wiki_pages/sub_pages', :locals => {:page => @wiki_page_decorator} %>
 <% end %>

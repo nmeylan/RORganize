@@ -7,9 +7,9 @@ File: pages.html
 
 
 <%= contextual t(:link_pages) do %>
-    <%= @wiki.organize_pages_link %>
-    <%= @wiki.new_page_link %>
+    <%= @wiki_decorator.organize_pages_link %>
+    <%= @wiki_decorator.new_page_link %>
 <% end %>
 <%= render :partial => 'wiki/sidebar' %>
-<%= @wiki.display_pages %>
+<%= @wiki_decorator.display_pages %>
 
