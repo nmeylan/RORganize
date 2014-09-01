@@ -164,16 +164,13 @@ class User < ActiveRecord::Base
   def owned_projects(filter)
     case filter
       when 'opened'
-        conditions = 'projects.is_archived = false '
+        conditions = "projects.is_archived = false AND (members.user_id = #{self.id} OR projects.is_public = true) "
       when 'archived'
-        conditions = 'projects.is_archived = true '
+        conditions = "projects.is_archived = true AND (members.user_id = #{self.id} OR projects.is_public = true) "
       when 'starred'
-        conditions = 'members.is_project_starred = true '
+        conditions = "members.is_project_starred = true AND (members.user_id = #{self.id}) "
       else
-        conditions = '1 = 1 '
-    end
-    unless self.act_as_admin?
-      conditions += "AND (members.user_id = #{self.id} OR projects.is_public = true)"
+        conditions = self.act_as_admin? ? '1 = 1 ' : "(members.user_id = #{self.id}) "
     end
     conditions += 'AND journals.id = (SELECT max(j.id) FROM journals j WHERE j.project_id = projects.id)'
     Project.eager_load([:members, [journals: :user]]).where(conditions).group('1')
