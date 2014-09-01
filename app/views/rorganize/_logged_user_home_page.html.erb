@@ -5,6 +5,7 @@
 %>
 <%= contextual "#{t(:text_welcome)} #{User.current.caption}" %>
 <div class="splitcontentleft">
+  <h2><%= t(:link_starred) %> <%= t(:label_project_plural) %></h2>
   <%= projects.display_collection  %>
 </div>
 
@@ -12,3 +13,5 @@
   <%= display_overview_groups(overview_object_submitted.content, 'Opened submitted issues', 'Project', 'home_page_issues_overview_group') %>
   <%= display_overview_groups(overview_object_assigned.content, 'Opened assigned issues', 'Project', 'home_page_issues_overview_group') %>
 </div>
+
+<%= clear_both %>
