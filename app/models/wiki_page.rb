@@ -20,7 +20,7 @@ class WikiPage < ActiveRecord::Base
   belongs_to :parent, :class_name => 'WikiPage'
   has_many :sub_pages, :class_name => 'WikiPage', :foreign_key => 'parent_id', :dependent => :nullify
  
-  validates :title, :presence => true, :uniqueness => true
+  validates :title, :presence => true
 
   def caption
     self.title
