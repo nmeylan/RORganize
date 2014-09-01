@@ -1,8 +1,8 @@
 #Welcome to RORganize
 ### Started on June 20, 2012 - Last update : August 25, 2014
 
-Run with Rails 4.1.X
-
+Run with Rails 4.1.X 
+[Demo here](http://demo.rorganize.org/)
 # What is RORganize?
 
 RORganize is an easy to use project management application. Running on the latest Ruby on Rails framework with the latest Ruby version.
