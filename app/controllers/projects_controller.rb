@@ -1,9 +1,10 @@
 require 'shared/activities'
 class ProjectsController < ApplicationController
+  before_filter { |c| c.add_action_alias = {'show' => 'overview'}}
   before_filter :find_project, :only => [:overview, :show, :activity, :activity_filter, :members]
   before_filter :check_permission, :except => [:index, :filter, :members, :activity_filter]
   before_filter { |c| c.menu_context :project_menu }
-  before_filter { |c| c.menu_item(params[:controller], params[:action]) }
+  before_filter { |c| c.menu_item(params[:controller], params[:action].eql?('show') ? 'overview' : params[:action]) }
   before_filter { |c| c.top_menu_item('projects') }
   helper VersionsHelper
   include Rorganize::ActivityManager
@@ -133,7 +134,8 @@ class ProjectsController < ApplicationController
   end
 
   def find_project
-    @project = Project.eager_load(:attachments, members: [[user: :avatar], :role]).where(slug: params[:project_id])[0].decorate
+    id = action_name.eql?('show') ? params[:id] : params[:project_id]
+    @project = Project.eager_load(:attachments, members: [[user: :avatar], :role]).where(slug: id)[0].decorate
   end
 
 
