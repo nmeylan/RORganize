@@ -112,12 +112,13 @@ function roadmap_gantt() {
 
         gantt.templates.rightside_text = function (start, end, task) {
             var assigne = task.context.assigne;
-            return assigne !== undefined ? '<b>' + assigne + '</b>' : '';
+            return assigne !== undefined ? '<b>' + assigne !== null ? assigne : 'unassigned' + '</b>' : '';
         };
 
         gantt.templates.leftside_text = function (start, end, task) {
-
-            return scale_config === "2" ? task.duration + " days" : task.context.start_date_str + " <b>-</b> " + task.context.due_date_str;
+            var duration = "<span>"+task.context.start_date_str + " <b>-</b> " + task.context.due_date_str+"</span>";
+            var progress = task.progress !== undefined ? "<span style='text-align:right;'>" + Math.round(task.progress * 100) + "% </span>" : '';
+            return duration + progress;
         };
 
         gantt.attachEvent("onBeforeLightbox", function (id) {
@@ -366,7 +367,4 @@ function config_column(edition){
         edit_tasks
     ];
 
-    gantt.templates.progress_text = function (start, end, task) {
-        return "<span style='text-align:left;'>" + Math.round(task.progress * 100) + "% </span>";
-    };
 }

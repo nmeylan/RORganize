@@ -1492,6 +1492,18 @@ div.dhx_modal_cover {
   }
 }
 
+.gantt_left{
+  line-height: 10px;
+  bottom: 0px;
+  span{
+    display: block;
+    margin-bottom: 5px;
+  }
+}
+.gantt_left.gantt_side_content.gantt_link_crossing{
+  line-height: 10px;
+  bottom: 0px;
+}
 #save_gantt{
   float: right;
 }
