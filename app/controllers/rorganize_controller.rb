@@ -1,4 +1,5 @@
 require 'shared/activities'
+require 'issues/issue_overview_hash'
 class RorganizeController < ApplicationController
   helper ProjectsHelper
   helper IssuesHelper
@@ -9,12 +10,15 @@ class RorganizeController < ApplicationController
 
 
   def index
-    unless current_user.nil?
-      respond_to do |format|
+    respond_to do |format|
+      if current_user.nil?
         format.html { render :action => 'index' }
+      else
+        projects = User.current.owned_projects('starred').decorate(context: {allow_to_star: false})
+        overview_object_assigned = IssueOverviewHash.new(Issue.where(assigned_to_id: User.current.id).fetch_dependencies, {project: :assigned_to})
+        overview_object_submitted = IssueOverviewHash.new(Issue.where(author_id: User.current.id).fetch_dependencies, {project: :author})
+        format.html { render action: 'index', locals: {projects: projects, overview_object_assigned: overview_object_assigned, overview_object_submitted: overview_object_submitted} }
       end
-    else
-      # redirect_to new_user_session_path
     end
   end
 

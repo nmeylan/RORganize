@@ -205,7 +205,7 @@ class IssuesController < ApplicationController
   end
 
   def overview
-    overview_object = IssueOverviewHash.new(Issue.where(project_id: @project.id).fetch_dependencies)
+    overview_object = IssueOverviewHash.new(Issue.where(project_id: @project.id).fetch_dependencies, [:assigned_to, :status, :version, :category, :tracker, :author])
     respond_to do |format|
       format.html { render action: :overview, locals: {overview: overview_object} }
     end

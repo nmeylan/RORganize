@@ -321,6 +321,11 @@ img.small_avatar {
   float: right;
   width: 49%;
 }
+.splitcontentright.small{
+  width: 29%;
+}.splitcontentright.large{
+  width: 69%;
+}
 
 .splitcontentright.box {
   width: 48%;
@@ -331,7 +336,11 @@ img.small_avatar {
   float: left;
   width: 49%;
 }
-
+.splitcontentleft.small{
+  width: 29%;
+}.splitcontentleft.large{
+   width: 69%;
+ }
 /*
 *  CONTEXTUAL
 */
