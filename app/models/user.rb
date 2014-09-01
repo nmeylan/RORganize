@@ -107,13 +107,9 @@ class User < ActiveRecord::Base
     return true if self.is_admin? && act_as_admin? && (project && module_enabled?(project.id.to_s, action, controller) || !project)
     if self.id.eql?(AnonymousUser::ANON_ID) #Concern unconnected users.
       if project
-        if project.is_public
-          (module_enabled?(project.id.to_s, action, controller) &&
-              anonymous_permission_manager_allowed_to?(action.to_s, controller.downcase.to_s) &&
-              (!project.is_archived? || (project.is_archived? && project_archive_permissions(action, controller))))
-        else
-          false
-        end
+        (project.is_public && module_enabled?(project.id.to_s, action, controller) &&
+            anonymous_permission_manager_allowed_to?(action.to_s, controller.downcase.to_s) &&
+            (!project.is_archived? || (project.is_archived? && project_archive_permissions(action, controller))))
       else
         if anonymous_permission_manager_allowed_to?(action.to_s, controller.downcase.to_s)
           true
@@ -124,15 +120,14 @@ class User < ActiveRecord::Base
     else
       m = self.members
       if project
-        if project.is_public
-          return (module_enabled?(project.id.to_s, action, controller) &&
-              non_member_permission_manager_allowed_to?(action.to_s, controller.downcase.to_s) &&
+        member = m.to_a.select { |mb| mb.project_id == project.id }.first
+        if member
+          (module_enabled?(project.id.to_s, action, controller) &&
+              permission_manager_allowed_to?(member.role.id.to_s, action.to_s, controller.downcase.to_s) &&
               (!project.is_archived? || (project.is_archived? && project_archive_permissions(action, controller))))
         else
-          member = m.to_a.select { |mb| mb.project_id == project.id }.first
-          return (member &&
-              module_enabled?(project.id.to_s, action, controller) &&
-              permission_manager_allowed_to?(member.role.id.to_s, action.to_s, controller.downcase.to_s) &&
+          (project.is_public && module_enabled?(project.id.to_s, action, controller) &&
+              non_member_permission_manager_allowed_to?(action.to_s, controller.downcase.to_s) &&
               (!project.is_archived? || (project.is_archived? && project_archive_permissions(action, controller))))
         end
       else
