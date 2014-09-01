@@ -24,8 +24,9 @@ class Issue < ActiveRecord::Base
   has_many :checklist_items, :class_name => 'ChecklistItem', :dependent => :destroy
   has_many :time_entries, :dependent => :destroy
   #triggers
+  before_validation :set_start_and_due_date
   before_save :set_done_ratio
-  before_update :set_done_ratio, :set_due_date
+  before_update :set_done_ratio
   after_update :save_attachments
   #Validators
   validates :subject, :tracker_id, :status_id, :presence => true
@@ -193,9 +194,12 @@ class Issue < ActiveRecord::Base
     end
   end
 
-  def set_due_date
+  def set_start_and_due_date
     if self.version && !self.version.target_date.nil? && self.version_id_changed?
       self.due_date = self.version.target_date
+    end
+    if self.version && !self.version.start_date.nil? && self.version_id_changed? && (self.start_date.nil? || (self.start_date && (self.start_date < self.version.start_date) || self.start_date > self.version.target_date))
+      self.start_date = self.version.start_date
     end
   end
 
