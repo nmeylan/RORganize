@@ -35,9 +35,17 @@ module Rorganize
           params[:data][:confirm] = params[:confirm].clone
           params[:confirm] = nil
         end
-        if (owner_id.nil? && User.current.allowed_to?(hash_path[:action], hash_path[:controller], project)) || (!owner_id.nil? && (User.current.allowed_to?(hash_path[:action], hash_path[:controller], project) && owner_id.eql?(User.current.id) ||
+        if (owner_id.nil? && User.current.allowed_to?(find_action_alias(hash_path[:action]), hash_path[:controller], project)) || (!owner_id.nil? && (User.current.allowed_to?(find_action_alias(hash_path[:action]), hash_path[:controller], project) && owner_id.eql?(User.current.id) ||
             User.current.allowed_to?("#{hash_path[:action]}_not_owner", hash_path[:controller], project)))
           yield
+        end
+      end
+
+      def find_action_alias(action)
+        if Rorganize::PermissionManager.aliases.keys.include?(action)
+          Rorganize::PermissionManager.aliases[action]
+        else
+          action
         end
       end
 
@@ -83,12 +91,13 @@ module Rorganize
     end
 
     class << self
-      attr_reader :permissions, :anonymous_role, :non_member_role
+      attr_reader :permissions, :anonymous_role, :non_member_role, :aliases
 
       def initialize
         @permissions = load_permissions
         @anonymous_role = Role.find_by_name('Anonymous')
         @non_member_role = Role.find_by_name('Non member')
+        @aliases = {'update' => 'edit', 'create' => 'new', 'toolbox' => 'edit'}
       end
 
       def reload_permissions
