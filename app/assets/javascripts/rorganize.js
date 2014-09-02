@@ -78,6 +78,7 @@
     $(document).ajaxComplete(function (e, xhr, options) {
         //BIND_CHZN-SELECT
         initialize_chosen();
+        bind_task_list_click();
         //MarkItUp
         if (options.dataType !== 'JSON')
             markdown_textarea();
