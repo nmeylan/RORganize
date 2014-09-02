@@ -11,7 +11,7 @@ class IssueOverviewHash
     @issues_count = issues.to_a.size
     @content = []
     @attributes = attributes
-    build_object(@attributes) if @issues_count > 0
+    build_object(@attributes)
   end
 
   def build_object(args = [])
@@ -30,7 +30,6 @@ class IssueOverviewHash
   def group_by(attr_name, _alias = nil)
     rows = {}
     @issues.each do |issue|
-
       if attr_name.eql?(:project) && _alias
         attr = issue.send(_alias)
         rows[issue.project_id] ||= {caption: issue.project.slug, id: attr.id, count: 0, project: issue.project}

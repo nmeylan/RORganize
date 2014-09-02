@@ -13,7 +13,7 @@ class ApplicationCollectionDecorator < Draper::CollectionDecorator
     h.url_for({controller: h.controller_name, action: 'index'})
   end
 
-  def display_collection(no_pagination = false)
+  def display_collection(no_pagination = false, no_data_text = nil)
     h.content_tag :div, id: "#{h.controller_name}_content" do
       if object.to_a.any?
         if block_given?
@@ -23,7 +23,7 @@ class ApplicationCollectionDecorator < Draper::CollectionDecorator
         end
         h.safe_concat(h.paginate(object, h.session[h.controller_name.to_sym], pagination_path)) unless no_pagination || (object.to_a.size < 25 && h.session[h.controller_name.to_sym][:current_page].to_i < 2)
       else
-        h.no_data
+        h.no_data(no_data_text)
       end
     end
   end

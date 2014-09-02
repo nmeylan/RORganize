@@ -31,8 +31,8 @@ module ApplicationHelper
     content_tag :div, nil, {class: 'clear-both'}
   end
 
-  def no_data
-    content_tag :div, t(:text_no_data), class: 'no-data'
+  def no_data(text = nil)
+    content_tag :div, text ? text : t(:text_no_data), class: 'no-data'
   end
 
   def render_404

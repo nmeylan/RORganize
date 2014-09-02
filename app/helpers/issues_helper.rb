@@ -117,39 +117,39 @@ module IssuesHelper
   end
 
   def display_overview_groups(groups, title = nil, group_name = nil, group_class_name = nil)
-    if groups.any?
-      groups.collect do |group_hash|
-        group_hash.collect do |k, v|
-          gn = group_name.nil? ? k.to_s.capitalize.gsub(/_/, ' ') : group_name
-          t = title.nil? ? (k.eql?(:status) ? 'Issues' : 'Opened issues') : title
-          display_overview_group_by("#{t} : By #{gn}", v, k, !k.eql?(:status), group_class_name)
-        end.join.html_safe
+    groups.collect do |group_hash|
+      group_hash.collect do |k, v|
+        gn = group_name.nil? ? k.to_s.capitalize.gsub(/_/, ' ') : group_name
+        t = title.nil? ? (k.eql?(:status) ? 'Issues' : 'Opened issues') : title
+        display_overview_group_by("#{t} : By #{gn}", v, k, !k.eql?(:status), group_class_name)
       end.join.html_safe
-    else
-      no_data
-    end
+    end.join.html_safe
   end
 
   def display_overview_group_by(title, group, group_name, only_opened_issues = true, group_class_name = nil)
-    class_name = group_class_name.nil? ? 'issues_overview_group': group_class_name
+    class_name = group_class_name.nil? ? 'issues_overview_group' : group_class_name
     content_tag :div, class: class_name do
       safe_concat content_tag :h2, title, class: "#{class_name} title"
-      safe_concat content_tag :table, class: class_name, &Proc.new {
-        safe_concat content_tag :tr, class: "#{class_name} header", &Proc.new {
-          safe_concat content_tag :th, t(:field_name), class: 'caption'
-          safe_concat content_tag :th, t(:label_issue_plural), class: 'number'
-          safe_concat content_tag :th, t(:label_percentage), class: 'percentage'
+      if group.any?
+        safe_concat content_tag :table, class: class_name, &Proc.new {
+          safe_concat content_tag :tr, class: "#{class_name} header", &Proc.new {
+            safe_concat content_tag :th, t(:field_name), class: 'caption'
+            safe_concat content_tag :th, t(:label_issue_plural), class: 'number'
+            safe_concat content_tag :th, t(:label_percentage), class: 'percentage'
+          }
+          na = nil
+          group.sort_by { |e| e[:caption] }.collect do |element|
+            if element[:id].eql?('NULL')
+              na = element
+            else
+              display_overview_row(element, group_name, only_opened_issues)
+            end
+          end.join.html_safe
+          display_overview_row(na, group_name, only_opened_issues) if na
         }
-        na = nil
-        group.sort_by { |e| e[:caption] }.collect do |element|
-          if element[:id].eql?('NULL')
-            na = element
-          else
-            display_overview_row(element, group_name, only_opened_issues)
-          end
-        end.join.html_safe
-        display_overview_row(na, group_name, only_opened_issues) if na
-      }
+      else
+        safe_concat no_data
+      end
     end
   end
 
