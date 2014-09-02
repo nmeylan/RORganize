@@ -56,7 +56,7 @@ class RorganizeController < ApplicationController
   end
 
   def task_list_action_markdown
-    element_types = {'Comment' => Comment, 'Issue' => Issue}
+    element_types = {'Comment' => Comment, 'Issue' => Issue, 'Document' => Document}
     params.require(:is_check)
     params.require(:element_type)
     params.require(:element_id)
@@ -66,8 +66,7 @@ class RorganizeController < ApplicationController
     unless element.nil?
       if params[:element_type].eql?('Comment') && (User.current.allowed_to?('edit_comment_not_owner', 'comments', @project) || element.user_id.eql?(User.current.id))
         content = element.content
-
-      elsif params[:element_type].eql?('Issue') && (User.current.allowed_to?('edit_not_owner', 'issues', @project) || element.author.eql?(User.current))
+      elsif (params[:element_type].eql?('Issue') && (User.current.allowed_to?('edit_not_owner', 'issues', @project) || element.author.eql?(User.current))) || (params[:element_type].eql?('Document') && (User.current.allowed_to?('edit', 'documents', @project)))
         content = element.description
       else #User try to cheat.
         content = nil
@@ -86,7 +85,7 @@ class RorganizeController < ApplicationController
         end
         if params[:element_type].eql?('Comment')
           element.update_column(:content, content)
-        elsif params[:element_type].eql?('Issue')
+        elsif params[:element_type].eql?('Issue') || params[:element_type].eql?('Document')
           element.update_column(:description, content)
         end
         message = t(:successful_update)

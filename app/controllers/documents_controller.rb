@@ -49,15 +49,15 @@ class DocumentsController < ApplicationController
 
   def update
     @document_decorator = Document.find(params[:id]).decorate(context: {project: @project})
-    @document.attributes = document_params
+    @document_decorator.attributes = document_params
     respond_to do |format|
-      if !@document.changed? &&
+      if !@document_decorator.changed? &&
           (document_params[:existing_attachment_attributes].nil? &&
               document_params[:new_attachment_attributes].nil?)
-        format.html { redirect_to document_path(@project.slug, @document.id) }
-      elsif @document.save && @document.save_attachments
+        format.html { redirect_to document_path(@project.slug, @document_decorator.id) }
+      elsif @document_decorator.save && @document_decorator.save_attachments
         flash[:notice] = t(:successful_update)
-        format.html { redirect_to document_path(@project.slug, @document.id) }
+        format.html { redirect_to document_path(@project.slug, @document_decorator.id) }
       else
         format.html { render :action => 'edit' }
       end

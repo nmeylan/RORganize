@@ -166,6 +166,8 @@ module ApplicationHelper
         allow = User.current.id.eql?(rendered_element.author_id) && User.current.allowed_to?('edit', 'issues', @project)|| User.current.allowed_to?('edit_not_owner', 'issues', @project)
       elsif rendered_element.class.eql?(Comment)
         allow = User.current.id.eql?(rendered_element.user_id) || User.current.allowed_to?('edit_comment_not_owner', 'comments', @project)
+      elsif rendered_element.class.eql?(Document)
+        allow = User.current.allowed_to?('edit', 'documents', @project)
       end
       context.merge!({element_type: rendered_element.class, element_id: rendered_element.id, allow_task_list: allow})
     end
