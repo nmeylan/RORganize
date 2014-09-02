@@ -31,6 +31,13 @@ class ProjectDecorator < ApplicationDecorator
       }
     end
     if versions.to_a.any?
+      versions.each do |version|
+        unless structure.keys.include?(version.id)
+          structure[version.id] = {
+              percent: 100, closed_issues_count: 0, opened_issues_count: 0
+          }
+        end
+      end
       h.versions_list_overview(versions, structure)
     else
       h.content_tag :div, h.t(:text_no_running_versions), class: 'no-data'
