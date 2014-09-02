@@ -62,7 +62,7 @@ class CommentsController < ApplicationController
 
   def find_comment
     @comment = Comment.find_by_id(params[:id])
-    @project = @comment.project_decorator
+    @project = @comment.project
     unless @comment
       render_404
     end
