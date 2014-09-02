@@ -28,12 +28,12 @@ class DocumentsController < ApplicationController
 
   def create
     @document_decorator = Document.new(document_params).decorate(context: {project: @project})
-    @document.project_id = @project.id
-    @document.created_at = Time.now.to_formatted_s(:db)
+    @document_decorator.project_id = @project.id
+    @document_decorator.created_at = Time.now.to_formatted_s(:db)
     respond_to do |format|
-      if @document.save
+      if @document_decorator.save
         flash[:notice] = t(:successful_creation)
-        format.html { redirect_to :action => 'show', :id => @document.id }
+        format.html { redirect_to :action => 'show', :id => @document_decorator.id }
       else
         format.html { render :action => 'new' }
       end
