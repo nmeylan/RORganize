@@ -29,8 +29,8 @@ class ApplicationDecorator < Draper::Decorator
   end
 
   def display_history(history)
-    if history && history.content.to_a.any?
-      h.content_tag :div, id: 'history' do
+    h.content_tag :div, id: 'history' do
+      if history && history.content.to_a.any?
         h.history_render(history)
       end
     end
@@ -72,6 +72,7 @@ class ApplicationDecorator < Draper::Decorator
       h.link_to h.glyph(h.t(:link_comment), 'comment'), '#add_comment', {id: 'new_comment_link'}
     end
   end
+
   def new_comment
     Comment.new({commentable_type: model.class, commentable_id: model.id})
   end
