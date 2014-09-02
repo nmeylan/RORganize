@@ -21,7 +21,6 @@ class Issue < ActiveRecord::Base
   belongs_to :category, :class_name => 'Category'
   has_many :children, :foreign_key => 'predecessor_id', :class_name => 'Issue'
   belongs_to :parent, :foreign_key => 'predecessor_id', :class_name => 'Issue'
-  has_many :checklist_items, :class_name => 'ChecklistItem', :dependent => :destroy
   has_many :time_entries, :dependent => :destroy
   #triggers
   before_validation :set_start_and_due_date
@@ -32,7 +31,7 @@ class Issue < ActiveRecord::Base
   validates :subject, :tracker_id, :status_id, :presence => true
   validate :validate_start_date, :validate_predecessor, :validate_due_date
   #Scopes
-  scope :fetch_dependencies, -> { eager_load([:tracker, :version, :assigned_to, :category, :attachments, :author, :checklist_items, :status => [:enumeration]]) }
+  scope :fetch_dependencies, -> { eager_load([:tracker, :version, :assigned_to, :category, :attachments, :author, :status => [:enumeration]]) }
   scope :assigned_issues_for_user, ->(user) { where(:assigned_to_id => user.id, :status_id => IssuesStatus.opened_statuses_id, :project_id => Project.opened_projects_id).eager_load(:project) }
   scope :submitted_issues_by_user, ->(user) { where(:author_id => user.id, :status_id => IssuesStatus.opened_statuses_id, :project_id => Project.opened_projects_id).eager_load(:project) }
 
@@ -85,7 +84,7 @@ class Issue < ActiveRecord::Base
   #Return an array with all attribute that can be filtered
   def self.filtered_attributes
     filtered_attributes = []
-    unused_attributes = ['Project', 'Description', 'Estimated time', 'Predecessor', 'Checklist items count', 'Attachments count']
+    unused_attributes = ['Project', 'Description', 'Estimated time', 'Predecessor', 'Attachments count']
     attrs = Issue.attributes_formalized_names.delete_if { |attribute| unused_attributes.include?(attribute) }
     attrs.each { |attribute| filtered_attributes << [attribute, attribute.gsub(/\s/, '_').downcase] } # TODO use map
     return filtered_attributes
@@ -94,8 +93,6 @@ class Issue < ActiveRecord::Base
   def self.display_issue_object(issue_id)
     object = {}
     object[:issue] = Issue.eager_load([:tracker, :version, :assigned_to, :category, :attachments, :parent, :author, status: :enumeration, comments: :author]).where(id: issue_id)[0]
-    object[:checklist_statuses] = Enumeration.where(:opt => 'CLIS')
-    object[:checklist_items] = ChecklistItem.where(:issue_id => issue_id).eager_load([:enumeration]).order(:position)
     object
   end
 

@@ -46,11 +46,8 @@ RORganize::Application.routes.draw do
       collection do
         get 'toolbox'
         post 'toolbox'
-        get 'show_checklist_items', :path => 'show_checklist_items/:id'
         delete 'delete_attachment', :path => 'delete_attachment/:id'
         get 'download_attachment', :path => 'download_attachment/:id'
-        post 'save_checklist'
-        get 'checklist'
         post 'edit_note', :path => 'edit_note/:note_id'
         post 'start_today', :path => 'start_today/:id'
         delete 'delete_note', :path => 'delete_note/:note_id'

@@ -1,7 +1,0 @@
-<%#=
- * User: Nicolas
- * Date: 07/12/13
- * Time: 14:42
- %>
-on_addition_effect("#ck_refresh", "<%= escape_javascript(render :partial => 'issues/checklist_items', :locals => {:checklist_items => checklist_items})%>");
-jQuery('#checklist_overlay').overlay().close();

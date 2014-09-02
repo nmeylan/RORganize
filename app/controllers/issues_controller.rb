@@ -6,7 +6,7 @@ require 'shared/history'
 require 'issues/issue_overview_hash'
 class IssuesController < ApplicationController
   before_filter { |c| c.add_action_alias= {'overview' => 'index'}}
-  before_filter :check_permission, :except => [:save_checklist, :show_checklist_items, :toolbox, :download_attachment, :start_today]
+  before_filter :check_permission, :except => [:toolbox, :download_attachment, :start_today]
   before_filter :check_not_owner_permission, :only => [:edit, :update, :destroy]
   before_filter { |c| c.menu_context :project_menu }
   before_filter { |c| c.menu_item(params[:controller]) }
@@ -29,10 +29,8 @@ class IssuesController < ApplicationController
   def show
     display_issue_object = Issue.display_issue_object(params[:id])
     @issue_decorator = display_issue_object[:issue].decorate(context: {project: @project})
-    @checklist_statuses = display_issue_object[:checklist_statuses]
-    gon.checklist_statuses = @checklist_statuses.to_json
     respond_to do |format|
-      format.html { render :action => 'show', :locals => {:history => History.new(Journal.issue_activities(@issue_decorator.id), @issue_decorator.comments), :done_ratio => display_issue_object[:done_ratio], :allowed_statuses => display_issue_object[:allowed_statuses], :checklist_items => display_issue_object[:checklist_items]} }
+      format.html { render :action => 'show', :locals => {:history => History.new(Journal.issue_activities(@issue_decorator.id), @issue_decorator.comments), :done_ratio => display_issue_object[:done_ratio], :allowed_statuses => display_issue_object[:allowed_statuses]} }
     end
   end
 
@@ -143,19 +141,6 @@ class IssuesController < ApplicationController
     end
   end
 
-  #Save checklist
-  def save_checklist
-    ChecklistItem.save_items(params[:items], params[:id])
-    respond_to do |format|
-      format.js { respond_to_js :response_header => :success, :response_content => t(:successful_update), :locals => {:checklist_items => ChecklistItem.where(:issue_id => params[:id]).includes([:enumeration])} }
-    end
-  end
-
-  def show_checklist_items
-    respond_to do |format|
-      format.js { respond_to_js :locals => {:checklist_items => ChecklistItem.where(:issue_id => params[:id]).includes([:enumeration])} }
-    end
-  end
 
   #GET /project/:project_identifier/issues/toolbox
   def toolbox

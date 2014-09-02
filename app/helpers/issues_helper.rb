@@ -68,7 +68,6 @@ module IssuesHelper
         safe_concat content_tag :th, sortable('issues.due_date', 'Due date')
         safe_concat content_tag :th, sortable('issues.done', 'Done')
         safe_concat content_tag :th, nil
-        safe_concat content_tag :th, nil
       }
       safe_concat(collection.collect do |issue|
         content_tag :tr, class: "has_context_menu odd_even issue_tr #{'close' if issue.status.is_closed?}" do
@@ -82,7 +81,6 @@ module IssuesHelper
           safe_concat content_tag :td, issue.version_str, class: 'list_center version'
           safe_concat content_tag :td, issue.due_date, class: 'list_center due_date'
           safe_concat content_tag :td, issue.done, class: 'list_center done'
-          safe_concat content_tag :td, issue.link_checklist_overlay
           safe_concat content_tag :td, issue.attachment_presence_indicator
         end
       end.join.html_safe)

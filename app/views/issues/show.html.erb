@@ -10,7 +10,6 @@
     <%= @issue_decorator.edit_link %>
     <%= @issue_decorator.start_today_link %>
     <%= @issue_decorator.new_comment_link %>
-    <%= @issue_decorator.checklist_link %>
     <%= @issue_decorator.log_time_link %>
     <%= @issue_decorator.delete_link %>
 <% end %>
@@ -52,13 +51,6 @@
 <h2><%= t(:field_description) %> :</h2>
 <%= @issue_decorator.display_description %>
 
-<div class="separator"></div>
-<h2>Checklist :</h2>
-<ul class="checklist" id="ck_refresh">
-  <%= render :partial => 'issues/checklist_items', :locals => {:checklist_items => checklist_items} %>
-</ul>
-
-<span><%= @issue_decorator.checklist_link %></span>
 
 <div class="separator"></div>
 
@@ -82,5 +74,4 @@
 <%= @issue_decorator.display_history(history) %>
 
 <%= @issue_decorator.add_comment_block %>
-<%= render :partial => 'issues/checklist_overlay', :locals => {:checklist_items => checklist_items} %>
 <%= render :partial => 'time_entries/log_issue_spent_time', :locals => {:issue_id => @issue_decorator.id, :tracker_name => @issue_decorator.tracker} %>

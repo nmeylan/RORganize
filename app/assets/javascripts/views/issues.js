@@ -68,12 +68,8 @@ function issues_show() {
         e.preventDefault();
         jQuery('#update_issue').fadeOut();
     });
-    createOverlay("#checklist_overlay", 150);
     createOverlay("#spent_time_overlay", 150);
-    jQuery(".open_checklist_overlay").click(function (e) {
-        e.preventDefault();
-        jQuery("#checklist_overlay").overlay().load();
-    });
+
     jQuery("#update_issue_link").click(function () {
         jQuery('#update_issue').show();
     });
@@ -82,7 +78,6 @@ function issues_show() {
         fill_log_issue_time_overlay(jQuery(this).attr('href'), this);
         jQuery('#spent_time_overlay').overlay().load();
     });
-    checklist_behaviour(gon.checklist_statuses);
 
 }
 

@@ -49,10 +49,6 @@ class IssueDecorator < ApplicationDecorator
     h.link_to h.glyph(h.t(:link_update), 'file-symlink-file'), '#update_issue', {:class => 'icon icon-update_issue', :id => 'update_issue_link'}
   end
 
-  def checklist_link
-    link_to_with_permissions(h.glyph(h.t(:link_checklist), 'checklist'), h.checklist_issues_path(context[:project].slug), context[:project], nil, {:class => 'open_checklist_overlay'})
-  end
-
   def log_time_link
     h.link_to h.glyph(h.t(:link_log_time), 'clock'), h.fill_overlay_time_entries_path(model.id), {:id => 'log_time'}
   end
@@ -60,11 +56,6 @@ class IssueDecorator < ApplicationDecorator
   def delete_link
     super(h.t(:link_delete), h.issue_path(context[:project].slug, model.id), context[:project], model.author_id)
   end
-
-  def link_checklist_overlay
-    h.link_to h.glyph('', 'checklist'), h.show_checklist_items_issues_path(context[:project].slug, model.id), {:remote => true} if model.checklist_items.to_a.any?
-  end
-
 
   def attachment_presence_indicator
     h.content_tag :span, nil, {class: 'octicon octicon-attachment'} unless model.attachments.empty?

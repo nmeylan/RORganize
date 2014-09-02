@@ -76,7 +76,7 @@ module Rorganize
 
       def project_archive_permissions(action, controller)
         permissions = Hash.new { |h, k| h[k] = [] }
-        permissions['action'] = %w(new edit create update destroy delete checklist change)
+        permissions['action'] = %w(new edit create update destroy delete change)
         permissions['controller'] = %w(Categories Versions)
         if permissions['controller'].include?(controller)
           return false

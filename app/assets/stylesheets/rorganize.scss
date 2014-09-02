@@ -470,40 +470,6 @@ img.small_avatar {
   padding-bottom: 10px !important;
   border-bottom: solid 1px #e5e5e5;
 }
-/*
-* CHECKLIST
-*/
-#checklist {
-  min-width: 400px;
-  max-width: 800px;
-  padding-bottom: 55px;
-  color: #888;
-  min-height: 130px;
-  max-height: 400px;
-  overflow-y: scroll;
-}
-
-ul.checklist {
-  list-style: none;
-}
-
-ul.checklist .started {
-  color: #FFC773;
-}
-
-ul.checklist .new {
-  color: #9B4D4D;
-}
-
-ul.checklist .finish {
-  color: #3E7C3E;
-}
-
-ul#items {
-  list-style: none;
-  margin-left: -35px;
-  min-width: 400px;
-}
 
 /*
 *  jQuery UI
