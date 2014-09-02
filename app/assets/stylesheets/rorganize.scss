@@ -319,7 +319,14 @@ img.small_avatar {
 */
 .splitcontentright {
   float: right;
-  width: 49%;
+  /* Firefox */
+  width: -moz-calc(50% - 20px);
+  /* WebKit */
+  width: -webkit-calc(50% - 20px);
+  /* Opera */
+  width: -o-calc(50% - 20px);
+  /* Standard */
+  width: calc(50% - 20px);
 }
 .splitcontentright.small{
   width: 29%;
@@ -328,13 +335,20 @@ img.small_avatar {
 }
 
 .splitcontentright.box {
-  width: 48%;
+
   background-color: #FCFCFC;
 }
 
 .splitcontentleft {
   float: left;
-  width: 49%;
+  /* Firefox */
+  width: -moz-calc(50% - 20px);
+  /* WebKit */
+  width: -webkit-calc(50% - 20px);
+  /* Opera */
+  width: -o-calc(50% - 20px);
+  /* Standard */
+  width: calc(50% - 20px);
 }
 .splitcontentleft.small{
   width: 29%;
