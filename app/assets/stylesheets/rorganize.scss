@@ -451,6 +451,10 @@ img.small_avatar {
   text-align: center;
 }
 
+.underlined_title{
+  padding-bottom: 10px !important;
+  border-bottom: solid 1px #e5e5e5;
+}
 /*
 * CHECKLIST
 */
@@ -767,6 +771,10 @@ div.issues_overview_group {
     padding-bottom: 10px !important;
     border-bottom: solid 1px $default-border-color;
   }
+}
+
+div.home_page_issues_overview_group{
+  margin-bottom: 20px;
 }
 
 table.issues_overview_group, table.home_page_issues_overview_group {
