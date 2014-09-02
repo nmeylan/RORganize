@@ -198,7 +198,7 @@ class Issue < ActiveRecord::Base
     if self.version && !self.version.target_date.nil? && self.version_id_changed?
       self.due_date = self.version.target_date
     end
-    if self.version && !self.version.start_date.nil? && self.version_id_changed? && (self.start_date.nil? || (self.start_date && (self.start_date < self.version.start_date) || self.start_date > self.version.target_date))
+    if self.version && self.version.start_date && self.version_id_changed? && (self.start_date.nil? || (self.start_date && (self.start_date < self.version.start_date) ||  self.version.target_date && self.start_date > self.version.target_date))
       self.start_date = self.version.start_date
     end
   end
