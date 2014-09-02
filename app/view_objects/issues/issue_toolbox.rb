@@ -21,6 +21,7 @@ class IssueToolbox < Toolbox
       @menu[:assigned_to].all = @project.members.collect { |member| member.user }
       @menu[:assigned_to].currents = @collection.collect { |issue| issue.assigned_to }.uniq
       @menu[:assigned_to].attribute_name = 'assigned_to_id'
+      @menu[:assigned_to].none_allowed = true
     end
 
     if @user.allowed_to?('change_version', 'Issues', @project)
@@ -29,6 +30,7 @@ class IssueToolbox < Toolbox
       @menu[:version].all = @project.versions.collect { |version| version }
       @menu[:version].currents = @collection.collect { |issue| issue.version }.uniq
       @menu[:version].attribute_name = 'version_id'
+      @menu[:version].none_allowed = true
     end
 
     if @user.allowed_to?('change_status', 'Issues', @project)
@@ -45,6 +47,7 @@ class IssueToolbox < Toolbox
       @menu[:category].all = @project.categories.collect { |category| category }
       @menu[:category].currents = @collection.collect { |issue| issue.category }.uniq
       @menu[:category].attribute_name = 'category_id'
+      @menu[:category].none_allowed = true
     end
 
     if @user.allowed_to?('change_progress', 'Issues', @project)

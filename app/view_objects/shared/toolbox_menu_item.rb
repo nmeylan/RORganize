@@ -11,7 +11,7 @@ class ToolboxMenuItem
     @attribute_name = name
     @caption = name
     @glyph_name = 'puzzle'
-    @none_allowed = true
+    @none_allowed = false
     @all = []
     @currents = []
     @context = {}

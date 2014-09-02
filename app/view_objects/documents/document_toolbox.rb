@@ -30,6 +30,9 @@ class DocumentToolbox < Toolbox
       #Attribute name
       @menu[:versions].attribute_name = 'version_id'
       @menu[:categories].attribute_name = 'category_id'
+
+      @menu[:versions].none_allowed = true
+      @menu[:categories].none_allowed = true
       @extra_actions << h.link_to(h.glyph(h.t(:link_edit), 'pencil'), h.edit_document_path(@project.slug, @collection_ids[0])) if @collection.size == 1
     end
     if @user.allowed_to?('destroy','Documents',@project)
