@@ -55,6 +55,49 @@ class RorganizeController < ApplicationController
     end
   end
 
+  def task_list_action_markdown
+    element_types = {'Comment' => Comment, 'Issue' => Issue}
+    params.require(:is_check)
+    params.require(:element_type)
+    params.require(:element_id)
+    params.require(:check_index)
+    element_type = element_types[params[:element_type]]
+    element = element_type.find_by_id(params[:element_id]) if element_type
+    unless element.nil?
+      if params[:element_type].eql?('Comment') && (User.current.allowed_to?('edit_comment_not_owner', 'comments', @project) || element.user_id.eql?(User.current.id))
+        content = element.content
+
+      elsif params[:element_type].eql?('Issue') && (User.current.allowed_to?('edit_not_owner', 'issues', @project) || element.author.eql?(User.current))
+        content = element.description
+      else #User try to cheat.
+        content = nil
+        message = "Don't try to brain the master. You now you haven't the permission to perform this action!"
+        header = :failure
+      end
+      unless content.nil?
+        count = -1
+        content.gsub!(/- \[(\w|\s)\]/) do |task|
+          count += 1
+          if count == params[:check_index].to_i
+            params[:is_check].eql?('true') ? '- [x]' : '- [ ]'
+          else
+            task
+          end
+        end
+        if params[:element_type].eql?('Comment')
+          element.update_column(:content, content)
+        elsif params[:element_type].eql?('Issue')
+          element.update_column(:description, content)
+        end
+        message = t(:successful_update)
+        header = :success
+      end
+    end
+    respond_to do |format|
+      format.js { respond_to_js action: 'do_nothing', response_header: header, response_content: message}
+    end
+  end
+
   def about
     respond_to do |format|
       format.html

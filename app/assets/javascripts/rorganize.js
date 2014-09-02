@@ -58,6 +58,7 @@
         //bind info tag
         bind_info_tag();
         bind_commentable();
+        bind_task_list_click();
 
         //help overlay
         createOverlay("#hotkeys_overlay", 150);
@@ -876,7 +877,7 @@ function bind_info_tag() {
     });
 }
 
-function write_info(info){
+function write_info(info) {
     return "<span class='help'>" + info + "</span>";
 }
 
@@ -886,5 +887,29 @@ function bind_commentable() {
     });
     $('#new_comment_link').click(function (e) {
         $('#add_comment_form').show();
+    });
+}
+
+function bind_task_list_click() {
+    $('.task-list-item-checkbox').click(function (e) {
+        var el = $(this);
+        var context = $(this).parents('div.markdown_renderer');
+        var split_ary = context.attr('id').split('_');
+        var element_type = split_ary[0];
+        var element_id = split_ary[1];
+        var check_index = context.find('.task-list-item-checkbox').index(el);
+        var is_check = el.is(':checked');
+
+        $.ajax({
+           url: '/rorganize/task_list_action_markdown',
+            type: 'post',
+           dataType: 'script',
+            data :{
+                is_check: is_check,
+                element_type: element_type,
+                element_id: element_id,
+                check_index: check_index
+            }
+        });
     });
 }

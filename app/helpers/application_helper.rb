@@ -1,6 +1,7 @@
 require 'rorganize/redcarpet/rorganize_markdown_renderer'
 module ApplicationHelper
   include Rorganize::PermissionManager::PermissionHandler
+
   def sidebar_content?
     content_for?(:sidebar)
   end
@@ -160,7 +161,13 @@ module ApplicationHelper
       context.merge!({project_slug: @project.slug})
     end
     if rendered_element
-      context.merge!({element_type: rendered_element.class, element_id: rendered_element.id})
+      allow = false
+      if rendered_element.class.eql?(Issue)
+        allow = User.current.id.eql?(rendered_element.author_id) && User.current.allowed_to?('edit', 'issues', @project)|| User.current.allowed_to?('edit_not_owner', 'issues', @project)
+      elsif rendered_element.class.eql?(Comment)
+        allow = User.current.id.eql?(rendered_element.user_id) || User.current.allowed_to?('edit_comment_not_owner', 'comments', @project)
+      end
+      context.merge!({element_type: rendered_element.class, element_id: rendered_element.id, allow_task_list: allow})
     end
     renderer = @project ? RorganizeMarkdownRenderer.new({issue_link_renderer: true}, context) : RorganizeMarkdownRenderer.new({}, context)
     extensions = {quote: true, space_after_headers: true, autolink: true}
@@ -317,11 +324,10 @@ module ApplicationHelper
     versions.each do |v|
       key = v.closed? ? :Close : :Open
       version_info = "#{t(:info_version_start_date)} <b>#{v.start_date.strftime('%d %b. %Y')}</b> #{t(:text_to)} <b>#{v.target_date ? v.target_date.strftime('%d %b. %Y') : ' undetermined'}</b>"
-      hash[key] << [v.caption, v.id, {'data-target_date' => v.target_date, 'data-start_date'=> v.start_date, 'data-version_info' => version_info }]
+      hash[key] << [v.caption, v.id, {'data-target_date' => v.target_date, 'data-start_date' => v.start_date, 'data-version_info' => version_info}]
     end
     select_tag name, grouped_options_for_select(hash, select_key), {class: 'chzn-select-deselect  cbb-medium search', id: id, include_blank: true}
   end
-
 
 
   def contextual_with_breadcrumb(title, breadcrumb)

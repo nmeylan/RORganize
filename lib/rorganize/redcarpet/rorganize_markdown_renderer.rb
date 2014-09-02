@@ -19,6 +19,8 @@ class RorganizeMarkdownRenderer < Redcarpet::Render::HTML
     super(options)
     @options = options
     @context = context
+    allow_task_list = !@context[:allow_task_list].nil? && @context[:allow_task_list]
+    @task_list_edit = "#{allow_task_list ? 'enabled=""' : 'disabled=""'}"
   end
 
   def add_context(addition)
@@ -49,15 +51,12 @@ class RorganizeMarkdownRenderer < Redcarpet::Render::HTML
   end
 
   def task_list_renderer(document)
-    i = 0
     document.gsub(TASKS_LIST_REGEX) do |task_list|
       list = '<ul class="task_list">'
       list += task_list.gsub(COMPLETE_TASK_REGEX) do |complete_task|
-        i += 1
-        '<li><input type="checkbox" class="task-list-item-checkbox" data-index='+i.to_s+' disabled="" checked="">'+complete_task.gsub(TASK_REGEX, '')+'</li>'
+        '<li><input type="checkbox" class="task-list-item-checkbox" '+@task_list_edit +' checked="">'+complete_task.gsub(TASK_REGEX, '')+'</li>'
       end.gsub(EMPTY_TASK_REGEX) do |empty_task|
-        i += 1
-        '<li><input type="checkbox" class="task-list-item-checkbox" data-index='+i.to_s+' disabled="">'+empty_task.gsub(TASK_REGEX, '')+'</li>'
+        '<li><input type="checkbox" class="task-list-item-checkbox" '+@task_list_edit+'>'+empty_task.gsub(TASK_REGEX, '')+'</li>'
       end
       list += '</ul>'
       list
