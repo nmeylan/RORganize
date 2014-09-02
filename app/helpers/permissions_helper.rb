@@ -22,7 +22,7 @@ module PermissionsHelper
             }
             safe_concat content_tag :div, class: "content #{controller}", &Proc.new {
               permissions.collect do |permission|
-                safe_concat check_box_tag "[permissions][#{permission.name}]", permission.id, selected_permissions.include?(permission.id)
+                safe_concat check_box_tag "[permissions][#{permission.controller}_#{permission.action}]", permission.id, selected_permissions.include?(permission.id)
                 safe_concat content_tag :label, permission.edit_link
               end.join.html_safe
             }
