@@ -37,7 +37,8 @@ class RorganizeMarkdownRenderer < Redcarpet::Render::HTML
   end
 
   def postprocess(document)
-    document
+    id = "#{@context[:element_type]}_#{@context[:element_id]}" if @context[:element_id] && @context[:element_type]
+    "<div class='markdown_renderer' id='#{id}'>#{document}</div>"
   end
 
   def issue_link_renderer(document)

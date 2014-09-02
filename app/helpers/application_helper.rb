@@ -154,8 +154,15 @@ module ApplicationHelper
     end
   end
 
-  def markdown_to_html(text)
-    renderer = @project ? RorganizeMarkdownRenderer.new({issue_link_renderer: true}, {project_slug: @project.slug}) : RorganizeMarkdownRenderer.new
+  def markdown_to_html(text, rendered_element = nil)
+    context = {}
+    if @project
+      context.merge!({project_slug: @project.slug})
+    end
+    if rendered_element
+      context.merge!({element_type: rendered_element.class, element_id: rendered_element.id})
+    end
+    renderer = @project ? RorganizeMarkdownRenderer.new({issue_link_renderer: true}, context) : RorganizeMarkdownRenderer.new({}, context)
     extensions = {quote: true, space_after_headers: true, autolink: true}
     markdown = Redcarpet::Markdown.new(renderer, extensions)
     markdown.render(text).html_safe

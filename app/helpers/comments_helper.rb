@@ -36,7 +36,7 @@ module CommentsHelper
         }
       }
       safe_concat content_tag :div, class: css_class, &Proc.new {
-        markdown_to_html comment.content
+        markdown_to_html comment.content, comment
       }
     }
   end

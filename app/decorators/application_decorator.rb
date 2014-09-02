@@ -10,7 +10,7 @@ class ApplicationDecorator < Draper::Decorator
 
   def display_description
     if description?
-      h.markdown_to_html(model.description)
+      h.markdown_to_html(model.description, model)
     else
       '-'
     end
