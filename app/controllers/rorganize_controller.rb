@@ -64,9 +64,10 @@ class RorganizeController < ApplicationController
     element_type = element_types[params[:element_type]]
     element = element_type.find_by_id(params[:element_id]) if element_type
     unless element.nil?
-      if params[:element_type].eql?('Comment') && (User.current.allowed_to?('edit_comment_not_owner', 'comments', @project) || element.user_id.eql?(User.current.id))
+      project = Project.find_by_id(element.project_id)
+      if params[:element_type].eql?('Comment') && (User.current.allowed_to?('edit_comment_not_owner', 'comments', project) || element.user_id.eql?(User.current.id))
         content = element.content
-      elsif (params[:element_type].eql?('Issue') && (User.current.allowed_to?('edit_not_owner', 'issues', @project) || element.author.eql?(User.current))) || (params[:element_type].eql?('Document') && (User.current.allowed_to?('edit', 'documents', @project)))
+      elsif (params[:element_type].eql?('Issue') && (element.author.eql?(User.current) || User.current.allowed_to?('edit_not_owner', 'issues', project))) || (params[:element_type].eql?('Document') && (User.current.allowed_to?('edit', 'documents', project)))
         content = element.description
       else #User try to cheat.
         content = nil
