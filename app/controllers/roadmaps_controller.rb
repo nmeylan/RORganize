@@ -14,7 +14,7 @@ class RoadmapsController < ApplicationController
 
   #GET/project/:project_id/roadmaps
   def show
-    @versions = Version.where(project_id: @project_decorator.id).order(:position).decorate
+    @versions = @project_decorator.current_versions.order(:position).decorate
     @versions.to_a << Version.new(name: 'Unplanned').decorate
     respond_to do |format|
       format.html { render :action => 'index' }
