@@ -15,8 +15,8 @@ class RorganizeController < ApplicationController
         format.html { render :action => 'index' }
       else
         projects_decorator = User.current.owned_projects('starred').decorate(context: {allow_to_star: false})
-        overview_object_assigned = IssueOverviewHash.new(Issue.where(assigned_to_id: User.current.id).where('issues_statuses.is_closed = false').fetch_dependencies, {project: :assigned_to})
-        overview_object_submitted = IssueOverviewHash.new(Issue.where(author_id: User.current.id).where('issues_statuses.is_closed = false').fetch_dependencies, {project: :author})
+        overview_object_assigned = IssueOverviewHash.new(Issue.where(assigned_to_id: User.current.id).joins(:status).where('`issues_statuses`.is_closed = false').fetch_dependencies, {project: :assigned_to})
+        overview_object_submitted = IssueOverviewHash.new(Issue.where(author_id: User.current.id).joins(:status).where('`issues_statuses`.is_closed = false').fetch_dependencies, {project: :author})
         format.html { render action: 'index', locals: {projects_decorator: projects_decorator, overview_object_assigned: overview_object_assigned, overview_object_submitted: overview_object_submitted} }
       end
     end

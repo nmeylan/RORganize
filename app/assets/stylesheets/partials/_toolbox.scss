@@ -62,6 +62,8 @@ ul.toolbox, ul.toolbox ul {
 .submenu {
   padding-left: 6px;
   margin-left: 13px;
+  max-height: 500px;
+  overflow-y: auto;
 }
 
 .submenu .no-icon {

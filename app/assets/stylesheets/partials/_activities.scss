@@ -195,4 +195,11 @@
       left: 0%;
     }
   }
+  .activity.max{
+    text-align: center;
+    font-weight: bold;
+    padding: 10px;
+    border : solid 1px $default-border-color;
+    background-color: $default-table-tr-hover-background-color;
+  }
 }

@@ -17,19 +17,19 @@ class JournalDecorator < ApplicationDecorator
     type = self.journalizable_type
     if type.eql?('Issue') && !self.action_type.eql?(Journal::ACTION_DELETE)
       h.safe_concat h.content_tag :b, "#{self.issue.tracker.caption.downcase} ##{self.issue.id} "
-      h.link_to self.issue.caption, h.issue_path(self.project.slug, self.journalizable_id)
+      h.fast_issue_link(self.issue, self.project).html_safe
     else
       h.content_tag :b, "#{type.downcase} #{self.journalizable_identifier}"
     end
   end
 
   def project_link
-    h.link_to model.project.caption, h.overview_projects_path(model.project.slug)
+    h.fast_project_link(model.project)
   end
 
   def display_project_link(project)
     unless project
-      h.safe_concat h.content_tag :span, class: 'object_type', &Proc.new{
+      h.safe_concat h.content_tag :span, class: 'object_type', &Proc.new {
         h.safe_concat 'on '
         h.safe_concat project_link
       }

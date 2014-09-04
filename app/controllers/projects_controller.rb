@@ -135,7 +135,7 @@ class ProjectsController < ApplicationController
 
   def find_project
     id = action_name.eql?('show') ? params[:id] : params[:project_id]
-    @project_decorator = Project.eager_load(:attachments, members: [[user: :avatar], :role]).where(slug: id)[0].decorate
+    @project_decorator = Project.includes(:attachments, members: [:role,user: :avatar]).where(slug: id)[0].decorate
     @project = @project_decorator.model
   end
 

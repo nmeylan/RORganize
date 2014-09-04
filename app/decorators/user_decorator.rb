@@ -32,8 +32,8 @@ class UserDecorator < ApplicationDecorator
 
   def user_link(avatar = true)
     h.content_tag :span, class: 'avatar' do
-      h.safe_concat h.image_tag user.avatar.avatar.url(:very_small), {class: 'small_avatar'} if avatar && user.avatar
-      h.safe_concat h.link_to model.caption, h.view_profile_path(model.slug), {class: 'author_link'}
+      h.safe_concat h.image_tag model.avatar.avatar.url(:very_small), {class: 'small_avatar'} if avatar && model.avatar
+      h.safe_concat h.fast_profile_link(model)
     end
   end
 

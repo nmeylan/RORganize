@@ -20,7 +20,7 @@ class CommentDecorator < ApplicationDecorator
   end
 
   def project_link
-    h.link_to model.project.caption, h.overview_projects_path(model.project.slug)
+    h.fast_project_link(model.project)
   end
 
   def display_project_link(project)

@@ -250,7 +250,7 @@ class IssuesController < ApplicationController
   end
 
   def find_project
-    @project = Project.eager_load(:attachments, :versions, :categories, :trackers, members: :user).where(slug: params[:project_id])[0]
+    @project = Project.includes(:attachments, :versions, :categories, :trackers, members: :user).where(slug: params[:project_id])[0]
     gon.project_id = @project.slug
   rescue => e
     render_404

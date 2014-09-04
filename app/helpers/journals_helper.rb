@@ -43,8 +43,13 @@ module JournalsHelper
   def activities_render(activities, date, objects)
     i = 0
     objects.keys.each do |polymorphic_identifier|
-      act = activities.content_for(date, polymorphic_identifier)
-      safe_concat activity_render(act, act.at(0), i)
+      if i < 500
+        act = activities.content_for(date, polymorphic_identifier)
+        safe_concat activity_render(act, act[0], i)
+      else
+        safe_concat content_tag :div, 'latest 500 activities from this day were loaded.', {class: 'activity max'}
+        break
+      end
       i += 1
     end
   end
@@ -100,23 +105,26 @@ module JournalsHelper
   end
 
   def activity_detail_render(activities, nth)
-    first_activity = activities.at(0)
+    first_activity = activities[0]
     safe_concat content_tag :div, class: 'journal_details', &Proc.new {
       if first_activity.is_a?(Journal)
         safe_concat content_tag(:ul, (first_activity.details.collect { |detail| history_detail_render(detail, true) }).join.html_safe)
       end
     }
-    activities.delete_at(0)
-    if activities.size > 0
+    if activities.size - 1 > 0
       safe_concat link_to 'view more', '#', {class: 'toggle'}
       safe_concat content_tag :div, class: 'journal_details hide more', &Proc.new {
+        i = 0
         activities.each do |activity|
-          safe_concat content_tag :div, class: 'detail more', &Proc.new {
-            safe_concat content_tag :span, class: 'date', &Proc.new {
-              safe_concat activity.display_creation_at
+          unless i == 0
+            safe_concat content_tag :div, class: 'detail more', &Proc.new {
+              safe_concat content_tag :span, class: 'date', &Proc.new {
+                safe_concat activity.display_creation_at
+              }
+              safe_concat activity.render_details
             }
-            safe_concat activity.render_details
-          }
+          end
+          i += 1
         end
       }
     end
@@ -150,7 +158,7 @@ module JournalsHelper
     labels = {'Issue' => t(:label_activity_type_issue), 'Category' => t(:label_activity_type_category), 'Document' => t(:label_activity_type_document),
               'Member' => t(:label_activity_type_member), 'Version' => t(:label_activity_type_version), 'Wiki' => t(:label_activity_type_wiki),
               'WikiPage' => t(:label_activity_type_wiki_page)}
-    periods = {ONE_DAY: t(:label_activity_period_one_day), THREE_DAYS: t(:label_activity_period_three_days), ONE_WEEK: t(:label_activity_period_one_week), ONE_MONTH: t(:label_activity_period_one_month)}
+    periods = {ONE_DAY: t(:label_activity_period_one_day), THREE_DAYS: t(:label_activity_period_three_days), ONE_WEEK: t(:label_activity_period_one_week)}
     select_values = Hash[Journal::ACTIVITIES_PERIODS.keys.map { |period| [periods[period], period] }]
     project_id = @project_decorator ? @project_decorator.slug : nil
     form_tag url_for({action: 'activity_filter', project_id: project_id, user: user}), {id: 'activities_filter', remote: true} do

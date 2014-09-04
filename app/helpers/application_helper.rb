@@ -368,5 +368,21 @@ module ApplicationHelper
     end
   end
 
+  def fast_profile_link(user)
+    "<a href='/#{user.slug}' class='author_link'>#{user.caption}</a>"
+  end
+
+  def fast_avatar(user)
+
+  end
+
+  def fast_project_link(project)
+    "<a href='/projects/#{project.slug}/overview'>#{project.caption}</a>"
+  end
+
+  def fast_issue_link(issue, project)
+    "<a href='/projects/#{project.slug}/issues/#{issue.id}'>#{issue.caption}</a>"
+  end
+
 
 end

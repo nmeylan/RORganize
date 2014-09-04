@@ -152,7 +152,7 @@ class DocumentsController < ApplicationController
   end
 
   def find_project
-    @project = Project.eager_load(:attachments, :versions, :categories, :members).where(slug: params[:project_id])[0]
+    @project = Project.includes(:attachments, :versions, :categories, :members).where(slug: params[:project_id])[0]
     gon.project_id = @project.slug
   rescue => e
     render_404
