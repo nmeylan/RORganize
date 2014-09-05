@@ -3,7 +3,7 @@ class Project < ActiveRecord::Base
   include Rorganize::Attachable::AttachmentType
   #SLug
   extend FriendlyId
-  friendly_id :identifier, use: :slugged
+  friendly_id :name, use: :slugged
   #Constants
   JOURNALIZABLE_ITEMS = %w(Issue Category Member Document Version Wiki WikiPage)
   #Relations
@@ -21,7 +21,7 @@ class Project < ActiveRecord::Base
   after_update :save_attachments
   #Validators
   validates_associated :attachments
-  validates :name, :identifier, :presence => true, :uniqueness => true
+  validates :name, :presence => true, :uniqueness => true
   validates :name, :length => {
       :maximum => 255,
       :tokenizer => lambda { |str| str.scan(/\w+/) },
