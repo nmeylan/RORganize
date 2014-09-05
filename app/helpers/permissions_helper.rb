@@ -53,7 +53,7 @@ module PermissionsHelper
   end
 
   def permissions_table_row_render(permissions_hash, selected_permissions, group_name)
-    row_categories = {read: ['view', 'access', 'consult'], create: ['create', 'add', 'new'], update: ['edit', 'update', 'change'], delete: ['delete', 'destroy', 'remove']}
+    row_categories = {read: ['view', 'access', 'consult', 'use'], create: ['create', 'add', 'new'], update: ['edit', 'update', 'change', 'organize', 'manage'], delete: ['delete', 'destroy', 'remove']}
     permissions_hash.sort { |x, y| x <=> y }.each do |controller, permissions|
       if permissions.any?
         safe_concat content_tag :tr, {class: "body #{controller}"}, &Proc.new {
