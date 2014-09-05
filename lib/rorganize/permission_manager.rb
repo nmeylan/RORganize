@@ -90,14 +90,35 @@ module Rorganize
       end
     end
 
+    module PermissionListCreator
+      def load_controllers
+        controllers = Rails.application.routes.routes.collect { |route| route.defaults[:controller] }
+        controllers = controllers.uniq!.select { |controller_name| controller_name && !controller_name.match(/.*\/.*/) }
+        result_group = nil
+        controllers_hash = {project: [], administration: [], misc: []}
+        controllers.collect do |controller|
+          Rorganize::PermissionManager.controllers_groups.each do |group, ctrls|
+            if ctrls.include?(controller)
+              result_group = group
+              break
+            end
+          end
+          controllers_hash[result_group.nil? ? :misc : result_group] << controller.capitalize
+          result_group = nil
+        end
+        controllers_hash
+      end
+    end
+
     class << self
-      attr_reader :permissions, :anonymous_role, :non_member_role, :aliases
+      attr_reader :permissions, :anonymous_role, :non_member_role, :aliases, :controllers_groups
 
       def initialize
         @permissions = load_permissions
         @anonymous_role = Role.find_by_name('Anonymous')
         @non_member_role = Role.find_by_name('Non member')
         @aliases = {'update' => 'edit', 'create' => 'new', 'toolbox' => 'edit'}
+        @controllers_groups = {project: [], administration: [], misc: []}
       end
 
       def reload_permissions
@@ -122,6 +143,10 @@ module Rorganize
         role.permissions.each do |perm|
           @permissions[role_id.to_s] << {:action => perm.action, :controller => perm.controller.downcase}
         end
+      end
+
+      def set_controllers_groups(controllers_groups)
+        @controllers_groups = controllers_groups
       end
 
     end

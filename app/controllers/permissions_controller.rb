@@ -5,10 +5,11 @@
 
 class PermissionsController < ApplicationController
   include Rorganize::RichController
-  before_filter :check_permission, :except => [:update_permissions]
   include PermissionsHelper
   include Rorganize::PermissionManager::PermissionManagerHelper
+  include Rorganize::PermissionManager::PermissionListCreator
 
+  before_filter :check_permission, :except => [:update_permissions]
   before_filter { |c| c.menu_context :admin_menu }
   before_filter { |c| c.menu_item(params[:controller])}
   before_filter {|c| c.top_menu_item('administration')}
@@ -25,7 +26,7 @@ class PermissionsController < ApplicationController
   def new
     @permission_decorator = Permission.new.decorate
     respond_to do |format|
-      format.html {render :action => 'new', :locals =>{:controllers =>  load_controller_list}}
+      format.html {render :action => 'new', :locals =>{:controllers =>  load_controllers.values}}
     end
   end
 
@@ -51,7 +52,7 @@ class PermissionsController < ApplicationController
   def edit
     @permission_decorator = Permission.find_by_id(params[:id]).decorate
     respond_to do |format|
-      format.html {render :action => 'edit', :locals =>{:controllers => load_controller_list}}
+      format.html {render :action => 'edit', :locals =>{:controllers => load_controllers.values}}
     end
   end
 
@@ -66,7 +67,7 @@ class PermissionsController < ApplicationController
           :status => :created, :location => @permission_decorator}
       else
 
-        format.html  {render :action => 'edit', :locals =>{:controllers =>  load_controller_list}}
+        format.html  {render :action => 'edit', :locals =>{:controllers =>  load_controllers.values}}
         format.json  { render :json => @permission_decorator.errors,
           :status => :unprocessable_entity }
       end
@@ -85,7 +86,7 @@ class PermissionsController < ApplicationController
   end
   #Other methods
   def list
-    @permissions_decorator = Permission.select('*').decorate(context: {role_name: params[:role_name], controller_list: load_controller_list})
+    @permissions_decorator = Permission.select('*').decorate(context: {role_name: params[:role_name], controller_list: load_controllers})
     respond_to do |format|
       format.html {render :action => 'list'}
     end

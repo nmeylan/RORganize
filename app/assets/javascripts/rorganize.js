@@ -831,15 +831,35 @@ function bind_task_list_click() {
         var is_check = el.is(':checked');
 
         $.ajax({
-           url: '/rorganize/task_list_action_markdown',
+            url: '/rorganize/task_list_action_markdown',
             type: 'post',
-           dataType: 'script',
-            data :{
+            dataType: 'script',
+            data: {
                 is_check: is_check,
                 element_type: element_type,
                 element_id: element_id,
                 check_index: check_index
             }
         });
+    });
+}
+
+function bind_tab_nav(tab_id) {
+    var tabs = $('#' + tab_id);
+    var links = tabs.find('a');
+    var content_tabs = [];
+    links.each(function(){
+        content_tabs.push($('#'+$(this).data('tab_id')));
+    });
+    links.click(function (e) {
+        e.preventDefault();
+        var el = $(this);
+        var tab_id = el.data('tab_id');
+        for(var i = 0; i < content_tabs.length; i++){
+            content_tabs[i].hide();
+        }
+        links.removeClass('selected');
+        $('#' + tab_id).show();
+        el.addClass('selected');
     });
 }

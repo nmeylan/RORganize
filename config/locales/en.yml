@@ -100,6 +100,12 @@ en:
   label_issues_hotkeys: Issues hotkeys
   label_list_hotkeys: Lists hotkeys
   label_hotkeys_list: Hotkeys list
+  label_misc: Miscellaneous
+  label_read: Read
+  label_create: Create
+  label_update: Update
+  label_delete: Delete
+
 # LINK
   link_new_project: New project
   link_new_issue: New issue

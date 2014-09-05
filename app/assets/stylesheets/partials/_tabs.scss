@@ -2,21 +2,28 @@
 
 .tabnav {
   border-bottom: 1px solid #ddd;
-  background: #f7f7f7;
   padding: 6px 10px 0;
-  border: 1px solid #ddd;
   border-radius: 3px 3px 0 0;
 
 }
+.markItUpHeaderMenu.tabnav{
 
+  border: 1px solid #ddd;
+  background: #f7f7f7;
+}
 ul.tabnav-tabs{
   display: inline-block;
+  margin: 0px;
+  padding: 0px;
+  outline: none;
   li{
     display: inline-block;
     margin-bottom: -1px;
   }
 }
-
+a.tabnav-tab{
+  color: #000;
+}
 .tabnav-tab {
   display: inline-block;
   padding: 8px 12px 7px;

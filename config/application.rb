@@ -30,7 +30,7 @@ module RORganize
     config.time_zone = 'Paris'
 
     # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
-    # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
+    # config.i18n.load_path += Dir[Rails.root.join('profiles', 'locales', '*.{rb,yml}').to_s]
     # config.i18n.default_locale = :de
     config.action_view.field_error_proc = Proc.new { |html_tag, instance|
       "#{html_tag}".html_safe
@@ -58,6 +58,7 @@ module RORganize
     config.after_initialize do
       unless $0.end_with?('rake')
         require 'module_configuration'
+        require 'permissions_configuration'
       end
     end
   end

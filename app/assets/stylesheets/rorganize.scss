@@ -873,3 +873,34 @@ hotkeys_overlay
     text-align: center;
   }
 }
+
+/*
+ Permissions
+*/
+table.permissions_list{
+  width: 100%;
+  margin-bottom: 30px;
+  margin-top: 30px;
+  .controller{
+    font-weight: bold;
+  }
+  .permissions_list.header{
+    vertical-align: middle;
+    a.check_all{
+      margin-right: 10px;
+    }
+  }
+  .permissions_list.header.controller{
+    width: 10%;
+  }
+  .permissions_list.body{
+    vertical-align: top;
+  }
+  .permissions_list.body.spacer td{
+    height: 10px;
+  }
+  .permissions_list.body.spacer.border td{
+    height: 10px;
+    border-bottom: solid 1px $default-border-color;
+  }
+}

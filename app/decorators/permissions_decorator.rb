@@ -5,12 +5,15 @@ class PermissionsDecorator < ApplicationCollectionDecorator
   end
 
   def display_collection
-    controllers = context[:controller_list]
-    permission_hash = Hash.new { |h, k| h[k] = [] }
+    controllers_groups = context[:controller_list]
+    permission_hash = {}
     role = Role.eager_load(:permissions).where(name: context[:role_name].gsub('_', ' '))[0]
     selected_permissions = role.permissions.collect { |permission| permission.id }
-    controllers.each do |controller|
-      permission_hash[controller] = self.select { |permission| permission.controller.eql?(controller) }
+    controllers_groups.each do |group, controllers|
+      controllers.each do |controller|
+        permission_hash[group] ||= {}
+        permission_hash[group][controller] = self.select { |permission| permission.controller.eql?(controller) }
+      end
     end
     h.list(permission_hash, selected_permissions)
   end

@@ -2,7 +2,7 @@ class PermissionDecorator < ApplicationDecorator
   delegate_all
 
   def edit_link
-    h.link_to(h.conditional_glyph(model.caption, self.is_critical?, 'flame'), h.edit_permission_path(permission.id))
+    h.link_to(model.caption, h.edit_permission_path(permission.id))
   end
 
   def delete_link

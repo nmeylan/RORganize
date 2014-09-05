@@ -384,5 +384,15 @@ module ApplicationHelper
     "<a href='/projects/#{project.slug}/issues/#{issue.id}'>#{issue.caption}</a>"
   end
 
+  #id is the id of the tab
+  #array must contains hash with following keys
+  # :name, the name of the tabs
+  # :element, the tab content
+  def horizontal_tabs(id, array)
+    content_tag :div, {class: 'tabnav', id: id} do
+      content_tag :ul, array.collect{|el| content_tag :li, link_to(el[:element], '#', {class: "tabnav-tab #{array.first.eql?(el) ? 'selected' : ''}", 'data-tab_id' => el[:name]})}.join.html_safe,{class: 'tabnav-tabs'}
+    end
+  end
+
 
 end
