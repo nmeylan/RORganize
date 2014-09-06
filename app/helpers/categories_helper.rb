@@ -4,6 +4,9 @@
 # File: categories_helper.rb
 
 module CategoriesHelper
+
+  # Build a list of categories.
+  # @param [Array] collection of categories.
   def list(collection)
     content_tag :table, class: 'category list' do
       safe_concat content_tag :tr, class: 'header', &Proc.new {

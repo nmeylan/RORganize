@@ -1,6 +1,8 @@
 module ProjectsHelper
   include JournalsHelper
 
+  # Build a list of members group by their role in project.
+  # @param [Hash] members_hash  with following structure {role: members}.
   def members_list(members_hash)
     content_tag :div do
       members_hash.collect do |role, members|
@@ -12,7 +14,9 @@ module ProjectsHelper
     end
   end
 
-
+  # Build a list of projects.
+  # @param [Array] projects.
+  # @param [boolean] allow_to_star : if true user can star projects from the list, else the star button is hidden.
   def project_list(projects, allow_to_star)
     content_tag :ul, class: "project_list #{allow_to_star ? 'sortable' : '' }" do
       projects.collect do |project|
@@ -28,6 +32,8 @@ module ProjectsHelper
     end
   end
 
+  # Build a render for project stats.
+  # @param [Project] project.
   def project_stats(project)
     content_tag :ul, class: 'project_stats' do
       safe_concat content_tag :li, (content_tag :span, project.members_count, class: 'octicon octicon-organization')
@@ -36,6 +42,8 @@ module ProjectsHelper
     end
   end
 
+  # Build a render for the star project' button.
+  # @param [Project] project.
   def project_list_star_button(project)
     safe_concat content_tag :div, class: 'star_project', &Proc.new {
       button_tag &Proc.new {

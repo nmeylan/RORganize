@@ -4,7 +4,8 @@
 # File: versions_helper.rb
 
 module VersionsHelper
-
+  # Build a list of versions.
+  # @param [Array] collection of versions.
   def list(collection)
     content_tag :table, {class: 'version list'}, &Proc.new {
       safe_concat content_tag :tr, class: 'header', &Proc.new {
@@ -31,17 +32,22 @@ module VersionsHelper
     }
   end
 
+  # Build a list of version overview report.
+  # @param [Array] collection : array of versions.
+  # @param [Hash] collection_detail : hash with following structure {version_id: {closed_issues_count: 'value', opened_issues_count: 'value', percent: 'value'}}
   def versions_list_overview(collection, collection_detail)
     collection.collect do |version|
       version_overview(version, collection_detail[version.id][:closed_issues_count], collection_detail[version.id][:opened_issues_count], collection_detail[version.id][:percent])
     end.join.html_safe
   end
 
-
+  # Build a render for the project road map.
+  # @param [Array] collection : array of versions.
+  # @param [Object] collection_detail
+  # @param [Hash] collection_detail : hash with following structure {version_id: {closed_issues_count: 'value', opened_issues_count: 'value', percent: 'value'}}
   def draw_roadmap(collection, collection_detail)
     collection.collect do |version|
       content_tag :div, class: 'roadmap_version_block' do
-
         safe_concat version_overview(version, collection_detail[version.id][:closed_issues_count],
                                      collection_detail[version.id][:opened_issues_count], collection_detail[version.id][:percent])
         safe_concat version.display_description
@@ -63,6 +69,11 @@ module VersionsHelper
     end.join(content_tag :div, nil, class: 'separator').html_safe
   end
 
+  # Build a render for version overview report.
+  # @param [Version] version.
+  # @param [Numeric] closed_issues_count.
+  # @param [Numeric] opened_issues_count.
+  # @param [Numeric] percent.
   def version_overview(version, closed_issues_count, opened_issues_count, percent)
     content_tag :div, class: 'version_overview' do
       safe_concat content_tag :h1, version.name, id: "v-#{version.display_id}"

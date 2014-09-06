@@ -4,6 +4,8 @@
 # File: queries_helper.rb
 
 module QueriesHelper
+  # Build a list of queries.
+  # @param [Array] collection of queries.
   def query_list(collection)
     content_tag :table, class: 'query list' do
       safe_concat content_tag :tr, class: 'header', &Proc.new {

@@ -7,6 +7,8 @@ require 'documents/document_toolbox'
 module DocumentsHelper
   include CommentsHelper
 
+  # Build a list of documents.
+  # @param [Array] collection of documents.
   def list(collection)
     content_tag :table, {class: 'document list', 'data-link' => toolbox_documents_path(@project.slug)}, &Proc.new {
       safe_concat content_tag :tr, class: 'header', &Proc.new {
@@ -28,6 +30,7 @@ module DocumentsHelper
     }
   end
 
+  # Build a json filter form.
   def documents_generics_form_to_json
     form_hash = {}
     filter_content_hash = DocumentFilter.new(@project).content
@@ -42,13 +45,9 @@ module DocumentsHelper
     form_hash.to_json
   end
 
+  # Build a toolbox render for document toolbox
+  # @param [DocumentToolbox] documents_toolbox
   def document_toolbox(documents_toolbox)
     toolbox_tag(DocumentToolbox.new(documents_toolbox, @project, User.current))
-  end
-
-  def documents_filter_js_tag
-    content_for(:js) do
-      javascript_tag
-    end
   end
 end

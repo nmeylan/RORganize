@@ -4,6 +4,8 @@
 # File: users_helper.rb
 
 module UsersHelper
+  # Build a list of users.
+  # @param [Array] collection of users.
   def list(collection)
     content_tag :table, {class: 'user list'}, &Proc.new {
       safe_concat content_tag :tr, class: 'header', &Proc.new {
@@ -27,6 +29,8 @@ module UsersHelper
     }
   end
 
+  # Build a list of projects in which the given user is member.
+  # @param [User] user.
   def projects(user)
     content_tag :ul do
       user.members.collect do |member|

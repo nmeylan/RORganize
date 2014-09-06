@@ -4,6 +4,9 @@
 # File: issues_statuses_helper.rb
 
 module IssuesStatusesHelper
+
+  # Build a list of issues_statuses.
+  # @param [Array] collection of issues_statuses.
   def list(collection)
     content_tag :table, {class: 'issues_status list'}, &Proc.new {
       safe_concat content_tag :tr, class: 'header', &Proc.new {

@@ -4,6 +4,10 @@
 # File: comments_helper.rb
 
 module CommentsHelper
+  # Build a comments block(thread) render.
+  # @param [Array] collection of comments.
+  # @param [Comment] selected_comment : the selected comment.
+  # @param [Booelan] avatar : if true display user avatar, hide avatar otherwise.
   def comments_block(collection, selected_comment = nil, avatar = true)
     content_tag :div, id: 'comments_block' do
       collection.collect do |comment|
@@ -16,6 +20,10 @@ module CommentsHelper
     end
   end
 
+  # Build a single comment block render.
+  # @param [Comment] comment : the comment to render.
+  # @param [Object] selected_comment_id : id of the selected comment if there is.
+  # @param [Booelan] avatar : if true display user avatar, hide avatar otherwise.
   def comment_block_render(comment, selected_comment_id = nil, avatar = true)
     css_class = comment.id.eql?(selected_comment_id) ? 'comment_content selected' : 'comment_content'
     content_tag :div, {id: "comment_#{comment.id}", class: 'comment_block'}, &Proc.new {
@@ -41,24 +49,28 @@ module CommentsHelper
     }
   end
 
+  # Build comment creation form.
+  # @param [ActiveRecord::Base] model : model that belongs to the new comment.
   def post_comment_form(model)
     form_for model.new_comment, url: comments_path, html: {class: 'form', remote: true} do |f|
       safe_concat f.hidden_field :commentable_id, value: model.new_comment.commentable_id
       safe_concat f.hidden_field :commentable_type, value: model.new_comment.commentable_type
-
       safe_concat hidden_field_tag :project_id, model.project.slug
       comment_form_content(f)
     end
   end
 
+  # Build comment edition form.
+  # @param [Comment] model : the comment to edit.
   def put_comment_form(comment)
     form_for comment, html: {class: 'form', remote: true, method: :put} do |f|
-
       safe_concat hidden_field_tag :project_id, comment.project.slug
       comment_form_content(f)
     end
   end
 
+  # Build content for the forms.
+  # @param [Form] f : the form.
   def comment_form_content(f)
     safe_concat content_tag :p, &Proc.new {
       safe_concat f.label :content, &Proc.new {

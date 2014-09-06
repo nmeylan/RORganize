@@ -4,6 +4,8 @@
 # File: member_helper.rb
 
 module MembersHelper
+  # Build a list of members.
+  # @param [Array] collection of members.
   def list(collection, roles)
     content_tag :table, {class: 'member list'}, &Proc.new {
       safe_concat content_tag :tr, class: 'header', &Proc.new {

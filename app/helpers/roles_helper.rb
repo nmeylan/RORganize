@@ -4,6 +4,8 @@
 # File: roles_helper.rb
 
 module RolesHelper
+  # Build a list of roles.
+  # @param [Array] collection of roles.
   def list(collection)
     content_tag :table, class: 'role list' do
       safe_concat content_tag :tr, class: 'header', &Proc.new {

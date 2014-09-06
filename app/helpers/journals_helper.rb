@@ -4,6 +4,10 @@
 # File: journals_helper.rb
 
 module JournalsHelper
+  # Build a render for activities.
+  # @param [Activities] activities object.
+  # @param [Date] to : date range right border.(from..to)
+  # @param [Date] from : date range left border.
   def display_activities(activities, to, from)
     activities_range(to, from) +
         (content_tag :div, class: 'activities', &Proc.new {
@@ -23,6 +27,9 @@ module JournalsHelper
         })
   end
 
+  # Build a render of the date range of activities.
+  # @param [Date] to : date range right border.(from..to)
+  # @param [Date] from : date range left border.
   def activities_range(to, from)
     content_tag :div, {class: 'activities_range'}, &Proc.new {
       safe_concat t(:text_from).capitalize + ' '
@@ -33,13 +40,18 @@ module JournalsHelper
     }
   end
 
+  # Build a render of the activities date.
+  # @param [Date] date.
   def activities_date(date)
     content_tag :div, class: 'date_circle', &Proc.new {
       content_tag :div, content_tag(:p, date), class: 'inner_circle'
     }
   end
 
-  #Render all journals
+  # Build a render all journals.
+  # @param [Activities] activities.
+  # @param [Date] date.
+  # @param [Hash] objects a hash with this structure : {type_id: ['journalizable', 'journalizable', 'comment', 'journalizable']}
   def activities_render(activities, date, objects)
     i = 0
     objects.keys.each do |polymorphic_identifier|
@@ -54,7 +66,10 @@ module JournalsHelper
     end
   end
 
-  #Render one journalizable for same journalizable items. if two or more journals exists for one item the same day, they will be compact into one.
+  # Build a render for one journalizable for same journalizable items. if two or more journals exists for one item the same day, they will be compact into one.
+  # @param [Array] activities containing Journal or Comment.
+  # @param [Journal|Comment] activity : the activity to render.
+  # @param [Numeric] nth : the number of the activity to render for the same day.
   def activity_render(activities, activity, nth)
     content_tag :div, class: "activity #{nth % 2 == 0 ? 'odd' : 'even'}", &Proc.new {
       content_tag :p do
@@ -68,7 +83,9 @@ module JournalsHelper
     }
   end
 
-  #Render journalizable content
+  # Build a render for journalizable content.
+  # @param [Journal] journal.
+  # @param [Numeric] nth : the number of the activity to render for the same day.
   def journal_header_render(journal, nth)
     user = journal.display_author
     if nth % 2 == 0 #Render is depending on the parity
@@ -88,6 +105,9 @@ module JournalsHelper
     end
   end
 
+  # Build a render for journalizable content.
+  # @param [Comment] comment.
+  # @param [Numeric] nth : the number of the activity to render for the same day.
   def comment_header_render(comment, nth)
     if nth % 2 == 0 #Render is depending on the parity
       safe_concat content_tag :span, nil, class: "octicon octicon-comment activity_icon"
@@ -104,6 +124,9 @@ module JournalsHelper
     end
   end
 
+  # Build a render for activities detail.
+  # @param [Array] activities containing Journal or Comment.
+  # @param [Numeric] nth : the number of the activity to render for the same day.
   def activity_detail_render(activities, nth)
     first_activity = activities[0]
     safe_concat content_tag :div, class: 'journal_details', &Proc.new {
@@ -130,6 +153,8 @@ module JournalsHelper
     end
   end
 
+  # Build a render for journal detail.
+  # @param [JournalDetail] detail.
   def activity_history_detail_render(detail)
     if detail.old_value && (detail.value.nil? || detail.value.eql?(''))
       content_tag :li do
@@ -154,6 +179,12 @@ module JournalsHelper
     end
   end
 
+  # Build a render for the activities' sidebar.
+  # @param [String] types : class name of Journalizable items.
+  # @param [Array] selected_types : selected types.
+  # @param [String] period : a value included in (ONE_DAY, THREE_DAYS, ONE_WEEK).
+  # @param [Date] date : the selected date.
+  # @param [User] user : provide when the sidebar is used in profile panel.
   def sidebar_types_selection(types, selected_types, period, date, user = nil)
     labels = {'Issue' => t(:label_activity_type_issue), 'Category' => t(:label_activity_type_category), 'Document' => t(:label_activity_type_document),
               'Member' => t(:label_activity_type_member), 'Version' => t(:label_activity_type_version), 'Wiki' => t(:label_activity_type_wiki),

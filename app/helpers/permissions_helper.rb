@@ -5,11 +5,9 @@
 
 module PermissionsHelper
 
-  def critical_controllers(controller_name)
-    critical_controllers = %w(administration permissions roles settings trackers)
-    critical_controllers.include?(controller_name.downcase)
-  end
-
+  # Build a render of all permissions.
+  # @param [Hash] permissions_hash : hash with following structure {group: [controller_name, ..]}.
+  # @param [Array] selected_permissions : array of selected permissions' id.
   def list(permissions_hash, selected_permissions)
     form_tag({:action => 'update_permissions', :controller => 'permissions'}) do
       safe_concat content_tag :div, {id: 'project-tab'}, &Proc.new {
@@ -25,7 +23,11 @@ module PermissionsHelper
     end
   end
 
-  def permissions_table(permissions_hash, selected_permissions, group_name)
+  # Build a render of all permissions table.
+  # @param [Array] permissions_array : array of controllers name.
+  # @param [Array] selected_permissions : array of selected permissions' id.
+  # @param [Symbol] group_name : the name of controllers group.
+  def permissions_table(permissions_array, selected_permissions, group_name)
     content_tag :table, {class: 'permissions_list'} do
       safe_concat content_tag :tr, {class: 'header'}, &Proc.new {
         safe_concat content_tag :td, 'Controller', {class: 'permissions_list controller header'}
@@ -48,13 +50,17 @@ module PermissionsHelper
       }
       safe_concat permissions_table_row_spacer(true)
       safe_concat permissions_table_row_spacer
-      permissions_table_row_render(permissions_hash, selected_permissions, group_name)
+      permissions_table_row_render(permissions_array, selected_permissions, group_name)
     end
   end
 
-  def permissions_table_row_render(permissions_hash, selected_permissions, group_name)
+  # Build a render of a permissions' table row.
+  # @param [Array] permissions_array : array of controllers name.
+  # @param [Array] selected_permissions : array of selected permissions' id.
+  # @param [Symbol] group_name : the name of controllers group.
+  def permissions_table_row_render(permissions_array, selected_permissions, group_name)
     row_categories = {read: ['view', 'access', 'consult', 'use'], create: ['create', 'add', 'new'], update: ['edit', 'update', 'change', 'organize', 'manage'], delete: ['delete', 'destroy', 'remove']}
-    permissions_hash.sort { |x, y| x <=> y }.each do |controller, permissions|
+    permissions_array.sort { |x, y| x <=> y }.each do |controller, permissions|
       if permissions.any?
         safe_concat content_tag :tr, {class: "body #{controller}"}, &Proc.new {
           safe_concat content_tag :td, {class: 'permissions_list controller body'}, &Proc.new {
@@ -80,6 +86,8 @@ module PermissionsHelper
     end
   end
 
+  # Build an empty row for table.
+  # @param [Boolean] border : if false don't display a border, else display it.
   def permissions_table_row_spacer(border = false)
     content_tag :tr, {class: "permissions_list spacer body #{border ? 'border' : ''}"}, &Proc.new {
       safe_concat content_tag :td, nil

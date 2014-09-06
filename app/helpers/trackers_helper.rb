@@ -4,6 +4,8 @@
 # File: trackers_helper.rb
 
 module TrackersHelper
+  # Build a list of trackers.
+  # @param [Array] collection of trackers.
   def list(collection)
     content_tag :table, class: 'tracker list' do
       safe_concat content_tag :tr, class: 'header', &Proc.new {
@@ -19,6 +21,8 @@ module TrackersHelper
     end
   end
 
+  # @param [Array] collection : array of trackers.
+  # @param [Array] checked_ids : array of trackers id used by project.
   def project_tracker_list(collection, checked_ids)
     safe_concat content_tag :label, t(:link_trackers)
     collection.collect do |tracker|

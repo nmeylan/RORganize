@@ -4,7 +4,9 @@
 #File: wiki_pages_helper
 
 module WikiHelper
-  #Call with all parents page : parent_id must be nil
+  # Build a render of all wiki pages.
+  # Call with all parents page : parent_id must be nil
+  # @param [Array] pages : all wiki root pages (nil parent_id).
   def display_pages(pages)
     content_tag :div, id: 'wiki_pages' do
       content_tag :ul, {class: 'connectedSortable', id: 'pages_root'} do
@@ -20,7 +22,10 @@ module WikiHelper
     end
   end
 
-  #Can be call with a single parent page
+  # Build a render of all sub pages.
+  # Can be call with a single parent page
+  # @param [Numeric] parent_id : id of the parent page.
+  # @param [Array] pages : array of sub pages.
   def display_sub_pages(parent_id, pages)
     content_tag :li, {class: 'parent'}, &Proc.new {
       content_tag :ul, {class: 'connectedSortable', id: "parent_#{parent_id}"}, &Proc.new {

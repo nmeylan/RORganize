@@ -3,6 +3,7 @@ require 'issues/issue_toolbox'
 module IssuesHelper
   include CommentsHelper
 
+  # Build a json filter form.
   def issues_generics_form_to_json
     form_hash = {}
     filter_content_hash = IssueFilter.new(@project).content
@@ -24,36 +25,8 @@ module IssuesHelper
     form_hash.to_json
   end
 
-  def issues_activities_text_builder(journal, specified_project = true)
-    content_tag :p do
-      if journal.action_type.eql?('updated') || journal.action_type.eql?('created')
-        if journal.details.empty? && !journal.notes.nil? && !journal.notes.eql?('')
-          safe_concat content_tag :span, nil, {class: 'octicon octicon-comment'}
-          safe_concat "#{journal.user.name} #{t(:label_commented_lower_case)} "
-        else
-          safe_concat content_tag :span, nil, {class: 'octicon octicon-pencil'} if journal.action_type.eql?('updated')
-          safe_concat content_tag :span, nil, {class: 'octicon octicon-diff-added'} if journal.action_type.eql?('created')
-          safe_concat "#{journal.user.name} #{t(:label_updated_lower_case)} "
-        end
-        safe_concat content_tag :b, "#{journal.journalizable_type} "
-        safe_concat link_to(journal.journalizable_id, issue_path(journal.project.slug, journal.journalizable_id))
-        if journal.project_id && specified_project
-          safe_concat " #{t(:label_at)} "
-          safe_concat content_tag :b, link_to(journal.project.slug, overview_projects_path(journal.project.slug))
-        end
-      elsif journal.action_type.eql?('deleted')
-        safe_concat content_tag :span, nil, {class: 'octicon octicon-trashcan'}
-        safe_concat "##{journal.user.name} #{t(:label_deleted_lower_case)} "
-        safe_concat content_tag :b, "#{journal.journalizable_type} ##{journal.journalizable_id}"
-        if journal.project_id && specified_project
-          safe_concat "#{t(:label_at)} "
-          safe_concat content_tag :b, link_to(journal.project.slug, overview_projects_path(journal.project.slug))
-        end
-      end
-    end
-  end
-
-
+  # Build a list of issues.
+  # @param [Array] collection of issues.
   def list(collection)
     content_tag :table, {class: 'issue list', 'data-link' => toolbox_issues_path(@project.slug)}, &Proc.new {
       safe_concat content_tag :tr, class: 'header', &Proc.new {
@@ -110,10 +83,17 @@ module IssuesHelper
     }
   end
 
+  # Build a toolbox render for issue toolbox.
+  # @param [IssueToolbox] issues_toolbox
   def issue_toolbox(issues_toolbox)
     toolbox_tag(IssueToolbox.new(issues_toolbox, @project, User.current))
   end
 
+  # Build a render for issues overview report.
+  # @param [Array] groups : array of groups that contains issues.
+  # @param [String] title : title of the report. (e.g : Opened assigned issue, Closed issues)
+  # @param [String] group_name : name of the group (e.g: project)
+  # @param [String] group_class_name : css class for the group.
   def display_overview_groups(groups, title = nil, group_name = nil, group_class_name = nil)
     groups.collect do |group_hash|
       group_hash.collect do |k, v|
@@ -124,6 +104,12 @@ module IssuesHelper
     end.join.html_safe
   end
 
+  # Build a render for group of issues.
+  # @param [String] title : title of the report (e.g : Opened assigned issue : by project)
+  # @param [Array] group : the group of issues
+  # @param [Symbol] group_name : the symbol of the object attribute (e.g :assigned_to, :status)
+  # @param [Boolean] only_opened_issues : true display report only for opened issues else display report for all issues.
+  # @param [String] group_class_name : css class for the group.
   def display_overview_group_by(title, group, group_name, only_opened_issues = true, group_class_name = nil)
     class_name = group_class_name.nil? ? 'issues_overview_group' : group_class_name
     content_tag :div, class: class_name do
@@ -151,6 +137,10 @@ module IssuesHelper
     end
   end
 
+  # Build a row for the overview report.
+  # @param [Hash] element : see #IssueOverviewHash.
+  # @param [Symbol] group_name : the symbol of the object attribute (e.g :assigned_to, :status)
+  # @param [Boolean] only_opened_issues : true display report only for opened issues else display report for all issues.
   def display_overview_row(element, group_name, only_opened_issues)
     safe_concat content_tag :tr, class: 'issues_overview_group body', &Proc.new {
       if only_opened_issues
@@ -163,6 +153,11 @@ module IssuesHelper
     }
   end
 
+  # Build a link to issues list with given filter.
+  # @param [String] label of the link.
+  # @param [String] project_slug : the slug of the project.
+  # @param [Array] filter_list : list of filtered field(attribute).
+  # @param [Hash] filter : hash with following structure {attribute: {operator: 'operator', value: ['values']}}.
   def filter_link(label, project_slug, filter_list, filter)
     link_to label, issues_path(project_slug, {type: :filter, filters_list: filter_list, filter: filter})
   end

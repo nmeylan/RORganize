@@ -2,10 +2,13 @@ require 'rorganize/redcarpet/rorganize_markdown_renderer'
 module ApplicationHelper
   include Rorganize::PermissionManager::PermissionHandler
 
+  # Check if there is any content for :sidebar
   def sidebar_content?
     content_for?(:sidebar)
   end
 
+  # Dynamic page title depending on context (action / controller)
+  # @return [String] page title.
   def title_tag
     title = ''
     if @project && !@project.new_record?
@@ -28,14 +31,18 @@ module ApplicationHelper
   end
 
 
+  # @return [String] : div that clear left and right.
   def clear_both
     content_tag :div, nil, {class: 'clear-both'}
   end
 
+  # @param [String] text : to display when there are no data to display
+  # @return [String] : div block containing text
   def no_data(text = nil)
     content_tag :div, text ? text : t(:text_no_data), class: 'no-data'
   end
 
+  # Page render for http 404
   def render_404
     respond_to do |format|
       format.html { render :file => "#{Rails.root}/public/404.html.erb", :status => :not_found }
@@ -45,6 +52,7 @@ module ApplicationHelper
     end
   end
 
+  # Page render for http 403
   def render_403
     respond_to do |format|
       format.html { render :file => "#{Rails.root}/public/403.html.erb", :status => :forbidden }
@@ -54,6 +62,8 @@ module ApplicationHelper
     end
   end
 
+  # @param [Date] date : whose test for format validation
+  # @param [Object] format : of the date.
   def date_valid?(date, format='%Y-%m-%d')
     if date.eql?('') || date.nil?
       return true
@@ -66,7 +76,10 @@ module ApplicationHelper
     end
   end
 
-  #Define pagination for the given collection : session is the current selected per_page item, path is the path of the controller
+  #Define pagination for the given collection : session is the current selected per_page item, path is the path of the controller.
+  # @param [Enumerable] collection : the collection of items to display.
+  # @param [Session] session : the per_page argument for pagination.
+  # @param [String] path : to the controller to refresh the list when user change the per_page or current_page parameter.
   def paginate(collection, session, path)
     safe_concat will_paginate(collection, :renderer => 'RemoteLinkRenderer')
     content_tag :div, class: 'autocomplete-combobox nosearch per_page', &Proc.new {
@@ -75,10 +88,12 @@ module ApplicationHelper
     }
   end
 
-  #label : what is filtered (e.g : issues, documents)
-  #filtered_attributes : which attributes will be filtered (e.g : Document.filtered_attributes)
-  #submission_path : where the form must be send
-  #options are :
+  # Build a filter form for given criteria.
+  # @param [String] label : what is filtered (e.g : issues, documents).
+  # @param [Array] filtered_attributes : an array of filtered attribute @see Document.filtered_attributes.
+  # @param [String] submission_path : the path to controller when the filter form is submit.
+  # @param [Boolean] can_save : false when save button is hidden, true otherwise.
+  # @param [hash] save_button_options
   def filter_tag(label, filtered_attributes, submission_path, can_save = false, save_button_options = {})
     content_tag :fieldset, id: "#{label}_filter" do
       safe_concat content_tag :legend, link_to(glyph(t(:link_filter), 'chevron-right'), '#', {:class => 'icon-collapsed toggle', :id => "#{label}"})
@@ -101,6 +116,10 @@ module ApplicationHelper
     end
   end
 
+  # Build a save button for filter : based on user permissions (does user is allowed to create custom queries?)
+  # @param [Array] filtered_content : an array of previous submitted filter, it use because if nothing were filtered then whe don't display the button.
+  # @param [User] user : the current user.
+  # @param [Project] project : current project.
   def save_filter_button_tag(filter_content, user, project)
     if !filter_content.eql?('') && user.allowed_to?('new', 'Queries', project) && params[:query_id].nil?
       link_to t(:button_save), new_project_query_queries_path(project.slug, 'Issue'), {:remote => true}
@@ -109,15 +128,22 @@ module ApplicationHelper
     end
   end
 
+  # Build a header for the given title.
+  # @param [String] title.
   def box_header_tag(title)
     content_tag :div, content_tag(:h2, title), class: 'header'
   end
 
+  # Build a button that display an info to the user when he click on it.
+  # @param [String] info : text info.
+  # @param [hash] options : html_options.
   def info_tag(info, options = {})
     default_options = {class: 'octicon octicon-info', title: info}
     content_tag :span, nil, default_options.merge(options)
   end
 
+  # Build a toolbox render from a toolbox object.
+  # @param [Toolbox] toolbox : the toolbox object.
   def toolbox_tag(toolbox)
     form_tag toolbox.path, :remote => true, :id => 'toolbox_form', &Proc.new {
       safe_concat(toolbox.menu.values.collect do |menu_item|
@@ -149,12 +175,17 @@ module ApplicationHelper
     }
   end
 
+  # Build error message render, when a form is submitted with validation errors.
+  # @param [Array] object : all errors contains on an ActiveRecord object.
   def error_messages(object)
     if object.any?
       javascript_tag("error_explanation('#{content_tag :ul, object.collect { |error| content_tag :li, error }.join.html_safe}')")
     end
   end
 
+  # The markdown to html render.
+  # @param [String] text : to be transform into html.
+  # @param [ActiveRecord::Base] rendered_element : The object that contains the content to be render. It use to define a context and let user click on task lists.
   def markdown_to_html(text, rendered_element = nil)
     context = {}
     if @project
@@ -177,6 +208,10 @@ module ApplicationHelper
     markdown.render(text).html_safe
   end
 
+  # Build a sort link for table.
+  # @param [String] column.
+  # @param [String] title : if provide replace the default column name.
+  # @param [String] default_action : when link is clicked it will send an ajax query to the given default_action. (defaults 'index').
   def sortable(column, title = nil, default_action = nil)
     default_action ||= 'index'
     title ||= column.titleize
@@ -185,18 +220,31 @@ module ApplicationHelper
     link_to glyph(title, icon), {:sort => column, :direction => direction, :action => default_action}, {:remote => true}
   end
 
+  # Build a 32x32 glyph render.
+  # @param [String] body : content.
+  # @param [String] names : glyph names.
   def mega_glyph(body, *names)
     content_tag(:span, nil, :class => names.map { |name| "octicon-#{name.to_s.gsub('_', '-')}" }.push('mega-octicon')) + body
   end
 
+  # Build a 24x24 glyph render.
+  # @param [String] body : content.
+  # @param [String] names : glyph names.
   def medium_glyph(body, *names)
     content_tag(:span, nil, :class => names.map { |name| "octicon-#{name.to_s.gsub('_', '-')}" }.push('medium-octicon')) + body
   end
 
+  # Build a 16x16 glyph render.
+  # @param [String] body : content.
+  # @param [String] names : glyph names.
   def glyph(body, *names)
     content_tag(:span, nil, :class => names.map { |name| "octicon-#{name.to_s.gsub('_', '-')}" }.push('octicon')) + body
   end
 
+  # Build a 16x16 glyph render, if condition is true else return raw content.
+  # @param [String] body : content.
+  # @param [Boolean] bool : the condition.
+  # @param [String] names : glyph names.
   def conditional_glyph(body, bool, *names)
     if bool
       glyph(body, *names)
@@ -206,7 +254,8 @@ module ApplicationHelper
   end
 
 
-  #generic journalizable renderer
+  # Build a generic history for journalizable models.
+  # @param [History] history : object.
   def history_render(history) #If come from show action
     safe_concat content_tag :div, nil, class: 'separator'
     safe_concat content_tag :h2, t(:label_history)
@@ -221,6 +270,8 @@ module ApplicationHelper
     }
   end
 
+  # Build a history block for one Journal.
+  # @param [Journal] journal : to render.
   def history_block_render(journal)
     user = journal.display_author(false)
     content_tag :div, class: 'history_block' do
@@ -236,6 +287,10 @@ module ApplicationHelper
     end
   end
 
+  # Build a history detail block.
+  # @param [JournalDetail] detail to render.
+  # @param [Boolean] no_icon : if true don't display for the updated field, else display the icon. Rendered icons are depending of the object's updated field.
+  # for the list of icons @see Rorganize::ACTION_ICON.
   def history_detail_render(detail, no_icon = false)
     content_tag :li do
       icon = Rorganize::ACTION_ICON[detail.property_key.to_sym]
@@ -260,17 +315,23 @@ module ApplicationHelper
     end
   end
 
-  def add_attachments_link(name, object, type)
+  # Build an add attachments link
+  # @param [String] caption : link caption.
+  # @param [ActiveRecord::Base] object that belongs to this attachment.
+  # @param [Class] type : type of the object that belongs to this attachment.
+  def add_attachments_link(caption, object, type)
     content = escape_once(render :partial => 'shared/attachments', locals: {attachments: Attachment.new, object: object, type: type})
-    link_to name, '#', {:class => 'add_attachment_link', 'data-content' => content}
+    link_to caption, '#', {:class => 'add_attachment_link', 'data-content' => content}
   end
 
 
-#Filter type : (simple_select date text)
-# Field label
-# Field name
-# Options for radio button selection
-# Filter arguments (depending on type of filter)
+  # Build filter form input.
+  # @param [Symbol] filter_type : type of the filtered link. values are :simple_select, :text, :date.
+  # @param [String] label.
+  # @param [String] name of the input.
+  # @param [Array] options_for_radio : this array must contains one or more of these values
+  # ('all', 'contains', 'not_contains', 'equal', 'superior', 'inferior', 'different', 'today', 'open', 'close').
+  # @param [Object] args : for simple_select are  ('options_for_select', 'multiple', 'size').
   def generic_filter(filter_type, label, name, options_for_radio, *args)
     types = %w(:simple_select :date :text)
     label ||= name.capitalize
@@ -278,9 +339,9 @@ module ApplicationHelper
                when :simple_select then
                  generics_filter_simple_select(name, *args)
                when :date then
-                 generics_filter_date_field(name, *args)
+                 generics_filter_date_field(name)
                when :text then
-                 generics_filter_text_field(name, *args)
+                 generics_filter_text_field(name)
                else
                  raise Exception, "Filter with type : :#{filter_type}, doesn't exist! Allowed types are : #{types.join(', ')}"
              end
@@ -292,7 +353,11 @@ module ApplicationHelper
   end
 
 
-#For following filter: e.g: Assigned with 3 radio button (All, equal, different) and 1 combo
+  # For following filter: e.g: Assigned with 3 radio button (All, equal, different) and 1 combo
+  # @param [String] name : name of the input field.
+  # @param [Object] options_for_select : options for select.
+  # @param [Boolean] multiple : true multiple select enabled, disabled otherwise.
+  # @param [Object] size
   def generics_filter_simple_select(name, options_for_select, multiple = true, size = nil)
     size ||= 'cbb-large'
     content_tag :div, class: 'autocomplete-combobox nosearch no-padding_left no-height' do
@@ -300,17 +365,20 @@ module ApplicationHelper
     end
   end
 
-#For filters that require data from text field: e.g subject
+  # For filters that require data from text field: e.g subject.
+  # @param [String] name : name of the input field.
   def generics_filter_text_field(name)
     text_field_tag("filter[#{name}][value]", '', {:size => 80})
   end
 
-#For filters that require data from date field: e.g created_at
+  # For filters that require data from date field: e.g created_at.
+  # @param [String] name : name of the input field.
   def generics_filter_date_field(name)
     date_field_tag("filter[#{name}][value]", '', {:size => 6, :id => 'calendar_'+name, :class => 'calendar'})
   end
 
-#Filters' operator
+  # @param [String] name : name of the input field.
+  # @param [Array] ary : array of radio names.
   def generics_filter_radio_button(name, ary)
     content_tag :span do
       ary.each do |v|
@@ -320,6 +388,10 @@ module ApplicationHelper
     end
   end
 
+  # Build a select tag for versions.
+  # @param [String] id : id of the select_tag.
+  # @param [String] name : name of the select_tag.
+  # @param [String] select_key : selected item key.
   def select_tag_versions(id, name, select_key)
     versions = @project.versions
     hash = {Open: [], Close: []}
@@ -332,6 +404,9 @@ module ApplicationHelper
   end
 
 
+  # Build a breadcrumb on top of the page.
+  # @param [String] title : title to display.
+  # @param [String] breadcrumb : breadcrump to display.
   def contextual_with_breadcrumb(title, breadcrumb)
     content_for :contextual do
       safe_concat content_tag :h1, title
@@ -342,6 +417,8 @@ module ApplicationHelper
     end
   end
 
+  # Build a contextual div on top of the page. give a block to display some custom content.
+  # @param [String] title of the contextual.
   def contextual(title = nil)
     content_for :contextual do
       if title
@@ -355,12 +432,17 @@ module ApplicationHelper
     end
   end
 
+  # Build a breadcrumb div.
+  # @param [String] content : breadcrumb content.
   def breadcrumb(content)
     content_tag :div, class: 'breadcrumb' do
       content
     end
   end
 
+
+  # Build a dynamic progress bar for a given percentage.
+  # @param [Numeric] percent : percentage of progression.
   def progress_bar_tag(percent)
     content_tag :span, class: 'progress_bar' do
       safe_concat content_tag :span, "&nbsp".html_safe, {class: 'progress', style: "width:#{percent}%"}
@@ -368,18 +450,27 @@ module ApplicationHelper
     end
   end
 
+  # Build a link to user profile.
+  # Use this instead of link_to .., .._path due to performance issue. Indeed when we call link_to .. ; .. rails try check path validity and slow the application
+  # in case of big render.
+  # @param [User] user.
   def fast_profile_link(user)
     "<a href='/#{user.slug}' class='author_link'>#{user.caption}</a>"
   end
 
-  def fast_avatar(user)
-
-  end
-
+  # Build a link to project overview.
+  # Use this instead of link_to .., .._path due to performance issue. Indeed when we call link_to .. ; .. rails try check path validity and slow the application
+  # in case of big render.
+  # @param [Project] project.
   def fast_project_link(project)
     "<a href='/projects/#{project.slug}/overview'>#{project.caption}</a>"
   end
 
+  # Build a link to issue show action.
+  # Use this instead of link_to .., .._path due to performance issue. Indeed when we call link_to .. ; .. rails try check path validity and slow the application
+  # in case of big render.
+  # @param [Issue] issue.
+  # @param [Project] project.
   def fast_issue_link(issue, project)
     "<a href='/projects/#{project.slug}/issues/#{issue.id}'>#{issue.caption}</a>"
   end
@@ -388,9 +479,11 @@ module ApplicationHelper
   #array must contains hash with following keys
   # :name, the name of the tabs
   # :element, the tab content
-  def horizontal_tabs(id, array)
+  # @param [id] id of the tab.
+  # @param [Hash] hash must be (name: the name of the tab, element: tab content(text/glyph)).
+  def horizontal_tabs(id, hash)
     content_tag :div, {class: 'tabnav', id: id} do
-      content_tag :ul, array.collect{|el| content_tag :li, link_to(el[:element], '#', {class: "tabnav-tab #{array.first.eql?(el) ? 'selected' : ''}", 'data-tab_id' => el[:name]})}.join.html_safe,{class: 'tabnav-tabs'}
+      content_tag :ul, hash.collect { |el| content_tag :li, link_to(el[:element], '#', {class: "tabnav-tab #{hash.first.eql?(el) ? 'selected' : ''}", 'data-tab_id' => el[:name]}) }.join.html_safe, {class: 'tabnav-tabs'}
     end
   end
 
