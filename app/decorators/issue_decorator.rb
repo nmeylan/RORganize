@@ -81,4 +81,10 @@ class IssueDecorator < ApplicationDecorator
   def download_attachment_link(attachment)
     super(attachment)
   end
+
+  def checklist_progression
+    if model.has_task_list?
+      h.content_tag :span, " #{model.count_checked_tasks} of #{model.count_tasks}", {class: 'octicon octicon-checklist'}
+    end
+  end
 end

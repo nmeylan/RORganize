@@ -174,6 +174,17 @@ class Issue < ActiveRecord::Base
     !self.status.is_closed
   end
 
+  def has_task_list?
+    self.description && !self.description.empty? && self.description.scan(/- \[(\w|\s)\]/).count > 0
+  end
+  def count_checked_tasks
+    self.has_task_list? ? self.description.scan(/- \[x\]/).count : 0
+  end
+
+  def count_tasks
+    self.has_task_list? ? self.description.scan(/- \[(\w|\s)\]/).count : 0
+  end
+
   private
   def set_done_ratio
     unless self.status.nil?

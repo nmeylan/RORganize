@@ -55,10 +55,42 @@ class IssueTest < ActiveSupport::TestCase
     actual = Issue.filtered_attributes
     assert_equal expectation, actual
   end
-  test "attributes_formalized_names" do
+
+  test "Attributes_formalized_names" do
     expectation = ["Subject", "Description", "Created at", "Updated at", "Due date", "Done", "Author", "Assigned to", "Project", "Tracker", "Status", "Version", "Category", "Estimated time", "Start date", "Predecessor", "Checklist items count", "Attachments count"]
     actual = Issue.attributes_formalized_names
     assert_equal expectation, actual
+  end
+
+  test "Has task list" do
+    @issue.description = "- [ ] A
+- [ ] B
+- [ ] C"
+    assert_equal true, @issue.has_task_list?
+    @issue.description = "- A
+- [ B
+@ aaa"
+    assert_equal false, @issue.has_task_list?
+  end
+  test "Count checked tasks in task list" do
+    @issue.description = "- [ ] A
+- [ ] B
+- [ ] C"
+    assert_equal 0, @issue.count_checked_tasks
+
+    @issue.description = "- [ ] A
+- [ ] B
+- [x] C"
+    assert_equal 1, @issue.count_checked_tasks
+    @issue.description = "- [x] A
+- [ ] B
+bla bla
+- [x] C"
+    assert_equal 2, @issue.count_checked_tasks
+    assert_equal 3, @issue.count_tasks
+
+    @issue.description = " a"
+    assert_equal 0, @issue.count_tasks
   end
 
 end
