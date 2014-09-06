@@ -2,7 +2,7 @@ class JournalDecorator < ApplicationDecorator
   decorates_association :user
   delegate_all
 
-  #Give journalizable action type
+  # @return [String] type of the journal.
   def display_action_type
     if self.action_type.eql?(Journal::ACTION_CREATE)
       h.t(:label_created_lower_case)
@@ -13,6 +13,7 @@ class JournalDecorator < ApplicationDecorator
     end
   end
 
+  # Render the type of the journalized object.
   def display_object_type
     type = self.journalizable_type
     if type.eql?('Issue') && !self.action_type.eql?(Journal::ACTION_DELETE)
@@ -23,10 +24,13 @@ class JournalDecorator < ApplicationDecorator
     end
   end
 
+  # @return [String] link to model project.
   def project_link
     h.fast_project_link(model.project)
   end
 
+  # @param [Project] project.
+  # @return [String] link to project if not nil.
   def display_project_link(project)
     unless project
       h.safe_concat h.content_tag :span, class: 'object_type', &Proc.new {
@@ -36,10 +40,13 @@ class JournalDecorator < ApplicationDecorator
     end
   end
 
+  # @return [String] user avatar image.
   def user_avatar?
     model.user && model.user.avatar
   end
 
+  # Render the details of a journal.
+  # @param [Boolean] no_icon if true don't display icon. Otherwise display it.
   def render_details(no_icon = false)
     h.safe_concat h.content_tag :span, self.display_author, class: 'author'
     if model.action_type.eql?(Journal::ACTION_UPDATE) && model.details.to_a.any?
@@ -55,6 +62,7 @@ class JournalDecorator < ApplicationDecorator
     end
   end
 
+  # @return [String] the icon of the journal type.
   def display_action_type_icon
     if self.action_type.eql?(Journal::ACTION_CREATE)
       'octicon octicon-plus activity_icon'
@@ -65,6 +73,7 @@ class JournalDecorator < ApplicationDecorator
     end
   end
 
+  # @return [String] formatted date.
   def display_creation_at
     model.created_at.strftime("%I:%M%p")
   end
@@ -73,13 +82,14 @@ class JournalDecorator < ApplicationDecorator
     model.created_at
   end
 
+  # Render the a link to the user.
+  # @param [Boolean] avatar if true display avatar, else hide it.
   def display_author(avatar = true)
     self.user ? self.user.user_link(avatar) : h.t(:label_unknown)
   end
 
+  # Render the user avatar.
   def display_author_avatar
     user_avatar? ? h.image_tag(self.user.avatar.avatar.url(:thumb), {class: 'avatar'}) : ''
   end
-
-
 end

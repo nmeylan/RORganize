@@ -1,9 +1,11 @@
 class PermissionsDecorator < ApplicationCollectionDecorator
 
+  # see #ApplicationCollectionDecorator::new_link
   def new_link
     super(h.t(:link_new_permission), h.new_permission_path)
   end
 
+  # see #ApplicationCollectionDecorator::display_collection
   def display_collection
     controllers_groups = context[:controller_list]
     permission_hash = {}

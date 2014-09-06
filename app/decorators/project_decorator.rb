@@ -1,10 +1,12 @@
 class ProjectDecorator < ApplicationDecorator
   delegate_all
 
+  # see #ApplicationDecorator::delete_attachment_link.
   def delete_attachment_link(attachment)
     super(h.delete_attachment_settings_path(self.slug, attachment.id), self)
   end
 
+  # Render last activity info.
   def last_activity_info
     last_activity = model.journals[0]
     unless last_activity.nil?
@@ -12,6 +14,7 @@ class ProjectDecorator < ApplicationDecorator
     end
   end
 
+  # Render list of members grouped by their roles.
   def display_members
     members_hash = Hash.new { |h, k| h[k] = [] }
     self.members.each do |member|
@@ -20,6 +23,7 @@ class ProjectDecorator < ApplicationDecorator
     h.members_list(members_hash)
   end
 
+  # Render an overview report of running versions of the project.
   def display_version_overview
     versions = model.current_versions.decorate
     condition = %Q(`versions`.`id` IN (#{current_versions.collect { |version| version.id }.join(',')})) if versions.to_a.any?
@@ -44,6 +48,8 @@ class ProjectDecorator < ApplicationDecorator
     end
   end
 
+  # Draw roadmap of the projects.
+  # @param [Array] versions an array of running versions.
   def display_roadmap(versions)
     versions_overviews = Version.overviews(self.id)
     issues_array = Issue.eager_load(:status, :tracker, :version).where(project_id: self.id)

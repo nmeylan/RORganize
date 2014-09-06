@@ -1,4 +1,5 @@
 class QueriesDecorator < ApplicationCollectionDecorator
+  # see #ApplicationCollectionDecorator::display_collection
   def display_collection
     super do
       h.query_list(self)
