@@ -42,6 +42,6 @@ class WikiPage < ActiveRecord::Base
   end
   
   def project_id
-    return self.wiki.project_id
+    self.wiki.project_id
   end
 end

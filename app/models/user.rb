@@ -103,6 +103,9 @@ class User < ActiveRecord::Base
     end
   end
 
+  # @param [String] action : the action that user want to perform.
+  # @param [String] controller : the controller concern by the action.
+  # @param [Project] project the context of the action.
   def allowed_to?(action, controller, project = nil)
     return true if self.is_admin? && act_as_admin? && (project && module_enabled?(project.id.to_s, action, controller) || !project)
     if self.id.eql?(AnonymousUser::ANON_ID) #Concern unconnected users.

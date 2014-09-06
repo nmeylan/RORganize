@@ -80,20 +80,13 @@ class Issue < ActiveRecord::Base
     errors.add(:predecessor, 'not found')
   end
 
-
-  #Return an array with all attribute that can be filtered
+  # @return [Array] array with all attribute that can be filtered.
   def self.filtered_attributes
     filtered_attributes = []
     unused_attributes = ['Project', 'Description', 'Estimated time', 'Predecessor', 'Attachments count']
     attrs = Issue.attributes_formalized_names.delete_if { |attribute| unused_attributes.include?(attribute) }
     attrs.each { |attribute| filtered_attributes << [attribute, attribute.gsub(/\s/, '_').downcase] } # TODO use map
     return filtered_attributes
-  end
-
-  def self.display_issue_object(issue_id)
-    object = {}
-    object[:issue] = Issue.eager_load([:tracker, :version, :assigned_to, :category, :attachments, :parent, :author, status: :enumeration, comments: :author]).where(id: issue_id)[0]
-    object
   end
 
   def set_predecessor(predecessor_id)
@@ -103,7 +96,8 @@ class Issue < ActiveRecord::Base
     {:saved => saved, :journals => journals}
   end
 
-
+  # @param [Array] doc_ids : array containing all ids of issues that will be bulk edited.
+  # @param [Hash] value_param : hash of attribute: :new_value.
   def self.bulk_edit(issue_ids, value_param)
     issues_toolbox = Issue.where(:id => issue_ids).includes(:tracker, :version, :assigned_to, :category, :status => [:enumeration])
     #As form send all attributes, we drop all attributes except th filled one.
@@ -123,6 +117,7 @@ class Issue < ActiveRecord::Base
     end
   end
 
+  # @param [Hash] hash containing {issue_id: {attribute: new_value}}
   def self.gantt_edit(hash)
     errors = []
     Issue.transaction do
@@ -140,6 +135,7 @@ class Issue < ActiveRecord::Base
     end
   end
 
+  # @param [Array] doc_ids : array containing all ids of documents that will be bulk deleted.
   def self.bulk_delete(issue_ids)
     issues = Issue.where(:id => issue_ids)
     Issue.transaction do
@@ -177,6 +173,7 @@ class Issue < ActiveRecord::Base
     Rorganize::MagicFilter.generics_filter(hash, attributes)
   end
 
+  # @return [Boolean] true if issue has an opened status. false otherwise.
   def open?
     !self.status.is_closed
   end
@@ -191,6 +188,10 @@ class Issue < ActiveRecord::Base
     end
   end
 
+  # Set start date and due date based on version.
+  # Rule :
+  # Version.start_date <= Issue.start_date < Issue.due_date <= Version.due_date
+  # So when issue's version is changing we have to update issue start and due date to respect the previous rule.
   def set_start_and_due_date
     if self.version && !self.version.target_date.nil? && self.version_id_changed?
       self.due_date = self.version.target_date

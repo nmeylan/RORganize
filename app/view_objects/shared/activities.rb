@@ -4,8 +4,12 @@
 # File: activities.rb
 
 class Activities
+  # This object combine both Journals and Comments. It is used to display :
+  # #User activities
+  # #Project activities
   attr_reader :content
-
+  # @param [Enumerable] journals an active record collection of Journal.
+  # @param [Enumerable] comments an active record collection of Comment.
   def initialize(journals, comments = [])
     @journals = journals.decorate
     @comments = comments.decorate
@@ -13,11 +17,15 @@ class Activities
     crunch_data if @journals.any? || @comments.any?
   end
 
+  # @param [Date] date.
+  # @param [String] polymorphic_identifier the identifier of the object.
+  # @return [Array] activities of a specific object for a given date.
   def content_for(date, polymorphic_identifier)
     @content[date][polymorphic_identifier]
   end
 
   private
+  # This method build a hash with the following structure : {date: {type_id: [journalizable, journalizable, comment, journalizable]}}
   def crunch_data
     tmp_hash = Hash.new { |h, k| h[k] = {} }
     fruit_salad = []

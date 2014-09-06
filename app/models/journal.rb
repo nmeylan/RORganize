@@ -35,6 +35,9 @@ class Journal < ActiveRecord::Base
     query
   end
 
+  # @param [Hash] updated_attr : a hash containing all updated attributes with their old and new value (e.g {attr_name: [old_value, new_value]}).
+  # @param [Hash] journalizable_property : a hash with the following structure : {attr_name: 'Attribute name'}
+  # @param [Hash] foreign_key_value : a hash with following structure : {attr_name: foreign_key}
   def detail_insertion(updated_attrs, journalizable_property, foreign_key_value = {})
     #Remove attributes that won't be considarate in journalizable update
     updated_attrs.each do |attribute, old_new_value|

@@ -34,14 +34,14 @@ class Document < ActiveRecord::Base
     [:version_id, :category_id]
   end
 
-  #Attributes name without id
+  # @return [Array] all attributes except id.
   def self.attributes_formalized_names
     names = []
     Document.attribute_names.each { |attribute| !attribute.eql?('id') ? names << attribute.gsub(/_id/, '').gsub(/id/, '').gsub(/_/, ' ').capitalize : '' }
     return names
   end
 
-  #Return an array with all attribute that can be filtered
+  # @return [Array] with all attribute that can be filtered.
   def self.filtered_attributes
     filtered_attributes = []
     unused_attributes = %w(Project Description)
@@ -50,6 +50,8 @@ class Document < ActiveRecord::Base
     return filtered_attributes
   end
 
+  # @param [Array] doc_ids : array containing all ids of documents that will be bulk edited.
+  # @param [Hash] value_param : hash of attribute: :new_value.
   def self.bulk_edit(doc_ids, value_param)
     #Editing with toolbox
     documents_toolbox = Document.where(:id => doc_ids)
@@ -72,6 +74,7 @@ class Document < ActiveRecord::Base
     end
   end
 
+  # @param [Array] doc_ids : array containing all ids of documents that will be bulk deleted.
   def self.bulk_delete(doc_ids)
     documents_toolbox = Document.where(:id => doc_ids)
     # Can't call Document.delete_all because, after_delete and :depends destroy callback is not triggered :(

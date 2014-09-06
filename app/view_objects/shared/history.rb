@@ -4,6 +4,7 @@
 # File: history.rb
 
 class History
+  # This object combine both Journals and Comments. It is used to display object Journals and Comments in the chronological order.
   attr_reader :journals, :comments, :content
 
   def initialize(journals, comments = [])

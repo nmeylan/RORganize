@@ -11,7 +11,7 @@ class ToolboxMenuItem
     @attribute_name = name
     @caption = name
     @glyph_name = 'puzzle'
-    @none_allowed = false
+    @none_allowed = false #does attribute can be set to nil? (e.g Issue : assigned_to can be nil)
     @all = []
     @currents = []
     @context = {}

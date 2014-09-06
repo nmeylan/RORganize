@@ -5,7 +5,8 @@
 
 class IssueOverviewHash
   attr_reader :content, :attributes
-
+  # @param [Array] issues an array of issues.
+  # @param [Array|Hash] attributes an array of symbols. (e.g :status, :assigned_to ...) represents the issue attributes to use to generate the report.
   def initialize(issues, attributes)
     @issues = issues
     @issues_count = issues.to_a.size
@@ -14,6 +15,9 @@ class IssueOverviewHash
     build_object(@attributes)
   end
 
+  # @param [Array|Hash] args : should be issue attributes.
+  # Array : e.g [:status, :assigned_to].
+  # Hash : e.g {project: :assigned_to}. this is a specific case.
   def build_object(args = [])
     if args.is_a? Array
       args.each do |attr_name| #O(4*n)

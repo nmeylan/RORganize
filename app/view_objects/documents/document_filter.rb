@@ -15,6 +15,7 @@ class DocumentFilter
   #Can define 2 type of filters:
   #Radio : with values : all - equal/contains - different/not contains
   #Select : for attributes which only defined values : e.g : version => [1,2,3]
+  # @return [Hash] with the content requiered for the filter's construction
   def build_filter
     content_hash = {}
     content_hash['hash_for_select'] = {}

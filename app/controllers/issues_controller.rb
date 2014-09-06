@@ -27,10 +27,9 @@ class IssuesController < ApplicationController
   end
 
   def show
-    display_issue_object = Issue.display_issue_object(params[:id])
-    @issue_decorator = display_issue_object[:issue].decorate(context: {project: @project})
+    @issue_decorator = Issue.eager_load([:tracker, :version, :assigned_to, :category, :attachments, :parent, :author, status: :enumeration, comments: :author]).where(id: params[:id])[0].decorate(context: {project: @project})
     respond_to do |format|
-      format.html { render :action => 'show', :locals => {:history => History.new(Journal.issue_activities(@issue_decorator.id), @issue_decorator.comments), :done_ratio => display_issue_object[:done_ratio], :allowed_statuses => display_issue_object[:allowed_statuses]} }
+      format.html { render :action => 'show', :locals => {:history => History.new(Journal.issue_activities(@issue_decorator.id), @issue_decorator.comments)} }
     end
   end
 

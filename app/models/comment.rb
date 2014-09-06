@@ -32,10 +32,13 @@ class Comment < ActiveRecord::Base
     self.updated_at = Time.now
   end
 
+  # @return [Boolean] true if the comment was edited.
   def edited?
     self.created_at < self.updated_at
   end
 
+  # @param [User] user.
+  # @return [Boolean] true if given user is the author, false otherwise.
   def author?(user)
     self.author.id.eql? user.id
   end

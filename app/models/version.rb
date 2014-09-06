@@ -27,6 +27,9 @@ class Version < ActiveRecord::Base
     !self.target_date.nil? && (self.target_date && self.target_date < Date.today)
   end
 
+  # The rule for issue start and due date is :
+  # Version.start_date <= Issue.start_date < Issue.due_date <= Version.due_date
+  # So when issue's version is changing we have to update issue start and due date to respect the previous rule.
   def update_issues_due_date
     issues = Issue.where(:version_id => self.id)
     Issue.transaction do
@@ -64,6 +67,9 @@ class Version < ActiveRecord::Base
     Version.where("position > #{position} AND project_id = #{self.project_id}").update_all('position = position - 1')
   end
 
+  # @param [Numeric] project_id : the id of the project.
+  # @param [String] condition :the condition.
+  # @return [Array] an array with de the following structure : [[version_id, number of closed issues, number of opened issues, progress percent of issue], [..]...]
   def self.overviews(project_id, condition = nil)
     condition ||= '1 = 1'
     #This request return : [version_id, number of opened request, number of closed request, total progress percent]
