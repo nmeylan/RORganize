@@ -31,7 +31,7 @@ end
 group :development do
   gem 'bullet'
   gem 'active_record_query_trace'
-  gem 'spring'
+  # gem 'spring'
 end
 
 #RORganize plugins
