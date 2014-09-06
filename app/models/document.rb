@@ -36,18 +36,14 @@ class Document < ActiveRecord::Base
 
   # @return [Array] all attributes except id.
   def self.attributes_formalized_names
-    names = []
-    Document.attribute_names.each { |attribute| !attribute.eql?('id') ? names << attribute.gsub(/_id/, '').gsub(/id/, '').gsub(/_/, ' ').capitalize : '' }
-    return names
+    Document.attribute_names.map { |attribute| attribute.gsub(/_id/, '').gsub(/id/, '').gsub(/_/, ' ').capitalize unless attribute.eql?('id')}.compact
   end
 
   # @return [Array] with all attribute that can be filtered.
   def self.filtered_attributes
-    filtered_attributes = []
     unused_attributes = %w(Project Description)
     attrs = Document.attributes_formalized_names.delete_if { |attribute| unused_attributes.include?(attribute) }
-    attrs.each { |attribute| filtered_attributes << [attribute, attribute.gsub(/\s/, '_').downcase] }
-    return filtered_attributes
+    attrs.map { |attribute| [attribute, attribute.gsub(/\s/, '_').downcase] }
   end
 
   # @param [Array] doc_ids : array containing all ids of documents that will be bulk edited.

@@ -41,9 +41,7 @@ class Issue < ActiveRecord::Base
 
   #Attributes name without id
   def self.attributes_formalized_names
-    names = []
-    Issue.attribute_names.each { |attribute| !attribute.eql?('id') ? names << attribute.gsub(/_id/, '').gsub(/id/, '').gsub(/_/, ' ').capitalize : '' }
-    return names
+    Issue.attribute_names.map { |attribute| attribute.gsub(/_id/, '').gsub(/id/, '').gsub(/_/, ' ').capitalize unless attribute.eql?('id')}.compact
   end
 
   #  Custom validator
@@ -60,7 +58,7 @@ class Issue < ActiveRecord::Base
   def validate_due_date
     if (self.due_date && self.version && self.version.target_date) && self.due_date > self.version.target_date
       errors.add(:due_date, "must be inferior or equals to version due date : #{self.version.target_date.to_formatted_s(:db)}")
-    elsif (self.due_date && self.version) && self.due_date <= self.version.start_date
+    elsif (self.due_date && self.version && self.version.start_date) && self.due_date <= self.version.start_date
       errors.add(:due_date, "must be superior than version start date : #{self.version.start_date.to_formatted_s(:db)}")
     end
   end
@@ -82,11 +80,9 @@ class Issue < ActiveRecord::Base
 
   # @return [Array] array with all attribute that can be filtered.
   def self.filtered_attributes
-    filtered_attributes = []
     unused_attributes = ['Project', 'Description', 'Estimated time', 'Predecessor', 'Attachments count']
     attrs = Issue.attributes_formalized_names.delete_if { |attribute| unused_attributes.include?(attribute) }
-    attrs.each { |attribute| filtered_attributes << [attribute, attribute.gsub(/\s/, '_').downcase] } # TODO use map
-    return filtered_attributes
+    attrs.map { |attribute| [attribute, attribute.gsub(/\s/, '_').downcase] }
   end
 
   def set_predecessor(predecessor_id)
