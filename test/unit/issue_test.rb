@@ -52,16 +52,12 @@ class IssueTest < ActiveSupport::TestCase
 
   test "Filtered attributes" do
     expectation = [["Subject", "subject"], ["Created at", "created_at"], ["Updated at", "updated_at"], ["Due date", "due_date"], ["Done", "done"], ["Author", "author"], ["Assigned to", "assigned_to"], ["Tracker", "tracker"], ["Status", "status"], ["Version", "version"], ["Category", "category"], ["Start date", "start_date"], ["Checklist items count", "checklist_items_count"]]
-
     actual = Issue.filtered_attributes
-    p actual
     assert_equal expectation, actual
   end
   test "attributes_formalized_names" do
     expectation = ["Subject", "Description", "Created at", "Updated at", "Due date", "Done", "Author", "Assigned to", "Project", "Tracker", "Status", "Version", "Category", "Estimated time", "Start date", "Predecessor", "Checklist items count", "Attachments count"]
-
     actual = Issue.attributes_formalized_names
-    p actual
     assert_equal expectation, actual
   end
 
