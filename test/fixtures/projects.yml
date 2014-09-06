@@ -13,7 +13,7 @@ projects_001:
     role’s can be customized with differents permissions)\r\n* Time tracking (look
     where you waste your time)\r\n* Repository integration \r\n* Activities notifications\r\n*
     Internal chat\r\n* Personnal permission\r\n* And more …"
-  identifier: RORganize
+  
   created_at: 2012-07-01 14:25:02.000000000 Z
   updated_at: 2014-01-18 05:27:26.000000000 Z
   created_by: 
@@ -37,7 +37,7 @@ projects_002:
     la capture en un minimum de coups. \r\n\r\nh1. Les terrains\r\n\r\n* Grilles 8
     * 8 et 9 * 20\r\n* Grilles toriques 8 * 8 et 9 * 20\r\n* Hypercube de degré 3\r\n*
     Hypercube de degré 4"
-  identifier: PursuitEvasion
+  
   created_at: 2012-12-20 14:37:56.000000000 Z
   updated_at: 2013-07-04 15:06:15.000000000 Z
   created_by: 
@@ -53,7 +53,7 @@ projects_003:
     web.\r\n\r\nPermet de faciliter : \r\n* La gestion des services et processus\r\n*
     L'accès aux la base de données\r\n* La migration des applications rails\r\n* l'exécution
     de scripts\r\n* La création/suppression de dépots svn\r\n* La gestion des utilisateurs\r\n\r\n"
-  identifier: SysAdmin Interface
+  
   created_at: 2013-02-24 20:07:52.000000000 Z
   updated_at: 2013-07-04 15:06:15.000000000 Z
   created_by: 1
@@ -70,7 +70,7 @@ projects_004:
     à l’heure actuelle, le plus connu de tous les automates cellulaires.\r\nMalgré
     des règles très simples, le jeu de la vie permet le développement de motifs extrêmement
     complexes."
-  identifier: JDV
+  
   created_at: 2013-03-26 14:48:46.000000000 Z
   updated_at: 2013-07-04 15:06:15.000000000 Z
   created_by: 1
