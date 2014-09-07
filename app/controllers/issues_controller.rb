@@ -5,7 +5,7 @@
 require 'shared/history'
 require 'issues/issue_overview_hash'
 class IssuesController < ApplicationController
-  before_filter { |c| c.add_action_alias= {'overview' => 'index'}}
+  before_filter { |c| c.add_action_alias= {'overview' => 'index', 'apply_custom_query' => 'index'}}
   before_filter :check_permission, :except => [:toolbox, :download_attachment, :start_today]
   before_filter :check_not_owner_permission, :only => [:edit, :update, :destroy]
   before_filter { |c| c.menu_context :project_menu }

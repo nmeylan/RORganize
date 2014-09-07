@@ -4,10 +4,10 @@
 # File: queries_controller.rb
 
 class QueriesController < ApplicationController
-  before_filter {|c| c.add_action_alias = {'new_project_query' => 'new'}}
+  before_filter { |c| c.add_action_alias = {'new_project_query' => 'new'} }
   before_filter :find_project, only: [:create]
-  before_filter :check_permission
-  before_filter :check_query_permission, :only => [:show, :edit, :destroy, :update]
+  before_filter :check_permission, except: [:edit_query_filter]
+  before_filter :check_query_permission, :only => [:show, :edit, :destroy, :update, :edit_query_filter]
   before_filter { |c| c.top_menu_item('administration') }
 
   def index
@@ -39,7 +39,8 @@ class QueriesController < ApplicationController
       format.js do
         if success
           case @query.object_type
-            when 'Issue' then js_redirect_to(apply_custom_query_issues_path(@query.project.slug, @query.slug))
+            when 'Issue' then
+              js_redirect_to(apply_custom_query_issues_path(@query.project.slug, @query.slug))
           end
         else
           respond_to_js :action => 'new_project_query', :locals => {:new => false, :success => success}, :response_header => :failure, :response_content => @query.errors.full_messages
@@ -110,7 +111,7 @@ class QueriesController < ApplicationController
   end
 
   def check_query_permission
-    @query = Query.find_by_id(params[:id])
+    @query = params[:id] ? Query.find_by_id(params[:id]) : Query.find_by_slug(params[:query_id])
     if (@query.is_public && !User.current.allowed_to?('public_queries', 'Queries', Project.find_by_slug(params[:project_id]))) ||
         (!@query.is_public && !@query.author_id.eql?(User.current.id))
       render_403
