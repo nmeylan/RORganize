@@ -37,7 +37,7 @@ module Rorganize
       Journal.create(:user_id => User.current.id,
                      :journalizable_id => self.id,
                      :journalizable_type => self.class.to_s,
-                     :journalizable_identifier => self.caption,
+                     :journalizable_identifier => self.caption[0..127],
                      :notes => '',
                      :action_type => Journal::ACTION_CREATE,
                      :project_id => p_id)
@@ -55,7 +55,7 @@ module Rorganize
         journal = Journal.create(:user_id => User.current.id,
                                  :journalizable_id => self.id,
                                  :journalizable_type => self.class.to_s,
-                                 :journalizable_identifier => self.caption,
+                                 :journalizable_identifier => self.caption[0..127],
                                  :notes => notes,
                                  :action_type => Journal::ACTION_UPDATE,
                                  :project_id => p_id)
@@ -68,7 +68,7 @@ module Rorganize
       Journal.create(:user_id => User.current.id,
                      :journalizable_id => self.id,
                      :journalizable_type => self.class.to_s,
-                     :journalizable_identifier => self.caption,
+                     :journalizable_identifier => self.caption[0..127],
                      :notes => '',
                      :action_type => Journal::ACTION_DELETE,
                      :project_id => p_id)
