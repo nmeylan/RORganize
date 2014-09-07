@@ -4,7 +4,7 @@
 # File: queries_controller.rb
 
 class QueriesController < ApplicationController
-  before_filter {|c| c.add_action_alias = {new_project_query: :public_queries}}
+  before_filter {|c| c.add_action_alias = {'new_project_query' => 'new'}}
   before_filter :find_project, only: [:create]
   before_filter :check_permission
   before_filter :check_query_permission, :only => [:show, :edit, :destroy, :update]

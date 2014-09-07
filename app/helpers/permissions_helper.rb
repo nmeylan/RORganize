@@ -59,7 +59,7 @@ module PermissionsHelper
   # @param [Array] selected_permissions : array of selected permissions' id.
   # @param [Symbol] group_name : the name of controllers group.
   def permissions_table_row_render(permissions_array, selected_permissions, group_name)
-    row_categories = {read: ['view', 'access', 'consult', 'use'], create: ['create', 'add', 'new'], update: ['edit', 'update', 'change', 'organize', 'manage'], delete: ['delete', 'destroy', 'remove']}
+    row_categories = {read: ['view', 'access', 'consult', 'use'], create: ['create', 'add', 'new'], update: ['edit', 'update', 'change', 'organize', 'manage', 'archive'], delete: ['delete', 'destroy', 'remove']}
     permissions_array.sort { |x, y| x <=> y }.each do |controller, permissions|
       if permissions.any?
         safe_concat content_tag :tr, {class: "body #{controller}"}, &Proc.new {
