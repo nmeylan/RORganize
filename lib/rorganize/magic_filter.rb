@@ -6,6 +6,7 @@
 module Rorganize
   module MagicFilter
     class << self
+      include ActiveRecord::ConnectionAdapters::Quoting
       #Filter method
       def generics_filter(hash, attr)
         query_str = ''
@@ -42,6 +43,7 @@ module Rorganize
             if v['value'].size > 1 #if ary contains more than 1 value
               inc_condition_items += 1
               v['value'].each do |value|
+                value = quote(value)
                 inc_condition_item_ary += 1
                 #If it's  the first item from the ary we add (.
                 #If it's the last item from the ary we don't put a link and we add ).
@@ -66,18 +68,17 @@ module Rorganize
                 operator = operators[v['operator']]
               end
               inc_condition_items += 1
-              query_str += "(#{attributes[k]} #{operator} #{v['value'].first} "
+              query_str += "(#{attributes[k]} #{operator} #{quote(v['value'].first)} "
               query_str += "#{'OR '+attributes[k].to_s+' IS NULL' if v['operator'].eql?('different') && !v['value'].first.eql?('NULL')}) "
               query_str += "#{'AND' if inc_condition_items != hash.size} "
             end
           else #if attribute has an uniq value
             inc_condition_items += 1
-            query_str += "#{attributes[k]} #{operators[v['operator']]} '%#{v['value']}%' #{'AND' if inc_condition_items != hash.size} "
+            query_str += "#{attributes[k]} #{operators[v['operator']]} \"%#{v['value']}%\" #{'AND' if inc_condition_items != hash.size} "
           end
           inc_condition_item_ary = 0
         end
         query_str += "#{'AND' if hash.size != 0}"
-        return query_str
       end
     end
   end

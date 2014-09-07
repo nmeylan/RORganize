@@ -20,7 +20,7 @@ class MagicFilterTest < ActiveSupport::TestCase
   def test_subject_filter
     hash = {'subject' => {'operator' => 'contains', 'value' => 'me'}}
     hash1 = {'subject' => {'operator' => 'contains', 'value' => 'Issue'}}
-    hash2 = {'subject' => {'operator' => 'not contains', 'value' => 'p'}}
+    hash2 = {'subject' => {'operator' => 'not_contains', 'value' => 'p'}}
     cases = [hash, hash1, hash2]
     expectations = [SUBJECT_CONTAINS_ME, SUBJECT_CONTAINS_ISSUE, SUBJECT_NOT_CONTAINS_P]
     text = ['When contains me', 'When subject contains Issue', 'When subject not contains any p']
