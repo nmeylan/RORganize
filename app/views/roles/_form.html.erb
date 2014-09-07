@@ -9,7 +9,7 @@
 <div class="box">
   <p>
     <label for="role_name"><%=t(:field_name)%><span class ="required"> *</span></label>
-    <%= f.text_field :name, :size => 80 %>
+    <%= f.text_field :name, :size => 80, maxlength: 255 %>
   </p>
   <p>
   <p>

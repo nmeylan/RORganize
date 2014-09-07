@@ -10,7 +10,7 @@ class Role < ActiveRecord::Base
   has_and_belongs_to_many :issues_statuses, -> {includes([:enumeration])}, :class_name => 'IssuesStatus'
   has_and_belongs_to_many :permissions, :class_name => 'Permission'
 
-  validates :name, :presence => true, :uniqueness => true
+  validates :name, :presence => true, :uniqueness => true, :length => 2..255
 
   def self.permit_attributes
     [:name]

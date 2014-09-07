@@ -12,7 +12,7 @@ class Query < ActiveRecord::Base
   belongs_to :user, :foreign_key => :author_id
   #Validators
   validates :name, :stringify_query, :stringify_params, :object_type, :presence => true
-  validates :name, :uniqueness => true
+  validates :name, :uniqueness => true, length: 2..50
   #Scopes
   scope :available_for, ->(user, project_id) { where('(project_id = ? AND (author_id = ? OR is_public = ?)) OR (is_for_all = ? AND (author_id = ? OR is_public = ?)) AND object_type = ?', project_id, user.id, true, true, user.id, true, Issue.to_s) }
   scope :created_by, ->(user) { where(['author_id = ? AND is_public = false', user.id])}

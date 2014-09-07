@@ -21,4 +21,5 @@ class QueryDecorator < ApplicationDecorator
   def author
     model.user.caption
   end
+
 end

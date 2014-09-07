@@ -41,6 +41,10 @@ table.list {
   color: $default-smooth-color;
 }
 
+.list td{
+  word-break: break-all;
+}
+
 .list tr.close {
   text-decoration: line-through;
 }

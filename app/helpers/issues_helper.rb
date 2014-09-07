@@ -47,8 +47,8 @@ module IssuesHelper
         content_tag :tr, class: "has_context_menu odd_even issue_tr #{'close' if issue.status.is_closed?}" do
           safe_concat content_tag :td, check_box_tag("issue-#{issue.id.to_s}", issue.id)
           safe_concat content_tag :td, issue.id, class: 'list_center id'
-          safe_concat content_tag :td, issue.tracker, class: 'list_center tracker'
-          safe_concat content_tag :td, link_to(issue.caption, issue_path(@project.slug, issue.id)), {class: 'name', id: issue.id}
+          safe_concat content_tag :td, issue.tracker_str, class: 'list_center tracker'
+          safe_concat content_tag :td, link_to(issue.resized_caption(35), issue_path(@project.slug, issue.id)), {class: 'name', id: issue.id}
           safe_concat content_tag :td, issue.assigned_to, class: 'list_center assigned_to'
           safe_concat content_tag :td, issue.status.caption, class: 'list_center status'
           safe_concat content_tag :td, issue.category, class: 'list_center category'

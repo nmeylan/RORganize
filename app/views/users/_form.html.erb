@@ -9,15 +9,15 @@
 <div class="box">
   <p>
     <label for="user_login"><%=t(:field_login)%><span class ="required"> *</span></label>
-    <%= f.text_field :login, :size => 50 %>
+    <%= f.text_field :login, :size => 50, maxlength: 50 %>
   </p>
   <p>
     <label for="user_name"><%=t(:field_name)%><span class ="required"> *</span></label>
-    <%= f.text_field :name, :size => 50 %>
+    <%= f.text_field :name, :size => 50, maxlength: 50 %>
   </p>
   <p>
     <label for="user_email"><%=t(:field_email)%><span class ="required"> *</span></label>
-    <%= f.text_field :email, :size => 50 %>
+    <%= f.text_field :email, :size => 50, maxlength: 255 %>
   </p>
   <% unless @user.id %>
     <p>

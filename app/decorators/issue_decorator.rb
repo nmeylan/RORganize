@@ -7,8 +7,8 @@ class IssueDecorator < ApplicationDecorator
   end
 
   # @return [String] tracker name.
-  def tracker
-    model.tracker ? model.tracker.caption : '-'
+  def tracker_str
+    model.tracker ? resize_text(model.tracker.caption, 15) : '-'
   end
 
   # @return [String] version name.

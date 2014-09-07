@@ -15,7 +15,7 @@ class Document < ActiveRecord::Base
   belongs_to :category
   belongs_to :project
   #Validators
-  validates :name, :presence => true
+  validates :name, :presence => true, :length => 2..255
   #triggers
   after_update :save_attachments
   #Scopes

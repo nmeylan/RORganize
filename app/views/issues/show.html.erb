@@ -5,7 +5,7 @@
 # File: show.html.erb
 %>
 
-<%= contextual (@issue_decorator.tracker)+' : #'+@issue_decorator.id.to_s do %>
+<%= contextual (@issue_decorator.tracker_str)+' : #'+@issue_decorator.id.to_s do %>
     <%= @issue_decorator.new_link %>
     <%= @issue_decorator.edit_link %>
     <%= @issue_decorator.start_today_link %>

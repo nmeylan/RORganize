@@ -220,7 +220,7 @@ class IssuesController < ApplicationController
 
   #Find custom queries
   def find_custom_queries
-    @custom_queries = Query.available_for(User.current, @project.id)
+    @custom_queries_decorator = Query.available_for(User.current, @project.id).decorate
   end
 
   def load_issues

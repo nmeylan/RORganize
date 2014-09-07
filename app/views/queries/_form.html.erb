@@ -9,7 +9,7 @@
   <div class="box">
     <p style="padding-right: 3px;">
       <label for="query_name"><%=t(:field_name)%><span class ="required"> *</span></label>
-      <%= f.text_field :name, :size => 80 %>
+      <%= f.text_field :name, :size => 80, maxlength: 50 %>
     </p>
     <p style="padding-right: 3px;">
       <%= f.label :description %>
