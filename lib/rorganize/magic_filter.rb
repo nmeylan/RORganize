@@ -43,7 +43,6 @@ module Rorganize
             if v['value'].size > 1 #if ary contains more than 1 value
               inc_condition_items += 1
               v['value'].each do |value|
-                value = quote(value)
                 inc_condition_item_ary += 1
                 #If it's  the first item from the ary we add (.
                 #If it's the last item from the ary we don't put a link and we add ).
@@ -53,6 +52,7 @@ module Rorganize
                   operator = null_operators[v['operator']]
                 else
                   operator = operators[v['operator']]
+                  value = quote(value)
                 end
                 query_str += "#{'(' if inc_condition_item_ary == 1}"
                 query_str += "#{attributes[k]} #{operator} #{value} "
@@ -62,13 +62,15 @@ module Rorganize
                 query_str += "#{'AND' if inc_condition_item_ary == v['value'].size && inc_condition_items != hash.size} "
               end
             else #if ary contains less than 1 value
-              if v['value'].first.eql?('NULL')
+              value = v['value'].first
+              if value.eql?('NULL')
                 operator = null_operators[v['operator']]
               else
                 operator = operators[v['operator']]
+                value = quote(value)
               end
               inc_condition_items += 1
-              query_str += "(#{attributes[k]} #{operator} #{quote(v['value'].first)} "
+              query_str += "(#{attributes[k]} #{operator} #{value} "
               query_str += "#{'OR '+attributes[k].to_s+' IS NULL' if v['operator'].eql?('different') && !v['value'].first.eql?('NULL')}) "
               query_str += "#{'AND' if inc_condition_items != hash.size} "
             end
