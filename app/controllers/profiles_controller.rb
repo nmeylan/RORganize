@@ -38,24 +38,6 @@ class ProfilesController < ApplicationController
     show
   end
 
-  def assigned_requests
-    issues = Issue.assigned_issues_for_user(@user).fetch_dependencies.decorate
-    respond_to do |format|
-      format.html { render :action => 'assigned_requests', :locals => {:issues => issues} }
-    end
-  end
-
-  def activities
-
-  end
-
-  def submitted_requests
-    issues = Issue.submitted_issues_by_user(@user).fetch_dependencies.decorate
-    respond_to do |format|
-      format.html { render :action => 'submitted_requests', :locals => {:issues => issues} }
-    end
-  end
-
   def change_password
     if request.post?
       if user_params[:password].eql?(user_params[:retype_password]) && @user.update_attributes(password: user_params[:password])

@@ -32,9 +32,6 @@ class Issue < ActiveRecord::Base
   validate :validate_start_date, :validate_predecessor, :validate_due_date
   #Scopes
   scope :fetch_dependencies, -> { includes([:tracker, :version, :assigned_to, :category, :author, :project, :attachments, :author, :status => [:enumeration]]) }
-  scope :assigned_issues_for_user, ->(user) { where(:assigned_to_id => user.id, :status_id => IssuesStatus.opened_statuses_id, :project_id => Project.opened_projects_id).eager_load(:project) }
-  scope :submitted_issues_by_user, ->(user) { where(:author_id => user.id, :status_id => IssuesStatus.opened_statuses_id, :project_id => Project.opened_projects_id).eager_load(:project) }
-
   def caption
     self.subject
   end

@@ -9,10 +9,7 @@
   <h2><%= @user.name %></h2>
   <h3><%= t(:label_my_pages) %></h3>
   <ul>
-    <li><%= link_to t(:link_my_assigned_requests), assigned_requests_profile_path%></li>
-    <li><%#= link_to t(:link_my_activities), my_activities_my_index_path(User.current.slug) %></li>
     <li><%= link_to t(:link_my_spent_time),spent_time_profile_path%></li>
-    <li><%= link_to t(:link_my_submited_requests),submitted_requests_profile_path%></li>
   </ul>
   <h3><%= t(:label_my_preferences) %></h3>
   <ul>
