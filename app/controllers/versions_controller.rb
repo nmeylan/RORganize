@@ -5,6 +5,7 @@
 
 class VersionsController < ApplicationController
   include Rorganize::RichController
+  before_filter :find_version, only: [:show, :edit, :update, :destroy, :change_position]
   before_filter :check_permission
   before_filter { |c| c.menu_context :project_menu }
   before_filter { |c| c.menu_item('settings') }
@@ -45,14 +46,12 @@ class VersionsController < ApplicationController
   end
 
   def edit
-    @version = Version.find(params[:id])
     respond_to do |format|
       format.html
     end
   end
 
   def update
-    @version = Version.find(params[:id])
     @version.attributes= version_params
     respond_to do |format|
       if !@version.changed?
@@ -74,7 +73,6 @@ class VersionsController < ApplicationController
 
   def destroy
     @versions_decorator = @project.versions.decorate(context: {project: @project})
-    @version = Version.find(params[:id])
     success = @version.destroy
     respond_to do |format|
       format.js { respond_to_js :response_header => success ? :success : :failure, :response_content => success ? t(:successful_deletion) : t(:failure_deletion), :locals => {:id => params[:id]} }
@@ -86,7 +84,6 @@ class VersionsController < ApplicationController
   end
 
   def change_position
-    @version = Version.find_by_id(params[:id])
     saved = @version.change_position(@project, params[:operator])
     @versions_decorator = @project.versions.order(:position).decorate(context: {project: @project})
     respond_to do |format|
@@ -101,5 +98,14 @@ class VersionsController < ApplicationController
   private
   def version_params
     params.require(:version).permit(Version.permit_attributes)
+  end
+
+  def find_version
+    @version = Version.find_by_id(params[:id])
+    if @version
+      @version_decorator = @version.decorate(context: {project: @project})
+    else
+      render_404
+    end
   end
 end

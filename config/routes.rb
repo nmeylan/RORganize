@@ -131,8 +131,6 @@ RORganize::Application.routes.draw do
       get 'custom_queries'
       get 'projects'
       post 'activity_filter', :path => 'activity_filter'
-      get 'assigned_requests'
-      get 'submitted_requests'
       get 'activities'
       get 'spent_time'
       post 'star_project', :path => 'star_project/:project_id'

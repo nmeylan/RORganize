@@ -7,6 +7,7 @@ require 'issues/issue_overview_hash'
 class IssuesController < ApplicationController
   before_filter { |c| c.add_action_alias= {'overview' => 'index', 'apply_custom_query' => 'index'}}
   before_filter :check_permission, :except => [:toolbox, :download_attachment, :start_today]
+  before_filter :find_issue, only: [:edit, :update, :destroy]
   before_filter :check_not_owner_permission, :only => [:edit, :update, :destroy]
   before_filter { |c| c.menu_context :project_menu }
   before_filter { |c| c.menu_item(params[:controller]) }
@@ -27,9 +28,14 @@ class IssuesController < ApplicationController
   end
 
   def show
-    @issue_decorator = Issue.eager_load([:tracker, :version, :assigned_to, :category, :attachments, :parent, :author, status: :enumeration, comments: :author]).where(id: params[:id])[0].decorate(context: {project: @project})
-    respond_to do |format|
-      format.html { render :action => 'show', :locals => {:history => History.new(Journal.issue_activities(@issue_decorator.id), @issue_decorator.comments)} }
+    @issue_decorator = Issue.eager_load([:tracker, :version, :assigned_to, :category, :attachments, :parent, :author, status: :enumeration, comments: :author]).find_by_id(params[:id])
+    if @issue_decorator.nil?
+      render_404
+    else
+      @issue_decorator = @issue_decorator.decorate(context: {project: @project})
+      respond_to do |format|
+        format.html { render :action => 'show', :locals => {:history => History.new(Journal.issue_activities(@issue_decorator.id), @issue_decorator.comments)} }
+      end
     end
   end
 
@@ -209,7 +215,6 @@ class IssuesController < ApplicationController
 
   #Check if current user is owner of issue
   def check_owner
-    @issue_decorator = Issue.eager_load(:attachments).where(id: params[:id])[0].decorate(context: {project: @project})
     @issue_decorator.author_id.eql?(User.current.id)
   end
 
@@ -253,6 +258,15 @@ class IssuesController < ApplicationController
     gon.project_id = @project.slug
   rescue => e
     render_404
+  end
+
+  def find_issue
+    @issue_decorator = Issue.eager_load(:attachments).where(id: params[:id])[0]
+    if @issue_decorator
+      @issue_decorator = @issue_decorator.decorate(context: {project: @project})
+    else
+      render_404
+    end
   end
 
 

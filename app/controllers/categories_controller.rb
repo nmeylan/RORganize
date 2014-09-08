@@ -5,6 +5,7 @@
 
 class CategoriesController < ApplicationController
   before_filter :find_project
+  before_filter :find_category, only: [:edit, :update, :destroy]
   before_filter :check_permission
   before_filter { |c| c.menu_context :project_menu }
   before_filter { |c| c.menu_item('settings') }
@@ -44,14 +45,12 @@ class CategoriesController < ApplicationController
   end
 
   def edit
-    @category = Category.find(params[:id])
     respond_to do |format|
       format.html
     end
   end
 
   def update
-    @category = Category.find(params[:id])
     @category.attributes = (category_params)
     respond_to do |format|
       if !@category.changed?
@@ -70,8 +69,7 @@ class CategoriesController < ApplicationController
   end
 
   def destroy
-    category = Category.find(params[:id])
-    category.destroy
+    @category.destroy
     respond_to do |format|
       format.html do
         flash[:notice] = t(:successful_deletion)
@@ -84,5 +82,12 @@ class CategoriesController < ApplicationController
   private
   def category_params
     params.require(:category).permit(Category.permit_attributes)
+  end
+
+  def find_category
+    @category = Category.find_by_id(params[:id])
+    unless @category
+      render_404
+    end
   end
 end

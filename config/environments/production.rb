@@ -62,6 +62,8 @@ RORganize::Application.configure do
 
   config.eager_load = true
 
+  config.exceptions_app = ->(env) { ExceptionController.action(:show).call(env) }
+
 
   # Send deprecation notices to registered listeners
   #  config.active_support.deprecation = :notice

@@ -5,6 +5,7 @@
 require 'shared/history'
 class DocumentsController < ApplicationController
   before_filter :load_documents, :only => [:index]
+  before_filter :find_document, only: [:show, :edit, :destroy, :update]
   before_filter :check_permission, :except => [:download_attachment, :toolbox]
   before_filter { |c| c.menu_context :project_menu }
   before_filter { |c| c.menu_item(params[:controller]) }
@@ -41,14 +42,12 @@ class DocumentsController < ApplicationController
   end
 
   def edit
-    @document_decorator = Document.find(params[:id]).decorate(context: {project: @project})
     respond_to do |format|
       format.html
     end
   end
 
   def update
-    @document_decorator = Document.find(params[:id]).decorate(context: {project: @project})
     @document_decorator.attributes = document_params
     respond_to do |format|
       if !@document_decorator.changed? &&
@@ -66,8 +65,7 @@ class DocumentsController < ApplicationController
 
   def show
     #this always return 1 result. Don't use .first(AR method) because it generate two query (due to ActiveRecord::FinderMethods::apply_join_dependency(..))
-    @document_decorator = Document.eager_load(:category, :version, :attachments).where(id: params[:id])[0].decorate(context: {project: @project})
-    respond_to do |format|
+     respond_to do |format|
       format.html { render :action => 'show', :locals => {:history => History.new(Journal.document_activities(@document_decorator.id), @document_decorator.comments)} }
     end
   end
@@ -89,8 +87,7 @@ class DocumentsController < ApplicationController
   end
 
   def destroy
-    @document = Document.find(params[:id])
-    @document.destroy
+    @document_decorator.destroy
     flash[:notice] = t(:successful_deletion)
     respond_to do |format|
       format.html { redirect_to documents_path }
@@ -156,6 +153,16 @@ class DocumentsController < ApplicationController
     gon.project_id = @project.slug
   rescue => e
     render_404
+  end
+
+  def find_document
+    @document_decorator = Document.eager_load(:category, :version, :attachments).where(id: params[:id])[0]
+    if @document_decorator
+    @document_decorator = @document_decorator.decorate(context: {project: @project})
+    else
+      render_404
+    end
+
   end
 
 

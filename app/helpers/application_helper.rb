@@ -11,21 +11,33 @@ module ApplicationHelper
   # @return [String] page title.
   def title_tag
     title = ''
-    if @project && !@project.new_record?
-      title += @project.slug.capitalize + ' '
-    elsif controller_name.eql?('profiles')
-      title += User.current.login + " (#{User.current.caption}) "
+    if controller_name.eql?('exception')
+      case @status
+        when 404
+          title += 'Page not found '
+        when 403
+          title += 'Permissions required '
+        else
+          title += 'Something went wrong '
+      end
+      title += '- RORganize'
     else
-      title += 'RORganize '
-    end
-    if action_name.eql?('activity')
-      title += t(:label_activity)
-    elsif action_name.eql?('overview')
-      title += t(:label_overview)
-    elsif controller_name.eql?('rorganize')
-      title += t(:home)
-    elsif !controller_name.eql?('profiles')
-      title += controller_name.capitalize
+      if @project && !@project.new_record?
+        title += @project.slug.capitalize + ' '
+      elsif controller_name.eql?('profiles')
+        title += User.current.login + " (#{User.current.caption}) "
+      else
+        title += 'RORganize '
+      end
+      if action_name.eql?('activity')
+        title += t(:label_activity)
+      elsif action_name.eql?('overview')
+        title += t(:label_overview)
+      elsif controller_name.eql?('rorganize')
+        title += t(:home)
+      elsif !controller_name.eql?('profiles')
+        title += controller_name.capitalize
+      end
     end
     title
   end
@@ -41,7 +53,13 @@ module ApplicationHelper
   def no_data(text = nil)
     content_tag :div, text ? text : t(:text_no_data), class: 'no-data'
   end
-
+  # Page render for http 500
+  def render_500
+    respond_to do |format|
+      format.html { render :file => "#{Rails.root}/public/500.html.erb", :status => :not_found }
+      format.js { respond_to_js action: 'do_nothing', :response_header => :failure, :response_content => 'An unexpected error occured, please try again!' }
+    end
+  end
   # Page render for http 404
   def render_404
     respond_to do |format|

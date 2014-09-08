@@ -14,7 +14,7 @@
         <% icon = session['act_as'].eql?('Admin') ? 'crown' : 'person'%>
         <% switch_to = icon.eql?('crown') ? 'User' : 'Admin' %>
         <% g = icon.eql?('crown') ? medium_glyph('', icon) : glyph('', icon) %>
-        <%= link_to g, act_as_profile_path, { title: "You are currently acting as an #{session['act_as']}. Click to act as #{switch_to}"} if User.current.is_admin?%>
+        <%= link_to g, act_as_profile_path, { title: "You are currently acting as an #{session['act_as']}. Click to act as #{switch_to}"} if current_user.is_admin?%>
         <%= link_to(glyph('', 'sign-out'), destroy_user_session_path, :method => :delete)%>
       </li>
     <%else%>

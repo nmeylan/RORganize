@@ -78,8 +78,13 @@ class RoadmapsController < ApplicationController
 
   private
   def find_project
-    @project_decorator = Project.eager_load(:versions, :attachments).where(slug: params[:project_id])[0].decorate
-    @project = @project_decorator.model
+    @project_decorator = Project.eager_load(:versions, :attachments).where(slug: params[:project_id])[0]
+    if @project_decorator
+      @project_decorator = @project_decorator.decorate
+      @project = @project_decorator.model
+    else
+      render_404
+    end
   end
 
   def persist_gantt(gantt)

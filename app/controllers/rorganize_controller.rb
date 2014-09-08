@@ -104,6 +104,10 @@ class RorganizeController < ApplicationController
     end
   end
 
+  def error_404
+    render_404
+  end
+
   private
   def sort_column
     params[:sort] ? params[:sort] : 'issues.id'

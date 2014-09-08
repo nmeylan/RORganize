@@ -2,7 +2,7 @@ class MembersDecorator < ApplicationCollectionDecorator
 
   # see #ApplicationCollectionDecorator::display_collection
   def display_collection
-    super do
+    super(false, nil ,true) do
       h.list(self, context[:roles])
     end
   end
