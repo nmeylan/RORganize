@@ -20,9 +20,6 @@
 
       <p>
         <label for="password"><%=t(:password)%><span class ="required"> *</span></label>
-        <% if @validatable %>
-            <i>(<%= @minimum_password_length %> characters minimum)</i>
-        <% end %>
         <%= f.password_field :password, autocomplete: "off", :size => 50 %></p>
 
       <p>
