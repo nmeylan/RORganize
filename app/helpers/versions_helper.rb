@@ -9,7 +9,7 @@ module VersionsHelper
   def list(collection)
     content_tag :table, {class: 'version list'}, &Proc.new {
       safe_concat content_tag :tr, class: 'header', &Proc.new {
-        safe_concat content_tag :th, 'Name'
+        safe_concat content_tag :th, 'Name', {class: 'list_left'}
         safe_concat content_tag :th, 'Start date'
         safe_concat content_tag :th, 'Target date'
         safe_concat content_tag :th, 'Is done'

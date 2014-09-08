@@ -19,6 +19,12 @@ table.list {
   width: 100%;
   border-collapse: collapse;
   border: 1px solid #E4E4E4;
+  overflow-x: auto;
+}
+.autoscroll {
+  overflow-x: auto;
+  padding: 1px;
+  margin-bottom: 1.2em;
 }
 
 .list .header {
@@ -42,9 +48,15 @@ table.list {
 }
 
 .list td{
-  word-break: break-all;
+//  word-break: break-all;
+  white-space: nowrap;
 }
-
+.list tr:first-child{
+  text-align: left;
+}
+.list td.action{
+  text-align: right;
+}
 .list tr.close {
   text-decoration: line-through;
 }
@@ -75,137 +87,6 @@ li.close {
   background-color:$default-table-tr-hover-background-color !important;
 }
 
-.list .id {
-  width: 3%
-}
-
-.issue.list .tracker {
-  width: 7%
-}
-
-.issue.list .subject {
-  width: 25%
-}
-
-.issue.list .assigned_to {
-  width: 13%
-}
-
-.issue.list .status {
-  width: 10%
-}
-
-.issue.list .category {
-  width: 10%
-}
-
-.issue.list .version {
-  width: 15%
-}
-
-.issue.list .due_date {
-  width: 10%
-}
-
-.issue.list .done {
-  width: 6%
-}
-
-.issue_overlay.list .id {
-  width: 3%
-}
-
-.issue_overlay.list .subject {
-  width: 95%
-}
-
-.user.list .id {
-  width: 3%
-}
-
-.user.list .login {
-  width: 15%
-}
-
-.user.list .name {
-  width: 25%
-}
-
-.user.list .email {
-  width: 30%
-}
-
-.user.list .admin {
-  width: 10%
-}
-
-.user.list .last_sign_in {
-  width: 17%
-}
-
-.version.list .name {
-  width: 20%
-}
-
-.version.list .version {
-  width: 25%
-}
-
-.version.list .start_date {
-  width: 25%
-}
-
-.member.list .name {
-  width: 20%
-}
-
-.member.list .role {
-  width: 75%
-}
-
-.list .action {
-  width: 5%
-}
-
-.role.list .name {
-  width: 70%
-}
-
-.tracker.list .name {
-  width: 95%
-}
-
-.queries.list .name {
-  width: 95%
-}
-
-.splitcontentright .issue.list .project {
-  width: 20%
-}
-
-.splitcontentright .issue.list .subject {
-  width: 30%
-}
-
-.splitcontentright .issue.list .due_date {
-  width: 10%
-}
-
-.splitcontentright .issue.list .status {
-  width: 15%
-}
-
-.document.list .name {
-  width: 61%
-}
-
-.document.list .category {
-  width: 15%
-}
-
-.document.list .version {
-  width: 20%
-}
 
 /*
 *  PAGINATION

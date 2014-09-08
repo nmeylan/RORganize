@@ -18,7 +18,7 @@ class ApplicationCollectionDecorator < Draper::CollectionDecorator
   # @param [Boolean] no_pagination : if false don't display pagination when there are too many results, else display pagination.
   # @param [String] no_data_text : text to display when there is no data to display.
   def display_collection(no_pagination = false, no_data_text = nil)
-    h.content_tag :div, id: "#{h.controller_name}_content" do
+    h.content_tag :div, {id: "#{h.controller_name}_content", class: 'autoscroll'} do
       if object.to_a.any?
         if block_given?
           h.safe_concat yield
