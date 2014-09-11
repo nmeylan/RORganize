@@ -34,7 +34,7 @@ class JournalDecorator < ApplicationDecorator
   def display_project_link(project)
     unless project
       h.safe_concat h.content_tag :span, class: 'object_type', &Proc.new {
-        h.safe_concat 'on '
+        h.safe_concat ' on '
         h.safe_concat project_link
       }
     end
