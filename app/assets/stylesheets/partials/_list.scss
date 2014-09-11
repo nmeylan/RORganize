@@ -37,10 +37,9 @@ table.list {
 
 .list th {
   text-align: center;
-  padding-top: 5px;
-  padding-bottom: 5px;
+  padding: 5px;
+  white-space: nowrap;
 }
-
 .list tr {
   color: $default-smooth-color;
 }
@@ -48,7 +47,22 @@ table.list {
 .list td{
 //  word-break: break-all;
   white-space: nowrap;
+  padding-right: 10px;
 }
+.list td.icon_information{
+  font-size: 11px;
+  text-align: right;
+}
+.list td.icon_information:last-child{
+padding-right: 10px;
+}
+.list td.cell_checkbox{
+  width: 20px;
+}
+.list td.id{
+  width: 20px;
+}
+
 .list tr:first-child{
   text-align: left;
 }

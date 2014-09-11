@@ -69,12 +69,12 @@ class IssueDecorator < ApplicationDecorator
 
   # @return [String] an indicator if model has attachments.
   def attachment_presence_indicator
-    h.content_tag :span, nil, {class: 'octicon octicon-attachment'} unless model.attachments.empty?
+    h.content_tag :span, nil, {class: "octicon octicon-attachment #{model.attachments.empty? ? 'smooth_gray' : ''}"}
   end
 
   # see #ApplicationDecorator::delete_attachment_link
   def delete_attachment_link(attachment)
-    super(h.delete_attachment_issues_path(context[:project].slug,attachment.id), context[:project])
+    super(h.delete_attachment_issues_path(context[:project].slug, attachment.id), context[:project])
   end
 
   # see #ApplicationDecorator::download_attachment_link
@@ -84,7 +84,10 @@ class IssueDecorator < ApplicationDecorator
 
   def checklist_progression
     if model.has_task_list?
-      h.content_tag :span, " #{model.count_checked_tasks} of #{model.count_tasks}", {class: 'octicon octicon-checklist'}
+      h.content_tag :span do
+        h.safe_concat h.content_tag :span, nil, {class: 'octicon octicon-checklist'}
+        h.safe_concat " #{model.count_checked_tasks} of #{model.count_tasks}"
+      end
     end
   end
 end

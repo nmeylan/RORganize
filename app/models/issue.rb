@@ -31,7 +31,7 @@ class Issue < ActiveRecord::Base
   validates :subject, :tracker_id, :status_id, :presence => true
   validate :validate_start_date, :validate_predecessor, :validate_due_date
   #Scopes
-  scope :fetch_dependencies, -> { includes([:tracker, :version, :assigned_to, :category, :author, :project, :attachments, :author, :status => [:enumeration]]) }
+  scope :fetch_dependencies, -> { includes([:tracker, :version, :assigned_to, :category, :project, :attachments, :author, :status => [:enumeration]]) }
   def caption
     self.subject
   end

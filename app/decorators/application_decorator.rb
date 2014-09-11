@@ -113,6 +113,11 @@ class ApplicationDecorator < Draper::Decorator
     end
   end
 
+  # @return [String] render how many comments belongs to the models.
+  def comment_presence_indicator
+    h.comment_presence(model.comments_count)
+  end
+
   # Render a link to delete an attachment.
   # @param [String] path : to controller to perform the action.
   # @param [Project] project : project belongs to the attachment.

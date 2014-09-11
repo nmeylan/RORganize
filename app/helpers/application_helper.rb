@@ -505,5 +505,12 @@ module ApplicationHelper
     end
   end
 
+  # @param [Numeric] number of comments that belongs to the model.
+  def comment_presence(number)
+    content_tag :span, {class: "#{number == 0 ? 'smooth_gray' : ''}"} do
+      safe_concat content_tag :span, nil, {class: 'octicon octicon-comment'}
+      safe_concat " #{number}"
+    end
+  end
 
 end
