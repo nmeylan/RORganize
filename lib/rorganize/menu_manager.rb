@@ -129,7 +129,7 @@ module Rorganize
           end
           i += 1
         end
-        raise "item not founded, please check your initializer files. Don't use it inside core_application initializer"
+        raise "item not found, please check your initializer file. Don't use it inside core_application initializer"
       end
     end
     #Menu item class

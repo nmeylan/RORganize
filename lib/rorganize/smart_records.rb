@@ -11,9 +11,13 @@ module Rorganize
       scope :paginated, ->(page, per_page, order) { paginate(:page => page, :per_page => per_page).order(order) }
       scope :filter, ->(filter, project_id) { where("#{filter} #{self.table_name}.project_id = #{project_id}") }
     end
+
     #Change a record's position from a collection. E.g: change_position([a, b, c, d], c, inc)
     # => c position change from 3 to 4 and d position change from 4 to 3, collection order is [a, b, d, c]
     #Available operator are : inc or dec
+    # @param [Array] records_collection : an array of ActiveRecord::Base object.
+    # @param [ActiveRecord::Base] record : the object whose position changed.
+    # @param [String] operator : is 'inc' of 'dec' to increment or decrement the record position.
     def apply_change_position(records_collection, record, operator)
       max = records_collection.size
       saved = false
