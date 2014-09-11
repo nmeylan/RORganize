@@ -62,7 +62,7 @@ function highlight_result(event, input) {
     if (event !== undefined && event.keyCode === 8) {
         filter = filter.substring(0, filter.length - 1);
     }
-    $('.highlight').removeClass('highlight');
+    $('.highlight_search_result').removeClass('highlight_search_result');
     $("#highlight_search_result_count").text('');
 
     if (filter.trim() !== '') {
@@ -73,7 +73,7 @@ function highlight_result(event, input) {
         var matches_size = matches.length;
         if (matches_size > 0 && matches_size < 5000) {
             matches.each(function (a) {
-                $(this).addClass('highlight');
+                $(this).addClass('highlight_search_result');
             });
         }
 
@@ -81,10 +81,10 @@ function highlight_result(event, input) {
         matches_size = matches.length;
         if (matches_size > 0 && matches_size < 5000) {
             matches.each(function (a) {
-                $(this).addClass('highlight');
+                $(this).addClass('highlight_search_result');
             });
         }
-        count = $('.highlight').length;
+        count = $('.highlight_search_result').length;
         if (count > 0) {
             $("#highlight_search_result_count").text(count);
         }
