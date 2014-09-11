@@ -35,19 +35,19 @@ module PermissionsHelper
           safe_concat (link_to glyph('', 'check'), '#', {class: 'check_all', id: "read_#{group_name}", 'cb_checked' => 'b', :title => 'check all'})
           safe_concat medium_glyph(t(:label_read), 'eye')
         }
-        safe_concat content_tag :td, {class: 'permissions_list header'}, &Proc.new {
+        safe_concat content_tag :td, {class: 'permissions_list header create'}, &Proc.new {
           safe_concat (link_to glyph('', 'check'), '#', {class: 'check_all', id: "create_#{group_name}", 'cb_checked' => 'b', :title => 'check all'})
           safe_concat medium_glyph(t(:label_create), 'plus')
         }
-        safe_concat content_tag :td, {class: 'permissions_list header'}, &Proc.new {
+        safe_concat content_tag :td, {class: 'permissions_list header update'}, &Proc.new {
           safe_concat (link_to glyph('', 'check'), '#', {class: 'check_all', id: "update_#{group_name}", 'cb_checked' => 'b', :title => 'check all'})
           safe_concat medium_glyph(t(:label_update), 'pencil')
         }
-        safe_concat content_tag :td, {class: 'permissions_list header'}, &Proc.new {
+        safe_concat content_tag :td, {class: 'permissions_list header delete'}, &Proc.new {
           safe_concat (link_to glyph('', 'check'), '#', {class: 'check_all', id: "delete_#{group_name}", 'cb_checked' => 'b', :title => 'check all'})
           safe_concat medium_glyph(t(:label_delete), 'trashcan')
         }
-        safe_concat content_tag :td, {class: 'permissions_list header'}, &Proc.new {
+        safe_concat content_tag :td, {class: 'permissions_list header no_category'}, &Proc.new {
           safe_concat (link_to glyph('', 'check'), '#', {class: 'check_all', id: "misc_#{group_name}", 'cb_checked' => 'b', :title => 'check all'})
           safe_concat medium_glyph(t(:label_misc), '')
         }
@@ -85,7 +85,7 @@ module PermissionsHelper
               end.join.html_safe
             }
           end
-          safe_concat content_tag :td, {class: "permissions_list body misc #{group_name}"}, &Proc.new {
+          safe_concat content_tag :td, {class: "permissions_list body no_category #{group_name}"}, &Proc.new {
             (permissions - permissions_tmp).collect do |permission|
               content_tag :div, {class: 'permissions_list body permission'} do
                 safe_concat check_box_tag "[permissions][#{permission.controller}_#{permission.action}]", permission.id, selected_permissions.include?(permission.id)

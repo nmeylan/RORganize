@@ -17,4 +17,10 @@ function permissions_index() {
         checkAllBox("#"+id, jQuery("td.body."+classes.join('.')));
     });
      bind_tab_nav('permissions_tab');
+    $('table.permissions_list').each(function(){
+       if($(this).find('.permissions_list.body.no_category').children().length == 0){
+           console.log($(this).find('td.no_category'));
+           $(this).find('td.no_category').hide();
+       }
+    });
 }
