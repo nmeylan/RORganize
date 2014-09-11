@@ -58,8 +58,9 @@ class IssueDecorator < ApplicationDecorator
 
   # @return [String] link to log time action.
   def log_time_link
-    #TODO check permission
-    h.link_to h.glyph(h.t(:link_log_time), 'clock'), h.fill_overlay_time_entries_path(model.id), {:id => 'log_time'}
+    if User.current.allowed_to?('new', 'time_entries', context[:project])
+      h.link_to h.glyph(h.t(:link_log_time), 'clock'), h.fill_overlay_time_entries_path(model.id), {:id => 'log_time'}
+    end
   end
 
   # see #ApplicationDecorator::delete_link

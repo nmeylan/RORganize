@@ -7,6 +7,7 @@
 #These module are always enabled.
 always_enabled_module = [{controller: 'settings', action: 'index'},
   {controller: 'members', action: 'index'},
+  {controller: 'time_entries', action: 'index'},
   {controller: 'categories', action: 'index'},
   {controller: 'wiki_pages', action: 'index'},
   {controller: 'versions', action: 'index'},
