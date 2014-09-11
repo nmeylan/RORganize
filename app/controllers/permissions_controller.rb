@@ -50,9 +50,14 @@ class PermissionsController < ApplicationController
 
   #GET administration/permission/edit/:id
   def edit
-    @permission_decorator = Permission.find_by_id(params[:id]).decorate
-    respond_to do |format|
-      format.html {render :action => 'edit', :locals =>{:controllers => load_controllers.values}}
+    @permission_decorator = Permission.find_by_id(params[:id])
+    if @permission_decorator
+      @permission_decorator = @permission_decorator.decorate
+      respond_to do |format|
+        format.html {render :action => 'edit', :locals =>{:controllers => load_controllers.values}}
+      end
+    else
+      render_404
     end
   end
 
