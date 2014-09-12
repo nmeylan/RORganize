@@ -9,5 +9,7 @@ unless $0.end_with?('rake')
   #If true unregister users can access to public project as Anonymous role. If false, user have to register to access to the application.
   RORganize::Application.config.rorganize_anonymous_access = true
 
+  RORganize::Application.config.enable_emails_notifications = false
+
 end
 
