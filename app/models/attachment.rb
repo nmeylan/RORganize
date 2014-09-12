@@ -22,12 +22,12 @@ class Attachment < ActiveRecord::Base
 
   before_post_process :skip_non_image
 
-  validates_attachment_size :avatar, :in => 0..2.megabytes
-  validates_attachment_file_name :avatar, {:not => /.exe/, message: 'Errors'}
-  validates_attachment_content_type :avatar, {content_type: /\Aimage/, message: 'Errors'}
-
-  validates_attachment_content_type :file, {content_type: /\Aimage|application\/pdf|text/, message: 'Errors'}
-  validates_attachment_size :file, :in => 0..2.megabytes
+  # validates_attachment_size :avatar, :in => 0..2.megabytes
+  # validates_attachment_file_name :avatar, {:not => /.exe/, message: 'Errors'}
+  # validates_attachment_content_type :avatar, {content_type: /\Aimage/, message: 'Errors'}
+  #
+  validates_attachment_content_type :file, {content_type: /\A(image|application|text)/, message: 'Errors'}
+  validates_attachment_size :file, {:in => 0..50.megabytes, message: 'size errors'}
   validates_attachment_file_name :file, {:not => /.exe/, message: 'Errors'}
 
 
@@ -74,7 +74,8 @@ class Attachment < ActiveRecord::Base
   end
 
   def skip_non_image
-    !file_content_type.match(/\Aimage/).nil?
+    false
+    # !file_content_type.match(/\Aimage/).nil?
   end
 
   def custom_uri
