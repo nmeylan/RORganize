@@ -10,6 +10,5 @@ unless $0.end_with?('rake')
   RORganize::Application.config.rorganize_anonymous_access = true
 
   RORganize::Application.config.enable_emails_notifications = false
-
 end
 
