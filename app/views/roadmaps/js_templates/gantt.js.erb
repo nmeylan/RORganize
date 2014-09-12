@@ -4,9 +4,9 @@
  * Time: 18:45
  %>
 var switch_button = $('#switch_gantt_mode');
-switch_button.val("<%=  @sessions[:gantt][:edition] ? t(:link_switch_to_view) : t(:link_switch_to_edition)%>");
-$('#gantt_mode').val("<%=  @sessions[:gantt][:edition] ? 'edition' : 'view' %>");
-$(switch_button.parents('form').get(0)).attr('action', "<%= manage_gantt_roadmap_path(@project_decorator.slug, {mode:  @sessions[:gantt][:edition] ? 'view' : 'edition'}) %>");
+switch_button.val("<%=  @sessions[@project.slug][:gantt][:edition] ? t(:link_switch_to_view) : t(:link_switch_to_edition)%>");
+$('#gantt_mode').val("<%=  @sessions[@project.slug][:gantt][:edition] ? 'edition' : 'view' %>");
+$(switch_button.parents('form').get(0)).attr('action', "<%= manage_gantt_roadmap_path(@project_decorator.slug, {mode:  @sessions[@project.slug][:gantt][:edition] ? 'view' : 'edition'}) %>");
 
 var edition = $('#gantt_mode').val() === 'edition';
 gantt.config.drag_progress = false;
@@ -16,7 +16,7 @@ gantt.config.drag_links = edition;
 
 $('#save_gantt').css('display', edition ? 'block' : 'none');
 config_column(edition);
-<% if @sessions[:gantt][:edition] %>
+<% if @sessions[@project.slug][:gantt][:edition] %>
     var merge_result = merge_gantt_data(<%= raw json_data.to_json %>);
     gantt.clearAll();
     gantt.parse(merge_result, 'json');
