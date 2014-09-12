@@ -311,6 +311,7 @@ function bind_save_button(){
             apprise('Before saving please select which elements you want to save.');
         }else {
 
+            console.log(serialized_gantt);
             var len = serialized_gantt.data.length;
             for (var i = 0; i < len; i++) {
                 if (ids.indexOf(serialized_gantt.data[i].id.toString()) != -1) {
@@ -321,6 +322,7 @@ function bind_save_button(){
                 }
             }
             serialized_gantt.data = data;
+            console.log(serialized_gantt);
             $.ajax({
                 url: form.attr('action'),
                 type: form.attr('method'),

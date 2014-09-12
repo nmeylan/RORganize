@@ -93,7 +93,7 @@ class GanttObject
         id: "#{issue.predecessor_id}_#{issue.id}",
         source: issue.predecessor_id,
         target: issue.id,
-        type: 0
+        type: issue.link_type
     }
   end
 end

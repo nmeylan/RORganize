@@ -22,13 +22,14 @@
 
 <%= button_to_with_permissions(t(:button_save), manage_gantt_roadmap_path(@project_decorator.slug), @project_decorator, nil, {method: 'post', remote: true, id: 'save_gantt', style: "display:#{@sessions[:gantt][:edition] ? 'block' : 'none'}"}) %>
 
-<div class="splitcontentright">
-  <input value="Export to PDF" type="button" onclick='gantt.exportToPDF()' style='margin-right: 0px;margin-left: 10px; float:right'>
-  <input value="Export to PNG" type="button" onclick='gantt.exportToPNG()' style="float:right">
-</div>
 <%= clear_both %>
 <div id="gantt_chart" style="height: 600px">
 
+</div>
+
+<div class="splitcontentright" style="margin-top: 10px">
+  <input value="Export to PDF" type="button" onclick='gantt.exportToPDF()' style='margin-right: 0px;margin-left: 10px; float:right'>
+  <input value="Export to PNG" type="button" onclick='gantt.exportToPNG()' style="float:right">
 </div>
 <p>
   About issues : <%= info_tag('Only task with a start and due date are displayed.') %><br>

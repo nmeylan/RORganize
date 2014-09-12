@@ -98,9 +98,17 @@ class RoadmapsController < ApplicationController
           issue_changes[task[:id]] = {start_date: task[:start_date], due_date: task[:context][:due_date]}
         end
       end
-      Version.gantt_edit(version_changes)
-      Issue.gantt_edit(issue_changes)
     end
+    p gantt[:links]
+    if gantt[:links]
+       gantt[:links].each do |_, link|
+         unless link[:source].start_with?('version') ||  link[:target].start_with?('version')
+           issue_changes[link[:target]] = issue_changes[link[:target]] ? issue_changes[link[:target]].merge({predecessor_id: link[:source], link_type: link[:type]}) : {predecessor_id: link[:source], link_type: link[:type]}
+         end
+       end
+    end
+    Version.gantt_edit(version_changes)
+    Issue.gantt_edit(issue_changes)
   end
 
 end
