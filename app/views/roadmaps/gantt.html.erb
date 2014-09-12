@@ -5,10 +5,11 @@
 # File: gantt.html.erb
 %>
 <%= javascript_include_tag 'dhtmlxgantt' %>
+<script src="http://export.dhtmlx.com/gantt/api.js"></script>
 <%= stylesheet_link_tag 'dhtmlxgantt' %>
 
 <%= contextual t(:label_gantt_chart) do %>
-    <%= button_to_with_permissions(@sessions[:gantt][:edition] ? t(:link_switch_to_view) : t(:link_switch_to_edition), manage_gantt_roadmap_path(@project_decorator.slug, {mode:  @sessions[:gantt][:edition] ? 'view' : 'edition'}), @project_decorator, nil, {method: 'get', remote: true, id: 'switch_gantt_mode'})%>
+    <%= button_to_with_permissions(@sessions[:gantt][:edition] ? t(:link_switch_to_view) : t(:link_switch_to_edition), manage_gantt_roadmap_path(@project_decorator.slug, {mode: @sessions[:gantt][:edition] ? 'view' : 'edition'}), @project_decorator, nil, {method: 'get', remote: true, id: 'switch_gantt_mode'}) %>
 <% end %>
 <%= hidden_field_tag :gantt_mode, @sessions[:gantt][:edition] ? 'edition' : 'view' %>
 <div class="gantt_scale_menu">
@@ -19,7 +20,12 @@
 <%= clear_both %>
 <%= select_tag :versions, options_for_select(versions.collect { |version| [version.caption, version.id] }, selected_versions.collect { |v| v.id }), {class: 'chzn-select cbb-verylarge', multiple: true, id: 'gantt_version_select', 'data-link' => gantt_roadmap_path(@project_decorator.slug)} %>
 
-<%= button_to_with_permissions(t(:button_save), manage_gantt_roadmap_path(@project_decorator.slug), @project_decorator, nil, {method: 'post', remote: true, id: 'save_gantt', style: "display:#{@sessions[:gantt][:edition] ? 'block' : 'none'}"})%>
+<%= button_to_with_permissions(t(:button_save), manage_gantt_roadmap_path(@project_decorator.slug), @project_decorator, nil, {method: 'post', remote: true, id: 'save_gantt', style: "display:#{@sessions[:gantt][:edition] ? 'block' : 'none'}"}) %>
+
+<div class="splitcontentright">
+  <input value="Export to PDF" type="button" onclick='gantt.exportToPDF()' style='margin-right: 0px;margin-left: 10px; float:right'>
+  <input value="Export to PNG" type="button" onclick='gantt.exportToPNG()' style="float:right">
+</div>
 <%= clear_both %>
 <div id="gantt_chart" style="height: 600px">
 
