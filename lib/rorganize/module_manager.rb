@@ -92,7 +92,7 @@ module Rorganize
         project =Project.find(project_id)
         @enabled_modules[project_id.to_s].clear
         project.enabled_modules.each do |mod|
-          @enabled_modules[project_id.to_s] << {:action => mod.action, :controller => mod.controller.downcase}
+          @enabled_modules[project_id.to_s] << {:action => mod.action, :controller => mod.controller.downcase, :name => mod.name}
         end
       end
 
