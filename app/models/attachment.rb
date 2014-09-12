@@ -74,8 +74,7 @@ class Attachment < ActiveRecord::Base
   end
 
   def skip_non_image
-    false
-    # !file_content_type.match(/\Aimage/).nil?
+     !file_content_type.match(/\Aimage/).nil?
   end
 
   def custom_uri
