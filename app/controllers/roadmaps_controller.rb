@@ -34,16 +34,17 @@ class RoadmapsController < ApplicationController
   end
 
   def gantt
-    @sessions[:gantt] ||= {}
-    @sessions[:gantt][:edition] ||= false
+    @sessions[@project.slug] ||= {}
+    @sessions[@project.slug][:gantt] ||= {}
+    @sessions[@project.slug][:gantt][:edition] ||= false
     if params[:value]
-      @sessions[:gantt][:versions] = params[:value]
+      @sessions[@project.slug][:gantt][:versions] = params[:value]
     end
-    versions = @sessions[:gantt][:versions] ? Version.eager_load(issues: [:parent, :children, :tracker, :assigned_to, :status]).where(id: @sessions[:gantt][:versions]) : @project_decorator.versions.eager_load(issues: [:parent, :children, :tracker, :assigned_to, :status]).to_a.select { |version| !version.is_done }
+    versions = @sessions[@project.slug][:gantt][:versions] ? Version.eager_load(issues: [:parent, :children, :tracker, :assigned_to, :status]).where(id: @sessions[@project.slug][:gantt][:versions]) : @project_decorator.versions.eager_load(issues: [:parent, :children, :tracker, :assigned_to, :status]).to_a.select { |version| !version.is_done }
     if params[:mode]
-      @sessions[:gantt][:edition] = params[:mode].eql?('edition')
+      @sessions[@project.slug][:gantt][:edition] = params[:mode].eql?('edition')
     end
-    @gantt_object = GanttObject.new(versions, @project_decorator, @sessions[:gantt][:edition])
+    @gantt_object = GanttObject.new(versions, @project_decorator, @sessions[@project.slug][:gantt][:edition])
     gon.Gantt_JSON = @gantt_object.json_data
     respond_to do |format|
       format.html { render action: 'gantt', locals: {versions: @project_decorator.versions, selected_versions: versions} }
@@ -52,8 +53,8 @@ class RoadmapsController < ApplicationController
   end
 
   def manage_gantt
-    versions = @sessions[:gantt][:versions] ? Version.eager_load(issues: [:parent, :children, :tracker, :assigned_to, :status]).where(id: @sessions[:gantt][:versions]) : @project_decorator.versions.eager_load(issues: [:parent, :children, :tracker, :assigned_to, :status]).to_a.select { |version| !version.is_done }
-    @gantt_object = GanttObject.new(versions, @project_decorator, @sessions[:gantt][:edition])
+    versions = @sessions[@project.slug][:gantt][:versions] ? Version.eager_load(issues: [:parent, :children, :tracker, :assigned_to, :status]).where(id: @sessions[@project.slug][:gantt][:versions]) : @project_decorator.versions.eager_load(issues: [:parent, :children, :tracker, :assigned_to, :status]).to_a.select { |version| !version.is_done }
+    @gantt_object = GanttObject.new(versions, @project_decorator, @sessions[@project.slug][:gantt][:edition])
     if request.post?
       errors = persist_gantt(params[:gantt])
       message = errors && errors.any? ? errors : t(:successful_update)
@@ -63,9 +64,9 @@ class RoadmapsController < ApplicationController
       end
     else
       if params[:mode] && params[:mode].eql?('edition')
-        @sessions[:gantt][:edition] = true
-        versions = @sessions[:gantt][:versions] ? Version.eager_load(issues: [:parent, :children, :tracker, :assigned_to, :status]).where(id: @sessions[:gantt][:versions]) : @project_decorator.versions.eager_load(issues: [:parent, :children, :tracker, :assigned_to, :status]).to_a.select { |version| !version.is_done }
-        @gantt_object = GanttObject.new(versions, @project_decorator, @sessions[:gantt][:edition])
+        @sessions[@project.slug][:gantt][:edition] = true
+        versions = @sessions[@project.slug][:gantt][:versions] ? Version.eager_load(issues: [:parent, :children, :tracker, :assigned_to, :status]).where(id: @sessions[@project.slug][:gantt][:versions]) : @project_decorator.versions.eager_load(issues: [:parent, :children, :tracker, :assigned_to, :status]).to_a.select { |version| !version.is_done }
+        @gantt_object = GanttObject.new(versions, @project_decorator, @sessions[@project.slug][:gantt][:edition])
         respond_to do |format|
           format.js { respond_to_js action: 'gantt', locals: {json_data: @gantt_object.json_data} }
         end
