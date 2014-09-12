@@ -26,6 +26,10 @@ class Document < ActiveRecord::Base
     self.name
   end
 
+  def author
+    Journal.find_by_action_type_and_journalizable_id_and_journalizable_type('created', self.id, self.class.to_s).user
+  end
+
   def self.permit_attributes
     [:name, :description, :version_id, :category_id, {:new_attachment_attributes => Attachment.permit_attributes}, {:edit_attachment_attributes => Attachment.permit_attributes}]
   end

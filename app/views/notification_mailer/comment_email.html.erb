@@ -1,0 +1,21 @@
+<%#=
+ * User: nmeylan
+ * Date: 12.09.14
+ * Time: 19:17
+%>
+<% comment = @notification.trigger.decorate %>
+<% model = @notification.model %>
+<%= content_tag :div, {id: "comment_#{comment.id}", class: 'block'}, &Proc.new {
+  safe_concat content_tag :div, class: "header", &Proc.new {
+    safe_concat content_tag :span, link_to(comment.author.caption, url_for(controller: 'rorganize', action: 'view_profile', user: comment.author.slug, only_path: false)) + ' ', class: 'author'
+    safe_concat content_tag :span, t(:label_commented_lower_case), class: 'text'
+    safe_concat " #{model.class.to_s.downcase}
+                #{link_to(model.caption,
+                          url_for(controller: @notification.model_url[:controller], action: @notification.model_url[:action],
+                                  id: model.id, project_id: @notification.model_url[:project_id], only_path: false))} on "
+    safe_concat content_tag :span, comment.creation_date, {class: 'history_date'}
+  }
+  safe_concat content_tag :div, class: 'block_content', &Proc.new {
+    markdown_to_html comment.content, nil, true
+  }
+} %>

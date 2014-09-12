@@ -20,7 +20,7 @@ class CommentTest < ActiveSupport::TestCase
   end
 
   def create_comment
-    comment = Comment.new({content: 'this a comment', user_id: User.current.id})
+    comment = Comment.new({content: 'this a comment', user_id: User.current.id, project_id: 1})
     @issue.comments << comment
     assert_nil comment.id
     assert_equal true, @issue.save
@@ -45,6 +45,7 @@ class CommentTest < ActiveSupport::TestCase
     comment.content = ' '
     assert_equal false, @issue.save
     comment.content = 'This is a comment'
+    comment.project_id = 1
     assert_equal true, @issue.save
   end
 
@@ -55,6 +56,19 @@ class CommentTest < ActiveSupport::TestCase
     comment.created_at = Time.now - 1
     assert_equal true, comment.save
     assert_equal true, comment.edited?
+  end
+
+  test 'thread' do
+    comment1 = Comment.new({content: 'this a comment', user_id: User.current.id, project_id: 1, commentable_id: 1, commentable_type: 'Issue'})
+    comment2 = Comment.new({content: 'this a second comment in same thread', user_id: User.current.id, project_id: 1, commentable_id: 1, commentable_type: 'Issue'})
+    comment3 = Comment.new({content: 'this a third comment in another thread', user_id: User.current.id, project_id: 1, commentable_id: 2, commentable_type: 'Issue'})
+
+    comment1.save
+    comment2.save
+    comment3.save
+    assert_equal 2, comment1.thread_comment_count
+    assert_equal 2, comment2.thread_comment_count
+    assert_equal 1, comment3.thread_comment_count
   end
 
 end

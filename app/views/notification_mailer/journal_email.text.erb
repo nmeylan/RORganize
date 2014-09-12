@@ -1,0 +1,14 @@
+
+<% journal = @notification.trigger.decorate %>
+<% model = @notification.model %>
+<%= content_tag :div, class: 'block' do
+  safe_concat content_tag :div, class: "header", &Proc.new {
+    safe_concat content_tag :span, journal.user.caption, {class: 'author'}
+    safe_concat " #{t(:label_updated).downcase} #{model.class.to_s.downcase} #{model.caption} on "
+    safe_concat content_tag :span, journal.created_at.strftime(Rorganize::TIME_FORMAT), {class: 'history_date'}
+  }
+  safe_concat clear_both
+  safe_concat content_tag(:ul, (journal.details.collect { |detail| history_detail_render(detail) }).join.html_safe)
+end %>
+
+You have been notified by RORganize. If you don't want to receive these kind of notifications anymore, go to my-account -> notifications.

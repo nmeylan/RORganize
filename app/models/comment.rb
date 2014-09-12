@@ -4,6 +4,7 @@
 # File: comment.rb
 
 class Comment < ActiveRecord::Base
+  include Rorganize::NotificationsManager
   ACTIVITIES_PERIODS = {ONE_DAY: 1, THREE_DAYS: 3, ONE_WEEK: 7, ONE_MONTH: 31}
 
   belongs_to :author, class_name: 'User', foreign_key: :user_id
@@ -49,6 +50,14 @@ class Comment < ActiveRecord::Base
 
   def polymorphic_identifier
     "#{self.commentable_type}_#{self.commentable_id}".to_sym
+  end
+
+  def thread_comment_count
+    self.thread.count
+  end
+
+  def thread
+    Comment.where(commentable_id: self.commentable_id, commentable_type: self.commentable_type)
   end
 
 

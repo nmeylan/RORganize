@@ -16,6 +16,8 @@ gem 'gon'
 gem 'tzinfo-data', platforms: [:mingw, :mswin]
 gem 'mime-types'
 gem 'draper'
+gem 'delayed_job_active_record'
+gem 'daemons'
 #Assets
 gem 'sass-rails', '~> 4.0.1'
 gem 'jquery-rails'

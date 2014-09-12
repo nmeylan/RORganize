@@ -1,0 +1,25 @@
+<%#=
+ * User: nmeylan
+ * Date: 12.09.14
+ * Time: 20:07
+%>
+
+<% journal = @notification.trigger.decorate %>
+<% model = @notification.model %>
+<%= content_tag :div, class: 'block' do
+  safe_concat content_tag :div, class: "header", &Proc.new {
+    safe_concat content_tag :span, link_to(journal.user.caption, url_for(controller: 'rorganize', action: 'view_profile', user: journal.user.slug, only_path: false)), {class: 'author'}
+    safe_concat " #{t(:label_updated).downcase} #{model.class.to_s.downcase}
+                #{link_to(model.caption,
+                          url_for(controller: @notification.model_url[:controller], action: @notification.model_url[:action],
+                                  id: model.id, project_id: @notification.model_url[:project_id], only_path: false))} on "
+    safe_concat content_tag :span, journal.created_at.strftime(Rorganize::TIME_FORMAT), {class: 'history_date'}
+  }
+  safe_concat clear_both
+  safe_concat content_tag(:ul, (journal.details.collect { |detail| history_detail_render(detail) }).join.html_safe)
+end %>
+<% p journal.details %>
+
+
+<p>You have been notified by RORganize. If you don't want to receive these kind of notifications anymore,
+  <%= link_to 'click here', url_for(controller: 'profiles', action: 'show', only_path: false) %>.</p>

@@ -5,6 +5,7 @@
 
 class Journal < ActiveRecord::Base
   include Rorganize::SmartRecords
+  include Rorganize::NotificationsManager
   ACTION_CREATE = 'created'
   ACTION_UPDATE = 'updated'
   ACTION_DELETE = 'deleted'

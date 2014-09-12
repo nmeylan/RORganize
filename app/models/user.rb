@@ -21,7 +21,6 @@ class User < ActiveRecord::Base
   #Validators
   validates :login, :presence => true, :length => 4..50, :uniqueness => true
   validates :name, :presence => true, :length => 4..50
-  validates :password, :length => 4..50
   #Triggers
   after_create :generate_default_avatar
   #Scope
