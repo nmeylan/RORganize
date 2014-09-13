@@ -1,0 +1,8 @@
+<%#=
+ * User: nmeylan
+ * Date: 12.09.14
+ * Time: 20:07
+%>
+<% journal = @notification.trigger.decorate %>
+<% member  = @notification.model %>
+<%= journal.user.caption %> just add you with role <%= member.role.caption %> to <%= @notification.project.slug%>.
