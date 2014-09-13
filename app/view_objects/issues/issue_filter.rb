@@ -18,7 +18,7 @@ class IssueFilter
   # @return [Hash] with the content requiered for the filter's construction
   def build_filter
     content_hash = {}
-    members = @project.members
+    members = @project.real_members
     content_hash['hash_for_select'] = {}
     content_hash['hash_for_radio'] = Hash.new { |k, v| k[v] = [] }
     content_hash['hash_for_select']['assigned'] = members.collect { |member| [member.user.name, member.user.id] }

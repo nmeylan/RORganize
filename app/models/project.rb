@@ -18,7 +18,7 @@ class Project < ActiveRecord::Base
   has_many :journals, :dependent => :destroy
   #Triggers
   after_create :create_member
-  after_update :save_attachments
+  after_update :save_attachments, :remove_all_non_member
   #Validators
   validates_associated :attachments
   validates :name, :presence => true, :uniqueness => true
@@ -99,5 +99,16 @@ class Project < ActiveRecord::Base
       }
     end
     structure
+  end
+
+  def real_members
+    non_member = Role.non_member
+    self.members.collect{|member| member unless member.role_id.eql?(non_member.id)}.compact
+  end
+
+  def remove_all_non_member
+    if self.is_public_changed? && !self.is_public
+      Member.delete_all(project_id: self.id, role_id: Role.non_member.id)
+    end
   end
 end

@@ -239,7 +239,7 @@ class IssuesController < ApplicationController
     form_content = {}
     form_content['allowed_statuses'] = User.current.allowed_statuses(@project).collect { |status| [status.enumeration.name, status.id] }
     form_content['done_ratio'] = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
-    form_content['members'] = @project.members.collect { |member| [member.user.name, member.user.id] }
+    form_content['members'] = @project.real_members.collect { |member| [member.user.name, member.user.id]}
     form_content['categories'] = @project.categories.collect { |category| [category.name, category.id] }
     form_content['trackers'] = @project.trackers.collect { |tracker| [tracker.name, tracker.id] }
     form_content

@@ -18,7 +18,7 @@ class IssueToolbox < Toolbox
     if @user.allowed_to?('change_assigned', 'Issues', @project)
       @menu[:assigned_to].caption = h.t(:field_assigned_to)
       @menu[:assigned_to].glyph_name = Rorganize::ACTION_ICON[:assigned_to_id]
-      @menu[:assigned_to].all = @project.members.collect { |member| member.user }
+      @menu[:assigned_to].all = @project.real_members.collect { |member| member.user }
       @menu[:assigned_to].currents = @collection.collect { |issue| issue.assigned_to }.uniq
       @menu[:assigned_to].attribute_name = 'assigned_to_id'
       @menu[:assigned_to].none_allowed = true

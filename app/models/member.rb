@@ -11,10 +11,10 @@ class Member < ActiveRecord::Base
   assign_foreign_keys({role_id: Role})
   #Relations
   belongs_to :project, :class_name => 'Project', counter_cache: true
-  
+
   belongs_to :user, :class_name => 'User'
   belongs_to :role, :class_name => 'Role'
-  has_many :assigned_issues, -> { where('issues.project_id = members.project_id')},through: :user, class_name: 'Issue'
+  has_many :assigned_issues, -> { where('issues.project_id = members.project_id') }, through: :user, class_name: 'Issue'
   #Triggers
   before_create :set_project_position
   before_destroy :unassigned_issues
@@ -24,16 +24,18 @@ class Member < ActiveRecord::Base
   def caption
     self.user.name
   end
-  
+
   def create_journal
-    created_journalizable_attributes = {:role_id => [nil, self.role_id]}
-    journal = Journal.create(:user_id => User.current.id,
-      :journalizable_id => self.id,
-      :journalizable_type => self.class.to_s,
-      :notes => '',
-      :action_type => 'created',
-      :project_id => self.project_id)
-    journal.detail_insertion(created_journalizable_attributes, self.class.journalizable_properties, self.class.foreign_keys)
+    unless self.role_id.eql?(Role.non_member.id)
+      created_journalizable_attributes = {:role_id => [nil, self.role_id]}
+      journal = Journal.create(:user_id => User.current.id,
+                               :journalizable_id => self.id,
+                               :journalizable_type => self.class.to_s,
+                               :notes => '',
+                               :action_type => 'created',
+                               :project_id => self.project_id)
+      journal.detail_insertion(created_journalizable_attributes, self.class.journalizable_properties, self.class.foreign_keys)
+    end
   end
 
   #Change a member's role
@@ -50,5 +52,5 @@ class Member < ActiveRecord::Base
   def unassigned_issues
     Issue.where({assigned_to: self.user_id}).update_all({assigned_to_id: nil})
   end
-  
+
 end

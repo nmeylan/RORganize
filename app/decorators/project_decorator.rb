@@ -17,8 +17,9 @@ class ProjectDecorator < ApplicationDecorator
   # Render list of members grouped by their roles.
   def display_members
     members_hash = Hash.new { |h, k| h[k] = [] }
+    non_member = Role.non_member
     self.members.each do |member|
-      members_hash[member.role.caption] << member
+      members_hash[member.role.caption] << member unless member.role.eql?(non_member)
     end
     h.members_list(members_hash)
   end

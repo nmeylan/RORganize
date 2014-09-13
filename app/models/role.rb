@@ -10,6 +10,7 @@ class Role < ActiveRecord::Base
   has_and_belongs_to_many :issues_statuses, -> {includes([:enumeration])}, :class_name => 'IssuesStatus'
   has_and_belongs_to_many :permissions, :class_name => 'Permission'
 
+  scope :non_member, -> { where(name: Rorganize::NON_MEMBER_ROLE).first }
   validates :name, :presence => true, :uniqueness => true, :length => 2..255
 
   def self.permit_attributes

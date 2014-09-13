@@ -21,7 +21,7 @@ class ProfilesController < ApplicationController
     init_activities_sessions
     activities_data = selected_filters
     if @sessions[:activities][:types].include?('NIL')
-      @activities =  Activities.new([])
+      @activities = Activities.new([])
     else
       activities_types = @sessions[:activities][:types]
       activities_period = @sessions[:activities][:period]
@@ -76,23 +76,37 @@ class ProfilesController < ApplicationController
   def star_project
     members = @user.members
     member = members.select { |member| member.project.slug.eql?(params[:project_id]) }.first
+    project = Project.find_by_slug(params[:project_id])
+    if member.nil? && project.is_public
+      non_member_role = Role.find_by_name('Non member')
+      member = Member.create({project_id: project.id, user_id: User.current.id, role_id: non_member_role.id})
+    end
     member.is_project_starred = !member.is_project_starred
     member.save
-    message = "#{t(:text_project)} #{member.project.name} #{member.is_project_starred ? t(:successful_starred) : t(:successful_unstarred )}"
+    message = "#{t(:text_project)} #{member.project.name} #{member.is_project_starred ? t(:successful_starred) : t(:successful_unstarred)}"
     respond_to do |format|
-      format.js {respond_to_js :response_header => :success, :response_content => message, :locals => {id: params[:project_id], is_starred: member.is_project_starred}}
+      format.js { respond_to_js :response_header => :success, :response_content => message, :locals => {id: params[:project_id], is_starred: member.is_project_starred} }
     end
   end
 
   def save_project_position
     members= @user.members
     project_ids = params[:ids]
+    member_project_slug = members.map { |member| member.project.slug }
+    diff = project_ids - member_project_slug
+    if diff.any?
+      non_member_projects = Project.where(slug: diff)
+      non_member_role = Role.find_by_name('Non member')
+      non_member_projects.each do |project|
+        members << Member.create({project_id: project.id, user_id: User.current.id, role_id: non_member_role.id}) if project.is_public
+      end
+    end
     members.each do |member|
       member.project_position = project_ids.index(member.project.slug)
       member.save
     end
     respond_to do |format|
-      format.js {respond_to_js :action => 'do_nothing', :response_header => :success, :response_content => t(:successful_update)}
+      format.js { respond_to_js :action => 'do_nothing', :response_header => :success, :response_content => t(:successful_update) }
     end
   end
 
@@ -103,13 +117,13 @@ class ProfilesController < ApplicationController
       @date = Date.today
     end
     time_entries = @user.time_entries_for_month(@date.year, @date.month)
-    @time_entries = Hash.new{|h, k| h[k] = []}
+    @time_entries = Hash.new { |h, k| h[k] = [] }
     time_entries.each do |time_entry|
       @time_entries[time_entry.spent_on] << time_entry
     end
     respond_to do |format|
       format.html
-      format.js {respond_to_js}
+      format.js { respond_to_js }
     end
   end
 
@@ -128,10 +142,9 @@ class ProfilesController < ApplicationController
     render_404 if @user.nil?
   end
 
-  private
-
   def user_params
     params.require(:user).permit(User.permit_attributes)
   end
+
 
 end

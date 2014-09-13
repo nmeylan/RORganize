@@ -11,7 +11,7 @@ class MembersController < ApplicationController
   before_filter {|c| c.top_menu_item('projects')}
   #GET /projects/
   def index
-    @members_decorator = Member.where(:project_id =>  @project.id).paginated(@sessions[:current_page], @sessions[:per_page], order('users.name')).fetch_dependencies.decorate(context: {project: @project, roles:
+    @members_decorator = Member.where(:project_id =>  @project.id).where('members.role_id <> ?', Role.non_member.id).paginated(@sessions[:current_page], @sessions[:per_page], order('users.name')).fetch_dependencies.decorate(context: {project: @project, roles:
         Role.select('*')})
     respond_to do |format|
       format.html{render :action => 'index', :locals => { :users => nil}}
@@ -30,8 +30,9 @@ class MembersController < ApplicationController
 
   def new
     members = Member.eager_load(:user).where(:project_id =>  @project.id)
-    ids = members.collect{|member| member.user.id}
-    users = User.where('users.id NOT IN (?)', ids)
+    ids = members.collect{|member| member.user.id unless member.role_id.eql?(Role.non_member.id)}
+    p ids
+    users = User.where('users.id NOT IN (?)', ids.compact)
     @member = Member.new
     respond_to do |format|
       format.js {respond_to_js :locals => {:roles => Role.select('*'), :users => users, :new => true}}

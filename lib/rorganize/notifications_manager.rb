@@ -62,8 +62,7 @@ module Rorganize
           mentioned_slugs = mentioned_slugs.map { |slug| slug.gsub(/@/, '') unless slug.eql?(User.current.slug) }
           participants |= User.where(slug: mentioned_slugs) if mentioned_slugs.any?
         end
-        watchers |= @model.watchers.collect{|watcher| watcher.author}
-        p watchers
+        watchers |= @model.watchers.collect{|watcher| watcher.author} if @model.respond_to?(:watchers)
         participants | watchers
       end
 

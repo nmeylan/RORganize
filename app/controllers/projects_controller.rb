@@ -121,7 +121,7 @@ class ProjectsController < ApplicationController
   end
 
   def members
-    members = User.joins(:members).where('members.project_id' => @project_decorator.id).pluck('users.slug')
+    members = User.joins(:members).where('members.project_id' => @project_decorator.id).where('members.role_id <> ?', Role.non_member.id).pluck('users.slug')
     respond_to do |format|
       format.json { render json: members}
     end
