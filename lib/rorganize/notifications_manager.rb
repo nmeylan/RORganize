@@ -13,7 +13,14 @@ module Rorganize
       if RORganize::Application.config.enable_emails_notifications
         if self.is_a?(Comment) || (self.is_a?(Journal) && !self.action_type.eql?(Journal::ACTION_DELETE))
           notification = Notification.new(self)
-          NotificationMailer.delay.notification_email(notification) if notification.recipients.any?
+          if notification.recipients.any?
+            if notification.notification_type.eql?(Notification::GENERIC_NOTIFICATION)
+              NotificationMailer.delay.notification_email(notification)
+            elsif notification.notification_type.eql?(Notification::MEMBER_NOTIFICATION)
+              NotificationMailer.delay.welcome_new_member_email(notification)
+              NotificationMailer.delay.member_join_email(notification)
+            end
+          end
           notification
         end
       end
@@ -21,10 +28,13 @@ module Rorganize
 
 
     class Notification
-      attr_reader :recipients, :project, :trigger, :model, :model_url
+      MEMBER_NOTIFICATION = 'MEMBER'
+      GENERIC_NOTIFICATION = 'GENERIC'
+      attr_reader :recipients, :project, :trigger, :model, :model_url, :notification_type
 
       def initialize(trigger)
         @trigger = trigger
+        @notification_type = GENERIC_NOTIFICATION
         if @trigger.project
           if trigger.is_a? Journal
             @model = trigger.journalizable
@@ -36,10 +46,23 @@ module Rorganize
           @date = trigger.created_at
           @project = trigger.project
           @model_url = model_url if @model
-          @recipients = find_recipients.compact
+          if @model.is_a?(Member)
+            @notification_type = MEMBER_NOTIFICATION
+            @recipients = member_addition_recipient.compact
+          else
+            @recipients = find_recipients.compact
+          end
+
         else
           @recipients = []
         end
+      end
+
+      def member_addition_recipient
+        watchers = []
+        watchers |= @model.watchers.collect { |watcher| watcher.author } if @model.respond_to?(:watchers)
+        user = @model.user
+        [user, watchers]
       end
 
       def find_recipients
@@ -62,7 +85,7 @@ module Rorganize
           mentioned_slugs = mentioned_slugs.map { |slug| slug.gsub(/@/, '') unless slug.eql?(User.current.slug) }
           participants |= User.where(slug: mentioned_slugs) if mentioned_slugs.any?
         end
-        watchers |= @model.watchers.collect{|watcher| watcher.author} if @model.respond_to?(:watchers)
+        watchers |= @model.watchers.collect { |watcher| watcher.author } if @model.respond_to?(:watchers)
         participants | watchers
       end
 

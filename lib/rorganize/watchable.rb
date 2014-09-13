@@ -23,11 +23,11 @@ module Rorganize
     end
 
     def watchers
-      unwatch = Watcher.where(watchable_type: self.class.to_s, watchable_id: self.id, is_unwatch: true).pluck('user_id')
-      w = Watcher.where(watchable_type: self.class.to_s, watchable_id: self.id)
+      unwatch = Watcher.where(watchable_type: self.class.to_s, watchable_id: self.id, is_unwatch: true, project_id: self.project_id).pluck('user_id')
+      w = Watcher.where(watchable_type: self.class.to_s, watchable_id: self.id, project_id: self.project_id)
       project_w = Watcher.where(watchable_type: 'Project', watchable_id: self.project_id) if !self.is_a?(Project)
-      sum = project_w + w
-      sum.delete_if{|watcher| unwatch.include? watcher.user_id}
+      sum = project_w.to_a + w.to_a
+      sum.flatten(0).delete_if{|watcher| unwatch.include? watcher.user_id}
     end
 
     def parent_watch_by?(user)

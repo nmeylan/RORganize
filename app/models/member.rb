@@ -6,6 +6,7 @@
 class Member < ActiveRecord::Base
   include Rorganize::SmartRecords
   include Rorganize::Journalizable
+  include Rorganize::Watchable
   #Constants
   assign_journalizable_properties({role_id: 'Role'})
   assign_foreign_keys({role_id: Role})

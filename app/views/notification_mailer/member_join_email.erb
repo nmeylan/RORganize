@@ -1,0 +1,13 @@
+<%#=
+ * User: nmeylan
+ * Date: 12.09.14
+ * Time: 20:07
+%>
+<% journal = @notification.trigger.decorate %>
+<% member  = @notification.model %>
+<p>
+  <%= link_to(journal.user.caption, url_for(controller: 'rorganize', action: 'view_profile', user: journal.user.slug, only_path: false)) %> just add
+  <%= link_to(member.user.caption, url_for(controller: 'rorganize', action: 'view_profile', user: member.user.slug, only_path: false)) %> with role
+  <b><%= member.role.caption %></b> to
+  <%= link_to @notification.project.slug, url_for(controller: 'projects', action: 'overview', project_id: @notification.project.slug) %>.
+</p>
