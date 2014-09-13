@@ -53,7 +53,7 @@ module ProjectsHelper
         if project.starred?
           link_to(glyph(t(:link_unstar), 'star'), star_project_profile_path(project.slug), {:class => 'icon icon-fav starred star', :method => :post, :remote => true})
         else
-          link_to(glyph(t(:link_star), 'star'), star_project_profile_path(project.slug), {:class => 'icon icon-fav-off star', :method => :post, :remote => true})
+          link_to(glyph(t(:link_star), 'star'), star_project_profile_path(project.slug), {:class => 'icon icon-fav-off star', :method => :post, :remote => true, confirm: ''})
         end
       }
     }

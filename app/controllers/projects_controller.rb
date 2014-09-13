@@ -106,7 +106,7 @@ class ProjectsController < ApplicationController
     if session['project_selection_filter'].nil?
       session['project_selection_filter'] = 'all'
     end
-    @projects_decorator = User.current.owned_projects(session['project_selection_filter']).decorate(context: {allow_to_star: false})
+    @projects_decorator = User.current.owned_projects(session['project_selection_filter']).decorate(context: {allow_to_star: true})
     respond_to do |format|
       format.html { render :action => 'index' }
       format.js { respond_to_js :action => 'index' }
