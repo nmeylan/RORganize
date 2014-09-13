@@ -1,6 +1,6 @@
 # Author: Nicolas Meylan
 # Date: 13.09.14
-# Encoding: UTF-8
+# Encoding: UTF-8x
 # File: watchers_controller.rb
 
 class WatchersController < ApplicationController
@@ -39,5 +39,14 @@ class WatchersController < ApplicationController
 
   def find_watcher
     @watcher = Watcher.find_by_id(params[:id])
+  end
+
+  def check_permission
+    controller = @watcher ? @watcher.watchable_type.pluralize : params[:watcher][:watchable_type].pluralize
+    if User.current.allowed_to?('watch', controller, @project)
+      true
+    else
+      render_403
+    end
   end
 end

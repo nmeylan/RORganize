@@ -3,4 +3,4 @@
  * Date: 13.09.14
  * Time: 02:50
  %>
-$('#unwatch_link').html('<%= link_to(glyph(t(:link_watch), 'eye'), watchers_path(watcher: {watchable_type: @model.class.to_s, watchable_id: @model.id}), {id: 'watch_link', remote: true, method: :post})%>');
+$('#unwatch_link').html('<%= link_to(glyph(t(:link_watch), 'eye'), watchers_path(@project.slug, watcher: {watchable_type: @model.class.to_s, watchable_id: @model.id}), {id: 'watch_link', remote: true, method: :post})%>');

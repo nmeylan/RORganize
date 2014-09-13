@@ -20,11 +20,11 @@ RORganize::Application.routes.draw do
   resources :comments do
 
   end
+  scope 'projects/:project_id/' do
+    resources :watchers do
 
-  resources :watchers do
-
+    end
   end
-
   scope 'administration/' do
     resources :users do
       collection do

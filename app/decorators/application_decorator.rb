@@ -128,12 +128,12 @@ class ApplicationDecorator < Draper::Decorator
 
   def watch
     if User.current.allowed_to?('watch', h.controller_name, model.project)
-      h.link_to h.glyph(h.t(:link_watch), 'eye'), h.watchers_path(watcher: {watchable_type: model.class.to_s, watchable_id: model.id}), {id: 'watch_link', remote: true, method: :post}
+      h.link_to h.glyph(h.t(:link_watch), 'eye'), h.watchers_path(model.project.slug, watcher: {watchable_type: model.class.to_s, watchable_id: model.id}), {id: 'watch_link', remote: true, method: :post}
     end
   end
   def unwatch
-    if User.current.allowed_to?('unwatch', h.controller_name, model.project)
-      h.link_to h.glyph(h.t(:link_unwatch), 'eye'), h.watcher_path(model.watcher_for(User.current)), {id: 'unwatch_link', remote: true, method: :delete}
+    if User.current.allowed_to?('watch', h.controller_name, model.project)
+      h.link_to h.glyph(h.t(:link_unwatch), 'eye'), h.watcher_path(model.project.slug, model.watcher_for(User.current)), {id: 'unwatch_link', remote: true, method: :delete}
     end
   end
 

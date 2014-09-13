@@ -49,7 +49,7 @@ module Rorganize
         model_assigned_to = nil
         mentioned_slugs = []
         if @model
-          if @trigger.is_a?(Journal) && !@trigger.action_type.eql?(Journal::ACTION_CREATE)
+          if @trigger.is_a?(Journal)
             model_author = @model.author if @model.respond_to?(:author) && !@model.author.eql?(User.current)
             model_assigned_to = @model.assigned_to if @model.respond_to?(:assigned_to) && !@model.assigned_to.eql?(User.current)
             mentioned_slugs |= @model.description.scan(/@[^\s]+/) if @model.respond_to?(:description)
@@ -62,6 +62,8 @@ module Rorganize
           mentioned_slugs = mentioned_slugs.map { |slug| slug.gsub(/@/, '') unless slug.eql?(User.current.slug) }
           participants |= User.where(slug: mentioned_slugs) if mentioned_slugs.any?
         end
+        watchers |= @model.watchers.collect{|watcher| watcher.author}
+        p watchers
         participants | watchers
       end
 

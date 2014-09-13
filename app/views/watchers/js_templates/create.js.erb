@@ -3,4 +3,4 @@
  * Date: 13.09.14
  * Time: 02:37
  %>
-$('#watch_link').html('<%= link_to(glyph(t(:link_unwatch), 'eye'), watcher_path(@watcher.id), {id: 'unwatch_link', remote: true, method: :delete})%>');
+$('#watch_link').html('<%= link_to(glyph(t(:link_unwatch), 'eye'), watcher_path(@project.slug, @watcher.id), {id: 'unwatch_link', remote: true, method: :delete})%>');
