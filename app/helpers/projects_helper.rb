@@ -26,7 +26,7 @@ module ProjectsHelper
           safe_concat content_tag :p, class: 'project_last_activity', &Proc.new {
             project.last_activity_info
           }
-          project_list_star_button(project) if allow_to_star
+          project_list_star_button(project) if allow_to_star && current_user
         end
       end.join.html_safe
     end
