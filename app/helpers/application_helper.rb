@@ -514,4 +514,13 @@ module ApplicationHelper
     end
   end
 
+  def watch_link(watchable, project)
+    link_to glyph(t(:link_watch), 'eye'), watchers_path(project.slug, watchable.class.to_s, watchable.id), {id: "watch_link_#{watchable.id}", remote: true, method: :post}
+  end
+
+  def unwatch_link(watchable, watcher, project)
+    link_to glyph(t(:link_unwatch), 'eye'), watcher_path(project.slug, watchable.class.to_s, watchable.id, watcher.id), {id: "unwatch_link_#{watchable.id}", remote: true, method: :delete}
+
+  end
+
 end

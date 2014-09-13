@@ -20,9 +20,8 @@ RORganize::Application.routes.draw do
   resources :comments do
 
   end
-  scope 'projects/:project_id/' do
+  scope 'projects/:project_id/:watchable_type/:watchable_id' do
     resources :watchers do
-
     end
   end
   scope 'administration/' do

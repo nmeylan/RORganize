@@ -10,11 +10,28 @@ module Rorganize
     end
 
     def watch_by?(user)
-      !watcher_for(user).nil?
+      w = Watcher.where(user_id: user.id, watchable_type: self.class.to_s, watchable_id: self.id).first
+      is_a_project = self.is_a?(Project)
+      parent_watch = parent_watch_by?(user)
+      (!is_a_project && ((parent_watch &&(w.nil? || (w && !w.is_unwatch))) ||(!parent_watch && (w && !w.is_unwatch)))) || (is_a_project && !w.nil?)
     end
 
     def watcher_for(user)
-      Watcher.where(user_id: user.id, watchable_type: self.class.to_s, watchable_id: self.id).first
+      w = Watcher.where(user_id: user.id, watchable_type: self.class.to_s, watchable_id: self.id, is_unwatch: false).first
+      w = Watcher.where(user_id: user.id, watchable_type: 'Project', watchable_id: self.project_id, is_unwatch: false).first if w.nil? && !self.is_a?(Project)
+      w
+    end
+
+    def watchers
+      unwatch = Watcher.where(watchable_type: self.class.to_s, watchable_id: self.id, is_unwatch: true).pluck('user_id')
+      w = Watcher.where(watchable_type: self.class.to_s, watchable_id: self.id)
+      project_w = Watcher.where(watchable_type: 'Project', watchable_id: self.project_id) if !self.is_a?(Project)
+      sum = project_w + w
+      sum.delete_if{|watcher| unwatch.include? watcher.user_id}
+    end
+
+    def parent_watch_by?(user)
+      !self.is_a?(Project) && Watcher.where(user_id: user.id, watchable_type: self.project.class.to_s, watchable_id: self.project.id).any?
     end
 
   end
