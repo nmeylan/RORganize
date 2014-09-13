@@ -16,7 +16,7 @@ class WatchersController < ApplicationController
     end
     respond_to do |format|
       if success
-        format.js { respond_to_js :response_header => :success, :response_content => t(:successful_deletion) }
+        format.js { respond_to_js :response_header => :success, :response_content => t(:successful_watched) }
       else
         format.js { respond_to_js action: 'do_nothing', :response_header => :failure, :response_content => "#{t(:failure_deletion)} : #{@watcher.errors.full_messages.join(', ')}" }
       end
@@ -28,7 +28,7 @@ class WatchersController < ApplicationController
       @model = @watcher.watchable
       respond_to do |format|
         if @watcher.destroy
-          format.js { respond_to_js action: 'destroy', :response_header => :success, :response_content => t(:successful_deletion) }
+          format.js { respond_to_js action: 'destroy', :response_header => :success, :response_content => t(:successful_unwatched) }
         else
           format.js { respond_to_js action: 'do_nothing', :response_header => :failure, :response_content => "#{t(:failure_deletion)} : #{@watcher.errors.full_messages.join(', ')}" }
         end
@@ -39,7 +39,7 @@ class WatchersController < ApplicationController
       respond_to do |format|
         if @watcher.save
           @model = @watcher.watchable
-          format.js { respond_to_js :response_header => :success, :response_content => t(:successful_creation) }
+          format.js { respond_to_js :response_header => :success, :response_content => t(:successful_watched) }
         else
           format.js { respond_to_js action: 'do_nothing', :response_header => :failure, :response_content => "#{t(:successful_creation)} : #{@watcher.errors.full_messages.join(', ')}" }
         end
