@@ -21,6 +21,10 @@ RORganize::Application.routes.draw do
 
   end
 
+  resources :watchers do
+
+  end
+
   scope 'administration/' do
     resources :users do
       collection do

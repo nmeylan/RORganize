@@ -183,6 +183,9 @@ en:
   link_view_comment: View comment
   link_switch_to_edition: Switch to edition
   link_switch_to_view: Switch to view
+  link_watch: Watch
+  link_unwatch: Unwatch
+
  #FORM
   field_name: Name
   field_description: Description

@@ -118,6 +118,25 @@ class ApplicationDecorator < Draper::Decorator
     h.comment_presence(model.comments_count)
   end
 
+  def display_watch_button
+    if model.watch_by?(User.current)
+      unwatch
+    else
+      watch
+    end
+  end
+
+  def watch
+    if User.current.allowed_to?('watch', h.controller_name, model.project)
+      h.link_to h.glyph(h.t(:link_watch), 'eye'), h.watchers_path(watcher: {watchable_type: model.class.to_s, watchable_id: model.id}), {id: 'watch_link', remote: true, method: :post}
+    end
+  end
+  def unwatch
+    if User.current.allowed_to?('unwatch', h.controller_name, model.project)
+      h.link_to h.glyph(h.t(:link_unwatch), 'eye'), h.watcher_path(model.watcher_for(User.current)), {id: 'unwatch_link', remote: true, method: :delete}
+    end
+  end
+
   # Render a link to delete an attachment.
   # @param [String] path : to controller to perform the action.
   # @param [Project] project : project belongs to the attachment.
