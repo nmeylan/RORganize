@@ -5,8 +5,8 @@
  %>
 var link;
 <% if is_starred %>
-    link = "<%= escape_javascript link_to(glyph(t(:link_unstar), 'star'), star_project_profile_path(id), {:class => 'icon icon-fav starred star', :method => :post, :remote => true}) %>";
+    link = "<%= escape_javascript link_to(glyph(t(:link_unstar), 'star'), star_project_profile_path(id), {:class => 'icon icon-fav starred star tooltipped tooltipped-s', :method => :post, :remote => true, label: t(:text_unstar)}) %>";
 <% else %>
-    link = "<%= escape_javascript link_to(glyph(t(:link_star), 'star'), star_project_profile_path(id), {:class => 'icon icon-fav-off star', :method => :post, :remote => true})%>";
+    link = "<%= escape_javascript link_to(glyph(t(:link_star), 'star'), star_project_profile_path(id), {:class => 'icon icon-fav-off star tooltipped tooltipped-s', :method => :post, :remote => true, label: t(:text_star)})%>";
 <%end %>
-$(".project#<%= id %> button").html(link);
+$(".project#<%= id %> button.star_button").html(link);

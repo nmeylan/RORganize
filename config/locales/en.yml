@@ -185,6 +185,7 @@ en:
   link_switch_to_view: Switch to view
   link_watch: Watch
   link_unwatch: Unwatch
+  link_view_profile: View profile
 
  #FORM
   field_name: Name
@@ -295,6 +296,10 @@ en:
   text_shortcut_j: Line downward
   text_shortcut_k: Line upward
   text_shortcut_list_enter: Open link contained on current line
+  text_watch: Be notified of all activities
+  text_unwatch: Be notified when participating
+  text_star: Mark as favorite
+  text_unstar: Remove from favorite
 
   password: "Password"
   field_steps: "Steps"

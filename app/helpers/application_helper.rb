@@ -474,7 +474,7 @@ module ApplicationHelper
   # in case of big render.
   # @param [User] user.
   def fast_profile_link(user)
-    "<a href='/#{user.slug}' class='author_link'>#{user.caption}</a>"
+    "<a href='/#{user.slug}' class='author_link tooltipped tooltipped-s' label='#{t(:link_view_profile)}'>#{user.caption}</a>"
   end
 
   # Build a link to project overview.
@@ -515,11 +515,11 @@ module ApplicationHelper
   end
 
   def watch_link(watchable, project)
-    link_to glyph(t(:link_watch), 'eye'), watchers_path(project.slug, watchable.class.to_s, watchable.id), {id: "watch_link_#{watchable.id}", remote: true, method: :post}
+    link_to glyph(t(:link_watch), 'eye'), watchers_path(project.slug, watchable.class.to_s, watchable.id), {id: "watch_link_#{watchable.id}", class: 'tooltipped tooltipped-s', remote: true, method: :post, label: t(:text_watch)}
   end
 
   def unwatch_link(watchable, watcher, project)
-    link_to glyph(t(:link_unwatch), 'eye'), watcher_path(project.slug, watchable.class.to_s, watchable.id, watcher.id), {id: "unwatch_link_#{watchable.id}", remote: true, method: :delete}
+    link_to glyph(t(:link_unwatch), 'eye'), watcher_path(project.slug, watchable.class.to_s, watchable.id, watcher.id), {id: "unwatch_link_#{watchable.id}", class: 'tooltipped tooltipped-s', remote: true, method: :delete, label: t(:text_unwatch)}
 
   end
 

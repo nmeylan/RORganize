@@ -49,11 +49,11 @@ module ProjectsHelper
       safe_concat button_tag &Proc.new {
         project.display_watch_button
       }
-      safe_concat button_tag &Proc.new {
+      safe_concat button_tag class: 'star_button', &Proc.new {
         if project.starred?
-          link_to(glyph(t(:link_unstar), 'star'), star_project_profile_path(project.slug), {:class => 'icon icon-fav starred star', :method => :post, :remote => true})
+          link_to(glyph(t(:link_unstar), 'star'), star_project_profile_path(project.slug), {:class => 'icon icon-fav starred star tooltipped tooltipped-s', :method => :post, :remote => true, label: t(:text_unstar)})
         else
-          link_to(glyph(t(:link_star), 'star'), star_project_profile_path(project.slug), {:class => 'icon icon-fav-off star', :method => :post, :remote => true, confirm: ''})
+          link_to(glyph(t(:link_star), 'star'), star_project_profile_path(project.slug), {:class => 'icon icon-fav-off star tooltipped tooltipped-s', :method => :post, :remote => true, label: t(:text_star)})
         end
       }
     }
