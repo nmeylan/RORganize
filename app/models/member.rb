@@ -31,6 +31,7 @@ class Member < ActiveRecord::Base
       journal = Journal.create(:user_id => User.current.id,
                                :journalizable_id => self.id,
                                :journalizable_type => self.class.to_s,
+                               :journalizable_identifier => self.caption,
                                :notes => '',
                                :action_type => 'created',
                                :project_id => self.project_id)
