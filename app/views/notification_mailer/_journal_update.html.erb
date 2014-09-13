@@ -16,3 +16,9 @@
   safe_concat clear_both
   safe_concat content_tag(:ul, (journal.details.collect { |detail| history_detail_render(detail) }).join.html_safe)
 end %>
+
+<% if model.respond_to?(:attachments) %>
+    <% model.attachments.each do |attachment| %>
+        <% attachments[attachment.file_file_name] = File.read(attachment.file.path) %>
+    <% end %>
+<% end %>

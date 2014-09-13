@@ -125,7 +125,6 @@ class IssuesController < ApplicationController
 
   def download_attachment
     attachment = Attachment.find_by_id(params[:id])
-    p attachment.file_file_name
     send_file(attachment.file.url)
   end
 

@@ -1,0 +1,15 @@
+<%#=
+ * User: nmeylan
+ * Date: 13.09.14
+ * Time: 03:34
+%>
+<ul>
+  <li><b><%= t(:field_title) %>:</b> <%= model.caption %></li>
+  <li><b><%= t(:field_version) %>:</b> <%= model.version ? model.version.caption : '-' %></li>
+  <li><b><%= t(:field_category) %>:</b> <%= model.category ? model.category.caption : '-' %></li>
+</ul>
+<%= markdown_to_html model.description, nil, true %>
+
+<% model.attachments.each do |attachment| %>
+    <% attachments[attachment.file_file_name] = File.read(attachment.file.path) %>
+<% end %>

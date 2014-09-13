@@ -14,3 +14,7 @@
   <li><b><%= t(:field_due_date) %>:</b> <%= model.due_date%></li>
 </ul>
 <%= markdown_to_html model.description, nil, true %>
+
+<% model.attachments.each do |attachment| %>
+    <% attachments[attachment.file_file_name] = File.read(attachment.file.path) %>
+<% end %>

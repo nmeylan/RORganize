@@ -16,6 +16,7 @@
     <% end %>
     <% if model.class.to_s.eql? 'Issue' %>
         <%= render partial: 'issue_creation_email', locals: {model: model} %>
-
+    <% elsif model.class.to_s.eql? 'Document' %>
+        <%= render partial: 'document_creation_email', locals: {model: model} %>
     <% end %>
 <% end %>
