@@ -63,7 +63,6 @@ module Rorganize
           participants |= User.where(slug: mentioned_slugs) if mentioned_slugs.any?
         end
         watchers |= @model.watchers.collect{|watcher| watcher.author} if @model.respond_to?(:watchers)
-        p watchers
         participants | watchers
       end
 
