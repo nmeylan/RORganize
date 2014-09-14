@@ -25,7 +25,7 @@ class NotificationMailer < ActionMailer::Base
 
   def member_join_email(notification)
     @notification = notification
-    subject = "RORganize - [#{notification.project.slug}] : A new member join the project!"
+    subject = "RORganize - [#{notification.project.slug}] : A new member joins the project!"
     mail(bcc: notification.recipients[1].collect { |recipient| recipient.email }, subject: subject, from: 'RORganize Notifier')
   end
 end
