@@ -29,8 +29,8 @@
 </div>
 
 <div class="splitcontentright" style="margin-top: 10px">
-  <input value="Export to PDF" type="button" onclick='gantt.exportToPDF({header: "<%= stylesheet_link_tag('dhtmlxgantt', protocole: :absolute).gsub('"', '').gsub('href=', 'href='+request.host.to_s+':'+request.port.to_s) %>" })' style='margin-right: 0px;margin-left: 10px; float:right'>
-  <input value="Export to PNG" type="button" onclick='gantt.exportToPNG({header: "<%= stylesheet_link_tag('dhtmlxgantt').gsub('"', '').gsub('href=', 'href='+request.host.to_s+':'+request.port.to_s) %>"})' style="float:right">
+  <input value="Export to PDF" type="button" onclick='gantt.exportToPDF({header: "<%= stylesheet_link_tag('dhtmlxgantt').gsub('"', '').gsub('href=', 'href='+request.protocol+request.host.to_s+':'+request.port.to_s) %>" })' style='margin-right: 0px;margin-left: 10px; float:right'>
+  <input value="Export to PNG" type="button" onclick='gantt.exportToPNG({header: "<%= stylesheet_link_tag('dhtmlxgantt').gsub('"', '').gsub('href=', 'href='+request.protocol+request.host.to_s+':'+request.port.to_s) %>"})' style="float:right">
 </div>
 <p>
   About issues : <%= info_tag('Only task with a start and due date are displayed.') %><br>
