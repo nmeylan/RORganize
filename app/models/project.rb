@@ -109,7 +109,8 @@ class Project < ActiveRecord::Base
 
   def remove_all_non_member
     if self.is_public_changed? && !self.is_public
-      Member.delete_all(project_id: self.id, role_id: Role.non_member.id)
+      Member.destroy_all(project_id: self.id, role_id: Role.non_member.id)
+      Watcher.delete_all("project_id = #{self.id} AND user_id NOT IN (#{self.members.collect{|member| member.user_id}.join(',')})")
     end
   end
 end
