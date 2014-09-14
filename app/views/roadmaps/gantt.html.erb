@@ -5,6 +5,7 @@
 # File: gantt.html.erb
 %>
 <%= javascript_include_tag 'dhtmlxgantt' %>
+
 <script src="http://export.dhtmlx.com/gantt/api.js"></script>
 <%= stylesheet_link_tag 'dhtmlxgantt' %>
 
@@ -28,8 +29,8 @@
 </div>
 
 <div class="splitcontentright" style="margin-top: 10px">
-  <input value="Export to PDF" type="button" onclick='gantt.exportToPDF()' style='margin-right: 0px;margin-left: 10px; float:right'>
-  <input value="Export to PNG" type="button" onclick='gantt.exportToPNG()' style="float:right">
+  <input value="Export to PDF" type="button" onclick='gantt.exportToPDF({header: "<%= stylesheet_link_tag('dhtmlxgantt').gsub('"', '') %>"})' style='margin-right: 0px;margin-left: 10px; float:right'>
+  <input value="Export to PNG" type="button" onclick='gantt.exportToPNG({header: "<%= stylesheet_link_tag('dhtmlxgantt').gsub('"', '') %>"})' style="float:right">
 </div>
 <p>
   About issues : <%= info_tag('Only task with a start and due date are displayed.') %><br>

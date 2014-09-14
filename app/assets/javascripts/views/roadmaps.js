@@ -108,6 +108,7 @@ function roadmap_gantt() {
         gantt.config.drag_links = edition;
         gantt.config.autosize = true;
 
+
         config_column(edition);
 
         gantt.templates.rightside_text = function (start, end, task) {
@@ -193,6 +194,7 @@ function roadmap_gantt() {
             }
             if (!(mode == modes.move || mode == modes.resize)) return;
             task.context.due_date = task.end_date;
+            task.context.start_date = task.start_date;
             task.context.due_date_str = task.context.due_date.getDate() + ' ' + MONTHS[task.context.due_date.getMonth()] + '.';
             task.context.start_date_str = task.start_date.getDate() + ' ' + MONTHS[task.start_date.getMonth()] + '.';
             gantt.refreshTask(task.id);
@@ -210,6 +212,7 @@ function roadmap_gantt() {
             var children = gantt.getChildren(id);
             __fix_dnd_scale_time(task, drag);
             task.context.due_date = task.end_date;
+            task.context.start_date = task.start_date;
             task.context.due_date_str = task.context.due_date.getDate() + ' ' + MONTHS[task.context.due_date.getMonth()] + '.';
             task.context.start_date_str = task.start_date.getDate() + ' ' + MONTHS[task.start_date.getMonth()] + '.';
             gantt.refreshTask(task.id);
@@ -261,6 +264,8 @@ function dnd_apply_constraints(mode, drag, task, child) {
         }
     }
     child.context.due_date = child.end_date;
+
+    child.context.start_date = child.start_date;
     child.context.due_date_str = child.context.due_date.getDate() + ' ' + MONTHS[child.context.due_date.getMonth()] + '.';
     child.context.start_date_str = child.start_date.getDate() + ' ' + MONTHS[child.start_date.getMonth()] + '.';
     child.duration = gantt.calculateDuration(child.start_date, child.end_date);
@@ -310,8 +315,6 @@ function bind_save_button(){
         if(ids.length == 0){
             apprise('Before saving please select which elements you want to save.');
         }else {
-
-            console.log(serialized_gantt);
             var len = serialized_gantt.data.length;
             for (var i = 0; i < len; i++) {
                 if (ids.indexOf(serialized_gantt.data[i].id.toString()) != -1) {
@@ -322,7 +325,6 @@ function bind_save_button(){
                 }
             }
             serialized_gantt.data = data;
-            console.log(serialized_gantt);
             $.ajax({
                 url: form.attr('action'),
                 type: form.attr('method'),
@@ -341,7 +343,7 @@ function config_column(edition){
         }
     } : {name : '', label: '', width: 0, template : function(item){return ''}};
     gantt.config.columns = [
-        {name: "text", label: "Task name", tree: true, width: 100,
+        {name: "text", label: "Task name", tree: true, width: 120,
             template: function (item) {
                 var context = item.context;
                 if (context.type === "issue") {
@@ -353,7 +355,7 @@ function config_column(edition){
         },
         {name: "start_date", label: "Start date", width: 60, align: "center",
             template: function (item) {
-                return item.start_date;
+                return item.context.start_date;
             }
         },
         {name: "due_date", label: "Due date", width: 60, align: "center",

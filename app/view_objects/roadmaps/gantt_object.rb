@@ -59,6 +59,7 @@ class GanttObject
         context: {
             type: 'version',
             due_date: version.target_date,
+            start_date: version.start_date,
             due_date_str: version.target_date ? version.target_date.strftime(DATE_FORMAT_STR) : '',
             start_date_str: version.start_date.strftime(DATE_FORMAT_STR)
         }
@@ -80,6 +81,7 @@ class GanttObject
             type: 'issue',
             link: link_to(issue.tracker.caption + ' #'+ issue.id.to_s, issue_path(@project, issue.id)),
             due_date: due_date,
+            start_date: start_date,
             assigne: issue.assigned_to ? issue.assigned_to.caption : nil,
             due_date_str: due_date.strftime(DATE_FORMAT_STR),
             start_date_str: start_date.strftime(DATE_FORMAT_STR),
