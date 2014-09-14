@@ -90,7 +90,7 @@ class ProfilesController < ApplicationController
   end
 
   def save_project_position
-    members= @user.members
+    members = @user.members.includes(:project)
     project_ids = params[:ids]
     member_project_slug = members.map { |member| member.project.slug }
     diff = project_ids - member_project_slug

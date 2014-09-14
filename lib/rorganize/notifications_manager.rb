@@ -60,7 +60,7 @@ module Rorganize
 
       def member_addition_recipient
         watchers = []
-        watchers |= @model.watchers.collect { |watcher| watcher.author } if @model.respond_to?(:watchers)
+        watchers |= @model.real_watchers.collect { |watcher| watcher.author } if @model.respond_to?(:real_watchers)
         user = @model.user
         [user, watchers]
       end
@@ -85,7 +85,7 @@ module Rorganize
           mentioned_slugs = mentioned_slugs.map { |slug| slug.gsub(/@/, '') unless slug.eql?(User.current.slug) }
           participants |= User.where(slug: mentioned_slugs) if mentioned_slugs.any?
         end
-        watchers |= @model.watchers.collect { |watcher| watcher.author } if @model.respond_to?(:watchers)
+        watchers |= @model.real_watchers.collect { |watcher| watcher.author } if @model.respond_to?(:real_watchers)
         participants | watchers
       end
 

@@ -17,8 +17,8 @@ class Member < ActiveRecord::Base
   belongs_to :role, :class_name => 'Role'
   has_many :assigned_issues, -> { where('issues.project_id = members.project_id') }, through: :user, class_name: 'Issue'
   #Triggers
-  before_create :set_project_position
-  before_destroy :unassigned_issues
+  before_create :set_project_position, :remove_old_member_role
+  after_destroy :unassigned_issues, :remove_watchers
   #Scopes
   scope :fetch_dependencies, -> { eager_load(:role, :user) }
   #Methods
@@ -53,6 +53,17 @@ class Member < ActiveRecord::Base
 
   def unassigned_issues
     Issue.where({assigned_to: self.user_id}).update_all({assigned_to_id: nil})
+  end
+
+  # When user is no longer a team member, he should lose his watchers on this project items.
+  def remove_watchers
+    Watcher.delete_all(project_id: self.project_id, user_id: self.user_id)
+  end
+
+  # If member was a non member on the project, then drop this old role and replaced by the new one.
+  def remove_old_member_role
+    Member.delete_all(project_id: self.project_id, user_id: self.user_id)
+
   end
 
 end
