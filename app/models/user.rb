@@ -176,7 +176,7 @@ class User < ActiveRecord::Base
         conditions = self.act_as_admin? ? '1 = 1 ' : "(members.user_id = #{self.id} OR projects.is_public = true) "
     end
     conditions += 'AND journals.id = (SELECT max(j.id) FROM journals j WHERE j.project_id = projects.id)'
-    Project.eager_load([:members, [journals: :user]]).where(conditions).order('members.project_position ASC')
+    Project.eager_load([:watchers, :members, [journals: :user]]).where(conditions).group('1').order('members.project_position ASC')
   end
 
   #Get all coworkers for each project
