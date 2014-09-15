@@ -23,7 +23,7 @@ class NotificationsManagerTest < ActiveSupport::TestCase
 
   test 'Recipients : author and assigned on journal creation' do
     notif = @journal.create_notification
-    assert_equal [], notif.recipients.collect { |r| r.id }
+    assert_equal [1], notif.recipients.collect { |r| r.id }
 
     @issue.assigned_to_id = 5
     @issue.status_id = 5
