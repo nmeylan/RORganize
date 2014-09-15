@@ -211,7 +211,7 @@ class User < ActiveRecord::Base
     path = "#{Rails.root}/public/system/identicons/#{self.slug}_avatar.png"
     Identicon.file_for self.slug, path
     file = File.open(path)
-    self.avatar = Attachment.new({attachable_type: self.class.to_s})
+    self.avatar = Avatar.new({attachable_type: self.class.to_s})
     self.avatar.avatar = file
     avatar = self.avatar
     avatar.save(validation: false)
