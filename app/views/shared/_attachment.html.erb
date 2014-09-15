@@ -3,7 +3,7 @@
  * Date: 21.07.14
  * Time: 18:56
 %>
-<% if attachment.file_content_type %>
+<% if !attachment.new_record? && attachment.file_content_type %>
     <tr id="<%= attachment.id %>">
       <td class="attachment_title">
         <% if attachment.file_content_type.include?('image') %>
