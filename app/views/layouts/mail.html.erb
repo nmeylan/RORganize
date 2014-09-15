@@ -17,6 +17,8 @@
     body {
         margin: 0px;
         background-color: #fff;
+
+        padding: 10px;
         font-size: 14px;
     }
 
@@ -45,13 +47,14 @@
     a:hover, a:visited:hover {
         color: #484848;
     }
-
+    p{
+        margin: 15px;
+    }
     #content {
         float: left;
         color: #484848;
-        padding: 10px;
+        width: 100%;
         z-index: 10;
-        width: 82%;
         text-align: justify;
         overflow-wrap: break-word;
     }
@@ -88,5 +91,6 @@
   <%= yield %>
   <p>You have been notified by RORganize.</p>
 </div>
+<%= clear_both %>
 </body>
 </html>
