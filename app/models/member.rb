@@ -18,7 +18,8 @@ class Member < ActiveRecord::Base
   has_many :assigned_issues, -> { where('issues.project_id = members.project_id') }, through: :user, class_name: 'Issue'
   #Triggers
   before_create :set_project_position, :remove_old_member_role
-  after_destroy :unassigned_issues, :remove_watchers
+  after_create :dec_counter_cache
+  after_destroy :unassigned_issues, :remove_watchers, :inc_counter_cache
   #Scopes
   scope :fetch_dependencies, -> { eager_load(:role, :user) }
   #Methods
@@ -66,4 +67,10 @@ class Member < ActiveRecord::Base
 
   end
 
+  def dec_counter_cache
+    Project.update_counters(self.project_id, members_count: -1) if self.role_id.eql?(Role.non_member.id)
+  end
+  def inc_counter_cache
+    Project.update_counters(self.project_id, members_count: 1) if self.role_id.eql?(Role.non_member.id)
+  end
 end
