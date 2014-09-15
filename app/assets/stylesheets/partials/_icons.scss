@@ -29,6 +29,9 @@ a .octicon {
   margin-left: 5px;
   margin-right: 4px;
 }
+.selected .octicon{
+  color: $link-hover-color;
+}
 a:hover{
   .medium-octicon, .mega-octicon, .octicon{
     color : $link-hover-color;

@@ -28,33 +28,22 @@ module Rorganize
 
       def render_menu(project = nil)
         if @menu_context.include?(:project_menu)
-          render_project_menu(Rorganize::MenuManager.items(:project_menu), project)
+          render_main_menu(Rorganize::MenuManager.items(:project_menu), project)
         elsif @menu_context.include?(:admin_menu)
-          render_admin_menu(Rorganize::MenuManager.items(:admin_menu))
+          render_main_menu(Rorganize::MenuManager.items(:admin_menu), nil)
         end
 
       end
 
-      def render_project_menu(menu, project)
+      def render_main_menu(menu, project)
         content = ''
         menu.menu_items.each do |item|
           if User.current.allowed_to?(item.url[:action], item.url[:controller], project)
-            item.url[:project_id] = project.slug
-            content += content_tag(:li,
-                                   link_to(item.label, item.url, {:id => item.params[:id]}),
-                                   :class => item.params[:id].eql?(@current_menu_item) ? 'selected' : '')
-          end
-        end
-        content_for :main_menu, content.html_safe
-      end
-
-      def render_admin_menu(menu)
-        content = ''
-        menu.menu_items.each do |item|
-          if User.current.allowed_to?(item.url[:action], item.url[:controller])
-            content += content_tag(:li,
-                                   link_to(item.label, item.url, {:id => item.params[:id]}),
-                                   :class => item.params[:id].eql?(@current_menu_item) ? 'selected' : '')
+            css_selection = item.params[:id].eql?(@current_menu_item) ? 'selected' : ''
+            css_class = item.params[:class] ? "#{item.params[:class]} #{css_selection}" : css_selection
+            glyph = glyph(item.label, item.params[:glyph])
+            item.url[:project_id] = project.slug if project
+            content += content_tag(:li,link_to(glyph, item.url, {:id => item.params[:id]}), :class => css_class)
           end
         end
         content_for :main_menu, content.html_safe
@@ -63,14 +52,13 @@ module Rorganize
       def render_top_menu
         menu = Rorganize::MenuManager.items(:top_menu)
         content = ''
-        content += content_tag(:li,link_to(t(:home), :root, {:class => @current_top_menu_item.eql?('menu_home') ? 'selected square' : 'square'}))
+        content += content_tag(:li, link_to(t(:home), :root, {:class => @current_top_menu_item.eql?('menu_home') ? 'selected square' : 'square'}))
         unless controller_name.eql?('sessions') || controller_name.eql?('registrations')
           menu.menu_items.each do |item|
             if User.current && User.current.allowed_to?(item.url[:action], item.url[:controller])
-              content += content_tag(:li,
-                                     link_to(item.label, item.url, {:id => item.params[:id],
-                                                                    :class => item.params[:id].eql?(@current_top_menu_item) ? 'selected square' : 'square'}
-                                     ))
+              css_selection = item.params[:id].eql?(@current_top_menu_item) ? 'selected square' : 'square'
+              css_class = item.params[:class] ? "#{item.params[:class]} #{css_selection}" : css_selection
+              content += content_tag(:li, link_to(item.label, item.url, {:id => item.params[:id], :class => css_class}))
             end
           end
         end
