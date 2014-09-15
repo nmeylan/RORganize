@@ -127,7 +127,7 @@ class ProjectsController < ApplicationController
     end
   end
   def issues_completion
-    issues = Issue.joins(:status).where(project_id: @project_decorator.id).order('issues_statuses.is_closed, issues.updated_at ASC').pluck('issues.id, issues.subject')
+    issues = Issue.joins(:status).where(project_id: @project_decorator.id).order('issues_statuses.is_closed ASC, issues.updated_at DESC').pluck('issues.id, issues.subject')
     respond_to do |format|
       format.json { render json: issues}
     end
