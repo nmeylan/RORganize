@@ -212,7 +212,6 @@ function markdown_textarea() {
                     });
                 } else {
                     callback($.map(cacheResponse, function (member) {
-                        console.log('aa');
                         return member.indexOf(term) === 0 ? member : null;
                     }));
                 }
@@ -230,14 +229,14 @@ function markdown_textarea() {
                         cacheResponse1 = response;
                         callback($.map(cacheResponse1, function (issue) {
                             var tmp = '#' + issue[0];
-                            var isTermMatch = issue[0].toString().indexOf(term) !== -1 || issue[1].indexOf(term) !== -1;
+                            var isTermMatch = issue[0].toString().indexOf(term) !== -1 || issue[1].toLowerCase().indexOf(term) !== -1;
                             return isTermMatch ? tmp + ' ' + issue[1] : null;
                         }));
                     });
                 } else {
                     callback($.map(cacheResponse1, function (issue) {
                         var tmp = '#' + issue[0];
-                        var isTermMatch = issue[0].toString().indexOf(term) === 0 || issue[1].indexOf(term) === 0;
+                        var isTermMatch = issue[0].toString().indexOf(term) === 0 || issue[1].toLowerCase().indexOf(term) === 0;
                         return isTermMatch ? tmp + ' ' + issue[1] : null;
                     }));
                 }
