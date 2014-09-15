@@ -14,6 +14,7 @@ RORganize::Application.routes.draw do
       post 'archive', :path => 'archive/:id'
       post 'activity_filter', :path => ':project_id/activity_filter/:type'
       get 'members', path: ':project_id/members'
+      get 'issues_completion', path: ':project_id/issues_completion'
     end
   end
 

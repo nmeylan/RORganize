@@ -1,8 +1,8 @@
 require 'shared/activities'
 class ProjectsController < ApplicationController
   before_filter { |c| c.add_action_alias = {'show' => 'overview'}}
-  before_filter :find_project, :only => [:overview, :show, :activity, :activity_filter, :members]
-  before_filter :check_permission, :except => [:index, :filter, :members, :activity_filter]
+  before_filter :find_project, :only => [:overview, :show, :activity, :activity_filter, :members, :issues_completion]
+  before_filter :check_permission, :except => [:index, :filter, :members, :activity_filter, :issues_completion]
   before_filter { |c| c.menu_context :project_menu }
   before_filter { |c| c.menu_item(params[:controller], params[:action].eql?('show') ? 'overview' : params[:action]) }
   before_filter { |c| c.top_menu_item('projects') }
@@ -124,6 +124,12 @@ class ProjectsController < ApplicationController
     members = User.joins(:members).where('members.project_id' => @project_decorator.id).where('members.role_id <> ?', Role.non_member.id).pluck('users.slug')
     respond_to do |format|
       format.json { render json: members}
+    end
+  end
+  def issues_completion
+    issues = Issue.joins(:status).where(project_id: @project_decorator.id).order('issues_statuses.is_closed, issues.updated_at ASC').pluck('issues.id, issues.subject')
+    respond_to do |format|
+      format.json { render json: issues}
     end
   end
 

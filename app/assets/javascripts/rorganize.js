@@ -197,6 +197,7 @@ function error_explanation(message) {
 function markdown_textarea() {
     var el = jQuery('.fancyEditor');
     var cacheResponse = [];
+    var cacheResponse1 = [];
     el.markItUpRemove().markItUp(markdownSettings);
     el.textcomplete([
         { // mention strategy
@@ -211,6 +212,7 @@ function markdown_textarea() {
                     });
                 } else {
                     callback($.map(cacheResponse, function (member) {
+                        console.log('aa');
                         return member.indexOf(term) === 0 ? member : null;
                     }));
                 }
@@ -219,6 +221,31 @@ function markdown_textarea() {
                 return '$1@' + value + ' ';
             },
             cache: true
+        },
+        { // Issues strategy
+            match: /(\s)#((\w*)|\d*)$/,
+            search: function (term, callback) {
+                if ($.isEmptyObject(cacheResponse1)) {
+                    $.getJSON('/projects/' + gon.project_id + '/issues_completion').done(function (response) {
+                        cacheResponse1 = response;
+                        callback($.map(cacheResponse1, function (issue) {
+                            var tmp = '#' + issue[0];
+                            var isTermMatch = issue[0].toString().indexOf(term) !== -1 || issue[1].indexOf(term) !== -1;
+                            return isTermMatch ? tmp + ' ' + issue[1] : null;
+                        }));
+                    });
+                } else {
+                    callback($.map(cacheResponse1, function (issue) {
+                        var tmp = '#' + issue[0];
+                        var isTermMatch = issue[0].toString().indexOf(term) === 0 || issue[1].indexOf(term) === 0;
+                        return isTermMatch ? tmp + ' ' + issue[1] : null;
+                    }));
+                }
+            },
+            replace: function (value) {
+                return '$1' + value.substr(0, value.indexOf(' ')) + ' ';
+            },
+            cache: false
         }
     ]);
     el.focus();
@@ -848,14 +875,14 @@ function bind_tab_nav(tab_id) {
     var tabs = $('#' + tab_id);
     var links = tabs.find('a');
     var content_tabs = [];
-    links.each(function(){
-        content_tabs.push($('#'+$(this).data('tab_id')));
+    links.each(function () {
+        content_tabs.push($('#' + $(this).data('tab_id')));
     });
     links.click(function (e) {
         e.preventDefault();
         var el = $(this);
         var tab_id = el.data('tab_id');
-        for(var i = 0; i < content_tabs.length; i++){
+        for (var i = 0; i < content_tabs.length; i++) {
             content_tabs[i].hide();
         }
         links.removeClass('selected');
