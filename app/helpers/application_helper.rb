@@ -507,7 +507,7 @@ module ApplicationHelper
   # @param [Document] document.
   # @param [Project] project.
   def fast_document_link(document, project)
-    "<a href='/projects/#{project.slug}/documents/#{document.id}'>#{document.caption}</a>"
+    "<b>document</b> <a href='/projects/#{project.slug}/documents/#{document.id}'>#{document.caption}</a>"
   end
 
   #id is the id of the tab
