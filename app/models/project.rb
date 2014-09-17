@@ -90,7 +90,7 @@ class Project < ActiveRecord::Base
     self.versions.where('versions.start_date <= ? AND versions.is_done = false', Date.today)
   end
 
-  def past_versions
+  def old_versions
     self.versions.where('versions.start_date <= ? AND versions.is_done = true', Date.today)
   end
   def roadmap
