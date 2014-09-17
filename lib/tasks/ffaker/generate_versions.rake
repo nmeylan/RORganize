@@ -12,6 +12,7 @@ namespace :ffaker do
         version.start_date = Date.today
         version.target_date = version.start_date + 50
         version.project_id = 1
+        version.is_done = true
         version.save
       end
     end
