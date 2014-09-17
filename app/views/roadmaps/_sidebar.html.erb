@@ -5,21 +5,23 @@
 # File: _sidebar.html.erb
 %>
 <%= content_for :sidebar do %>
-  <h2><%= t(:link_versions) %></h2>
-  <ul>
-    <%= @version_decorator.collect{|version| content_tag :li, link_to(version.resized_caption(20), "#v-#{version.id ? version.id : 'unplanned'}")}.join.html_safe  %>
-  </ul>
-  <h2><%= t(:label_report_plural) %></h2>
-  <ul>
-    <li>
-      <%= link_to t(:label_calendar), {:controller => 'roadmaps', :action => 'calendar', :project_id => @project_decorator.slug} %>
-    </li>
-    <li>
-      <%= link_to t(:label_gantt_chart), {:controller => 'roadmaps', :action => 'gantt', :project_id => @project_decorator.slug} %>
-    </li>
-  </ul>
-    <h2><%= t(:link_old_versions) %></h2>
+    <h2><%= t(:link_versions) %></h2>
     <ul>
-      <%= old_versions.collect{|version| content_tag :li, link_to(version.resized_caption(20), version_roadmap_path(@project_decorator.slug, version.id))}.join.html_safe  %>
+      <%= @version_decorator.collect { |version| content_tag :li, link_to(version.resized_caption(20), "#v-#{version.id ? version.id : 'unplanned'}") }.join.html_safe %>
     </ul>
+    <h2><%= t(:label_report_plural) %></h2>
+    <ul>
+      <li>
+        <%= link_to t(:label_calendar), {:controller => 'roadmaps', :action => 'calendar', :project_id => @project_decorator.slug} %>
+      </li>
+      <li>
+        <%= link_to t(:label_gantt_chart), {:controller => 'roadmaps', :action => 'gantt', :project_id => @project_decorator.slug} %>
+      </li>
+    </ul>
+    <% if old_versions.to_a.any? %>
+        <h2><%= t(:link_old_versions) %></h2>
+        <ul>
+          <%= old_versions.collect { |version| content_tag :li, link_to(version.resized_caption(20), version_roadmap_path(@project_decorator.slug, version.id)) }.join.html_safe %>
+        </ul>
+    <% end %>
 <% end %>
