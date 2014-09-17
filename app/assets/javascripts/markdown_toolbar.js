@@ -23,7 +23,7 @@ markdownSettings = {
     markupSet: [
         [
             {name: 'h1', key: "1", placeHolder: 'Your title here...', openWith: '# '},
-            {name: 'h2', key: "2", placeHolder: 'Your title here...', openWith: '# ' },
+            {name: 'h2', key: "2", placeHolder: 'Your title here...', openWith: '## ' },
             {name: 'h3', key: "3", openWith: '### ', placeHolder: 'Your title here...' },
             {name: 'h4', key: "4", openWith: '#### ', placeHolder: 'Your title here...' }
         ],
@@ -37,7 +37,7 @@ markdownSettings = {
             {name: 'Numeric List', iconName: 'list-ordered', openWith: function (markItUp) {
                 return markItUp.line + '. ';
             }},
-            {name: 'Task List', openWith: '- [ ', closeWith: ']', iconName: 'checklist'},
+            {name: 'Task List', openWith: '- [ ] ', closeWith: ' ', iconName: 'checklist'},
         ],
         [
             {name: 'Picture', key: "P", replaceWith: '![[![Alternative text]!]]([![Url:!:http://]!] "[![Title]!]")', iconName: 'file-media'},
