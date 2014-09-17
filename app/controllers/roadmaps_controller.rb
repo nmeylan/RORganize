@@ -7,17 +7,29 @@ require 'roadmaps/gantt_object'
 class RoadmapsController < ApplicationController
   helper VersionsHelper
   include RoadmapsHelper
-  before_filter :check_permission, only: [:gantt, :manage_gantt, :show]
+  before_filter {|c| c.add_action_alias = {'version' => 'show'}}
+  before_filter :check_permission, only: [:gantt, :manage_gantt, :show, :version]
   before_filter { |c| c.menu_context :project_menu }
   before_filter { |c| c.menu_item(params[:controller]) }
   before_filter { |c| c.top_menu_item('projects') }
 
   #GET/project/:project_id/roadmaps
   def show
-    @versions = @project_decorator.current_versions.order(:position).decorate
-    @versions.to_a << Version.new(name: 'Unplanned').decorate
+    @version_decorator = @project_decorator.current_versions.eager_load(issues: [:status, :tracker]).order(:position).decorate
+    @version_decorator.to_a << Version.new(name: 'Unplanned').decorate
+    old_versions = @project_decorator.old_versions.decorate
     respond_to do |format|
-      format.html { render :action => 'index' }
+      format.html { render :action => 'index', locals: {old_versions: old_versions} }
+    end
+  end
+
+  def version
+    @version_decorator = Version.find_by_id(params[:id])
+    if @version_decorator
+      @version_decorator = @version_decorator.decorate
+
+    else
+      render_404
     end
   end
 

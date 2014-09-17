@@ -7,5 +7,5 @@
 
 <%= contextual t(:label_roadmap) %>
 
-<%= @project_decorator.display_roadmap(@versions) %>
-  <%= render :partial => 'roadmaps/sidebar' %>
+<%= @project_decorator.display_roadmap(@version_decorator) %>
+  <%= render :partial => 'roadmaps/sidebar', locals: {old_versions: old_versions} %>

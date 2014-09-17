@@ -20,6 +20,8 @@ class Member < ActiveRecord::Base
   before_create :set_project_position, :remove_old_member_role
   after_create :dec_counter_cache
   after_destroy :unassigned_issues, :remove_watchers, :inc_counter_cache
+
+  validates_uniqueness_of :user_id, scope: [:project_id]
   #Scopes
   scope :fetch_dependencies, -> { eager_load(:role, :user) }
   #Methods

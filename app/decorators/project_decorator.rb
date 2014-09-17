@@ -55,12 +55,12 @@ class ProjectDecorator < ApplicationDecorator
   # @param [Array] versions an array of running versions.
   def display_roadmap(versions)
     versions_overviews = Version.overviews(self.id)
-    issues_array = Issue.eager_load(:status, :tracker, :version).where(project_id: self.id)
     structure = Hash.new { |k, v| k[v] = {} }
     versions_overviews.each do |version_overview|
+      version = versions.select { |v| v.id.eql?(version_overview[0]) && v.id }.first
+      issues = version ? version.issues : []
       structure[version_overview.first] = {
-          percent: version_overview[3].truncate, closed_issues_count: version_overview[2], opened_issues_count: version_overview[1], issues: issues_array.select { |issue| issue.version_id.eql?(version_overview.first) }
-      }
+      percent: version_overview[3].truncate, closed_issues_count: version_overview[2], opened_issues_count: version_overview[1], issues: issues}
     end
     if versions.to_a.any?
       versions.each do |version|

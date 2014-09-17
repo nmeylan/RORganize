@@ -87,9 +87,12 @@ class Project < ActiveRecord::Base
   end
 
   def current_versions
-    self.versions.where('start_date <= ? AND is_done = false', Date.today)
+    self.versions.where('versions.start_date <= ? AND versions.is_done = false', Date.today)
   end
 
+  def old_versions
+    self.versions.where('versions.start_date <= ? AND versions.is_done = true', Date.today)
+  end
   def roadmap
     structure = Hash.new { |k, v| k[v] = {} }
     versions_overviews = Version.overviews(self.id)

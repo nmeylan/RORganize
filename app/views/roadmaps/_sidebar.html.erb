@@ -7,9 +7,7 @@
 <%= content_for :sidebar do %>
   <h2><%= t(:link_versions) %></h2>
   <ul>
-    <% @versions.each do |version| %>
-      <li><%= link_to version.name, "#v-#{version.id ? version.id : 'unplanned'}" %></li>
-    <% end %>
+    <%= @version_decorator.collect{|version| content_tag :li, link_to(version.resized_caption(20), "#v-#{version.id ? version.id : 'unplanned'}")}.join.html_safe  %>
   </ul>
   <h2><%= t(:label_report_plural) %></h2>
   <ul>
@@ -20,4 +18,8 @@
       <%= link_to t(:label_gantt_chart), {:controller => 'roadmaps', :action => 'gantt', :project_id => @project_decorator.slug} %>
     </li>
   </ul>
+    <h2><%= t(:link_old_versions) %></h2>
+    <ul>
+      <%= old_versions.collect{|version| content_tag :li, link_to(version.resized_caption(20), version_roadmap_path(@project_decorator.slug, version.id))}.join.html_safe  %>
+    </ul>
 <% end %>

@@ -186,6 +186,7 @@ en:
   link_watch: Watch
   link_unwatch: Unwatch
   link_view_profile: View profile
+  link_old_versions: Old versions
 
  #FORM
   field_name: Name
