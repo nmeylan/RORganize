@@ -1,7 +1,7 @@
 #Welcome to RORganize
-### Started on June 20, 2012 - Last update : August 25, 2014
+### Started on June 20, 2012 - Last update : September 16, 2014
 
-Run with Rails 4.1.X 
+Run with Rails 4.1.6
 [Demo here](http://demo.rorganize.org/)
 # What is RORganize?
 
@@ -15,18 +15,20 @@ RORganize offers a lots of features. Here are the mains features :
 
 *   Bugs and issues tracking.
 *   Easy to use filters system.
+*   Enriched text editor (same as [github flavored markdown](https://help.github.com/articles/github-flavored-markdown)).
 *   Filters can be shared.
 *   Flexible permissions and roles management.
 *   Wiki for each project.
-*   Module management : you can define which feature you want to use for each projects.
-*   Clear projects/users activity browser.
-*   Documents sharing.
+*   Modules management : you can define which feature you want to use for each projects.
+*   Clear projects/users activities feed.
+*   Documents upload.
 *   Time logging.
 *   Gantt creation.
+*   Email notifications.
 *   Flexible core application. It's really easy to make and mount a plugin to the core app.
 *   And more in progress...
 
-## So it's another n+1 project management application?
+## So it's a n+1 project management application?
 I hope not. I have used several project management tools before write RORganize and I've always find them too much complex. Indeed, these tools often have a lots of menu/features that we don't use everyday.
 I built RORganize with the principle to make an ergonomic tool.
 
