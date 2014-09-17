@@ -24,7 +24,7 @@ class RoadmapsController < ApplicationController
   end
 
   def version
-    @version_decorator = Version.find_by_id(params[:id])
+    @version_decorator = Version.eager_load(issues: [:status, :tracker]).find_by_id(params[:id])
     if @version_decorator
       @version_decorator = @version_decorator.decorate
 
