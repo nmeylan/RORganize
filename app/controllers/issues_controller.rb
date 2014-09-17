@@ -195,7 +195,13 @@ class IssuesController < ApplicationController
   end
 
   def overview
-    overview_object = IssueOverviewHash.new(Issue.where(project_id: @project.id).includes(:assigned_to, :version, :category, :tracker, :author, status: [:enumeration]), [:assigned_to, :status, :version, :category, :tracker, :author], @project)
+    tracker_report = Issue.group_opened_by_attr(@project.id, 'trackers', :tracker)
+    version_report = Issue.group_opened_by_attr(@project.id, 'versions', :version)
+    category_report =  Issue.group_opened_by_attr(@project.id, 'categories', :category)
+    author_report =  Issue.group_opened_by_attr(@project.id, 'users', :author)
+    assigned_to_report = Issue.group_opened_by_attr(@project.id, 'users', :assigned_to)
+    status_report = Issue.group_by_status(@project.id)
+   overview_object = IssueOverviewHash.new({tracker: tracker_report, versions: version_report, category: category_report, author: author_report, assigned_to: assigned_to_report, status: status_report}, @project.issues.count)
     respond_to do |format|
       format.html { render action: :overview, locals: {overview: overview_object} }
     end

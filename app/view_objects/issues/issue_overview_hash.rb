@@ -5,55 +5,39 @@
 
 class IssueOverviewHash
   attr_reader :content, :attributes
-  # @param [Array] issues an array of issues.
-  # @param [Array|Hash] attributes an array of symbols. (e.g :status, :assigned_to ...) represents the issue attributes to use to generate the report.
-  def initialize(issues, attributes, project = nil)
-    @issues = issues
-    @issues_count = issues.to_a.size
+  # @param [Hash] reports an array of selected_data. Structure : {attr_name : [[attr.id, attr.name, count(issues), project.slug]]}
+  def initialize(reports, issues_count)
+    @reports = reports
+    @issues_count = issues_count
     @content = []
-    @attributes = attributes
-    build_object(@attributes, project)
+    build_object
   end
 
   # @param [Array|Hash] args : should be issue attributes.
   # Array : e.g [:status, :assigned_to].
   # Hash : e.g {project: :assigned_to}. this is a specific case.
-  def build_object(args = [], project = nil)
-    if args.is_a? Array
-      args.each do |attr_name| #O(4*n)
-        @content << {attr_name => group_by(attr_name, nil, project)}
-      end
-    elsif args.is_a? Hash
-      args.each do |attr_name, _alias| #O(4*n)
-        @content << {_alias => group_by(attr_name, _alias)}
-      end
+  def build_object
+    @reports.each do |report_name, report|
+      @content << {report_name => group_by(report_name, report)}
     end
     @content = @content.sort { |x, y| x.values[0].size <=> y.values[0].size }
   end
 
-  def group_by(attr_name, _alias = nil, project = nil)
+  def group_by(report_name, report)
     rows = {}
-    @issues.each do |issue|
-      if attr_name.eql?(:project) && _alias
-        attr = issue.send(_alias)
-        rows[issue.project_id] ||= {caption: issue.project.slug, id: attr.id, count: 0, project: issue.project}
-        rows[issue.project_id][:count] += 1 if issue.open?
-      else
-        attr = issue.send(attr_name)
-        # attr = issue.send(attr_name)
-        rows[attr ? attr.id : -1] ||= {caption: attr ? attr.caption : na_label(attr_name), id: attr ? attr.id : 'NULL', count: 0, project: project}
-        rows[attr ? attr.id : -1][:count] += 1 if attr_name.eql?(:status) || issue.open?
-      end
+    report.each do |row|
+      id = row[0] ? row[0] : -1
+      rows[id] =  {caption: row[1], id: id ? id : 'NULL', count: row[2], project: row[3]}
     end
     rows.values.map { |row| row[:percent] = ((row[:count].to_f / @issues_count) * 100).truncate; row }
   end
 
-  def na_label(attr_name)
-    if attr_name.eql?(:assigned_to)
+  def na_label(report_name)
+    if report_name.eql?(:assigned_to)
       'Nobody'
-    elsif attr_name.eql?(:version)
+    elsif report_name.eql?(:version)
       'Unplanned'
-    elsif attr_name.eql?(:category)
+    elsif report_name.eql?(:category)
       'No category'
     else
       'NA'

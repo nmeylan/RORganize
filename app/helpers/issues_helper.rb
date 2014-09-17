@@ -148,9 +148,9 @@ module IssuesHelper
   def display_overview_row(element, group_name, only_opened_issues)
     safe_concat content_tag :tr, class: 'issues_overview_group body', &Proc.new {
       if only_opened_issues
-        safe_concat content_tag :td, filter_link(element[:caption], element[:project].slug, [group_name, :status], {group_name => {operator: :equal, value: [element[:id]]}, status: {operator: :open}}), class: 'caption'
+        safe_concat content_tag :td, filter_link(element[:caption], element[:project], [group_name, :status], {group_name => {operator: :equal, value: [element[:id]]}, status: {operator: :open}}), class: 'caption'
       else
-        safe_concat content_tag :td, filter_link(element[:caption], element[:project].slug, [group_name], {group_name => {operator: :equal, value: [element[:id]]}}), class: 'caption'
+        safe_concat content_tag :td, filter_link(element[:caption], element[:project], [group_name], {group_name => {operator: :equal, value: [element[:id]]}}), class: 'caption'
       end
       safe_concat content_tag :td, element[:count], class: 'number'
       safe_concat content_tag :td, progress_bar_tag(element[:percent]), class: 'percentage'
