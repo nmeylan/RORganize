@@ -494,8 +494,20 @@ module ApplicationHelper
     "<a href='/projects/#{project.slug}/issues/#{issue.id}'>#{issue.caption}</a>"
   end
 
+
+  # Build an avatar renderer for the given user.
+  # @param [User] user.
   def fast_user_small_avatar(user)
     "<img alt='' class='small_avatar' src='/system/attachments/Users/#{user.id}/#{user.avatar.id}/very_small/#{user.avatar.avatar.hash_key(:very_small)}.png'>"
+  end
+
+  # Build a link to issue show action.
+  # Use this instead of link_to .., .._path due to performance issue. Indeed when we call link_to .. ; .. rails try check path validity and slow the application
+  # in case of big render.
+  # @param [Document] document.
+  # @param [Project] project.
+  def fast_document_link(document, project)
+    "<a href='/projects/#{project.slug}/documents/#{document.id}'>#{document.caption}</a>"
   end
 
   #id is the id of the tab

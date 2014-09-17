@@ -13,6 +13,7 @@ class Journal < ActiveRecord::Base
   has_many :details, :class_name => 'JournalDetail', :dependent => :destroy
   belongs_to :journalizable, :polymorphic => true
   belongs_to :issue, foreign_key: 'journalizable_id'
+  belongs_to :document, foreign_key: 'journalizable_id'
   belongs_to :user, :class_name => 'User'
   belongs_to :category
   belongs_to :project

@@ -19,6 +19,8 @@ class JournalDecorator < ApplicationDecorator
     if type.eql?('Issue') && !self.action_type.eql?(Journal::ACTION_DELETE)
       h.safe_concat h.content_tag :b, "#{self.issue.tracker.caption.downcase} ##{self.issue.id} "
       h.fast_issue_link(self.issue, self.project).html_safe
+    elsif type.eql?('Document') && !self.action_type.eql?(Journal::ACTION_DELETE)
+      h.fast_document_link(self.document, self.project).html_safe
     else
       h.content_tag :b, "#{type.downcase} #{self.journalizable_identifier}"
     end
