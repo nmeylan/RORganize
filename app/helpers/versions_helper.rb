@@ -59,7 +59,7 @@ module VersionsHelper
             safe_concat content_tag :div, class: "content version-#{version.id}", &Proc.new {
               content_tag :ul do
                 collection_detail[version.id][:issues].collect do |issue|
-                  content_tag :li, "#{issue.tracker.name} ##{issue.id} : #{issue.caption}", class: "#{'close' if issue.status.is_closed?}"
+                  content_tag :li, link_to("#{issue.tracker.name} ##{issue.id} : #{issue.caption}", issue_path(version.project.slug, issue.id))  , class: "#{'close' if issue.status.is_closed?}"
                 end.join.html_safe
               end
             }
