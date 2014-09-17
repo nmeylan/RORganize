@@ -39,7 +39,7 @@ class Issue < ActiveRecord::Base
 
   scope :group_by_status, -> (project_id){joins(:project, status: [:enumeration]).group('1').where('issues.project_id = ?', project_id ).pluck("issues_statuses.id, enumerations.name, count(issues.id), projects.slug")}
 
-  scope :group_opened_by_project, -> (conditions = '1 = 1') {joins(:project, status: [:enumeration]).group('1').where("issues_statuses.is_closed = false AND #{conditions}").pluck("projects.id, projects.slug, count(issues.id), projects.slug")}
+  scope :group_opened_by_project, -> (attr, conditions = '1 = 1') {joins(:project, status: [:enumeration]).group('2').where("issues_statuses.is_closed = false AND #{conditions}").pluck("#{attr}, projects.id, projects.slug, count(issues.id), projects.slug")}
 
   def caption
     self.subject
