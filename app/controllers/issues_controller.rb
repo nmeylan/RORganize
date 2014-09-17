@@ -6,6 +6,7 @@ require 'shared/history'
 require 'issues/issue_overview_hash'
 class IssuesController < ApplicationController
   before_filter { |c| c.add_action_alias= {'overview' => 'index', 'apply_custom_query' => 'index'}}
+  before_filter :find_project_with_depedencies, only: [:index, :new, :edit, :toolbox]
   before_filter :check_permission, :except => [:toolbox, :download_attachment, :start_today]
   before_filter :find_issue, only: [:edit, :update, :destroy]
   before_filter :check_not_owner_permission, :only => [:edit, :update, :destroy]
@@ -194,7 +195,7 @@ class IssuesController < ApplicationController
   end
 
   def overview
-    overview_object = IssueOverviewHash.new(Issue.where(project_id: @project.id).fetch_dependencies, [:assigned_to, :status, :version, :category, :tracker, :author])
+    overview_object = IssueOverviewHash.new(Issue.where(project_id: @project.id).includes(:assigned_to, :version, :category, :tracker, :author, status: [:enumeration]), [:assigned_to, :status, :version, :category, :tracker, :author], @project)
     respond_to do |format|
       format.html { render action: :overview, locals: {overview: overview_object} }
     end
@@ -252,7 +253,7 @@ class IssuesController < ApplicationController
     params.require(:value).permit(Issue.permit_bulk_edit_values)
   end
 
-  def find_project
+  def find_project_with_depedencies
     @project = Project.includes(:attachments, :versions, :categories, :trackers, members: :user).where(slug: params[:project_id])[0]
     gon.project_id = @project.slug
   rescue => e

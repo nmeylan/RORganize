@@ -7,21 +7,21 @@ class IssueOverviewHash
   attr_reader :content, :attributes
   # @param [Array] issues an array of issues.
   # @param [Array|Hash] attributes an array of symbols. (e.g :status, :assigned_to ...) represents the issue attributes to use to generate the report.
-  def initialize(issues, attributes)
+  def initialize(issues, attributes, project = nil)
     @issues = issues
     @issues_count = issues.to_a.size
     @content = []
     @attributes = attributes
-    build_object(@attributes)
+    build_object(@attributes, project)
   end
 
   # @param [Array|Hash] args : should be issue attributes.
   # Array : e.g [:status, :assigned_to].
   # Hash : e.g {project: :assigned_to}. this is a specific case.
-  def build_object(args = [])
+  def build_object(args = [], project = nil)
     if args.is_a? Array
       args.each do |attr_name| #O(4*n)
-        @content << {attr_name => group_by(attr_name)}
+        @content << {attr_name => group_by(attr_name, nil, project)}
       end
     elsif args.is_a? Hash
       args.each do |attr_name, _alias| #O(4*n)
@@ -31,7 +31,7 @@ class IssueOverviewHash
     @content = @content.sort { |x, y| x.values[0].size <=> y.values[0].size }
   end
 
-  def group_by(attr_name, _alias = nil)
+  def group_by(attr_name, _alias = nil, project = nil)
     rows = {}
     @issues.each do |issue|
       if attr_name.eql?(:project) && _alias
@@ -40,7 +40,8 @@ class IssueOverviewHash
         rows[issue.project_id][:count] += 1 if issue.open?
       else
         attr = issue.send(attr_name)
-        rows[attr ? attr.id : -1] ||= {caption: attr ? attr.caption : na_label(attr_name), id: attr ? attr.id : 'NULL', count: 0, project: issue.project}
+        # attr = issue.send(attr_name)
+        rows[attr ? attr.id : -1] ||= {caption: attr ? attr.caption : na_label(attr_name), id: attr ? attr.id : 'NULL', count: 0, project: project}
         rows[attr ? attr.id : -1][:count] += 1 if attr_name.eql?(:status) || issue.open?
       end
     end

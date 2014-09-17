@@ -40,7 +40,7 @@ class UserDecorator < ApplicationDecorator
   # @param [Boolean] avatar : if true display user avatar, else hide it.
   def user_link(avatar = true)
     h.content_tag :span, class: 'avatar' do
-      h.safe_concat h.image_tag model.avatar.avatar.url(:very_small), {class: 'small_avatar'} if avatar && model.avatar
+      h.safe_concat h.fast_user_small_avatar(model) if avatar && model.avatar
       h.safe_concat h.fast_profile_link(model)
     end
   end

@@ -494,6 +494,10 @@ module ApplicationHelper
     "<a href='/projects/#{project.slug}/issues/#{issue.id}'>#{issue.caption}</a>"
   end
 
+  def fast_user_small_avatar(user)
+    "<img alt='' class='small_avatar' src='/system/attachments/Users/#{user.id}/#{user.avatar.id}/very_small/#{user.avatar.avatar.hash_key(:very_small)}.png'>"
+  end
+
   #id is the id of the tab
   #array must contains hash with following keys
   # :name, the name of the tabs

@@ -28,6 +28,10 @@ class Avatar < ActiveRecord::Base
     self.file_file_name
   end
 
+  def avatar_file_path
+    self.file_file_path
+  end
+
   def avatar_content_type
     self.file_content_type
   end
