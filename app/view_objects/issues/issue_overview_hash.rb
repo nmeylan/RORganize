@@ -27,7 +27,7 @@ class IssueOverviewHash
     rows = {}
     report.each do |row|
       id = row[0] ? row[0] : -1
-      rows[id] =  {caption: row[1], id: id ? id : 'NULL', count: row[2], project: row[3]}
+      rows[id] =  {caption: row[1] ? row[1] : na_label(report_name), id: !id.eql?(-1) ? id : 'NULL', count: row[2], project: row[3]}
     end
     rows.values.map { |row| row[:percent] = ((row[:count].to_f / @issues_count) * 100).truncate; row }
   end
