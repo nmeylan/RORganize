@@ -11,8 +11,8 @@ class Activities
   # @param [Enumerable] journals an active record collection of Journal.
   # @param [Enumerable] comments an active record collection of Comment.
   def initialize(journals, comments = [])
-    @journals = journals.decorate
-    @comments = comments.decorate
+    @journals = journals.any? ? journals.decorate : journals
+    @comments = comments.any? ? comments.decorate : comments
     @content = Hash.new { |h, k| h[k] = {} } #e.g  {date: {type_id: [journalizable, journalizable, comment, journalizable]}}
     crunch_data if @journals.any? || @comments.any?
   end
