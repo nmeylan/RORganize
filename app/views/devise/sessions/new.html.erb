@@ -1,13 +1,15 @@
-<div class="contextual">
-  <h1><%= t(:link_sign_in) %></h1>
-</div>
+<%= contextual "Sign in" %>
 <%= form_for(resource, :as => resource_name, :url => session_path(resource_name), :html => {:class => 'form'}) do |f| %>
     <div class="box">
       <p><%= f.label :login %>
         <%= f.text_field :login %></p>
 
       <p><%= f.label :password %>
-        <%= f.password_field :password %></p>
+        <%= f.password_field :password %>
+        <%- if devise_mapping.recoverable? && controller_name != 'passwords' %>
+            <%= link_to 'Forgot your password?', new_password_path(resource_name) %><br />
+        <% end -%>
+      </p>
 
       <% if devise_mapping.rememberable? -%>
           <p><%= f.check_box :remember_me %> <%= f.label :remember_me %></p>
@@ -20,5 +22,7 @@
       <%= link_to t(:devise_text_registration), new_user_registration_path %>
       <% end %>
     </div>
+
+
 
 <% end %>

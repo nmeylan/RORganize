@@ -53,7 +53,7 @@ module Rorganize
         menu = Rorganize::MenuManager.items(:top_menu)
         content = ''
         content += content_tag(:li, link_to(t(:home), :root, {:class => @current_top_menu_item.eql?('menu_home') ? 'selected square' : 'square'}))
-        unless controller_name.eql?('sessions') || controller_name.eql?('registrations')
+        unless controller_name.eql?('sessions') || controller_name.eql?('registrations') || controller_name.eql?('passwords')
           menu.menu_items.each do |item|
             if User.current && User.current.allowed_to?(item.url[:action], item.url[:controller])
               css_selection = item.params[:id].eql?(@current_top_menu_item) ? 'selected square' : 'square'
