@@ -66,15 +66,17 @@ class RoadmapsController < ApplicationController
 
   def manage_gantt
     versions = @sessions[@project.slug][:gantt][:versions] ? Version.eager_load(issues: [:parent, :children, :tracker, :assigned_to, :status]).where(id: @sessions[@project.slug][:gantt][:versions]) : @project_decorator.versions.eager_load(issues: [:parent, :children, :tracker, :assigned_to, :status]).to_a.select { |version| !version.is_done }
-    @gantt_object = GanttObject.new(versions, @project_decorator, @sessions[@project.slug][:gantt][:edition])
+
     if request.post?
       errors = persist_gantt(params[:gantt])
+      @gantt_object = GanttObject.new(versions, @project_decorator, @sessions[@project.slug][:gantt][:edition])
       message = errors && errors.any? ? errors : t(:successful_update)
       header = errors && errors.any? ? :failure : :success
       respond_to do |format|
         format.js { respond_to_js action: 'gantt', :response_header => header, :response_content => message , locals: {json_data: @gantt_object.json_data} }
       end
     else
+      @gantt_object = GanttObject.new(versions, @project_decorator, @sessions[@project.slug][:gantt][:edition])
       if params[:mode] && params[:mode].eql?('edition')
         @sessions[@project.slug][:gantt][:edition] = true
         versions = @sessions[@project.slug][:gantt][:versions] ? Version.eager_load(issues: [:parent, :children, :tracker, :assigned_to, :status]).where(id: @sessions[@project.slug][:gantt][:versions]) : @project_decorator.versions.eager_load(issues: [:parent, :children, :tracker, :assigned_to, :status]).to_a.select { |version| !version.is_done }
@@ -112,7 +114,6 @@ class RoadmapsController < ApplicationController
         end
       end
     end
-    p gantt[:links]
     if gantt[:links]
        gantt[:links].each do |_, link|
          unless link[:source].start_with?('version') ||  link[:target].start_with?('version')
