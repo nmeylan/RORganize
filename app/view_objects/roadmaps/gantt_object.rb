@@ -69,17 +69,18 @@ class GanttObject
   def build_issue_output(issue, version, are_data_provided)
     start_date = issue.start_date ? issue.start_date : version.start_date
     due_date = issue.due_date ? issue.due_date : (version.target_date ? version.target_date : Date.today)
+    caption = issue.caption.length > 40 ? "#{issue.caption[0..45]}..." : issue.caption
     {
         id: issue.id,
         start_date: start_date.strftime(DATE_FORMAT),
-        text: issue.tracker.caption + ' #'+ issue.id.to_s,
+        text: caption,
         parent: "version_#{issue.version_id}",
         open: true,
         progress: issue.done / 100.0,
         duration: (due_date - start_date).to_i,
         context: {
             type: 'issue',
-            link: link_to(issue.tracker.caption + ' #'+ issue.id.to_s, issue_path(@project, issue.id)),
+            link: link_to(caption, issue_path(@project, issue.id)),
             due_date: due_date,
             start_date: start_date,
             assigne: issue.assigned_to ? issue.assigned_to.caption : nil,

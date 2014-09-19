@@ -107,6 +107,8 @@ function roadmap_gantt() {
         gantt.config.drag_resize = edition;
         gantt.config.drag_links = edition;
         gantt.config.autosize = true;
+        gantt.config.grid_width = 600;
+        gantt.config.grid_resize = true;
 
 
         config_column(edition);
@@ -125,6 +127,7 @@ function roadmap_gantt() {
         gantt.attachEvent("onBeforeLightbox", function (id) {
             return false;
         });
+
         setScaleConfig(scale_config);
         gantt.init('gantt_chart');
         gantt.parse(gon.Gantt_JSON, 'json');
@@ -343,7 +346,7 @@ function config_column(edition){
         }
     } : {name : '', label: '', width: 0, template : function(item){return ''}};
     gantt.config.columns = [
-        {name: "text", label: "Task name", tree: true, width: 120,
+        {name: "text", label: "Task name", tree: true, width: 300,
             template: function (item) {
                 var context = item.context;
                 if (context.type === "issue") {
