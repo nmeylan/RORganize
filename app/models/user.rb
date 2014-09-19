@@ -176,7 +176,7 @@ class User < ActiveRecord::Base
         conditions = self.act_as_admin? ? '1 = 1 ' : "(members.user_id = #{self.id}) "
     end
     conditions += 'AND journals.id = (SELECT max(j.id) FROM journals j WHERE j.project_id = projects.id)'
-    Project.joins('INNER JOIN `members` ON `members`.`project_id` = `projects`.`id` OR `projects`.`is_public` = true LEFT OUTER JOIN `watchers` ON `watchers`.`watchable_id` = `projects`.`id` AND `watchers`.`watchable_type` = \'Project\' AND watchers.user_id = members.user_id').eager_load([journals: :user]).where(conditions).order('members.project_position ASC').preload(:members, :watchers)
+    Project.joins('INNER JOIN `members` ON `members`.`project_id` = `projects`.`id` OR (`projects`.`is_public` = true AND projects.id NOT IN (SELECT p2.id FROM projects p2 JOIN members m2 ON p2.id = m2.project_id WHERE m2.user_id = 2)) LEFT OUTER JOIN `watchers` ON `watchers`.`watchable_id` = `projects`.`id` AND `watchers`.`watchable_type` = \'Project\' AND watchers.user_id = members.user_id').eager_load([journals: :user]).where(conditions).order('members.project_position ASC').preload(:members, :watchers)
   end
 
   #Get all coworkers for each project
