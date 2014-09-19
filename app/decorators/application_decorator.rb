@@ -51,6 +51,7 @@ class ApplicationDecorator < Draper::Decorator
   # @param [Object] owner the owner of the model. (e.g issue.author)
   # @param [Hash] options : html_options.
   def edit_link(label, path, project = nil, owner = nil, options = {})
+    options = options.merge({class: 'button'})
     link_to_with_permissions(h.glyph(label, 'pencil'), path, project, owner, options)
   end
 
@@ -58,8 +59,9 @@ class ApplicationDecorator < Draper::Decorator
   # @param [String] label : link label.
   # @param [String] path to controller.
   # @param [Project] project the project that belongs to the model.
-  def new_link(label, path, project = nil)
-    link_to_with_permissions(h.glyph(label, 'plus'), path, project, nil)
+  def new_link(label, path, project = nil, options = {})
+    options = options.merge({class: 'button new'})
+    link_to_with_permissions(h.glyph(label, 'plus'), path, project, nil, options)
   end
 
   # Render a link to delete the model.
@@ -69,7 +71,7 @@ class ApplicationDecorator < Draper::Decorator
   # @param [Object] owner the owner of the model. (e.g issue.author)
   # @param [Hash] options : html_options.
   def delete_link(label, path, project = nil, owner = nil, options = {})
-    default_options = {:method => :delete, :remote => true, :confirm => h.t(:text_delete_item), class: 'delete_link'}
+    default_options = {:method => :delete, :remote => true, :confirm => h.t(:text_delete_item), class: 'delete_link button danger'}
     link_to_with_permissions(h.glyph(label, 'trashcan'), path, project, owner, default_options.merge(options))
   end
 
@@ -97,7 +99,7 @@ class ApplicationDecorator < Draper::Decorator
   # Render a link to add a comment. Can be used by all commentable model.
   def new_comment_link
     if User.current.allowed_to?('comment', h.controller_name, model.project)
-      h.link_to h.glyph(h.t(:link_comment), 'comment'), '#add_comment', {id: 'new_comment_link'}
+      h.link_to h.glyph(h.t(:link_comment), 'comment'), '#add_comment', {id: 'new_comment_link', class: 'button'}
     end
   end
 

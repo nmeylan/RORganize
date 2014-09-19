@@ -51,6 +51,8 @@ fieldset {
   border: 1px solid #e4e4e4;
   -webkit-border-radius: 3px;
   border-radius: 3px;
+  margin-left: 0px;
+  margin-right: 0px;
 }
 
 fieldset legend {
@@ -61,7 +63,7 @@ fieldset.margin_fieldset {
   margin: 10px;
 }
 
-.button, button, input[type=button], input[type=submit] {
+a.button, button, input[type=button], input[type=submit] {
   font-size: 12px;
   font-weight: 700;
   cursor: pointer;
@@ -79,7 +81,18 @@ fieldset.margin_fieldset {
   padding: 4px 10px;
 }
 
-.button:hover, button:hover, input[type=button]:hover, input[type=submit]:hover {
+a.button, .button{
+  color: $link-color;
+}
+a.danger, .danger{
+  color: $danger-color;
+  .octicon{
+    color: $danger-color;
+  }
+}
+
+
+a.button:hover, button:hover, input[type=button]:hover, input[type=submit]:hover {
   text-decoration: none;
   background-color: #dddddd;
   background-image: -moz-linear-gradient(#eee, #ddd);
@@ -88,6 +101,27 @@ fieldset.margin_fieldset {
   background-repeat: repeat-x;
   border-color: #ccc;
   cursor: pointer;
+}
+
+a.button:hover, .button:hover{
+  color: $link-color;
+}
+a.danger:hover, .danger:hover{
+  color: #fff;
+  text-shadow: 0px -1px 0 rgba(0,0,0,0.3);
+  background-color: #b33630;
+  background-image: -moz-linear-gradient(#dc5f59, #b33630);
+  background-image: -webkit-linear-gradient(#dc5f59, #b33630);
+  background-image: linear-gradient(#dc5f59, #b33630);
+  background-repeat: repeat-x;
+  border: 1px solid #b33630;
+  .octicon{
+    color: white;
+  }
+}
+
+#contextual .button{
+  margin: 0px;
 }
 
 input {

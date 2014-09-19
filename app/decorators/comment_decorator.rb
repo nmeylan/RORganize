@@ -53,14 +53,14 @@ class CommentDecorator < ApplicationDecorator
   # see #ApplicationDecorator::edit_link
   def edit_link
     if User.current.allowed_to?('edit_comment_not_owner', 'comments', model.project) || model.author?(User.current)
-      h.link_to h.glyph(h.t(:link_edit), 'pencil'), h.edit_comment_path(model.id), {class: 'edit_comment', remote: true}
+      h.link_to h.glyph(h.t(:link_edit), 'pencil'), h.edit_comment_path(model.id), {class: 'edit_comment button', remote: true}
     end
   end
 
   # see #ApplicationDecorator::delete_link
   def delete_link
     if User.current.allowed_to?('destroy_comment_not_owner', 'comments', model.project) || model.author?(User.current)
-      h.link_to h.glyph(h.t(:link_delete), 'trashcan'), h.comment_path(model.id), {:method => :delete, :remote => true, 'data-confirm' => h.t(:text_delete_item)}
+      h.link_to h.glyph(h.t(:link_delete), 'trashcan'), h.comment_path(model.id), {class: 'button danger',:method => :delete, :remote => true, 'data-confirm' => h.t(:text_delete_item)}
     end
   end
 

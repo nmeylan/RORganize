@@ -40,6 +40,7 @@ class ApplicationCollectionDecorator < Draper::CollectionDecorator
   # @param [Project] project the project that belongs to the model.
   # @param [Hash] options : html_options.
   def new_link(label, path, project = nil, options = {})
+    options = options.merge({class: 'button new'})
     link_to_with_permissions(h.glyph(label, 'plus'), path, project, nil, options)
   end
 end
