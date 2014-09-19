@@ -17,11 +17,11 @@ class Member < ActiveRecord::Base
   belongs_to :role, :class_name => 'Role'
   has_many :assigned_issues, -> { where('issues.project_id = members.project_id') }, through: :user, class_name: 'Issue'
   #Triggers
-  before_create :set_project_position, :remove_old_member_role
+  before_create :remove_old_member_role, :set_project_position
   after_create :dec_counter_cache
   after_destroy :unassigned_issues, :remove_watchers, :inc_counter_cache
 
-  validates_uniqueness_of :user_id, scope: [:project_id]
+  validates_uniqueness_of :user_id, scope: [:project_id, :role_id]
   #Scopes
   scope :fetch_dependencies, -> { eager_load(:role, :user) }
   #Methods

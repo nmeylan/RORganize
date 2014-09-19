@@ -30,8 +30,9 @@ class MembersController < ApplicationController
   end
 
   def new
-    members = Member.eager_load(:user).where(:project_id => @project.id)
-    ids = members.collect { |member| member.user.id unless member.role_id.eql?(Role.non_member.id) }
+    members = Member.eager_load(:user, :role).where(:project_id => @project.id)
+    non_member_id = Role.non_member.id
+    ids = members.collect { |member| member.user.id unless member.role_id.eql?(non_member_id) }
     users = User.where('users.id NOT IN (?)', ids.compact)
     @member = Member.new
     respond_to do |format|
