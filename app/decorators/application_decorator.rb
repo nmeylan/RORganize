@@ -131,13 +131,13 @@ class ApplicationDecorator < Draper::Decorator
   end
 
   def watch(project, no_permission_required = false)
-    if no_permission_required || User.current.allowed_to?('watch', h.controller_name, project)
+    if User.current.allowed_to?('watch', h.controller_name, project)
       h.watch_link(model, project)
     end
   end
 
   def unwatch(project, no_permission_required = false)
-    if no_permission_required || User.current.allowed_to?('watch', h.controller_name, project)
+    if User.current.allowed_to?('watch', h.controller_name, project)
       h.unwatch_link(model, model.watcher_for(User.current), project)
     end
   end
