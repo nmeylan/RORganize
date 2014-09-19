@@ -3,4 +3,4 @@
  * Date: 13.09.14
  * Time: 02:50
  %>
-$('#<%= "unwatch_link_#{@model.id}" %>').html('<%= watch_link(@model, @project)%>');
+$('#<%= "unwatch_link_#{@model.id}" %>').replaceWith('<%= watch_link(@model, @project)%>');

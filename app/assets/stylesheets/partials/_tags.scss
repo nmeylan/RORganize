@@ -61,7 +61,7 @@ fieldset.margin_fieldset {
   margin: 10px;
 }
 
-button, input[type=button], input[type=submit] {
+.button, button, input[type=button], input[type=submit] {
   font-size: 12px;
   font-weight: 700;
   cursor: pointer;
@@ -79,7 +79,7 @@ button, input[type=button], input[type=submit] {
   padding: 4px 10px;
 }
 
-button:hover, input[type=button]:hover, input[type=submit]:hover {
+.button:hover, button:hover, input[type=button]:hover, input[type=submit]:hover {
   text-decoration: none;
   background-color: #dddddd;
   background-image: -moz-linear-gradient(#eee, #ddd);
@@ -136,10 +136,11 @@ ul.task_list{
 }
 
 a.author_link{
-    color: $default-color;
+  color: $default-color;
 
 }
 a.author_link:hover {
   color: $default-smooth-color;
   text-decoration: underline;
 }
+

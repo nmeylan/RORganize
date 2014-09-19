@@ -46,16 +46,13 @@ module ProjectsHelper
   # @param [Project] project.
   def project_list_star_button(project)
     safe_concat content_tag :div, class: 'star_project', &Proc.new {
-      safe_concat button_tag &Proc.new {
-        project.display_watch_button
-      }
-      safe_concat button_tag class: 'star_button', &Proc.new {
-        if project.starred?
-          link_to(glyph(t(:link_unstar), 'star'), star_project_profile_path(project.slug), {:class => 'icon icon-fav starred star tooltipped tooltipped-s', :method => :post, :remote => true, label: t(:text_unstar)})
-        else
-          link_to(glyph(t(:link_star), 'star'), star_project_profile_path(project.slug), {:class => 'icon icon-fav-off star tooltipped tooltipped-s', :method => :post, :remote => true, label: t(:text_star)})
-        end
-      }
+      safe_concat project.display_watch_button
+      if project.starred?
+        safe_concat link_to(glyph(t(:link_unstar), 'star'), star_project_profile_path(project.slug), {:class => 'icon icon-fav starred star tooltipped tooltipped-s star_button button', :method => :post, :remote => true, label: t(:text_unstar)})
+      else
+        safe_concat link_to(glyph(t(:link_star), 'star'), star_project_profile_path(project.slug), {:class => 'icon icon-fav-off star tooltipped tooltipped-s star_button button', :method => :post, :remote => true, label: t(:text_star)})
+      end
+
     }
 
   end
