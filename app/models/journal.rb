@@ -22,8 +22,8 @@ class Journal < ActiveRecord::Base
   scope :document_activities, ->(document_id) { eager_load([:details, user: :avatar]).where(journalizable_type: 'Document', journalizable_id: document_id) }
   scope :issue_activities, ->(issuer_id) { eager_load([:details, user: :avatar]).where(journalizable_type: 'Issue', journalizable_id: issuer_id) }
   scope :member_activities, ->(member) { where(:user_id => member.user_id, :project_id => member.project_id).order('created_at DESC') }
-  scope :activities, ->(journalizable_types, date_range, conditions = '1 = 1') {
-    includes([:details, :project, user: :avatar]).where("journalizable_type IN (?) AND #{conditions} AND journals.created_at BETWEEN ? AND ?", journalizable_types, date_range.first, date_range.last).order('created_at DESC').limit(3500)
+  scope :activities, ->(journalizable_types, date_range, days, conditions = '1 = 1') {
+    includes([:details, :project, user: :avatar]).where("journalizable_type IN (?) AND #{conditions} AND journals.created_at BETWEEN ? AND ?", journalizable_types, date_range.first, date_range.last).order('created_at DESC').limit(days * 1000)
   }
   scope :fetch_dependencies_issues, -> { includes(issue: :tracker) }
   scope :fetch_dependencies_categories, -> { includes(:category) }
@@ -31,8 +31,9 @@ class Journal < ActiveRecord::Base
   def self.activities_eager_load(journalizable_types, period, date, conditions)
     periods = ACTIVITIES_PERIODS
     date = date.to_date + 1
-    date_range = (date - periods[period.to_sym])..date
-    query = self.activities(journalizable_types, date_range, conditions)
+    days = periods[period.to_sym]
+    date_range = (date - days)..date
+    query = self.activities(journalizable_types, date_range, days, conditions)
     query = query.fetch_dependencies_issues if journalizable_types.include?('Issue')
     query
   end

@@ -55,11 +55,11 @@ module JournalsHelper
   def activities_render(activities, date, objects)
     i = 0
     objects.keys.each do |polymorphic_identifier|
-      if i < 500
+      if i < 1000
         act = activities.content_for(date, polymorphic_identifier)
         safe_concat activity_render(act, act[0], i)
       else
-        safe_concat content_tag :div, 'latest 500 activities from this day were loaded.', {class: 'activity max'}
+        safe_concat content_tag :div, 'latest 1000 activities from this day were loaded.', {class: 'activity max'}
         break
       end
       i += 1
