@@ -35,17 +35,27 @@ class GanttObject
       duration = version.target_date ? (version.target_date - version.start_date) : (Date.today - version.start_date)
       if duration > 0
         output_hash[:data] << build_version_output(version, duration)
-        issues.each do |issue|
-          if issue.start_date && issue.due_date && issue.due_date >= issue.start_date
-            output_hash[:data] << build_issue_output(issue, version, true)
-          elsif @edition
-            output_hash[:data] << build_issue_output(issue, version, false)
-          end
-          output_hash[:links] << build_link(issue) unless issue.predecessor_id.nil?
-        end
+        issues_start_date = issues.select{|issue| issue.start_date}
+        issues_no_start_date = issues.select{|issue| issue.start_date.nil?}
+        build_issue_json(output_hash, issues_start_date, version)
+        build_issue_json(output_hash, issues_no_start_date, version)
       end
     end
     output_hash.to_json
+  end
+
+  # @param [Version] version
+  # @param [Hash] output_hash
+  # @param [Array] issues.
+  def build_issue_json(output_hash, issues, version)
+    issues.sort_by { |x| x.start_date}.each do |issue|
+      if issue.start_date && issue.due_date && issue.due_date >= issue.start_date
+        output_hash[:data] << build_issue_output(issue, version, true)
+      elsif @edition
+        output_hash[:data] << build_issue_output(issue, version, false)
+      end
+      output_hash[:links] << build_link(issue) unless issue.predecessor_id.nil?
+    end
   end
 
   def build_version_output(version, duration)
@@ -69,7 +79,7 @@ class GanttObject
   def build_issue_output(issue, version, are_data_provided)
     start_date = issue.start_date ? issue.start_date : version.start_date
     due_date = issue.due_date ? issue.due_date : (version.target_date ? version.target_date : Date.today)
-    caption = issue.caption.length > 40 ? "#{issue.caption[0..45]}..." : issue.caption
+    caption = issue.caption.length > 40 ? "#{issue.caption[0..4]}..." : issue.caption
     {
         id: issue.id,
         start_date: start_date.strftime(DATE_FORMAT),
