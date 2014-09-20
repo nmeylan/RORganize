@@ -7,6 +7,7 @@ class Issue < ActiveRecord::Base
   include Rorganize::Journalizable
   include Rorganize::Commentable
   include Rorganize::Watchable
+  include Rorganize::Notifiable
   include Rorganize::Attachable::AttachmentType
   #Class variables
   assign_journalizable_properties({status_id: 'Status', category_id: 'Category', assigned_to_id: 'Assigned to', tracker_id: 'Tracker', due_date: 'Due date', start_date: 'Start date', done: 'Done', estimated_time: 'Estimated time', version_id: 'Version', predecessor_id: 'Predecessor', subject: 'Subject'})

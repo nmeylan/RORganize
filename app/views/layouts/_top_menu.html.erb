@@ -10,6 +10,7 @@
     <% if user_signed_in? %>
       <li>Welcome
         <%= link_to current_user.name, profile_path, {:class => params[:controller].eql?('profiles') ? 'selected' : ''} %>
+        <%= notification_link(current_user) %>
         <%= '|'  if current_user.is_admin? %>
         <% icon = session['act_as'].eql?('Admin') ? 'crown' : 'person'%>
         <% switch_to = icon.eql?('crown') ? 'User' : 'Admin' %>

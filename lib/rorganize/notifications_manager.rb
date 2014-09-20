@@ -12,22 +12,42 @@ module Rorganize
     def create_notification
       if RORganize::Application.config.enable_emails_notifications
         if self.is_a?(Comment) || (self.is_a?(Journal) && !self.action_type.eql?(Journal::ACTION_DELETE))
-          notification = Notification.new(self)
+          notification = NotifiableEvent.new(self)
           if notification.recipients.any?
-            if notification.notification_type.eql?(Notification::GENERIC_NOTIFICATION)
-              NotificationMailer.delay.notification_email(notification)
-            elsif notification.notification_type.eql?(Notification::MEMBER_NOTIFICATION)
-              NotificationMailer.delay.welcome_new_member_email(notification)
-              NotificationMailer.delay.member_join_email(notification)
-            end
+            send_emails(notification)
+            in_app_notification(notification)
           end
           notification
         end
       end
     end
 
+    def send_emails(notification)
+      if notification.notification_type.eql?(NotifiableEvent::GENERIC_NOTIFICATION)
+        NotificationMailer.delay.notification_email(notification)
+      elsif notification.notification_type.eql?(NotifiableEvent::MEMBER_NOTIFICATION)
+        NotificationMailer.delay.welcome_new_member_email(notification)
+        NotificationMailer.delay.member_join_email(notification)
+      end
+    end
 
-    class Notification
+    def in_app_notification(notification)
+      if notification.notification_type.eql?(NotifiableEvent::GENERIC_NOTIFICATION)
+        Notification.transaction do
+          notification.recipients.each do |user|
+            Notification.create({notifiable_id: notification.model.id,
+                                 notifiable_type: notification.model.class,
+                                 notification_type: notification.trigger.class,
+                                 user_id: user.id,
+                                 from_id: notification.trigger.user_id,
+                                 project_id: notification.project.id})
+          end
+        end
+      end
+    end
+
+
+    class NotifiableEvent
       MEMBER_NOTIFICATION = 'MEMBER'
       GENERIC_NOTIFICATION = 'GENERIC'
       attr_reader :recipients, :project, :trigger, :model, :model_url, :notification_type

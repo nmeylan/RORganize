@@ -1,0 +1,4 @@
+class NotificationsDecorator < ApplicationCollectionDecorator
+
+
+end

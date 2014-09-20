@@ -18,12 +18,12 @@ module ProjectsHelper
   # @param [Array] projects.
   # @param [boolean] allow_to_star : if true user can star projects from the list, else the star button is hidden.
   def project_list(projects, allow_to_star)
-    content_tag :ul, class: "project_list #{allow_to_star ? 'sortable' : '' }" do
+    content_tag :ul, class: "fancy_list project_list #{allow_to_star ? 'sortable' : '' }" do
       projects.collect do |project|
-        content_tag :li, class: "project #{project.is_archived ? 'archived' : ''}", id: project.slug do
+        content_tag :li, class: "fancy_list_item project #{project.is_archived ? 'archived' : ''}", id: project.slug do
           safe_concat project_stats(project).html_safe
           safe_concat link_to mega_glyph(project.name, 'repo'), overview_projects_path(project.slug)
-          safe_concat content_tag :p, class: 'project_last_activity', &Proc.new {
+          safe_concat content_tag :p, class: 'bottom_list_content project_last_activity', &Proc.new {
             project.last_activity_info
           }
           project_list_star_button(project) if allow_to_star && current_user
@@ -35,7 +35,7 @@ module ProjectsHelper
   # Build a render for project stats.
   # @param [Project] project.
   def project_stats(project)
-    content_tag :ul, class: 'project_stats' do
+    content_tag :ul, class: 'right_content_list project_stats' do
       safe_concat content_tag :li, (content_tag :span, nil, {class: 'octicon octicon-broadcast'}), {class: 'tooltipped tooltipped-s', label: t(:text_public_project)} if project.is_public
       safe_concat content_tag :li, (content_tag :span, project.members_count, class: 'octicon octicon-organization')
       safe_concat content_tag :li, (content_tag :span, project.issues_count, class: 'octicon octicon-issue-opened')

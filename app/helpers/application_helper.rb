@@ -148,8 +148,13 @@ module ApplicationHelper
 
   # Build a header for the given title.
   # @param [String] title.
-  def box_header_tag(title)
-    content_tag :div, content_tag(:h2, title), class: 'header'
+  def box_header_tag(title, css_class = 'header')
+    content_tag :div, class: css_class do
+      if block_given?
+        safe_concat content_tag :div, yield, class: 'right actions'
+      end
+      safe_concat content_tag(:h2, title)
+    end
   end
 
   # Build a button that display an info to the user when he click on it.
@@ -530,13 +535,29 @@ module ApplicationHelper
     end
   end
 
+  # Render a link to watch all activities from watchable.
+  # @param [ActiveRecord::base] watchable : a model that include Watchable module.
+  # @param [Project] project : the project which belongs to watchable.
   def watch_link(watchable, project)
     link_to glyph(t(:link_watch), 'eye'), watchers_path(project.slug, watchable.class.to_s, watchable.id), {id: "watch_link_#{watchable.id}", class: 'tooltipped tooltipped-s button', remote: true, method: :post, label: t(:text_watch)}
   end
 
+  # Render a link to unwatch all activities from watchable.
+  # @param [ActiveRecord::base] watchable : a model that include Watchable module.
+  # @param [Watcher] watcher : the watcher model (activeRecord).
+  # @param [Project] project : the project which belongs to watchable.
   def unwatch_link(watchable, watcher, project)
     link_to glyph(t(:link_unwatch), 'eye'), watcher_path(project.slug, watchable.class.to_s, watchable.id, watcher.id), {id: "unwatch_link_#{watchable.id}", class: 'tooltipped tooltipped-s button', remote: true, method: :delete, label: t(:text_unwatch)}
-
   end
 
+  def notification_link(user)
+    if user.notified?
+      link_to notifications_path, {class: 'tooltipped tooltipped-s indicator', label: t(:text_unread_notifications)} do
+        safe_concat content_tag :span, nil, {class: 'unread inbox'}
+        safe_concat glyph('', 'inbox')
+      end
+    else
+      link_to glyph('', 'inbox'), notifications_path, {class: ''}
+    end
+  end
 end

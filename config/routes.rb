@@ -125,6 +125,13 @@ RORganize::Application.routes.draw do
   resources :administration do
 
   end
+
+  resources :notifications do
+    collection do
+      delete 'destroy_all_for_project', path: 'destroy_all_for_project/:project_slug'
+    end
+  end
+
   resource :profile, path: 'my-account' do
     collection do
       get 'act_as'

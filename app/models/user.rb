@@ -18,6 +18,7 @@ class User < ActiveRecord::Base
   #Relations
   has_many :members, :class_name => 'Member', :dependent => :destroy
   has_many :assigned_issues, foreign_key: :assigned_to_id, class_name: 'Issue'
+  has_many :notifications, dependent: :destroy
   #Validators
   validates :login, :presence => true, :length => 4..50, :uniqueness => true
   validates :name, :presence => true, :length => 4..50
@@ -194,6 +195,14 @@ class User < ActiveRecord::Base
     avatar = self.avatar
     avatar.save(validation: false)
     file.close
+  end
+
+  def count_notification
+    Notification.where(user_id: self.id).pluck("count(notifications.id)")[0]
+  end
+
+  def notified?
+    count_notification > 0
   end
 
 end

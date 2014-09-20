@@ -17,7 +17,6 @@ issues_001:
   estimated_time: 
   start_date: 
   predecessor_id: 
-  checklist_items_count: 0
   attachments_count: 0
 issues_002:
   id: 10
@@ -35,10 +34,9 @@ issues_002:
   status_id: 3
   version_id: 1
   category_id: 2
-  estimated_time: 
-  start_date: 
-  predecessor_id: 
-  checklist_items_count: 0
+  estimated_time:
+  start_date:
+  predecessor_id:
   attachments_count: 0
 issues_003:
   id: 11
@@ -55,10 +53,9 @@ issues_003:
   status_id: 3
   version_id: 1
   category_id: 2
-  estimated_time: 
-  start_date: 
-  predecessor_id: 
-  checklist_items_count: 0
+  estimated_time:
+  start_date:
+  predecessor_id:
   attachments_count: 0
 issues_004:
   id: 12
@@ -75,10 +72,9 @@ issues_004:
   status_id: 3
   version_id: 1
   category_id: 2
-  estimated_time: 
-  start_date: 
-  predecessor_id: 
-  checklist_items_count: 0
+  estimated_time:
+  start_date:
+  predecessor_id:
   attachments_count: 0
 issues_005:
   id: 16
@@ -95,10 +91,9 @@ issues_005:
   status_id: 3
   version_id: 1
   category_id: 2
-  estimated_time: 
-  start_date: 
-  predecessor_id: 
-  checklist_items_count: 0
+  estimated_time:
+  start_date:
+  predecessor_id:
   attachments_count: 0
 issues_006:
   id: 36
@@ -116,10 +111,9 @@ issues_006:
   status_id: 3
   version_id: 1
   category_id: 2
-  estimated_time: 
-  start_date: 
-  predecessor_id: 
-  checklist_items_count: 1
+  estimated_time:
+  start_date:
+  predecessor_id:
   attachments_count: 0
 issues_007:
   id: 37
@@ -136,10 +130,9 @@ issues_007:
   status_id: 3
   version_id: 1
   category_id: 2
-  estimated_time: 
-  start_date: 
-  predecessor_id: 
-  checklist_items_count: 3
+  estimated_time:
+  start_date:
+  predecessor_id:
   attachments_count: 0
 issues_008:
   id: 38
@@ -156,10 +149,9 @@ issues_008:
   status_id: 3
   version_id: 4
   category_id: 2
-  estimated_time: 
-  start_date: 
-  predecessor_id: 
-  checklist_items_count: 0
+  estimated_time:
+  start_date:
+  predecessor_id:
   attachments_count: 0
 issues_009:
   id: 39
@@ -176,10 +168,9 @@ issues_009:
   status_id: 3
   version_id: 1
   category_id: 2
-  estimated_time: 
-  start_date: 
-  predecessor_id: 
-  checklist_items_count: 3
+  estimated_time:
+  start_date:
+  predecessor_id:
   attachments_count: 0
 issues_010:
   id: 41
@@ -196,10 +187,9 @@ issues_010:
   status_id: 3
   version_id: 1
   category_id: 2
-  estimated_time: 
-  start_date: 
-  predecessor_id: 
-  checklist_items_count: 4
+  estimated_time:
+  start_date:
+  predecessor_id:
   attachments_count: 0
 issues_011:
   id: 42
@@ -216,10 +206,9 @@ issues_011:
   status_id: 3
   version_id: 1
   category_id: 2
-  estimated_time: 
-  start_date: 
-  predecessor_id: 
-  checklist_items_count: 0
+  estimated_time:
+  start_date:
+  predecessor_id:
   attachments_count: 0
 issues_012:
   id: 43
@@ -236,10 +225,9 @@ issues_012:
   status_id: 3
   version_id: 2
   category_id: 2
-  estimated_time: 
-  start_date: 
-  predecessor_id: 
-  checklist_items_count: 0
+  estimated_time:
+  start_date:
+  predecessor_id:
   attachments_count: 0
 issues_013:
   id: 44
@@ -257,10 +245,9 @@ issues_013:
   status_id: 2
   version_id: 4
   category_id: 2
-  estimated_time: 
-  start_date: 
-  predecessor_id: 
-  checklist_items_count: 0
+  estimated_time:
+  start_date:
+  predecessor_id:
   attachments_count: 0
 issues_014:
   id: 45
@@ -277,10 +264,9 @@ issues_014:
   status_id: 2
   version_id: 4
   category_id: 2
-  estimated_time: 
-  start_date: 
-  predecessor_id: 
-  checklist_items_count: 4
+  estimated_time:
+  start_date:
+  predecessor_id:
   attachments_count: 0
 issues_015:
   id: 46
@@ -297,10 +283,9 @@ issues_015:
   status_id: 3
   version_id: 2
   category_id: 2
-  estimated_time: 
-  start_date: 
-  predecessor_id: 
-  checklist_items_count: 0
+  estimated_time:
+  start_date:
+  predecessor_id:
   attachments_count: 0
 issues_016:
   id: 47
@@ -317,10 +302,9 @@ issues_016:
   status_id: 3
   version_id: 2
   category_id: 2
-  estimated_time: 
-  start_date: 
-  predecessor_id: 
-  checklist_items_count: 0
+  estimated_time:
+  start_date:
+  predecessor_id:
   attachments_count: 0
 issues_017:
   id: 48
@@ -328,19 +312,18 @@ issues_017:
   description: ''
   created_at: 2012-08-24 13:35:34.000000000 Z
   updated_at: 2013-02-16 14:56:29.000000000 Z
-  due_date: 
+  due_date:
   done: 0
   author_id: 1
   assigned_to_id: 1
   project_id: 1
   tracker_id: 1
   status_id: 1
-  version_id: 
+  version_id:
   category_id: 2
-  estimated_time: 
-  start_date: 
-  predecessor_id: 
-  checklist_items_count: 0
+  estimated_time:
+  start_date:
+  predecessor_id:
   attachments_count: 0
 issues_018:
   id: 49
@@ -348,19 +331,18 @@ issues_018:
   description: ''
   created_at: 2012-08-24 13:35:42.000000000 Z
   updated_at: 2013-02-16 14:56:29.000000000 Z
-  due_date: 
+  due_date:
   done: 0
   author_id: 1
   assigned_to_id: 1
   project_id: 1
   tracker_id: 1
   status_id: 1
-  version_id: 
+  version_id:
   category_id: 2
-  estimated_time: 
-  start_date: 
-  predecessor_id: 
-  checklist_items_count: 0
+  estimated_time:
+  start_date:
+  predecessor_id:
   attachments_count: 0
 issues_019:
   id: 50
@@ -368,19 +350,18 @@ issues_019:
   description: ''
   created_at: 2012-08-24 13:35:53.000000000 Z
   updated_at: 2013-02-16 14:56:30.000000000 Z
-  due_date: 
+  due_date:
   done: 0
   author_id: 1
   assigned_to_id: 1
   project_id: 1
   tracker_id: 1
   status_id: 1
-  version_id: 
+  version_id:
   category_id: 2
-  estimated_time: 
-  start_date: 
-  predecessor_id: 
-  checklist_items_count: 0
+  estimated_time:
+  start_date:
+  predecessor_id:
   attachments_count: 0
 issues_020:
   id: 51
@@ -388,19 +369,18 @@ issues_020:
   description: ''
   created_at: 2012-08-24 13:36:19.000000000 Z
   updated_at: 2013-02-16 14:56:30.000000000 Z
-  due_date: 
+  due_date:
   done: 0
   author_id: 1
   assigned_to_id: 1
   project_id: 1
   tracker_id: 1
   status_id: 1
-  version_id: 
+  version_id:
   category_id: 2
-  estimated_time: 
-  start_date: 
-  predecessor_id: 
-  checklist_items_count: 0
+  estimated_time:
+  start_date:
+  predecessor_id:
   attachments_count: 0
 issues_021:
   id: 53
@@ -417,10 +397,9 @@ issues_021:
   status_id: 3
   version_id: 4
   category_id: 2
-  estimated_time: 
-  start_date: 
-  predecessor_id: 
-  checklist_items_count: 0
+  estimated_time:
+  start_date:
+  predecessor_id:
   attachments_count: 0
 issues_022:
   id: 54
@@ -437,10 +416,9 @@ issues_022:
   status_id: 1
   version_id: 2
   category_id: 2
-  estimated_time: 
-  start_date: 
-  predecessor_id: 
-  checklist_items_count: 0
+  estimated_time:
+  start_date:
+  predecessor_id:
   attachments_count: 0
 issues_023:
   id: 55
@@ -458,10 +436,9 @@ issues_023:
   status_id: 3
   version_id: 2
   category_id: 2
-  estimated_time: 
-  start_date: 
-  predecessor_id: 
-  checklist_items_count: 0
+  estimated_time:
+  start_date:
+  predecessor_id:
   attachments_count: 0
 issues_024:
   id: 56
@@ -478,10 +455,9 @@ issues_024:
   status_id: 3
   version_id: 2
   category_id: 2
-  estimated_time: 
-  start_date: 
-  predecessor_id: 
-  checklist_items_count: 0
+  estimated_time:
+  start_date:
+  predecessor_id:
   attachments_count: 0
 issues_025:
   id: 62
@@ -500,10 +476,9 @@ issues_025:
   status_id: 3
   version_id: 4
   category_id: 2
-  estimated_time: 
-  start_date: 
-  predecessor_id: 
-  checklist_items_count: 0
+  estimated_time:
+  start_date:
+  predecessor_id:
   attachments_count: 0
 issues_026:
   id: 76
@@ -525,10 +500,9 @@ issues_026:
   status_id: 2
   version_id: 4
   category_id: 2
-  estimated_time: 
-  start_date: 
-  predecessor_id: 
-  checklist_items_count: 12
+  estimated_time:
+  start_date:
+  predecessor_id:
   attachments_count: 0
 issues_027:
   id: 77
@@ -548,10 +522,9 @@ issues_027:
   status_id: 3
   version_id: 7
   category_id: 2
-  estimated_time: 
-  start_date: 
-  predecessor_id: 
-  checklist_items_count: 0
+  estimated_time:
+  start_date:
+  predecessor_id:
   attachments_count: 0
 issues_028:
   id: 86
@@ -568,10 +541,9 @@ issues_028:
   status_id: 3
   version_id: 4
   category_id: 3
-  estimated_time: 
-  start_date: 
-  predecessor_id: 
-  checklist_items_count: 0
+  estimated_time:
+  start_date:
+  predecessor_id:
   attachments_count: 0
 issues_029:
   id: 88
@@ -579,7 +551,7 @@ issues_029:
   description: Corriger l'insertion dans le journalizable lorsqu'un attribut est changé.
   created_at: 2012-10-20 18:23:17.000000000 Z
   updated_at: 2013-02-16 14:56:30.000000000 Z
-  due_date: 
+  due_date:
   done: 100
   author_id: 1
   assigned_to_id: 1
@@ -588,10 +560,9 @@ issues_029:
   status_id: 3
   version_id: 7
   category_id: 2
-  estimated_time: 
-  start_date: 
-  predecessor_id: 
-  checklist_items_count: 0
+  estimated_time:
+  start_date:
+  predecessor_id:
   attachments_count: 0
 issues_030:
   id: 92
@@ -608,10 +579,9 @@ issues_030:
   status_id: 3
   version_id: 2
   category_id: 2
-  estimated_time: 
-  start_date: 
-  predecessor_id: 
-  checklist_items_count: 0
+  estimated_time:
+  start_date:
+  predecessor_id:
   attachments_count: 0
 issues_031:
   id: 96
@@ -629,10 +599,9 @@ issues_031:
   status_id: 3
   version_id: 2
   category_id: 2
-  estimated_time: 
-  start_date: 
-  predecessor_id: 
-  checklist_items_count: 0
+  estimated_time:
+  start_date:
+  predecessor_id:
   attachments_count: 0
 issues_032:
   id: 97
@@ -643,7 +612,7 @@ issues_032:
     devrait passer à *100%*"
   created_at: 2012-10-23 11:22:06.000000000 Z
   updated_at: 2013-02-16 14:56:30.000000000 Z
-  due_date: 
+  due_date:
   done: 100
   author_id: 1
   assigned_to_id: 1
@@ -652,10 +621,9 @@ issues_032:
   status_id: 3
   version_id: 7
   category_id: 2
-  estimated_time: 
-  start_date: 
-  predecessor_id: 
-  checklist_items_count: 0
+  estimated_time:
+  start_date:
+  predecessor_id:
   attachments_count: 0
 issues_033:
   id: 98
@@ -674,9 +642,8 @@ issues_033:
   version_id: 4
   category_id: 1
   estimated_time: !ruby/object:BigDecimal 18:0.2E1
-  start_date: 
-  predecessor_id: 
-  checklist_items_count: 13
+  start_date:
+  predecessor_id:
   attachments_count: 0
 issues_034:
   id: 102
@@ -695,10 +662,9 @@ issues_034:
   status_id: 3
   version_id: 8
   category_id: 2
-  estimated_time: 
-  start_date: 
-  predecessor_id: 
-  checklist_items_count: 0
+  estimated_time:
+  start_date:
+  predecessor_id:
   attachments_count: 0
 issues_035:
   id: 105
@@ -707,19 +673,18 @@ issues_035:
     afin qu'il puisse répartir son temps de travail.
   created_at: 2012-11-10 13:32:17.000000000 Z
   updated_at: 2013-02-16 14:56:31.000000000 Z
-  due_date: 
+  due_date:
   done: 0
   author_id: 1
   assigned_to_id: 1
   project_id: 1
   tracker_id: 1
   status_id: 1
-  version_id: 
+  version_id:
   category_id: 2
-  estimated_time: 
-  start_date: 
-  predecessor_id: 
-  checklist_items_count: 0
+  estimated_time:
+  start_date:
+  predecessor_id:
   attachments_count: 0
 issues_036:
   id: 106
@@ -738,10 +703,9 @@ issues_036:
   status_id: 4
   version_id: 8
   category_id: 2
-  estimated_time: 
-  start_date: 
-  predecessor_id: 
-  checklist_items_count: 0
+  estimated_time:
+  start_date:
+  predecessor_id:
   attachments_count: 0
 issues_037:
   id: 120
@@ -758,10 +722,9 @@ issues_037:
   status_id: 3
   version_id: 8
   category_id: 2
-  estimated_time: 
-  start_date: 
-  predecessor_id: 
-  checklist_items_count: 0
+  estimated_time:
+  start_date:
+  predecessor_id:
   attachments_count: 0
 issues_038:
   id: 121
@@ -779,10 +742,9 @@ issues_038:
   status_id: 4
   version_id: 12
   category_id: 2
-  estimated_time: 
-  start_date: 
-  predecessor_id: 
-  checklist_items_count: 0
+  estimated_time:
+  start_date:
+  predecessor_id:
   attachments_count: 0
 issues_039:
   id: 122
@@ -799,10 +761,9 @@ issues_039:
   status_id: 1
   version_id: 2
   category_id: 2
-  estimated_time: 
-  start_date: 
-  predecessor_id: 
-  checklist_items_count: 0
+  estimated_time:
+  start_date:
+  predecessor_id:
   attachments_count: 0
 issues_040:
   id: 129
@@ -820,10 +781,9 @@ issues_040:
   status_id: 3
   version_id: 5
   category_id: 4
-  estimated_time: 
-  start_date: 
-  predecessor_id: 
-  checklist_items_count: 0
+  estimated_time:
+  start_date:
+  predecessor_id:
   attachments_count: 0
 issues_041:
   id: 130
@@ -840,10 +800,9 @@ issues_041:
   status_id: 3
   version_id: 5
   category_id: 4
-  estimated_time: 
-  start_date: 
-  predecessor_id: 
-  checklist_items_count: 0
+  estimated_time:
+  start_date:
+  predecessor_id:
   attachments_count: 0
 issues_042:
   id: 131
@@ -862,10 +821,9 @@ issues_042:
   status_id: 3
   version_id: 5
   category_id: 4
-  estimated_time: 
-  start_date: 
-  predecessor_id: 
-  checklist_items_count: 0
+  estimated_time:
+  start_date:
+  predecessor_id:
   attachments_count: 0
 issues_043:
   id: 132
@@ -882,11 +840,10 @@ issues_043:
   tracker_id: 1
   status_id: 3
   version_id: 5
-  category_id: 
-  estimated_time: 
-  start_date: 
-  predecessor_id: 
-  checklist_items_count: 2
+  category_id:
+  estimated_time:
+  start_date:
+  predecessor_id:
   attachments_count: 0
 issues_044:
   id: 133
@@ -904,10 +861,9 @@ issues_044:
   status_id: 3
   version_id: 5
   category_id: 5
-  estimated_time: 
-  start_date: 
-  predecessor_id: 
-  checklist_items_count: 2
+  estimated_time:
+  start_date:
+  predecessor_id:
   attachments_count: 0
 issues_045:
   id: 134
@@ -924,10 +880,9 @@ issues_045:
   status_id: 3
   version_id: 5
   category_id: 6
-  estimated_time: 
-  start_date: 
-  predecessor_id: 
-  checklist_items_count: 0
+  estimated_time:
+  start_date:
+  predecessor_id:
   attachments_count: 0
 issues_046:
   id: 135
@@ -944,10 +899,9 @@ issues_046:
   status_id: 3
   version_id: 5
   category_id: 6
-  estimated_time: 
-  start_date: 
-  predecessor_id: 
-  checklist_items_count: 0
+  estimated_time:
+  start_date:
+  predecessor_id:
   attachments_count: 0
 issues_047:
   id: 136
@@ -964,10 +918,9 @@ issues_047:
   status_id: 3
   version_id: 5
   category_id: 6
-  estimated_time: 
-  start_date: 
-  predecessor_id: 
-  checklist_items_count: 0
+  estimated_time:
+  start_date:
+  predecessor_id:
   attachments_count: 0
 issues_048:
   id: 137
@@ -985,10 +938,9 @@ issues_048:
   status_id: 3
   version_id: 5
   category_id: 6
-  estimated_time: 
-  start_date: 
-  predecessor_id: 
-  checklist_items_count: 0
+  estimated_time:
+  start_date:
+  predecessor_id:
   attachments_count: 0
 issues_049:
   id: 138
@@ -1005,10 +957,9 @@ issues_049:
   status_id: 3
   version_id: 5
   category_id: 7
-  estimated_time: 
-  start_date: 
-  predecessor_id: 
-  checklist_items_count: 0
+  estimated_time:
+  start_date:
+  predecessor_id:
   attachments_count: 0
 issues_050:
   id: 139
@@ -1016,7 +967,7 @@ issues_050:
   description: Sur 1000 itérations calculer le nombre de coups moyens
   created_at: 2012-12-20 17:06:18.000000000 Z
   updated_at: 2013-12-15 11:34:14.000000000 Z
-  due_date: 
+  due_date:
   done: 100
   author_id: 1
   assigned_to_id: 5
@@ -1024,11 +975,10 @@ issues_050:
   tracker_id: 1
   status_id: 3
   version_id: 6
-  category_id: 
-  estimated_time: 
-  start_date: 
-  predecessor_id: 
-  checklist_items_count: 0
+  category_id:
+  estimated_time:
+  start_date:
+  predecessor_id:
   attachments_count: 0
 issues_051:
   id: 140
@@ -1037,7 +987,7 @@ issues_051:
     déterminer qui a le meilleur algo.
   created_at: 2012-12-20 17:07:38.000000000 Z
   updated_at: 2013-02-19 09:11:27.000000000 Z
-  due_date: 
+  due_date:
   done: 100
   author_id: 1
   assigned_to_id: 1
@@ -1045,11 +995,10 @@ issues_051:
   tracker_id: 1
   status_id: 3
   version_id: 6
-  category_id: 
-  estimated_time: 
-  start_date: 
-  predecessor_id: 
-  checklist_items_count: 0
+  category_id:
+  estimated_time:
+  start_date:
+  predecessor_id:
   attachments_count: 0
 issues_052:
   id: 141
@@ -1066,10 +1015,9 @@ issues_052:
   status_id: 3
   version_id: 12
   category_id: 2
-  estimated_time: 
-  start_date: 
-  predecessor_id: 
-  checklist_items_count: 0
+  estimated_time:
+  start_date:
+  predecessor_id:
   attachments_count: 0
 issues_053:
   id: 142
@@ -1084,12 +1032,11 @@ issues_053:
   project_id: 5
   tracker_id: 1
   status_id: 3
-  version_id: 
+  version_id:
   category_id: 6
-  estimated_time: 
-  start_date: 
-  predecessor_id: 
-  checklist_items_count: 0
+  estimated_time:
+  start_date:
+  predecessor_id:
   attachments_count: 0
 issues_054:
   id: 218
@@ -1107,10 +1054,9 @@ issues_054:
   status_id: 1
   version_id: 4
   category_id: 2
-  estimated_time: 
-  start_date: 
-  predecessor_id: 
-  checklist_items_count: 0
+  estimated_time:
+  start_date:
+  predecessor_id:
   attachments_count: 0
 issues_055:
   id: 220
@@ -1125,12 +1071,11 @@ issues_055:
   project_id: 1
   tracker_id: 1
   status_id: 1
-  version_id: 
+  version_id:
   category_id: 2
-  estimated_time: 
-  start_date: 
-  predecessor_id: 
-  checklist_items_count: 0
+  estimated_time:
+  start_date:
+  predecessor_id:
   attachments_count: 0
 issues_056:
   id: 221
@@ -1147,10 +1092,9 @@ issues_056:
   status_id: 3
   version_id: 4
   category_id: 2
-  estimated_time: 
-  start_date: 
-  predecessor_id: 
-  checklist_items_count: 0
+  estimated_time:
+  start_date:
+  predecessor_id:
   attachments_count: 0
 issues_057:
   id: 224
@@ -1158,7 +1102,7 @@ issues_057:
   description: ''
   created_at: 2013-01-27 00:53:02.000000000 Z
   updated_at: 2013-02-16 14:56:31.000000000 Z
-  due_date: 
+  due_date:
   done: 100
   author_id: 1
   assigned_to_id: 1
@@ -1167,10 +1111,9 @@ issues_057:
   status_id: 3
   version_id: 7
   category_id: 2
-  estimated_time: 
-  start_date: 
-  predecessor_id: 
-  checklist_items_count: 0
+  estimated_time:
+  start_date:
+  predecessor_id:
   attachments_count: 0
 issues_058:
   id: 225
@@ -1188,10 +1131,9 @@ issues_058:
   status_id: 3
   version_id: 4
   category_id: 2
-  estimated_time: 
-  start_date: 
-  predecessor_id: 
-  checklist_items_count: 0
+  estimated_time:
+  start_date:
+  predecessor_id:
   attachments_count: 0
 issues_059:
   id: 226
@@ -1209,9 +1151,8 @@ issues_059:
   version_id: 4
   category_id: 2
   estimated_time: !ruby/object:BigDecimal 18:0.5E0
-  start_date: 
+  start_date:
   predecessor_id: 272
-  checklist_items_count: 2
   attachments_count: 0
 issues_060:
   id: 227
@@ -1229,10 +1170,9 @@ issues_060:
   status_id: 3
   version_id: 8
   category_id: 2
-  estimated_time: 
-  start_date: 
-  predecessor_id: 
-  checklist_items_count: 0
+  estimated_time:
+  start_date:
+  predecessor_id:
   attachments_count: 0
 issues_061:
   id: 231
@@ -1249,10 +1189,9 @@ issues_061:
   status_id: 3
   version_id: 8
   category_id: 2
-  estimated_time: 
-  start_date: 
-  predecessor_id: 
-  checklist_items_count: 0
+  estimated_time:
+  start_date:
+  predecessor_id:
   attachments_count: 0
 issues_062:
   id: 232
@@ -1269,10 +1208,9 @@ issues_062:
   status_id: 3
   version_id: 8
   category_id: 2
-  estimated_time: 
-  start_date: 
-  predecessor_id: 
-  checklist_items_count: 0
+  estimated_time:
+  start_date:
+  predecessor_id:
   attachments_count: 0
 issues_063:
   id: 233
@@ -1290,10 +1228,9 @@ issues_063:
   status_id: 3
   version_id: 8
   category_id: 2
-  estimated_time: 
-  start_date: 
-  predecessor_id: 
-  checklist_items_count: 0
+  estimated_time:
+  start_date:
+  predecessor_id:
   attachments_count: 0
 issues_064:
   id: 234
@@ -1312,10 +1249,9 @@ issues_064:
   status_id: 3
   version_id: 8
   category_id: 2
-  estimated_time: 
-  start_date: 
-  predecessor_id: 
-  checklist_items_count: 0
+  estimated_time:
+  start_date:
+  predecessor_id:
   attachments_count: 0
 issues_065:
   id: 235
@@ -1333,10 +1269,9 @@ issues_065:
   status_id: 3
   version_id: 8
   category_id: 2
-  estimated_time: 
-  start_date: 
-  predecessor_id: 
-  checklist_items_count: 0
+  estimated_time:
+  start_date:
+  predecessor_id:
   attachments_count: 0
 issues_066:
   id: 236
@@ -1353,10 +1288,9 @@ issues_066:
   status_id: 3
   version_id: 8
   category_id: 2
-  estimated_time: 
-  start_date: 
-  predecessor_id: 
-  checklist_items_count: 0
+  estimated_time:
+  start_date:
+  predecessor_id:
   attachments_count: 0
 issues_067:
   id: 237
@@ -1373,10 +1307,9 @@ issues_067:
   status_id: 3
   version_id: 8
   category_id: 2
-  estimated_time: 
-  start_date: 
-  predecessor_id: 
-  checklist_items_count: 0
+  estimated_time:
+  start_date:
+  predecessor_id:
   attachments_count: 0
 issues_068:
   id: 238
@@ -1384,19 +1317,18 @@ issues_068:
   description: ''
   created_at: 2013-02-16 14:52:59.000000000 Z
   updated_at: 2013-11-16 16:03:03.000000000 Z
-  due_date: 
+  due_date:
   done: 0
   author_id: 1
-  assigned_to_id: 
+  assigned_to_id:
   project_id: 1
   tracker_id: 1
   status_id: 1
-  version_id: 
-  category_id: 
-  estimated_time: 
-  start_date: 
-  predecessor_id: 
-  checklist_items_count: 0
+  version_id:
+  category_id:
+  estimated_time:
+  start_date:
+  predecessor_id:
   attachments_count: 0
 issues_069:
   id: 239
@@ -1413,10 +1345,9 @@ issues_069:
   status_id: 4
   version_id: 2
   category_id: 2
-  estimated_time: 
-  start_date: 
-  predecessor_id: 
-  checklist_items_count: 2
+  estimated_time:
+  start_date:
+  predecessor_id:
   attachments_count: 0
 issues_070:
   id: 242
@@ -1433,11 +1364,10 @@ issues_070:
   tracker_id: 2
   status_id: 3
   version_id: 8
-  category_id: 
-  estimated_time: 
-  start_date: 
-  predecessor_id: 
-  checklist_items_count: 2
+  category_id:
+  estimated_time:
+  start_date:
+  predecessor_id:
   attachments_count: 0
 issues_071:
   id: 243
@@ -1453,11 +1383,10 @@ issues_071:
   tracker_id: 1
   status_id: 3
   version_id: 8
-  category_id: 
-  estimated_time: 
-  start_date: 
-  predecessor_id: 
-  checklist_items_count: 0
+  category_id:
+  estimated_time:
+  start_date:
+  predecessor_id:
   attachments_count: 0
 issues_072:
   id: 244
@@ -1473,11 +1402,10 @@ issues_072:
   tracker_id: 1
   status_id: 3
   version_id: 8
-  category_id: 
-  estimated_time: 
-  start_date: 
-  predecessor_id: 
-  checklist_items_count: 0
+  category_id:
+  estimated_time:
+  start_date:
+  predecessor_id:
   attachments_count: 0
 issues_073:
   id: 245
@@ -1494,11 +1422,10 @@ issues_073:
   tracker_id: 1
   status_id: 1
   version_id: 12
-  category_id: 
-  estimated_time: 
-  start_date: 
-  predecessor_id: 
-  checklist_items_count: 0
+  category_id:
+  estimated_time:
+  start_date:
+  predecessor_id:
   attachments_count: 0
 issues_074:
   id: 246
@@ -1517,11 +1444,10 @@ issues_074:
   tracker_id: 1
   status_id: 4
   version_id: 1
-  category_id: 
-  estimated_time: 
-  start_date: 
-  predecessor_id: 
-  checklist_items_count: 0
+  category_id:
+  estimated_time:
+  start_date:
+  predecessor_id:
   attachments_count: 0
 issues_075:
   id: 251
@@ -1538,10 +1464,9 @@ issues_075:
   status_id: 4
   version_id: 10
   category_id: 11
-  estimated_time: 
+  estimated_time:
   start_date: 2013-03-26
-  predecessor_id: 
-  checklist_items_count: 0
+  predecessor_id:
   attachments_count: 0
 issues_076:
   id: 252
@@ -1558,10 +1483,9 @@ issues_076:
   status_id: 3
   version_id: 10
   category_id: 8
-  estimated_time: 
+  estimated_time:
   start_date: 2013-03-26
-  predecessor_id: 
-  checklist_items_count: 0
+  predecessor_id:
   attachments_count: 0
 issues_077:
   id: 253
@@ -1578,10 +1502,9 @@ issues_077:
   status_id: 3
   version_id: 10
   category_id: 8
-  estimated_time: 
+  estimated_time:
   start_date: 2013-03-26
-  predecessor_id: 
-  checklist_items_count: 0
+  predecessor_id:
   attachments_count: 0
 issues_078:
   id: 254
@@ -1598,10 +1521,9 @@ issues_078:
   status_id: 3
   version_id: 10
   category_id: 8
-  estimated_time: 
+  estimated_time:
   start_date: 2013-03-26
-  predecessor_id: 
-  checklist_items_count: 0
+  predecessor_id:
   attachments_count: 0
 issues_079:
   id: 258
@@ -1619,10 +1541,9 @@ issues_079:
   status_id: 3
   version_id: 10
   category_id: 9
-  estimated_time: 
+  estimated_time:
   start_date: 2013-04-05
   predecessor_id: 254
-  checklist_items_count: 0
   attachments_count: 0
 issues_080:
   id: 259
@@ -1637,12 +1558,11 @@ issues_080:
   project_id: 7
   tracker_id: 1
   status_id: 4
-  version_id: 
+  version_id:
   category_id: 9
-  estimated_time: 
+  estimated_time:
   start_date: 2013-04-05
   predecessor_id: 258
-  checklist_items_count: 0
   attachments_count: 0
 issues_081:
   id: 260
@@ -1654,16 +1574,15 @@ issues_081:
   due_date: 2013-04-30
   done: 100
   author_id: 1
-  assigned_to_id: 
+  assigned_to_id:
   project_id: 7
   tracker_id: 1
   status_id: 3
   version_id: 11
   category_id: 9
-  estimated_time: 
+  estimated_time:
   start_date: 2013-04-24
-  predecessor_id: 
-  checklist_items_count: 3
+  predecessor_id:
   attachments_count: 0
 issues_082:
   id: 262
@@ -1675,16 +1594,15 @@ issues_082:
   due_date: 2013-04-30
   done: 100
   author_id: 1
-  assigned_to_id: 
+  assigned_to_id:
   project_id: 7
   tracker_id: 1
   status_id: 3
   version_id: 11
   category_id: 9
-  estimated_time: 
+  estimated_time:
   start_date: 2013-04-01
-  predecessor_id: 
-  checklist_items_count: 0
+  predecessor_id:
   attachments_count: 0
 issues_083:
   id: 264
@@ -1703,10 +1621,9 @@ issues_083:
   status_id: 4
   version_id: 11
   category_id: 9
-  estimated_time: 
+  estimated_time:
   start_date: 2013-04-06
-  predecessor_id: 
-  checklist_items_count: 0
+  predecessor_id:
   attachments_count: 0
 issues_084:
   id: 265
@@ -1724,11 +1641,10 @@ issues_084:
   tracker_id: 1
   status_id: 4
   version_id: 11
-  category_id: 
-  estimated_time: 
+  category_id:
+  estimated_time:
   start_date: 2013-04-06
-  predecessor_id: 
-  checklist_items_count: 0
+  predecessor_id:
   attachments_count: 0
 issues_085:
   id: 266
@@ -1744,11 +1660,10 @@ issues_085:
   tracker_id: 1
   status_id: 4
   version_id: 11
-  category_id: 
-  estimated_time: 
+  category_id:
+  estimated_time:
   start_date: 2013-04-06
-  predecessor_id: 
-  checklist_items_count: 0
+  predecessor_id:
   attachments_count: 0
 issues_086:
   id: 267
@@ -1758,19 +1673,18 @@ issues_086:
     enregistrer dans un fichier."
   created_at: 2013-04-13 04:52:22.000000000 Z
   updated_at: 2013-04-13 12:51:19.000000000 Z
-  due_date: 
+  due_date:
   done: 100
   author_id: 1
   assigned_to_id: 1
   project_id: 7
   tracker_id: 1
   status_id: 4
-  version_id: 
-  category_id: 
-  estimated_time: 
-  start_date: 
-  predecessor_id: 
-  checklist_items_count: 0
+  version_id:
+  category_id:
+  estimated_time:
+  start_date:
+  predecessor_id:
   attachments_count: 0
 issues_087:
   id: 269
@@ -1781,16 +1695,15 @@ issues_087:
   due_date: 2013-04-30
   done: 0
   author_id: 5
-  assigned_to_id: 
+  assigned_to_id:
   project_id: 7
   tracker_id: 1
   status_id: 1
   version_id: 11
-  category_id: 
-  estimated_time: 
-  start_date: 
-  predecessor_id: 
-  checklist_items_count: 0
+  category_id:
+  estimated_time:
+  start_date:
+  predecessor_id:
   attachments_count: 0
 issues_088:
   id: 271
@@ -1801,16 +1714,15 @@ issues_088:
   due_date: 2013-04-30
   done: 100
   author_id: 5
-  assigned_to_id: 
+  assigned_to_id:
   project_id: 7
   tracker_id: 1
   status_id: 3
   version_id: 11
-  category_id: 
-  estimated_time: 
+  category_id:
+  estimated_time:
   start_date: 2013-04-24
-  predecessor_id: 
-  checklist_items_count: 0
+  predecessor_id:
   attachments_count: 0
 issues_089:
   id: 275
@@ -1819,17 +1731,16 @@ issues_089:
     Détailler les fonctionnalitées"
   created_at: 2013-04-30 12:20:57.000000000 Z
   updated_at: 2013-04-30 12:20:57.000000000 Z
-  due_date: 
+  due_date:
   done: 0
   author_id: 1
   assigned_to_id: 1
   project_id: 7
   tracker_id: 1
   status_id: 1
-  version_id: 
+  version_id:
   category_id: 11
-  estimated_time: 
-  start_date: 
-  predecessor_id: 
-  checklist_items_count: 0
+  estimated_time:
+  start_date:
+  predecessor_id:
   attachments_count: 0

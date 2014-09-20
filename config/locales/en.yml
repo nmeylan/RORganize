@@ -105,6 +105,8 @@ en:
   label_create: Create
   label_update: Update
   label_delete: Delete
+  label_notifications: Notifications
+  label_commented: Commented
 
 # LINK
   link_new_project: New project
@@ -187,7 +189,7 @@ en:
   link_unwatch: Unwatch
   link_view_profile: View profile
   link_old_versions: Old versions
-
+  link_mark_all_as_read: Mark all as read
  #FORM
   field_name: Name
   field_description: Description
@@ -304,6 +306,7 @@ en:
   text_star: Mark as favorite
   text_unstar: Remove from favorite
   text_public_project: This project is public.
+  text_unread_notifications: You have unread notifications
 
   password: "Password"
   field_steps: "Steps"
@@ -325,3 +328,6 @@ en:
 
   #No data
   no_data_projects: There are no projects to display
+
+  #Confirm
+  confirm_mark_all_as_read: Are you sure you want to mark all unread notifications as read?

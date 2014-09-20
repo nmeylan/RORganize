@@ -403,11 +403,18 @@ img.small_avatar {
 
 .box > .header {
   background: $default-box-header-background-color;
-  color: $default-box-header-color;
+  color: $default-color;
   padding-top: 5px;
   text-align: center;
   margin: -6px -6px 10px;
   border-bottom: 1px solid #DADEE5;
+  .actions{
+    margin-top: 4px;
+  }
+}
+.box > .header_left{
+ padding-left: 5px;
+  text-align: left;
 }
 
 .box .header h2, .box .header h1 {
@@ -578,29 +585,7 @@ img.small_avatar {
 * PROJECTS
 */
 ul.project_list {
-  list-style-type: none;
   > li {
-    margin: 0px 30px 30px -15px !important;
-    border-bottom: 1px solid $default-border-color;
-    > a {
-      font-size: 20px;
-    }
-    ul.project_stats {
-      position: relative;
-      float: right;
-      list-style-type: none;
-      li {
-        float: left;
-        margin-left: 10px;
-        .octicon:before {
-          margin-right: 2px;
-        }
-      }
-    }
-    p.project_last_activity {
-      font-size: 12px;
-      padding-bottom: 20px;
-    }
     div.star_project, div.watch_project {
       position: relative;
       margin-top: -30px;
@@ -918,12 +903,11 @@ table.permissions_list {
   }
 }
 
-
 /*
   BADGES
 */
 
-.badge{
+.badge {
   position: relative;
   top: -1px;
   padding: 2px 5px;
@@ -939,21 +923,50 @@ table.permissions_list {
 /*
   PROFILES
 */
-.profile_user_projects{
-  li{
+.profile_user_projects {
+  li {
     line-height: 25px;
   }
 }
 
 .peek-rblineprof-file pre.duration {
-width: 300px !important;
+  width: 300px !important;
 }
 
 .peek-rblineprof-modal {
   width: 100% !important;
   position: absolute;
   z-index: 10000;
-   left: 0% !important;
+  left: 0% !important;
   top: 50px;
-   margin-left: 0px !important;
+  margin-left: 0px !important;
+}
+
+/*
+  NOTIFICATIONS
+*/
+a.indicator {
+  padding-top: 6px;
+  padding-right: 6px;
+}
+
+.indicator .unread {
+  position: absolute;
+  top: -2px;
+  right: 2px;
+  z-index: 2;
+  width: 10px;
+  height: 10px;
+  color: #fff;
+  text-align: center;
+  background-color: #4183c4;
+  background-image: -moz-linear-gradient(#7ba9d6, #4183c4);
+  background-image: -webkit-linear-gradient(#7ba9d6, #4183c4);
+  background-image: linear-gradient(#7ba9d6, #4183c4);
+  background-repeat: repeat-x;
+  background-clip: padding-box;
+  border-radius: 50%;
+  border: 2px solid #f3f3f3;
+  padding: 0px;
+  display: inline-block;
 }

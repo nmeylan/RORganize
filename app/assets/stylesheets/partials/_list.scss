@@ -21,6 +21,7 @@ table.list {
   border: 1px solid #E4E4E4;
   overflow-x: auto;
 }
+
 .autoscroll {
   overflow-x: auto;
   overflow-y: hidden;
@@ -41,36 +42,43 @@ table.list {
   padding: 5px;
   white-space: nowrap;
 }
+
 .list tr {
   color: $default-smooth-color;
 }
 
-.list td{
-//  word-break: break-all;
+.list td {
+  //  word-break: break-all;
   white-space: nowrap;
   padding-right: 10px;
 }
-.list td.icon_information{
+
+.list td.icon_information {
   font-size: 11px;
   text-align: right;
 }
-.list td.icon_information:last-child{
-padding-right: 10px;
+
+.list td.icon_information:last-child {
+  padding-right: 10px;
 }
-.list td.cell_checkbox{
-  width: 20px;
-}
-.list td.id{
+
+.list td.cell_checkbox {
   width: 20px;
 }
 
-.list tr:first-child{
+.list td.id {
+  width: 20px;
+}
+
+.list tr:first-child {
   text-align: left;
 }
-.list td.action{
+
+.list td.action {
   text-align: right;
   height: 27px;
 }
+
 .list tr.close {
   text-decoration: line-through;
 }
@@ -92,20 +100,17 @@ li.close {
   margin-top: 20px;
 }
 
-
 .list tr.hover:not(.header) {
   background-color: $default-table-tr-hover-background-color !important;
 }
 
-.toolbox_selection{
-  background-color:$default-table-tr-hover-background-color !important;
+.toolbox_selection {
+  background-color: $default-table-tr-hover-background-color !important;
 }
-
 
 /*
 *  PAGINATION
 */
-
 
 .list th .current {
   padding-right: 12px;
@@ -119,4 +124,65 @@ li.close {
 
 .list th .desc {
   content: '\f05b';
+}
+
+/*
+ FANCY LIST
+*/
+.box .fancy_list{
+  padding: 0px;
+  margin-top: -5px;
+  margin-bottom: 0px;
+  margin-left: -6px;
+  margin-right: -6px;
+  .fancy_list_item {
+    margin-left: 0px;
+    margin-right: 0px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+.fancy_list {
+  list-style-type: none;
+  .fancy_list_item {
+    margin: 0px 30px 30px -15px;
+    border-bottom: 1px solid $default-border-color;
+    > a {
+      font-size: 20px;
+    }
+    .right_content_list {
+      position: relative;
+      float: right;
+      list-style-type: none;
+      li {
+        float: left;
+        margin-left: 10px;
+        .octicon:before {
+          margin-right: 2px;
+        }
+      }
+    }
+    p.bottom_content_list {
+      font-size: 12px;
+      padding-bottom: 20px;
+    }
+  }
+}
+
+.fancy_list_mini {
+  .fancy_list_item {
+    margin-bottom: 5px;
+    margin-top: 5px;
+    padding: 5px;
+    > a {
+      font-size: 13px;
+    }
+  }
+  .fancy_list_item:last-child{
+    border-bottom: inherit;
+    margin-bottom: -6px;
+  }
+  .octicon{
+    font-size: 20px;
+  }
 }
