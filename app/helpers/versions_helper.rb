@@ -56,7 +56,7 @@ module VersionsHelper
             safe_concat content_tag :legend, &Proc.new {
               link_to glyph(t(:link_related_request), 'chevron-down'), '#', {:class => 'icon icon-expanded toggle', :id => "version-#{version.display_id}"}
             }
-            safe_concat content_tag :div, class: "content version-#{version.id}", &Proc.new {
+            safe_concat content_tag :div, class: "content version-#{version.display_id}", &Proc.new {
               content_tag :ul do
                 collection_detail[version.id][:issues].collect do |issue|
                   content_tag :li, link_to("#{issue.tracker.name} ##{issue.id} : #{issue.caption}", issue_path(version.project.slug, issue.id))  , class: "#{'close' if issue.status.is_closed?}"

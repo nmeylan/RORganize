@@ -57,12 +57,13 @@ class ProjectDecorator < ApplicationDecorator
     versions_overviews = Version.overviews(self.id)
     structure = Hash.new { |k, v| k[v] = {} }
     versions_overviews.each do |version_overview|
-      version = versions.select { |v| v.id.eql?(version_overview[0]) && v.id }.first
+      version = versions.select { |v| v.id.eql?(version_overview[0]) }.first
       issues = version ? version.issues : []
       structure[version_overview.first] = {
       percent: version_overview[3].truncate, closed_issues_count: version_overview[2], opened_issues_count: version_overview[1], issues: issues}
     end
-    if versions.to_a.any?
+    p structure
+    if versions.to_a.any? && versions.to_a.first.issues.size > 0
       versions.each do |version|
         unless structure.keys.include?(version.id)
           structure[version.id] = {

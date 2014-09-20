@@ -16,7 +16,10 @@ class RoadmapsController < ApplicationController
   #GET/project/:project_id/roadmaps
   def show
     @version_decorator = @project_decorator.current_versions.eager_load(issues: [:status, :tracker]).order(:position).decorate
-    @version_decorator.to_a << Version.new(name: 'Unplanned').decorate
+    unplanned = Version.new(name: 'Unplanned')
+    unplanned.issues << Issue.where(project_id: @project_decorator.id, version_id: nil).eager_load(:status, :tracker)
+    unplanned.project = @project_decorator.model
+    @version_decorator.to_a << unplanned.decorate
     old_versions = @project_decorator.old_versions.decorate
     respond_to do |format|
       format.html { render :action => 'index', locals: {old_versions: old_versions} }
