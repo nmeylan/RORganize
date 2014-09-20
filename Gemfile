@@ -23,7 +23,11 @@ gem 'sass-rails', '~> 4.0.1'
 gem 'jquery-rails'
 gem 'coffee-rails'
 gem 'uglifier'
-
+#Performance
+gem 'peek'
+gem 'peek-mysql2'
+gem 'peek-rblineprof'
+gem 'peek-performance_bar'
 group :test do
   # Pretty printed test output
   gem 'turn', '~> 0.8.3', :require => false
@@ -33,10 +37,6 @@ group :development do
   gem 'bullet'
   gem 'active_record_query_trace'
   gem 'spring'
-  gem 'peek'
-  gem 'peek-mysql2'
-  gem 'peek-rblineprof'
-  gem 'peek-performance_bar'
 end
 
 #RORganize plugins
