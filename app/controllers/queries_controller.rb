@@ -4,15 +4,21 @@
 # File: queries_controller.rb
 
 class QueriesController < ApplicationController
+  include Rorganize::RichController
   before_filter { |c| c.add_action_alias = {'new_project_query' => 'new'} }
+  before_filter :set_pagination, only: [:index]
   before_filter :find_project, only: [:create]
   before_filter :check_permission, except: [:edit_query_filter]
   before_filter :check_query_permission, :only => [:show, :edit, :destroy, :update, :edit_query_filter]
   before_filter { |c| c.top_menu_item('administration') }
 
   def index
+    self.menu_context :admin_menu
+    self.menu_item(params[:controller], params[:action])
+    @queries_decorator = Query.where('is_public = ? AND is_for_all = ?', true, true).eager_load(:user).paginated(@sessions[:current_page], @sessions[:per_page], order('queries.name')).decorate(context: {queries_url: queries_path, action_name: 'index'})
     respond_to do |format|
       format.html
+      format.js { respond_to_js }
     end
   end
 

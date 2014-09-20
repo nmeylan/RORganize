@@ -42,7 +42,7 @@ unless $0.end_with?('rake')
     menu.add(:permissions, I18n.t(:link_permissions), {controller: 'permissions', action: 'index'}, {id: 'menu_permissions', glyph: 'key'})
     menu.add(:roles, I18n.t(:link_roles), {controller: 'roles', action: 'index'}, {id: 'menu_roles', glyph: 'person'})
     menu.add(:users, I18n.t(:link_users), {controller: 'users', action: 'index'}, {id: 'menu_users', glyph: 'organization'})
-    menu.add(:queries, I18n.t(:link_queries), {controller: 'administration', action: 'public_queries'}, {id: 'menu_administration_public_queries', glyph: 'database'})
+    menu.add(:queries, I18n.t(:link_queries), {controller: 'queries', action: 'index'}, {id: 'menu_queries_index', glyph: 'database'})
     menu.add(:trackers, I18n.t(:link_trackers), {controller: 'trackers', action: 'index'}, {id: 'menu_trackers', glyph: 'issue-opened'})
     menu.add(:issues_statuses, I18n.t(:link_issues_statuses), {controller: 'issues_statuses', action: 'index'}, {id: 'menu_issues_statuses', glyph: 'dashboard'})
   end

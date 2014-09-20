@@ -123,9 +123,7 @@ RORganize::Application.routes.draw do
   end
 
   resources :administration do
-    collection do
-      get 'public_queries', :path => 'queries'
-    end
+
   end
   resource :profile, path: 'my-account' do
     collection do
