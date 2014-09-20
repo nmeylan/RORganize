@@ -86,7 +86,7 @@ class Issue < ActiveRecord::Base
 
   # @return [Array] array with all attribute that can be filtered.
   def self.filtered_attributes
-    unused_attributes = ['Project', 'Description', 'Estimated time', 'Predecessor', 'Attachments count']
+    unused_attributes = ['Project', 'Description', 'Estimated time', 'Predecessor', 'Attachments count', 'Comments count', 'Link type']
     attrs = Issue.attributes_formalized_names.delete_if { |attribute| unused_attributes.include?(attribute) }
     attrs.map { |attribute| [attribute, attribute.gsub(/\s/, '_').downcase] }
   end

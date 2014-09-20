@@ -163,7 +163,8 @@ class User < ActiveRecord::Base
     end
   end
 
-  #Get owned projects with filters
+  # Get projects when user is a member or when projects are public.
+  # @param [String] filter which values are : 'opened' or 'archived' or 'starred'
   def owned_projects(filter)
     case filter
       when 'opened'
@@ -183,33 +184,6 @@ class User < ActiveRecord::Base
     end
   end
 
-  #Get all coworkers for each project
-  def coworkers_per_project
-    coworkers = Hash.new { |h, k| h[k] = [] }
-    if self.is_admin? && self.act_as_admin?
-      condition = ['users.id = ?', self.id]
-    else
-      condition = ['users.id = ? AND `permissions`.`action` = ? AND `permissions`.`controller` = ?', self.id, 'display_activities', 'Coworkers']
-    end
-    project_ids = Project.joins(members: [:user, role: :permissions]).where(condition).group('1').pluck('projects.id')
-    members = Member.eager_load(:user, :role, :project).where('project_id IN (?) AND user_id <> ?', project_ids.to_a, self.id)
-    members.each do |member|
-      coworkers[member.project.name] << member
-    end
-    coworkers
-  end
-
-  #Load latest assigned requests
-  def latest_assigned_issues(order, limit)
-    Issue.select('issues.*')
-    .where('issues.id IN (?)', Issue.select('issues.id').where('assigned_to_id = ?', self.id).order('issues.id DESC'))
-    .eager_load(:tracker, :project, :status => [:enumeration])
-    .order(order).limit(limit)
-  end
-
-  def latest_activities(limit)
-    Journal.select('journals.*').where(:user_id => self.id).includes(:details, :project, :user, :journalizable).limit(limit).order('created_at DESC')
-  end
 
   def generate_default_avatar
     path = "#{Rails.root}/public/system/identicons/#{self.slug}_avatar.png"

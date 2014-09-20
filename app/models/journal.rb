@@ -55,31 +55,6 @@ class Journal < ActiveRecord::Base
     end
   end
 
-
-  def self.edit_note(journal_id, owner_id, content)
-    journal = Journal.find_by_id(journal_id)
-    saved = false
-    if journal && journal.user_id.eql?(owner_id)
-      saved = journal.update_column(:notes, content)
-    end
-    journals = Journal.where(:journalizable_type => 'Issue', :journalizable_id => journal.journalizable_id).includes([:details, :user])
-    {:saved => saved, :journals => journals}
-  end
-
-  def self.delete_note(journal_id, owner_id)
-    journal = Journal.find_by_id(journal_id)
-    destroyed = false
-    if journal && journal.user_id.eql?(owner_id)
-      if journal.details.empty?
-        destroyed = journal.destroy
-      else
-        destroyed = journal.update_column(:notes, '')
-      end
-    end
-    journals = Journal.where(:journalizable_type => 'Issue', :journalizable_id => journal.journalizable_id).includes([:details, :user])
-    {:destroyed => destroyed, :journals => journals}
-  end
-
   def polymorphic_identifier
     "#{self.journalizable_type}_#{self.journalizable_id}".to_sym
   end
