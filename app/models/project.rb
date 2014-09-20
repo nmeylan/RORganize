@@ -2,6 +2,7 @@ class Project < ActiveRecord::Base
   include Rorganize::SmartRecords
   include Rorganize::Attachable::AttachmentType
   include Rorganize::Watchable
+  include Rorganize::ModuleManager::ModuleManagerHelper
   #SLug
   extend FriendlyId
   friendly_id :name, use: :slugged
@@ -18,7 +19,7 @@ class Project < ActiveRecord::Base
   has_many :documents, :dependent => :destroy
   has_many :journals, :dependent => :destroy
   #Triggers
-  after_create :create_member
+  after_create :create_member, :add_modules
   after_update :save_attachments, :remove_all_non_member
   #Validators
   validates_associated :attachments
@@ -40,6 +41,14 @@ class Project < ActiveRecord::Base
   def create_member
     role = Role.find_by_name('Project Manager')
     Member.create(:project_id => self.id, :role_id => role.id, :user_id => self.created_by)
+  end
+
+  def add_modules
+    Rorganize::ModuleManager::enabled_by_default_modules.each do |m|
+      self.enabled_modules << EnabledModule.new(m)
+    end
+    self.save
+    reload_enabled_module(self.id)
   end
 
   def starred?
@@ -93,6 +102,7 @@ class Project < ActiveRecord::Base
   def old_versions
     self.versions.where('versions.start_date <= ? AND versions.is_done = true', Date.today)
   end
+
   def roadmap
     structure = Hash.new { |k, v| k[v] = {} }
     versions_overviews = Version.overviews(self.id)
@@ -107,13 +117,13 @@ class Project < ActiveRecord::Base
 
   def real_members
     non_member = Role.non_member
-    self.members.collect{|member| member unless member.role_id.eql?(non_member.id)}.compact
+    self.members.collect { |member| member unless member.role_id.eql?(non_member.id) }.compact
   end
 
   def remove_all_non_member
     if self.is_public_changed? && !self.is_public
       Member.destroy_all(project_id: self.id, role_id: Role.non_member.id)
-      Watcher.delete_all("project_id = #{self.id} AND user_id NOT IN (#{self.members.collect{|member| member.user_id}.join(',')})")
+      Watcher.delete_all("project_id = #{self.id} AND user_id NOT IN (#{self.members.collect { |member| member.user_id }.join(',')})")
     end
   end
 end

@@ -54,7 +54,7 @@ class ProjectsController < ApplicationController
     respond_to do |format|
       if @project_decorator.save
         flash[:notice] = t(:successful_creation)
-        format.html { redirect_to :action => 'index', :controller => 'projects' }
+        format.html { redirect_to :action => 'overview', :controller => 'projects', project_id: @project_decorator.slug }
         format.json { render :json => @project_decorator,
                              :status => :created, :location => @project_decorator }
       else

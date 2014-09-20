@@ -32,7 +32,7 @@ module Rorganize
     end
 
     class << self
-      attr_reader :associations
+      attr_reader :associations, :enabled_by_default_modules
       def map(module_panel_name)
         @modules ||= {}
         if !self.modules(module_panel_name)
@@ -51,12 +51,18 @@ module Rorganize
       end
 
       def initialize_modules(always_enabled_module)
+        @enabled_by_default_modules = []
         @always_enabled_module = always_enabled_module
         Rorganize::ModuleManager.map :project do |mod|
           Rorganize::MenuManager.items(:project_menu).menu_items.each do |item|
             mod.add(item.name, item.controller, item.action)
           end
         end
+      end
+
+      # @param [Array] modules : enabled by default on project creation.
+      def set_enabled_by_default_module(modules)
+        @enabled_by_default_modules = modules
       end
       def always_enabled_module
         return @always_enabled_module

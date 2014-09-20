@@ -9,8 +9,11 @@ require 'rorganize/permission_manager'
 
 module Rorganize
   TIME_FORMAT = '%a. %-d %b. %I:%M %p.'
+  #ICONS
   ACTION_ICON = {version_id: 'milestone', due_date: 'today', assigned_to_id: 'person', status_id: 'dashboard', category_id: 'tag', done: 'pulse', tracker_id: 'issue-opened', admin: 'crown', email: 'mail'}
+  #ROLES constants
   NON_MEMBER_ROLE = 'Non member'
+
 end
 
 unless $0.end_with?('rake')
