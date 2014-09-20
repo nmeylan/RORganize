@@ -7,7 +7,7 @@ module ProjectsHelper
     content_tag :div do
       members_hash.collect do |role, members|
         content_tag :div, class: 'members_block' do
-          safe_concat content_tag :h4, "#{role} : "
+          safe_concat content_tag :h4, "#{role}", {class: 'badge badge_role'}
           safe_concat content_tag :span, members.collect { |member| member.user.decorate.user_link(true) }.join(', ').html_safe, class: 'members_grouped_by_role'
         end
       end.join.html_safe

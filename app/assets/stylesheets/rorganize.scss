@@ -848,14 +848,6 @@ div.issues_overview_group:nth-child(even) {
 }
 
 /*
-  Coworkers
-*/
-#coworkers_content .box {
-  margin: 0px;
-  margin-top: 10px;
-}
-
-/*
 hotkeys_overlay
 */
 #hotkeys_overlay {
@@ -923,5 +915,32 @@ table.permissions_list {
   .permissions_list.body.spacer.border td {
     height: 10px;
     border-bottom: solid 1px $default-border-color;
+  }
+}
+
+
+/*
+  BADGES
+*/
+
+.badge{
+  position: relative;
+  top: -1px;
+  padding: 2px 5px;
+  font-size: 10px;
+  font-weight: bold;
+  color: #fff;
+  text-transform: uppercase;
+  background-color: $default-badge-background-color;
+  border-radius: 3px;
+  margin-right: 5px;
+}
+
+/*
+  PROFILES
+*/
+.profile_user_projects{
+  li{
+    line-height: 25px;
   }
 }

@@ -32,11 +32,12 @@ module UsersHelper
   # Build a list of projects in which the given user is member.
   # @param [User] user.
   def projects(user)
-    content_tag :ul do
+    content_tag :ul, {class: 'profile profile_user_projects'} do
       user.members.collect do |member|
         content_tag :li do
           safe_concat link_to member.project.caption.capitalize, overview_projects_path(member.project.slug)
-          safe_concat " (#{member.role.caption}, #{link_to member.assigned_issues.to_a.count{|issue| issue.open?}, issues_path(member.project.slug, {type: :filter, filters_list: [:assigned_to, :status], filter: {assigned_to: {operator: :equal, value: [user.id]}, status: {operator: :open}}}) } #{t(:text_assigned_issues)})"
+          safe_concat " (#{link_to member.assigned_issues.to_a.count{|issue| issue.open?}, issues_path(member.project.slug, {type: :filter, filters_list: [:assigned_to, :status], filter: {assigned_to: {operator: :equal, value: [user.id]}, status: {operator: :open}}}) } #{t(:text_assigned_issues)}) "
+          safe_concat content_tag :span, member.role.caption, {class: 'badge'}
         end
       end.join.html_safe
     end
