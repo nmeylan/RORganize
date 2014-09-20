@@ -474,7 +474,7 @@ module ApplicationHelper
   # in case of big render.
   # @param [User] user.
   def fast_profile_link(user)
-    "<a href='/#{user.slug}' class='author_link tooltipped tooltipped-s' label='#{t(:link_view_profile)}'>#{user.caption}</a>"
+    "<a href='/#{user.slug}' class='author_link' >#{user.caption}</a>"
   end
 
   # Build a link to project overview.

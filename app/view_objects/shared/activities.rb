@@ -14,7 +14,7 @@ class Activities
     @journals = journals.any? ? journals.decorate : journals
     @comments = comments.any? ? comments.decorate : comments
     @content = Hash.new { |h, k| h[k] = {} } #e.g  {date: {type_id: [journalizable, journalizable, comment, journalizable]}}
-    crunch_data if @journals.any? || @comments.any?
+    crunch_data
   end
 
   # @param [Date] date.
@@ -28,15 +28,11 @@ class Activities
   # This method build a hash with the following structure : {date: {type_id: [journalizable, journalizable, comment, journalizable]}}
   def crunch_data
     tmp_hash = Hash.new { |h, k| h[k] = {} }
-    fruit_salad = []
-    fruit_salad += @journals.flatten
-    fruit_salad += @comments.flatten
-    current_year = Date.today.year
-    fruit_salad.sort { |x, y| y.created_at <=> x.created_at }.each do |element|
-      el_date = element.created_at
-      date = el_date.year.eql?(current_year) ? el_date.strftime("%a. %-d %b.") : el_date.strftime("%a. %-d %b. %Y")
-      tmp_hash[date][element.polymorphic_identifier] ||= []
-      tmp_hash[date][element.polymorphic_identifier] << element
+    fruit_salad = @journals | @comments
+    fruit_salad.each do |element|
+      s = element.created_at.to_date
+      tmp_hash[s][element.polymorphic_identifier] ||= []
+      tmp_hash[s][element.polymorphic_identifier] << element
     end
     tmp_hash.each do |date, elements_hash|
       elements_hash.each do |polymorphic_identifier, elements|

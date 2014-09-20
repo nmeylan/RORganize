@@ -34,6 +34,10 @@ group :development do
   gem 'bullet'
   gem 'active_record_query_trace'
   gem 'spring'
+  gem 'peek'
+  gem 'peek-mysql2'
+  gem 'peek-rblineprof'
+  gem 'peek-performance_bar'
 end
 
 #RORganize plugins

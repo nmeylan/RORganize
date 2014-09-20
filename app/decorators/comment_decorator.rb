@@ -96,8 +96,4 @@ class CommentDecorator < ApplicationDecorator
     h.content_tag :span, self.display_object_type
   end
 
-  def created_at
-    model.created_at
-  end
-
 end

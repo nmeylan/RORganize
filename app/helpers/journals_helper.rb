@@ -44,7 +44,7 @@ module JournalsHelper
   # @param [Date] date.
   def activities_date(date)
     content_tag :div, class: 'date_circle', &Proc.new {
-      content_tag :div, content_tag(:p, date), class: 'inner_circle'
+      content_tag :div, content_tag(:p, date.strftime('%a. %-d %b.')), class: 'inner_circle'
     }
   end
 
@@ -87,7 +87,7 @@ module JournalsHelper
   # @param [Journal] journal.
   # @param [Numeric] nth : the number of the activity to render for the same day.
   def journal_header_render(journal, nth)
-    user = journal.display_author
+    user = journal.display_author(true)
     if nth % 2 == 0 #Render is depending on the parity
       safe_concat content_tag :span, nil, class: "#{journal.display_action_type_icon}"
       safe_concat content_tag :span, user, class: 'author'

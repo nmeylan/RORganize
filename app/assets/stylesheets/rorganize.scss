@@ -944,3 +944,16 @@ table.permissions_list {
     line-height: 25px;
   }
 }
+
+.peek-rblineprof-file pre.duration {
+width: 300px !important;
+}
+
+.peek-rblineprof-modal {
+  width: 100% !important;
+  position: absolute;
+  z-index: 10000;
+   left: 0% !important;
+  top: 50px;
+   margin-left: 0px !important;
+}

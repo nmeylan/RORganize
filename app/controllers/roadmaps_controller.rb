@@ -111,7 +111,7 @@ class RoadmapsController < ApplicationController
     if @sessions[@project.slug][:gantt][:versions]
       Version.includes(issues: [:parent, :children, :tracker, :assigned_to, :status]).where(id: @sessions[@project.slug][:gantt][:versions])
     else
-      @project_decorator.versions.includes(issues: [:parent, :children, :tracker, :assigned_to, :status]).to_a.select { |version| !version.is_done }
+      @project_decorator.versions.includes(issues: [:parent, :children, :tracker, :assigned_to, :status]).where('versions.is_done = false')
     end
   end
 

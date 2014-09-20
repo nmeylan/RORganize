@@ -5,7 +5,7 @@ require 'action_view/helpers/tag_helper'
 class MyTestClass
 
 end
-class EagerLoadingTest
+class RubyFuncTest
   include ActionView::Helpers::TagHelper
   ITERATION = 100_000
 
@@ -76,8 +76,62 @@ class EagerLoadingTest
     end
   end
 
+  def array_flatten_test
+    array = [0.200000]
+    Benchmark.bm(27) do |bm|
+      bm.report('with flatten') do
+        ITERATION.times do
+          array.flatten
+        end
+      end
+
+      bm.report('without flatten') do
+        ITERATION.times do
+          array
+        end
+      end
+    end
+  end
+
+  def array_any_test
+    array = [0.200000]
+    Benchmark.bm(27) do |bm|
+      bm.report('Any?') do
+        ITERATION.times do
+          array.any?
+        end
+      end
+
+      bm.report('size > 0') do
+        ITERATION.times do
+          array.size > 0
+        end
+      end
+    end
+  end
+
+  def array_concat_test
+    array = [0.20000]
+    Benchmark.bm(27) do |bm|
+      bm.report('concat') do
+        ITERATION.times do
+          array.concat(array)
+        end
+      end
+      bm.report('+') do
+        ITERATION.times do
+          array + array
+        end
+      end
+      bm.report('|') do
+        ITERATION.times do
+          array | array
+        end
+      end
+    end
+  end
 end
 
-test = EagerLoadingTest.new
+test = RubyFuncTest.new
 
-test.content_tag_test
+test.array_concat_test

@@ -15,4 +15,7 @@
 //= require jquery.jgrowl_minimized
 //= require overlay.min
 //= require rorganize
+//= require peek
+//= require peek/views/rblineprof
+//= require peek/views/performance_bar
 //= require_tree .

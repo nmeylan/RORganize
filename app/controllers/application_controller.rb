@@ -14,6 +14,10 @@ class ApplicationController < ActionController::Base
   around_filter :set_current_user
   after_filter :set_sessions
 
+  def peek_enabled?
+    Rails.env.eql?('development')
+  end
+
   #Define which menu it concern (:project_menu, :admin_menu)
   def menu_context(context)
     @menu_context ||= []

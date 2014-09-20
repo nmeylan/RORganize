@@ -19,12 +19,12 @@ class ApplicationDecorator < Draper::Decorator
   end
 
   # @return [String] formatted created_at date.
-  def created_at
+  def display_created_at
     model.created_at ? model.created_at.to_formatted_s(:short) : '-'
   end
 
   # @return [String] formatted updated_at date.
-  def updated_at
+  def display_updated_at
     model.updated_at ? model.updated_at.to_formatted_s(:short) : '-'
   end
 

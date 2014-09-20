@@ -80,10 +80,6 @@ class JournalDecorator < ApplicationDecorator
     model.created_at.strftime("%I:%M%p")
   end
 
-  def created_at
-    model.created_at
-  end
-
   # Render the a link to the user.
   # @param [Boolean] avatar if true display avatar, else hide it.
   def display_author(avatar = true)

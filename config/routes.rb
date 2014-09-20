@@ -152,6 +152,7 @@ RORganize::Application.routes.draw do
 
   #MOUNT PLUGINS
   mount Scenarios::Engine => '/', :as => 'scenarios_route' #/scenarios
+  mount Peek::Railtie => '/peek'
 
   get 'projects/:project_id/scenarios/:action', :controller => 'scenarios'
 
