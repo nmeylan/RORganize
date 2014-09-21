@@ -89,7 +89,7 @@
 <body>
 <div id="content">
   <%= yield %>
-  <p>You have been notified by RORganize.</p>
+  <p>You have been notified by RORganize. If you don't want to receive emails from this kind of notifications, go to <%= link_to 'your account preferences', url_for(controller: 'profiles', action: 'notification_preferences', only_path: false) %>.</p>
 </div>
 <%= clear_both %>
 </body>
