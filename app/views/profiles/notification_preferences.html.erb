@@ -1,0 +1,34 @@
+<%#=
+ * User: nmeylan
+ * Date: 21.09.14
+ * Time: 16:57
+%>
+<%= contextual t(:link_notification_preferences) %>
+<%= render :partial => 'profiles/sidebar' %>
+
+<%= form_tag notification_preferences_profile_path, {method: :post} do %>
+    <div class="box">
+      <%= box_header_tag(t(:text_notification_preferences)) %>
+      <div>
+        <h2><%= t(:label_participating) %></h2>
+
+        <p><%= t(:text_notification_participating) %></p>
+        <%= check_box_tag 'pref[participating][email]', 'notification_participant_email', @enums_hash['notification_participant_email'] %>
+        <%= label_tag 'pref[participating][email]', t(:field_email) %>
+        <%= check_box_tag 'pref[participating][in_app]', 'notification_participant_in_app', @enums_hash['notification_participant_in_app'] %>
+        <%= label_tag 'pref[participating][in_app]', t(:field_in_app) %>
+      </div>
+       <div class="separator"></div>
+      <div>
+        <h2><%= t(:label_watching) %></h2>
+
+        <p><%= t(:text_notification_watching) %></p>
+        <%= check_box_tag 'pref[watching][email]', 'notification_watcher_email', @enums_hash['notification_watcher_email'] %>
+        <%= label_tag 'pref[watching][email]', t(:field_email) %>
+        <%= check_box_tag 'pref[watching][in_app]', 'notification_watcher_in_app', @enums_hash['notification_watcher_in_app'] %>
+        <%= label_tag 'pref[watching][in_app]', t(:field_in_app) %>
+      </div>
+
+    </div>
+    <%= submit_tag t(:button_save) %>
+<% end %>

@@ -59,3 +59,24 @@ enumerations_012:
   opt: SCAC
   name: User
   position: 2
+
+enumerations_013:
+  id: 13
+  opt: PRNO
+  name: notification_watcher_email
+  position: 1
+enumerations_014:
+  id: 14
+  opt: PRNO
+  name: notification_watcher_in_app
+  position: 2
+enumerations_015:
+  id: 15
+  opt: PRNO
+  name: notification_participant_email
+  position: 3
+enumerations_016:
+  id: 16
+  opt: PRNO
+  name: notification_participant_in_app
+  position: 4

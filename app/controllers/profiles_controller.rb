@@ -136,6 +136,28 @@ class ProfilesController < ApplicationController
     end
   end
 
+  def notification_preferences
+    enums = Enumeration.where(opt: 'PRNO')
+    if request.post?
+      Preference.delete_all(enumeration_id: enums.collect { |enum| enum.id }, user_id: @user.id)
+      if params[:pref]
+        params[:pref].each do |_, preferences|
+          preferences.each do |_, v|
+            enum_id = enums.to_a.select{ |enum| enum.name.eql?(v) }.first.id
+            @user.preferences << Preference.new(enumeration_id: enum_id, boolean_value: true)
+          end
+        end
+      end
+      @user.save
+      respond_to do |format|
+        format.html { redirect_to action: 'notification_preferences'}
+      end
+    end
+    @preferences = @user.preferences.where(enumeration_id: enums.collect { |enum| enum.id }).eager_load(:enumeration)
+    @enums_hash = {}
+    @preferences.each { |pref| @enums_hash[pref.enumeration.name] = pref.enumeration.id }
+  end
+
   private
   def find_user
     @user = User.find(User.current.id)

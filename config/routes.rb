@@ -144,6 +144,8 @@ RORganize::Application.routes.draw do
       get 'spent_time'
       post 'star_project', :path => 'star_project/:project_id'
       post 'save_project_position'
+      get 'notification_preferences'
+      post 'notification_preferences'
     end
   end
 

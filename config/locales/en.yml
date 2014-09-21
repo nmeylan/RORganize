@@ -107,6 +107,8 @@ en:
   label_delete: Delete
   label_notifications: Notifications
   label_commented: Commented
+  label_participating: Participating
+  label_watching: Watching
 
 # LINK
   link_new_project: New project
@@ -190,6 +192,7 @@ en:
   link_view_profile: View profile
   link_old_versions: Old versions
   link_mark_all_as_read: Mark all as read
+  link_notification_preferences: Notification preferences
  #FORM
   field_name: Name
   field_description: Description
@@ -232,6 +235,7 @@ en:
   field_date: Date
   field_spent_time: Spent time
   field_hours: Hours
+  field_in_app: In app
   #FLASH
   successful_creation: Successful creation
   successful_update: Successful update
@@ -307,6 +311,9 @@ en:
   text_unstar: Remove from favorite
   text_public_project: This project is public.
   text_unread_notifications: You have unread notifications
+  text_notification_preferences: How you receive notifications
+  text_notification_participating: When you participate by commenting something or are assigned to a task or someone brings you in with an @mention.
+  text_notification_watching: Any activities from something that you are watching.
 
   password: "Password"
   field_steps: "Steps"

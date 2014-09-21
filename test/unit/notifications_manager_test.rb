@@ -21,67 +21,100 @@ class NotificationsManagerTest < ActiveSupport::TestCase
     @issue.destroy
   end
 
-  test 'Recipients : author and assigned on journal creation' do
-    notif = @journal.create_notification
-    assert_equal [1], notif.recipients.collect { |r| r.id }
-
-    @issue.assigned_to_id = 5
-    @issue.status_id = 5
-    @issue.save
-    @journal = Journal.where(journalizable_id: @issue.id, journalizable_type: @issue.class.to_s).last
-    notif = @journal.create_notification
-    assert_equal [1], notif.recipients.collect { |r| r.id }
-
-    @issue.assigned_to_id = 7
-    @issue.save
-    @journal = Journal.where(journalizable_id: @issue.id, journalizable_type: @issue.class.to_s).last
-    notif = @journal.create_notification
-    assert_equal [1, 7], notif.recipients.collect { |r| r.id }
+  def create_watcher
+    Watcher.create(watchable_id: 1, watchable_type: 'Project', user_id: 1, project_id: 1)
   end
 
-  test 'Recipients : mentioned in description' do
-    @issue.assigned_to_id = 5
-    @issue.description = 'Hey @nicolas-meylan'
-    @issue.save
-    @journal = Journal.where(journalizable_id: @issue.id, journalizable_type: @issue.class.to_s).last
+  #
+  # test 'Recipients : author and assigned on journal creation' do
+  #   notif = @journal.create_notification
+  #   assert_equal [], notif.recipients_hash[:participants].collect { |r| r.id }
+  #
+  #   @issue.assigned_to_id = 1
+  #   @issue.status_id = 5
+  #   @issue.save
+  #   @journal = Journal.where(journalizable_id: @issue.id, journalizable_type: @issue.class.to_s).last
+  #   notif = @journal.create_notification
+  #   assert_equal [1], notif.recipients_hash[:participants].collect { |r| r.id }
+  #
+  #   @issue.assigned_to_id = 7
+  #   @issue.save
+  #   @journal = Journal.where(journalizable_id: @issue.id, journalizable_type: @issue.class.to_s).last
+  #   notif = @journal.create_notification
+  #   assert_equal [7], notif.recipients_hash[:participants].collect { |r| r.id }
+  # end
+  #
+  # test 'Recipients : mentioned in description' do
+  #   @issue.assigned_to_id = 5
+  #   @issue.description = 'Hey @nicolas-meylan'
+  #   @issue.save
+  #   @journal = Journal.where(journalizable_id: @issue.id, journalizable_type: @issue.class.to_s).last
+  #   notif = @journal.create_notification
+  #   assert_equal [1], notif.recipients_hash[:participants].collect { |r| r.id }
+  #
+  #   @issue.description = 'Hey @nicolas-meylan and @stan-smith'
+  #   @issue.save
+  #   @journal = Journal.where(journalizable_id: @issue.id, journalizable_type: @issue.class.to_s).last
+  #   notif = @journal.create_notification
+  #   assert_equal [1, 7], notif.recipients_hash[:participants].collect { |r| r.id }
+  #
+  #   @issue.description = 'Hey @nicolas-meylan and @stan-smith @stan-smith'
+  #   @issue.save
+  #   @journal = Journal.where(journalizable_id: @issue.id, journalizable_type: @issue.class.to_s).last
+  #   notif = @journal.create_notification
+  #   assert_equal [1, 7], notif.recipients_hash[:participants].collect { |r| r.id }
+  # end
+  #
+  # test 'Recipients : in comments thread' do
+  #   comment1 = Comment.new({content: 'this a comment', user_id: User.current.id, project_id: 1, commentable_id: @issue.id, commentable_type: 'Issue'})
+  #   comment2 = Comment.new({content: 'this a second comment in same thread', user_id: 1, project_id: 1, commentable_id: @issue.id, commentable_type: 'Issue'})
+  #   comment1.save
+  #   notif = comment1.create_notification
+  #   assert_equal [], notif.recipients_hash[:participants].collect { |r| r.id }
+  #   comment2.save
+  #   notif = comment1.create_notification
+  #   assert_equal [1], notif.recipients_hash[:participants].collect { |r| r.id }.sort { |x, y| x <=> y }
+  #   notif = comment2.create_notification
+  #   assert_equal [5], notif.recipients_hash[:participants].collect { |r| r.id }.sort { |x, y| x <=> y }
+  # end
+  #
+  # test 'Recipients : mentionned in comments' do
+  #   comment1 = Comment.new({content: 'this a comment', user_id: 5, project_id: 1, commentable_id: @issue.id, commentable_type: 'Issue'})
+  #   comment2 = Comment.new({content: 'this a comment', user_id: 7, project_id: 1, commentable_id: @issue.id, commentable_type: 'Issue'})
+  #   comment3 = Comment.new({content: 'this a comment', user_id: 1, project_id: 1, commentable_id: @issue.id, commentable_type: 'Issue'})
+  #   comment1.save
+  #   notif = comment1.create_notification
+  #   assert_equal [], notif.recipients_hash[:participants].collect { |r| r.id }
+  #   comment1.content = 'Hey @nicolas-meylan and @stan-smith'
+  #   comment1.save
+  #   notif = comment1.create_notification
+  #   assert_equal [1, 7], notif.recipients_hash[:participants].collect { |r| r.id }.sort { |x, y| x <=> y }
+  #   comment2.save
+  #   comment3.save
+  #   notif = comment3.create_notification
+  #   assert_equal [5, 7], notif.recipients_hash[:participants].collect { |r| r.id }.sort { |x, y| x <=> y }
+  # end
+  #
+  # test 'Recipients : user watcher' do
+  #   create_watcher
+  #   notif = @journal.create_notification
+  #   assert_equal [], notif.recipients_hash[:participants].collect { |r| r.id }
+  #   assert_equal [1], notif.recipients_hash[:watchers].collect { |r| r.id }
+  # end
+
+  test 'Recipients : preferences in app' do
+    create_watcher
     notif = @journal.create_notification
-    assert_equal [1], notif.recipients.collect { |r| r.id }
+    recipients_hash = @journal.real_recipients(notif, 'in_app')
+    assert_equal [], recipients_hash[:participants].collect { |r| r.id }
+    assert_equal [], recipients_hash[:watchers].collect { |r| r.id }
 
-    @issue.description = 'Hey @nicolas-meylan and @stan-smith'
-    @issue.save
-    @journal = Journal.where(journalizable_id: @issue.id, journalizable_type: @issue.class.to_s).last
+    Preference.create(user_id: 1, enumeration_id: Enumeration.find_by_name('notification_watcher_in_app').id, boolean_value: 1)
+
     notif = @journal.create_notification
-    assert_equal [1, 7], notif.recipients.collect { |r| r.id }
-
-    @issue.description = 'Hey @nicolas-meylan and @stan-smith @stan-smith'
-    @issue.save
-    @journal = Journal.where(journalizable_id: @issue.id, journalizable_type: @issue.class.to_s).last
-    notif = @journal.create_notification
-    assert_equal [1, 7], notif.recipients.collect { |r| r.id }
-  end
-
-  test 'Recipients : in comments thread' do
-    comment1 = Comment.new({content: 'this a comment', user_id: User.current.id, project_id: 1, commentable_id: @issue.id, commentable_type: 'Issue'})
-    comment2 = Comment.new({content: 'this a second comment in same thread', user_id: 1, project_id: 1, commentable_id: @issue.id, commentable_type: 'Issue'})
-    comment1.save
-    notif = comment1.create_notification
-    assert_equal [5], notif.recipients.collect { |r| r.id }
-    comment2.save
-    notif = comment1.create_notification
-    assert_equal [1, 5], notif.recipients.collect { |r| r.id }.sort { |x, y| x <=> y }
-    notif = comment2.create_notification
-    assert_equal [1, 5], notif.recipients.collect { |r| r.id }.sort { |x, y| x <=> y }
-  end
-
-  test 'Recipients : mentionned in comments' do
-    comment1 = Comment.new({content: 'this a comment', user_id: 5, project_id: 1, commentable_id: @issue.id, commentable_type: 'Issue'})
-    comment1.save
-    notif = comment1.create_notification
-    assert_equal [5], notif.recipients.collect { |r| r.id }
-    comment1.content = 'Hey @nicolas-meylan and @stan-smith'
-    comment1.save
-    notif = comment1.create_notification
-    assert_equal [1, 5, 7], notif.recipients.collect { |r| r.id }.sort { |x, y| x <=> y }
+    recipients_hash = @journal.real_recipients(notif, 'in_app')
+    assert_equal [], recipients_hash[:participants].collect { |r| r.id }
+    assert_equal [1], recipients_hash[:watchers].collect { |r| r.id }
   end
 
 

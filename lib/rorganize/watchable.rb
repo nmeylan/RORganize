@@ -26,9 +26,9 @@ module Rorganize
     end
 
     def real_watchers
-      unwatch = Watcher.where(watchable_type: self.class.to_s, watchable_id: self.id, is_unwatch: true, project_id: self.project_id).pluck('user_id')
-      w = Watcher.where(watchable_type: self.class.to_s, watchable_id: self.id, project_id: self.project_id)
-      project_w = Watcher.where(watchable_type: 'Project', watchable_id: self.project_id) if !self.is_a?(Project)
+      unwatch = Watcher.includes(author: :preferences).where(watchable_type: self.class.to_s, watchable_id: self.id, is_unwatch: true, project_id: self.project_id).pluck('user_id')
+      w = Watcher.includes(author: :preferences).where(watchable_type: self.class.to_s, watchable_id: self.id, project_id: self.project_id)
+      project_w = Watcher.includes(author: :preferences).where(watchable_type: 'Project', watchable_id: self.project_id) if !self.is_a?(Project)
       sum = project_w.to_a + w.to_a
       sum.flatten(0).delete_if{|watcher| unwatch.include? watcher.user_id}
     end

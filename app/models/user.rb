@@ -19,6 +19,7 @@ class User < ActiveRecord::Base
   has_many :members, :class_name => 'Member', :dependent => :destroy
   has_many :assigned_issues, foreign_key: :assigned_to_id, class_name: 'Issue'
   has_many :notifications, dependent: :destroy
+  has_many :preferences, dependent: :destroy
   #Validators
   validates :login, :presence => true, :length => 4..50, :uniqueness => true
   validates :name, :presence => true, :length => 4..50

@@ -13,6 +13,7 @@
   </ul>
   <h3><%= t(:label_my_preferences) %></h3>
   <ul>
+    <li><%= link_to t(:label_notifications), notification_preferences_profile_path %></li>
     <li><%= link_to t(:link_custom_queries), custom_queries_profile_path%></li>
     <li><%= link_to t(:link_my_projects), projects_profile_path %></li>
   </ul>
@@ -21,5 +22,4 @@
     <li><%= link_to t(:link_change_email), '#'%></li>
     <li><%= link_to t(:link_change_password), change_password_profile_path %></li>
   </ul>
-
 <% end %>
