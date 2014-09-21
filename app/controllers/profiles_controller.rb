@@ -150,6 +150,7 @@ class ProfilesController < ApplicationController
       end
       @user.save
       respond_to do |format|
+        flash[:notice] = t(:successful_preferences)
         format.html { redirect_to action: 'notification_preferences'}
       end
     end

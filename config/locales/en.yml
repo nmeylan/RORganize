@@ -247,6 +247,7 @@ en:
   successful_time_entry_creation: Your time spent on this issue was successfully logged
   successful_time_entry_update: Your time spent on this issue was successfully updated
   successful_starred: was successfully starred.
+  successful_preferences: Your preferences have been successfully saved!
   successful_unstarred: was successfully unstarred.
   successful_watched: You will now be notified of any activities from this.
   successful_unwatched: You will now only be notified when you are participating.
