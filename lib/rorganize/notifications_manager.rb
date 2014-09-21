@@ -84,6 +84,7 @@ module Rorganize
         @trigger = trigger
         @notification_type = GENERIC_NOTIFICATION
         @recipients = []
+        @recipients_hash = {}
         if @trigger.project
           if trigger.is_a? Journal
             @model = trigger.journalizable

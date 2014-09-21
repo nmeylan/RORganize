@@ -24,7 +24,7 @@ class User < ActiveRecord::Base
   validates :login, :presence => true, :length => 4..50, :uniqueness => true
   validates :name, :presence => true, :length => 4..50
   #Triggers
-  after_create :generate_default_avatar
+  after_create :generate_default_avatar, :set_preferences
   #Scope
   default_scope { eager_load(:avatar) }
 
@@ -204,6 +204,17 @@ class User < ActiveRecord::Base
 
   def notified?
     count_notification > 0
+  end
+
+  def set_preferences
+    enum_watch_email = Enumeration.find_by_name('notification_watcher_email').id
+    enum_watch_in_app = Enumeration.find_by_name('notification_watcher_in_app').id
+    enum_participate_email = Enumeration.find_by_name('notification_participant_email').id
+    enum_participate_in_app = Enumeration.find_by_name('notification_participant_in_app').id
+    Preference.create(user_id: self.id, enumeration_id: enum_watch_email, boolean_value: true)
+    Preference.create(user_id: self.id, enumeration_id: enum_watch_in_app, boolean_value: true)
+    Preference.create(user_id: self.id, enumeration_id: enum_participate_email, boolean_value: true)
+    Preference.create(user_id: self.id, enumeration_id: enum_participate_in_app, boolean_value: true)
   end
 
 end
