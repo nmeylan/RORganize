@@ -1424,13 +1424,14 @@ div.dhx_modal_cover {
   border-color: $default-selected-border-color;
 }
 .gantt_task_line.issue{
-  background-color: $top-menu-background-color;
-  background-image: -moz-linear-gradient(#f9f9f9, #f3f3f3);
-  background-image: -webkit-linear-gradient(#f9f9f9, #f3f3f3);
-  background-image: linear-gradient(#f9f9f9, #f3f3f3);
-  border-color: $default-border-color;
+  background-color: #65bd10;
+  background-image: -moz-linear-gradient(#8dcf16, #65bd10);
+  background-image: -webkit-linear-gradient(#8dcf16, #65bd10);
+  background-image: linear-gradient(#8dcf16, #65bd10);
+  background-repeat: repeat-x;
+  color: white;
   .gantt_task_content{
-    color: $default-color;
+    color: white;
   }
   .gantt_task_progress{
     background-color: #65bd10;
