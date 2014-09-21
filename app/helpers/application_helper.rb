@@ -298,7 +298,7 @@ module ApplicationHelper
   # @param [Journal] journal : to render.
   def history_block_render(journal)
     user = journal.display_author(false)
-    content_tag :div, class: 'history_block' do
+    content_tag :div, {class: 'history_block', id: "journal_#{journal.id}"} do
       safe_concat journal.display_author_avatar
       safe_concat content_tag :div, class: "history_header #{'display_avatar' if journal.user_avatar?}", &Proc.new {
         safe_concat content_tag :span, user, {class: 'author'}

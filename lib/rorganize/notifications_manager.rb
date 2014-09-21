@@ -37,7 +37,8 @@ module Rorganize
           notification.recipients.each do |user|
             Notification.create({notifiable_id: notification.model.id,
                                  notifiable_type: notification.model.class,
-                                 notification_type: notification.trigger.class,
+                                 trigger_type: notification.trigger.class,
+                                 trigger_id: notification.trigger.id,
                                  user_id: user.id,
                                  from_id: notification.trigger.user_id,
                                  project_id: notification.project.id})

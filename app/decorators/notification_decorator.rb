@@ -9,9 +9,9 @@ class NotificationDecorator < ApplicationDecorator
 
   def notification_info
     str = ''
-    if model.notification_type.eql?('Journal')
+    if model.trigger_type.eql?('Journal')
       str += h.t(:label_updated)
-    elsif model.notification_type.eql?('Comment')
+    elsif model.trigger_type.eql?('Comment')
       str += h.t(:label_commented)
     end
     str +=" #{h.distance_of_time_in_words(model.created_at, Time.now)} #{h.t(:label_ago)}"
@@ -20,7 +20,7 @@ class NotificationDecorator < ApplicationDecorator
   end
 
   def notification_type_icon
-    if model.notification_type.eql?('Journal')
+    if model.trigger_type.eql?('Journal')
       if model.notifiable.is_a? Issue
         'issue-opened'
       elsif model.notifiable.is_a? Document
@@ -28,7 +28,7 @@ class NotificationDecorator < ApplicationDecorator
       elsif model.notifiable.is_a? WikiPage
         'wiki'
       end
-    elsif model.notification_type.eql?('Comment')
+    elsif model.trigger_type.eql?('Comment')
       'comment'
     end
   end
