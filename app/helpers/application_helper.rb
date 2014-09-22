@@ -503,7 +503,7 @@ module ApplicationHelper
   # Build an avatar renderer for the given user.
   # @param [User] user.
   def fast_user_small_avatar(user)
-    "<img alt='' class='small_avatar' src='/system/attachments/Users/#{user.id}/#{user.avatar.id}/very_small/#{user.avatar.avatar.hash_key(:very_small)}.png'>"
+    "<img alt='' class='small_avatar' src='/system/attachments/Users/#{user.id}/#{user.avatar.id}/very_small/#{user.avatar.avatar_file_name}'>"
   end
 
   # Build a link to issue show action.

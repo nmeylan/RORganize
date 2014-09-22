@@ -5,7 +5,7 @@
 
 class Avatar < ActiveRecord::Base
   self.table_name = 'attachments'
-  has_attached_file :avatar, {:url => "/system/attachments/:attachable_type/:attachable_id/:id/:style/:hash.:extension",
+  has_attached_file :avatar, {:url => "/system/attachments/:attachable_type/:attachable_id/:id/:style/:file_name",
                               :hash_secret => RORganize::Application.config.secret_attachment_key,
                               :styles => {:thumb => '50x50', :very_small => '16x16>', :small => '100x100>', :medium => '150x150>'}}
   Paperclip.interpolates :attachable_type do |attachment, _|
@@ -13,6 +13,9 @@ class Avatar < ActiveRecord::Base
   end
   Paperclip.interpolates :attachable_id do |attachment, _|
     attachment.instance.attachable_id
+  end
+  Paperclip.interpolates :file_name do |attachment, _|
+    attachment.instance.file_file_name
   end
 
   validates_attachment :avatar,
