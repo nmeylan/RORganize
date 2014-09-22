@@ -4,6 +4,7 @@
 # File: bulk_edit_manager.rb
 module Rorganize
   module BulkEditManager
+    include ActiveRecord::ConnectionAdapters::Quoting
     extend ActiveSupport::Concern
     included do |base|
 
@@ -14,7 +15,7 @@ module Rorganize
         insert = []
         created_at = Time.now.utc.to_formatted_s(:db)
         objects.each do |obj|
-          insert << "(#{user_id}, #{obj.id}, '#{klazz}', '#{obj.caption[0..127]}', '#{Journal::ACTION_UPDATE}', #{project_id}, '#{created_at}', '#{created_at}')"
+          insert << "(#{user_id}, #{obj.id}, '#{klazz}', '#{quote_string(obj.caption[0..127])}', '#{Journal::ACTION_UPDATE}', #{project_id}, '#{created_at}', '#{created_at}')"
         end
         sql = "INSERT INTO `journals` (`user_id`, `journalizable_id`, `journalizable_type`, `journalizable_identifier`, `action_type`, `project_id`, `created_at`, `updated_at`) VALUES #{insert.join(', ')}"
         Journal.connection.execute(sql)
@@ -32,7 +33,7 @@ module Rorganize
         insert = []
         created_at = Time.now.utc.to_formatted_s(:db)
         objects.each do |obj|
-          insert << "(#{user_id}, #{obj.id}, '#{klazz}', '#{obj.caption[0..127]}', '#{Journal::ACTION_DELETE}', #{project_id}, '#{created_at}', '#{created_at}')"
+          insert << "(#{user_id}, #{obj.id}, '#{klazz}', '#{quote_string(obj.caption[0..127])}', '#{Journal::ACTION_DELETE}', #{project_id}, '#{created_at}', '#{created_at}')"
         end
         sql = "INSERT INTO `journals` (`user_id`, `journalizable_id`, `journalizable_type`, `journalizable_identifier`, `action_type`, `project_id`, `created_at`, `updated_at`) VALUES #{insert.join(', ')}"
         Journal.connection.execute(sql)
