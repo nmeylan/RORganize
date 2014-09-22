@@ -13,20 +13,24 @@
         <h2><%= t(:label_participating) %></h2>
 
         <p><%= t(:text_notification_participating) %></p>
-        <%= check_box_tag 'pref[participating][email]', 'notification_participant_email', @enums_hash['notification_participant_email'] %>
-        <%= label_tag 'pref[participating][email]', t(:field_email) %>
-        <%= check_box_tag 'pref[participating][in_app]', 'notification_participant_in_app', @enums_hash['notification_participant_in_app'] %>
-        <%= label_tag 'pref[participating][in_app]', t(:field_in_app) %>
+        <%= check_box_tag '[preferences][participant_email]', @keys[:notification_participant_email],
+                          @preferences.any? { |pref| pref.key.eql?('notification_participant_email') } %>
+        <%= label_tag '[preferences][participant_email]', t(:field_email) %>
+        <%= check_box_tag '[preferences][participant_in_app]', @keys[:notification_participant_in_app],
+                          @preferences.any? { |pref| pref.key.eql?('notification_participant_in_app') } %>
+        <%= label_tag '[preferences][participant_in_app]', t(:field_in_app) %>
       </div>
-       <div class="separator"></div>
+      <div class="separator"></div>
       <div>
         <h2><%= t(:label_watching) %></h2>
 
         <p><%= t(:text_notification_watching) %></p>
-        <%= check_box_tag 'pref[watching][email]', 'notification_watcher_email', @enums_hash['notification_watcher_email'] %>
-        <%= label_tag 'pref[watching][email]', t(:field_email) %>
-        <%= check_box_tag 'pref[watching][in_app]', 'notification_watcher_in_app', @enums_hash['notification_watcher_in_app'] %>
-        <%= label_tag 'pref[watching][in_app]', t(:field_in_app) %>
+        <%= check_box_tag '[preferences][watcher_email]', @keys[:notification_watcher_email],
+                          @preferences.any? { |pref| pref.key.eql?('notification_watcher_email') } %>
+        <%= label_tag '[preferences][watcher_email]', t(:field_email) %>
+        <%= check_box_tag '[preferences][watcher_in_app]', @keys[:notification_watcher_in_app],
+                          @preferences.any? { |pref| pref.key.eql?('notification_watcher_in_app') } %>
+        <%= label_tag '[preferences][watcher_in_app]', t(:field_in_app) %>
       </div>
 
     </div>

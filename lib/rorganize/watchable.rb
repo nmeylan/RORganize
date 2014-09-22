@@ -20,8 +20,6 @@ module Rorganize
     def watcher_for(user)
       w = self.watchers.to_a.delete_if{|watcher| !watcher.user_id.eql?(user.id) && watcher.is_unwatch}[0]
       w = Watcher.where(user_id: user.id, watchable_type: 'Project', watchable_id: self.project_id, is_unwatch: false).first if w.nil? && !self.is_a?(Project)
-      # w = Watcher.where(user_id: user.id, watchable_type: self.class.to_s, watchable_id: self.id, is_unwatch: false).first
-      # w = Watcher.where(user_id: user.id, watchable_type: 'Project', watchable_id: self.project_id, is_unwatch: false).first if w.nil? && !self.is_a?(Project)
       w
     end
 

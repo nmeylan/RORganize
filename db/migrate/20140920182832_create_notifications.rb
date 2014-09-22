@@ -8,6 +8,7 @@ class CreateNotifications < ActiveRecord::Migration
       t.integer :from_id
       t.integer :trigger_id
       t.string :trigger_type
+      t.string :recipient_type
       t.timestamps :created_at
       t.timestamps :updated_at
     end
