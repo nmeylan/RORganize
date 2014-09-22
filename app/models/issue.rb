@@ -34,13 +34,13 @@ class Issue < ActiveRecord::Base
   validate :validate_start_date, :validate_predecessor, :validate_due_date
   #Scopes
   scope :fetch_dependencies, -> { includes([:tracker, :version, :assigned_to, :category, :project, :attachments, :author, :status => [:enumeration]]) }
-  scope :opened_issues, -> {joins(:status).where('issues_statuses.is_closed = false')}
+  scope :opened_issues, -> { joins(:status).where('issues_statuses.is_closed = false') }
   #Group
-  scope :group_opened_by_attr, -> (project_id, table_name, attr, conditions = '1 = 1'){joins(:project, :status).joins("LEFT OUTER JOIN #{table_name} ON #{table_name}.id = issues.#{attr}_id").group('1').where('issues_statuses.is_closed = false AND issues.project_id = ? AND ?', project_id, conditions).pluck("#{table_name}.id, #{table_name}.name, count(issues.id), projects.slug")}
+  scope :group_opened_by_attr, -> (project_id, table_name, attr, conditions = '1 = 1') { joins(:project, :status).joins("LEFT OUTER JOIN #{table_name} ON #{table_name}.id = issues.#{attr}_id").group('1').where('issues_statuses.is_closed = false AND issues.project_id = ? AND ?', project_id, conditions).pluck("#{table_name}.id, #{table_name}.name, count(issues.id), projects.slug") }
 
-  scope :group_by_status, -> (project_id){joins(:project, status: [:enumeration]).group('1').where('issues.project_id = ?', project_id ).pluck("issues_statuses.id, enumerations.name, count(issues.id), projects.slug")}
+  scope :group_by_status, -> (project_id) { joins(:project, status: [:enumeration]).group('1').where('issues.project_id = ?', project_id).pluck("issues_statuses.id, enumerations.name, count(issues.id), projects.slug") }
 
-  scope :group_opened_by_project, -> (attr, conditions = '1 = 1') {joins(:project, status: [:enumeration]).group('2').where("issues_statuses.is_closed = false AND #{conditions}").pluck("#{attr}, projects.id, projects.slug, count(issues.id), projects.slug")}
+  scope :group_opened_by_project, -> (attr, conditions = '1 = 1') { joins(:project, status: [:enumeration]).group('2').where("issues_statuses.is_closed = false AND #{conditions}").pluck("#{attr}, projects.id, projects.slug, count(issues.id), projects.slug") }
 
   def caption
     self.subject
@@ -48,7 +48,7 @@ class Issue < ActiveRecord::Base
 
   #Attributes name without id
   def self.attributes_formalized_names
-    Issue.attribute_names.map { |attribute| attribute.gsub(/_id/, '').gsub(/id/, '').gsub(/_/, ' ').capitalize unless attribute.eql?('id')}.compact
+    Issue.attribute_names.map { |attribute| attribute.gsub(/_id/, '').gsub(/id/, '').gsub(/_/, ' ').capitalize unless attribute.eql?('id') }.compact
   end
 
   #  Custom validator
@@ -139,15 +139,15 @@ class Issue < ActiveRecord::Base
   end
 
   # @param [Array] doc_ids : array containing all ids of documents that will be bulk deleted.
-  def self.bulk_delete(issue_ids)
+  def self.bulk_delete(issue_ids, project)
     issues = Issue.where(:id => issue_ids)
-    Issue.transaction do
-      issues.each do |issue|
-        if issue.author_id.eql?(User.current.id) || User.current.allowed_to?('delete not owner', 'Issue', @project)
-          issue.destroy
-        end
+    ids = []
+    issues.each do |issue|
+      if issue.author_id.eql?(User.current.id) || User.current.allowed_to?('destroy_not_owner', 'Issues', project)
+        ids << issue.id
       end
     end
+    Issue.destroy_all(id: ids)
   end
 
   def self.conditions_string(hash)
@@ -184,6 +184,7 @@ class Issue < ActiveRecord::Base
   def has_task_list?
     self.description && !self.description.empty? && self.description.scan(/- \[(\w|\s)\]/).count > 0
   end
+
   def count_checked_tasks
     self.has_task_list? ? self.description.scan(/- \[x\]/).count : 0
   end
@@ -210,7 +211,7 @@ class Issue < ActiveRecord::Base
     if self.version && !self.version.target_date.nil? && self.version_id_changed?
       self.due_date = self.version.target_date
     end
-    if self.version && self.version.start_date && self.version_id_changed? && (self.start_date.nil? || (self.start_date && (self.start_date < self.version.start_date) ||  self.version.target_date && self.start_date > self.version.target_date))
+    if self.version && self.version.start_date && self.version_id_changed? && (self.start_date.nil? || (self.start_date && (self.start_date < self.version.start_date) || self.version.target_date && self.start_date > self.version.target_date))
       self.start_date = self.version.start_date
     end
   end

@@ -158,7 +158,7 @@ class IssuesController < ApplicationController
       end
     elsif params[:delete_ids]
       #Multi delete
-      Issue.bulk_delete(params[:delete_ids])
+      Issue.bulk_delete(params[:delete_ids], @project)
       load_issues
       respond_to do |format|
         format.js { respond_to_js :action => :index, :response_header => :success, :response_content => t(:successful_deletion) }

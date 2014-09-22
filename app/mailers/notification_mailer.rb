@@ -6,7 +6,7 @@ class NotificationMailer < ActionMailer::Base
   def notification_email(notification)
     @notification = notification
     subject = "RORganize - [#{notification.project.slug}] [#{notification.model.class.to_s} ##{notification.model.id}] : #{notification.model.caption}"
-    mail(bcc: notification.recipients.map { |recipient| recipient.email }, subject: subject, from: 'RORganize Notifier') do |format|
+    mail(bcc: notification.recipients.map { |recipient| recipient[:email] }, subject: subject, from: 'RORganize Notifier') do |format|
       if @notification.trigger.is_a? Journal
         format.html { render file: 'notification_mailer/journal_email' }
         format.text { render file: 'notification_mailer/journal_email' }

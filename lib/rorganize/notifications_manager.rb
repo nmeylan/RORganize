@@ -41,20 +41,18 @@ module Rorganize
     def in_app_notification(notification)
       if notification.notification_type.eql?(NotifiableEvent::GENERIC_NOTIFICATION)
         notification.recipients = notification.recipients_hash.values
-        Notification.transaction do
-          real_recipients(notification, 'in_app').each do |key, users|
-            users.each do |user|
-              Notification.create({notifiable_id: notification.model.id,
-                                   notifiable_type: notification.model.class,
-                                   trigger_type: notification.trigger.class,
-                                   trigger_id: notification.trigger.id,
-                                   user_id: user.id,
-                                   from_id: notification.trigger.user_id,
-                                   recipient_type: key,
-                                   project_id: notification.project.id})
-            end
+        insert = []
+        user_ids = []
+        created_at = Time.now.to_formatted_s(:db)
+        real_recipients(notification, 'in_app').each do |key, users|
+          users.each do |user|
+            insert << "(#{notification.model.id}, '#{notification.model.class}','#{notification.trigger.class}', #{notification.trigger.id}, #{user[:id]}, '#{notification.trigger.user_id}', '#{key}', #{notification.project.id}, '#{created_at}')"
+            user_ids << user[:id]
           end
         end
+        Notification.delete_all(user_id: user_ids, notifiable_id: notification.model.id, notifiable_type: notification.model.class)
+        sql = "INSERT INTO `notifications` (`notifiable_id`, `notifiable_type`, `trigger_type`, `trigger_id`, `user_id`, `from_id`, `recipient_type`, `project_id`, `created_at`) VALUES #{insert.join(', ')}"
+        Notification.connection.execute(sql)
       end
     end
 
@@ -72,7 +70,7 @@ module Rorganize
           enum_preference_ids = user.preferences.collect { |pref| Preference.notification_keys[pref.key.to_sym] }
           if key.eql?(:participants) && enum_preference_ids.include?(enumeration_participant) ||
               key.eql?(:watchers) && enum_preference_ids.include?(enumeration_watcher)
-            tmp_hash[key] << user
+            tmp_hash[key] << {id: user.id, email: user.email}
           end
         end
       end
