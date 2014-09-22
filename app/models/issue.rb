@@ -154,6 +154,7 @@ class Issue < ActiveRecord::Base
       end
     end
     Issue.delete_all(id: ids)
+    Notification.delete_all(notifiable_id: ids)
     journal_delete_creation(issues, project.id, User.current.id, 'Issue')
   end
 

@@ -107,13 +107,15 @@ module Rorganize
         enumeration_watcher = Preference.keys["notification_watcher_#{type}".to_sym]
         enumeration_participant = Preference.keys["notification_participant_#{type}".to_sym]
         tmp_hash = {}
+        added_user_ids = []
         notification.recipients_hash.each do |key, users|
           tmp_hash[key] = []
           users.each do |user|
             enum_preference_ids = user.preferences.collect { |pref| Preference.notification_keys[pref.key.to_sym] }
-            if key.eql?(:participants) && enum_preference_ids.include?(enumeration_participant) ||
-                key.eql?(:watchers) && enum_preference_ids.include?(enumeration_watcher)
+            if !added_user_ids.include?(user.id) && (key.eql?(:participants) && enum_preference_ids.include?(enumeration_participant) ||
+                key.eql?(:watchers) && enum_preference_ids.include?(enumeration_watcher))
               tmp_hash[key] << {id: user.id, email: user.email}
+              added_user_ids << user.id
             end
           end
         end
