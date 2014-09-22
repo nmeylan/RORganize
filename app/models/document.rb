@@ -75,7 +75,6 @@ class Document < ActiveRecord::Base
       end
     end
     Document.where(id: documents.collect{|document| document.id}).update_all(value_param)
-    Document.bulk_set_start_and_due_date(documents.collect{|document| document.id}, value_param[:version_id]) if value_param[:version_id]
     journal_update_creation(documents, documents[0].project_id, User.current.id, 'Document') if documents[0]
 
   end
