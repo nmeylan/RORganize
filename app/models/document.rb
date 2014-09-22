@@ -9,6 +9,7 @@ class Document < ActiveRecord::Base
   include Rorganize::Commentable
   include Rorganize::Watchable
   include Rorganize::Notifiable
+  extend Rorganize::BulkEditManager
   #Class variables
   assign_journalizable_properties({name: 'Name', category_id: 'Category', version_id: 'Version'})
   assign_foreign_keys({category_id: Category, version_id: Version})
@@ -57,7 +58,7 @@ class Document < ActiveRecord::Base
   def self.bulk_edit(doc_ids, value_param)
     #Editing with toolbox
     documents_toolbox = Document.where(:id => doc_ids)
-
+    documents = []
     #As form send all attributes, we drop all attributes except th filled one.
     value_param.delete_if { |k, v| v.eql?('') }
     key = value_param.keys[0]
@@ -65,26 +66,31 @@ class Document < ActiveRecord::Base
     if value.eql?('-1')
       value_param[key] = nil
     end
-    # Can't call Document.update_all because, after_update callback is not triggered :(
     Document.transaction do
       documents_toolbox.each do |document|
         document.attributes = value_param
         if document.changed?
-          document.save
+          documents << document
         end
       end
     end
+    Document.where(id: documents.collect{|document| document.id}).update_all(value_param)
+    Document.bulk_set_start_and_due_date(documents.collect{|document| document.id}, value_param[:version_id]) if value_param[:version_id]
+    journal_update_creation(documents, documents[0].project_id, User.current.id, 'Document') if documents[0]
+
   end
 
   # @param [Array] doc_ids : array containing all ids of documents that will be bulk deleted.
   def self.bulk_delete(doc_ids)
     documents_toolbox = Document.where(:id => doc_ids)
-    # Can't call Document.delete_all because, after_delete and :depends destroy callback is not triggered :(
+    documents = []
     Document.transaction do
       documents_toolbox.each do |document|
-        document.destroy
+        documents << document
       end
     end
+    Document.delete_all(id: ids)
+    journal_delete_creation(documents, documents[0].project_id, User.current.id, 'Document')
   end
 
   def self.conditions_string(hash)

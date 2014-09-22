@@ -1,0 +1,23 @@
+<%#=
+ * User: nmeylan
+ * Date: 22.09.14
+ * Time: 21:11
+%>
+<% journal = @notification.journal.decorate %>
+<%= content_tag :div, class: 'block' do %>
+    <%= content_tag :div, class: "header" do %>
+        <%= content_tag :span, {class: 'author'} do %>
+            <%= link_to(journal.user.caption, url_for(controller: 'rorganize', action: 'view_profile', user: journal.user.slug, only_path: false)) %>
+        <% end %>
+        <%= " bulk edited #{@notification.type.to_s.downcase}s." %>
+        <%= " on " %>
+        <%= content_tag :span, journal.created_at.strftime(Rorganize::TIME_FORMAT), {class: 'history_date'} %>
+    <% end %>
+    <% @notification.objects do |model| %>
+        <ul>
+        <li><%= link_to(model[:caption], url_for(controller: @notification.model_url[:controller], action: @notification.model_url[:action], id: model[:id], project_id: @notification.model_url[:project_id], only_path: false)) %> %></li>
+        </ul>
+    <% end %>
+    <hr>
+    <%= content_tag(:ul, (journal.details.collect { |detail| history_detail_render(detail) }).join.html_safe) %>
+<% end %>

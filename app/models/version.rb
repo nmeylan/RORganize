@@ -1,6 +1,7 @@
 class Version < ActiveRecord::Base
   include Rorganize::SmartRecords
   include Rorganize::Journalizable
+  extend Rorganize::BulkEditManager
   #Class variables
   assign_journalizable_properties({name: 'Name', target_date: 'Due date', start_date: 'Start date'})
   #Relations
@@ -32,21 +33,10 @@ class Version < ActiveRecord::Base
   # So when issue's version is changing we have to update issue start and due date to respect the previous rule.
   def update_issues_due_date
     issues = Issue.where(:version_id => self.id)
-    Issue.transaction do
-      issues.each do |issue|
-        if !self.target_date.nil? && (issue.due_date.nil? || issue.due_date > self.target_date)
-          journal = Journal.create(:user_id => User.current.id, :journalizable_id => issue.id, :journalizable_type => issue.class.to_s, :created_at => Time.now.to_formatted_s(:db), :notes => '', :action_type => 'updated', :project_id => issue.project.id)
-          #Create an entry for the journalizable
-          JournalDetail.create(:journal_id => journal.id, :property => 'Due date', :property_key => :due_date, :old_value => issue.due_date, :value => self.target_date)
-          issue.update_column('due_date', self.target_date)
-        end
-        if !self.start_date.nil? && (issue.start_date.nil? || issue.start_date < self.start_date)
-          journal = Journal.create(:user_id => User.current.id, :journalizable_id => issue.id, :journalizable_type => issue.class.to_s, :created_at => Time.now.to_formatted_s(:db), :notes => '', :action_type => 'updated', :project_id => issue.project.id)
-          #Create an entry for the journalizable
-          JournalDetail.create(:journal_id => journal.id, :property => 'Due date', :property_key => :due_date, :old_value => issue.due_date, :value => self.target_date)
-          issue.update_column('start_date', self.start_date)
-        end
-      end
+
+    if issues.any?
+      journals = Issue.journal_update_creation(issues, issues[0].project_id, User.current.id, 'Issue')
+      Issue.bulk_set_start_and_due_date(issues.collect { |issue| issue.id }, self.id, journals)
     end
   end
 
