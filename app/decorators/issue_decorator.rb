@@ -68,10 +68,7 @@ class IssueDecorator < ApplicationDecorator
     super(h.t(:link_delete), h.issue_path(context[:project].slug, model.id), context[:project], model.author_id)
   end
 
-  # @return [String] an indicator if model has attachments.
-  def attachment_presence_indicator
-    h.content_tag :span, nil, {class: "octicon octicon-attachment #{model.attachments.empty? ? 'smooth_gray' : ''}"}
-  end
+
 
   # see #ApplicationDecorator::delete_attachment_link
   def delete_attachment_link(attachment)

@@ -157,6 +157,11 @@ class ApplicationDecorator < Draper::Decorator
     h.link_to h.glyph(attachment.file_file_name, attachment.icon_type), path
   end
 
+  # @return [String] an indicator if model has attachments.
+  def attachment_presence_indicator
+    h.content_tag :span, nil, {class: "octicon octicon-attachment #{model.attachments.empty? ? 'smooth_gray' : ''}"}
+  end
+
   # @param [Numeric] length : number or characters.
   def resized_caption(length = 50)
     resize_text(model.caption, length)

@@ -17,7 +17,8 @@ module DocumentsHelper
         safe_concat content_tag :th, sortable('documents.name', 'Name')
         safe_concat content_tag :th, sortable('categories.name', 'Category')
         safe_concat content_tag :th, sortable('versions.name', 'Target phase')
-        safe_concat content_tag :th, nil
+        safe_concat content_tag :th, nil, {class: 'optional_cell'}
+        safe_concat content_tag :th, nil, {class: 'optional_cell'}
       }
       safe_concat(collection.collect do |document|
         content_tag :tr, class: 'odd_even document_tr has_context_menu' do
@@ -27,6 +28,7 @@ module DocumentsHelper
           safe_concat content_tag :td, document.category, class: 'list_center category'
           safe_concat content_tag :td, document.version, class: 'list_center version'
           safe_concat content_tag :td, document.comment_presence_indicator, class: 'icon_information'
+          safe_concat content_tag :td, document.attachment_presence_indicator, class: 'icon_information'
         end
       end.join.html_safe)
     }
