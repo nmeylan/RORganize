@@ -5,17 +5,18 @@
 module Rorganize
   module BulkEditManager
     include ActiveRecord::ConnectionAdapters::Quoting
-    extend ActiveSupport::Concern
-    included do |base|
 
-    end
-
-    def journal_update_creation(objects, project_id, user_id, klazz)
+    # Create a journal for a bulk update action.
+    # @param [Array] objects : array of updated objects.
+    # @param [Fixnum] project_id.
+    # @param [Fixnum] user_id.
+    # @param [String] class_name : name of the updated objects' class.
+    def journal_update_creation(objects, project_id, user_id, class_name)
       if objects.any?
         insert = []
         created_at = Time.now.utc.to_formatted_s(:db)
         objects.each do |obj|
-          insert << "(#{user_id}, #{obj.id}, '#{klazz}', '#{quote_string(obj.caption[0..127])}', '#{Journal::ACTION_UPDATE}', #{project_id}, '#{created_at}', '#{created_at}')"
+          insert << "(#{user_id}, #{obj.id}, '#{class_name}', '#{quote_string(obj.caption[0..127])}', '#{Journal::ACTION_UPDATE}', #{project_id}, '#{created_at}', '#{created_at}')"
         end
         sql = "INSERT INTO `journals` (`user_id`, `journalizable_id`, `journalizable_type`, `journalizable_identifier`, `action_type`, `project_id`, `created_at`, `updated_at`) VALUES #{insert.join(', ')}"
         Journal.connection.execute(sql)
@@ -28,18 +29,26 @@ module Rorganize
       end
     end
 
-    def journal_delete_creation(objects, project_id, user_id, klazz)
+    # Create a journal for bulk delete action.
+    # @param [Array] objects : array of deleted objects.
+    # @param [Fixnum] project_id.
+    # @param [Fixnum] user_id.
+    # @param [String] class_name : name of the updated objects' class.
+    def journal_delete_creation(objects, project_id, user_id, class_name)
       if objects.any?
         insert = []
         created_at = Time.now.utc.to_formatted_s(:db)
         objects.each do |obj|
-          insert << "(#{user_id}, #{obj.id}, '#{klazz}', '#{quote_string(obj.caption[0..127])}', '#{Journal::ACTION_DELETE}', #{project_id}, '#{created_at}', '#{created_at}')"
+          insert << "(#{user_id}, #{obj.id}, '#{class_name}', '#{quote_string(obj.caption[0..127])}', '#{Journal::ACTION_DELETE}', #{project_id}, '#{created_at}', '#{created_at}')"
         end
         sql = "INSERT INTO `journals` (`user_id`, `journalizable_id`, `journalizable_type`, `journalizable_identifier`, `action_type`, `project_id`, `created_at`, `updated_at`) VALUES #{insert.join(', ')}"
         Journal.connection.execute(sql)
       end
     end
 
+    # Create journal details.
+    # @param [Array] journals : array of journals.
+    # @param [Object] obj : one of bulk updated object.
     def journal_detail_insertion(journals, obj)
       properties = self.journalizable_properties
       foreign_keys = self.foreign_keys
