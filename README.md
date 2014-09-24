@@ -25,12 +25,13 @@ RORganize offers a lots of features. Here are the mains features :
 *   Time logging.
 *   Gantt creation.
 *   Email notifications.
+*   In app notifications.
 *   Flexible core application. It's really easy to make and mount a plugin to the core app.
 *   And more in progress...
 
 ## So it's a n+1 project management application?
 I hope not. I have used several project management tools before write RORganize and I've always find them too much complex. Indeed, these tools often have a lots of menu/features that we don't use everyday.
-I built RORganize with the principle to make an ergonomic tool.
+I built RORganize with the principle to make an ergonomic tool. I always take care of performances, so I spend lots of time on refactoring to gain precious _ms_.
 
 # Documentation
 
