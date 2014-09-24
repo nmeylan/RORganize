@@ -166,7 +166,7 @@ class IssuesController < ApplicationController
     else
       if User.current.allowed_to?('edit', 'issues', @project)
         #Editing with toolbox
-        Issue.bulk_edit(params[:ids], value_params)
+        Issue.bulk_edit(params[:ids], value_params, @project)
         load_issues
         respond_to do |format|
           format.js { respond_to_js :action => :index, :response_header => :success, :response_content => t(:successful_update) }

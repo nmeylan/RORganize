@@ -70,5 +70,12 @@ class Journal < ActiveRecord::Base
     "#{self.journalizable_type}_#{self.journalizable_id}".to_sym
   end
 
+  # Bulk insert journals in a single query.
+  # @param [Array] insert : an array of sql values to insert.
+  def self.bulk_insert(insert)
+    sql = "INSERT INTO `journals` (`user_id`, `journalizable_id`, `journalizable_type`, `journalizable_identifier`, `action_type`, `project_id`, `created_at`, `updated_at`) VALUES #{insert.join(', ')}"
+    Journal.connection.execute(sql)
+  end
+
 
 end

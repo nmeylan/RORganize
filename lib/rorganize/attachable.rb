@@ -29,5 +29,11 @@ module Rorganize
         attachment.save(:validation => false)
       end
     end
+
+    class << self
+      def bulk_delete_dependent(attachable_ids, class_name)
+        Attachment.destroy_all(attachable_id: attachable_ids, attachable_type: class_name)
+      end
+    end
   end
 end

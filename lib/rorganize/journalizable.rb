@@ -13,5 +13,11 @@ module Rorganize
       after_update :update_journal
       after_destroy :destroy_journal
     end
+
+    class << self
+      def bulk_delete_dependent(journalizable_ids, class_name)
+        Journal.delete_all(journalizable_id: journalizable_ids, journalizable_type: class_name)
+      end
+    end
   end
 end

@@ -13,5 +13,10 @@ module Rorganize
       self.comments_count > 0
     end
 
+    class << self
+      def bulk_delete_dependent(commentable_ids, class_name)
+        Comment.delete_all(commentable_id: commentable_ids, commentable_type: class_name)
+      end
+    end
   end
 end

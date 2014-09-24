@@ -109,14 +109,14 @@ class DocumentsController < ApplicationController
       index
     elsif params[:delete_ids]
       #Multi delete
-      Document.destroy_all(:id => params[:delete_ids])
+      Document.bulk_delete(params[:delete_ids], @project)
       respond_to do |format|
         load_documents
         format.js { respond_to_js :action => :index, :response_header => :success, :response_content => t(:successful_deletion) }
       end
     else
       if User.current.allowed_to?('edit', 'documents', @project)
-        Document.bulk_edit(params[:ids], value_params)
+        Document.bulk_edit(params[:ids], value_params, @project)
         respond_to do |format|
           load_documents
           format.js { respond_to_js :action => :index, :response_header => :success, :response_content => t(:successful_update) }

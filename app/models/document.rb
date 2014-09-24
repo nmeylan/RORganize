@@ -22,7 +22,7 @@ class Document < ActiveRecord::Base
   #triggers
   after_update :save_attachments
   #Scopes
-  scope :fetch_dependencies, -> { eager_load([:version, :category]) }
+  scope :fetch_dependencies, -> { eager_load([:version, :category, :attachments]) }
   #methods
 
   def caption
@@ -51,45 +51,6 @@ class Document < ActiveRecord::Base
     unused_attributes = %w(Project Description)
     attrs = Document.attributes_formalized_names.delete_if { |attribute| unused_attributes.include?(attribute) }
     attrs.map { |attribute| [attribute, attribute.gsub(/\s/, '_').downcase] }
-  end
-
-  # @param [Array] doc_ids : array containing all ids of documents that will be bulk edited.
-  # @param [Hash] value_param : hash of attribute: :new_value.
-  def self.bulk_edit(doc_ids, value_param)
-    #Editing with toolbox
-    documents_toolbox = Document.where(:id => doc_ids)
-    documents = []
-    #As form send all attributes, we drop all attributes except th filled one.
-    value_param.delete_if { |k, v| v.eql?('') }
-    key = value_param.keys[0]
-    value = value_param.values[0]
-    if value.eql?('-1')
-      value_param[key] = nil
-    end
-    Document.transaction do
-      documents_toolbox.each do |document|
-        document.attributes = value_param
-        if document.changed?
-          documents << document
-        end
-      end
-    end
-    Document.where(id: documents.collect{|document| document.id}).update_all(value_param)
-    journal_update_creation(documents, documents[0].project_id, User.current.id, 'Document') if documents[0]
-
-  end
-
-  # @param [Array] doc_ids : array containing all ids of documents that will be bulk deleted.
-  def self.bulk_delete(doc_ids)
-    documents_toolbox = Document.where(:id => doc_ids)
-    documents = []
-    Document.transaction do
-      documents_toolbox.each do |document|
-        documents << document
-      end
-    end
-    Document.delete_all(id: ids)
-    journal_delete_creation(documents, documents[0].project_id, User.current.id, 'Document')
   end
 
   def self.conditions_string(hash)

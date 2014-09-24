@@ -72,7 +72,7 @@ class CommentDecorator < ApplicationDecorator
   # Render the type of the commented object.
   def display_object_type
     type = self.commentable_type
-    if type.eql?('Issue')
+    if type.eql?('Issue') && self.issue
       h.safe_concat h.content_tag :b, "#{self.issue.tracker.caption.downcase}  ##{self.issue.id} "
       h.link_to self.issue.caption, h.issue_path(self.project.slug, self.commentable_id)
     end

@@ -35,5 +35,10 @@ module Rorganize
       !self.is_a?(Project) && Watcher.where(user_id: user.id, watchable_type: self.project.class.to_s, watchable_id: self.project.id).any?
     end
 
+    class << self
+      def bulk_delete_dependent(watchable_ids, class_name)
+        Watcher.delete_all(watchable_id: watchable_ids, watchable_type: class_name)
+      end
+    end
   end
 end

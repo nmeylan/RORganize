@@ -101,27 +101,11 @@ class Issue < ActiveRecord::Base
   end
 
   # @param [Array] doc_ids : array containing all ids of issues that will be bulk edited.
-  # @param [Hash] value_param : hash of attribute: :new_value.
-  def self.bulk_edit(issue_ids, value_param)
-    issues_toolbox = Issue.where(:id => issue_ids).includes(:tracker, :version, :assigned_to, :category, :status => [:enumeration])
-    #As form send all attributes, we drop all attributes except th filled one.
-    value_param.delete_if { |k, v| v.eql?('') }
-    key = value_param.keys[0]
-    value = value_param.values[0]
-    if value.eql?('-1')
-      value_param[key] = nil
-    end
-    issues = []
-    issues_toolbox.each do |issue|
-      issue.attributes = value_param
-      if issue.changed?
-        issues << issue
-      end
-    end
-    Issue.where(id: issues.collect { |issue| issue.id }).update_all(value_param)
-    journals = journal_update_creation(issues, issues[0].project_id, User.current.id, 'Issue') if issues[0]
+  # @param [Hash] value_param : hash of {attribute: :new_value}.
+  def self.bulk_edit(issue_ids, value_param, project)
+    issues, journals = super(issue_ids, value_param, project)
+    # If version changed trigger the due and start date rules.
     Issue.bulk_set_start_and_due_date(issues.collect { |issue| issue.id }, value_param[:version_id], journals) if value_param[:version_id]
-
   end
 
   # @param [Hash] hash containing {issue_id: {attribute: new_value}}
@@ -142,20 +126,10 @@ class Issue < ActiveRecord::Base
     end
   end
 
-  # @param [Array] doc_ids : array containing all ids of documents that will be bulk deleted.
+  # @param [Array] issue_ids : array containing all ids of issues that will be bulk deleted.
   def self.bulk_delete(issue_ids, project)
-    issues_toolbox = Issue.where(:id => issue_ids)
-    issues = []
-    ids = []
-    issues_toolbox.each do |issue|
-      if issue.author_id.eql?(User.current.id) || User.current.allowed_to?('destroy_not_owner', 'Issues', project)
-        ids << issue.id
-        issues << issue
-      end
-    end
-    Issue.delete_all(id: ids)
-    Notification.delete_all(notifiable_id: ids)
-    journal_delete_creation(issues, project.id, User.current.id, 'Issue')
+    destroyed_objects = super(issue_ids, project)
+    Project.update_counters(project.id, issues_count: -destroyed_objects.size)
   end
 
   def self.conditions_string(hash)
@@ -232,24 +206,23 @@ class Issue < ActiveRecord::Base
     end
     version = Version.find_by_id(version_id)
     issues = Issue.where(version_id: version.id, id: issue_ids)
-    issues[0].due_date = version.target_date
-    issues.update_all(due_date: version.target_date) if version.target_date
     j = []
     issues.each do |issue|
       j << journals_hash[issue.id]
     end
+    journal_detail_insertion(j, issues.map { |issue| issue.due_date = version.target_date; issue })
+    issues.update_all(due_date: version.target_date) if version.target_date
 
-    journal_detail_insertion(j, issues[0])
+
     condition = version.target_date ? "issues.start_date > #{version.target_date}" : '1 <> 1'
     issues = issues.where("(issues.start_date IS NULL OR (issues.start_date < ? OR #{condition}))", version.start_date)
-    issues.update_all(due_date: version.target_date)
-
-    issues[0].due_date = version.target_date
     j = []
     issues.each do |issue|
       j << journals_hash[issue.id]
     end
-    journal_detail_insertion(j, issues[0])
+    issues.each { |issue| issue.due_date = version.target_date }
+    journal_detail_insertion(j, issues.map { |issue| issue.due_date = version.target_date; issue })
+    issues.update_all(due_date: version.target_date)
   end
 
   #Permit attributes

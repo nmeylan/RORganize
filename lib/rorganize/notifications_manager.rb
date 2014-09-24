@@ -10,31 +10,27 @@ module Rorganize
     end
 
     def create_notification
-      if RORganize::Application.config.enable_emails_notifications
-        if self.is_a?(Comment) || (self.is_a?(Journal) && !self.action_type.eql?(Journal::ACTION_DELETE))
-          notification = NotifiableEvent.new(self)
-          if notification.recipients.any? || notification.recipients_hash.any?
-            Rorganize::NotificationsManager.send_emails(notification)
-            Rorganize::NotificationsManager.in_app_notification(notification)
-          end
-          notification
+      if self.is_a?(Comment) || (self.is_a?(Journal) && !self.action_type.eql?(Journal::ACTION_DELETE))
+        notification = NotifiableEvent.new(self)
+        if notification.recipients.any? || notification.recipients_hash.any?
+          Rorganize::NotificationsManager.send_emails(notification) if RORganize::Application.config.enable_emails_notifications
+          Rorganize::NotificationsManager.in_app_notification(notification)
         end
+        notification
       end
     end
 
     class << self
-      def create_bulk_notification(models, journals, project_id, from_id)
-        if RORganize::Application.config.enable_emails_notifications
-
-          notification = NotifiableBulkEditEvent.new(models, journals, project_id, from_id)
-          if notification.recipients_hash.any?
-            send_emails_bulk_edit(notification)
-            in_app_bulk_edit_notifications(notification)
-          end
-          notification
+      def create_bulk_notification(models, journals, project, from_id)
+        notification = NotifiableBulkEditEvent.new(models, journals, project, from_id)
+        if notification.recipients_hash.any?
+          send_emails_bulk_edit(notification) if RORganize::Application.config.enable_emails_notifications
+          in_app_bulk_edit_notifications(notification)
         end
+        notification
       end
-      # Send email to recipients.
+
+      # Send a single email to all recipients.
       # @param [NotifiableEvent] notification : the notification event object.
       def send_emails(notification)
         if notification.notification_type.eql?(NotifiableEvent::GENERIC_NOTIFICATION)
@@ -48,6 +44,8 @@ module Rorganize
         end
       end
 
+      # Send a single email to all recipients.
+      # @param [NotifiableBulkEditEvent] notification_bulk_edit : the notification event objet when a bulk edition is done.
       def send_emails_bulk_edit(notification_bulk_edit)
         notification_bulk_edit.recipients = real_recipients(notification_bulk_edit, 'email').values.flatten.compact
         if notification_bulk_edit.recipients.any?
@@ -77,6 +75,8 @@ module Rorganize
         end
       end
 
+      # Create all @see Notification object.
+      # @param [NotifiableBulkEditEvent] notification_bulk_edit
       def in_app_bulk_edit_notifications(notification_bulk_edit)
         notification_bulk_edit.recipients = notification_bulk_edit.recipients_hash.values
         insert = []
@@ -122,7 +122,6 @@ module Rorganize
         tmp_hash
       end
     end
-
 
 
     class NotifiableEvent
@@ -232,7 +231,7 @@ module Rorganize
     class NotifiableBulkEditEvent
       attr_accessor :recipients, :recipients_hash, :objects, :project, :journal, :from_id, :type, :journals_hash
 
-      def initialize(objects, journals, project_id, from_id)
+      def initialize(objects, journals, project, from_id)
         @objects = objects.collect { |model| {id: model.id, caption: model.caption} }
         @type = objects[0].class
         @journals_hash = {}
@@ -241,9 +240,9 @@ module Rorganize
         end
         @from_id = from_id
         @journal = journals[0]
-        @project = Project.find_by_id(project_id)
+        @project = project
         @recipients = []
-        @recipients_hash = {participants: find_participants(objects), watchers: find_watchers(objects, project_id)}
+        @recipients_hash = {participants: find_participants(objects), watchers: find_watchers(objects, project.id)}
       end
 
       def find_watchers(objects, project_id)
