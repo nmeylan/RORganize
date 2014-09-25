@@ -4,6 +4,7 @@
 # File: notifiable.rb
 
 module Rorganize
+  module Models
   module Notifiable
     extend ActiveSupport::Concern
     included do |base|
@@ -15,5 +16,6 @@ module Rorganize
         Notification.delete_all(notifiable_id: notifiable_ids, notifiable_type: class_name)
       end
     end
+  end
   end
 end

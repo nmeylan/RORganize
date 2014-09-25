@@ -4,6 +4,7 @@
 #File: journalizable_record_callback
 
 module Rorganize
+  module Managers
   module JounalsManager
     module ClassMethods
       def init_journals_manager
@@ -74,4 +75,5 @@ module Rorganize
                      :project_id => p_id)
     end
   end
+end
 end

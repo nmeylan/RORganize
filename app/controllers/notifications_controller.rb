@@ -26,7 +26,7 @@ class NotificationsController < ApplicationController
 
   def destroy_all_for_project
     notifications = Notification.includes(:notifiable, :project).where(project_id: Project.find_by_slug(params[:project_slug]), user_id: @user.id)
-    notifications.destroy_all
+    notifications.delete_all
     respond_to do |format|
       format.html {redirect_to action: 'index'}
     end

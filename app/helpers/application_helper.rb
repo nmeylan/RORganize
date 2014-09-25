@@ -1,6 +1,6 @@
 require 'rorganize/redcarpet/rorganize_markdown_renderer'
 module ApplicationHelper
-  include Rorganize::PermissionManager::PermissionHandler
+  include Rorganize::Managers::PermissionManager::PermissionHandler
 
   # Check if there is any content for :sidebar
   def sidebar_content?

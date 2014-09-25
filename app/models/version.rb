@@ -1,7 +1,7 @@
 class Version < ActiveRecord::Base
-  include Rorganize::SmartRecords
-  include Rorganize::Journalizable
-  extend Rorganize::BulkEditManager
+  include Rorganize::Models::SmartRecords
+  include Rorganize::Models::Journalizable
+  extend Rorganize::Managers::BulkEditManager
   #Class variables
   assign_journalizable_properties({name: 'Name', target_date: 'Due date', start_date: 'Start date'})
   #Relations

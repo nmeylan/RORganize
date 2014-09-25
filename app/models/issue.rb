@@ -3,13 +3,13 @@
 # Encoding: UTF-8
 # File: issue.rb
 class Issue < ActiveRecord::Base
-  include Rorganize::SmartRecords
-  include Rorganize::Journalizable
-  include Rorganize::Commentable
-  include Rorganize::Watchable
-  include Rorganize::Notifiable
-  include Rorganize::Attachable::AttachmentType
-  extend Rorganize::BulkEditManager
+  include Rorganize::Models::SmartRecords
+  include Rorganize::Models::Journalizable
+  include Rorganize::Models::Commentable
+  include Rorganize::Models::Watchable
+  include Rorganize::Models::Notifiable
+  include Rorganize::Models::Attachable::AttachmentType
+  extend Rorganize::Managers::BulkEditManager
   #Class variables
   assign_journalizable_properties({status_id: 'Status', category_id: 'Category', assigned_to_id: 'Assigned to', tracker_id: 'Tracker', due_date: 'Due date', start_date: 'Start date', done: 'Done', estimated_time: 'Estimated time', version_id: 'Version', predecessor_id: 'Predecessor', subject: 'Subject'})
   assign_foreign_keys({status_id: IssuesStatus, category_id: Category, assigned_to_id: User, tracker_id: Tracker, version_id: Version})

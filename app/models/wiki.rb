@@ -4,7 +4,7 @@
 # File: wiki.rb
 
 class Wiki < ActiveRecord::Base
-  include Rorganize::SmartRecords
+  include Rorganize::Models::SmartRecords
   #Relations
   belongs_to :home_page, :class_name => 'WikiPage', :foreign_key => :home_page_id
   has_many :pages, :class_name => 'WikiPage', :foreign_key => :wiki_id, :dependent => :destroy

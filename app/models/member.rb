@@ -4,9 +4,9 @@
 # File: member.rb
 
 class Member < ActiveRecord::Base
-  include Rorganize::SmartRecords
-  include Rorganize::Journalizable
-  include Rorganize::Watchable
+  include Rorganize::Models::SmartRecords
+  include Rorganize::Models::Journalizable
+  include Rorganize::Models::Watchable
   #Constants
   assign_journalizable_properties({role_id: 'Role'})
   assign_foreign_keys({role_id: Role})

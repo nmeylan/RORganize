@@ -1,9 +1,9 @@
 class User < ActiveRecord::Base
-  include Rorganize::SmartRecords
-  include Rorganize::Journalizable
-  include Rorganize::PermissionManager::PermissionManagerHelper
-  include Rorganize::ModuleManager::ModuleManagerHelper
-  include Rorganize::Attachable::AvatarType
+  include Rorganize::Models::SmartRecords
+  include Rorganize::Models::Journalizable
+  include Rorganize::Managers::PermissionManager::PermissionManagerHelper
+  include Rorganize::Managers::ModuleManager::ModuleManagerHelper
+  include Rorganize::Models::Attachable::AvatarType
   extend FriendlyId
 
   assign_journalizable_properties({name: 'Name', admin: 'Administrator', email: 'Email', login: 'Login'})

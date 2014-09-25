@@ -3,6 +3,7 @@
 # Encoding: UTF-8
 # File: commentable.rb
 module Rorganize
+  module Models
   module Commentable
     extend ActiveSupport::Concern
     included do |base|
@@ -18,5 +19,6 @@ module Rorganize
         Comment.delete_all(commentable_id: commentable_ids, commentable_type: class_name)
       end
     end
+  end
   end
 end

@@ -4,7 +4,7 @@
 # File: query.rb
 
 class Query < ActiveRecord::Base
-  include Rorganize::SmartRecords
+  include Rorganize::Models::SmartRecords
   extend FriendlyId
   friendly_id :name, use: :slugged
 

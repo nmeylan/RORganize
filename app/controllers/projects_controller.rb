@@ -7,7 +7,7 @@ class ProjectsController < ApplicationController
   before_filter { |c| c.menu_item(params[:controller], params[:action].eql?('show') ? 'overview' : params[:action]) }
   before_filter { |c| c.top_menu_item('projects') }
   helper VersionsHelper
-  include Rorganize::ActivityManager
+  include Rorganize::Managers::ActivityManager
   #GET /project/:project_id
   #Project overview
   def overview

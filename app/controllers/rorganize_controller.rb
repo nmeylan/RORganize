@@ -4,7 +4,7 @@ class RorganizeController < ApplicationController
   helper ProjectsHelper
   helper IssuesHelper
   helper UsersHelper
-  include Rorganize::ActivityManager
+  include Rorganize::Managers::ActivityManager
   before_filter { |c| c.top_menu_item('home') }
   helper_method :sort_column, :sort_direction
 

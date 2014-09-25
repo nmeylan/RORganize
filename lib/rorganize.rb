@@ -3,9 +3,9 @@
 # Encoding: UTF-8
 # File: rorganize.rb
 
-require 'rorganize/menu_manager'
-require 'rorganize/module_manager'
-require 'rorganize/permission_manager'
+require 'rorganize/managers/menu_manager'
+require 'rorganize/managers/permission_manager'
+require 'rorganize/managers/module_manager'
 
 module Rorganize
   TIME_FORMAT = '%a. %-d %b. %I:%M %p.'
@@ -18,7 +18,7 @@ end
 
 unless $0.end_with?('rake')
   I18n.load_path += Dir[Rails.root.join('config', 'locales', '**', '*.{rb,yml}')]
-  Rorganize::MenuManager.map :project_menu do |menu|
+  Rorganize::Managers::MenuManager.map :project_menu do |menu|
     #menu.add(module_name, menu_url, options)
     #module_name : is the name of the associated module. Module need to be activate(at settings->module) to perform actions from controller.
     #menu_url must be under hash format and not route_path(..)
@@ -38,7 +38,7 @@ unless $0.end_with?('rake')
     menu.add(:settings, I18n.t(:label_setting_plural), {controller: 'settings', action: 'index'}, {id: 'menu_settings', glyph: 'tools'})
   end
 
-  Rorganize::MenuManager.map :admin_menu do |menu|
+  Rorganize::Managers::MenuManager.map :admin_menu do |menu|
     menu.add(:permissions, I18n.t(:link_permissions), {controller: 'permissions', action: 'index'}, {id: 'menu_permissions', glyph: 'key'})
     menu.add(:roles, I18n.t(:link_roles), {controller: 'roles', action: 'index'}, {id: 'menu_roles', glyph: 'person'})
     menu.add(:users, I18n.t(:link_users), {controller: 'users', action: 'index'}, {id: 'menu_users', glyph: 'organization'})
@@ -47,11 +47,11 @@ unless $0.end_with?('rake')
     menu.add(:issues_statuses, I18n.t(:link_issues_statuses), {controller: 'issues_statuses', action: 'index'}, {id: 'menu_issues_statuses', glyph: 'dashboard'})
   end
 
-  Rorganize::MenuManager.map :top_menu do |menu|
+  Rorganize::Managers::MenuManager.map :top_menu do |menu|
     menu.add(:projects, I18n.t(:label_project_plural), {controller: 'projects', action: 'index'}, {id: 'menu_projects'})
     menu.add(:administration, I18n.t(:link_administration), {controller: 'administration', action: 'index'}, {id: 'menu_administration'})
   end
 
 
-  Rorganize::PermissionManager.initialize
+  Rorganize::Managers::PermissionManager.initialize
 end

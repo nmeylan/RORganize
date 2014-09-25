@@ -4,7 +4,7 @@
 # File: comment.rb
 
 class Comment < ActiveRecord::Base
-  include Rorganize::NotificationsManager
+  include Rorganize::Managers::NotificationsManager
   ACTIVITIES_PERIODS = {ONE_DAY: 1, THREE_DAYS: 3, ONE_WEEK: 7, ONE_MONTH: 31}
 
   belongs_to :author, class_name: 'User', foreign_key: :user_id

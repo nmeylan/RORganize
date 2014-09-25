@@ -21,7 +21,7 @@ always_enabled_module = [{controller: 'settings', action: 'index'},
 ]
 
 
-Rorganize::ModuleManager.initialize_modules(always_enabled_module)
+Rorganize::Managers::ModuleManager.initialize_modules(always_enabled_module)
 
 #There is two cases for module activation :
 #General case : All actions from a same controller are associated to one MENU and MODULE.
@@ -36,10 +36,10 @@ Rorganize::ModuleManager.initialize_modules(always_enabled_module)
 association_actions_module = {
     'roadmaps' => {'roadmaps' => ['manage_gantt', 'gantt']}
 }
-Rorganize::ModuleManager.set_associations_actions_module(association_actions_module)
+Rorganize::Managers::ModuleManager.set_associations_actions_module(association_actions_module)
 
 #Modules enabled by default (on project creation)
 modules = [{:controller => 'projects', :action => 'activity', :name => 'activity'},
            {:controller => 'roadmaps', :action => 'show', :name => 'roadmaps'},
            {:controller => 'issues', :action => 'index', :name => 'requests'}]
-Rorganize::ModuleManager.set_enabled_by_default_module(modules)
+Rorganize::Managers::ModuleManager.set_enabled_by_default_module(modules)

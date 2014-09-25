@@ -4,7 +4,7 @@
 # File: IssueStatus.rb
 
 class IssuesStatus < ActiveRecord::Base
-  include Rorganize::SmartRecords
+  include Rorganize::Models::SmartRecords
 
   has_and_belongs_to_many :roles, :class_name => 'Role'
   belongs_to :enumeration, :class_name => 'Enumeration', :dependent => :destroy

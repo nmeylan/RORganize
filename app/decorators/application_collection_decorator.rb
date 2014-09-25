@@ -7,7 +7,7 @@ class ApplicationCollectionDecorator < Draper::CollectionDecorator
   include ActionView::Helpers::UrlHelper
   include ActionDispatch::Routing
   include Rails.application.routes.url_helpers
-  include Rorganize::PermissionManager::PermissionHandler
+  include Rorganize::Managers::PermissionManager::PermissionHandler
 
   # @return [String] path to the default pagination action.
   def pagination_path

@@ -3,13 +3,13 @@
 # Encoding: UTF-8
 # File: document.rb
 class Document < ActiveRecord::Base
-  include Rorganize::Journalizable
-  include Rorganize::SmartRecords
-  include Rorganize::Attachable::AttachmentType
-  include Rorganize::Commentable
-  include Rorganize::Watchable
-  include Rorganize::Notifiable
-  extend Rorganize::BulkEditManager
+  include Rorganize::Models::Journalizable
+  include Rorganize::Models::SmartRecords
+  include Rorganize::Models::Attachable::AttachmentType
+  include Rorganize::Models::Commentable
+  include Rorganize::Models::Watchable
+  include Rorganize::Models::Notifiable
+  extend Rorganize::Managers::BulkEditManager
   #Class variables
   assign_journalizable_properties({name: 'Name', category_id: 'Category', version_id: 'Version'})
   assign_foreign_keys({category_id: Category, version_id: Version})

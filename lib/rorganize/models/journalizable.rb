@@ -4,8 +4,9 @@
 # File: journalizable.rb
 
 module Rorganize
+  module Models
   module Journalizable
-    include Rorganize::JounalsManager
+    include Rorganize::Managers::JounalsManager
     extend ActiveSupport::Concern
     included do |base|
       has_many :journals, -> { where :journalizable_type => base }, :as => :journalizable, :dependent => :destroy
@@ -20,4 +21,5 @@ module Rorganize
       end
     end
   end
+end
 end

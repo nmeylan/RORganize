@@ -13,7 +13,7 @@ class SettingsController < ApplicationController
   before_filter {|c| c.top_menu_item('projects')}
   helper QueriesHelper
   helper TrackersHelper
-  include Rorganize::ModuleManager::ModuleManagerHelper
+  include Rorganize::Managers::ModuleManager::ModuleManagerHelper
   #GET project/:project_identifier/settings/
   def index
     tracker_ids = @project.trackers.collect{|tracker| tracker.id}
@@ -69,8 +69,8 @@ class SettingsController < ApplicationController
       @project.save
       reload_enabled_module(@project.id)
     end
-    always_enabled = Rorganize::ModuleManager.always_enabled_module
-    @modules = Rorganize::ModuleManager.modules(:project).module_items.delete_if{|mod| always_enabled.any?{|modules | modules[:controller].eql?(mod.controller) && modules[:action].eql?(mod.action)}}
+    always_enabled = Rorganize::Managers::ModuleManager.always_enabled_module
+    @modules = Rorganize::Managers::ModuleManager.modules(:project).module_items.delete_if{|mod| always_enabled.any?{|modules | modules[:controller].eql?(mod.controller) && modules[:action].eql?(mod.action)}}
     enabled_modules = @project.enabled_modules.collect{|mod| mod.name }
     respond_to do |format|
       format.html {render action: 'modules', locals: {enabled_modules: enabled_modules}}

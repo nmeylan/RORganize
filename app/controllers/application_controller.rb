@@ -3,10 +3,10 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
   helper :application
   include ApplicationHelper
-  helper Rorganize::ModuleManager::ModuleManagerHelper
+  helper Rorganize::Managers::MenuManager::MenuHelper
+  helper Rorganize::Managers::PermissionManager::PermissionManagerHelper
+  helper Rorganize::Managers::ModuleManager::ModuleManagerHelper
   include Rorganize::SecurityFilter
-  helper Rorganize::MenuManager::MenuHelper
-  helper Rorganize::PermissionManager::PermissionManagerHelper
   helper_method :sort_column, :sort_direction
   before_filter :configure_permitted_parameters, if: :devise_controller?
   before_filter :authenticate unless RORganize::Application.config.rorganize_anonymous_access

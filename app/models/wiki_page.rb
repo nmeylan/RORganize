@@ -3,8 +3,8 @@
 # Encoding: UTF-8
 # File: wiki_page.rb
 class WikiPage < ActiveRecord::Base
-  include Rorganize::SmartRecords
-  include Rorganize::Journalizable
+  include Rorganize::Models::SmartRecords
+  include Rorganize::Models::Journalizable
   #Class variables
   assign_journalizable_properties({title: 'Title', content: 'Content'})
   #Slug

@@ -4,7 +4,7 @@
 # File: permission.rb
 
 class Permission < ActiveRecord::Base
-  include Rorganize::SmartRecords
+  include Rorganize::Models::SmartRecords
 
   has_and_belongs_to_many :roles, :class_name => 'Role'
 

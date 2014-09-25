@@ -2,7 +2,7 @@ class ApplicationDecorator < Draper::Decorator
   include ActionView::Helpers::UrlHelper
   include ActionDispatch::Routing
   include Rails.application.routes.url_helpers
-  include Rorganize::PermissionManager::PermissionHandler
+  include Rorganize::Managers::PermissionManager::PermissionHandler
 
   # @return [Boolean] true if the model description exists.
   def description?

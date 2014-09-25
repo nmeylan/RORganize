@@ -1,8 +1,8 @@
 class Project < ActiveRecord::Base
-  include Rorganize::SmartRecords
-  include Rorganize::Attachable::AttachmentType
-  include Rorganize::Watchable
-  include Rorganize::ModuleManager::ModuleManagerHelper
+  include Rorganize::Models::SmartRecords
+  include Rorganize::Models::Attachable::AttachmentType
+  include Rorganize::Models::Watchable
+  include Rorganize::Managers::ModuleManager::ModuleManagerHelper
   #SLug
   extend FriendlyId
   friendly_id :name, use: :slugged

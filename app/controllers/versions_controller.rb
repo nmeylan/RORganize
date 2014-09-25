@@ -85,7 +85,7 @@ class VersionsController < ApplicationController
 
   def change_position
     saved = @version.change_position(@project, params[:operator])
-    @versions_decorator = @project.versions.order(:position).decorate(context: {project: @project})
+    @versions_decorator = @project.versions.paginated(@sessions[:current_page], @sessions[:per_page], 'versions.position').decorate(context: {project: @project})
     respond_to do |format|
       if saved
         format.js { respond_to_js :response_header => :success, :response_content => t(:successful_update) }

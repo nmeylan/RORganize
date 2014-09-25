@@ -4,8 +4,8 @@
 # File: category.rb
 
 class Category < ActiveRecord::Base
-  include Rorganize::SmartRecords
-  include Rorganize::Journalizable
+  include Rorganize::Models::SmartRecords
+  include Rorganize::Models::Journalizable
   #Class variables
   assign_journalizable_properties({name: 'Name'})
   #Relations

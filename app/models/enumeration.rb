@@ -1,5 +1,5 @@
 class Enumeration < ActiveRecord::Base
-  include Rorganize::SmartRecords
+  include Rorganize::Models::SmartRecords
 
   before_save :inc_position
   after_destroy :dec_position_on_destroy

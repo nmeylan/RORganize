@@ -37,7 +37,7 @@ groups = {
     ],
     misc: []
 }
-Rorganize::PermissionManager.set_controllers_groups(groups)
+Rorganize::Managers::PermissionManager.set_controllers_groups(groups)
 
 
 module Rorganize
