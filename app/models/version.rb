@@ -32,11 +32,18 @@ class Version < ActiveRecord::Base
   # Version.start_date <= Issue.start_date < Issue.due_date <= Version.due_date
   # So when issue's version is changing we have to update issue start and due date to respect the previous rule.
   def update_issues_due_date
-    issues = Issue.where(:version_id => self.id)
-
-    if issues.any?
-      journals = Issue.journal_update_creation(issues, issues[0].project_id, User.current.id, 'Issue')
-      Issue.bulk_set_start_and_due_date(issues.collect { |issue| issue.id }, self.id, journals)
+    issues = Issue.where(:version_id => self.id).eager_load(:version)
+    issue_changes = {due_date: [], start_date: []}
+    issues.each do |issue|
+      issue = issue.set_start_and_due_date(true)
+      issue_changes[:due_date] << issue unless issue.changes[:due_date].nil?
+      issue_changes[:start_date] << issue unless issue.changes[:start_date].nil?
+    end
+    merged_issues = issue_changes[:due_date] | issue_changes[:start_date]
+    if merged_issues.any?
+      Issue.where(id: issue_changes[:due_date].collect{|issue| issue.id}).update_all(due_date: self.target_date)
+      Issue.where(id: issue_changes[:start_date].collect{|issue| issue.id}).update_all(start_date: self.start_date)
+      Issue.journal_update_creation(merged_issues, self.project, User.current.id, 'Issue')
     end
   end
 

@@ -175,6 +175,20 @@ class Issue < ActiveRecord::Base
     self.has_task_list? ? self.description.scan(/- \[(\w|\s)\]/).count : 0
   end
 
+  # Set start date and due date based on version.
+  # Rule :
+  # Version.start_date <= Issue.start_date < Issue.due_date <= Version.due_date
+  # So when issue's version is changing we have to update issue start and due date to respect the previous rule.
+  def set_start_and_due_date(version_update = false)
+    if self.version && !self.version.target_date.nil? && self.due_date >= version.target_date && (version_update || self.version_id_changed?)
+      self.due_date = self.version.target_date
+    end
+    if self.version && self.version.start_date && (version_update || self.version_id_changed?) && (self.start_date.nil? || (self.start_date && (self.start_date < self.version.start_date) || self.version.target_date && self.start_date > self.version.target_date))
+      self.start_date = self.version.start_date
+    end
+    self
+  end
+
   private
   def set_done_ratio
     unless self.status.nil?
@@ -185,44 +199,22 @@ class Issue < ActiveRecord::Base
     end
   end
 
-  # Set start date and due date based on version.
-  # Rule :
-  # Version.start_date <= Issue.start_date < Issue.due_date <= Version.due_date
-  # So when issue's version is changing we have to update issue start and due date to respect the previous rule.
-  def set_start_and_due_date
-    if self.version && !self.version.target_date.nil? && self.version_id_changed?
-      self.due_date = self.version.target_date
-    end
-    if self.version && self.version.start_date && self.version_id_changed? && (self.start_date.nil? || (self.start_date && (self.start_date < self.version.start_date) || self.version.target_date && self.start_date > self.version.target_date))
-      self.start_date = self.version.start_date
-    end
-  end
 
-  #TODO refactor this. Rework the rule
   def self.bulk_set_start_and_due_date(issue_ids, version_id, journals)
-    journals_hash = {}
-    journals.each do |journal|
-      journals_hash[journal.journalizable_id] = journal
-    end
     version = Version.find_by_id(version_id)
-    issues = Issue.where(version_id: version.id, id: issue_ids)
-    j = []
+    issues = Issue.where(id: issue_ids)
+    issue_changes = {due_date: [], start_date: []}
     issues.each do |issue|
-      j << journals_hash[issue.id]
+      issue = issue.set_start_and_due_date(true)
+      issue_changes[:due_date] << issue unless issue.changes[:due_date].nil?
+      issue_changes[:start_date] << issue unless issue.changes[:start_date].nil?
     end
-    journal_detail_insertion(j, issues.map { |issue| issue.due_date = version.target_date; issue })
-    issues.update_all(due_date: version.target_date) if version.target_date
-
-
-    condition = version.target_date ? "issues.start_date > #{version.target_date}" : '1 <> 1'
-    issues = issues.where("(issues.start_date IS NULL OR (issues.start_date < ? OR #{condition}))", version.start_date)
-    j = []
-    issues.each do |issue|
-      j << journals_hash[issue.id]
+    merged_issues = issue_changes[:due_date] | issue_changes[:start_date]
+    if merged_issues.any?
+      Issue.where(id: issue_changes[:due_date].collect{|issue| issue.id}).update_all(due_date: version.target_date)
+      Issue.where(id: issue_changes[:start_date].collect{|issue| issue.id}).update_all(start_date: version.start_date)
+      Issue.journal_update_creation(merged_issues, version.project, User.current.id, 'Issue')
     end
-    issues.each { |issue| issue.due_date = version.target_date }
-    journal_detail_insertion(j, issues.map { |issue| issue.due_date = version.target_date; issue })
-    issues.update_all(due_date: version.target_date)
   end
 
   #Permit attributes

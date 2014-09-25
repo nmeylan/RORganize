@@ -28,7 +28,7 @@ module Rorganize
             objects << issue
           end
         end
-        # Update all changed issues
+        # Update all changed objects
         self.where(id: objects.collect { |obj| obj.id }).update_all(value_param)
         # Create journals for this changes
         journals = journal_update_creation(objects, project, User.current.id, self.to_s)
@@ -72,7 +72,7 @@ module Rorganize
           journals = Journal.where(created_at: created_at)
           journal_detail_insertion(journals, objects)
           if journals.any?
-            Rorganize::NotificationsManager.create_bulk_notification(objects, journals, project, user_id)
+            Rorganize::Managers::NotificationsManager.create_bulk_notification(objects, journals, project, user_id)
           end
           journals
         end
@@ -109,9 +109,10 @@ module Rorganize
           end
           memo
         end
+
         insert = []
         journals.each do |journal|
-          insertion_hash = Journal.prepare_detail_insertion(objects[journal.journalizable_id], properties, foreign_keys).first
+          insertion_hash = Journal.prepare_detail_insertion(objects[journal.journalizable_id], properties, foreign_keys).first if objects[journal.journalizable_id]
           if insertion_hash
             old = insertion_hash[:old_value].is_a?(String) ? quote_string(insertion_hash[:old_value]) : insertion_hash[:old_value]
             new = insertion_hash[:value].is_a?(String) ? quote_string(insertion_hash[:value]) : insertion_hash[:value]
