@@ -14,7 +14,7 @@ class ProfilesController < ApplicationController
   helper IssuesHelper
   helper QueriesHelper
   helper UsersHelper
-  include Rorganize::ActivityManager
+  include Rorganize::Managers::ActivityManager
 
   def show
     @user_decorator = User.eager_load([members: [:role, :project, assigned_issues: :status]]).find_by_slug(User.current.slug).decorate
