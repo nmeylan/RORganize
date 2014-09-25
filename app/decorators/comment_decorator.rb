@@ -75,6 +75,10 @@ class CommentDecorator < ApplicationDecorator
     if type.eql?('Issue') && self.issue
       h.safe_concat h.content_tag :b, "#{self.issue.tracker.caption.downcase}  ##{self.issue.id} "
       h.link_to self.issue.caption, h.issue_path(self.project.slug, self.commentable_id)
+    elsif type.eql?('Document')
+      h.fast_document_link(self.document, self.project).html_safe
+    else
+      h.content_tag :b, "#{type.downcase} #{self.journalizable_identifier}"
     end
   end
 
