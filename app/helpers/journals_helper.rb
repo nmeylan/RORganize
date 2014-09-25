@@ -172,8 +172,8 @@ module JournalsHelper
       end
     else
       content_tag :li do
-        safe_concat "#{t(:text_set_at)} "
         safe_concat content_tag :b, "#{detail.property} "
+        safe_concat "#{t(:text_set_at)} "
         safe_concat content_tag :b, "#{detail.value.to_s}"
       end
     end
