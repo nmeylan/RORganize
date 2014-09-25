@@ -14,6 +14,7 @@ class IssuesController < ApplicationController
   before_filter { |c| c.menu_item(params[:controller]) }
   before_filter { |c| c.top_menu_item('projects') }
   include Rorganize::RichController
+  include Rorganize::Filters::NotificationFilter
   require 'will_paginate'
 
   #RESTFULL CRUD Methods

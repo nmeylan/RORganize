@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
   helper Rorganize::Managers::MenuManager::MenuHelper
   helper Rorganize::Managers::PermissionManager::PermissionManagerHelper
   helper Rorganize::Managers::ModuleManager::ModuleManagerHelper
-  include Rorganize::SecurityFilter
+  include Rorganize::Filters::SecurityFilter
   helper_method :sort_column, :sort_direction
   before_filter :configure_permitted_parameters, if: :devise_controller?
   before_filter :authenticate unless RORganize::Application.config.rorganize_anonymous_access

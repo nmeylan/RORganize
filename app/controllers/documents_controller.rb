@@ -11,6 +11,7 @@ class DocumentsController < ApplicationController
   before_filter { |c| c.menu_item(params[:controller]) }
   before_filter { |c| c.top_menu_item('projects') }
   include Rorganize::RichController
+  include Rorganize::Filters::NotificationFilter
 
   def index
     respond_to do |format|
