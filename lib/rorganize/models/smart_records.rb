@@ -5,7 +5,7 @@
 module Rorganize
   module Models
     module SmartRecords
-      include Rorganize::AbstractModelCaption
+      include Rorganize::Models::AbstractModelCaption
 
       extend ActiveSupport::Concern
       included do
