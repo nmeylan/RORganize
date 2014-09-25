@@ -315,6 +315,8 @@ en:
   text_notification_preferences: How you receive notifications
   text_notification_participating: When you participate by commenting something or are assigned to a task or someone brings you in with an @mention.
   text_notification_watching: Any activities from something that you are watching.
+  text_notification_recipient_type_watcher: You received this notification because you are watching this item.
+  text_notification_recipient_type_participant: You received this notification because you are participating on this item.
 
   password: "Password"
   field_steps: "Steps"

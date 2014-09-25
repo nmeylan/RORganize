@@ -4,7 +4,9 @@ class NotificationDecorator < ApplicationDecorator
 
   def link_to_notifiable
     icon = notification_type_icon
-    h.link_to h.glyph(model.notifiable.caption, icon), h.notification_path(model.id), {method: :delete}
+    caption = resize_text(model.notifiable.caption,80)
+    caption = model.notifiable_type.eql?('Issue') ? "##{model.notifiable_id} : #{caption}": caption
+    h.link_to h.glyph(caption, icon), h.notification_path(model.id), {method: :delete}
   end
 
   def notification_info
@@ -16,11 +18,20 @@ class NotificationDecorator < ApplicationDecorator
     end
     str +=" #{h.distance_of_time_in_words(model.created_at, Time.now)} #{h.t(:label_ago)}"
     str += " #{h.t(:label_by)} "
-
   end
 
+  def recipient_type
+    if model.recipient_type.eql?(Notification::RECIPIENT_TYPE_WATCHER)
+      icon = 'eye'
+      label = h.t(:text_notification_recipient_type_watcher)
+    else
+      icon = 'person'
+      label = h.t(:text_notification_recipient_type_participant)
+    end
+    h.content_tag :span, h.content_tag(:span, nil, {class: "octicon octicon-#{icon} "}), {class: 'tooltipped tooltipped-s notification_recipient_type', label: label}
+  end
   def notification_type_icon
-    if model.trigger_type.eql?('Journal')
+    if true || model.trigger_type.eql?('Journal')
       if model.notifiable.is_a? Issue
         'issue-opened'
       elsif model.notifiable.is_a? Document

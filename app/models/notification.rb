@@ -4,6 +4,8 @@
 # File: notification.rb
 
 class Notification < ActiveRecord::Base
+  RECIPIENT_TYPE_WATCHER = 'watchers'
+  RECIPIENT_TYPE_PARTICIPANT = 'participants'
   belongs_to :user
   belongs_to :from, class_name: 'User'
   belongs_to :project

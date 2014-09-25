@@ -29,6 +29,7 @@ module NotificationsHelper
             safe_concat content_tag :span, {class: 'right_content_list'}, &Proc.new{
               safe_concat notification.notification_info
               safe_concat notification.from.user_link
+              safe_concat notification.recipient_type
             }
           end
         end.join.html_safe
