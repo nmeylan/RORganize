@@ -12,3 +12,9 @@ unless $0.end_with?('rake')
   RORganize::Application.config.enable_emails_notifications = true
 end
 
+module Paperclip
+  class MediaTypeSpoofDetector
+    prepend Rorganize::Patches::PaperclipPatch::MediaTypeSpoofDetector
+  end
+end
+
