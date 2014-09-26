@@ -24,7 +24,7 @@ class Attachment < ActiveRecord::Base
   before_post_process :skip_non_image
 
   validates_attachment :file,
-                       content_type: {content_type: /\A(image|application|text)/, not: %w(application/octet-stream application/x-sh application/x-shar), message: 'Errors'},
+                       content_type: {content_type: /\A(image|application|text)/, not: %w(application/x-sh application/x-shar), message: 'Errors'},
                        size: {:in => 0..50.megabytes, message: 'size errors'},
                        file_name: {:not => /.exe/, message: 'Errors'}
 
