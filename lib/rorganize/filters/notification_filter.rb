@@ -7,7 +7,7 @@ module Rorganize
   module Filters
     module NotificationFilter
       def self.included(base)
-        base.before_filter :remove_related_notification, only:[:show, :edit]
+        base.before_filter :remove_related_notification, only: [:show, :edit]
       end
 
       def remove_related_notification

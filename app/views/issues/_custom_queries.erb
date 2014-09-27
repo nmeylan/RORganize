@@ -5,16 +5,16 @@
 # File: _custom_queries.erb
 %>
 
-<% if @custom_queries_decorator && @custom_queries_decorator.to_a.any? && User.current.allowed_to?('apply_custom_query','Issues',@project)  %>
-  <h2><%= t(:label_queries) %></h2>
-  <ul>
-    <% @custom_queries_decorator.each do |query| %>
-      <li>
-        <%= link_to query.resized_caption(15), {:action => 'apply_custom_query',
-          :query_id => query.slug,
-          :controller => 'issues',
-          :project_id => @project.slug} %>
-      </li>
-    <% end %>
-  </ul>
+<% if @custom_queries_decorator && @custom_queries_decorator.to_a.any? && User.current.allowed_to?('apply_custom_query', 'Issues', @project) %>
+    <h2><%= t(:label_queries) %></h2>
+    <ul>
+      <% @custom_queries_decorator.each do |query| %>
+          <li>
+            <%= link_to query.resized_caption(15), {:action => 'apply_custom_query',
+                                                    :query_id => query.slug,
+                                                    :controller => 'issues',
+                                                    :project_id => @project.slug} %>
+          </li>
+      <% end %>
+    </ul>
 <% end %>

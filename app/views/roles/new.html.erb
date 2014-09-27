@@ -5,9 +5,9 @@
 # File: new.html.erb
 %>
 
-<%= contextual t(:link_new_role)%>
+<%= contextual t(:link_new_role) %>
 
-<%= form_for @role, :url => {:controller => 'roles'}, :html => {:class => 'form'} do |f|%>
-  <%= render :partial => 'roles/form', :locals => {:f => f} %>
-  <%= submit_tag t(:button_create) %>
+<%= form_for @role, :url => {:controller => 'roles'}, :html => {:class => 'form'} do |f| %>
+    <%= render :partial => 'roles/form', :locals => {:f => f} %>
+    <%= submit_tag t(:button_create) %>
 <% end %>

@@ -9,6 +9,6 @@
 
 <%= render :partial => 'wiki/sidebar' %>
 <%= form_for @wiki_page_decorator, {:html => {:class => 'form'}} do |f| %>
-  <%= render :partial => 'wiki_pages/form', :locals => {:f => f} %>
-  <%= submit_tag t(:button_create) %>
+    <%= render :partial => 'wiki_pages/form', :locals => {:f => f} %>
+    <%= submit_tag t(:button_create) %>
 <% end %>

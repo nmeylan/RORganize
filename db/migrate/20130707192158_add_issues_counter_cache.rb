@@ -15,6 +15,6 @@ class AddIssuesCounterCache < ActiveRecord::Migration
 
   def down
     remove_column :issues, :checklist_items_count
-    remove_column :issues, :attachments_count 
+    remove_column :issues, :attachments_count
   end
 end

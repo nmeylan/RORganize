@@ -5,7 +5,7 @@
 
 class JournalDetail < ActiveRecord::Base
   belongs_to :journal, :class_name => 'Journal'
-  
-   
+
+
 end
 

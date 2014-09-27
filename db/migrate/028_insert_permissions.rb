@@ -91,7 +91,7 @@ class InsertPermissions < ActiveRecord::Migration
     #Permissions for project's setting
     Permission.delete_all(:controller => 'Settings', :action => 'index', :name => 'Access to settings')
     Permission.delete_all(:controller => 'Settings', :action => 'update_project_informations', :name => 'Edit project informations')
-     #Permissions for project
+    #Permissions for project
     Permission.delete_all(:controller => 'Projects', :action => 'index', :name => 'View projects')
     #Permissions for project's member
     Permission.delete_all(:controller => 'Members', :action => 'index', :name => 'View members')

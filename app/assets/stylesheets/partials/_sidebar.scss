@@ -1,8 +1,8 @@
 @import 'utilities/_variables';
+
 /*
 *  SIDEBAR
 */
-
 
 #sidebar ul {
   list-style: none;
@@ -21,7 +21,7 @@
 /**
   TABS
 */
-#sidebar{
+#sidebar {
   ul.tabs {
     margin: 0 -1px 0 0;
     padding-left: 0px;
@@ -30,7 +30,7 @@
     li {
       background-color: $default-background-color;
       padding: 15px 10px 15px 10px;
-      a{
+      a {
         color: $link-tabs-color;
       }
     }
@@ -41,14 +41,14 @@
       border-bottom: 1px solid $default-border-color !important;
       margin-left: -1px !important;
       font-weight: bold;
-      a{
+      a {
         color: $link-hover-color !important;
       }
     }
     li:hover {
       margin-left: -3px;
       border-left: 3px solid $default-hover-border-color;
-      a{
+      a {
         color: $link-hover-color !important;
       }
     }
@@ -56,7 +56,7 @@
 }
 
 #sidebar .tabs .alert {
-  text-shadow: 0 1px 0 rgba(255,255,255,0.9);
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.9);
   white-space: nowrap;
   border-radius: 3px;
 
@@ -68,7 +68,7 @@
 
 #sidebar .tabs .alert:hover {
   color: #fff;
-  text-shadow: 0px -1px 0 rgba(0,0,0,0.3);
+  text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.3);
   background-color: #b33630;
   background-image: -moz-linear-gradient(#dc5f59, #b33630);
   background-image: -webkit-linear-gradient(#dc5f59, #b33630);

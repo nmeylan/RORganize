@@ -27,7 +27,7 @@ class RubyFuncTest
   end
 
   def delete_at_test
-    ary = ITERATION.times.map{|x| x}
+    ary = ITERATION.times.map { |x| x }
     Benchmark.bm(27) do |bm|
       bm.report('is_a') do
         ITERATION.times do
@@ -44,7 +44,7 @@ class RubyFuncTest
   end
 
   def at_test
-    ary = ITERATION.times.map{|x| x}
+    ary = ITERATION.times.map { |x| x }
     Benchmark.bm(27) do |bm|
       bm.report('is_a') do
         ITERATION.times do

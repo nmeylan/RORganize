@@ -5,6 +5,7 @@
 
 class AnonymousUser < User
   ANON_ID = -666
+
   def initialize(arg)
     super(arg)
   end

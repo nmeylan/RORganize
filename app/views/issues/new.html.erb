@@ -5,7 +5,7 @@
 # File: new.html.erb
 %>
 <%= contextual t(:link_new_issue) %>
-<%= form_for @issue_decorator, :url => {:controller => 'issues'}, :html => {:class => 'form',:multipart => true} do |f|%>
-  <%= render :partial => 'issues/form', :locals => {:f => f, :form_content => form_content} %>
-  <%= submit_tag t(:button_create) %>
+<%= form_for @issue_decorator, :url => {:controller => 'issues'}, :html => {:class => 'form', :multipart => true} do |f| %>
+    <%= render :partial => 'issues/form', :locals => {:f => f, :form_content => form_content} %>
+    <%= submit_tag t(:button_create) %>
 <% end %>

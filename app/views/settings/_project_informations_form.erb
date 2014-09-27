@@ -10,7 +10,8 @@
     <%= raw error_messages(@project.errors.full_messages) %>
     <div class="box">
       <p>
-        <label for="project_name"><%= t(:field_name) %><span class="required"> *</span></label>
+        <label for="project_name"><%= t(:field_name) %><span class="required">
+          *</span></label>
         <%= f.text_field :name, :size => 80 %>
       </p>
 

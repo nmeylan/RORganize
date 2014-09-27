@@ -7,7 +7,7 @@
 
 <%= contextual t(:link_new_permission) %>
 
-<%= form_for @permission_decorator, :url => {:controller => 'permissions'}, :html => {:class => 'form'} do |f|%>
-  <%= render :partial => 'permissions/form', :locals => {:f => f, :controllers => controllers} %>
-  <%= submit_tag t(:button_create) %>
+<%= form_for @permission_decorator, :url => {:controller => 'permissions'}, :html => {:class => 'form'} do |f| %>
+    <%= render :partial => 'permissions/form', :locals => {:f => f, :controllers => controllers} %>
+    <%= submit_tag t(:button_create) %>
 <% end %>

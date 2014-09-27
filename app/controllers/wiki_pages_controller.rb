@@ -12,6 +12,7 @@ class WikiPagesController < ApplicationController
   before_filter { |c| c.menu_item('wiki') }
   before_filter { |c| c.top_menu_item('projects') }
   helper WikiHelper
+
   def new
     new_form
   end
@@ -113,6 +114,7 @@ class WikiPagesController < ApplicationController
   def check_owner
     @wiki_page_decorator.author_id.eql?(User.current.id)
   end
+
   def wiki_page_params
     params.require(:wiki_page).permit(WikiPage.permit_attributes)
   end

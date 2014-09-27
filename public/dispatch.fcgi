@@ -25,4 +25,4 @@ class Rack::PathInfoRewriter
   end
 end
 
-Rack::Handler::FastCGI.run  Rack::PathInfoRewriter.new(WebApp::Application)
+Rack::Handler::FastCGI.run Rack::PathInfoRewriter.new(WebApp::Application)

@@ -33,7 +33,7 @@ class CommentDecorator < ApplicationDecorator
   # @return [String] link to project if not nil.
   def display_project_link(project)
     unless project
-      h.safe_concat h.content_tag :span, class: 'object_type', &Proc.new{
+      h.safe_concat h.content_tag :span, class: 'object_type', &Proc.new {
         h.safe_concat ' on '
         h.safe_concat project_link
       }
@@ -60,7 +60,7 @@ class CommentDecorator < ApplicationDecorator
   # see #ApplicationDecorator::delete_link
   def delete_link
     if User.current.allowed_to?('destroy_comment_not_owner', 'comments', model.project) || model.author?(User.current)
-      h.link_to h.glyph(h.t(:link_delete), 'trashcan'), h.comment_path(model.id), {class: 'button danger',:method => :delete, :remote => true, 'data-confirm' => h.t(:text_delete_item)}
+      h.link_to h.glyph(h.t(:link_delete), 'trashcan'), h.comment_path(model.id), {class: 'button danger', :method => :delete, :remote => true, 'data-confirm' => h.t(:text_delete_item)}
     end
   end
 

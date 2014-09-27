@@ -2,7 +2,7 @@ class CreateIssues < ActiveRecord::Migration
   def up
     create_table :issues do |t|
       t.string :subject, :limit => 255
-      t.text :description,:limit => 65535
+      t.text :description, :limit => 65535
       t.timestamps :created_on
       t.timestamps :updated_on
       t.date :due_date

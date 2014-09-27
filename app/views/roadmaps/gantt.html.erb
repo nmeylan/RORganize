@@ -14,9 +14,12 @@
 <% end %>
 <%= hidden_field_tag :gantt_mode, @sessions[@project.slug][:gantt][:edition] ? 'edition' : 'view' %>
 <div class="gantt_scale_menu">
-  <input type="radio" id="scale2" name="scale" value="2"/><label for="scale2">Week scale</label>
-  <input type="radio" id="scale3" name="scale" value="3" checked/><label for="scale3">Month scale</label>
-  <input type="radio" id="scale4" name="scale" value="4"/><label for="scale4">Year scale</label>
+  <input type="radio" id="scale2" name="scale" value="2"/><label for="scale2">Week
+  scale</label>
+  <input type="radio" id="scale3" name="scale" value="3" checked/><label for="scale3">Month
+  scale</label>
+  <input type="radio" id="scale4" name="scale" value="4"/><label for="scale4">Year
+  scale</label>
 </div>
 <%= clear_both %>
 <%= select_tag :versions, options_for_select(versions.collect { |version| [version.caption, version.id] }, selected_versions.collect { |v| v.id }), {class: 'chzn-select cbb-verylarge', multiple: true, id: 'gantt_version_select', 'data-link' => gantt_roadmap_path(@project_decorator.slug)} %>
@@ -33,7 +36,9 @@
   <input value="Export to PNG" type="button" onclick='gantt.exportToPNG({header: "<%= stylesheet_link_tag('dhtmlxgantt').gsub('"', '').gsub('href=', 'href='+request.protocol+request.host.to_s+':'+request.port.to_s) %>"})' style="float:right">
 </div>
 <p>
-  About issues : <%= info_tag('Only task with a start and due date are displayed.') %><br>
-  About edition : <%= info_tag('Blue issues are issues with missing information (start date or due date)') %>
+  About issues
+  : <%= info_tag('Only task with a start and due date are displayed.') %><br>
+  About edition
+  : <%= info_tag('Blue issues are issues with missing information (start date or due date)') %>
 </p>
 

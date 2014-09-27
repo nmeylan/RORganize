@@ -13,22 +13,22 @@ function on_load_profiles_scripts() {
     }
 }
 
-function profiles_spent_time(){
+function profiles_spent_time() {
     bind_calendar_button();
     jQuery('.log_time').click(function (e) {
         e.preventDefault();
-        fill_log_issue_time_overlay(jQuery(this).attr('href'),this);
+        fill_log_issue_time_overlay(jQuery(this).attr('href'), this);
         createOverlay("#spent_time_overlay", 150);
         jQuery('#spent_time_overlay').overlay().load();
 
     });
 }
 
-function profiles_project(){
+function profiles_project() {
     jQuery(".sortable").sortable();
     bind_save_project_position();
 }
 
-function on_activities_load(){
+function on_activities_load() {
     createOverlay("#comments_overlay", 150);
 }

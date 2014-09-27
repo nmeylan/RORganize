@@ -52,7 +52,7 @@ module RORganize
 
     #Engines
     #Scenarios::Engine
-    config.railties_order = [Scenarios::Engine,self]
+    config.railties_order = [Scenarios::Engine, self]
 
     #MODULES
     config.after_initialize do

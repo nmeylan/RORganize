@@ -11,6 +11,7 @@ module Rorganize
         def supplied_file_content_types
           @supplied_file_content_types ||= MimeMagic.by_path(@name).type
         end
+
         def supplied_file_media_types
           @supplied_file_media_types ||= MimeMagic.by_path(@name).mediatype
         end

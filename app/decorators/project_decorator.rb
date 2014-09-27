@@ -60,7 +60,7 @@ class ProjectDecorator < ApplicationDecorator
       version = versions.select { |v| v.id.eql?(version_overview[0]) }.first
       issues = version ? version.issues : []
       structure[version_overview.first] = {
-      percent: version_overview[3].truncate, closed_issues_count: version_overview[2], opened_issues_count: version_overview[1], issues: issues} if issues.any?
+          percent: version_overview[3].truncate, closed_issues_count: version_overview[2], opened_issues_count: version_overview[1], issues: issues} if issues.any?
     end
     if versions.to_a.any? && structure.any?
       versions.each do |version|
@@ -70,7 +70,7 @@ class ProjectDecorator < ApplicationDecorator
           }
         end
       end
-      h.draw_roadmap(versions.delete_if{|version| version.issues.empty?}, structure)
+      h.draw_roadmap(versions.delete_if { |version| version.issues.empty? }, structure)
     else
       h.content_tag :div, h.t(:text_no_data), class: 'no-data'
     end

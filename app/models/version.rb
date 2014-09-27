@@ -41,8 +41,8 @@ class Version < ActiveRecord::Base
     end
     merged_issues = issue_changes[:due_date] | issue_changes[:start_date]
     if merged_issues.any?
-      Issue.where(id: issue_changes[:due_date].collect{|issue| issue.id}).update_all(due_date: self.target_date)
-      Issue.where(id: issue_changes[:start_date].collect{|issue| issue.id}).update_all(start_date: self.start_date)
+      Issue.where(id: issue_changes[:due_date].collect { |issue| issue.id }).update_all(due_date: self.target_date)
+      Issue.where(id: issue_changes[:start_date].collect { |issue| issue.id }).update_all(start_date: self.start_date)
       Issue.journal_update_creation(merged_issues, self.project, User.current.id, 'Issue')
     end
   end

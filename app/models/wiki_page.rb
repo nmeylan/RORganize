@@ -12,27 +12,28 @@ class WikiPage < ActiveRecord::Base
   friendly_id :title, use: :slugged
   #Triggers
   before_create :inc_position
-  after_destroy :dec_position,:destroy_journal
+  after_destroy :dec_position, :destroy_journal
   #Relations
   has_one :wiki_home_page, :class_name => 'Wiki', :foreign_key => 'home_page_id', :dependent => :nullify
   belongs_to :author, :class_name => 'User', :foreign_key => 'author_id'
   belongs_to :wiki, :class_name => 'Wiki', :foreign_key => 'wiki_id'
   belongs_to :parent, :class_name => 'WikiPage'
   has_many :sub_pages, :class_name => 'WikiPage', :foreign_key => 'parent_id', :dependent => :nullify
- 
+
   validates :title, :presence => true
 
   def caption
     self.title
   end
+
   def self.permit_attributes
     [:parent_id, :title, :content]
   end
-  
+
   def inc_position
     self.position = self.class.where(:parent_id => self.parent_id).count('*')
   end
-  
+
   def dec_position
     pages = self.class.where('parent_id = ? AND id <> ? AND position > ?', self.parent_id, self.id, self.position)
     pages.each do |wiki_page|
@@ -40,7 +41,7 @@ class WikiPage < ActiveRecord::Base
       wiki_page.update_attributes(:position => p)
     end
   end
-  
+
   def project_id
     self.wiki.project_id
   end

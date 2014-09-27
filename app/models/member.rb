@@ -72,6 +72,7 @@ class Member < ActiveRecord::Base
   def dec_counter_cache
     Project.update_counters(self.project_id, members_count: -1) if self.role_id.eql?(Role.non_member.id)
   end
+
   def inc_counter_cache
     Project.update_counters(self.project_id, members_count: 1) if self.role_id.eql?(Role.non_member.id)
   end

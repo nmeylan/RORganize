@@ -38,7 +38,7 @@ class CommentsController < ApplicationController
     @comment.update(comment_params)
     respond_to do |format|
       if @comment.save
-          format.js { respond_to_js :response_header => :success, :response_content => t(:successful_update) }
+        format.js { respond_to_js :response_header => :success, :response_content => t(:successful_update) }
       else
         format.js { respond_to_js action: 'do_nothing', :response_header => :failure, :response_content => t(:failure_update) }
       end

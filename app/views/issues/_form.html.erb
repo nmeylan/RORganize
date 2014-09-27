@@ -7,11 +7,13 @@
 <%= raw error_messages(@issue_decorator.errors.full_messages) %>
 <div class="box">
   <div class="autocomplete-combobox cbb-medium nosearch">
-    <label for="issue_tracker"><%= t(:field_tracker) %><span class="required"> *</span></label>
+    <label for="issue_tracker"><%= t(:field_tracker) %><span class="required">
+      *</span></label>
     <%= f.select :tracker_id, form_content['trackers'], {:include_blank => false}, {:class => 'chzn-select cbb-medium'} %>
   </div>
   <p>
-    <label for="issue_subject"><%= t(:field_subject) %><span class="required"> *</span></label>
+    <label for="issue_subject"><%= t(:field_subject) %><span class="required">
+      *</span></label>
     <%= f.text_field :subject, :size => 80 %>
   </p>
 
@@ -28,7 +30,8 @@
     </div>
 
     <div class="autocomplete-combobox cbb-medium nosearch">
-      <label for="issue_status"><%= t(:field_status) %><span class="required"> *</span></label>
+      <label for="issue_status"><%= t(:field_status) %><span class="required">
+        *</span></label>
       <%= f.select :status_id, form_content['allowed_statuses'], {:include_blank => false}, {:class => 'chzn-select cbb-medium'} %>
     </div>
     <div class="autocomplete-combobox cbb-medium">

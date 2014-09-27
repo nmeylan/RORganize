@@ -22,7 +22,7 @@ class InsertIssuesStatuses < ActiveRecord::Migration
     project_manager.save
     engagement_manager.issues_statuses = issues_statuses
     engagement_manager.save
-    team_member.issues_statuses = IssuesStatus.where(enumeration_id: Enumeration.where(opt: 'ISTS', name: ['New','In progress','Fixed to test']))
+    team_member.issues_statuses = IssuesStatus.where(enumeration_id: Enumeration.where(opt: 'ISTS', name: ['New', 'In progress', 'Fixed to test']))
     team_member.save
   end
 

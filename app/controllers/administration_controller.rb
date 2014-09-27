@@ -7,7 +7,7 @@ class AdministrationController < ApplicationController
   before_filter :check_permission
   before_filter { |c| c.menu_context :admin_menu }
   before_filter { |c| c.menu_item(params[:controller], params[:action]) }
-  before_filter {|c| c.top_menu_item('administration')}
+  before_filter { |c| c.top_menu_item('administration') }
 
   helper QueriesHelper
 

@@ -6,12 +6,15 @@
 <ul>
   <li><b><%= t(:field_tracker) %>:</b> <%= model.tracker.caption %></li>
   <li><b><%= t(:field_subject) %>:</b> <%= model.caption %></li>
-  <li><b><%= t(:field_version) %>:</b> <%= model.version ? model.version.caption : '-'%></li>
-  <li><b><%= t(:field_assigned_to) %>:</b> <%= model.assigned_to ? model.assigned_to.caption : '-'%></li>
-  <li><b><%= t(:field_category) %>:</b> <%= model.category ? model.category.caption : '-'%></li>
+  <li><b><%= t(:field_version) %>
+    :</b> <%= model.version ? model.version.caption : '-' %></li>
+  <li><b><%= t(:field_assigned_to) %>
+    :</b> <%= model.assigned_to ? model.assigned_to.caption : '-' %></li>
+  <li><b><%= t(:field_category) %>
+    :</b> <%= model.category ? model.category.caption : '-' %></li>
   <li><b><%= t(:field_done) %>:</b> <%= model.done %></li>
-  <li><b><%= t(:field_start_date) %>:</b> <%= model.start_date%></li>
-  <li><b><%= t(:field_due_date) %>:</b> <%= model.due_date%></li>
+  <li><b><%= t(:field_start_date) %>:</b> <%= model.start_date %></li>
+  <li><b><%= t(:field_due_date) %>:</b> <%= model.due_date %></li>
 </ul>
 <%= markdown_to_html model.description, nil, true %>
 

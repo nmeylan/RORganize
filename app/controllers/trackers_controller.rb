@@ -7,8 +7,8 @@ class TrackersController < ApplicationController
   include Rorganize::RichController
   before_filter :check_permission
   before_filter { |c| c.menu_context :admin_menu }
-  before_filter { |c| c.menu_item(params[:controller])}
-  before_filter {|c| c.top_menu_item('administration')}
+  before_filter { |c| c.menu_item(params[:controller]) }
+  before_filter { |c| c.top_menu_item('administration') }
 
   #Get /administration/trackers
   def index
@@ -33,11 +33,11 @@ class TrackersController < ApplicationController
     respond_to do |format|
       if @tracker.save
         flash[:notice] = t(:successful_creation)
-        format.html {redirect_to :action => 'index'}
+        format.html { redirect_to :action => 'index' }
       else
-        format.html  { render :action => 'new' }
-        format.json  { render :json => @tracker.errors,
-          :status => :unprocessable_entity }
+        format.html { render :action => 'new' }
+        format.json { render :json => @tracker.errors,
+                             :status => :unprocessable_entity }
       end
     end
   end
@@ -56,9 +56,9 @@ class TrackersController < ApplicationController
     respond_to do |format|
       if @tracker.update_attributes(tracker_params)
         flash[:notice] = t(:successful_update)
-        format.html {redirect_to :action => 'index'}
+        format.html { redirect_to :action => 'index' }
       else
-        format.html {render :action => 'edit'}
+        format.html { render :action => 'edit' }
       end
     end
   end
@@ -69,8 +69,8 @@ class TrackersController < ApplicationController
     @tracker.destroy
     @trackers = Tracker.select('*')
     respond_to do |format|
-      format.html {redirect_to :action => 'index'}
-      format.js {respond_to_js :response_header => :success, :response_content => t(:successful_deletion), :locals => { :id => @tracker.id}}
+      format.html { redirect_to :action => 'index' }
+      format.js { respond_to_js :response_header => :success, :response_content => t(:successful_deletion), :locals => {:id => @tracker.id} }
     end
   end
 

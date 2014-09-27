@@ -8,7 +8,7 @@ class CreatePreferences < ActiveRecord::Migration
     end
 
   end
-  
+
   def down
     drop_table :preferences
 

@@ -7,8 +7,8 @@ class RolesController < ApplicationController
   include Rorganize::RichController
   before_filter :check_permission
   before_filter { |c| c.menu_context :admin_menu }
-  before_filter { |c| c.menu_item(params[:controller])}
-  before_filter {|c| c.top_menu_item('administration')}
+  before_filter { |c| c.menu_item(params[:controller]) }
+  before_filter { |c| c.top_menu_item('administration') }
 
   #Get /administration/roles
   def index
@@ -35,12 +35,12 @@ class RolesController < ApplicationController
     respond_to do |format|
       if @role.save
         flash[:notice] = t(:successful_creation)
-        format.html {redirect_to :action => 'index'}
+        format.html { redirect_to :action => 'index' }
       else
         @issues_statuses = IssuesStatus.select('*').includes(:enumeration)
-        format.html  { render :action => 'new' }
-        format.json  { render :json => @role.errors,
-          :status => :unprocessable_entity }
+        format.html { render :action => 'new' }
+        format.json { render :json => @role.errors,
+                             :status => :unprocessable_entity }
       end
     end
   end
@@ -61,10 +61,10 @@ class RolesController < ApplicationController
     respond_to do |format|
       if @role.update_attributes(role_params)
         flash[:notice] = t(:successful_update)
-        format.html {redirect_to :action => 'index'}
+        format.html { redirect_to :action => 'index' }
       else
         @issues_statuses = IssuesStatus.select('*').includes(:enumeration)
-        format.html {render :action => 'edit'}
+        format.html { render :action => 'edit' }
       end
     end
   end
@@ -75,8 +75,8 @@ class RolesController < ApplicationController
     @role.destroy
     @roles_decorator = Role.select('*').paginated(@sessions[:current_page], @sessions[:per_page], order('roles.name')).decorate
     respond_to do |format|
-      format.html {redirect_to :action => 'index'}
-      format.js {respond_to_js :response_header => :success, :response_content => t(:successful_deletion), :locals => { :id => @role.id}}
+      format.html { redirect_to :action => 'index' }
+      format.js { respond_to_js :response_header => :success, :response_content => t(:successful_deletion), :locals => {:id => @role.id} }
     end
   end
 

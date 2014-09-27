@@ -69,7 +69,6 @@ class IssueDecorator < ApplicationDecorator
   end
 
 
-
   # see #ApplicationDecorator::delete_attachment_link
   def delete_attachment_link(attachment)
     super(h.delete_attachment_issues_path(context[:project].slug, attachment.id), context[:project])

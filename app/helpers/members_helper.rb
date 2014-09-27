@@ -17,7 +17,7 @@ module MembersHelper
         content_tag :tr, {class: 'odd_even', id: member.id} do
           safe_concat content_tag :td, member.caption, {class: 'list_left name'}
           safe_concat content_tag :td, member.role_selection(roles), {class: 'list_center role'}
-          safe_concat content_tag :td, member.delete_link,{class: 'action'}
+          safe_concat content_tag :td, member.delete_link, {class: 'action'}
         end
       end.join.html_safe)
     }

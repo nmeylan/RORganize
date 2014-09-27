@@ -26,10 +26,10 @@ class IssueOverviewHash
     report.each do |row|
       if @group_by_project
         id = row[1]
-        rows[id] =  {caption: row[2] ? row[2] : na_label(report_name), id: row[0], count: row[3], project: row[4]}
+        rows[id] = {caption: row[2] ? row[2] : na_label(report_name), id: row[0], count: row[3], project: row[4]}
       else
         id = row[0] ? row[0] : -1
-        rows[id] =  {caption: row[1] ? row[1] : na_label(report_name), id: !id.eql?(-1) ? id : 'NULL', count: row[2], project: row[3]}
+        rows[id] = {caption: row[1] ? row[1] : na_label(report_name), id: !id.eql?(-1) ? id : 'NULL', count: row[2], project: row[3]}
       end
 
     end

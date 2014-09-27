@@ -1,11 +1,13 @@
 @import 'utilities/_variables';
+
 $top-menu-font-size: 11px;
 /*
 *  TOP MENU
 */
-#top_menu a{
-  font-size : $top-menu-font-size;
+#top_menu a {
+  font-size: $top-menu-font-size;
 }
+
 #top_menu {
   background-color: $top-menu-background-color;
   background-image: -moz-linear-gradient(#f9f9f9, #f3f3f3);
@@ -34,7 +36,6 @@ $top-menu-font-size: 11px;
   background-color: $default-background-color;
   border: 1px solid #bbb;
 }
-
 
 #top_menu ul {
   padding: 0px;
@@ -79,6 +80,6 @@ $top-menu-font-size: 11px;
   margin-right: 10px;
 }
 
-.octicon-inbox{
+.octicon-inbox {
   font-size: 20px;
 }

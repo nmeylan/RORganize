@@ -7,7 +7,7 @@ function on_load_documents_scripts(options) {
     switch (gon.action) {
         case 'index' :
             documents_index(options);
-            uniq_toogle("#document.toggle",".content");
+            uniq_toogle("#document.toggle", ".content");
             break;
         case 'show' :
             documents_show();
@@ -27,7 +27,7 @@ function on_load_documents_scripts(options) {
     }
 }
 
-function documents_index(options){
+function documents_index(options) {
     checkAll("#check_all", ".list");
     listTrClick(".list .document_tr");
     checkboxToolbox(".list");
@@ -35,7 +35,7 @@ function documents_index(options){
     initialize_filters(options);
 }
 
-function documents_show(){
+function documents_show() {
     jQuery('a.lightbox').lightBox({
         fixedNavigation: true,
         imageLoading: "<%= asset_path 'lightbox-ico-loading.gif' %>",

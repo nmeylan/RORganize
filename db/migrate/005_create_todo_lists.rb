@@ -9,7 +9,7 @@ class CreateTodoLists < ActiveRecord::Migration
       t.timestamps :updated_on
     end
   end
- 
+
   def down
     drop_table :todo_lists
   end

@@ -135,9 +135,9 @@
         color: $default-color;
         vertical-align: top;
       }
-      span{
+      span {
         vertical-align: top;
-        a{
+        a {
           vertical-align: top;
         }
       }
@@ -145,7 +145,7 @@
         display: block;
       }
     }
-    .activity_icon{
+    .activity_icon {
       margin-right: 6px;
     }
   }
@@ -195,11 +195,11 @@
       left: 0%;
     }
   }
-  .activity.max{
+  .activity.max {
     text-align: center;
     font-weight: bold;
     padding: 10px;
-    border : solid 1px $default-border-color;
+    border: solid 1px $default-border-color;
     background-color: $default-table-tr-hover-background-color;
   }
 }

@@ -19,12 +19,12 @@ $history-header-background: #f7f7f7;
           top: -4px;
           left: -17px;
         }
-        .detail{
+        .detail {
           margin-left: 25px;
         }
       }
     }
-    img{
+    img {
       float: left;
       margin-left: -65px;
     }
@@ -35,9 +35,7 @@ $history-header-background: #f7f7f7;
     font-style: italic;
   }
 
-
-
-  .history_header:before, .history_header:after{
+  .history_header:before, .history_header:after {
     position: absolute;
     top: 16px;
     left: -15px;
@@ -51,11 +49,11 @@ $history-header-background: #f7f7f7;
     pointer-events: none;
 
   }
-  .history_header.display_avatar:before{
+  .history_header.display_avatar:before {
     border-right-color: #dddddd;
     border-width: 8px;
   }
-  .history_header.display_avatar:after{
+  .history_header.display_avatar:after {
     border-width: 7px;
     border-right-color: #f7f7f7;
     margin-top: 1px;
@@ -70,7 +68,7 @@ $history-header-background: #f7f7f7;
     border-bottom-left-radius: 3px;
     border-bottom-right-radius: 3px;
     border: 1px solid #ddd;
-    .author{
+    .author {
       color: $default-color;
       font-weight: bold;
     }

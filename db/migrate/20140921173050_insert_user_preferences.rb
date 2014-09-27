@@ -4,11 +4,12 @@ class InsertUserPreferences < ActiveRecord::Migration
     Preference.transaction do
       User.all.each do |user|
         Preference.notification_keys.each do |_, v|
-        Preference.create(user_id: user.id, key: v, boolean_value: true)
+          Preference.create(user_id: user.id, key: v, boolean_value: true)
         end
       end
     end
   end
+
   def down
     Preference.delete_all(key: Preference.notification_keys.values)
   end

@@ -4,10 +4,10 @@
  * Time: 10:45
  %>
 <% if new %>
-    jQuery("#add_member_overlay").replaceWith("<%= escape_javascript(render :partial => 'members/add_overlay', :locals => {:roles => roles, :users => users}) %>");
-    createOverlay("#add_member_overlay", 150);
-    jQuery('#add_member_overlay').overlay().load();
+jQuery("#add_member_overlay").replaceWith("<%= escape_javascript(render :partial => 'members/add_overlay', :locals => {:roles => roles, :users => users}) %>");
+createOverlay("#add_member_overlay", 150);
+jQuery('#add_member_overlay').overlay().load();
 <% else %>
-    jQuery('#add_member_overlay').overlay().close();
-    on_replace_effect("#members_content","<%= escape_javascript(@members_decorator.display_collection) %>");
+jQuery('#add_member_overlay').overlay().close();
+on_replace_effect("#members_content", "<%= escape_javascript(@members_decorator.display_collection) %>");
 <% end %>

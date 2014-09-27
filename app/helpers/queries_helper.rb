@@ -17,7 +17,7 @@ module QueriesHelper
         content_tag :tr, {class: 'odd_even query_tr', id: "#{query.id}"} do
           safe_concat content_tag :td, query.show_link, class: 'list_left name'
           safe_concat content_tag :td, query.author, class: 'list_left author'
-          safe_concat content_tag :td, class: 'action', &Proc.new{
+          safe_concat content_tag :td, class: 'action', &Proc.new {
             safe_concat query.edit_link
             safe_concat query.delete_link
           }

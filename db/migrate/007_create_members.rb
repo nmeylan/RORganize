@@ -6,7 +6,7 @@ class CreateMembers < ActiveRecord::Migration
       t.integer :role_id
     end
   end
- 
+
   def down
     drop_table :members
   end

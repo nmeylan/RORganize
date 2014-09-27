@@ -7,25 +7,27 @@
 
 <div class="overlayOuter" id="add_member_overlay">
   <div class="overlayInner">
-    <%if users && users.to_a.any? %>
-      <%= form_tag(members_path,:remote => true) do -%>
-        <p>
-          <label for="users"><%=t(:field_user)%></label>
-          <%= select_tag('user', options_from_collection_for_select(users, 'id', 'name'), {:class => 'chzn-select cbb-medium'} )%>
-        </p>
-        <p>
-          <!--<div class="autocomplete-combobox cbb-medium nosearch">-->
-          <label for="roles"><%=t(:field_role)%></label>
-          <%= select_tag('role', options_from_collection_for_select(roles, 'id', 'name'), {:class => 'chzn-select cbb-medium nosearch'} )%>
-          <!--</div>-->
-        </p>
-        <div class="overlayButtons">
-          <%= submit_tag 'Ok' %>
-          <input type="button" class="close" value="<%= t(:button_close) %>">
-        </div>
-      <% end %>
+    <% if users && users.to_a.any? %>
+        <%= form_tag(members_path, :remote => true) do -%>
+            <p>
+              <label for="users"><%= t(:field_user) %></label>
+              <%= select_tag('user', options_from_collection_for_select(users, 'id', 'name'), {:class => 'chzn-select cbb-medium'}) %>
+            </p>
+
+            <p>
+              <!--<div class="autocomplete-combobox cbb-medium nosearch">-->
+              <label for="roles"><%= t(:field_role) %></label>
+              <%= select_tag('role', options_from_collection_for_select(roles, 'id', 'name'), {:class => 'chzn-select cbb-medium nosearch'}) %>
+              <!--</div>-->
+            </p>
+
+            <div class="overlayButtons">
+              <%= submit_tag 'Ok' %>
+              <input type="button" class="close" value="<%= t(:button_close) %>">
+            </div>
+        <% end %>
     <% else %>
-      <%= t(:text_no_data) %>
+        <%= t(:text_no_data) %>
     <% end %>
 
   </div>

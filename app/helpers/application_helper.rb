@@ -53,6 +53,7 @@ module ApplicationHelper
   def no_data(text = nil)
     content_tag :div, text ? text : t(:text_no_data), class: 'no-data'
   end
+
   # Page render for http 500
   def render_500
     respond_to do |format|
@@ -60,6 +61,7 @@ module ApplicationHelper
       format.js { respond_to_js action: 'do_nothing', :response_header => :failure, :response_content => 'An unexpected error occured, please try again!' }
     end
   end
+
   # Page render for http 404
   def render_404
     respond_to do |format|

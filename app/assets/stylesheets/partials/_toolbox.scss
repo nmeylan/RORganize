@@ -6,6 +6,7 @@
         Purpose of the stylesheet follows.
 */
 @import 'utilities/variables';
+
 /*
 *  TOOLBOX
 */
@@ -25,7 +26,7 @@ ul.toolbox, ul.toolbox ul {
     list-style: none none outside;
     overflow: hidden;
     cursor: default;
-    a{
+    a {
       color: $link-color;
     }
   }
@@ -46,10 +47,10 @@ ul.toolbox, ul.toolbox ul {
     background-image: url(asset_path('bullet_arrow_right.png'))
   }
   li:hover {
-    > a{
+    > a {
       color: $link-hover-color;
       .octicon {
-        color : $link-hover-color;
+        color: $link-hover-color;
       }
     }
   }

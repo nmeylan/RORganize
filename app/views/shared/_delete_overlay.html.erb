@@ -7,17 +7,17 @@
 <div class="overlayOuter" id="delete_overlay">
   <div class="overlayInner">
     <% if collection %>
-      <%= form_tag({},:remote => true, :methode => :delete) do -%>
-        <% collection.each do |item| %>
-          <%= "##{item.id} -" %><%= link_to item.caption, {:action => 'show', :id => item.id} %>
-          <%= hidden_field_tag 'delete_ids[]', item.id%>
-          <br/>
+        <%= form_tag({}, :remote => true, :methode => :delete) do -%>
+            <% collection.each do |item| %>
+                <%= "##{item.id} -" %><%= link_to item.caption, {:action => 'show', :id => item.id} %>
+                <%= hidden_field_tag 'delete_ids[]', item.id %>
+                <br/>
+            <% end %>
+            <div class="overlayButtons">
+              <%= submit_tag 'Ok' %>
+              <input type="button" class="close" value="<%= t(:button_close) %>">
+            </div>
         <% end %>
-        <div class="overlayButtons">
-          <%= submit_tag 'Ok' %>
-          <input type="button" class="close" value="<%= t(:button_close) %>">
-        </div>
-      <% end %>
     <% end %>
   </div>
 </div>

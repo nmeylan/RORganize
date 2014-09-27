@@ -130,7 +130,7 @@ li.close {
 /*
  FANCY LIST
 */
-.box .fancy_list{
+.box .fancy_list {
   padding: 0px;
   margin-top: -5px;
   margin-bottom: 0px;
@@ -143,6 +143,7 @@ li.close {
     padding-right: 6px;
   }
 }
+
 .fancy_list {
   list-style-type: none;
   .fancy_list_item {
@@ -179,11 +180,11 @@ li.close {
       font-size: 13px;
     }
   }
-  .fancy_list_item:last-child{
+  .fancy_list_item:last-child {
     border-bottom: inherit;
     margin-bottom: -6px;
   }
-  .octicon{
+  .octicon {
     font-size: 20px;
   }
 }

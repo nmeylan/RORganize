@@ -19,14 +19,14 @@ module NotificationsHelper
   # @param [Array] notifications : array of Notification.
   def notifications_block(project_slug, notifications)
     content_tag :div, class: 'box' do
-      safe_concat box_header_tag((link_to medium_glyph(project_slug, 'repo'), project_path(project_slug)), 'header header_left', &Proc.new{
+      safe_concat box_header_tag((link_to medium_glyph(project_slug, 'repo'), project_path(project_slug)), 'header header_left', &Proc.new {
         link_to t(:link_mark_all_as_read), destroy_all_for_project_notifications_path(project_slug), {method: :delete, 'data-confirm' => t(:confirm_mark_all_as_read), class: 'button'}
       })
       safe_concat content_tag :ul, class: 'fancy_list fancy_list_mini', &Proc.new {
         notifications.collect do |notification|
           content_tag :li, class: 'fancy_list_item' do
             safe_concat notification.link_to_notifiable
-            safe_concat content_tag :span, {class: 'right_content_list'}, &Proc.new{
+            safe_concat content_tag :span, {class: 'right_content_list'}, &Proc.new {
               safe_concat notification.notification_info
               safe_concat notification.from.user_link
               safe_concat notification.recipient_type

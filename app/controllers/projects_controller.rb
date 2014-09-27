@@ -1,6 +1,6 @@
 require 'shared/activities'
 class ProjectsController < ApplicationController
-  before_filter { |c| c.add_action_alias = {'show' => 'overview'}}
+  before_filter { |c| c.add_action_alias = {'show' => 'overview'} }
   before_filter :find_project, :only => [:overview, :show, :activity, :activity_filter, :members, :issues_completion]
   before_filter :check_permission, :except => [:index, :filter, :members, :activity_filter, :issues_completion]
   before_filter { |c| c.menu_context :project_menu }
@@ -24,7 +24,7 @@ class ProjectsController < ApplicationController
     init_activities_sessions
     locals = selected_filters
     if @sessions[:activities][:types].include?('NIL')
-      @activities =  Activities.new([])
+      @activities = Activities.new([])
     else
       activities_types = @sessions[:activities][:types]
       activities_period = @sessions[:activities][:period]
@@ -123,13 +123,14 @@ class ProjectsController < ApplicationController
   def members
     members = User.joins(:members).where('members.project_id' => @project_decorator.id).where('members.role_id <> ?', Role.non_member.id).pluck('users.slug')
     respond_to do |format|
-      format.json { render json: members}
+      format.json { render json: members }
     end
   end
+
   def issues_completion
     issues = Issue.joins(:status).where(project_id: @project_decorator.id).order('issues.id ASC').pluck('issues.id, issues.subject')
     respond_to do |format|
-      format.json { render json: issues}
+      format.json { render json: issues }
     end
   end
 
@@ -141,7 +142,7 @@ class ProjectsController < ApplicationController
 
   def find_project
     id = action_name.eql?('show') ? params[:id] : params[:project_id]
-    @project_decorator = Project.includes(:attachments, members: [:role,user: :avatar]).where(slug: id)[0]
+    @project_decorator = Project.includes(:attachments, members: [:role, user: :avatar]).where(slug: id)[0]
     if @project_decorator
       @project_decorator = @project_decorator.decorate
       @project = @project_decorator.model

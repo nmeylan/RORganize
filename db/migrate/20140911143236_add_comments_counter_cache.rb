@@ -1,7 +1,7 @@
 class AddCommentsCounterCache < ActiveRecord::Migration
   def up
-     add_column :issues, :comments_count, :integer, :default => 0
-     add_column :documents, :comments_count, :integer, :default => 0
+    add_column :issues, :comments_count, :integer, :default => 0
+    add_column :documents, :comments_count, :integer, :default => 0
 
     Issue.transaction do
       Issue.find_each do |i|

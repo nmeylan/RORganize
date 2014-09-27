@@ -22,15 +22,15 @@ function bind_activities() {
             next.fadeIn();
         }
     });
-    circles.hover(function(e){
+    circles.hover(function (e) {
         var el = jQuery(this);
         el.next('.journals').addClass('hover');
-    }, function(e){
+    }, function (e) {
         var el = jQuery(this);
         el.next('.journals').removeClass('hover');
     });
     filters.unbind();
-    filters.change(function(e){
+    filters.change(function (e) {
         var form = jQuery('form#activities_filter');
         form.submit();
     });

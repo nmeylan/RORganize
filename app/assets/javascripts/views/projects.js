@@ -12,6 +12,6 @@ function on_load_projects_scripts() {
     }
 }
 
-function on_activities_load(){
+function on_activities_load() {
     createOverlay("#comments_overlay", 150);
 }

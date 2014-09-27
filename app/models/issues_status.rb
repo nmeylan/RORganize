@@ -27,6 +27,7 @@ class IssuesStatus < ActiveRecord::Base
   def position
     self.enumeration.position
   end
+
   #Change position
   def change_position(operator)
     enumerations = Enumeration.where(opt: 'ISTS').order('position ASC')

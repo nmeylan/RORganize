@@ -11,13 +11,13 @@
 
 <ul>
   <% @roles.each do |role| %>
-    <li>
-      <% if User.current.allowed_to?('list','Permissions') %>
-        <%= link_to role.name, list_permissions_path(role.name.gsub(' ', '_')) %>
-      <% else %>
-        <%= role.name %>
-      <% end %>
-    </li>
+      <li>
+        <% if User.current.allowed_to?('list', 'Permissions') %>
+            <%= link_to role.name, list_permissions_path(role.name.gsub(' ', '_')) %>
+        <% else %>
+            <%= role.name %>
+        <% end %>
+      </li>
   <% end %>
 </ul>
 
@@ -27,17 +27,20 @@
 <p>
   Permissions are one of the most important part of the application.<br/>
   The majority of them were build during the building of the application.<br/>
-  So that why you neither can delete them neither edit their properties, except their name.<br/>
+  So that why you neither can delete them neither edit their properties, except
+  their name.<br/>
   <br/>
   In addition, several permissions are considered as more or less critical.<br/>
   Indeed take a look of the following rules:
 <ul>
   <li>
-    If your permissions are named: Delete, Remove or Destroy.. will apear like this:
+    If your permissions are named: Delete, Remove or Destroy.. will apear like
+    this:
     <span class="octicon octicon-flame"></span>Dangerous permissions
   </li>
   <li>
-    If your permission affect a critical controller (e.g administration), controllers will apears like this :
+    If your permission affect a critical controller (e.g administration),
+    controllers will apears like this :
     <span class="octicon octicon-alert"></span>Critical controller
   </li>
 </ul>

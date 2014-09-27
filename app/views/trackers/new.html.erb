@@ -5,9 +5,9 @@
 # File: new.html.erb
 %>
 
-<%= contextual t(:link_new_tracker)%>
+<%= contextual t(:link_new_tracker) %>
 
-<%= form_for @tracker, :url => {:controller => 'trackers'}, :html => {:class => 'form'} do |f|%>
-  <%= render :partial => 'trackers/form', :locals => {:f => f} %>
-  <%= submit_tag t(:button_create) %>
+<%= form_for @tracker, :url => {:controller => 'trackers'}, :html => {:class => 'form'} do |f| %>
+    <%= render :partial => 'trackers/form', :locals => {:f => f} %>
+    <%= submit_tag t(:button_create) %>
 <% end %>

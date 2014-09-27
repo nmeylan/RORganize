@@ -3,9 +3,9 @@
  * Date: 28.07.14
  * Time: 06:48
  %>
-if($('#history_blocks').length == 0){
+if ($('#history_blocks').length == 0) {
     $('#history').append('<div id="history_blocks"></div>');
 }
-    on_append_effect('#history_blocks', "<%= escape_javascript(comment_block_render(@comment, nil, false)) %>");
+on_append_effect('#history_blocks', "<%= escape_javascript(comment_block_render(@comment, nil, false)) %>");
 
 $('#add_comment_form').fadeOut();

@@ -143,13 +143,13 @@ class ProfilesController < ApplicationController
       Preference.delete_all(key: @keys.values, user_id: @user.id)
       if params[:preferences]
         params[:preferences].values.each do |preference_key|
-            @user.preferences << Preference.new(key: preference_key.to_i, boolean_value: true)
+          @user.preferences << Preference.new(key: preference_key.to_i, boolean_value: true)
         end
       end
       @user.save
       respond_to do |format|
         flash[:notice] = t(:successful_preferences)
-        format.html { redirect_to action: 'notification_preferences'}
+        format.html { redirect_to action: 'notification_preferences' }
       end
     end
     @preferences = @user.preferences.where(key: @keys.values)

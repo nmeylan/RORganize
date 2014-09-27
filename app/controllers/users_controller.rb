@@ -62,7 +62,7 @@ class UsersController < ApplicationController
     @user = User.find_by_slug(params[:id])
     @user.admin = (user_params[:admin].eql?('1'))
     user_params[:updated_at] = Time.now.to_formatted_s(:db)
-    @user.attributes = user_params.delete_if{|k, _| k.eql?(:password)}
+    @user.attributes = user_params.delete_if { |k, _| k.eql?(:password) }
     respond_to do |format|
       if !@user.changed?
         format.html { redirect_to :action => 'show', :controller => 'users', :id => @user }
@@ -102,7 +102,7 @@ class UsersController < ApplicationController
   end
 
   def register
-    @user = User.new(user_params.delete_if{|k,_| k.eql?('retype_password')})
+    @user = User.new(user_params.delete_if { |k, _| k.eql?('retype_password') })
     @user.admin = false
     @user.created_at = Time.now.to_formatted_s(:db)
     @user.updated_at = Time.now.to_formatted_s(:db)

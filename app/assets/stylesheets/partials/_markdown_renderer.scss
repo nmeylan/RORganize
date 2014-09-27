@@ -28,22 +28,23 @@
   border-radius: 3px;
 }
 
-.markdown_renderer{
-  ul{
+.markdown_renderer {
+  ul {
     padding-left: 20px;
   }
-  ul.task_list{
+  ul.task_list {
     padding: 0px;
   }
 }
 
 .comment_block {
-  .markdown_preview{
+  .markdown_preview {
     padding: 10px;
   }
 }
-.markdown_preview{
-  ul{
+
+.markdown_preview {
+  ul {
     margin-left: 10px;
   }
 }

@@ -9,6 +9,7 @@ class InsertChecklistItemStatus < ActiveRecord::Migration
     Enumeration.create(:opt => 'CLIS', :name => 'Started', :position => 2)
     Enumeration.create(:opt => 'CLIS', :name => 'Finish', :position => 3)
   end
+
   def down
     Enumeration.delete_all(:opt => 'CLIS')
   end

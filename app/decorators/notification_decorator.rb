@@ -4,8 +4,8 @@ class NotificationDecorator < ApplicationDecorator
 
   def link_to_notifiable
     icon = notification_type_icon
-    caption = resize_text(model.notifiable.caption,80)
-    caption = model.notifiable_type.eql?('Issue') ? "##{model.notifiable_id} : #{caption}": caption
+    caption = resize_text(model.notifiable.caption, 80)
+    caption = model.notifiable_type.eql?('Issue') ? "##{model.notifiable_id} : #{caption}" : caption
     h.link_to h.glyph(caption, icon), h.notification_path(model.id), {method: :delete}
   end
 
@@ -30,6 +30,7 @@ class NotificationDecorator < ApplicationDecorator
     end
     h.content_tag :span, h.content_tag(:span, nil, {class: "octicon octicon-#{icon} "}), {class: 'tooltipped tooltipped-s notification_recipient_type', label: label}
   end
+
   def notification_type_icon
     if true || model.trigger_type.eql?('Journal')
       if model.notifiable.is_a? Issue

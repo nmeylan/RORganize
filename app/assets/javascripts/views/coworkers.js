@@ -1,4 +1,4 @@
-function on_load_coworkers_scripts(){
+function on_load_coworkers_scripts() {
     listTrClick(".list .member_tr", true);
     checkboxToolbox(".list");
     bind_tr_ajax(".member_tr");
@@ -13,7 +13,7 @@ function bind_tr_ajax(selector) {
             url: jQuery(this).data("link"),
             type: "get",
             dataType: "script",
-            data: {getAct : getActivity}
+            data: {getAct: getActivity}
         })
     });
 }

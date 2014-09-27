@@ -9,16 +9,16 @@
 
 <%= contextual t(:link_modules) %>
 
-<%= form_tag url_for({:action => 'modules', :controller => 'settings', :project_id => @project.slug})%>
+<%= form_tag url_for({:action => 'modules', :controller => 'settings', :project_id => @project.slug}) %>
 <div class="box">
   <ul style="list-style-type: none">
     <% @modules.each do |mod| %>
-      <li>
-        <label>
-          <%= check_box_tag 'modules[name][]',"#{mod.controller}_#{mod.action}_#{mod.name}", enabled_modules.include?(mod.name.to_s) %>
-          <%= mod.name.capitalize %>
-        </label>
-      </li>
+        <li>
+          <label>
+            <%= check_box_tag 'modules[name][]', "#{mod.controller}_#{mod.action}_#{mod.name}", enabled_modules.include?(mod.name.to_s) %>
+            <%= mod.name.capitalize %>
+          </label>
+        </li>
 
     <% end %>
   </ul>

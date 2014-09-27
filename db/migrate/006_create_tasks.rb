@@ -11,7 +11,7 @@ class CreateTasks < ActiveRecord::Migration
       t.timestamps :updated_on
     end
   end
- 
+
   def down
     drop_table :tasks
   end

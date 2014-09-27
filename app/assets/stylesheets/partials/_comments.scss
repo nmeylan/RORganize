@@ -1,13 +1,15 @@
 @import 'utilities/_variables';
+
 $comment-header-background: #f7f7f7;
-#add_comment_form{
+#add_comment_form {
   display: none;
 }
-#comments_block, #history_blocks{
-  .comment_content.selected{
+
+#comments_block, #history_blocks {
+  .comment_content.selected {
     background-color: #e6f1f6;
   }
-  .comment_block{
+  .comment_block {
     position: relative;
     border: 1px solid #ddd;
     box-sizing: border-box;
@@ -15,12 +17,12 @@ $comment-header-background: #f7f7f7;
     background-color: #ffffff;
     margin-top: 15px;
     margin-bottom: 15px;
-    img{
+    img {
       float: left;
       margin-left: -65px;
     }
   }
-  .comment_header.display_avatar:before, .comment_header.display_avatar:after{
+  .comment_header.display_avatar:before, .comment_header.display_avatar:after {
     position: absolute;
     top: 16px;
     left: -16px;
@@ -34,28 +36,27 @@ $comment-header-background: #f7f7f7;
     pointer-events: none;
 
   }
-  .comment_header.display_avatar:before{
+  .comment_header.display_avatar:before {
     border-right-color: #dddddd;
     border-width: 8px;
   }
-  .comment_header.display_avatar:after{
+  .comment_header.display_avatar:after {
 
     border-width: 7px;
     border-right-color: #f7f7f7;
     margin-top: 1px;
     margin-left: 2px;
   }
-  .comment_block p{
+  .comment_block p {
     margin: 0;
   }
-  .comment_header{
+  .comment_header {
     padding: 15px;
     color: #999;
     border-bottom: 1px solid #ddd;
     background-color: $comment-header-background;
 
-
-    .author{
+    .author {
       color: $default-color;
       font-weight: bold;
     }
@@ -65,30 +66,30 @@ $comment-header-background: #f7f7f7;
       font-size: 12px;
       font-style: italic;
     }
-    .actions{
+    .actions {
       vertical-align: top;
     }
 
-    .edited{
+    .edited {
       position: absolute;
       left: 50%;
-      color : $default-smooth-color;
+      color: $default-smooth-color;
       font-size: 12px;
     }
   }
-  .comment_content{
+  .comment_content {
     padding: 15px;
 
   }
 }
 
-#comments_overlay_content{
+#comments_overlay_content {
   padding: 10px 10px 10px 20px;
   width: 800px;
-  #comments_block{
+  #comments_block {
     margin-left: 40px;
   }
-  .edited{
+  .edited {
     display: none;
     position: relative;
   }

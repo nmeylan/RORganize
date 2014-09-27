@@ -15,6 +15,6 @@ class PermissionDecorator < ApplicationDecorator
       else
         super h.t(:link_delete), h.permission_path(model.id)
       end
-     end
+    end
   end
 end

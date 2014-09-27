@@ -27,6 +27,7 @@
           <%= link_to glyph(t(:link_delete), 'trashcan'), del_predecessor_issues_path(@project.slug, @issue_decorator.id), {:remote => true, :confirm => t(:text_delete_item), :method => :delete} %>
         </p>
     <% else %>
-        <p>#<%= @issue_decorator.predecessor_id %> : <%= link_to @issue_decorator.parent.caption, issue_path(@project.slug, @issue_decorator.parent.id) %></p>
+        <p>#<%= @issue_decorator.predecessor_id %>
+          : <%= link_to @issue_decorator.parent.caption, issue_path(@project.slug, @issue_decorator.parent.id) %></p>
     <% end %>
 <% end %>

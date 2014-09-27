@@ -11,6 +11,7 @@ module Rorganize
     def self.included(base)
       base.before_filter :set_pagination, only: [:index]
     end
+
     # Klazz : type of the filtered content, e.g : Issue
     #Criterias : HASH criteria, e.g : {"subject"=>{"operator"=>"contains", "value"=>"test"}}
     #Filter type : are content filtered? then value is filter (to filter content) or all (to display all result)

@@ -11,8 +11,8 @@ class PermissionsController < ApplicationController
 
   before_filter :check_permission, :except => [:update_permissions]
   before_filter { |c| c.menu_context :admin_menu }
-  before_filter { |c| c.menu_item(params[:controller])}
-  before_filter {|c| c.top_menu_item('administration')}
+  before_filter { |c| c.menu_item(params[:controller]) }
+  before_filter { |c| c.top_menu_item('administration') }
 
   #GET administration/permissions
   def index
@@ -26,7 +26,7 @@ class PermissionsController < ApplicationController
   def new
     @permission_decorator = Permission.new.decorate
     respond_to do |format|
-      format.html {render :action => 'new', :locals =>{:controllers =>  load_controllers.values}}
+      format.html { render :action => 'new', :locals => {:controllers => load_controllers.values} }
     end
   end
 
@@ -36,14 +36,14 @@ class PermissionsController < ApplicationController
     respond_to do |format|
       if @permission_decorator.save
         flash[:notice] = t(:successful_creation)
-        format.html { redirect_to :action => 'index', :controller => 'permissions'}
-        format.json  { render :json => @permission_decorator,
-          :status => :created, :location => @permission_decorator}
+        format.html { redirect_to :action => 'index', :controller => 'permissions' }
+        format.json { render :json => @permission_decorator,
+                             :status => :created, :location => @permission_decorator }
       else
         Permission.controller_list
-        format.html  { render :action => 'new' }
-        format.json  { render :json => @permission_decorator.errors,
-          :status => :unprocessable_entity }
+        format.html { render :action => 'new' }
+        format.json { render :json => @permission_decorator.errors,
+                             :status => :unprocessable_entity }
       end
     end
   end
@@ -54,7 +54,7 @@ class PermissionsController < ApplicationController
     if @permission_decorator
       @permission_decorator = @permission_decorator.decorate
       respond_to do |format|
-        format.html {render :action => 'edit', :locals =>{:controllers => load_controllers.values}}
+        format.html { render :action => 'edit', :locals => {:controllers => load_controllers.values} }
       end
     else
       render_404
@@ -67,14 +67,14 @@ class PermissionsController < ApplicationController
     respond_to do |format|
       if @permission_decorator.update_attributes(permission_params)
         flash[:notice] = t(:successful_update)
-        format.html { redirect_to :action => 'index', :controller => 'permissions'}
-        format.json  { render :json => @permission_decorator,
-          :status => :created, :location => @permission_decorator}
+        format.html { redirect_to :action => 'index', :controller => 'permissions' }
+        format.json { render :json => @permission_decorator,
+                             :status => :created, :location => @permission_decorator }
       else
 
-        format.html  {render :action => 'edit', :locals =>{:controllers =>  load_controllers.values}}
-        format.json  { render :json => @permission_decorator.errors,
-          :status => :unprocessable_entity }
+        format.html { render :action => 'edit', :locals => {:controllers => load_controllers.values} }
+        format.json { render :json => @permission_decorator.errors,
+                             :status => :unprocessable_entity }
       end
     end
   end
@@ -85,15 +85,16 @@ class PermissionsController < ApplicationController
     @permission.destroy
     flash[:notice] = t(:successful_deletion)
     respond_to do |format|
-      format.html { redirect_to permissions_path}
-      format.js {js_redirect_to (permissions_path)}
+      format.html { redirect_to permissions_path }
+      format.js { js_redirect_to (permissions_path) }
     end
   end
+
   #Other methods
   def list
     @permissions_decorator = Permission.select('*').decorate(context: {role_name: params[:role_name], controller_list: load_controllers})
     respond_to do |format|
-      format.html {render :action => 'list'}
+      format.html { render :action => 'list' }
     end
   end
 
@@ -105,7 +106,7 @@ class PermissionsController < ApplicationController
       @roles = Role.select('*')
       respond_to do |format|
         flash[:notice] = t(:successful_update)
-        format.html { redirect_to :action => 'index', :controller => 'permissions'}
+        format.html { redirect_to :action => 'index', :controller => 'permissions' }
       end
     else
       list

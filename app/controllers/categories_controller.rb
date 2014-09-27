@@ -9,7 +9,7 @@ class CategoriesController < ApplicationController
   before_filter :check_permission
   before_filter { |c| c.menu_context :project_menu }
   before_filter { |c| c.menu_item('settings') }
-  before_filter {|c| c.top_menu_item('projects')}
+  before_filter { |c| c.top_menu_item('projects') }
   include Rorganize::RichController
 
   def index
@@ -33,13 +33,13 @@ class CategoriesController < ApplicationController
     respond_to do |format|
       if @category.save
         flash[:notice] = t(:successful_creation)
-        format.html { redirect_to :action => 'index', :controller => 'categories'}
-        format.json  { render :json => @category,
-          :status => :created, :location => @category}
+        format.html { redirect_to :action => 'index', :controller => 'categories' }
+        format.json { render :json => @category,
+                             :status => :created, :location => @category }
       else
-        format.html  { render :action => 'new' }
-        format.json  { render :json => @category.errors,
-          :status => :unprocessable_entity }
+        format.html { render :action => 'new' }
+        format.json { render :json => @category.errors,
+                             :status => :unprocessable_entity }
       end
     end
   end
@@ -54,16 +54,16 @@ class CategoriesController < ApplicationController
     @category.attributes = (category_params)
     respond_to do |format|
       if !@category.changed?
-        format.html { redirect_to :action => 'index', :controller => 'categories'}
+        format.html { redirect_to :action => 'index', :controller => 'categories' }
       elsif @category.changed? && @category.save
         flash[:notice] = t(:successful_update)
-        format.html { redirect_to :action => 'index', :controller => 'categories'}
-        format.json  { render :json => @category,
-          :status => :created, :location => @category}
+        format.html { redirect_to :action => 'index', :controller => 'categories' }
+        format.json { render :json => @category,
+                             :status => :created, :location => @category }
       else
-        format.html  { render :action => 'edit' }
-        format.json  { render :json => @category.errors,
-          :status => :unprocessable_entity }
+        format.html { render :action => 'edit' }
+        format.json { render :json => @category.errors,
+                             :status => :unprocessable_entity }
       end
     end
   end
@@ -75,7 +75,7 @@ class CategoriesController < ApplicationController
         flash[:notice] = t(:successful_deletion)
         redirect_to category_path
       end
-      format.js {respond_to_js :locals => {:id => params[:id]}, :response_header => :success, :response_content => t(:successful_deletion)}
+      format.js { respond_to_js :locals => {:id => params[:id]}, :response_header => :success, :response_content => t(:successful_deletion) }
     end
   end
 

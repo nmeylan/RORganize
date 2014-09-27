@@ -6,7 +6,7 @@
 
 function on_load_attachments_scripts() {
     bind_remove_attachment_field_link();
-    jQuery(".add_attachment_link").click(function (e){
+    jQuery(".add_attachment_link").click(function (e) {
         e.preventDefault();
         var self_element = jQuery(this);
         var content = self_element.data("content");
@@ -16,11 +16,11 @@ function on_load_attachments_scripts() {
     });
 }
 
-function bind_remove_attachment_field_link(){
-    jQuery('.remove_attachment_field_link').click(function(e){
+function bind_remove_attachment_field_link() {
+    jQuery('.remove_attachment_field_link').click(function (e) {
         e.preventDefault();
         var el = jQuery(this);
-        el.parents('.attachments').fadeOut('slow',function(){
+        el.parents('.attachments').fadeOut('slow', function () {
             this.remove();
         })
     });

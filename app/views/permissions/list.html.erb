@@ -9,8 +9,8 @@
     <%= @permissions_decorator.new_link %>
 <% end -%>
 
-<%= horizontal_tabs('permissions_tab', [{name: 'project-tab',element: glyph(t(:label_project), 'repo')},
-                     {name: 'adminstration-tab',element: medium_glyph(t(:label_administration), 'crown')},
-                     {name: 'misc-tab',element: t(:misc)}])
+<%= horizontal_tabs('permissions_tab', [{name: 'project-tab', element: glyph(t(:label_project), 'repo')},
+                                        {name: 'adminstration-tab', element: medium_glyph(t(:label_administration), 'crown')},
+                                        {name: 'misc-tab', element: t(:misc)}])
 %>
 <%= @permissions_decorator.display_collection %>

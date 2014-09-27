@@ -19,8 +19,8 @@ class AddProjectsCounterCache < ActiveRecord::Migration
   end
 
   def down
-     remove_column :issues, :issues_count
-     remove_column :issues, :members_count
-    remove_column :issues, :attachments_count 
+    remove_column :issues, :issues_count
+    remove_column :issues, :members_count
+    remove_column :issues, :attachments_count
   end
 end

@@ -5,9 +5,9 @@
 # File: version_edit.html.erb
 %>
 
-<%= contextual "#{t(:label_setting_plural)} - #{t(:link_categories)}"%>
-    <%= form_for @category, :url => category_path(@project.slug, @category.id), :method => :put, :html => {:class => 'form'} do |f| %>
-        <%= render :partial => 'categories/form', :locals => {:f => f} %>
-        <%= submit_tag t(:button_save) %>
-    <% end %>
+<%= contextual "#{t(:label_setting_plural)} - #{t(:link_categories)}" %>
+<%= form_for @category, :url => category_path(@project.slug, @category.id), :method => :put, :html => {:class => 'form'} do |f| %>
+    <%= render :partial => 'categories/form', :locals => {:f => f} %>
+    <%= submit_tag t(:button_save) %>
+<% end %>
 <%= render :partial => 'settings/sidebar' %>

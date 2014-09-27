@@ -4,10 +4,10 @@ class CreateVersions < ActiveRecord::Migration
       t.string :name, :limit => 255
       t.date :target_date
       t.text :description, :limit => 65535
-      
+
     end
   end
- 
+
   def down
     drop_table :versions
   end

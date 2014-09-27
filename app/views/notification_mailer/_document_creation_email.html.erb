@@ -5,8 +5,10 @@
 %>
 <ul>
   <li><b><%= t(:field_title) %>:</b> <%= model.caption %></li>
-  <li><b><%= t(:field_version) %>:</b> <%= model.version ? model.version.caption : '-' %></li>
-  <li><b><%= t(:field_category) %>:</b> <%= model.category ? model.category.caption : '-' %></li>
+  <li><b><%= t(:field_version) %>
+    :</b> <%= model.version ? model.version.caption : '-' %></li>
+  <li><b><%= t(:field_category) %>
+    :</b> <%= model.category ? model.category.caption : '-' %></li>
 </ul>
 <%= markdown_to_html model.description, nil, true %>
 

@@ -4,9 +4,9 @@
 # Encoding: UTF-8
 # File: edit.html.erb
 %>
-<%= contextual t(:link_edit_tracker)%>
+<%= contextual t(:link_edit_tracker) %>
 
-<%= form_for @tracker, :url => tracker_path, :method => :put, :html => {:class => 'form'} do |f|%>
-  <%= render :partial => 'trackers/form', :locals => {:f => f} %>
-  <%= submit_tag t(:button_save) %>
+<%= form_for @tracker, :url => tracker_path, :method => :put, :html => {:class => 'form'} do |f| %>
+    <%= render :partial => 'trackers/form', :locals => {:f => f} %>
+    <%= submit_tag t(:button_save) %>
 <% end %>

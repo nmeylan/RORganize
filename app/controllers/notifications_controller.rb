@@ -9,7 +9,7 @@ class NotificationsController < ApplicationController
   def index
     @notifications_decorator = Notification.includes(:project, :notifiable, :from).where(user_id: @user.id).order('notifications.created_at DESC').decorate
     respond_to do |format|
-      format.html {render action: 'index'}
+      format.html { render action: 'index' }
     end
   end
 
@@ -28,7 +28,7 @@ class NotificationsController < ApplicationController
     notifications = Notification.includes(:notifiable, :project).where(project_id: Project.find_by_slug(params[:project_slug]), user_id: @user.id)
     notifications.delete_all
     respond_to do |format|
-      format.html {redirect_to action: 'index'}
+      format.html { redirect_to action: 'index' }
     end
   end
 

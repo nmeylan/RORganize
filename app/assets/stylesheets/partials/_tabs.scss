@@ -6,24 +6,28 @@
   border-radius: 3px 3px 0 0;
 
 }
-.markItUpHeaderMenu.tabnav{
+
+.markItUpHeaderMenu.tabnav {
 
   border: 1px solid #ddd;
   background: #f7f7f7;
 }
-ul.tabnav-tabs{
+
+ul.tabnav-tabs {
   display: inline-block;
   margin: 0px;
   padding: 0px;
   outline: none;
-  li{
+  li {
     display: inline-block;
     margin-bottom: -1px;
   }
 }
-a.tabnav-tab{
+
+a.tabnav-tab {
   color: #000;
 }
+
 .tabnav-tab {
   display: inline-block;
   padding: 8px 12px 7px;
@@ -34,6 +38,7 @@ a.tabnav-tab{
   border: 1px solid transparent;
   border-bottom: 0;
 }
+
 .tabnav-tab.selected {
   color: #333;
   background-color: #fff;

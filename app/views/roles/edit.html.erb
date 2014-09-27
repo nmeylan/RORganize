@@ -5,9 +5,9 @@
 # File: edit.html.erb
 %>
 
-<%= contextual t(:link_edit_role)%>
+<%= contextual t(:link_edit_role) %>
 
-<%= form_for @role, :url => role_path, :method => :put, :html => {:class => 'form'} do |f|%>
-  <%= render :partial => 'roles/form', :locals => {:f => f} %>
-  <%= submit_tag t(:button_save) %>
+<%= form_for @role, :url => role_path, :method => :put, :html => {:class => 'form'} do |f| %>
+    <%= render :partial => 'roles/form', :locals => {:f => f} %>
+    <%= submit_tag t(:button_save) %>
 <% end %>

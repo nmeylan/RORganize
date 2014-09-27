@@ -4,6 +4,6 @@ class AddJournalizedIdentifier < ActiveRecord::Migration
   end
 
   def down
-    remove_column :journals, :journalized_identifier 
+    remove_column :journals, :journalized_identifier
   end
 end

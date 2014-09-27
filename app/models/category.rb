@@ -13,6 +13,7 @@ class Category < ActiveRecord::Base
   has_many :issues, :class_name => 'Issue', :dependent => :nullify
 
   validates :name, :presence => true, :length => 2..20
+
   def self.permit_attributes
     [:name]
   end
@@ -20,5 +21,5 @@ class Category < ActiveRecord::Base
   def caption
     self.name
   end
-  
+
 end

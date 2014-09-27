@@ -17,11 +17,11 @@ gantt.config.drag_links = edition;
 $('#save_gantt').css('display', edition ? 'block' : 'none');
 config_column(edition);
 <% if @sessions[@project.slug][:gantt][:edition] && !save %>
-    var merge_result = merge_gantt_data(<%= raw json_data.to_json %>);
-    gantt.clearAll();
-    gantt.parse(merge_result, 'json');
+var merge_result = merge_gantt_data(<%= raw json_data.to_json %>);
+gantt.clearAll();
+gantt.parse(merge_result, 'json');
 <% else %>
-    gantt.clearAll();
-    gantt.parse(<%= raw json_data.to_json %>, 'json');
+gantt.clearAll();
+gantt.parse(<%= raw json_data.to_json %>, 'json');
 <% end %>
 gantt.render();

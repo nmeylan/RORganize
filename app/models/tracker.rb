@@ -14,6 +14,7 @@ class Tracker < ActiveRecord::Base
   def caption
     self.name
   end
+
   def self.permit_attributes
     [:name]
   end

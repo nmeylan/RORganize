@@ -5,32 +5,34 @@
 # File: _form.html.erb
 %>
 
-<%= form_for @query, :url => {:controller => 'queries', :project_id => @project.slug} , :html => {:class => 'form', id: 'query_creation_form'} do |f|%>
-  <div class="box">
-    <p style="padding-right: 3px;">
-      <label for="query_name"><%=t(:field_name)%><span class ="required"> *</span></label>
-      <%= f.text_field :name, :size => 80, maxlength: 50 %>
-    </p>
-    <p style="padding-right: 3px;">
-      <%= f.label :description %>
-      <%= f.text_area :description, :rows => 12, :class => 'fancyEditor' %>
-    </p>
-    <% if User.current.allowed_to?('public_queries','Queries',@project) %>
-      <p>
-        <%= f.label :is_public %>
-        <%= f.check_box :is_public%>
-        <%= info_tag t(:text_query_is_public) %>
+<%= form_for @query, :url => {:controller => 'queries', :project_id => @project.slug}, :html => {:class => 'form', id: 'query_creation_form'} do |f| %>
+    <div class="box">
+      <p style="padding-right: 3px;">
+        <label for="query_name"><%= t(:field_name) %><span class="required">
+          *</span></label>
+        <%= f.text_field :name, :size => 80, maxlength: 50 %>
       </p>
-    <% else %>
-      <%= hidden_field :query, :is_public, {:value => false} %>
-    <% end %>
-    <p>
-      <%= f.label :is_for_all %>
-      <%= f.check_box :is_for_all%>
-      <%= info_tag t(:text_query_is_for_all) %>
-    </p>
-    <%= hidden_field :query, :object_type%>
-  </div>
-  <%= submit_tag t(:button_save) %>
-  <input type="button" class="close" value="<%= t(:button_close)  %>">
+
+      <p style="padding-right: 3px;">
+        <%= f.label :description %>
+        <%= f.text_area :description, :rows => 12, :class => 'fancyEditor' %>
+      </p>
+      <% if User.current.allowed_to?('public_queries', 'Queries', @project) %>
+          <p>
+            <%= f.label :is_public %>
+            <%= f.check_box :is_public %>
+            <%= info_tag t(:text_query_is_public) %>
+          </p>
+      <% else %>
+          <%= hidden_field :query, :is_public, {:value => false} %>
+      <% end %>
+      <p>
+        <%= f.label :is_for_all %>
+        <%= f.check_box :is_for_all %>
+        <%= info_tag t(:text_query_is_for_all) %>
+      </p>
+      <%= hidden_field :query, :object_type %>
+    </div>
+    <%= submit_tag t(:button_save) %>
+    <input type="button" class="close" value="<%= t(:button_close) %>">
 <% end %>

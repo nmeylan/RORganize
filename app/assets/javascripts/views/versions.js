@@ -3,8 +3,8 @@
  * Date: 15/12/13
  * Time: 03:10
  */
-function on_load_versions_scripts(){
-    switch(gon.action){
+function on_load_versions_scripts() {
+    switch (gon.action) {
         case 'index' :
             versions_index();
             break;
@@ -24,9 +24,9 @@ function on_load_versions_scripts(){
 
 }
 
-function versions_index(){
+function versions_index() {
     bind_version_change_positions();
 }
 
-function versions_form(){
+function versions_form() {
 }

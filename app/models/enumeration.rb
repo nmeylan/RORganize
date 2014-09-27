@@ -14,7 +14,7 @@ class Enumeration < ActiveRecord::Base
   end
 
   def inc_position
-    count = Enumeration.select('*').where(['opt = ?',self.opt]).count
+    count = Enumeration.select('*').where(['opt = ?', self.opt]).count
     self.position = count + 1
   end
 

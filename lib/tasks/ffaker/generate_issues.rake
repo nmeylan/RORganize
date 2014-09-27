@@ -9,7 +9,7 @@ namespace :ffaker do
       versions = Version.where(project_id: 1)
       categories = Category.where(project_id: 1)
       issues_iterations.times do |x|
-        User.current =  members[rand(1..75)].user
+        User.current = members[rand(1..75)].user
         issue = Issue.new
         issue.subject = Faker::Lorem.word
         issue.description = Faker::Lorem.paragraph(2)

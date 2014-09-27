@@ -46,12 +46,15 @@ td .autocomplete-combobox {
   color: $default-smooth-color;
   font-size: 12px;
 }
+
 .chzn-container a:hover {
   color: $link-hover-color;
 }
-a.chzn-single.chzn-default{
+
+a.chzn-single.chzn-default {
   color: $link-hover-color;
 }
+
 /**
   CHOSEN default style
 */
@@ -171,12 +174,15 @@ a.chzn-single.chzn-default{
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-.chzn-container-single .chzn-single div b:before{
+
+.chzn-container-single .chzn-single div b:before {
   content: '\f0a3';
 }
-.chzn-container-single .chzn-single div b:hover{
+
+.chzn-container-single .chzn-single div b:hover {
   color: $link-hover-color;
 }
+
 .chzn-container-single .chzn-search {
   padding: 3px 4px;
   position: relative;
@@ -295,7 +301,6 @@ a.chzn-single.chzn-default{
   top: 4px;
 }
 
-
 /* @end */
 
 /* @group Results */
@@ -338,7 +343,7 @@ a.chzn-single.chzn-default{
 }
 
 .chzn-container .chzn-results .highlighted em {
-//  background: transparent;
+  //  background: transparent;
 }
 
 .chzn-container .chzn-results .no-results {
@@ -411,7 +416,8 @@ a.chzn-single.chzn-default{
 .chzn-container-active .chzn-single-with-drop div b:before {
   content: '\f0a2';
 }
-.chzn-container-active .chzn-single-with-drop div b:hover{
+
+.chzn-container-active .chzn-single-with-drop div b:hover {
   color: $link-hover-color;
 }
 

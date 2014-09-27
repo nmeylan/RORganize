@@ -79,7 +79,7 @@ class WikiController < ApplicationController
   end
 
   def find_wiki
-    wiki = Wiki.where(:project_id => @project.id).eager_load([[pages: [:author, :sub_pages, :parent]],  [home_page: :author]])[0]
+    wiki = Wiki.where(:project_id => @project.id).eager_load([[pages: [:author, :sub_pages, :parent]], [home_page: :author]])[0]
     @wiki_decorator = wiki ? wiki.decorate(context: {project: @project}) : Wiki.new.decorate(context: {project: @project})
   end
 

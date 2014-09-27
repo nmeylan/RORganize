@@ -5,7 +5,7 @@
 require 'shared/history'
 require 'issues/issue_overview_hash'
 class IssuesController < ApplicationController
-  before_filter { |c| c.add_action_alias= {'overview' => 'index', 'apply_custom_query' => 'index'}}
+  before_filter { |c| c.add_action_alias= {'overview' => 'index', 'apply_custom_query' => 'index'} }
   before_filter :find_project_with_depedencies, only: [:index, :new, :create, :update, :edit, :toolbox, :apply_custom_query]
   before_filter :check_permission, :except => [:toolbox, :download_attachment, :start_today]
   before_filter :find_issue, only: [:edit, :update, :destroy]
@@ -198,8 +198,8 @@ class IssuesController < ApplicationController
   def overview
     tracker_report = Issue.group_opened_by_attr(@project.id, 'trackers', :tracker)
     version_report = Issue.group_opened_by_attr(@project.id, 'versions', :version)
-    category_report =  Issue.group_opened_by_attr(@project.id, 'categories', :category)
-    author_report =  Issue.group_opened_by_attr(@project.id, 'users', :author)
+    category_report = Issue.group_opened_by_attr(@project.id, 'categories', :category)
+    author_report = Issue.group_opened_by_attr(@project.id, 'users', :author)
     assigned_to_report = Issue.group_opened_by_attr(@project.id, 'users', :assigned_to)
     status_report = Issue.group_by_status(@project.id)
     overview_object = IssueOverviewHash.new({tracker: tracker_report, versions: version_report, category: category_report, author: author_report, assigned_to: assigned_to_report, status: status_report}, @project.issues.count)
@@ -246,7 +246,7 @@ class IssuesController < ApplicationController
     form_content = {}
     form_content['allowed_statuses'] = User.current.allowed_statuses(@project).collect { |status| [status.enumeration.name, status.id] }
     form_content['done_ratio'] = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
-    form_content['members'] = @project.real_members.collect { |member| [member.user.name, member.user.id]}
+    form_content['members'] = @project.real_members.collect { |member| [member.user.name, member.user.id] }
     form_content['categories'] = @project.categories.collect { |category| [category.name, category.id] }
     form_content['trackers'] = @project.trackers.collect { |tracker| [tracker.name, tracker.id] }
     form_content

@@ -6,8 +6,8 @@
 %>
 <%= contextual "#{t(:label_setting_plural)} - #{t(:link_versions)}" %>
 
-<%= form_for @version, :url => {:controller => 'versions'}, :html => {:class => 'form'} do |f|%>
-<%= render :partial => 'versions/form', :locals => {:f => f} %>
-<%= submit_tag t(:button_create) %>
+<%= form_for @version, :url => {:controller => 'versions'}, :html => {:class => 'form'} do |f| %>
+    <%= render :partial => 'versions/form', :locals => {:f => f} %>
+    <%= submit_tag t(:button_create) %>
 <% end %>
 <%= render :partial => 'settings/sidebar' %>

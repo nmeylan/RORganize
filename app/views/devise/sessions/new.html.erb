@@ -7,7 +7,8 @@
       <p><%= f.label :password %>
         <%= f.password_field :password %>
         <%- if devise_mapping.recoverable? && controller_name != 'passwords' %>
-            <%= link_to 'Forgot your password?', new_password_path(resource_name) %><br />
+            <%= link_to 'Forgot your password?', new_password_path(resource_name) %>
+            <br/>
         <% end -%>
       </p>
 
@@ -18,8 +19,8 @@
     </div>
     <div>
       <%= f.submit 'Sign in' %>
-      <% if  RORganize::Application.config.rorganize_allow_user_self_registration  %>
-      <%= link_to t(:devise_text_registration), new_user_registration_path %>
+      <% if  RORganize::Application.config.rorganize_allow_user_self_registration %>
+          <%= link_to t(:devise_text_registration), new_user_registration_path %>
       <% end %>
     </div>
 

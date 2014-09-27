@@ -7,7 +7,7 @@ namespace :ffaker do
       users_iterations = 100
       users_iterations.times do |x|
         user = User.new
-        user.name =  Faker::Name.first_name + ' ' + Faker::Name.last_name
+        user.name = Faker::Name.first_name + ' ' + Faker::Name.last_name
         user.login = Faker::Internet.user_name(user.name)
         user.email = Faker::Internet.email
         user.password = user.login

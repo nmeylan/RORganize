@@ -6,8 +6,9 @@
 require 'test_helper'
 class RorganizeMarkdownRendererTest < ActiveSupport::TestCase
   include ApplicationHelper
+
   def setup
-    @text =  <<EOF
+    @text = <<EOF
 - k
 - l
  - i

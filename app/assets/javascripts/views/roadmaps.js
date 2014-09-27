@@ -119,7 +119,7 @@ function roadmap_gantt() {
         };
 
         gantt.templates.leftside_text = function (start, end, task) {
-            var duration = "<span>"+task.context.start_date_str + " <b>-</b> " + task.context.due_date_str+"</span>";
+            var duration = "<span>" + task.context.start_date_str + " <b>-</b> " + task.context.due_date_str + "</span>";
             var progress = task.progress !== undefined ? "<span style='text-align:right;'>" + Math.round(task.progress * 100) + "% </span>" : '';
             return duration + progress;
         };
@@ -166,7 +166,7 @@ function roadmap_gantt() {
             task.start_date = new Date(limit.start_date)
         }
 
-        gantt.attachEvent("onTaskClick", function(id,e){
+        gantt.attachEvent("onTaskClick", function (id, e) {
             return !$(e.target).hasClass('update_task');
         });
 
@@ -303,8 +303,8 @@ function bind_gantt_filter() {
     });
 }
 
-function bind_save_button(){
-    $('#save_gantt').click(function(e){
+function bind_save_button() {
+    $('#save_gantt').click(function (e) {
         e.preventDefault();
         var el = $(this);
         var form = el.parents('form');
@@ -312,12 +312,12 @@ function bind_save_button(){
         var ids = [];
         var serialized_gantt = gantt.json.serialize();
         var data = [];
-        for(var i = 0; i < updated_tasks.length; i++){
-           ids.push($(updated_tasks[i]).val());
+        for (var i = 0; i < updated_tasks.length; i++) {
+            ids.push($(updated_tasks[i]).val());
         }
-        if(ids.length == 0){
+        if (ids.length == 0) {
             apprise('Before saving please select which elements you want to save.');
-        }else {
+        } else {
             var len = serialized_gantt.data.length;
             for (var i = 0; i < len; i++) {
                 if (ids.indexOf(serialized_gantt.data[i].id.toString()) != -1) {
@@ -338,13 +338,15 @@ function bind_save_button(){
     })
 }
 
-function config_column(edition){
+function config_column(edition) {
     var edit_tasks;
     edit_tasks = edition ? {name: "update", label: "<span class='octicon octicon-pencil'></span>", align: "center", width: 10,
         template: function (item) {
-            return "<input type='checkbox' name='update_task[]' class='update_task' value='"+item.id+"'>";
+            return "<input type='checkbox' name='update_task[]' class='update_task' value='" + item.id + "'>";
         }
-    } : {name : '', label: '', width: 0, template : function(item){return ''}};
+    } : {name: '', label: '', width: 0, template: function (item) {
+        return ''
+    }};
     gantt.config.columns = [
         {name: "text", label: "Task name", tree: true, width: 300,
             template: function (item) {

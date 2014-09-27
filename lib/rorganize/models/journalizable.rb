@@ -5,21 +5,21 @@
 
 module Rorganize
   module Models
-  module Journalizable
-    include Rorganize::Managers::JounalsManager
-    extend ActiveSupport::Concern
-    included do |base|
-      has_many :journals, -> { where :journalizable_type => base }, :as => :journalizable, :dependent => :destroy
-      after_create :create_journal
-      after_update :update_journal
-      after_destroy :destroy_journal
-    end
+    module Journalizable
+      include Rorganize::Managers::JounalsManager
+      extend ActiveSupport::Concern
+      included do |base|
+        has_many :journals, -> { where :journalizable_type => base }, :as => :journalizable, :dependent => :destroy
+        after_create :create_journal
+        after_update :update_journal
+        after_destroy :destroy_journal
+      end
 
-    class << self
-      def bulk_delete_dependent(journalizable_ids, class_name)
-        Journal.delete_all(journalizable_id: journalizable_ids, journalizable_type: class_name)
+      class << self
+        def bulk_delete_dependent(journalizable_ids, class_name)
+          Journal.delete_all(journalizable_id: journalizable_ids, journalizable_type: class_name)
+        end
       end
     end
   end
-end
 end

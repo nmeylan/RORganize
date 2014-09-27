@@ -15,8 +15,8 @@ class RorganizeController < ApplicationController
         format.html { render :action => 'index' }
       else
         projects_decorator = User.current.owned_projects('starred').decorate(context: {allow_to_star: false})
-        overview_object_assigned = IssueOverviewHash.new({assigned_to: Issue.group_opened_by_project('issues.assigned_to_id',"assigned_to_id = #{User.current.id}")}, Issue.where(assigned_to_id: User.current.id).count, true)
-        overview_object_submitted = IssueOverviewHash.new({author: Issue.group_opened_by_project('issues.author_id',"author_id = #{User.current.id}")}, Issue.where(author_id: User.current.id).count, true)
+        overview_object_assigned = IssueOverviewHash.new({assigned_to: Issue.group_opened_by_project('issues.assigned_to_id', "assigned_to_id = #{User.current.id}")}, Issue.where(assigned_to_id: User.current.id).count, true)
+        overview_object_submitted = IssueOverviewHash.new({author: Issue.group_opened_by_project('issues.author_id', "author_id = #{User.current.id}")}, Issue.where(author_id: User.current.id).count, true)
         format.html { render action: 'index', locals: {projects_decorator: projects_decorator, overview_object_assigned: overview_object_assigned, overview_object_submitted: overview_object_submitted} }
       end
     end
@@ -94,7 +94,7 @@ class RorganizeController < ApplicationController
       end
     end
     respond_to do |format|
-      format.js { respond_to_js action: 'do_nothing', response_header: header, response_content: message}
+      format.js { respond_to_js action: 'do_nothing', response_header: header, response_content: message }
     end
   end
 

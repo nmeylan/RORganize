@@ -16,7 +16,7 @@
   margin: 5px 0 5px 0;
 }
 
-.markItUpHeader{
+.markItUpHeader {
   margin-top: -5px;
 }
 
@@ -50,13 +50,14 @@
   margin-left: -1px;
   float: left;
   color: $link-hover-color !important;
-  .octicon{
+  .octicon {
     padding: 0px;
     margin: 0px;
     color: $link-hover-color !important;
   }
 }
-.markItUpButtons a:hover{
+
+.markItUpButtons a:hover {
   text-decoration: none;
   background-color: #dddddd;
   background-image: -moz-linear-gradient(#eee, #ddd);
@@ -66,12 +67,12 @@
   border-color: #ccc;
 }
 
-.markItUp .markItUpGroup a:last-child{
+.markItUp .markItUpGroup a:last-child {
   border-top-right-radius: 3px;
   border-bottom-right-radius: 3px;
 }
 
-.markItUp .markItUpGroup a:first-child{
+.markItUp .markItUpGroup a:first-child {
   border-top-left-radius: 3px;
   border-bottom-left-radius: 3px;
 }
@@ -84,17 +85,17 @@
   content: '\f05c';
 }
 
-.markItUpGroup{
+.markItUpGroup {
   margin-right: 10px;
   display: inline-block;
 }
 
-div.markdown_preview p{
+div.markdown_preview p {
   padding: 10px 0 3px 0;
-  margin-top: 0px!important;
+  margin-top: 0px !important;
 }
 
-.markItUpEditorContainer{
+.markItUpEditorContainer {
   padding-left: 10px;
   padding-right: 10px;
   padding-bottom: 5px;
@@ -106,7 +107,7 @@ div.markdown_preview p{
   border-bottom-left-radius: 3px;
 }
 
-.markItUpButtons{
+.markItUpButtons {
   padding: 10px;
   border-left: 1px solid #d5d5d5;
   border-right: 1px solid #d5d5d5;

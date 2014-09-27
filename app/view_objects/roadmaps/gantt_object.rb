@@ -35,8 +35,8 @@ class GanttObject
       duration = version.target_date ? (version.target_date - version.start_date) : (Date.today - version.start_date)
       if duration > 0
         output_hash[:data] << build_version_output(version, duration)
-        issues_start_date = issues.select{|issue| issue.start_date}
-        issues_no_start_date = issues.select{|issue| issue.start_date.nil?}
+        issues_start_date = issues.select { |issue| issue.start_date }
+        issues_no_start_date = issues.select { |issue| issue.start_date.nil? }
         build_issue_json(output_hash, issues_start_date, version)
         build_issue_json(output_hash, issues_no_start_date, version)
       end
@@ -48,7 +48,7 @@ class GanttObject
   # @param [Hash] output_hash
   # @param [Array] issues.
   def build_issue_json(output_hash, issues, version)
-    issues.sort_by { |x| x.start_date}.each do |issue|
+    issues.sort_by { |x| x.start_date }.each do |issue|
       if issue.start_date && issue.due_date && issue.due_date >= issue.start_date
         output_hash[:data] << build_issue_output(issue, version, true)
       elsif @edition

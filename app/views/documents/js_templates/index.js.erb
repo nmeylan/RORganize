@@ -10,7 +10,7 @@ on_replace_effect("#document_filter", "<%= escape_javascript(filter_tag('documen
 per_page();
 
 uniq_toogle("#document.toggle", ".content");
-documents_index({dom_persisted_filter:"<%= json_escape escape_javascript(session[controller_name][@project.slug][:json_filter].to_json.html_safe)%>"});
+documents_index({dom_persisted_filter: "<%= json_escape escape_javascript(session[controller_name][@project.slug][:json_filter].to_json.html_safe)%>"});
 <% if params[:filter] %>
 $('#document.toggle').switchClass('icon-collapsed', 'icon-expanded');
 $('#document.toggle .octicon-chevron-right').switchClass('octicon-chevron-right', 'octicon-chevron-down');

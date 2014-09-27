@@ -5,7 +5,7 @@ class CreateRoles < ActiveRecord::Migration
       t.integer :position
     end
   end
- 
+
   def down
     drop_table :roles
   end

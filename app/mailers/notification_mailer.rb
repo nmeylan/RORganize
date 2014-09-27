@@ -11,7 +11,7 @@ class NotificationMailer < ActionMailer::Base
         format.html { render file: 'notification_mailer/journal_email' }
         format.text { render file: 'notification_mailer/journal_email' }
       elsif @notification.trigger.is_a? Comment
-      format.html { render file: 'notification_mailer/comment_email' }
+        format.html { render file: 'notification_mailer/comment_email' }
         format.text { render file: 'notification_mailer/comment_email' }
       end
     end
@@ -25,7 +25,7 @@ class NotificationMailer < ActionMailer::Base
       format.text { render file: 'notification_mailer/bulk_edit_email' }
     end
 
-    end
+  end
 
   def welcome_new_member_email(notification)
     @notification = notification

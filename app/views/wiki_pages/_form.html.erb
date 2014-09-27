@@ -6,12 +6,14 @@
 %>
 <%= raw error_messages(@wiki_page_decorator.errors.full_messages) %>
 <div class="box">
-<p>
-  <label for="wiki_page_title"><%=t(:field_title)%><span class ="required"> *</span></label>
-  <%= f.text_field :title, :size => 80 %>
-</p>
-<p>
-  <label for="wiki_page_content"><%=t(:field_content)%></label>
-  <%= f.text_area :content, :rows => 30, :class => 'fancyEditor' %>
-</p>
+  <p>
+    <label for="wiki_page_title"><%= t(:field_title) %><span class="required">
+      *</span></label>
+    <%= f.text_field :title, :size => 80 %>
+  </p>
+
+  <p>
+    <label for="wiki_page_content"><%= t(:field_content) %></label>
+    <%= f.text_area :content, :rows => 30, :class => 'fancyEditor' %>
+  </p>
 </div>

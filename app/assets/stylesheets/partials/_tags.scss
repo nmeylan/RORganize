@@ -10,9 +10,11 @@ body {
   background-color: $default-background-color;
   font-size: 14px;
 }
+
 *:focus {
   outline: none;
 }
+
 h2 {
   color: $default-h2-color;
 }
@@ -81,16 +83,16 @@ a.button, button, input[type=button], input[type=submit] {
   padding: 4px 10px;
 }
 
-a.button, .button{
+a.button, .button {
   color: $link-color;
 }
-a.danger, .danger{
+
+a.danger, .danger {
   color: $danger-color;
-  .octicon{
+  .octicon {
     color: $danger-color;
   }
 }
-
 
 a.button:hover, button:hover, input[type=button]:hover, input[type=submit]:hover {
   text-decoration: none;
@@ -103,24 +105,25 @@ a.button:hover, button:hover, input[type=button]:hover, input[type=submit]:hover
   cursor: pointer;
 }
 
-a.button:hover, .button:hover{
+a.button:hover, .button:hover {
   color: $link-color;
 }
-a.danger:hover, .danger:hover{
+
+a.danger:hover, .danger:hover {
   color: #fff;
-  text-shadow: 0px -1px 0 rgba(0,0,0,0.3);
+  text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.3);
   background-color: #b33630;
   background-image: -moz-linear-gradient(#dc5f59, #b33630);
   background-image: -webkit-linear-gradient(#dc5f59, #b33630);
   background-image: linear-gradient(#dc5f59, #b33630);
   background-repeat: repeat-x;
   border: 1px solid #b33630;
-  .octicon{
+  .octicon {
     color: white;
   }
 }
 
-#contextual .button{
+#contextual .button {
   margin: 0px;
 }
 
@@ -131,6 +134,7 @@ input {
   border-radius: 3px;
   margin-bottom: 10px;
 }
+
 input[type=checkbox] {
   height: auto;
 }
@@ -163,16 +167,17 @@ input[type=radio] {
   height: 13px;
 }
 
-ul.task_list{
+ul.task_list {
   list-style-type: none;
   padding: 0;
   margin: 0;
 }
 
-a.author_link{
+a.author_link {
   color: $default-color;
 
 }
+
 a.author_link:hover {
   color: $default-smooth-color;
   text-decoration: underline;

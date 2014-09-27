@@ -25,6 +25,7 @@
   -moz-border-top-right-radius: 3px;
   border-top-right-radius: 3px;
 }
+
 .dropdown-menu li:last-child {
   -webkit-border-bottom-left-radius: 3px;
   -moz-border-bottom-left-radius: 3px;
@@ -39,7 +40,7 @@
   background-color: $combobox-hover;
 }
 
-.dropdown-menu li a{
+.dropdown-menu li a {
   color: $link-hover-color;
 }
 
@@ -50,6 +51,7 @@
   padding: 0;
   margin: 0;
 }
+
 .dropdown-menu li:hover a,
 .dropdown-menu .active a,
 .dropdown-menu a:hover {

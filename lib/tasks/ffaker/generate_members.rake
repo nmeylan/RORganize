@@ -9,7 +9,7 @@ namespace :ffaker do
       members_iterations = 75
       members_iterations.times do |x|
         member = Member.new
-        member.role =  roles[rand(1..2)]
+        member.role = roles[rand(1..2)]
         member.user = users[rand(1..74)]
         member.project_id = 1
         member.save

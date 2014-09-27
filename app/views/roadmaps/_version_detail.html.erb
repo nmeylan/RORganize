@@ -7,16 +7,17 @@
 
 <%= render :partial => 'versions/version_overview', :locals => {version: version, opened_issues_count: versions_details[:opened_issues_count], closed_issues_count: versions_details[:closed_issues_count], percent: versions_details[:percent]} %>
 
-<%= version.display_description%>
+<%= version.display_description %>
 
 <fieldset class="margin_fielset">
   <legend>
-    <%= link_to glyph(t(:link_related_request),'chevron-down'), '#', {:class => 'icon icon-expanded toggle', :id => version.id ? "version-#{version.id}" : 'version-unplanned'} %>
+    <%= link_to glyph(t(:link_related_request), 'chevron-down'), '#', {:class => 'icon icon-expanded toggle', :id => version.id ? "version-#{version.id}" : 'version-unplanned'} %>
   </legend>
-  <div class="content version-<%=version.id ? version.id : 'unplanned'%>">
+  <div class="content version-<%= version.id ? version.id : 'unplanned' %>">
     <ul>
       <% versions_details[:issues].each do |issue| %>
-        <li class="<%= 'close' if issue.status.is_closed? %>"><%= issue.tracker.name %> #<%= issue.id %> : <%= issue.subject %></li>
+          <li class="<%= 'close' if issue.status.is_closed? %>"><%= issue.tracker.name %>
+            #<%= issue.id %> : <%= issue.subject %></li>
       <% end %>
     </ul>
   </div>
