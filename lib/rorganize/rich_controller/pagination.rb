@@ -7,11 +7,19 @@ module Rorganize
       end
 
       def sort_direction
-        @sessions[:direction] = params[:direction] ? params[:direction] : (@sessions[:direction] ? @sessions[:direction] : 'desc')
+        @sessions[:direction] = if params[:direction] then
+                                  params[:direction]
+                                else
+                                  @sessions[:direction] ? @sessions[:direction] : 'desc'
+                                end
       end
 
       def sort_column(default_column = nil)
-        @sessions[:sort] = params[:sort] ? params[:sort] : (@sessions[:sort] ? @sessions[:sort] : default_column)
+        @sessions[:sort] = if params[:sort] then
+                             params[:sort]
+                           else
+                             @sessions[:sort] ? @sessions[:sort] : default_column
+                           end
       end
 
       def order(default_column)
@@ -19,7 +27,11 @@ module Rorganize
       end
 
       def set_per_page
-        @sessions[:per_page] = params[:per_page] ? params[:per_page] : (@sessions[:per_page] ? @sessions[:per_page] : 25)
+        @sessions[:per_page] = if params[:per_page] then
+                                 params[:per_page]
+                               else
+                                 @sessions[:per_page] ? @sessions[:per_page] : 25
+                               end
       end
 
       def set_current_page

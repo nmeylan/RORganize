@@ -9,12 +9,12 @@ class PermissionDecorator < ApplicationDecorator
   # see #ApplicationDecorator::delete_link.
   def delete_link
     if User.current.allowed_to?('destroy', 'Permissions')
-      unless model.is_locked
-        super h.t(:link_delete), h.permission_path(model.id)
-      else
+      if model.is_locked
         h.safe_concat h.content_tag :span, nil, class: 'octicon octicon-lock'
         h.content_tag :span, h.t(:link_delete)
-       end
+      else
+        super h.t(:link_delete), h.permission_path(model.id)
+      end
      end
   end
 end

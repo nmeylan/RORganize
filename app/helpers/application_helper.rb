@@ -239,7 +239,11 @@ module ApplicationHelper
   def sortable(column, title = nil, default_action = nil)
     default_action ||= 'index'
     title ||= column.titleize
-    icon = column == sort_column ? (sort_direction == 'asc' ? 'triangle-up' : 'triangle-down') : ''
+    icon = if column == sort_column then
+             sort_direction == 'asc' ? 'triangle-up' : 'triangle-down'
+           else
+             ''
+           end
     direction = column == sort_column && sort_direction == 'asc' ? 'desc' : 'asc'
     link_to glyph(title, icon), {:sort => column, :direction => direction, :action => default_action}, {:remote => true}
   end
@@ -469,7 +473,7 @@ module ApplicationHelper
   # @param [Numeric] percent : percentage of progression.
   def progress_bar_tag(percent)
     content_tag :span, class: 'progress_bar' do
-      safe_concat content_tag :span, "&nbsp".html_safe, {class: 'progress', style: "width:#{percent}%"}
+      safe_concat content_tag :span, '&nbsp'.html_safe, {class: 'progress', style: "width:#{percent}%"}
       safe_concat content_tag :span, "#{percent}%", {class: 'percent'}
     end
   end

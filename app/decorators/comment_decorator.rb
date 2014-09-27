@@ -14,7 +14,7 @@ class CommentDecorator < ApplicationDecorator
 
   # @return [String] formatted creation date.
   def display_creation_at
-    model.created_at.strftime("%I:%M%p")
+    model.created_at.strftime('%I:%M%p')
   end
 
   # Render the link to user.
@@ -85,7 +85,7 @@ class CommentDecorator < ApplicationDecorator
   # Render comment details.
   def render_details
     h.content_tag :span, class: 'comment' do
-      h.safe_concat h.content_tag :span, nil, class: "octicon octicon-comment activity_icon"
+      h.safe_concat h.content_tag :span, nil, class: 'octicon octicon-comment activity_icon'
       h.safe_concat h.content_tag :span, self.display_author, class: 'author'
       h.safe_concat h.content_tag :span, h.t(:text_added_a).capitalize + ' '
       h.safe_concat h.content_tag :span, self.remote_show_link

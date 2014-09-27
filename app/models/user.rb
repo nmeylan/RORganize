@@ -199,7 +199,7 @@ class User < ActiveRecord::Base
   end
 
   def count_notification
-    Notification.where(user_id: self.id).pluck("count(notifications.id)")[0]
+    Notification.where(user_id: self.id).pluck('count(notifications.id)')[0]
   end
 
   def notified?

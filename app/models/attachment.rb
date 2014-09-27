@@ -6,7 +6,7 @@
 class Attachment < ActiveRecord::Base
   include Rorganize::Models::SmartRecords
 
- has_attached_file :file, {:url => "/system/:class/:attachable_type/:attachable_id/:id/:style/:file_name",
+ has_attached_file :file, {:url => '/system/:class/:attachable_type/:attachable_id/:id/:style/:file_name',
                             :hash_secret => RORganize::Application.config.secret_attachment_key,
                             :styles => {:logo => '40x40', :thumb => '100x100>', :small => '150x150>', :medium => '300x300>', :large => '800x800>'}}
 

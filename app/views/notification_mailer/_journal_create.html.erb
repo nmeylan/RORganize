@@ -4,14 +4,14 @@
  * Time: 03:29
 %>
 <%= content_tag :div, class: 'block' do %>
-    <%= content_tag :div, class: "header" do %>
+    <%= content_tag :div, class: 'header' do %>
         <%= content_tag :span, {class: 'author'} do %>
             <%= link_to(journal.user.caption, url_for(controller: 'rorganize', action: 'view_profile', user: journal.user.slug, only_path: false)) %>
         <% end %>
         <%= " #{t(:label_created).downcase} #{model.class.to_s.downcase} " %>
         <%= link_to(model.caption, url_for(controller: @notification.model_url[:controller], action: @notification.model_url[:action],
                                            id: model.id, project_id: @notification.model_url[:project_id], only_path: false)) %>
-        <%= " on " %>
+        <%= ' on ' %>
         <%= content_tag :span, journal.created_at.strftime(Rorganize::TIME_FORMAT), {class: 'history_date'} %>
     <% end %>
     <% if model.class.to_s.eql? 'Issue' %>

@@ -52,10 +52,10 @@ class JournalDecorator < ApplicationDecorator
   def render_details(no_icon = false)
     h.safe_concat h.content_tag :span, self.display_author, class: 'author'
     if model.action_type.eql?(Journal::ACTION_UPDATE) && model.details.to_a.any?
-      h.safe_concat h.content_tag :span, nil, class: "octicon octicon-pencil activity_icon" unless no_icon
+      h.safe_concat h.content_tag :span, nil, class: 'octicon octicon-pencil activity_icon' unless no_icon
       h.content_tag(:ul, (model.details.collect { |detail| h.activity_history_detail_render(detail) }).join.html_safe)
     elsif model.action_type.eql?(Journal::ACTION_CREATE)
-      h.safe_concat h.content_tag :span, nil, class: "octicon octicon-plus activity_icon" unless no_icon
+      h.safe_concat h.content_tag :span, nil, class: 'octicon octicon-plus activity_icon' unless no_icon
       if model.journalizable_type.eql?('Issue')
         h.t(:text_created_this_issue)
       else
@@ -77,7 +77,7 @@ class JournalDecorator < ApplicationDecorator
 
   # @return [String] formatted date.
   def display_creation_at
-    model.created_at.strftime("%I:%M%p")
+    model.created_at.strftime('%I:%M%p')
   end
 
   # Render the a link to the user.

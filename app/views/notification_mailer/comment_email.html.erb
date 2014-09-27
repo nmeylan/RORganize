@@ -6,7 +6,7 @@
 <% comment = @notification.trigger.decorate %>
 <% model = @notification.model %>
 <%= content_tag :div, {id: "comment_#{comment.id}", class: 'block'}, &Proc.new {
-  safe_concat content_tag :div, class: "header", &Proc.new {
+  safe_concat content_tag :div, class: 'header', &Proc.new {
     safe_concat content_tag :span, link_to(comment.author.caption, url_for(controller: 'rorganize', action: 'view_profile', user: comment.author.slug, only_path: false)) + ' ', class: 'author'
     safe_concat content_tag :span, t(:label_commented_lower_case), class: 'text'
     safe_concat " #{model.class.to_s.downcase}

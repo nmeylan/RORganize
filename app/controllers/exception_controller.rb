@@ -62,7 +62,7 @@ class ExceptionController < ApplicationController
 
   #Layout
   def layout_status
-    "application"
+    'application'
   end
 
 end

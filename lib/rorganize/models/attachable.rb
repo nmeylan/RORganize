@@ -27,7 +27,7 @@ module Rorganize
 
       def save_attachments
         attachments.each do |attachment|
-          attachment.save(:validation => false)
+          attachment.save
         end
       end
 

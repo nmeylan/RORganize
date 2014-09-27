@@ -8,7 +8,7 @@ namespace :db do
   task :rorganize_truncate => :environment do
     ActiveRecord::Base.transaction do
       ActiveRecord::Base.connection.tables.each do |table|
-        except = ['users', 'attachments', 'permissions', 'roles', 'trackers', 'permissions_roles', 'issues_statuses', 'enumerations', 'issues_statuses_roles', 'schema_migrations']
+        except = %w(users attachments permissions roles trackers permissions_roles issues_statuses enumerations issues_statuses_roles schema_migrations)
         if except.include? table
           if table.eql?('attachments')
             Attachment.delete_all("attachable_type <> 'User'")

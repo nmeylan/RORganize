@@ -9,7 +9,7 @@
     <%= content_tag :div, version.display_target_date, {class: 'version_due_date'} %>
     <%= clear_both %>
     <%= content_tag :span, class: 'progress_bar' do -%>
-        <%= content_tag :span, "&nbsp".html_safe, {class: 'progress', style: "width:#{percent}%"} %>
+        <%= content_tag :span, '&nbsp'.html_safe, {class: 'progress', style: "width:#{percent}%"} %>
         <%= content_tag :span, "#{percent}%", {class: 'percent'} %>
     <% end -%>
     <%= content_tag :span, class: 'requests_stats' do %>

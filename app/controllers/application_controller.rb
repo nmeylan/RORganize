@@ -83,10 +83,10 @@ class ApplicationController < ActionController::Base
     elsif options[:response_header].eql?(:failure)
       response.headers['flash-error-message'] = message
     end
-    unless options[:action].eql?('do_nothing')
-      options[:action] = "js_templates/#{options[:action]}"
-    else
+    if options[:action].eql?('do_nothing')
       options[:action] = "../layouts/js_templates/#{options[:action]}"
+    else
+      options[:action] = "js_templates/#{options[:action]}"
     end
     options.except!(:response_header, :response_content)
     render options

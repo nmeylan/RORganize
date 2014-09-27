@@ -20,7 +20,7 @@ class DocumentFilter
     content_hash = {}
     content_hash['hash_for_select'] = {}
     content_hash['hash_for_radio'] = Hash.new { |k, v| k[v] = [] }
-    content_hash['hash_for_radio']['name'] = ['all', 'contains', 'not_contains']
+    content_hash['hash_for_radio']['name'] = %w(all contains not_contains)
     content_hash['hash_for_select']['category'] = @project.categories.collect { |category| [category.name, category.id] }
     content_hash['hash_for_radio']['category'] = %w(all equal different)
     content_hash['hash_for_radio']['created'] = %w(all equal superior inferior today)

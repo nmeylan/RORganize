@@ -16,7 +16,7 @@ module JournalsHelper
             activities.content.each do |date, objects|
               i += 1
               safe_concat activities_date(date)
-              safe_concat content_tag :div, class: "journals", &Proc.new {
+              safe_concat content_tag :div, class: 'journals', &Proc.new {
                 activities_render(activities, date, objects)
               }
               safe_concat clear_both
@@ -110,13 +110,13 @@ module JournalsHelper
   # @param [Numeric] nth : the number of the activity to render for the same day.
   def comment_header_render(comment, nth)
     if nth % 2 == 0 #Render is depending on the parity
-      safe_concat content_tag :span, nil, class: "octicon octicon-comment activity_icon"
+      safe_concat content_tag :span, nil, class: 'octicon octicon-comment activity_icon'
       safe_concat content_tag :span, comment.display_author, class: 'author'
       safe_concat comment.render_header
       comment.display_project_link(@project)
       safe_concat content_tag :span, comment.display_creation_at, class: 'date'
     else
-      safe_concat content_tag :span, nil, class: "octicon octicon-comment activity_icon"
+      safe_concat content_tag :span, nil, class: 'octicon octicon-comment activity_icon'
       safe_concat content_tag :span, comment.display_creation_at, class: 'date'
       safe_concat content_tag :span, comment.display_author, class: 'author'
       safe_concat comment.render_header

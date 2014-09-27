@@ -78,7 +78,11 @@ class GanttObject
 
   def build_issue_output(issue, version, are_data_provided)
     start_date = issue.start_date ? issue.start_date : version.start_date
-    due_date = issue.due_date ? issue.due_date : (version.target_date ? version.target_date : Date.today)
+    due_date = if issue.due_date then
+                 issue.due_date
+               else
+                 version.target_date ? version.target_date : Date.today
+               end
     caption = issue.caption.length > 40 ? "#{issue.caption[0..40]}..." : issue.caption
     {
         id: issue.id,

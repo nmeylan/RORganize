@@ -21,8 +21,8 @@ class IssueStatusTest < ActiveSupport::TestCase
     @status.destroy
   end
 
-  test "Increment position on enumeration create" do
-    statuses = Enumeration.where(opt: 'ISTS').order("position ASC")
+  test 'Increment position on enumeration create' do
+    statuses = Enumeration.where(opt: 'ISTS').order('position ASC')
     i = 1
     #Check uniq position
     statuses.each do |status|
@@ -33,7 +33,7 @@ class IssueStatusTest < ActiveSupport::TestCase
     assert_equal @enumeration.position, i - 1
   end
 
-  test "Decrement position" do
+  test 'Decrement position' do
     old_position = @status.enumeration.position
     @status.change_position('dec')
     @status.change_position('dec')
@@ -41,14 +41,14 @@ class IssueStatusTest < ActiveSupport::TestCase
     assert_equal old_position - 2, @status.enumeration.position
   end
 
-  test "Increment position must fail" do
+  test 'Increment position must fail' do
     old_position = @status.enumeration.position
     @status.change_position('inc')
     @status.reload
     assert_equal old_position, @status.enumeration.position
   end
 
-  test "Crap param position must fail" do
+  test 'Crap param position must fail' do
     old_position = @status.enumeration.position
     @status.change_position('crap')
     @status.reload

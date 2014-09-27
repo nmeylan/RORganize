@@ -102,7 +102,11 @@ module IssuesHelper
     groups.collect do |group_hash|
       group_hash.collect do |k, v|
         gn = group_name.nil? ? k.to_s.capitalize.gsub(/_/, ' ') : group_name
-        t = title.nil? ? (k.eql?(:status) ? 'Issues' : 'Opened issues') : title
+        t = if title.nil? then
+              k.eql?(:status) ? 'Issues' : 'Opened issues'
+            else
+              title
+            end
         display_overview_group_by("#{t} : By #{gn}", v, k, !k.eql?(:status), group_class_name)
       end.join.html_safe
     end.join.html_safe
