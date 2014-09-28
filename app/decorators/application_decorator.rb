@@ -146,7 +146,7 @@ class ApplicationDecorator < Draper::Decorator
   # @param [String] path : to controller to perform the action.
   # @param [Project] project : project belongs to the attachment.
   def delete_attachment_link(path, project)
-    link_to_with_permissions h.glyph(h.t(:link_delete), 'trashcan'), path, project, nil, {:remote => true, :confirm => h.t(:text_delete_item), :method => :delete}
+    link_to_with_permissions h.glyph(h.t(:link_delete), 'trashcan'), path, project, nil, {:remote => true, :confirm => h.t(:text_delete_item), :method => :delete, class: 'button danger'}
   end
 
   # Render a link to download an attachment.
