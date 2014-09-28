@@ -19,7 +19,21 @@
 .cbb-small {
   width: 69px;
 }
+.autocomplete-combobox-high{
+  .chzn-container{
 
+    a{
+      font-size: 13px;
+    }
+  }
+  .chzn-container-single .chzn-single{
+    padding-top: 4px;
+    padding-bottom: 3px;
+    div b{
+      top: 6px;
+    }
+  }
+}
 .cbb-tiny {
   width: 100px;
 }

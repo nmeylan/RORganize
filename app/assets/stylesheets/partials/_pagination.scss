@@ -13,35 +13,59 @@
   /* self-clearing method: */
 }
 
+.pagination a:first-child, .pagination span:first-child, .pagination em:first-child {
+  margin-left: 0;
+  border-top-left-radius: 3px;
+  border-bottom-left-radius: 3px;
+}
+
+.pagination a:last-child, .pagination span:last-child, .pagination em:last-child {
+  border-top-right-radius: 3px;
+  border-bottom-right-radius: 3px;
+}
+
+.pagination .gap, .pagination .disabled, .pagination .gap:hover, .pagination .disabled:hover {
+  background-color: #fafafa;
+  cursor: default;
+  color: #d3d3d3;
+}
+
 .pagination a, .pagination span, .pagination em {
-  padding: 0.2em 0.5em;
-  display: block;
+  position: relative;
   float: left;
-  margin-right: 1px;
-}
-
-.pagination .disabled {
-  color: $default-smooth-color;
-  border: 1px solid $default-border-color;
-}
-
-.pagination .current {
-  font-style: normal;
+  margin-left: -1px;
+  font-size: 13px;
   font-weight: bold;
-  padding-bottom: 3px;
-  color: $link-selected-color;
-  border: 1px solid $default-border-color;
+  font-style: normal;
+  padding: 7px 12px;
+  color: #4183c4;
+  white-space: nowrap;
+  vertical-align: middle;
+  cursor: pointer;
+  background: #fff;
+  border: 1px solid #e5e5e5;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
-.pagination a {
-  text-decoration: none;
-  color: $link-tabs-color !important;
-  border: 1px solid $default-border-color;
+.pagination .current, .pagination .current:hover {
+  z-index: 3;
+  color: #fff;
+  background-color: #4183c4;
+  border-color: #4183c4;
 }
 
 .pagination a:hover, .pagination a:focus {
-  color: $link-hover-color !important;
-  border-color: $default-border-color;
+  background-color: #dddddd;
+  background-image: -moz-linear-gradient(#eee, #ddd);
+  background-image: -webkit-linear-gradient(#eee, #ddd);
+  background-image: linear-gradient(#eee, #ddd);
+  background-repeat: repeat-x;
+
 }
 
 .pagination .page_info {
@@ -76,9 +100,26 @@
 }
 
 .per_page label {
+  float: left;
+  margin-right: 5px;
   color: $default-smooth-color;
   border: 1px solid $default-border-color;
-  padding: 0.2em 0.4em;
-  float: left;
-  margin-right: 2px;
+  border-radius: 3px;
+  margin-left: -1px;
+  font-size: 13px;
+  font-weight: bold;
+  font-style: normal;
+  padding: 7px 12px;
+  white-space: nowrap;
+  background: #fff;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.autocomplete-combobox.per_page{
+  margin-top: 5px;
 }
