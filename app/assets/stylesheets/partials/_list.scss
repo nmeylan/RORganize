@@ -12,7 +12,7 @@
 *  LIST
 */
 tr.odd_even:nth-child(odd) {
-  background: $default-table-tr-odd-background-color;
+//  background: $default-table-tr-odd-background-color;
 }
 
 table.list {
@@ -30,7 +30,10 @@ table.list {
 .list .header {
   background-color: $default-table-head-background-color;
   border-bottom: 1px solid #DADEE5;
+  border-top: 1px solid #DADEE5;
+  border-radius: 3px;
   color: $default-color;
+  height: 30px;
 }
 
 .list .header a {
@@ -45,8 +48,12 @@ table.list {
 
 .list tr {
   color: $default-smooth-color;
+  height: 60px;
+  border-top: 1px solid #eeeeee;
 }
-
+.list td:first-child{
+  padding-left: 5px;
+}
 .list td {
   //  word-break: break-all;
   white-space: nowrap;
