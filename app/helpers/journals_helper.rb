@@ -54,7 +54,7 @@ module JournalsHelper
   # @param [Hash] objects a hash with this structure : {type_id: ['journalizable', 'journalizable', 'comment', 'journalizable']}
   def activities_render(activities, date, objects)
     i = 0
-    objects.keys.each do |polymorphic_identifier|
+    objects.each_key do |polymorphic_identifier|
       if i < 1000
         act = activities.content_for(date, polymorphic_identifier)
         safe_concat activity_render(act, act[0], i)

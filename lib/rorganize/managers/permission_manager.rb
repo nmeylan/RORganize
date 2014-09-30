@@ -36,8 +36,10 @@ module Rorganize
             params[:data][:confirm] = params[:confirm].clone
             params[:confirm] = nil
           end
-          if (owner_id.nil? && User.current.allowed_to?(find_action_alias(hash_path[:action]), hash_path[:controller], project)) || (!owner_id.nil? && (User.current.allowed_to?(find_action_alias(hash_path[:action]), hash_path[:controller], project) && owner_id.eql?(User.current.id) ||
-              User.current.allowed_to?("#{hash_path[:action]}_not_owner", hash_path[:controller], project)))
+          if (owner_id.nil? && User.current.allowed_to?(find_action_alias(hash_path[:action]), hash_path[:controller], project)) ||
+              (!owner_id.nil? && (User.current.allowed_to?(find_action_alias(hash_path[:action]), hash_path[:controller], project) &&
+                  owner_id.eql?(User.current.id) ||
+                  User.current.allowed_to?("#{hash_path[:action]}_not_owner", hash_path[:controller], project)))
             yield
           end
         end

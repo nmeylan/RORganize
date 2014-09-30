@@ -29,7 +29,7 @@ class Activities
   def crunch_data
     tmp_hash = Hash.new { |h, k| h[k] = {} }
     fruit_salad = @journals | @comments
-    fruit_salad.sort { |x, y| y.created_at <=> x.created_at }.each do |element|
+    fruit_salad.sort_by(&:created_at).each do |element|
       s = element.created_at.to_date
       tmp_hash[s][element.polymorphic_identifier] ||= []
       tmp_hash[s][element.polymorphic_identifier] << element
