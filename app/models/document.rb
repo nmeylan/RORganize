@@ -22,7 +22,7 @@ class Document < ActiveRecord::Base
   #triggers
   after_update :save_attachments
   #Scopes
-  scope :fetch_dependencies, -> { eager_load([:version, :category, :attachments]) }
+  scope :fetch_dependencies, -> { includes([:version, :category, :attachments]) }
   #methods
 
   def caption

@@ -9,7 +9,15 @@ module Rorganize
 
       extend ActiveSupport::Concern
       included do
-        scope :paginated, ->(page, per_page, order) { paginate(:page => page, :per_page => per_page).order(order) }
+        scope :paginated, ->(page, per_page, order, includes = []) { paginate(:page => page, :per_page => per_page).smart_record_order(order, includes) }
+        scope :smart_record_order, -> (order, includes) do
+          if includes.any?
+            dependent_attributes, attr, joins = Rorganize::Models::SmartRecords.smart_records_eager_load(self, includes, order)
+            joins(joins).preload(attr).order(order).includes(dependent_attributes)
+          else
+            order(order)
+          end
+        end
         scope :filter, ->(filter, project_id) { where("#{filter} #{self.table_name}.project_id = #{project_id}") }
       end
 
@@ -39,6 +47,36 @@ module Rorganize
         end
         saved
       end
+
+      class << self
+
+
+        # This methods will split the eager lod strategy in two part :
+        # 1. if eager_loaded attribute is not the ordered one, we will passed it in the "includes" method.
+        # 2. the ordered attribute will be passed in the "joins" method.
+        # @param [Class] klazz : the class that calls the scope.
+        # @param [Array] includes : an array of all eager_loaded attributes ("includes").
+        # @param [String] order : the sql order : e.g(versions.name ASC).
+        # @return [Array] array that contains :
+        # at index 0 : the list of eager_loaded attribute with the "includes" method.
+        # at index 1 : the ordered attribute that will be use in "preload" method.
+        # at index 2 : the joins query part.
+        def smart_records_eager_load(klazz, includes, order)
+          table_name = order.split('.')[0]
+          attr = nil
+          joins = ''
+          unless table_name.eql?(klazz.table_name)
+            klazz.reflect_on_all_associations(:belongs_to).each do |attrib|
+              if attrib.table_name.eql?(table_name)
+                attr = attrib.name.to_sym
+                joins = "LEFT OUTER JOIN #{table_name} ON #{table_name}.id = #{klazz.table_name}.#{attrib.foreign_key}"
+              end
+            end
+          end
+          [includes.delete_if { |attribute_name| attribute_name.eql?(attr) }, attr, joins]
+        end
+      end
+
     end
   end
 end

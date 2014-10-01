@@ -138,7 +138,7 @@ class DocumentsController < ApplicationController
     gon.DOM_filter = view_context.documents_generics_form_to_json
     gon.DOM_persisted_filter = @sessions[@project.slug][:json_filter].to_json
     filter = @sessions[@project.slug][:sql_filter]
-    @documents_decorator = Document.filter(filter, @project.id).paginated(@sessions[:current_page], @sessions[:per_page], order('documents.id')).fetch_dependencies.decorate(context: {project: @project})
+    @documents_decorator = Document.filter(filter, @project.id).paginated(@sessions[:current_page], @sessions[:per_page], order('documents.id'), [:version, :category, :attachments]).fetch_dependencies.decorate(context: {project: @project})
   end
 
   def document_params
