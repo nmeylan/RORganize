@@ -18,3 +18,11 @@ module Paperclip
   end
 end
 
+module WillPaginate
+  module ActiveRecord
+    module RelationMethods
+      prepend Rorganize::Patches::WillPaginatePatch::RelationMethods
+    end
+  end
+end
+
