@@ -44,7 +44,7 @@ class Project < ActiveRecord::Base
   end
 
   def add_modules
-    Rorganize::ModuleManager::enabled_by_default_modules.each do |m|
+    Rorganize::Managers::ModuleManager::enabled_by_default_modules.each do |m|
       self.enabled_modules << EnabledModule.new(m)
     end
     self.save
