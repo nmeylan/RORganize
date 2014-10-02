@@ -48,7 +48,7 @@ class GanttObject
   # @param [Hash] output_hash
   # @param [Array] issues.
   def build_issue_json(output_hash, issues, version)
-    issues.sort_by { |x| x.start_date }.each do |issue|
+    issues.sort_by(&:start_date).each do |issue|
       if issue.start_date && issue.due_date && issue.due_date >= issue.start_date
         output_hash[:data] << build_issue_output(issue, version, true)
       elsif @edition
