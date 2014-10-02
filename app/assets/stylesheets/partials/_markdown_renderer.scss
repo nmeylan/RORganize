@@ -1,39 +1,42 @@
-.markdown_renderer pre {
-  padding: 16px;
-  overflow: auto;
-  font-size: 95%;
-  line-height: 1.45;
-  background-color: #f7f7f7;
-  border-radius: 3px;
-  code {
-    display: inline;
-    max-width: initial;
-    padding: 0;
-    margin: 0;
-    overflow: initial;
-    line-height: inherit;
-    word-wrap: normal;
-    background-color: transparent;
-    border: 0;
+
+#content .markdown_renderer {
+  pre {
+      padding: 16px;
+      overflow: auto;
+      font-size: 95%;
+      line-height: 1.45;
+      background-color: #f7f7f7;
+      border-radius: 3px;
+    code {
+      display: inline;
+      max-width: initial;
+      padding: 0;
+      margin: 0;
+      overflow: initial;
+      line-height: inherit;
+      word-wrap: normal;
+      background-color: transparent;
+      border: 0;
+    }
   }
-}
 
-.markdown_renderer code {
-  padding: 0;
-  padding-top: 0.2em;
-  padding-bottom: 0.2em;
-  margin: 0;
-  font-size: 95%;
-  background-color: rgba(0, 0, 0, 0.04);
-  border-radius: 3px;
-}
+  blockquote{
+    padding: 0 15px;
+    color: #777;
+    border-left: 4px solid #ddd;
+    margin: 0;
+  }
 
-.markdown_renderer {
   ul {
     padding-left: 20px;
   }
   ul.task_list {
     padding: 0px;
+  }
+
+  p{
+    margin-bottom: 10px;
+    margin-top: 5px;
   }
 }
 
