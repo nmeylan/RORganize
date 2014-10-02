@@ -7,6 +7,7 @@ class ProjectsController < ApplicationController
   before_filter { |c| c.menu_item(params[:controller], params[:action].eql?('show') ? 'overview' : params[:action]) }
   before_filter { |c| c.top_menu_item('projects') }
   helper VersionsHelper
+  helper TrackersHelper
   include Rorganize::Managers::ActivityManager
   #GET /project/:project_id
   #Project overview
@@ -41,6 +42,7 @@ class ProjectsController < ApplicationController
   #GET /project/new
   def new
     @project_decorator = Project.new.decorate
+    @trackers_decorator = Tracker.all.decorate(context: {checked_ids: Tracker.where(name: ['Bug', 'Task']).collect(&:id)})
     @project_decorator.attachments.build
     respond_to do |format|
       format.html
@@ -53,11 +55,13 @@ class ProjectsController < ApplicationController
     @project_decorator.created_by = User.current.id
     respond_to do |format|
       if @project_decorator.save
+        @project_decorator.update_info({}, params[:trackers])
         flash[:notice] = t(:successful_creation)
         format.html { redirect_to :action => 'overview', :controller => 'projects', project_id: @project_decorator.slug }
         format.json { render :json => @project_decorator,
                              :status => :created, :location => @project_decorator }
       else
+        @trackers_decorator = Tracker.all.decorate(context: {checked_ids: Tracker.where(name: ['Bug', 'Task']).collect(&:id)})
         format.html { render :action => 'new' }
         format.json { render :json => @project_decorator.errors,
                              :status => :unprocessable_entity }

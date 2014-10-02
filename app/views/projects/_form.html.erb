@@ -25,6 +25,9 @@
         <%= f.text_area :description, :class => 'fancyEditor', rows: '12' %>
       </p>
 
+      <p>
+        <% @trackers_decorator.settings_list %>
+      </p>
 
       <div id="attachments">
         <p>
@@ -33,5 +36,7 @@
         <%= render :partial => 'shared/attachments', :collection => @project_decorator.attachments, locals: {object: @project_decorator, type: 'project'} %>
       </div>
     </div>
+
+
     <%= submit_tag t(:button_create) %>
 <% end %>
