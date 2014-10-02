@@ -207,14 +207,10 @@ class User < ActiveRecord::Base
   end
 
   def set_preferences
-    enum_watch_email = Enumeration.find_by_name('notification_watcher_email').id
-    enum_watch_in_app = Enumeration.find_by_name('notification_watcher_in_app').id
-    enum_participate_email = Enumeration.find_by_name('notification_participant_email').id
-    enum_participate_in_app = Enumeration.find_by_name('notification_participant_in_app').id
-    Preference.create(user_id: self.id, enumeration_id: enum_watch_email, boolean_value: true)
-    Preference.create(user_id: self.id, enumeration_id: enum_watch_in_app, boolean_value: true)
-    Preference.create(user_id: self.id, enumeration_id: enum_participate_email, boolean_value: true)
-    Preference.create(user_id: self.id, enumeration_id: enum_participate_in_app, boolean_value: true)
+    Preference.create(user_id: self.id, key: Preference.keys[:notification_watcher_in_app], boolean_value: true)
+    Preference.create(user_id: self.id, key: Preference.keys[:notification_watcher_email], boolean_value: true)
+    Preference.create(user_id: self.id, key: Preference.keys[:notification_participant_in_app], boolean_value: true)
+    Preference.create(user_id: self.id, key: Preference.keys[:notification_participant_email], boolean_value: true)
   end
 
 end
