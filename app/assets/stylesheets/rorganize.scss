@@ -437,6 +437,13 @@ img.small_avatar {
   outline: none;
 }
 
+.attachment_row{
+  line-height: 25px;
+  .attachment_delete_link{
+    vertical-align: bottom;
+  }
+}
+
 .attachment_title {
   padding-right: 20px;
 }
