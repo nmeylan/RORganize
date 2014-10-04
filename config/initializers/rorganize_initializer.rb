@@ -10,6 +10,9 @@ unless $0.end_with?('rake')
   RORganize::Application.config.rorganize_anonymous_access = true
 
   RORganize::Application.config.enable_emails_notifications = true
+
+  #T Attachment size : range.<gigabytes|megabytes|kilobytes>
+  RORganize::Application.config.attachments_size = 0..50.megabytes
 end
 
 module Paperclip

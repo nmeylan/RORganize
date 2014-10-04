@@ -25,7 +25,7 @@ class Attachment < ActiveRecord::Base
 
   validates_attachment :file,
                        content_type: {content_type: /\A(image|application|text)/, not: %w(application/x-sh application/x-shar), message: 'Errors'},
-                       size: {:in => 0..50.megabytes, message: 'size errors'},
+                       size: {:in => RORganize::Application.config.attachments_size, message: 'size errors'},
                        file_name: {:not => /.exe/, message: 'Errors'}
 
   def self.permit_attributes
