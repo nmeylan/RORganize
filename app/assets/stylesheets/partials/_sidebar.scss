@@ -94,12 +94,11 @@
   color: white !important;
 }
 
-
-ul.filter_sidebar{
+ul.filter_sidebar {
   list-style-type: none;
   padding: 0;
-  li{
-    .filter_item{
+  li {
+    .filter_item {
       display: block;
       padding: 8px 10px;
       margin: 0 0 5px;
@@ -111,25 +110,34 @@ ul.filter_sidebar{
       white-space: nowrap;
       cursor: pointer;
       border-radius: 3px;
-      .count{
+      .count {
         float: right;
         font-weight: bold;
       }
     }
-    .filter_item.selected{
+    .filter_item.selected {
       color: #fff;
       background: #4183c4 !important;
-      .octicon{
+      .octicon {
         color: #fff;
       }
     }
-    .filter_item:hover{
+    .filter_item:hover {
       background-color: $default-box-header-background-color;
     }
   }
 }
 
-.left_sidebar{
+ul.filter_sidebar.small {
+  li {
+    .filter_item {
+
+      font-size: 12px;
+    }
+  }
+}
+
+.left_sidebar {
   float: left;
   width: 20%;
 }

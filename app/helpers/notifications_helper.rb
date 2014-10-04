@@ -45,7 +45,8 @@ module NotificationsHelper
       safe_concat content_tag :ul, {class: 'filter_sidebar'}, &Proc.new {
         filters.keys.collect do |filter|
           content_tag :li do
-            link_to notifications_path(filter: filter), {class: "filter_item #{filter.to_s.eql?(@sessions[:filter_recipient_type]) ? 'selected' : ''}"} do
+            link_to notifications_path(filter: filter),
+                    {class: "filter_item #{filter.to_s.eql?(@sessions[:filter_recipient_type]) ? 'selected' : ''}"} do
               safe_concat sidebar_count_tag(filters[filter])
               safe_concat glyph(labels_hash[filter], glyphs_hash[filter])
             end
@@ -54,6 +55,18 @@ module NotificationsHelper
         end.join.html_safe
       }
       safe_concat content_tag :hr
+      safe_concat content_tag :ul, {class: 'filter_sidebar small'}, &Proc.new {
+        projects.keys.collect do |project|
+          content_tag :li do
+            link_to notifications_path(filter: @sessions[:filter_recipient_type], project: projects[project][:id]),
+                    {class: "filter_item #{projects[project][:id].to_s.eql?(@sessions[:filter_project]) ? 'selected' : ''}"} do
+              safe_concat sidebar_count_tag(projects[project][:count])
+              safe_concat glyph(project, 'repo')
+            end
+
+          end
+        end.join.html_safe
+      }
     end
   end
 end
