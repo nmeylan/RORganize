@@ -7,7 +7,16 @@ class NotificationsController < ApplicationController
   before_filter :find_user
 
   def index
-    @notifications_decorator = Notification.includes(:project, :notifiable, :from).where(user_id: @user.id).order('notifications.created_at DESC').decorate
+    @sessions[:filter_recipient_type] = params[:filter] ? params[:filter] : 'all'
+    filter = @sessions[:filter_recipient_type].eql?('all') ? '1 = 1' : {recipient_type:  @sessions[:filter_recipient_type]}
+    @notifications_decorator = Notification.includes(:project, :notifiable, :from).where(user_id: @user.id).where(filter).order('notifications.created_at DESC')
+
+    count_participating = Notification.where(user_id: @user.id, recipient_type: 'participants').count('id')
+    count_watching = Notification.where(user_id: @user.id, recipient_type: 'watchers').count('id')
+    projects = @notifications_decorator.map{|notif| notif.project}.uniq
+    filters = {all:count_participating + count_watching, participants: count_participating, watchers: count_watching}
+
+    @notifications_decorator = @notifications_decorator.decorate(context: {filters: filters, projects: projects})
     respond_to do |format|
       format.html { render action: 'index' }
     end
@@ -25,10 +34,12 @@ class NotificationsController < ApplicationController
   end
 
   def destroy_all_for_project
-    notifications = Notification.includes(:notifiable, :project).where(project_id: Project.find_by_slug(params[:project_slug]), user_id: @user.id)
+    filter = @sessions[:filter_recipient_type].eql?('all') ? '1 = 1' : {recipient_type:  @sessions[:filter_recipient_type]}
+
+    notifications = Notification.includes(:notifiable, :project).where(project_id: Project.find_by_slug(params[:project_slug]), user_id: @user.id).where(filter)
     notifications.delete_all
     respond_to do |format|
-      format.html { redirect_to action: 'index' }
+      format.html { redirect_to action: 'index', filter: @sessions[:filter_recipient_type] }
     end
   end
 

@@ -568,4 +568,8 @@ autocomplete-combobox-high',
       link_to glyph('', 'inbox'), notifications_path, {class: "#{params[:controller].eql?('notifications') ? 'selected' : ''}"}
     end
   end
+
+  def sidebar_count_tag(count)
+    content_tag :span, count, class: 'count'
+  end
 end

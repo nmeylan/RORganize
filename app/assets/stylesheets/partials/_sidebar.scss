@@ -93,3 +93,43 @@
 #sidebar .tabs .warning:hover a {
   color: white !important;
 }
+
+
+ul.filter_sidebar{
+  list-style-type: none;
+  padding: 0;
+  li{
+    .filter_item{
+      display: block;
+      padding: 8px 10px;
+      margin: 0 0 5px;
+      overflow: hidden;
+      font-size: 14px;
+      color: $default-smooth-color;
+      text-decoration: none;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      cursor: pointer;
+      border-radius: 3px;
+      .count{
+        float: right;
+        font-weight: bold;
+      }
+    }
+    .filter_item.selected{
+      color: #fff;
+      background: #4183c4 !important;
+      .octicon{
+        color: #fff;
+      }
+    }
+    .filter_item:hover{
+      background-color: $default-box-header-background-color;
+    }
+  }
+}
+
+.left_sidebar{
+  float: left;
+  width: 20%;
+}

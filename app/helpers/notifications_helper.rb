@@ -18,7 +18,7 @@ module NotificationsHelper
   # @param [String] project_slug : slug of project that belongs to notifications.
   # @param [Array] notifications : array of Notification.
   def notifications_block(project_slug, notifications)
-    content_tag :div, class: 'box' do
+    content_tag :div, class: 'box notification_list' do
       safe_concat box_header_tag((link_to medium_glyph(project_slug, 'repo'), project_path(project_slug)), 'header header_left', &Proc.new {
         link_to t(:link_mark_all_as_read), destroy_all_for_project_notifications_path(project_slug), {method: :delete, 'data-confirm' => t(:confirm_mark_all_as_read), class: 'button'}
       })
@@ -38,7 +38,22 @@ module NotificationsHelper
   end
 
   # Render a sidebar for notifications.
-  def sidebar(projects)
+  def sidebar(filters, projects)
+    labels_hash = {all: t(:label_all), participants: t(:label_participating), watchers: t(:label_watching)}
+    glyphs_hash = {all: 'inbox', participants: 'person', watchers: 'eye'}
+    content_tag :div, class: 'left_sidebar' do
+      safe_concat content_tag :ul, {class: 'filter_sidebar'}, &Proc.new {
+        filters.keys.collect do |filter|
+          content_tag :li do
+            link_to notifications_path(filter: filter), {class: "filter_item #{filter.to_s.eql?(@sessions[:filter_recipient_type]) ? 'selected' : ''}"} do
+              safe_concat sidebar_count_tag(filters[filter])
+              safe_concat glyph(labels_hash[filter], glyphs_hash[filter])
+            end
 
+          end
+        end.join.html_safe
+      }
+      safe_concat content_tag :hr
+    end
   end
 end
