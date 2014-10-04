@@ -559,13 +559,14 @@ autocomplete-combobox-high',
   end
 
   def notification_link(user)
+    p params
     if user.notified?
-      link_to notifications_path, {class: 'tooltipped tooltipped-s indicator', label: t(:text_unread_notifications)} do
+      link_to notifications_path, {class: "tooltipped tooltipped-s indicator #{params[:controller].eql?('notifications') ? 'selected' : ''}", label: t(:text_unread_notifications)} do
         safe_concat content_tag :span, nil, {class: 'unread inbox'}
         safe_concat glyph('', 'inbox')
       end
     else
-      link_to glyph('', 'inbox'), notifications_path, {class: ''}
+      link_to glyph('', 'inbox'), notifications_path, {class: "#{params[:controller].eql?('notifications') ? 'selected' : ''}"}
     end
   end
 end
