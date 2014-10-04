@@ -985,4 +985,7 @@ a.indicator {
 #notifications_content{
   float: left;
   width: 80%;
+  .no-data{
+    margin-left: 10px;
+  }
 }
