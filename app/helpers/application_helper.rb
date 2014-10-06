@@ -109,11 +109,11 @@ module ApplicationHelper
   # @param [Session] session : the per_page argument for pagination.
   # @param [String] path : to the controller to refresh the list when user change the per_page or current_page parameter.
   def paginate(collection, session, path)
-    safe_concat will_paginate(collection, {renderer: 'RemoteLinkRenderer'})
+    safe_concat will_paginate(collection, {renderer: 'RemoteLinkRenderer', next_label: t(:label_next), previous_label: t(:label_previous)})
     content_tag :div, class: 'autocomplete-combobox nosearch per_page
 autocomplete-combobox-high',
                 &Proc.new {
-      safe_concat content_tag :label, t(:label_per_page), {for: 'per_page'}
+      safe_concat content_tag :label, t(:label_per_page), {for: 'per_page', class: 'per_page'}
       safe_concat select_tag 'per_page', options_for_select([%w(25 25), %w(50 50), %w(100 100)], session[:per_page]), :class => 'chzn-select cbb-small cbb-high', :id => 'per_page', :'data-link' => "#{path}"
     }
   end

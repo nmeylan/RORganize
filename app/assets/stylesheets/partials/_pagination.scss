@@ -11,6 +11,9 @@
   background: $default-background-color;
   cursor: default;
   /* self-clearing method: */
+  .previous_page{
+    width: 65px;
+  }
 }
 
 .pagination a:first-child, .pagination span:first-child, .pagination em:first-child {
