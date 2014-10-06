@@ -29,7 +29,7 @@ class ApplicationCollectionDecorator < Draper::CollectionDecorator
         }
         h.safe_concat(h.paginate(object, h.session[h.controller_name.to_sym], pagination_path)) unless no_pagination || (object.to_a.size < 25 && h.session[h.controller_name.to_sym][:current_page].to_i < 2)
       else
-        h.no_data(no_data_text)
+        h.no_data(no_data_text, no_data_glyph_name, true)
       end
     end
   end
@@ -43,4 +43,9 @@ class ApplicationCollectionDecorator < Draper::CollectionDecorator
     options = options.merge({class: 'button new'})
     link_to_with_permissions(h.glyph(label, 'plus'), path, project, nil, options)
   end
+
+  def no_data_glyph_name
+    ''
+  end
+
 end

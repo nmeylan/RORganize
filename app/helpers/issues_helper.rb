@@ -140,7 +140,7 @@ module IssuesHelper
           display_overview_row(na, group_name, only_opened_issues) if na
         }
       else
-        safe_concat no_data
+        safe_concat no_data(t(:text_no_issues), 'issue_opened')
       end
     end
   end

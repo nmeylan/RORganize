@@ -1,5 +1,6 @@
 .form .box {
   border: inherit;
+  border-bottom: 1px solid $default-border-color;
 }
 
 /*
@@ -9,7 +10,7 @@
 .form p {
   margin: 0;
   padding: 3px 0 3px 0;
-  padding-left: 180px; /* width of left column containing the label elements */
+  padding-left: 160px; /* width of left column containing the label elements */
   min-height: 1.8em;
   clear: left;
 }
@@ -23,7 +24,7 @@ fieldset.settings {
 .form fieldset {
   margin: 0;
   padding: 3px 0 3px 0;
-  margin-left: 180px; /* width of left column containing the label elements */
+  margin-left: 160px; /* width of left column containing the label elements */
   min-height: 1.8em;
   width: 89%;
   clear: left;
@@ -35,11 +36,17 @@ fieldset.settings {
   float: left;
   text-align: right;
   /* width of left column */
-  margin-left: -180px;
+  margin-left: -160px;
   /* width of labels. Should be smaller than left column to create some right margin */
-  width: 175px;
+  width: 155px;
 }
 
+.form{
+  input[type=submit]{
+//    margin-left: 140px;
+//    width: 65px;
+  }
+}
 .normal_label {
   font-weight: normal !important;
   float: none !important;

@@ -5,4 +5,8 @@ class NotificationsDecorator < ApplicationCollectionDecorator
     h.sidebar(context[:filters], context[:projects])
   end
 
+  def no_data_glyph_name
+    'inbox'
+  end
+
 end

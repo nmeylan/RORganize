@@ -22,7 +22,7 @@ module JournalsHelper
               safe_concat clear_both
             end
           else
-            content_tag :div, t(:text_no_data), class: 'no-data'
+            no_data(t(:text_no_activities), 'rss', true)
           end
         })
   end

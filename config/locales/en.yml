@@ -262,7 +262,13 @@ en:
   text_set_at: set at
   text_deleted: deleted
   text_no_data: There are no data to display
-  text_no_running_versions: There is no running versions for this project
+  text_no_categories: There are no categories to display
+  text_no_documents: There are no documents to display
+  text_no_issues: There are no issues to display
+  text_no_activities: There are no activities to display
+  text_no_versions: There are no versions to display
+  text_no_running_versions: There are no running versions for this project
+  text_no_notifications: You don't have any notifications.
   text_choose_role: Define permissions for following roles
   text_delete_item: Are you sure to want to delete this item?
   text_delete_this_project: Delete this project

@@ -6,4 +6,12 @@ class VersionsDecorator < ApplicationCollectionDecorator
     super(h.t(:link_new_version), h.new_version_path(context[:project].slug), context[:project])
   end
 
+  def no_data_glyph_name
+    'milestone'
+  end
+
+  def display_collection
+    super(false, h.t(:text_no_versions))
+  end
+
 end

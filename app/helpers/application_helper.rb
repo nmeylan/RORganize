@@ -49,10 +49,18 @@ module ApplicationHelper
   end
 
   # @param [String] text : to display when there are no data to display
-  # @return [String] : div block containing text
-  def no_data(text = nil)
-    content_tag :div, text ? text : t(:text_no_data), class: 'no-data'
+  # @return [String] : div block containing text.
+  # @param [String] glyph : glyph name to display.
+  # @param [Boolean] large : large display or not?
+  def no_data(text = nil, glyph = nil, large = false)
+    content_tag :div, class: "no-data #{large ? 'large' : '' }" do
+      if glyph
+        safe_concat (glyph('', glyph))
+      end
+     safe_concat content_tag :h3, text ? text : t(:text_no_data)
+    end
   end
+
 
   # Page render for http 500
   def render_500

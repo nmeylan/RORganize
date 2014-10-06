@@ -47,7 +47,7 @@ class ProjectDecorator < ApplicationDecorator
       end
       h.versions_list_overview(versions, structure)
     else
-      h.content_tag :div, h.t(:text_no_running_versions), class: 'no-data'
+      h.no_data h.t(:text_no_running_versions), 'milestone'
     end
   end
 
@@ -72,7 +72,7 @@ class ProjectDecorator < ApplicationDecorator
       end
       h.draw_roadmap(versions.delete_if { |version| version.issues.empty? }, structure)
     else
-      h.content_tag :div, h.t(:text_no_data), class: 'no-data'
+      h.no_data(h.t(:text_no_versions), 'milestone', true)
     end
   end
 

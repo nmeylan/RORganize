@@ -14,4 +14,8 @@ class ProjectsDecorator < ApplicationCollectionDecorator
     end
   end
 
+  def no_data_glyph_name
+    'repo'
+  end
+
 end

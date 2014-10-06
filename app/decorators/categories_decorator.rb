@@ -5,9 +5,12 @@
 
 class CategoriesDecorator < ApplicationCollectionDecorator
 
-  # see #ApplicationCollectionDecorator::display_collection
+  def no_data_glyph_name
+    'tag'
+  end
+
   def display_collection
-    super
+    super(false, h.t(:text_no_categories))
   end
 
   # see #ApplicationCollectionDecorator::new_link
