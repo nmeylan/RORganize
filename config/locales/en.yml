@@ -109,7 +109,8 @@ en:
   label_commented: Commented
   label_participating: Participating
   label_watching: Watching
-
+  label_next: Next
+  label_previous: Previous
 # LINK
   link_new_project: New project
   link_new_issue: New issue
