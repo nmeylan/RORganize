@@ -2,8 +2,17 @@ class IssueDecorator < ApplicationDecorator
   delegate_all
 
   # Render document creation info.
-  def creation_info(journals)
-    "#{h.t(:label_added)} #{h.distance_of_time_in_words(model.created_at, Time.now)} #{h.t(:label_ago)}, #{h.t(:label_by)} #{model.author.caption}. #{(model.created_at.eql?(model.updated_at) ? '' : "#{h.t(:label_updated)} #{h.distance_of_time_in_words(model.updated_at, Time.now)} #{h.t(:label_ago)}.").to_s}"
+  def creation_info
+    h.content_tag :div, class: 'creation_info' do
+      h.content_tag :p do
+        h.content_tag :em do
+          h.safe_concat "#{h.t(:label_added)} #{h.distance_of_time_in_words(model.created_at, Time.now)} #{h.t(:label_ago)}, #{h.t(:label_by)} "
+          h.safe_concat model.author.decorate.user_link(true)
+          h.safe_concat '.'
+          h.safe_concat " #{h.t(:label_updated)} #{h.distance_of_time_in_words(model.updated_at, Time.now)} #{h.t(:label_ago)}." unless model.created_at.eql?(model.updated_at)
+        end
+      end
+    end
   end
 
   # @return [String] tracker name.
@@ -27,8 +36,8 @@ class IssueDecorator < ApplicationDecorator
   end
 
   # @return [String] assigned to user name.
-  def assigned_to
-    model.assigned_to ? model.assigned_to.caption : '-'
+  def display_assigned_to
+    model.assigned_to ? model.assigned_to.decorate.user_link(true) : '-'
   end
 
   # @return [String] estimated time.

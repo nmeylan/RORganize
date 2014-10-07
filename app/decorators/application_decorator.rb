@@ -14,7 +14,7 @@ class ApplicationDecorator < Draper::Decorator
     if description?
       h.markdown_to_html(model.description, model)
     else
-      '-'
+      content_tag :p, '-'
     end
   end
 

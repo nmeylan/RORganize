@@ -15,11 +15,7 @@
 <% end -%>
 
 <h2><%= @document_decorator.name %></h2>
-<p>
-  <em>
-    <%= @document_decorator.creation_info(history.journals) %>
-  </em>
-</p>
+<%= @document_decorator.creation_info %>
 <table class="detail" style="width:100%">
   <tr>
     <th style="width:15%"><%= t(:field_version) %> :</th>

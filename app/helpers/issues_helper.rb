@@ -50,7 +50,7 @@ module IssuesHelper
           safe_concat content_tag :td, issue.id, class: 'list_center id'
           safe_concat content_tag :td, issue.tracker_str, class: 'list_center tracker'
           safe_concat content_tag :td, link_to(issue.resized_caption(35), issue_path(@project.slug, issue.id)), {class: 'name', id: issue.id}
-          safe_concat content_tag :td, issue.assigned_to, class: 'list_center assigned_to'
+          safe_concat content_tag :td, issue.display_assigned_to, class: 'list_center assigned_to'
           safe_concat content_tag :td, issue.status.caption, class: 'list_center status'
           safe_concat content_tag :td, issue.category, class: 'list_center category'
           safe_concat content_tag :td, issue.version_str, class: 'list_center version'
@@ -59,29 +59,6 @@ module IssuesHelper
           safe_concat content_tag :td, issue.checklist_progression, class: 'icon_information'
           safe_concat content_tag :td, issue.comment_presence_indicator, class: 'icon_information'
           safe_concat content_tag :td, issue.attachment_presence_indicator, class: 'icon_information'
-        end
-      end.join.html_safe)
-    }
-  end
-
-  def simple_list(collection)
-    content_tag :table, {class: 'issue list'}, &Proc.new {
-      safe_concat content_tag :tr, class: 'header', &Proc.new {
-        safe_concat content_tag :th, '#'
-        safe_concat content_tag :th, 'Tracker'
-        safe_concat content_tag :th, 'Project'
-        safe_concat content_tag :th, 'Subject'
-        safe_concat content_tag :th, 'Status'
-        safe_concat content_tag :th, 'Done'
-      }
-      safe_concat(collection.collect do |issue|
-        content_tag :tr, class: "odd_even issue_tr #{'close' if issue.status.is_closed?}" do
-          safe_concat content_tag :td, issue.id, class: 'list_center id'
-          safe_concat content_tag :td, issue.tracker, class: 'list_center tracker'
-          safe_concat content_tag :td, link_to(issue.project.name, overview_projects_path(issue.project.slug)), class: 'list_center project'
-          safe_concat content_tag :td, link_to(issue.caption, issue_path(issue.project.slug, issue.id)), {class: 'name', id: issue.id}
-          safe_concat content_tag :td, issue.status.caption, class: 'list_center status'
-          safe_concat content_tag :td, issue.done, class: 'list_center done'
         end
       end.join.html_safe)
     }

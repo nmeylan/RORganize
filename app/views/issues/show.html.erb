@@ -15,11 +15,8 @@
 <% end %>
 
 <h2><%= @issue_decorator.subject %></h2>
-<p>
-  <em>
-    <%= @issue_decorator.creation_info(history.journals) %>
-  </em>
-</p>
+
+<%= @issue_decorator.creation_info %>
 <table class="detail" style="width:100%">
   <tr>
     <th style="width:15%"><%= t(:field_status) %> :</th>
@@ -29,7 +26,7 @@
   </tr>
   <tr>
     <th style="width:15%"><%= t(:field_assigned_to) %> :</th>
-    <td style="width:30%"><%= @issue_decorator.assigned_to %></td>
+    <td style="width:30%"><%= @issue_decorator.display_assigned_to %></td>
     <th style="width:15%"><%= t(:field_due_date) %> :</th>
     <td style="width:30%"><%= @issue_decorator.due_date %></td>
   </tr>
