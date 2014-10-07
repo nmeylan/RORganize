@@ -46,7 +46,7 @@ class WikiDecorator < ApplicationDecorator
     if model.pages && model.pages.to_a.any?
       h.display_pages(model.pages)
     else
-      h.content_tag :div, h.t(:text_no_data), class: 'no-data'
+      h.no_data  h.t(:text_no_wiki_page), 'file-text', true
     end
   end
 end
