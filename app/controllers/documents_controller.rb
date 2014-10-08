@@ -6,7 +6,7 @@ require 'shared/history'
 class DocumentsController < ApplicationController
   before_filter :load_documents, :only => [:index]
   before_filter :find_document, only: [:show, :edit, :destroy, :update]
-  before_filter :check_permission, :except => [:download_attachment, :toolbox]
+  before_filter :check_permission, :except => [:toolbox]
   before_filter { |c| c.menu_context :project_menu }
   before_filter { |c| c.menu_item(params[:controller]) }
   before_filter { |c| c.top_menu_item('projects') }
@@ -80,11 +80,6 @@ class DocumentsController < ApplicationController
         format.js { respond_to_js :response_header => :success, :response_content => t(:successful_deletion), :locals => {:id => attachment.id} }
       end
     end
-  end
-
-  def download_attachment
-    filename = params[:path]
-    send_file(filename)
   end
 
   def destroy

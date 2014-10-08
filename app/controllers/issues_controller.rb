@@ -7,7 +7,7 @@ require 'issues/issue_overview_hash'
 class IssuesController < ApplicationController
   before_filter { |c| c.add_action_alias= {'overview' => 'index', 'apply_custom_query' => 'index'} }
   before_filter :find_project_with_depedencies, only: [:index, :new, :create, :update, :edit, :toolbox, :apply_custom_query]
-  before_filter :check_permission, :except => [:toolbox, :download_attachment, :start_today]
+  before_filter :check_permission, :except => [:toolbox, :start_today]
   before_filter :find_issue, only: [:edit, :update, :destroy]
   before_filter :check_not_owner_permission, :only => [:edit, :update, :destroy]
   before_filter { |c| c.menu_context :project_menu }
@@ -125,11 +125,6 @@ class IssuesController < ApplicationController
     end
   end
 
-  def download_attachment
-    attachment = Attachment.find_by_id(params[:id])
-    send_file(attachment.file.url)
-  end
-
   def start_today
     @issue_decorator = Issue.find_by_id(params[:id]).decorate(context: {project: @project})
     @issue_decorator.start_date = Date.current
@@ -179,10 +174,10 @@ class IssuesController < ApplicationController
   end
 
   def apply_custom_query
-    query = Query.friendly.find(params[:query_id])
+    query = Query.find_by_slug(params[:query_id])
     if query
       @sessions[@project.slug][:sql_filter] = query.stringify_query
-      @sessions[@project.slug][:json_filter] = eval(query.stringify_params)
+      @sessions[@project.slug][:json_filter] = eval(query.stringify_params) #eval data from DataBase, not user input.
     end
     index
   end

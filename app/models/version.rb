@@ -61,7 +61,7 @@ class Version < ActiveRecord::Base
 
   def dec_position_on_destroy
     position = self.position
-    Version.where("position > #{position} AND project_id = #{self.project_id}").update_all('position = position - 1')
+    Version.where("position > ? AND project_id = ? ", position, self.project_id).update_all('position = position - 1')
   end
 
   # @param [Numeric] project_id : the id of the project.

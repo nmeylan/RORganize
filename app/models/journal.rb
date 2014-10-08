@@ -23,7 +23,7 @@ class Journal < ActiveRecord::Base
   scope :issue_activities, ->(issuer_id) { includes([:details, user: :avatar]).where(journalizable_type: 'Issue', journalizable_id: issuer_id) }
   scope :member_activities, ->(member) { where(:user_id => member.user_id, :project_id => member.project_id).order('created_at DESC') }
   scope :activities, ->(journalizable_types, date_range, days, conditions = '1 = 1') {
-    includes([:details, :project, user: :avatar]).where("journalizable_type IN (?) AND #{conditions} AND journals.created_at BETWEEN ? AND ?", journalizable_types, date_range.first, date_range.last).order('journals.created_at DESC').limit(days * 1000)
+    includes([:details, :project, user: :avatar]).where("journalizable_type IN (?) AND journals.created_at BETWEEN ? AND ?", journalizable_types, date_range.first, date_range.last).where(conditions).order('journals.created_at DESC').limit(days * 1000)
   }
   scope :fetch_dependencies_issues, -> { includes(issue: :tracker) }
   scope :fetch_dependencies_documents, -> { includes(:document) }
