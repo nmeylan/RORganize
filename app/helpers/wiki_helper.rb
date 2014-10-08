@@ -28,7 +28,7 @@ module WikiHelper
   # @param [Array] pages : array of sub pages.
   def display_sub_pages(parent_id, pages)
     content_tag :li, {class: 'parent'}, &Proc.new {
-      content_tag :ul, {class: 'connectedSortable', id: "parent-#{parent-id}"}, &Proc.new {
+      content_tag :ul, {class: 'connectedSortable', id: "parent-#{parent_id}"}, &Proc.new {
         pages.sort { |x, y| x.position<=>y.position }.collect do |page|
           safe_concat content_tag :li, {class: 'item', id: "item-#{page.id}"}, &Proc.new {
             safe_concat link_to page.title, wiki_page_path(@project.slug, page.slug)

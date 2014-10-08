@@ -572,38 +572,6 @@ function per_page() {
     });
 }
 
-function edit_notes() {
-    jQuery(".edit-notes").click(function (e) {
-        e.preventDefault();
-        jQuery('#edit-note-form').remove();
-        var journal_id = jQuery(this).attr("id").replace("link_edit_note_", '');
-        var note_id = "#note-" + journal_id;
-        var form = "<div id='edit_note_form' class='edit_note'>";
-        form += "<textarea id='edit_note' name='notes' rows='12'>";
-        form += jQuery(note_id).text();
-        form += "</textarea>";
-        form += "<button id='send_edit_note'>Save</button>";
-        form += "</div>";
-        jQuery(note_id).append(form);
-        jQuery('#edit-note').markItUp(mySettings);
-        edit_notes_bind_save_button("#send-edit-note", jQuery(this).attr("href"), journal_id)
-    });
-}
-
-function edit_notes_bind_save_button(id, url, journal_id) {
-    jQuery(id).click(function (e) {
-        e.preventDefault();
-        jQuery.ajax({
-            url: url,
-            type: 'post',
-            dataType: 'script',
-            data: {
-                notes: jQuery("#edit-note").val(),
-                journal_id: journal_id
-            }
-        });
-    })
-}
 
 function bind_calendar_button() {
     jQuery(".change-month").click(function (e) {
@@ -691,7 +659,7 @@ function add_sub_item(selector) {
         e.preventDefault();
         var parent_id = jQuery(this).parent("li").attr("id").split("_")[1];
         jQuery(this).parent().after("<li class='parent' style='list-style:none'>\n\
-                <ul id='parent_" + parent_id + "' class='connectedSortable'></ul></li>");
+                <ul id='parent-" + parent_id + "' class='connectedSortable'></ul></li>");
         bind_organization_behaviour(".connectedSortable");
     });
 }
@@ -710,8 +678,8 @@ function bind_set_organization_button(main_selector, list_selector) {
             tmp_position = jQuery(value).index();
             is_undifined = (typeof jQuery(value).parent("ul").parent("li").prev().attr("id") === "undefined");
             //put parent id value if defined, else put nil
-            tmp_parent_id = !is_undifined ? jQuery(value).parent("ul").parent("li").prev().attr("id").split("_")[1] : null;
-            tmp_item_id = jQuery(value).attr("id").split("_")[1];
+            tmp_parent_id = !is_undifined ? jQuery(value).parent("ul").parent("li").prev().attr("id").split("-")[1] : null;
+            tmp_item_id = jQuery(value).attr("id").split("-")[1];
             parent_ids.push(tmp_parent_id);
             serialized_hash[tmp_item_id] = {parent_id: tmp_parent_id, position: tmp_position};
 
@@ -737,14 +705,14 @@ function project_selection_filter() {
 // LOG TIME
 //Date is optional
 function fill_log_issue_time_overlay(url, context, date) {
-    if (jQuery(context).attr("id") === "pick_calendar")
-        date = jQuery(context).val();
+    if (jQuery(context).attr("id") === "pick-calendar")
+        date = jQuery(context).valueAsDate ;
 
     jQuery.ajax({
         url: url,
         type: 'GET',
         dataType: 'script',
-        data: {spent_on: date}
+        data: {spent_on: date }
     });
 }
 
@@ -895,8 +863,8 @@ function bind_tab_nav(tab_id) {
 
 function bind_color_editor(){
     var editor_field =  $(".color-editor-field");
-    var color_bg = $("<span class='color_editor_bg'></span>");
-    var container = $("<div class='color_editor'></div>");
+    var color_bg = $("<span class='color-editor-bg'></span>");
+    var container = $("<div class='color-editor'></div>");
     editor_field.wrap(container);
     color_bg.insertBefore(editor_field);
     color_bg.css('background-color', '#' + editor_field.val());

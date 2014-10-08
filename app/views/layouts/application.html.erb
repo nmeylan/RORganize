@@ -20,7 +20,7 @@
 <div id="header">
   <h1>
     <% if @project && @project.attachments.to_a.any? && !@project.attachments.first.id.nil? %>
-        <%= image_tag @project.attachments.first.file.url(:logo), {:align => :left, :id => 'project_logo'} %>
+        <%= image_tag @project.attachments.first.file.url(:logo), {:align => :left, :id => 'project-logo'} %>
     <% end %>
     <%= @project ? @project.name : 'RORganize' %><%# Here what you want %>
   </h1>
