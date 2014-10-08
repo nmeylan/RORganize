@@ -580,4 +580,8 @@ autocomplete-combobox-high',
   def sidebar_count_tag(count)
     content_tag :span, count, class: 'count'
   end
+
+  def color_field_tag(form, field)
+    form.text_field field, autocomplete: 'off', maxlength: 7, class: 'color_editor_field'
+  end
 end

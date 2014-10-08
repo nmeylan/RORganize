@@ -952,6 +952,20 @@ table.permissions_list {
 }
 
 /*
+  Statuses
+*/
+.issue_status{
+  display: inline-block;
+  font-weight: bold;
+  line-height: 1;
+  color: #fff;
+  border-radius: 2px;
+  padding: 6px 10px;
+  font-size: 12px;
+  box-shadow: none;
+}
+
+/*
   PROFILES
 */
 .profile_user_projects {

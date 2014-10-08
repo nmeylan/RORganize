@@ -1,6 +1,6 @@
 <%= contextual t(:link_new_status) %>
 
 <%= form_for @status, :url => {:controller => 'issues_statuses'}, :html => {:class => 'form'} do |f| %>
-    <%= render :partial => 'issues_statuses/form', :locals => {:f => f} %>
+    <%= render :partial => 'issues_statuses/form', :locals => {f: f, done_ratio: done_ratio} %>
     <%= submit_tag t(:button_create) %>
 <% end %>

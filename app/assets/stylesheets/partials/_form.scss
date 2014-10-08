@@ -59,3 +59,23 @@ fieldset.settings {
 button, input[type=button], input[type=submit] {
   margin-left: 10px;
 }
+
+.color_editor{
+  position: relative;
+  .color_editor_bg{
+    position: absolute;
+    left: 0;
+    z-index: 10;
+    width: 20px;
+    height: 20px;
+    margin-top: 5px;
+    margin-left: 5px;
+    cursor: pointer;
+    border-radius: 3px;
+  }
+  .color_editor_field{
+    width: 100px;
+    padding-left: 28px;
+    border-color: #ccc
+  }
+}

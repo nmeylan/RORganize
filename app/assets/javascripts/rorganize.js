@@ -59,6 +59,7 @@
         bind_info_tag();
         bind_commentable();
         bind_task_list_click();
+        bind_color_editor();
 
         //help overlay
         createOverlay("#hotkeys_overlay", 150);
@@ -887,5 +888,21 @@ function bind_tab_nav(tab_id) {
         links.removeClass('selected');
         $('#' + tab_id).show();
         el.addClass('selected');
+    });
+}
+
+function bind_color_editor(){
+    var editor_field =  $(".color_editor_field");
+    var color_bg = $("<span class='color_editor_bg'></span>");
+    var container = $("<div class='color_editor'></div>");
+    editor_field.wrap(container);
+    color_bg.insertBefore(editor_field);
+    color_bg.css('background-color', '#' + editor_field.val());
+    editor_field.keydown(function(e){
+        var val = editor_field.val();
+        if(val.indexOf('#') != 0)
+            editor_field.val('#' + val);
+        color_bg.css('background-color', '#' + editor_field.val());
+        editor_field.css('color', '#' + editor_field.val());
     });
 }

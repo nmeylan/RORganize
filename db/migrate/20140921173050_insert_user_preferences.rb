@@ -3,7 +3,7 @@ class InsertUserPreferences < ActiveRecord::Migration
     Preference.delete_all
     Preference.transaction do
       User.all.each do |user|
-        Preference.notification_keys.each do |_, v|
+        Preference.notification_keys.each_value do |v|
           Preference.create(user_id: user.id, key: v, boolean_value: true)
         end
       end

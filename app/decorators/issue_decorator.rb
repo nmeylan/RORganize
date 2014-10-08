@@ -50,6 +50,11 @@ class IssueDecorator < ApplicationDecorator
     model.start_date ? model.start_date : '-'
   end
 
+  def display_status
+    h.content_tag :span, {class: 'issue_status', style: "background-color: #{model.status.color}"} do
+      model.status.caption
+    end
+  end
   # see #ApplicationDecorator::new_link.
   def new_link
     super(h.t(:link_new_issue), h.new_issue_path(context[:project].slug), context[:project])

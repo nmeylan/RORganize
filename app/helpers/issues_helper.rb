@@ -51,7 +51,7 @@ module IssuesHelper
           safe_concat content_tag :td, issue.tracker_str, class: 'list_center tracker'
           safe_concat content_tag :td, link_to(issue.resized_caption(35), issue_path(@project.slug, issue.id)), {class: 'name', id: issue.id}
           safe_concat content_tag :td, issue.display_assigned_to, class: 'list_center assigned_to'
-          safe_concat content_tag :td, issue.status.caption, class: 'list_center status'
+          safe_concat content_tag :td, issue.display_status, class: 'list_center status'
           safe_concat content_tag :td, issue.category, class: 'list_center category'
           safe_concat content_tag :td, issue.version_str, class: 'list_center version'
           safe_concat content_tag :td, issue.due_date, class: 'list_center due_date'

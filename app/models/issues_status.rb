@@ -5,7 +5,8 @@
 
 class IssuesStatus < ActiveRecord::Base
   include Rorganize::Models::SmartRecords
-
+  DEFAULT_OPENED_STATUS_COLOR = '#6cc644'
+  DEFAULT_CLOSED_STATUS_COLOR = '#bd2c00'
   has_and_belongs_to_many :roles, :class_name => 'Role'
   belongs_to :enumeration, :class_name => 'Enumeration', :dependent => :destroy
   has_many :issues, :class_name => 'Issue', :foreign_key => :status_id, :dependent => :nullify
@@ -17,7 +18,7 @@ class IssuesStatus < ActiveRecord::Base
   end
 
   def self.permit_attributes
-    [:is_closed, :default_done_ratio]
+    [:is_closed, :default_done_ratio, :color]
   end
 
   def caption

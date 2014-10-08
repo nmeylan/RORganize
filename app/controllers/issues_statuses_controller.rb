@@ -14,18 +14,16 @@ class IssuesStatusesController < ApplicationController
   end
 
   def new
-    @status = IssuesStatus.new
-    @done_ratio = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
+    @status = IssuesStatus.new(color: IssuesStatus::DEFAULT_OPENED_STATUS_COLOR)
     respond_to do |format|
-      format.html
+      format.html { render action: :new, locals: {done_ratio: done_ratio} }
     end
   end
 
   def edit
-    @status = IssuesStatus.select('*').where(['id = ?', params[:id]]).includes(:enumeration).first
-    @done_ratio = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
+    @status = IssuesStatus.includes(:enumeration).find_by_id(params[:id])
     respond_to do |format|
-      format.html
+      format.html { render action: :edit, locals: {done_ratio: done_ratio} }
     end
   end
 
@@ -37,9 +35,8 @@ class IssuesStatusesController < ApplicationController
         flash[:notice] = t(:successful_update)
         format.html { redirect_to :action => 'index' }
       else
-        @done_ratio = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
         @status.errors.add(:name, "can't be blank")
-        format.html { render :action => 'edit' }
+        format.html { render action: :edit, locals: {done_ratio: done_ratio} }
       end
     end
   end
@@ -54,15 +51,13 @@ class IssuesStatusesController < ApplicationController
           flash[:notice] = t(:successful_creation)
           format.html { redirect_to :action => 'index' }
         else
-          @done_ratio = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
-          format.html { render :action => 'new' }
+          format.html { render action: :new, locals: {done_ratio: done_ratio} }
           format.json { render :json => @staus.errors,
                                :status => :unprocessable_entity }
         end
       else
         @status.errors.add(:name, "can't be blank")
-        @done_ratio = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
-        format.html { render :action => 'new' }
+        format.html { render action: :new, locals: {done_ratio: done_ratio} }
       end
     end
   end
@@ -105,6 +100,11 @@ class IssuesStatusesController < ApplicationController
 
   def get_statuses
     @issues_statuses_decorator = IssuesStatus.paginated(@sessions[:current_page], @sessions[:per_page], order('enumerations.position')).fetch_dependencies.decorate
+  end
+
+  def done_ratio
+    range = 0..100
+    range.step(10).map{|x| x}
   end
 
 end
