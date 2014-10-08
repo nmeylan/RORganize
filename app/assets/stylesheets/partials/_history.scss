@@ -1,11 +1,11 @@
 @import 'utilities/_variables';
 
 $history-header-background: #f7f7f7;
-#history_blocks {
+#history-blocks {
   position: relative;
   padding-left: 80px;
 
-  .history_block {
+  .history-block {
     position: relative;
     margin-top: 15px;
     margin-bottom: 15px;
@@ -15,7 +15,7 @@ $history-header-background: #f7f7f7;
         position: relative;
         margin-bottom: 25px;
         margin-top: 25px;
-        .activity_icon {
+        .activity-icon {
           top: -4px;
           left: -17px;
         }
@@ -29,13 +29,13 @@ $history-header-background: #f7f7f7;
       margin-left: -65px;
     }
   }
-  .history_date {
+  .history-date {
     margin-left: 5px;
     font-size: 12px;
     font-style: italic;
   }
 
-  .history_header:before, .history_header:after {
+  .history-header:before, .history-header:after {
     position: absolute;
     top: 16px;
     left: -15px;
@@ -49,17 +49,17 @@ $history-header-background: #f7f7f7;
     pointer-events: none;
 
   }
-  .history_header.display_avatar:before {
+  .history-header.display-avatar:before {
     border-right-color: #dddddd;
     border-width: 8px;
   }
-  .history_header.display_avatar:after {
+  .history-header.display-avatar:after {
     border-width: 7px;
     border-right-color: #f7f7f7;
     margin-top: 1px;
     margin-left: 2px;
   }
-  .history_header {
+  .history-header {
     padding: 15px;
     color: #999;
     background-color: $history-header-background;
@@ -75,7 +75,7 @@ $history-header-background: #f7f7f7;
   }
 }
 
-#history_blocks:before {
+#history-blocks:before {
   display: block;
   content: "";
   position: absolute;

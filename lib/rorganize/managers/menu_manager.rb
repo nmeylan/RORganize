@@ -52,7 +52,7 @@ module Rorganize
         def render_top_menu
           menu = Rorganize::Managers::MenuManager.items(:top_menu)
           content = ''
-          content += content_tag(:li, link_to(t(:home), :root, {:class => @current_top_menu_item.eql?('menu_home') ? 'selected square' : 'square'}))
+          content += content_tag(:li, link_to(t(:home), :root, {:class => @current_top_menu_item.eql?('menu-home') ? 'selected square' : 'square'}))
           unless controller_name.eql?('sessions') || controller_name.eql?('registrations') || controller_name.eql?('passwords')
             menu.menu_items.each do |item|
               if User.current && User.current.allowed_to?(item.url[:action], item.url[:controller])

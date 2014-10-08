@@ -62,7 +62,7 @@ class IssueToolbox < Toolbox
       @extra_actions << h.link_to(h.glyph(h.t(:link_edit), 'pencil'), h.edit_issue_path(@project.slug, @collection_ids[0])) if @collection.size == 1
     end
     if @user.allowed_to?('destroy', 'Issues', @project)
-      @extra_actions << h.link_to(h.glyph(h.t(:link_delete), 'trashcan'), '#', {:class => 'icon icon-del', :id => 'open_delete_overlay'})
+      @extra_actions << h.link_to(h.glyph(h.t(:link_delete), 'trashcan'), '#', {:class => 'icon icon-del', id: 'open-delete-overlay'})
     end
   end
 

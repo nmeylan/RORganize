@@ -4,14 +4,14 @@
  * Time: 18:56
 %>
 <% if !attachment.new_record? && attachment.file_content_type %>
-    <tr id="<%= attachment.id %>" class="attachment_row">
-      <td class="attachment_title">
+    <tr id="<%= attachment.id %>" class="attachment-row">
+      <td class="attachment-title">
         <% if attachment.file_content_type.include?('image') %>
             <a href="<%= attachment.file.url(:large) %>" class="lightbox"><%= image_tag attachment.file.url(:thumb) %></a>
             <br>
         <% end %>
         <%= link_to glyph(attachment.file_file_name, attachment.icon_type), attachment.file.url, {target: 'blank'} %>
       </td>
-      <td class="attachment_delete_link"><%= object.delete_attachment_link(attachment) %></td>
+      <td class="attachment-delete-link"><%= object.delete_attachment_link(attachment) %></td>
     </tr>
 <% end %>

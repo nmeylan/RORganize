@@ -26,7 +26,7 @@
     <div class="autocomplete-combobox">
       <label for="issue_version"><%= t(:field_version) %></label>
       <%= select_tag_versions('issue_version_id', 'issue[version_id]', @issue_decorator.version_id) %>
-      <%= info_tag('', {id: 'version_info'}) %>
+      <%= info_tag('', {id: 'version-info'}) %>
     </div>
 
     <div class="autocomplete-combobox cbb-medium nosearch">
@@ -74,7 +74,7 @@
           </p>
           <%= render :partial => 'shared/attachments', :collection => @issue_decorator.attachments, locals: {object: @issue_decorator, type: 'issue'} %>
         </div>
-        <div class="splitcontentright attachment_box"><%= render :partial => 'shared/show_attachments', :locals => {:attachments => @issue_decorator.attachments, :object => @issue_decorator, no_header: true} %></div>
+        <div class="splitcontentright attachment-box"><%= render :partial => 'shared/show_attachments', :locals => {:attachments => @issue_decorator.attachments, :object => @issue_decorator, no_header: true} %></div>
         <%= clear_both %>
       </div>
 

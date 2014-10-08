@@ -1,14 +1,14 @@
 function on_load_coworkers_scripts() {
     listTrClick(".list .member_tr", true);
     checkboxToolbox(".list");
-    bind_tr_ajax(".member_tr");
-    bind_coworker_radio_filter(".radio_filter", ".list")
+    bind_tr_ajax(".member-tr");
+    bind_coworker_radio_filter(".radio-filter", ".list")
 }
 
 //Coworker
 function bind_tr_ajax(selector) {
     jQuery(selector).click(function (e) {
-        var getActivity = jQuery(this).hasClass("toolbox_selection");
+        var getActivity = jQuery(this).hasClass(".toolbox-selection");
         jQuery.ajax({
             url: jQuery(this).data("link"),
             type: "get",

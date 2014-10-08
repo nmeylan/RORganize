@@ -3,10 +3,10 @@
  * Date: 07/12/13
  * Time: 05:42
  %>
-jQuery('#delete_overlay').overlay();
-jQuery('#delete_overlay').overlay().close();
-on_replace_effect("#issues_content", "<%= escape_javascript(@issues_decorator.display_collection)%>");
-on_replace_effect("#issue_filter", "<%= escape_javascript(filter_tag('issue', Issue.filtered_attributes, issues_path(@project.slug), true, {user: User.current, project: @project, filter_content: session[controller_name][@project.slug][:json_filter]}))%>");
+jQuery('#delete-overlay').overlay();
+jQuery('#delete-overlay').overlay().close();
+on_replace_effect("#issues-content", "<%= escape_javascript(@issues_decorator.display_collection)%>");
+on_replace_effect("#issue-filter", "<%= escape_javascript(filter_tag('issue', Issue.filtered_attributes, issues_path(@project.slug), true, {user: User.current, project: @project, filter_content: session[controller_name][@project.slug][:json_filter]}))%>");
 per_page();
 
 uniq_toogle("#issue.toggle", ".content");
@@ -15,5 +15,5 @@ issues_index({dom_persisted_filter: "<%= json_escape escape_javascript(session[c
 <% if params[:filter] %>
 $('#issue.toggle').switchClass('icon-collapsed', 'icon-expanded');
 $('#issue.toggle .octicon-chevron-right').switchClass('octicon-chevron-right', 'octicon-chevron-down');
-$('#issue_filter .content').show();
+$('#issue-filter .content').show();
 <% end %>

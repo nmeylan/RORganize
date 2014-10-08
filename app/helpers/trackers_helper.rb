@@ -13,7 +13,7 @@ module TrackersHelper
         safe_concat content_tag :td, nil
       }
       safe_concat(collection.collect do |tracker|
-        content_tag :tr, {class: 'odd_even', id: %Q(tracker-#{tracker.id})} do
+        content_tag :tr, {class: 'odd-even', id: %Q(tracker-#{tracker.id})} do
           safe_concat content_tag :td, tracker.edit_link, class: 'name'
           safe_concat content_tag :td, tracker.delete_link, class: 'action'
         end
@@ -26,7 +26,7 @@ module TrackersHelper
   def project_tracker_list(collection, checked_ids)
     safe_concat content_tag :label, t(:link_trackers)
     collection.collect do |tracker|
-      safe_concat label_tag "[trackers][#{tracker.name}]", tracker.caption, {class: 'normal_label'}
+      safe_concat label_tag "[trackers][#{tracker.name}]", tracker.caption, {class: 'normal-label'}
       safe_concat check_box_tag "[trackers][#{tracker.name}]", tracker.id, checked_ids.include?(tracker.id)
     end.join.html_safe
   end

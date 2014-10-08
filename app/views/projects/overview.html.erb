@@ -7,7 +7,7 @@
 %>
 <%= contextual t(:label_overview) %>
 
-<div class="splitcontentleft" id="project_description">
+<div class="splitcontentleft" id="project-description">
   <%= @project_decorator.display_description %>
 </div>
 
@@ -16,7 +16,7 @@
   <%= @project_decorator.display_members %>
 </div>
 
-<div class="splitcontentright box" id="project_running_versions">
+<div class="splitcontentright box" id="project-running-versions">
   <%= box_header_tag t(:label_running_versions) %>
   <%= @project_decorator.display_version_overview %>
 </div>

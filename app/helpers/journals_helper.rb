@@ -31,7 +31,7 @@ module JournalsHelper
   # @param [Date] to : date range right border.(from..to)
   # @param [Date] from : date range left border.
   def activities_range(to, from)
-    content_tag :div, {class: 'activities_range'}, &Proc.new {
+    content_tag :div, {class: 'activities-range'}, &Proc.new {
       safe_concat t(:text_from).capitalize + ' '
       safe_concat content_tag :span, from
       safe_concat ' ' + t(:text_to) + ' '
@@ -43,8 +43,8 @@ module JournalsHelper
   # Build a render of the activities date.
   # @param [Date] date.
   def activities_date(date)
-    content_tag :div, class: 'date_circle', &Proc.new {
-      content_tag :div, content_tag(:p, date.strftime('%a. %-d %b.')), class: 'inner_circle'
+    content_tag :div, class: 'date-circle', &Proc.new {
+      content_tag :div, content_tag(:p, date.strftime('%a. %-d %b.')), class: 'inner-circle'
     }
   end
 
@@ -91,16 +91,16 @@ module JournalsHelper
     if nth % 2 == 0 #Render is depending on the parity
       safe_concat content_tag :span, nil, class: "#{journal.display_action_type_icon}"
       safe_concat content_tag :span, user, class: 'author'
-      safe_concat content_tag :span, journal.display_action_type, class: 'action_type'
-      safe_concat content_tag :span, journal.display_object_type, class: 'object_type'
+      safe_concat content_tag :span, journal.display_action_type, class: 'action-type'
+      safe_concat content_tag :span, journal.display_object_type, class: 'object-type'
       journal.display_project_link(@project)
       safe_concat content_tag :span, journal.display_creation_at, class: 'date'
     else
       safe_concat content_tag :span, nil, class: "#{journal.display_action_type_icon}"
       safe_concat content_tag :span, journal.display_creation_at, class: 'date'
       safe_concat content_tag :span, user, class: 'author'
-      safe_concat content_tag :span, journal.display_action_type, class: 'action_type'
-      safe_concat content_tag :span, journal.display_object_type, class: 'object_type'
+      safe_concat content_tag :span, journal.display_action_type, class: 'action-type'
+      safe_concat content_tag :span, journal.display_object_type, class: 'object-type'
       journal.display_project_link(@project)
     end
   end
@@ -110,13 +110,13 @@ module JournalsHelper
   # @param [Numeric] nth : the number of the activity to render for the same day.
   def comment_header_render(comment, nth)
     if nth % 2 == 0 #Render is depending on the parity
-      safe_concat content_tag :span, nil, class: 'octicon octicon-comment activity_icon'
+      safe_concat content_tag :span, nil, class: 'octicon octicon-comment activity-icon'
       safe_concat content_tag :span, comment.display_author, class: 'author'
       safe_concat comment.render_header
       comment.display_project_link(@project)
       safe_concat content_tag :span, comment.display_creation_at, class: 'date'
     else
-      safe_concat content_tag :span, nil, class: 'octicon octicon-comment activity_icon'
+      safe_concat content_tag :span, nil, class: 'octicon octicon-comment activity-icon'
       safe_concat content_tag :span, comment.display_creation_at, class: 'date'
       safe_concat content_tag :span, comment.display_author, class: 'author'
       safe_concat comment.render_header
@@ -129,14 +129,14 @@ module JournalsHelper
   # @param [Numeric] nth : the number of the activity to render for the same day.
   def activity_detail_render(activities, nth)
     first_activity = activities[0]
-    safe_concat content_tag :div, class: 'journal_details', &Proc.new {
+    safe_concat content_tag :div, class: 'journal-details', &Proc.new {
       if first_activity.is_a?(Journal)
         safe_concat content_tag(:ul, (first_activity.details.collect { |detail| history_detail_render(detail, true) }).join.html_safe)
       end
     }
     if activities.size - 1 > 0
       safe_concat link_to 'view more', '#', {class: 'toggle'}
-      safe_concat content_tag :div, class: 'journal_details hide more', &Proc.new {
+      safe_concat content_tag :div, class: 'journal-details hide more', &Proc.new {
         i = 0
         activities.each do |activity|
           unless i == 0
@@ -192,18 +192,18 @@ module JournalsHelper
     periods = {ONE_DAY: t(:label_activity_period_one_day), THREE_DAYS: t(:label_activity_period_three_days), ONE_WEEK: t(:label_activity_period_one_week)}
     select_values = Hash[Journal::ACTIVITIES_PERIODS.keys.map { |period| [periods[period], period] }]
     project_id = @project_decorator ? @project_decorator.slug : nil
-    form_tag url_for({action: 'activity_filter', project_id: project_id, user: user}), {id: 'activities_filter', remote: true} do
+    form_tag url_for({action: 'activity_filter', project_id: project_id, user: user}), {id: 'activities-filter', remote: true} do
       safe_concat content_tag :ul, class: '', &Proc.new {
         types.collect do |type|
-          content_tag :li, class: 'activities_filter' do
-            safe_concat check_box_tag "[types][#{type}]", 1, selected_types.include?(type), {class: 'filter_selection'}
+          content_tag :li, class: 'activities-filter' do
+            safe_concat check_box_tag "[types][#{type}]", 1, selected_types.include?(type), {class: 'filter-selection'}
             safe_concat label_tag "[types][#{type}]", labels[type], {class: ''}
           end
         end.join.html_safe
       }
-      safe_concat date_field_tag 'date', date, {class: 'filter_selection'}
-      safe_concat content_tag :div, {class: 'autocomplete-combobox cbb-tiny nosearch', id: 'period_select'}, &Proc.new {
-        select_tag 'period', options_for_select(select_values, period), {include_blank: false, class: 'filter_selection chzn-select-deselect cbb-tiny'}
+      safe_concat date_field_tag 'date', date, {class: 'filter-selection'}
+      safe_concat content_tag :div, {class: 'autocomplete-combobox cbb-tiny nosearch', id: 'period-select'}, &Proc.new {
+        select_tag 'period', options_for_select(select_values, period), {include_blank: false, class: 'filter-selection chzn-select-deselect cbb-tiny'}
       }
     end
   end

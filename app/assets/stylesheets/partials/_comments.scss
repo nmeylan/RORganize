@@ -1,15 +1,15 @@
 @import 'utilities/_variables';
 
 $comment-header-background: #f7f7f7;
-#add_comment_form {
+#add-comment-form {
   display: none;
 }
 
-#comments_block, #history_blocks {
-  .comment_content.selected {
+#comments-block, #history-blocks {
+  .comment-content.selected {
     background-color: #e6f1f6;
   }
-  .comment_block {
+  .comment-block {
     position: relative;
     border: 1px solid #ddd;
     box-sizing: border-box;
@@ -22,7 +22,7 @@ $comment-header-background: #f7f7f7;
       margin-left: -65px;
     }
   }
-  .comment_header.display_avatar:before, .comment_header.display_avatar:after {
+  .comment-header.display-avatar:before, .comment-header.display-avatar:after {
     position: absolute;
     top: 16px;
     left: -16px;
@@ -36,21 +36,21 @@ $comment-header-background: #f7f7f7;
     pointer-events: none;
 
   }
-  .comment_header.display_avatar:before {
+  .comment-header.display-avatar:before {
     border-right-color: #dddddd;
     border-width: 8px;
   }
-  .comment_header.display_avatar:after {
+  .comment-header.display-avatar:after {
 
     border-width: 7px;
     border-right-color: #f7f7f7;
     margin-top: 1px;
     margin-left: 2px;
   }
-  .comment_block p {
+  .comment-block p {
     margin: 0;
   }
-  .comment_header {
+  .comment-header {
     padding: 15px;
     color: #999;
     border-bottom: 1px solid #ddd;
@@ -61,7 +61,7 @@ $comment-header-background: #f7f7f7;
       font-weight: bold;
     }
 
-    .history_date {
+    .history-date {
       margin-left: 5px;
       font-size: 12px;
       font-style: italic;
@@ -77,16 +77,16 @@ $comment-header-background: #f7f7f7;
       font-size: 12px;
     }
   }
-  .comment_content {
+  .comment-content {
     padding: 15px;
 
   }
 }
 
-#comments_overlay_content {
+#comments-overlay-content {
   padding: 10px 10px 10px 20px;
   width: 800px;
-  #comments_block {
+  #comments-block {
     margin-left: 40px;
   }
   .edited {

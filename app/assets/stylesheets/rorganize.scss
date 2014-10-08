@@ -53,7 +53,7 @@
 /*
 *  MAIN CONTENT
 */
-#highlight_search {
+#highlight-search {
   top: 56px;
   position: fixed;
   right: 0px;
@@ -66,7 +66,7 @@
     width: 250px;
     margin-bottom: 0px;
   }
-  span#highlight_search_result_count {
+  span#highlight-search-result-count {
     position: absolute;
     z-index: 1;
     cursor: text;
@@ -81,7 +81,7 @@
   }
 }
 
-.highlight_search_result {
+.highlight-search-result {
   position: relative !important;
   z-index: 20;
   text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff !important;
@@ -169,7 +169,7 @@
   margin: 0px !important;
 }
 
-.no-padding_left {
+.no-padding-left {
   padding-left: 0px !important;
 }
 
@@ -236,7 +236,7 @@
   vertical-align: top;
 }
 
-img.user_profile {
+img.user-profile {
   vertical-align: middle;
 }
 
@@ -244,12 +244,12 @@ img.avatar {
   border-radius: 5px;
 }
 
-img.small_avatar {
+img.small-avatar {
   border-radius: 3px;
   vertical-align: top;
 }
 
-.members_block {
+.members-block {
   margin-bottom: 10px;
   margin-top: 10px;
   span.avatar {
@@ -257,7 +257,7 @@ img.small_avatar {
       line-height: 20px;
     }
   }
-  span.members_grouped_by_role {
+  span.members-grouped-by-role {
     vertical-align: middle;
   }
   h4 {
@@ -265,7 +265,7 @@ img.small_avatar {
   }
 }
 
-.smooth_gray {
+.smooth-gray {
   color: #eee;
   .octicon {
     color: #eee;
@@ -280,7 +280,7 @@ img.small_avatar {
 }
 
 .flash:hover {
-  .close_flash {
+  .close-flash {
     opacity: 1;
   }
 }
@@ -316,7 +316,7 @@ img.small_avatar {
   }
 }
 
-.close_flash {
+.close-flash {
   float: right;
   opacity: 0.8;
   text-decoration: none;
@@ -406,7 +406,7 @@ img.small_avatar {
   border-radius: 3px;
 }
 
-.box_notes {
+.box-notes {
   color: #505050;
   border: 1px solid #e4e4e4;
 }
@@ -429,7 +429,7 @@ img.small_avatar {
   }
 }
 
-.box > .header_left {
+.box > .header-left {
   padding-left: 5px;
   text-align: left;
 }
@@ -438,7 +438,7 @@ img.small_avatar {
   color: $default-box-header-color !important;
 }
 
-.edit_note {
+.edit-note {
   padding: 6px;
   margin: 10px;
 }
@@ -453,18 +453,18 @@ img.small_avatar {
   outline: none;
 }
 
-.attachment_row{
+.attachment-row{
   line-height: 25px;
-  .attachment_delete_link{
+  .attachment-delete-link{
     vertical-align: bottom;
   }
 }
 
-.attachment_title {
+.attachment-title {
   padding-right: 20px;
 }
 
-.attachment_box {
+.attachment-box {
   table {
     margin-left: 60px !important;
   }
@@ -476,7 +476,7 @@ img.small_avatar {
   }
 }
 
-.has_context_menu {
+.has-context-menu {
   cursor: context-menu;
   -webkit-user-select: none;
   -khtml-user-select: none;
@@ -485,7 +485,7 @@ img.small_avatar {
   user-select: none;
 }
 
-#content .creation_info{
+#content .creation-info{
   p{
     margin-left: 5px;
   }
@@ -518,7 +518,7 @@ img.small_avatar {
   text-align: center;
 }
 
-.underlined_title {
+.underlined-title {
   padding-bottom: 10px !important;
   border-bottom: solid 1px #e5e5e5;
 }
@@ -539,23 +539,23 @@ img.small_avatar {
 *  FILTER
 */
 
-#filter_content td {
+#filter-content td {
   display: inline-block;
 }
 
-#filter_content td.label {
+#filter-content td.label {
   width: 10%;
 }
 
-#filter_content td.radio {
+#filter-content td.radio {
   width: 40%;
 }
 
-#filter_content td.value {
+#filter-content td.value {
   width: 48%;
 }
 
-#filter_content {
+#filter-content {
   width: 100%;
   padding: 6px;
   margin-bottom: 10px;
@@ -569,21 +569,21 @@ img.small_avatar {
 /*
   PROGRESS BAR
 */
-.roadmap .progress_bar {
+.roadmap .progress-bar {
   height: 20px;
 }
 
-.roadmap_version_block {
+.roadmap-version-block {
   margin-bottom: 30px;
   margin-top: 30px;
 }
 
-.roadmap_version_block .box {
+.roadmap-version-block .box {
   margin-left: 2px;
   margin-right: 2px;
 }
 
-.progress_bar {
+.progress-bar {
   position: relative;
   display: block;
   overflow: hidden;
@@ -614,9 +614,9 @@ img.small_avatar {
 /*
 * PROJECTS
 */
-ul.project_list {
+ul.project-list {
   > li {
-    div.star_project, div.watch_project {
+    div.star-project, div.watch-project {
       position: relative;
       margin-top: -30px;
       float: right;
@@ -624,28 +624,28 @@ ul.project_list {
   }
 }
 
-#project_description {
+#project-description {
   min-height: 300px;
 }
 
-.version_overview {
+.version-overview {
   h1 {
     float: left;
   }
-  .version_due_date {
+  .version-due-date {
     float: right;
   }
-  .requests_stats {
+  .requests-stats {
     float: left;
     margin-top: 10px;
   }
-  .over_run {
+  .over-run {
     float: right;
     margin-top: 10px;
   }
 }
 
-#add_member_overlay {
+#add-member-overlay {
   height: 300px;
   width: 400px;
   .overlayInner {
@@ -656,18 +656,18 @@ ul.project_list {
 /*
    CALENDAR
 */
-#calendar_header {
+#calendar-header {
   border: 1px solid #CACACA;
   text-align: center;
   background-color: whitesmoke;
 }
 
-#calendar_body {
+#calendar-body {
   padding: 0;
   width: 100%
 }
 
-#calendar .li_calendar_item {
+#calendar .li-calendar-item {
   list-style-type: none;
   float: left;
   display: inline-block;
@@ -676,22 +676,22 @@ ul.project_list {
   min-height: 131px;
 }
 
-#spent_time .li_calendar_item {
+#spent-time .li-calendar-item {
   width: 14%;
   min-height: 201px;
 }
 
-.calendar_item {
+.calendar-item {
   height: 130px;
   margin-right: -1px;
   border: 1px solid #CACACA;
 }
 
-#spent_time .calendar_item {
+#spent-time .calendar-item {
   height: 200px;
 }
 
-.calendar_item .calendar_item_header {
+.calendar-item .calendar-item-header {
   background-color: whitesmoke;
   height: 20px;
   border-bottom: 1px solid #CACACA;
@@ -699,26 +699,26 @@ ul.project_list {
 
 }
 
-.calendar_item .calendar_item_body {
+.calendar-item .calendar-item-body {
   height: 110px;
   margin: 0;
 }
 
-#spent_time .calendar_item .calendar_item_body {
+#spent-time .calendar-item .calendar-item-body {
   height: 160px;
 }
 
-.calendar_item .calendar_item_body ul {
+.calendar-item .calendar-item-body ul {
   padding: 0px;
   height: 95%;
   overflow-x: auto;
 }
 
-.calendar_item .calendar_item_bottom {
+.calendar-item .calendar-item-bottom {
   border-top: 1px solid #CACACA;
 }
 
-.calendar_item .calendar_item_body li {
+.calendar-item .calendar-item-body li {
   list-style-type: none;
   padding: 5px;
   margin: 2px;
@@ -734,34 +734,34 @@ ul.project_list {
   background-color: #EEF0F3;
 }
 
-#calendar .odd_even:nth-child(odd) .calendar_item_body li {
+#calendar .odd-even:nth-child(odd) .calendar-item-body li {
   background-color: white;
 }
 
-#calendar .odd_even:nth-child(odd) {
+#calendar .odd-even:nth-child(odd) {
   background: #F1F5FA;
 }
 
-.calendar_item .calendar_item_body p {
+.calendar-item .calendar-item-body p {
   margin: 0px 5px 0px 5px !important;
   padding-top: 10px;
 }
 
-.calendar_item .calendar_item_body.target {
+.calendar-item .calendar-item-body.target {
   background-color: #E1E0DC;
   cursor: pointer;
 }
 
-.calendar_item .calendar_item_body.today {
+.calendar-item .calendar-item-body.today {
   background-color: #D7D7D7;
 }
 
-.calendar_item_left {
+.calendar-item-left {
   width: 45%;
   float: left;
 }
 
-.calendar_item_right {
+.calendar-item-right {
   float: right;
 }
 
@@ -774,12 +774,12 @@ ul.project_list {
 }
 
 
-div.home_page_issues_overview_group h2 {
+div.home-page-issues-overview-group h2 {
   padding-bottom: 10px !important;
   border-bottom: solid 1px $default-border-color;
 }
 
-div.issues_overview_group {
+div.issues-overview-group {
   width: 49%;
   margin-bottom: 30px;
   h2 {
@@ -788,11 +788,11 @@ div.issues_overview_group {
   }
 }
 
-div.home_page_issues_overview_group {
+div.home-page-issues-overview-group {
   margin-bottom: 20px;
 }
 
-table.issues_overview_group, table.home_page_issues_overview_group {
+table.issues-overview-group, table.home-page-issues-overview-group {
   width: 100%;
   td.caption {
     width: 40%;
@@ -807,44 +807,44 @@ table.issues_overview_group, table.home_page_issues_overview_group {
   th.number, th.percentage {
     text-align: center;
   }
-  tr.issues_overview_group.body, tr.home_page_issues_overview_group.body {
+  tr.issues-overview-group.body, tr.home-page-issues-overview-group.body {
     td {
 
     }
   }
 }
 
-div.issues_overview_group:nth-child(odd) {
+div.issues-overview-group:nth-child(odd) {
   float: right;
 }
 
-div.issues_overview_group:nth-child(even) {
+div.issues-overview-group:nth-child(even) {
   float: left;
 }
 
-.issue_checklist_progress {
+.issue-checklist-progress {
   font-size: 14px;
 }
 
 /*
     WIKI
 */
-#wiki_pages li {
+#wiki-pages li {
   list-style-type: none;
 }
 
-#wiki_pages.organize li {
+#wiki-pages.organize li {
   padding: 5px;
   margin: 5px;
 }
 
-#wiki_pages.organize ul {
+#wiki-pages.organize ul {
   min-height: 40px;
   border: 1px dashed #D7D7D7;
   margin: 10px;
 }
 
-#wiki_pages.organize ul.trash {
+#wiki-pages.organize ul.trash {
   margin: 0px;
   padding: 0px;
 }
@@ -852,21 +852,21 @@ div.issues_overview_group:nth-child(even) {
 /*
     MY
 */
-.my .issue.list td.project, td.assigned_to {
+.my .issue.list td.project, td.assigned-to {
   width: 10%;
 }
 
 /*
     Log time
 */
-#spent_time_overlay_content {
+#spent-time-overlay-content {
   width: 700px;
 }
 
 /*
 hotkeys_overlay
 */
-#hotkeys_overlay {
+#hotkeys-overlay {
   min-width: 700px;
   height: 400px;
   li {
@@ -906,29 +906,29 @@ hotkeys_overlay
 /*
  Permissions
 */
-table.permissions_list {
+table.permissions-list {
   width: 100%;
   margin-bottom: 30px;
   margin-top: 30px;
   .controller {
     font-weight: bold;
   }
-  .permissions_list.header {
+  .permissions-list.header {
     vertical-align: middle;
-    a.check_all {
+    a.check-all {
       margin-right: 10px;
     }
   }
-  .permissions_list.header.controller {
+  .permissions-list.header.controller {
     width: 15%;
   }
-  .permissions_list.body {
+  .permissions-list.body {
     vertical-align: top;
   }
-  .permissions_list.body.spacer td {
+  .permissions-list.body.spacer td {
     height: 10px;
   }
-  .permissions_list.body.spacer.border td {
+  .permissions-list.body.spacer.border td {
     height: 10px;
     border-bottom: solid 1px $default-border-color;
   }
@@ -954,7 +954,7 @@ table.permissions_list {
 /*
   Statuses
 */
-.issue_status{
+.issue-status{
   display: inline-block;
   font-weight: bold;
   line-height: 1;
@@ -968,7 +968,7 @@ table.permissions_list {
 /*
   PROFILES
 */
-.profile_user_projects {
+.profile-user-projects {
   li {
     line-height: 25px;
   }
@@ -1016,10 +1016,10 @@ a.indicator {
   display: inline-block;
 }
 
-.notification_recipient_type {
+.notification-recipient-type {
   margin-left: 5px;
 }
-#notifications_content{
+#notifications-content{
   float: left;
   width: 80%;
   .no-data{

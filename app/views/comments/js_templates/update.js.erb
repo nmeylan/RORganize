@@ -3,4 +3,4 @@
  * Date: 05.08.14
  * Time: 10:30
  %>
-$("#comment_<%= @comment.id %> .comment_content").html("<%= escape_javascript markdown_to_html(@comment.content, @comment) %>");
+$("#comment-<%= @comment.id %> .comment-content").html("<%= escape_javascript markdown_to_html(@comment.content, @comment) %>");

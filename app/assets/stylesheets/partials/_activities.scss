@@ -4,7 +4,7 @@
   width: 100%;
   position: relative;
   overflow-x: hidden;
-  .activities_range {
+  .activities-range {
     color: $default-smooth-color;
     font-style: italic;
     span {
@@ -27,11 +27,11 @@
   z-index: -1;
 }
 
-#activities_filter {
+#activities-filter {
   #date {
     float: left;
   }
-  #period_select {
+  #period-select {
     float: right;
     margin-right: 40px;
     margin-top: -2px;
@@ -41,7 +41,7 @@
 .activities {
   width: 100%;
   overflow-x: hidden;
-  .date_circle {
+  .date-circle {
     cursor: pointer;
     position: relative;
     /* Firefox */
@@ -62,7 +62,7 @@
     vertical-align: middle;
     text-decoration: none;
     background: $activity-color;
-    .inner_circle {
+    .inner-circle {
       width: 160px;
       height: 160px;
       border-radius: 50%;
@@ -81,11 +81,11 @@
       }
     }
   }
-  .date_circle:hover {
+  .date-circle:hover {
     background-color: $activity-color-hover;
     border: 1px solid $activity-color-hover;
   }
-  .date_circle.collasped_circle {
+  .date-circle.collasped-circle {
     background-color: $activity-color-collapsed;
     border: 1px solid $activity-color-collapsed;
   }
@@ -104,13 +104,13 @@
       vertical-align: middle;
 
     }
-    span.action_type, span.object_type {
+    span.action-type, span.object-type {
       margin-right: 5px;
     }
     span.date {
       font-style: italic;
     }
-    div.journal_details {
+    div.journal-details {
       color: $default-smooth-color;
       font-size: 13px;
       ul {
@@ -124,7 +124,7 @@
         }
       }
     }
-    div.journal_details.more.hide {
+    div.journal-details.more.hide {
       display: none;
       vertical-align: top;
     }
@@ -145,7 +145,7 @@
         display: block;
       }
     }
-    .activity_icon {
+    .activity-icon {
       margin-right: 6px;
     }
   }
@@ -168,7 +168,7 @@
         margin-left: 5px;
       }
     }
-    .activity_icon {
+    .activity-icon {
       right: 0%;
     }
 
@@ -191,7 +191,7 @@
         margin-right: 5px;
       }
     }
-    .activity_icon {
+    .activity-icon {
       left: 0%;
     }
   }

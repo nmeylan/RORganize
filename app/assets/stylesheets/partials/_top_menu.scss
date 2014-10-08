@@ -4,11 +4,11 @@ $top-menu-font-size: 11px;
 /*
 *  TOP MENU
 */
-#top_menu a {
+#top-menu a {
   font-size: $top-menu-font-size;
 }
 
-#top_menu {
+#top-menu {
   background-color: $top-menu-background-color;
   background-image: -moz-linear-gradient(#f9f9f9, #f3f3f3);
   background-image: -webkit-linear-gradient(#f9f9f9, #f3f3f3);
@@ -21,7 +21,7 @@ $top-menu-font-size: 11px;
   border-bottom: 1px solid $default-border-color;
 }
 
-#top_menu_logo {
+#top-menu-logo {
   width: 32px;
   height: 32px;
   display: inline-block;
@@ -37,19 +37,19 @@ $top-menu-font-size: 11px;
   border: 1px solid #bbb;
 }
 
-#top_menu ul {
+#top-menu ul {
   padding: 0px;
   margin: 5px 0px;
 }
 
-#top_menu li {
+#top-menu li {
   float: left;
   list-style-type: none;
   padding: 0px;
   margin: 0px;
 }
 
-#top_menu a.square {
+#top-menu a.square {
   border: 1px solid #bbb;
   text-shadow: 0 1px 0 #fff;
   cursor: pointer;
@@ -64,11 +64,11 @@ $top-menu-font-size: 11px;
   padding: 4px 5px 7px 5px;
 }
 
-#top_menu a.square:hover {
+#top-menu a.square:hover {
   color: $link-hover-color;
 }
 
-#top_menu a.square.selected {
+#top-menu a.square.selected {
   color: $link-selected-color;
 }
 
@@ -76,7 +76,7 @@ $top-menu-font-size: 11px;
   float: right;
 }
 
-#project_logo {
+#project-logo {
   margin-right: 10px;
 }
 

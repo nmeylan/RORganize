@@ -110,11 +110,11 @@ module ApplicationHelper
   # @param [String] path : to the controller to refresh the list when user change the per_page or current_page parameter.
   def paginate(collection, session, path)
     safe_concat will_paginate(collection, {renderer: 'RemoteLinkRenderer', next_label: t(:label_next), previous_label: t(:label_previous)})
-    content_tag :div, class: 'autocomplete-combobox nosearch per_page
+    content_tag :div, class: 'autocomplete-combobox nosearch per-page
 autocomplete-combobox-high',
                 &Proc.new {
-      safe_concat content_tag :label, t(:label_per_page), {for: 'per_page', class: 'per_page'}
-      safe_concat select_tag 'per_page', options_for_select([%w(25 25), %w(50 50), %w(100 100)], session[:per_page]), :class => 'chzn-select cbb-small cbb-high', :id => 'per_page', :'data-link' => "#{path}"
+      safe_concat content_tag :label, t(:label_per_page), {for: 'per_page', class: 'per-page'}
+      safe_concat select_tag 'per_page', options_for_select([%w(25 25), %w(50 50), %w(100 100)], session[:per_page]), :class => 'chzn-select cbb-small cbb-high', id: 'per-page', :'data-link' => "#{path}"
     }
   end
 
@@ -125,21 +125,21 @@ autocomplete-combobox-high',
   # @param [Boolean] can_save : false when save button is hidden, true otherwise.
   # @param [hash] save_button_options
   def filter_tag(label, filtered_attributes, submission_path, can_save = false, save_button_options = {})
-    content_tag :fieldset, id: "#{label}_filter" do
+    content_tag :fieldset, id: "#{label}-filter" do
       safe_concat content_tag :legend, link_to(glyph(t(:link_filter), 'chevron-right'), '#', {:class => 'icon-collapsed toggle', :id => "#{label}"})
       safe_concat content_tag :div, class: 'content', &Proc.new {
-        safe_concat form_tag submission_path, {:method => :get, :class => 'filter_form', :id => 'filter_form', :remote => true}, &Proc.new {
-          safe_concat radio_button_tag('type', 'all', true, {:align => 'center'})
-          safe_concat label_tag('type_all', t(:label_all))
-          safe_concat radio_button_tag 'type', 'filter', false
-          safe_concat label_tag 'type_filter', t(:link_filter)
-          safe_concat content_tag :div, class: 'autocomplete-combobox nosearch no-padding_left no-height', &Proc.new {
-            select_tag 'filters_list', options_for_select(filtered_attributes), :class => 'chzn-select cbb-verylarge', :id => 'filters_list', :multiple => true
+        safe_concat form_tag submission_path, {:method => :get, class: 'filter-form', id: 'filter-form', :remote => true}, &Proc.new {
+          safe_concat radio_button_tag('type', 'all', true, {:align => 'center', id: 'type-all'})
+          safe_concat label_tag('type-all', t(:label_all))
+          safe_concat radio_button_tag 'type', 'filter', false, id: 'type-filter'
+          safe_concat label_tag 'type-filter', t(:link_filter)
+          safe_concat content_tag :div, class: 'autocomplete-combobox nosearch no-padding-left no-height', &Proc.new {
+            select_tag 'filters_list', options_for_select(filtered_attributes), :class => 'chzn-select cbb-verylarge', id: 'filters-list', :multiple => true
           }
-          safe_concat content_tag :table, nil, id: 'filter_content'
+          safe_concat content_tag :table, nil, id: 'filter-content'
           safe_concat submit_tag t(:button_apply), {:style => 'margin-left:0px'}
           if can_save
-            safe_concat content_tag :span, save_filter_button_tag(save_button_options[:filter_content], save_button_options[:user], save_button_options[:project]), {id: 'save_query_button'}
+            safe_concat content_tag :span, save_filter_button_tag(save_button_options[:filter_content], save_button_options[:user], save_button_options[:project]), {id: 'save-query-button'}
           end
         }
       }
@@ -154,7 +154,7 @@ autocomplete-combobox-high',
     if !filter_content.eql?('') && user.allowed_to?('new', 'Queries', project) && params[:query_id].nil?
       link_to t(:button_save), new_project_query_queries_path(project.slug, 'Issue'), {:remote => true}
     elsif !filter_content.eql?('') && user.allowed_to?('new', 'Queries', project) && !params[:query_id].nil?
-      link_to t(:button_save), edit_query_filter_queries_path(params[:query_id]), {:id => 'filter_edit_save'}
+      link_to t(:button_save), edit_query_filter_queries_path(params[:query_id]), {id: 'filter-edit-save'}
     end
   end
 
@@ -180,7 +180,7 @@ autocomplete-combobox-high',
   # Build a toolbox render from a toolbox object.
   # @param [Toolbox] toolbox : the toolbox object.
   def toolbox_tag(toolbox)
-    form_tag toolbox.path, :remote => true, :id => 'toolbox_form', &Proc.new {
+    form_tag toolbox.path, :remote => true, :id => 'toolbox-form', &Proc.new {
       safe_concat(toolbox.menu.values.collect do |menu_item|
         content_tag :li do
           safe_concat link_to glyph(menu_item.caption, menu_item.glyph_name), '#', {:id => menu_item.name}
@@ -299,7 +299,7 @@ autocomplete-combobox-high',
   def history_render(history) #If come from show action
     safe_concat content_tag :div, nil, class: 'separator'
     safe_concat content_tag :h2, t(:label_history)
-    safe_concat content_tag :div, id: 'history_blocks', &Proc.new {
+    safe_concat content_tag :div, id: 'history-blocks', &Proc.new {
       history.content.collect do |activity|
         if activity.is_a?(Journal)
           safe_concat history_block_render(activity).html_safe
@@ -314,13 +314,13 @@ autocomplete-combobox-high',
   # @param [Journal] journal : to render.
   def history_block_render(journal)
     user = journal.display_author(false)
-    content_tag :div, {class: 'history_block', id: "journal_#{journal.id}"} do
+    content_tag :div, {class: 'history-block', id: "watch-link-#{journal.id}"} do
       safe_concat journal.display_author_avatar
-      safe_concat content_tag :div, class: "history_header #{'display_avatar' if journal.user_avatar?}", &Proc.new {
+      safe_concat content_tag :div, class: "history-header #{'display-avatar' if journal.user_avatar?}", &Proc.new {
         safe_concat content_tag :span, user, {class: 'author'}
         safe_concat " #{t(:label_updated).downcase} #{t(:text_this)} "
         safe_concat "#{distance_of_time_in_words(journal.created_at, Time.now)} #{t(:label_ago)}. "
-        safe_concat content_tag :span, journal.created_at.strftime(Rorganize::TIME_FORMAT), {class: 'history_date'}
+        safe_concat content_tag :span, journal.created_at.strftime(Rorganize::TIME_FORMAT), {class: 'history-date'}
       }
       safe_concat clear_both
       safe_concat content_tag(:ul, (journal.details.collect { |detail| history_detail_render(detail) }).join.html_safe)
@@ -335,7 +335,7 @@ autocomplete-combobox-high',
     content_tag :li do
       icon = Rorganize::ACTION_ICON[detail.property_key.to_sym]
       icon ||= 'pencil'
-      safe_concat content_tag :span, nil, class: "octicon octicon-#{icon} activity_icon" unless no_icon
+      safe_concat content_tag :span, nil, class: "octicon octicon-#{icon} activity-icon" unless no_icon
       safe_concat content_tag :span, class: 'detail', &Proc.new {
         if detail.old_value && (detail.value.nil? || detail.value.eql?(''))
           safe_concat content_tag :b, "#{detail.property} #{detail.old_value.to_s} "
@@ -361,7 +361,7 @@ autocomplete-combobox-high',
   # @param [Class] type : type of the object that belongs to this attachment.
   def add_attachments_link(caption, object, type)
     content = escape_once(render :partial => 'shared/attachments', locals: {attachments: Attachment.new, object: object, type: type})
-    link_to caption, '#', {:class => 'add_attachment_link', 'data-content' => content}
+    link_to caption, '#', {class: 'add-attachment-link', 'data-content' => content}
   end
 
 
@@ -400,7 +400,7 @@ autocomplete-combobox-high',
   # @param [Object] size
   def generics_filter_simple_select(name, options_for_select, multiple = true, size = nil)
     size ||= 'cbb-large'
-    content_tag :div, class: 'autocomplete-combobox nosearch no-padding_left no-height' do
+    content_tag :div, class: 'autocomplete-combobox nosearch no-padding-left no-height' do
       select_tag("filter[#{name}][value][]", options_for_select(options_for_select), :class => 'chzn-select '+size, :id => name+'_list', :multiple => multiple)
     end
   end
@@ -414,7 +414,7 @@ autocomplete-combobox-high',
   # For filters that require data from date field: e.g created_at.
   # @param [String] name : name of the input field.
   def generics_filter_date_field(name)
-    date_field_tag("filter[#{name}][value]", '', {:size => 6, :id => 'calendar_'+name, :class => 'calendar'})
+    date_field_tag("filter[#{name}][value]", '', {:size => 6, id: 'calendar-'+name, :class => 'calendar'})
   end
 
   # @param [String] name : name of the input field.
@@ -484,7 +484,7 @@ autocomplete-combobox-high',
   # Build a dynamic progress bar for a given percentage.
   # @param [Numeric] percent : percentage of progression.
   def progress_bar_tag(percent)
-    content_tag :span, class: 'progress_bar' do
+    content_tag :span, class: 'progress-bar' do
       safe_concat content_tag :span, '&nbsp'.html_safe, {class: 'progress', style: "width:#{percent}%"}
       safe_concat content_tag :span, "#{percent}%", {class: 'percent'}
     end
@@ -495,7 +495,7 @@ autocomplete-combobox-high',
   # in case of big render.
   # @param [User] user.
   def fast_profile_link(user)
-    "<a href='/#{user.slug}' class='author_link' >#{user.caption}</a>"
+    "<a href='/#{user.slug}' class='author-link' >#{user.caption}</a>"
   end
 
   # Build a link to project overview.
@@ -519,7 +519,7 @@ autocomplete-combobox-high',
   # Build an avatar renderer for the given user.
   # @param [User] user.
   def fast_user_small_avatar(user)
-    "<img alt='' class='small_avatar' src='/system/attachments/Users/#{user.id}/#{user.avatar.id}/very_small/#{user.avatar.avatar_file_name}'>"
+    "<img alt='' class='small-avatar' src='/system/attachments/Users/#{user.id}/#{user.avatar.id}/very_small/#{user.avatar.avatar_file_name}'>"
   end
 
   # Build a link to issue show action.
@@ -545,7 +545,7 @@ autocomplete-combobox-high',
 
   # @param [Numeric] number of comments that belongs to the model.
   def comment_presence(number)
-    content_tag :span, {class: "#{number == 0 ? 'smooth_gray' : ''}"} do
+    content_tag :span, {class: "#{number == 0 ? 'smooth-gray' : ''}"} do
       safe_concat content_tag :span, nil, {class: 'octicon octicon-comment'}
       safe_concat " #{number}"
     end
@@ -555,7 +555,7 @@ autocomplete-combobox-high',
   # @param [ActiveRecord::base] watchable : a model that include Watchable module.
   # @param [Project] project : the project which belongs to watchable.
   def watch_link(watchable, project)
-    link_to glyph(t(:link_watch), 'eye'), watchers_path(project.slug, watchable.class.to_s, watchable.id), {id: "watch_link_#{watchable.id}", class: 'tooltipped tooltipped-s button', remote: true, method: :post, label: t(:text_watch)}
+    link_to glyph(t(:link_watch), 'eye'), watchers_path(project.slug, watchable.class.to_s, watchable.id), {id: "watch-link-#{watchable.id}", class: 'tooltipped tooltipped-s button', remote: true, method: :post, label: t(:text_watch)}
   end
 
   # Render a link to unwatch all activities from watchable.
@@ -563,7 +563,7 @@ autocomplete-combobox-high',
   # @param [Watcher] watcher : the watcher model (activeRecord).
   # @param [Project] project : the project which belongs to watchable.
   def unwatch_link(watchable, watcher, project)
-    link_to glyph(t(:link_unwatch), 'eye'), watcher_path(project.slug, watchable.class.to_s, watchable.id, watcher.id), {id: "unwatch_link_#{watchable.id}", class: 'tooltipped tooltipped-s button', remote: true, method: :delete, label: t(:text_unwatch)}
+    link_to glyph(t(:link_unwatch), 'eye'), watcher_path(project.slug, watchable.class.to_s, watchable.id, watcher.id), {id: "unwatch-link-#{watchable.id}", class: 'tooltipped tooltipped-s button', remote: true, method: :delete, label: t(:text_unwatch)}
   end
 
   def notification_link(user)
@@ -582,6 +582,6 @@ autocomplete-combobox-high',
   end
 
   def color_field_tag(form, field)
-    form.text_field field, autocomplete: 'off', maxlength: 7, class: 'color_editor_field'
+    form.text_field field, autocomplete: 'off', maxlength: 7, class: 'color-editor-field'
   end
 end

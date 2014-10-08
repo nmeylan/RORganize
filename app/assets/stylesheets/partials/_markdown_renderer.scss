@@ -1,5 +1,5 @@
 
-#content .markdown_renderer {
+#content .markdown-renderer {
   pre {
       padding: 16px;
       overflow: auto;
@@ -30,7 +30,7 @@
   ul {
     padding-left: 20px;
   }
-  ul.task_list {
+  ul.task-list {
     padding: 0px;
   }
 
@@ -40,13 +40,13 @@
   }
 }
 
-.comment_block {
-  .markdown_preview {
+.comment-block {
+  .markdown-preview {
     padding: 10px;
   }
 }
 
-.markdown_preview {
+.markdown-preview {
   ul {
     margin-left: 10px;
   }

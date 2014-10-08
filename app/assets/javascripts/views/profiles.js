@@ -15,12 +15,11 @@ function on_load_profiles_scripts() {
 
 function profiles_spent_time() {
     bind_calendar_button();
-    jQuery('.log_time').click(function (e) {
+    jQuery('.log-time').click(function (e) {
         e.preventDefault();
         fill_log_issue_time_overlay(jQuery(this).attr('href'), this);
-        createOverlay("#spent_time_overlay", 150);
-        jQuery('#spent_time_overlay').overlay().load();
-
+        createOverlay("#spent-time-overlay", 150);
+        jQuery('#spent-time-overlay').overlay().load();
     });
 }
 
@@ -30,5 +29,5 @@ function profiles_project() {
 }
 
 function on_activities_load() {
-    createOverlay("#comments_overlay", 150);
+    createOverlay("#comments-overlay", 150);
 }

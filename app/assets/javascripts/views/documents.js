@@ -28,10 +28,10 @@ function on_load_documents_scripts(options) {
 }
 
 function documents_index(options) {
-    checkAll("#check_all", ".list");
-    listTrClick(".list .document_tr");
+    checkAll("#check-all", ".list");
+    listTrClick(".list .document-tr");
     checkboxToolbox(".list");
-    init_toolbox('.document.list .document_tr', 'documents_toolbox', {list: '.document.list'});
+    init_toolbox('.document.list .document-tr', 'documents-toolbox', {list: '.document.list'});
     initialize_filters(options);
 }
 

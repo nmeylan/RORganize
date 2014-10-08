@@ -12,23 +12,23 @@ module DocumentsHelper
   def list(collection)
     content_tag :table, {class: 'document list', 'data-link' => toolbox_documents_path(@project.slug)}, &Proc.new {
       safe_concat content_tag :tr, class: 'header', &Proc.new {
-        safe_concat content_tag :th, link_to(glyph('', 'check'), '#', {:class => 'icon-checked', :id => 'check_all', 'cb_checked' => 'b'})
+        safe_concat content_tag :th, link_to(glyph('', 'check'), '#', {:class => 'icon-checked', id: 'check-all', 'cb_checked' => 'b'})
         safe_concat content_tag :th, sortable('documents.id', '#')
         safe_concat content_tag :th, sortable('documents.name', 'Name')
         safe_concat content_tag :th, sortable('categories.name', 'Category')
         safe_concat content_tag :th, sortable('versions.name', 'Target phase')
-        safe_concat content_tag :th, nil, {class: 'optional_cell'}
-        safe_concat content_tag :th, nil, {class: 'optional_cell'}
+        safe_concat content_tag :th, nil, {class: 'optional-cell'}
+        safe_concat content_tag :th, nil, {class: 'optional-cell'}
       }
       safe_concat(collection.collect do |document|
-        content_tag :tr, class: 'odd_even document_tr has_context_menu' do
-          safe_concat content_tag :td, check_box_tag("document-#{document.id.to_s}", document.id), {class: 'cell_checkbox'}
-          safe_concat content_tag :td, document.id, class: 'list_center id'
+        content_tag :tr, class: 'odd-even document-tr has-context-menu' do
+          safe_concat content_tag :td, check_box_tag("document-#{document.id.to_s}", document.id), {class: 'cell-checkbox'}
+          safe_concat content_tag :td, document.id, class: 'list-center id'
           safe_concat content_tag :td, link_to(document.resized_caption(100), document_path(@project.slug, document.id)), {class: 'name', id: document.id}
-          safe_concat content_tag :td, document.category, class: 'list_center category'
-          safe_concat content_tag :td, document.version, class: 'list_center version'
-          safe_concat content_tag :td, document.comment_presence_indicator, class: 'icon_information'
-          safe_concat content_tag :td, document.attachment_presence_indicator, class: 'icon_information'
+          safe_concat content_tag :td, document.category, class: 'list-center category'
+          safe_concat content_tag :td, document.version, class: 'list-center version'
+          safe_concat content_tag :td, document.comment_presence_indicator, class: 'icon-information'
+          safe_concat content_tag :td, document.attachment_presence_indicator, class: 'icon-information'
         end
       end.join.html_safe)
     }

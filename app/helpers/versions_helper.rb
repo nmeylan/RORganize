@@ -9,7 +9,7 @@ module VersionsHelper
   def list(collection)
     content_tag :table, {class: 'version list'}, &Proc.new {
       safe_concat content_tag :tr, class: 'header', &Proc.new {
-        safe_concat content_tag :th, 'Name', {class: 'list_left'}
+        safe_concat content_tag :th, 'Name', {class: 'list-left'}
         safe_concat content_tag :th, 'Start date'
         safe_concat content_tag :th, 'Target date'
         safe_concat content_tag :th, 'Is done'
@@ -17,11 +17,11 @@ module VersionsHelper
         safe_concat content_tag :th, nil
       }
       safe_concat(collection.collect do |version|
-        content_tag :tr, {class: 'odd_even', id: version.id} do
-          safe_concat content_tag :td, version.edit_link, {class: 'list_left name'}
-          safe_concat content_tag :td, version.start_date, {class: 'list_center start_date'}
-          safe_concat content_tag :td, version.display_target_date, {class: 'list_center version'}
-          safe_concat content_tag :td, version.is_done, {class: 'list_center is_done'}
+        content_tag :tr, {class: 'odd-even', id: version.id} do
+          safe_concat content_tag :td, version.edit_link, {class: 'list-left name'}
+          safe_concat content_tag :td, version.start_date, {class: 'list-center start-date'}
+          safe_concat content_tag :td, version.display_target_date, {class: 'list-center version'}
+          safe_concat content_tag :td, version.is_done, {class: 'list-center is-done'}
           safe_concat content_tag :td, {class: 'action'}, &Proc.new {
             safe_concat version.inc_position_link
             safe_concat version.dec_position_link(collection.size)
@@ -47,7 +47,7 @@ module VersionsHelper
   # @param [Hash] collection_detail : hash with following structure {version_id: {closed_issues_count: 'value', opened_issues_count: 'value', percent: 'value'}}
   def draw_roadmap(collection, collection_detail)
     collection.collect do |version|
-      content_tag :div, class: 'roadmap_version_block' do
+      content_tag :div, class: 'roadmap-version-block' do
         safe_concat version_overview(version, collection_detail[version.id][:closed_issues_count],
                                      collection_detail[version.id][:opened_issues_count], collection_detail[version.id][:percent])
         safe_concat version.display_description
@@ -75,12 +75,12 @@ module VersionsHelper
   # @param [Numeric] opened_issues_count.
   # @param [Numeric] percent.
   def version_overview(version, closed_issues_count, opened_issues_count, percent)
-    content_tag :div, class: 'version_overview' do
+    content_tag :div, class: 'version-overview' do
       safe_concat content_tag :h1, version.name, id: "v-#{version.display_id}"
-      safe_concat content_tag :div, version.display_target_date, {class: 'version_due_date'}
+      safe_concat content_tag :div, version.display_target_date, {class: 'version-due-date'}
       safe_concat clear_both
       safe_concat progress_bar_tag(percent)
-      safe_concat content_tag :span, class: 'requests_stats', &Proc.new {
+      safe_concat content_tag :span, class: 'requests-stats', &Proc.new {
         safe_concat content_tag :b, version.issues_count.to_s + ' '
         safe_concat t(:label_request_plural) + ', '
         safe_concat content_tag :b, closed_issues_count.to_s + ' '
@@ -90,7 +90,7 @@ module VersionsHelper
       }
       over_run = (version.target_date.nil? || version.is_done) ? 0 : (Date.today - version.target_date).to_i
       if over_run > 0
-        safe_concat content_tag :span, %Q(#{t(:text_past_due)} #{t(:label_by)} #{over_run} #{t(:label_plural_day)}), {class: 'over_run text-alert octicon octicon-alert'}
+        safe_concat content_tag :span, %Q(#{t(:text_past_due)} #{t(:label_by)} #{over_run} #{t(:label_plural_day)}), {class: 'over-run text-alert octicon octicon-alert'}
       end
       safe_concat clear_both
     end

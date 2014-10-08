@@ -4,7 +4,7 @@
 %>
 
 
-<%= image_tag asset_path('rorganize_logo_3.svg'), id: 'top_menu_logo' %>
+<%= image_tag asset_path('rorganize_logo_3.svg'), id: 'top-menu-logo' %>
 <div id="account">
   <ul>
     <% if user_signed_in? %>
@@ -24,7 +24,7 @@
   </ul>
 </div>
 
-<ul id="top_menu_items">
+<ul id="top-menu-items">
   <% render_top_menu %>
   <%= yield :top_menu_items %>
 </ul>

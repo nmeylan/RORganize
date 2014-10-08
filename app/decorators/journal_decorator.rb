@@ -35,7 +35,7 @@ class JournalDecorator < ApplicationDecorator
   # @return [String] link to project if not nil.
   def display_project_link(project)
     unless project
-      h.safe_concat h.content_tag :span, class: 'object_type', &Proc.new {
+      h.safe_concat h.content_tag :span, class: 'object-type', &Proc.new {
         h.safe_concat ' at '
         h.safe_concat project_link
       }
@@ -52,10 +52,10 @@ class JournalDecorator < ApplicationDecorator
   def render_details(no_icon = false)
     h.safe_concat h.content_tag :span, self.display_author, class: 'author'
     if model.action_type.eql?(Journal::ACTION_UPDATE) && model.details.to_a.any?
-      h.safe_concat h.content_tag :span, nil, class: 'octicon octicon-pencil activity_icon' unless no_icon
+      h.safe_concat h.content_tag :span, nil, class: 'octicon octicon-pencil activity-icon' unless no_icon
       h.content_tag(:ul, (model.details.collect { |detail| h.activity_history_detail_render(detail) }).join.html_safe)
     elsif model.action_type.eql?(Journal::ACTION_CREATE)
-      h.safe_concat h.content_tag :span, nil, class: 'octicon octicon-plus activity_icon' unless no_icon
+      h.safe_concat h.content_tag :span, nil, class: 'octicon octicon-plus activity-icon' unless no_icon
       if model.journalizable_type.eql?('Issue')
         h.t(:text_created_this_issue)
       else
@@ -67,11 +67,11 @@ class JournalDecorator < ApplicationDecorator
   # @return [String] the icon of the journal type.
   def display_action_type_icon
     if self.action_type.eql?(Journal::ACTION_CREATE)
-      'octicon octicon-plus activity_icon'
+      'octicon octicon-plus activity-icon'
     elsif self.action_type.eql?(Journal::ACTION_UPDATE)
-      'octicon octicon-pencil activity_icon'
+      'octicon octicon-pencil activity-icon'
     elsif self.action_type.eql?(Journal::ACTION_DELETE)
-      'octicon octicon-trashcan activity_icon'
+      'octicon octicon-trashcan activity-icon'
     end
   end
 

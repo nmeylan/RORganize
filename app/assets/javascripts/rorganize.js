@@ -62,10 +62,10 @@
         bind_color_editor();
 
         //help overlay
-        createOverlay("#hotkeys_overlay", 150);
-        $('#open_hotkey_link').click(function (e) {
+        createOverlay("#hotkeys-overlay", 150);
+        $('#open-hotkey-link').click(function (e) {
             e.preventDefault();
-            $("#hotkeys_overlay").overlay().load();
+            $("#hotkeys-overlay").overlay().load();
         });
         bind_table_list_actions();
 
@@ -180,7 +180,7 @@ function display_flash() {
         el = jQuery(this);
         if (el.text().trim() != "") {
             el.css("display", "block");
-            el.find(".close_flash").click(function (e) {
+            el.find(".close-flash").click(function (e) {
                 jQuery(this).parent().fadeOut();
             });
         } else {
@@ -301,8 +301,8 @@ function createOverlay(id, top) {
             var self = this;
             var overlay = self.getOverlay();
             $(self).removeClass('animated bounceInDown bounceOutUp');
-            overlay.find('.close_button').remove();
-            var close_button = $('<span class="medium-octicon octicon-x close_button"></span>');
+            overlay.find('.close-button').remove();
+            var close_button = $('<span class="medium-octicon octicon-x close-button"></span>');
             close_button.click(function (e) {
                 e.preventDefault();
                 self.close();
@@ -331,7 +331,7 @@ function checkAll(selector, context) {
         var checked = jQuery(this).attr("cb_checked") === 'b';
         cases.attr('checked', checked);
         jQuery(this).attr("cb_checked", checked ? "a" : "b");
-        checked ? jQuery(".issue_tr").addClass("toolbox_selection") : jQuery(".issue_tr").removeClass("toolbox_selection");
+        checked ? jQuery('.issue-tr').addClass("toolbox-selection") : jQuery('.issue-tr').removeClass("toolbox-selection");
     });
 }
 
@@ -339,11 +339,11 @@ function checkboxToolbox(selector) {
     jQuery(selector + " input[type=checkbox]").change(function () {
         var row = jQuery(this).parent("td").parent("tr");
         if (jQuery(this).is(':checked')) {
-            jQuery(".toolbox_selection").removeClass("toolbox_last");
-            row.addClass("toolbox_selection").addClass("toolbox_last");
+            jQuery(".toolbox-selection").removeClass("toolbox-last");
+            row.addClass("toolbox-selection").addClass("toolbox-last");
         }
         else
-            row.removeClass("toolbox_selection").removeClass("toolbox_last");
+            row.removeClass("toolbox-selection").removeClass("toolbox-last");
     });
 }
 
@@ -354,24 +354,24 @@ function listTrClick(rows_selector) {
         var target = e.target || e.srcElement;
         if (!e.shiftKey && !$(target).is('input') && !e.ctrlKey && !e.metaKey) {
             rows.find("input[type=checkbox]").attr('checked', false);
-            rows.removeClass("toolbox_selection").removeClass("toolbox_last");
+            rows.removeClass("toolbox-selection").removeClass("toolbox-last");
             el.find("input[type=checkbox]").attr('checked', true);
-            el.addClass("toolbox_selection").addClass("toolbox_last");
+            el.addClass("toolbox-selection").addClass("toolbox-last");
         } else if (e.shiftKey) {
             e.preventDefault();
-            var last_selected_row = $('.toolbox_last');
+            var last_selected_row = $('.toolbox-last');
             if (last_selected_row.length > 0) {
                 var between_rows = last_selected_row[0].rowIndex > el[0].rowIndex ? last_selected_row.prevUntil(el[0]) : last_selected_row.nextUntil(el[0]);
-                rows.removeClass("toolbox_last");
+                rows.removeClass("toolbox-last");
                 between_rows.find("input[type=checkbox]").attr('checked', true);
-                between_rows.addClass("toolbox_selection").addClass("toolbox_last");
+                between_rows.addClass("toolbox-selection").addClass("toolbox-last");
             }
             el.find("input[type=checkbox]").attr('checked', true);
-            el.addClass("toolbox_selection").addClass("toolbox_last");
+            el.addClass("toolbox-selection").addClass("toolbox-last");
         } else if (e.ctrlKey || e.metaKey) {
-            rows.removeClass("toolbox_last");
+            rows.removeClass("toolbox-last");
             el.find("input[type=checkbox]").attr('checked', true);
-            el.addClass("toolbox_selection").addClass("toolbox_last");
+            el.addClass("toolbox-selection").addClass("toolbox-last");
         }
     });
 }
@@ -387,7 +387,7 @@ function init_toolbox(selector, id, options) {
                 var self_element = jQuery(this);
                 self_element.find(':checkbox').attr('checked', true);
                 menu_item_updater(options);
-                self_element.addClass("toolbox_selection");
+                self_element.addClass("toolbox-selection");
             }
         }
     );
@@ -421,15 +421,15 @@ function bind_menu_actions(toolbox_id) {
         jQuery("input#value_" + context).val(jQuery(this).data("id"));
         jQuery(toolbox_id).find("form").submit();
     });
-    jQuery("a.action_link").click(function (e) {
+    jQuery("a.action-link").click(function (e) {
         e.preventDefault();
         var context = _.without(jQuery(this).parents("li").attr('class').split(' '), 'hover');
         //put new value into hidden field which name is matching with context
         jQuery("input#value_" + context).val(jQuery(this).data("id"));
         jQuery(toolbox_id).find("form").submit();
     });
-    jQuery("#open_delete_overlay").click(function (e) {
-        jQuery('#delete_overlay').overlay().load();
+    jQuery("#open-delete-overlay").click(function (e) {
+        jQuery('#delete-overlay').overlay().load();
     });
 }
 
@@ -482,7 +482,7 @@ function binding_radio_button(selector) {
 }
 //Param is json object that containing html: {'assigned_to':"<td>some html</td>",....}
 function add_filters(json_content) {
-    jQuery("#filters_list").change(function (e) {
+    jQuery("#filters-list").change(function (e) {
         var domobject = jQuery(jQuery.parseJSON(json_content));
         var selected = jQuery(this).val();
         var tmp = "";
@@ -491,13 +491,13 @@ function add_filters(json_content) {
             tmp = jQuery(this).val();
             selector = "tr." + tmp.toLowerCase().replace(' ', '_');
             if ((jQuery(selector).length < 1) && jQuery.inArray(jQuery(this).val(), selected) != -1) {
-                jQuery("#filter_content").append(domobject[0][tmp]);
+                jQuery("#filter-content").append(domobject[0][tmp]);
 
                 //binding radio button action
-                binding_radio_button("#filter_content " + selector + " input[type=radio]");
-                radio_button_behaviour("#filter_content " + selector + " input[type=radio]");
+                binding_radio_button("#filter-content " + selector + " input[type=radio]");
+                radio_button_behaviour("#filter-content " + selector + " input[type=radio]");
                 if (tmp == 'Status')
-                    jQuery("#filter_content " + selector + " input[type=radio]#status_open").attr('checked', 'checked');
+                    jQuery("#filter-content " + selector + " input[type=radio]#status-open").attr('checked', 'checked');
 
             } else if (jQuery(selector).length > 0 && jQuery.inArray(jQuery(this).val(), selected) == -1) {
                 jQuery(selector).remove();
@@ -514,19 +514,19 @@ function load_filter(json_content, present_filters) {
     var selector = "";
     var radio = "";
     if (_.any(present_filters)) {
-        jQuery("#filter_content").html("");
-        jQuery("#type_filter").attr('checked', 'checked');
+        jQuery("#filter-content").html("");
+        jQuery("#type-filter").attr('checked', 'checked');
         _.each(present_filters, function (value, key) {
             radio = "#" + key + "_" + value.operator;
             tmp = key;
             selector = "tr." + tmp.toLowerCase().replace(' ', '_');
-            jQuery("#filters_list").find("option[value='" + key + "']").attr("selected", "selected");
-            jQuery("#filter_content").append(domobject[0][tmp]);
+            jQuery("#filters-list").find("option[value='" + key + "']").attr("selected", "selected");
+            jQuery("#filter-content").append(domobject[0][tmp]);
             jQuery(radio).attr('checked', 'checked');
             jQuery();
             //binding radio button action
-            binding_radio_button("#filter_content " + selector + " input[type=radio]");
-            radio_button_behaviour("#filter_content " + selector + " input[type=radio]");
+            binding_radio_button("#filter-content " + selector + " input[type=radio]");
+            radio_button_behaviour("#filter-content " + selector + " input[type=radio]");
             if (value.operator != 'open')
                 jQuery("#td-" + key).show();
             jQuery("#td-" + key).find("input").val(value.value);
@@ -538,9 +538,9 @@ function load_filter(json_content, present_filters) {
         });
         jQuery(".content").hide();
     } else {
-        jQuery("#filters_list").chosen();
+        jQuery("#filters-list").chosen();
         jQuery("#filters_list_chzn").hide();
-        jQuery("#filter_content").hide();
+        jQuery("#filter-content").hide();
         jQuery(".content").hide();
     }
 }
@@ -550,7 +550,7 @@ function load_filter(json_content, present_filters) {
 //Query overlay
 function create_query_overlay(e, ajax_url) {
     e.preventDefault();
-    jQuery('#create_query_overlay').overlay().load();
+    jQuery('#create-query-overlay').overlay().load();
     jQuery.ajax({
         url: ajax_url,
         type: 'GET',
@@ -560,7 +560,7 @@ function create_query_overlay(e, ajax_url) {
 
 //Per page issue list
 function per_page() {
-    jQuery("#per_page").change(function () {
+    jQuery("#per-page").change(function () {
         jQuery.ajax({
             url: jQuery(this).data("link"),
             data: {
@@ -573,11 +573,11 @@ function per_page() {
 }
 
 function edit_notes() {
-    jQuery(".edit_notes").click(function (e) {
+    jQuery(".edit-notes").click(function (e) {
         e.preventDefault();
-        jQuery('#edit_note_form').remove();
+        jQuery('#edit-note-form').remove();
         var journal_id = jQuery(this).attr("id").replace("link_edit_note_", '');
-        var note_id = "#note_" + journal_id;
+        var note_id = "#note-" + journal_id;
         var form = "<div id='edit_note_form' class='edit_note'>";
         form += "<textarea id='edit_note' name='notes' rows='12'>";
         form += jQuery(note_id).text();
@@ -585,8 +585,8 @@ function edit_notes() {
         form += "<button id='send_edit_note'>Save</button>";
         form += "</div>";
         jQuery(note_id).append(form);
-        jQuery('#edit_note').markItUp(mySettings);
-        edit_notes_bind_save_button("#send_edit_note", jQuery(this).attr("href"), journal_id)
+        jQuery('#edit-note').markItUp(mySettings);
+        edit_notes_bind_save_button("#send-edit-note", jQuery(this).attr("href"), journal_id)
     });
 }
 
@@ -598,7 +598,7 @@ function edit_notes_bind_save_button(id, url, journal_id) {
             type: 'post',
             dataType: 'script',
             data: {
-                notes: jQuery("#edit_note").val(),
+                notes: jQuery("#edit-note").val(),
                 journal_id: journal_id
             }
         });
@@ -606,7 +606,7 @@ function edit_notes_bind_save_button(id, url, journal_id) {
 }
 
 function bind_calendar_button() {
-    jQuery(".change_month").click(function (e) {
+    jQuery(".change-month").click(function (e) {
         e.preventDefault();
         var self_element = jQuery(this);
         var c = self_element.attr("id");
@@ -620,7 +620,7 @@ function bind_calendar_button() {
 
 
 function bind_version_change_positions() {
-    jQuery(".change_position").click(function (e) {
+    jQuery(".change-position").click(function (e) {
         e.preventDefault();
         var self_element = jQuery(this);
         var vid = self_element.parents("tr").attr("id");
@@ -642,11 +642,11 @@ function bind_version_change_positions() {
 }
 
 function bind_save_project_position() {
-    jQuery("#save_position").click(function (e) {
+    jQuery("#save-position").click(function (e) {
         e.preventDefault();
         var p_ids = [];
         var url = jQuery(this).data('link');
-        jQuery.each(jQuery(".project_list.sortable li.project"), function (project) {
+        jQuery.each(jQuery(".project-list.sortable li.project"), function (project) {
             p_ids.push(jQuery(this).attr("id"));
         });
         console.log(p_ids);
@@ -728,8 +728,8 @@ function bind_set_organization_button(main_selector, list_selector) {
 
 }
 function project_selection_filter() {
-    jQuery(".project_selection_filter").click(function (e) {
-        jQuery(".project_selection_filter").removeClass("selected");
+    jQuery(".project-selection-filter").click(function (e) {
+        jQuery(".project-selection-filter").removeClass("selected");
         jQuery(this).addClass("selected");
 
     });
@@ -767,7 +767,7 @@ function on_replace_effect(element_id, content) {
 }
 
 function replace_list_content(content) {
-    on_replace_effect("#" + gon.controller + "_content", content);
+    on_replace_effect("#" + gon.controller.replace('_','-') + "-content", content);
 }
 
 function initialize_filters(options) {
@@ -776,13 +776,13 @@ function initialize_filters(options) {
         add_filters(gon.DOM_filter);
         load_filter(gon.DOM_filter, (options && options["dom_persisted_filter"]) ? options["dom_persisted_filter"] : gon.DOM_persisted_filter);
     }
-    $("#type_filter").click(function (e) {
+    $("#type-filter").click(function (e) {
         $("#filters_list_chzn").show();
-        $("#filter_content").show();
+        $("#filter-content").show();
     });
-    $("#type_all").click(function (e) {
+    $("#type-all").click(function (e) {
         $("#filters_list_chzn").hide();
-        $("#filter_content").hide();
+        $("#filter-content").hide();
     });
 
 }
@@ -839,19 +839,21 @@ function write_info(info) {
 }
 
 function bind_commentable() {
-    $('#add_comment_form .octicon-x').click(function (e) {
-        $('#add_comment_form').fadeOut();
+    $('#add-comment-form .octicon-x').click(function (e) {
+        $('#add-comment-form').fadeOut();
     });
-    $('#new_comment_link').click(function (e) {
-        $('#add_comment_form').show();
+    $('#new-comment-link').click(function (e) {
+        $('#add-comment-form').show();
     });
 }
 
 function bind_task_list_click() {
-    $('.task-list-item-checkbox').click(function (e) {
+    var el = $('.task-list-item-checkbox');
+    el.unbind('click');
+    el.click(function (e) {
         var el = $(this);
-        var context = $(this).parents('div.markdown_renderer');
-        var split_ary = context.attr('id').split('_');
+        var context = $(this).parents('div.markdown-renderer');
+        var split_ary = context.attr('id').split('-');
         var element_type = split_ary[0];
         var element_id = split_ary[1];
         var check_index = context.find('.task-list-item-checkbox').index(el);
@@ -892,7 +894,7 @@ function bind_tab_nav(tab_id) {
 }
 
 function bind_color_editor(){
-    var editor_field =  $(".color_editor_field");
+    var editor_field =  $(".color-editor-field");
     var color_bg = $("<span class='color_editor_bg'></span>");
     var container = $("<div class='color_editor'></div>");
     editor_field.wrap(container);

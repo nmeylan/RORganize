@@ -33,7 +33,7 @@ class CommentDecorator < ApplicationDecorator
   # @return [String] link to project if not nil.
   def display_project_link(project)
     unless project
-      h.safe_concat h.content_tag :span, class: 'object_type', &Proc.new {
+      h.safe_concat h.content_tag :span, class: 'object-type', &Proc.new {
         h.safe_concat ' on '
         h.safe_concat project_link
       }
@@ -53,7 +53,7 @@ class CommentDecorator < ApplicationDecorator
   # see #ApplicationDecorator::edit_link
   def edit_link
     if User.current.allowed_to?('edit_comment_not_owner', 'comments', model.project) || model.author?(User.current)
-      h.link_to h.glyph(h.t(:link_edit), 'pencil'), h.edit_comment_path(model.id), {class: 'edit_comment button', remote: true}
+      h.link_to h.glyph(h.t(:link_edit), 'pencil'), h.edit_comment_path(model.id), {class: 'edit-comment button', remote: true}
     end
   end
 
@@ -66,7 +66,7 @@ class CommentDecorator < ApplicationDecorator
 
   # Render a remote link to comment.
   def remote_show_link
-    h.link_to h.t(:link_comment), h.comment_path(model.id), {class: 'view_comment', id: model.id, remote: true}
+    h.link_to h.t(:link_comment), h.comment_path(model.id), {class: 'view-comment', id: model.id, remote: true}
   end
 
   # Render the type of the commented object.
@@ -85,7 +85,7 @@ class CommentDecorator < ApplicationDecorator
   # Render comment details.
   def render_details
     h.content_tag :span, class: 'comment' do
-      h.safe_concat h.content_tag :span, nil, class: 'octicon octicon-comment activity_icon'
+      h.safe_concat h.content_tag :span, nil, class: 'octicon octicon-comment activity-icon'
       h.safe_concat h.content_tag :span, self.display_author, class: 'author'
       h.safe_concat h.content_tag :span, h.t(:text_added_a).capitalize + ' '
       h.safe_concat h.content_tag :span, self.remote_show_link

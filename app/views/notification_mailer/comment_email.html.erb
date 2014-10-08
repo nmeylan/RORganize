@@ -13,9 +13,9 @@
                 #{link_to(model.caption,
                           url_for(controller: @notification.model_url[:controller], action: @notification.model_url[:action],
                                   id: model.id, project_id: @notification.model_url[:project_id], only_path: false))} on "
-    safe_concat content_tag :span, comment.creation_date, {class: 'history_date'}
+    safe_concat content_tag :span, comment.creation_date, {class: 'history-date'}
   }
-  safe_concat content_tag :div, class: 'block_content', &Proc.new {
+  safe_concat content_tag :div, class: 'block-content', &Proc.new {
     markdown_to_html comment.content, nil, true
   }
 } %>

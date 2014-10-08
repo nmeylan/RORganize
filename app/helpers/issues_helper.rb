@@ -30,7 +30,7 @@ module IssuesHelper
   def list(collection)
     content_tag :table, {class: 'issue list', 'data-link' => toolbox_issues_path(@project.slug)}, &Proc.new {
       safe_concat content_tag :tr, class: 'header', &Proc.new {
-        safe_concat content_tag :th, link_to(glyph('', 'check'), '#', {:class => 'icon-checked', :id => 'check_all', 'cb_checked' => 'b'})
+        safe_concat content_tag :th, link_to(glyph('', 'check'), '#', {:class => 'icon-checked', id: 'check-all', 'cb_checked' => 'b'})
         safe_concat content_tag :th, sortable('issues.id', '#')
         safe_concat content_tag :th, sortable('trackers.name', 'Tracker')
         safe_concat content_tag :th, sortable('issues.subject', 'Subject')
@@ -40,25 +40,25 @@ module IssuesHelper
         safe_concat content_tag :th, sortable('versions.name', 'Target phase')
         safe_concat content_tag :th, sortable('issues.due_date', 'Due date')
         safe_concat content_tag :th, sortable('issues.done', 'Done')
-        safe_concat content_tag :th, nil, {class: 'optional_cell'}
-        safe_concat content_tag :th, nil, {class: 'optional_cell'}
-        safe_concat content_tag :th, nil, {class: 'optional_cell'}
+        safe_concat content_tag :th, nil, {class: 'optional-cell'}
+        safe_concat content_tag :th, nil, {class: 'optional-cell'}
+        safe_concat content_tag :th, nil, {class: 'optional-cell'}
       }
       safe_concat(collection.collect do |issue|
-        content_tag :tr, class: "has_context_menu odd_even issue_tr #{'close' if issue.status.is_closed?}" do
-          safe_concat content_tag :td, check_box_tag("issue-#{issue.id.to_s}", issue.id), {class: 'cell_checkbox'}
-          safe_concat content_tag :td, issue.id, class: 'list_center id'
-          safe_concat content_tag :td, issue.tracker_str, class: 'list_center tracker'
+        content_tag :tr, class: "has-context-menu odd-even issue-tr #{'close' if issue.status.is_closed?}" do
+          safe_concat content_tag :td, check_box_tag("issue-#{issue.id.to_s}", issue.id), {class: 'cell-checkbox'}
+          safe_concat content_tag :td, issue.id, class: 'list-center id'
+          safe_concat content_tag :td, issue.tracker_str, class: 'list-center tracker'
           safe_concat content_tag :td, link_to(issue.resized_caption(35), issue_path(@project.slug, issue.id)), {class: 'name', id: issue.id}
-          safe_concat content_tag :td, issue.display_assigned_to, class: 'list_center assigned_to'
-          safe_concat content_tag :td, issue.display_status, class: 'list_center status'
-          safe_concat content_tag :td, issue.category, class: 'list_center category'
-          safe_concat content_tag :td, issue.version_str, class: 'list_center version'
-          safe_concat content_tag :td, issue.due_date, class: 'list_center due_date'
-          safe_concat content_tag :td, issue.done, class: 'list_center done'
-          safe_concat content_tag :td, issue.checklist_progression, class: 'icon_information'
-          safe_concat content_tag :td, issue.comment_presence_indicator, class: 'icon_information'
-          safe_concat content_tag :td, issue.attachment_presence_indicator, class: 'icon_information'
+          safe_concat content_tag :td, issue.display_assigned_to, class: 'list-center assigned-to'
+          safe_concat content_tag :td, issue.display_status, class: 'list-center status'
+          safe_concat content_tag :td, issue.category, class: 'list-center category'
+          safe_concat content_tag :td, issue.version_str, class: 'list-center version'
+          safe_concat content_tag :td, issue.due_date, class: 'list-center due-date'
+          safe_concat content_tag :td, issue.done, class: 'list-center done'
+          safe_concat content_tag :td, issue.checklist_progression, class: 'icon-information'
+          safe_concat content_tag :td, issue.comment_presence_indicator, class: 'icon-information'
+          safe_concat content_tag :td, issue.attachment_presence_indicator, class: 'icon-information'
         end
       end.join.html_safe)
     }
@@ -96,7 +96,7 @@ module IssuesHelper
   # @param [Boolean] only_opened_issues : true display report only for opened issues else display report for all issues.
   # @param [String] group_class_name : css class for the group.
   def display_overview_group_by(title, group, group_name, only_opened_issues = true, group_class_name = nil)
-    class_name = group_class_name.nil? ? 'issues_overview_group' : group_class_name
+    class_name = group_class_name.nil? ? 'issues-overview-group' : group_class_name
     content_tag :div, class: class_name do
       safe_concat content_tag :h2, title, class: "#{class_name} title"
       if group.any?
@@ -117,7 +117,7 @@ module IssuesHelper
           display_overview_row(na, group_name, only_opened_issues) if na
         }
       else
-        safe_concat no_data(t(:text_no_issues), 'issue_opened')
+        safe_concat no_data(t(:text_no_issues), 'issue-opened')
       end
     end
   end
@@ -127,7 +127,7 @@ module IssuesHelper
   # @param [Symbol] group_name : the symbol of the object attribute (e.g :assigned_to, :status)
   # @param [Boolean] only_opened_issues : true display report only for opened issues else display report for all issues.
   def display_overview_row(element, group_name, only_opened_issues)
-    safe_concat content_tag :tr, class: 'issues_overview_group body', &Proc.new {
+    safe_concat content_tag :tr, class: 'issues-overview-group body', &Proc.new {
       if only_opened_issues
         safe_concat content_tag :td, filter_link(element[:caption], element[:project], [group_name, :status], {group_name => {operator: :equal, value: [element[:id]]}, status: {operator: :open}}), class: 'caption'
       else

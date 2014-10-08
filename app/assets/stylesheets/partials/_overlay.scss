@@ -23,13 +23,13 @@
   -webkit-animation-duration: 0.5s;
   animation-duration: 0.5s;
 
-  span.close_button {
+  span.close-button {
     position: absolute;
     top: 10px;
     right: 15px;
     cursor: pointer;
   }
-  span.close_button:hover {
+  span.close-button:hover {
     color: $default-color;
   }
 }
@@ -47,12 +47,12 @@
   text-align: center;
 }
 
-#activity_overlay .overlayInner {
+#activity-overlay .overlayInner {
   max-height: 400px;
 
   overflow-y: auto;
 }
 
-.overlayInner #issue_history {
+.overlayInner #issue-history {
   width: 600px;
 }

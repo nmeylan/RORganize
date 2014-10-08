@@ -6,10 +6,10 @@
 function bind_activities() {
     jQuery('a.toggle').click(function (e) {
         e.preventDefault();
-        jQuery(this).next('.journal_details.more').slideToggle();
+        jQuery(this).next('.journal-details.more').slideToggle();
     });
-    var circles = jQuery('.date_circle');
-    var filters = jQuery('.filter_selection');
+    var circles = jQuery('.date-circle');
+    var filters = jQuery('.filter-selection');
     circles.click(function (e) {
         e.preventDefault();
         var el = jQuery(this);
@@ -31,7 +31,7 @@ function bind_activities() {
     });
     filters.unbind();
     filters.change(function (e) {
-        var form = jQuery('form#activities_filter');
+        var form = jQuery('form#activities-filter');
         form.submit();
     });
 }

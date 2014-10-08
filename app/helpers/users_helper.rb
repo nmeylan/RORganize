@@ -17,13 +17,13 @@ module UsersHelper
         safe_concat content_tag :th, sortable('users.last_sign_in_at', 'Last sign in')
       }
       safe_concat(collection.collect do |user|
-        content_tag :tr, class: 'odd_even user_tr' do
-          safe_concat content_tag :td, user.id, class: 'list_center id'
-          safe_concat content_tag :td, user.login, class: 'list_center login'
-          safe_concat content_tag :td, user.show_link, class: 'list_center name'
-          safe_concat content_tag :td, user.email, class: 'list_center email'
-          safe_concat content_tag :td, user.display_is_admin, class: 'list_center admin'
-          safe_concat content_tag :td, user.sign_in, class: 'list_center last_sign_in'
+        content_tag :tr, class: 'odd-even user-tr' do
+          safe_concat content_tag :td, user.id, class: 'list-center id'
+          safe_concat content_tag :td, user.login, class: 'list-center login'
+          safe_concat content_tag :td, user.show_link, class: 'list-center name'
+          safe_concat content_tag :td, user.email, class: 'list-center email'
+          safe_concat content_tag :td, user.display_is_admin, class: 'list-center admin'
+          safe_concat content_tag :td, user.sign_in, class: 'list-center last-sign-in'
         end
       end.join.html_safe)
     }
@@ -32,7 +32,7 @@ module UsersHelper
   # Build a list of projects in which the given user is member.
   # @param [User] user.
   def projects(user)
-    content_tag :ul, {class: 'profile profile_user_projects'} do
+    content_tag :ul, {class: 'profile profile-user-projects'} do
       user.members.collect do |member|
         content_tag :li do
           safe_concat link_to member.project.caption.capitalize, overview_projects_path(member.project.slug)

@@ -37,23 +37,23 @@ function on_load_issues_scripts(options) {
 function issues_index(options) {
     //Paginate
     //Checkboxes
-    checkAll("#check_all", ".list");
-    listTrClick(".list .issue_tr");
+    checkAll("#check-all", ".list");
+    listTrClick(".list .issue-tr");
     //Toolbox
     checkboxToolbox(".list");
-    init_toolbox('.issue.list .issue_tr', 'issues_toolbox', {list: '.issue.list'});
+    init_toolbox('.issue.list .issue-tr', 'issues-toolbox', {list: '.issue.list'});
     //Filters
 
     initialize_filters(options);
 
-    save_edit_filter("#filter_edit_save", "#filter_form");
+    save_edit_filter("#filter-edit-save", "#filter-form");
 
 
 }
 
 function issues_show() {
-    multi_toogle("#gantt_informations");
-    jQuery(".content.gantt_informations").hide();
+    multi_toogle("#gantt-informations");
+    jQuery(".content.gantt-informations").hide();
     jQuery('a.lightbox').lightBox({
         fixedNavigation: true,
         imageLoading: "<%= asset_path 'lightbox-ico-loading.gif' %>",
@@ -63,20 +63,20 @@ function issues_show() {
         imageBlank: "<%= asset_path 'lightbox-blank.gif' %>",
         containerResizeSpeed: 350
     });
-    jQuery('#update_issue').hide();
-    jQuery('#update_issue h2').click(function (e) {
+    jQuery('#update-issue').hide();
+    jQuery('#update-issue h2').click(function (e) {
         e.preventDefault();
-        jQuery('#update_issue').fadeOut();
+        jQuery('#update-issue').fadeOut();
     });
-    createOverlay("#spent_time_overlay", 150);
+    createOverlay("#spent-time-overlay", 150);
 
-    jQuery("#update_issue_link").click(function () {
-        jQuery('#update_issue').show();
+    jQuery("#update-issue-link").click(function () {
+        jQuery('#update-issue').show();
     });
-    jQuery('#log_time').click(function (e) {
+    jQuery('#log-time').click(function (e) {
         e.preventDefault();
         fill_log_issue_time_overlay(jQuery(this).attr('href'), this);
-        jQuery('#spent_time_overlay').overlay().load();
+        jQuery('#spent-time-overlay').overlay().load();
     });
 
 }
@@ -97,7 +97,7 @@ function issues_form() {
 
 function update_version_info(select) {
     var phase = select.find('option:selected');
-    var info = $('#version_info');
+    var info = $('#version-info');
     var title = phase.data('version_info');
     info.attr('title', title);
     var help = info.find('.help');

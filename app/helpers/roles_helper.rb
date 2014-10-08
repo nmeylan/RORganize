@@ -13,7 +13,7 @@ module RolesHelper
         safe_concat content_tag :td, nil
       }
       safe_concat(collection.collect do |role|
-        content_tag :tr, {class: 'odd_even', id: %Q(role-#{role.id})} do
+        content_tag :tr, {class: 'odd-even', id: %Q(role-#{role.id})} do
           safe_concat content_tag :td, role.edit_link, class: 'name'
           safe_concat content_tag :td, role.delete_link, class: 'action'
         end

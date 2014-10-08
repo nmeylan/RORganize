@@ -3,7 +3,7 @@
 /*
 * HORIZONTAL MENU
 */
-#horizontal_menu {
+#horizontal-menu {
   margin: 0px 15px 15px 15px;
   padding-bottom: 3px;
   /* Progressive background */
@@ -13,7 +13,7 @@
   color: $link-tabs-color;
 }
 
-#horizontal_menu li {
+#horizontal-menu li {
   text-align: center;
   display: table-cell;
   width: 1%;
@@ -21,26 +21,26 @@
 
 }
 
-#horizontal_menu li a {
+#horizontal-menu li a {
   display: block;
   line-height: 47px;
   font-weight: bold;
   color: $link-tabs-color;
 }
 
-#horizontal_menu ul {
+#horizontal-menu ul {
   margin: 0 -1px 0 0;
   height: 47px;
   list-style-type: none;
   padding-left: 0;
 }
 
-#horizontal_menu li a:hover {
+#horizontal-menu li a:hover {
   border-bottom: 3px solid $default-hover-border-color;
   color: $link-hover-color;
 }
 
-#horizontal_menu li.selected a {
+#horizontal-menu li.selected a {
   margin-top: -1px;
   border-top: 1px solid $default-background-color !important;
   border-left: 1px solid $default-border-color !important;
@@ -49,7 +49,7 @@
   color: $link-hover-color;
 }
 
-#horizontal_menu li.selected a:hover {
+#horizontal-menu li.selected a:hover {
 }
 
 .menu-separator {

@@ -7,7 +7,7 @@
 
 <%= content_for :sidebar do %>
     <ul class="tabs">
-      <li class="settings_index"><%= link_to t(:link_update_informations), settings_path(@project.slug) %></li>
+      <li class="settings-index"><%= link_to t(:link_update_informations), settings_path(@project.slug) %></li>
       <% if User.current.allowed_to?('index', 'Versions', @project) %>
           <li class="versions">
             <%= link_to glyph(t(:link_versions), Rorganize::ACTION_ICON[:version_id]),
@@ -27,27 +27,27 @@
           </li>
       <% end %>
       <% if User.current.allowed_to?('public_queries', 'Queries', @project) %>
-          <li class="settings_public_queries">
+          <li class="settings-public-queries">
             <%= link_to glyph(t(:link_queries), 'database'),
                         public_queries_settings_path(@project.slug) %>
           </li>
       <% end %>
       <% if User.current.allowed_to?('modules', 'Settings', @project) %>
-          <li class="settings_modules">
+          <li class="settings-modules">
             <%= link_to glyph(t(:link_modules), 'plug'),
                         modules_settings_path(@project.slug) %>
           </li>
       <% end %>
-      <li class="settings_repository"><%= link_to glyph(t(:link_repository), 'repo-push'), '#' %></li>
+      <li class="settings-repository"><%= link_to glyph(t(:link_repository), 'repo-push'), '#' %></li>
 
       <% if User.current.allowed_to?('archive', 'Projects', @project) %>
-          <li class="project_delete warning">
+          <li class="project-delete warning">
             <%= link_to !@project.is_archived ? glyph(t(:text_close_this_project), 'lock') : glyph(t(:text_open_this_project), 'unlock'), archive_projects_path(@project.id),
                         {:remote => true, :data => {:confirm => !@project.is_archived ? t(:text_archive_project) : t(:text_open_project)}, :method => :post} %>
           </li>
       <% end %>
       <% if User.current.allowed_to?('destroy', 'Projects', @project) %>
-          <li class="project_delete alert">
+          <li class="project-delete alert">
             <%= link_to glyph(t(:text_delete_this_project), 'trashcan'), project_path(@project.id),
                         {:remote => true, :data => {:confirm => t(:text_delete_project)}, :method => :delete} %>
           </li>
@@ -57,8 +57,8 @@
 
 <script type="text/javascript">
     <% if controller.controller_name.eql?('settings') %>
-    jQuery("#sidebar li[class='<%=controller.controller_name%>_<%=controller.action_name%>']").toggleClass("selected");
+    jQuery("#sidebar li[class='<%=controller.controller_name.tr('_','-')%>-<%=controller.action_name.tr('_','-')%>']").toggleClass("selected");
     <% else %>
-    jQuery("#sidebar li[class='<%=controller.controller_name%>']").toggleClass("selected");
+    jQuery("#sidebar li[class='<%=controller.controller_name.tr('_','-')%>']").toggleClass("selected");
     <%  end %>
 </script>

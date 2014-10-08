@@ -16,7 +16,7 @@
 <%# HACK quick and dirty =( %>
 <% session['act_as'] ||= 'User' %>
 <% User.current.act_as_admin(session['act_as']) if User.current && session['act_as'] != User.current.act_as_admin_session %>
-<div id="top_menu"><%= render :partial => 'layouts/top_menu' %></div>
+<div id="top-menu"><%= render :partial => 'layouts/top_menu' %></div>
 <div id="header">
   <h1>
     <% if @project && @project.attachments.to_a.any? && !@project.attachments.first.id.nil? %>
@@ -38,9 +38,9 @@
   <%= yield %>
 </div>
 <div id="loading"><p>Sending request...</p></div>
-<div id="highlight_search" class="octicon octicon-search">
-  <span id="highlight_search_result_count"></span>
-  <input type="text" name="highlight_search" id="highlight_search_input" placeholder="search on page...">
+<div id="highlight-search" class="octicon octicon-search">
+  <span id="highlight-search-result-count"></span>
+  <input type="text" name="highlight_search" id="highlight-search-input" placeholder="search on page...">
 </div>
 <%= render partial: 'layouts/footer' %>
 </body>

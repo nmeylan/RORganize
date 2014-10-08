@@ -3,10 +3,10 @@
  * Date: 30/11/13
  * Time: 08:14
  %>
-jQuery('#delete_overlay').overlay();
-jQuery('#delete_overlay').overlay().close();
-on_replace_effect("#documents_content", "<%= escape_javascript(@documents_decorator.display_collection)%>");
-on_replace_effect("#document_filter", "<%= escape_javascript(filter_tag('document', Document.filtered_attributes, documents_path(@project.slug)) )%>");
+jQuery('#delete-overlay').overlay();
+jQuery('#delete-overlay').overlay().close();
+on_replace_effect("#documents-content", "<%= escape_javascript(@documents_decorator.display_collection)%>");
+on_replace_effect("#document-filter", "<%= escape_javascript(filter_tag('document', Document.filtered_attributes, documents_path(@project.slug)) )%>");
 per_page();
 
 uniq_toogle("#document.toggle", ".content");
@@ -14,5 +14,5 @@ documents_index({dom_persisted_filter: "<%= json_escape escape_javascript(sessio
 <% if params[:filter] %>
 $('#document.toggle').switchClass('icon-collapsed', 'icon-expanded');
 $('#document.toggle .octicon-chevron-right').switchClass('octicon-chevron-right', 'octicon-chevron-down');
-$('#document_filter .content').show();
+$('#document-filter .content').show();
 <% end %>

@@ -9,17 +9,17 @@ function on_load_permissions_scripts() {
 function permissions_index() {
     jQuery("tr.body").each(function () {
         var id = jQuery(this).attr("class").split(' ')[1];
-        checkAllBox("#check_all_" + id, jQuery(this));
+        checkAllBox("#check-all-" + id, jQuery(this));
     });
-    $('.check_all').each(function () {
+    $('.check-all').each(function () {
         var id = jQuery(this).attr('id');
-        var classes = id.split('_');
+        var classes = id.split('-');
         checkAllBox("#" + id, jQuery("td.body." + classes.join('.')));
     });
-    bind_tab_nav('permissions_tab');
-    $('table.permissions_list').each(function () {
-        if ($(this).find('.permissions_list.body.no_category').children().length == 0) {
-            $(this).find('td.no_category').hide();
+    bind_tab_nav('permissions-tab');
+    $('table.permissions-list').each(function () {
+        if ($(this).find('.permissions-list.body.no-category').children().length == 0) {
+            $(this).find('td.no-category').hide();
         }
     });
 }

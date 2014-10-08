@@ -28,4 +28,3 @@ module WillPaginate
     end
   end
 end
-

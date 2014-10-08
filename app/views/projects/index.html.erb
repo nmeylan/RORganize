@@ -10,16 +10,16 @@
 <% end %>
 
 <%= link_to t(:link_all), filter_projects_path('all'),
-            {:class => "project_selection_filter #{session['project_selection_filter'].eql?('all') ? 'selected' : ''}",
+            {:class => "project-selection-filter #{session['project_selection_filter'].eql?('all') ? 'selected' : ''}",
              :id => 'all', :remote => true, :method => :post} %> |
 <%= link_to t(:link_starred), filter_projects_path('starred'),
-            {:class => "project_selection_filter #{session['project_selection_filter'].eql?('starred') ? 'selected' : ''}",
+            {:class => "project-selection-filter #{session['project_selection_filter'].eql?('starred') ? 'selected' : ''}",
              :id => 'starred', :remote => true, :method => :post} %> |
 <%= link_to t(:link_opened), filter_projects_path('opened'),
-            {:class => "project_selection_filter #{session['project_selection_filter'].eql?('opened') ? 'selected' : ''}",
+            {:class => "project-selection-filter #{session['project_selection_filter'].eql?('opened') ? 'selected' : ''}",
              :id => 'opened', :remote => true, :method => :post} %> |
 <%= link_to t(:link_archived), filter_projects_path('archived'),
-            {:class => "project_selection_filter #{session['project_selection_filter'].eql?('archived') ? 'selected' : ''}",
+            {:class => "project-selection-filter #{session['project_selection_filter'].eql?('archived') ? 'selected' : ''}",
              :id => 'archived', :remote => true, :method => :post} %>
 
 <%= @projects_decorator.display_collection %>

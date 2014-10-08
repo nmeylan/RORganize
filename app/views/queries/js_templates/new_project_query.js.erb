@@ -4,18 +4,18 @@
  * Time: 08:03
  %>
 <% if new %>
-jQuery('#create_query_overlay').replaceWith("<%= escape_javascript (render :partial => 'queries/create_overlay' )%>");
-createOverlay("#create_query_overlay", 150);
+jQuery('#create-query-overlay').replaceWith("<%= escape_javascript (render :partial => 'queries/create_overlay' )%>");
+createOverlay("#create-query-overlay", 150);
 //bind info tag
 bind_info_tag();
-jQuery('#create_query_overlay').overlay().load();
+jQuery('#create-query-overlay').overlay().load();
 jQuery(".close").click(function (e) {
-    jQuery('#create_query_overlay').overlay().close();
+    jQuery('#create-query-overlay').overlay().close();
 });
-jQuery("#query_creation_form").submit(function (e) {
+jQuery("#query-creation-form").submit(function (e) {
     e.preventDefault();
     var self_element = jQuery(this);
-    var json = jQuery("#filter_form").serializeJSON();
+    var json = jQuery("#filter-form").serializeJSON();
     var json2 = self_element.serializeJSON();
     var forms = jQuery.extend(json, json2);
     console.log(forms);
@@ -28,7 +28,7 @@ jQuery("#query_creation_form").submit(function (e) {
 });
 <% else %>
 <% if success %>
-jQuery('#create_query_overlay').overlay().close();
-on_addition_effect('#custom_queries', "<%= escape_javascript (render :partial => 'issues/custom_queries')%>");
+jQuery('#create-query-overlay').overlay().close();
+on_addition_effect('#custom-queries', "<%= escape_javascript (render :partial => 'issues/custom_queries')%>");
 <% end %>
 <% end  %>

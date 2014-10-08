@@ -48,7 +48,7 @@ fieldset.settings {
 //    width: 65px;
   }
 }
-.normal_label {
+.normal-label {
   font-weight: normal !important;
   float: none !important;
   text-align: inherit !important;
@@ -60,9 +60,9 @@ button, input[type=button], input[type=submit] {
   margin-left: 10px;
 }
 
-.color_editor{
+.color-editor{
   position: relative;
-  .color_editor_bg{
+  .color-editor-bg{
     position: absolute;
     left: 0;
     z-index: 10;
@@ -73,7 +73,7 @@ button, input[type=button], input[type=submit] {
     cursor: pointer;
     border-radius: 3px;
   }
-  .color_editor_field{
+  .color-editor-field{
     width: 100px;
     padding-left: 28px;
     border-color: #ccc

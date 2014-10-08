@@ -39,8 +39,8 @@ class RorganizeMarkdownRenderer < Redcarpet::Render::HTML
   end
 
   def postprocess(document)
-    id = "#{@context[:element_type]}_#{@context[:element_id]}" if @context[:element_id] && @context[:element_type]
-    "<div class='markdown_renderer' id='#{id}'>#{document}</div>"
+    id = "#{@context[:element_type]}-#{@context[:element_id]}" if @context[:element_id] && @context[:element_type]
+    "<div class='markdown-renderer' id='#{id}'>#{document}</div>"
   end
 
   def issue_link_renderer(document)
@@ -52,7 +52,7 @@ class RorganizeMarkdownRenderer < Redcarpet::Render::HTML
 
   def task_list_renderer(document)
     document.gsub(TASKS_LIST_REGEX) do |task_list|
-      list = '<ul class="task_list">'
+      list = '<ul class="task-list">'
       list += task_list.gsub(COMPLETE_TASK_REGEX) do |complete_task|
         '<li><input type="checkbox" class="task-list-item-checkbox" '+@task_list_edit +' checked="">'+complete_task.gsub(TASK_REGEX, '')+'</li>'
       end.gsub(EMPTY_TASK_REGEX) do |empty_task|
@@ -66,7 +66,7 @@ class RorganizeMarkdownRenderer < Redcarpet::Render::HTML
   def user_link_renderer(document)
     document.gsub(USER_LINK_REGEX) do |user_link|
       if !@context[:from_mail]
-        link_to user_link, url_for(controller: 'rorganize', action: 'view_profile', user: user_link.gsub(/@/, '')), {class: 'author_link'}
+        link_to user_link, url_for(controller: 'rorganize', action: 'view_profile', user: user_link.gsub(/@/, '')), {class: 'author-link'}
       else
         user_link
       end

@@ -11,7 +11,7 @@
 /*
 *  LIST
 */
-tr.odd_even:nth-child(odd) {
+tr.odd-even:nth-child(odd) {
 //  background: $default-table-tr-odd-background-color;
 }
 
@@ -60,17 +60,17 @@ table.list {
   padding-right: 10px;
 }
 
-.list td.icon_information {
+.list td.icon-information {
   font-size: 11px;
   text-align: right;
   width: 30px;
 }
 
-.list td.icon_information:last-child {
+.list td.icon-information:last-child {
   padding-right: 10px;
 }
 
-.list td.cell_checkbox {
+.list td.cell-checkbox {
   width: 20px;
 }
 
@@ -95,11 +95,11 @@ li.close {
   text-decoration: line-through;
 }
 
-.list .list_center {
+.list .list-center {
   text-align: center;
 }
 
-.list .list_left {
+.list .list-left {
   text-align: left;
 }
 
@@ -112,7 +112,7 @@ li.close {
   background-color: $default-table-tr-hover-background-color !important;
 }
 
-.toolbox_selection {
+.toolbox-selection {
   background-color: $default-table-tr-hover-background-color !important;
 }
 
@@ -137,13 +137,13 @@ li.close {
 /*
  FANCY LIST
 */
-.box .fancy_list {
+.box .fancy-list {
   padding: 0px;
   margin-top: -5px;
   margin-bottom: 0px;
   margin-left: -6px;
   margin-right: -6px;
-  .fancy_list_item {
+  .fancy-list-item {
     margin-left: 0px;
     margin-right: 0px;
     padding-left: 6px;
@@ -151,15 +151,15 @@ li.close {
   }
 }
 
-.fancy_list {
+.fancy-list {
   list-style-type: none;
-  .fancy_list_item {
+  .fancy-list-item {
     margin: 0px 30px 30px -15px;
     border-bottom: 1px solid $default-border-color;
     > a {
       font-size: 20px;
     }
-    .right_content_list {
+    .right-content-list {
       position: relative;
       float: right;
       list-style-type: none;
@@ -171,15 +171,15 @@ li.close {
         }
       }
     }
-    p.bottom_content_list {
+    p.bottom-content-list {
       font-size: 12px;
       padding-bottom: 20px;
     }
   }
 }
 
-.fancy_list_mini {
-  .fancy_list_item {
+.fancy-list-mini {
+  .fancy-list-item {
     margin-bottom: 5px;
     margin-top: 5px;
     padding: 5px;
@@ -187,7 +187,7 @@ li.close {
       font-size: 13px;
     }
   }
-  .fancy_list_item:last-child {
+  .fancy-list-item:last-child {
     border-bottom: inherit;
     margin-bottom: -6px;
   }

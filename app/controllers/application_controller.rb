@@ -26,15 +26,15 @@ class ApplicationController < ActionController::Base
 
   #Define which is the active(or selected) menu
   def menu_item(controller, action = nil)
-    @current_menu_item = 'menu_'
-    @current_menu_item+= "#{controller}"
+    @current_menu_item = 'menu-'
+    @current_menu_item+= "#{controller.tr('_', '-')}"
     if action
-      @current_menu_item += "_#{action}"
+      @current_menu_item += "-#{action}"
     end
   end
 
   def top_menu_item(menu_name)
-    @current_top_menu_item = 'menu_'
+    @current_top_menu_item = 'menu-'
     @current_top_menu_item+= "#{menu_name}"
   end
 

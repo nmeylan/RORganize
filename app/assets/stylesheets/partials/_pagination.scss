@@ -11,7 +11,7 @@
   background: $default-background-color;
   cursor: default;
   /* self-clearing method: */
-  .previous_page{
+  .previous-page{
     width: 65px;
   }
 }
@@ -71,7 +71,7 @@
 
 }
 
-.pagination .page_info {
+.pagination .page-info {
   background: #6F8696;
   color: white;
   padding: 0.4em 0.6em;
@@ -80,7 +80,7 @@
   text-align: center;
 }
 
-.pagination .page_info b {
+.pagination .page-info b {
   color: #6F8696;
   background: #6F8696;
   padding: 0.1em 0.25em;
@@ -102,7 +102,7 @@
   overflow: hidden;
 }
 
-.per_page label {
+.per-page label {
   float: left;
   margin-right: 5px;
   color: $default-smooth-color;
@@ -123,6 +123,6 @@
   user-select: none;
 }
 
-.autocomplete-combobox.per_page{
+.autocomplete-combobox.per-page{
   margin-top: 5px;
 }

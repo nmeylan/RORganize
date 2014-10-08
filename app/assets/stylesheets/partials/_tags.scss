@@ -61,7 +61,7 @@ fieldset legend {
   font-weight: bold;
 }
 
-fieldset.margin_fieldset {
+fieldset.margin-fieldset {
   margin: 10px;
 }
 
@@ -167,18 +167,18 @@ input[type=radio] {
   height: 13px;
 }
 
-ul.task_list {
+ul.task-list {
   list-style-type: none;
   padding: 0;
   margin: 0;
 }
 
-a.author_link {
+a.author-link {
   color: $default-color;
 
 }
 
-a.author_link:hover {
+a.author-link:hover {
   color: $default-smooth-color;
   text-decoration: underline;
 }

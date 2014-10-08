@@ -11,7 +11,7 @@
         <% end %>
         <%= " bulk edited #{@notification.type.to_s.downcase}s." %>
         <%= ' on ' %>
-        <%= content_tag :span, journal.created_at.strftime(Rorganize::TIME_FORMAT), {class: 'history_date'} %>
+        <%= content_tag :span, journal.created_at.strftime(Rorganize::TIME_FORMAT), {class: 'history-date'} %>
     <% end %>
     <% @notification.objects do |model| %>
         <ul>

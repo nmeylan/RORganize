@@ -28,7 +28,7 @@ class NotificationDecorator < ApplicationDecorator
       icon = 'person'
       label = h.t(:text_notification_recipient_type_participant)
     end
-    h.content_tag :span, h.content_tag(:span, nil, {class: "octicon octicon-#{icon} "}), {class: 'tooltipped tooltipped-s notification_recipient_type', label: label}
+    h.content_tag :span, h.content_tag(:span, nil, {class: "octicon octicon-#{icon} "}), {class: 'tooltipped tooltipped-s notification-recipient-type', label: label}
   end
 
   def notification_type_icon

@@ -31,7 +31,7 @@ class ApplicationDecorator < Draper::Decorator
   # @param [String] content of the field.
   # @return [String] span containing the disabled content.
   def disabled_field(content)
-    h.content_tag :span, content, {class: 'disabled_field'}
+    h.content_tag :span, content, {class: 'disabled-field'}
   end
 
   # @param [History] history.
@@ -71,7 +71,7 @@ class ApplicationDecorator < Draper::Decorator
   # @param [Object] owner the owner of the model. (e.g issue.author)
   # @param [Hash] options : html_options.
   def delete_link(label, path, project = nil, owner = nil, options = {})
-    default_options = {:method => :delete, :remote => true, :confirm => h.t(:text_delete_item), class: 'delete_link button danger'}
+    default_options = {:method => :delete, :remote => true, :confirm => h.t(:text_delete_item), class: 'delete-link button danger'}
     link_to_with_permissions(h.glyph(label, 'trashcan'), path, project, owner, default_options.merge(options))
   end
 
@@ -79,9 +79,9 @@ class ApplicationDecorator < Draper::Decorator
   # @param [String] path to the controller.
   def inc_position_link(path)
     if model.position > 1
-      h.link_to(h.glyph('', 'arrow-up'), path, {:class => 'icon icon-up_arrow change_position dec'})
+      h.link_to(h.glyph('', 'arrow-up'), path, {class: 'icon icon-up-arrow change-position dec'})
     else
-      h.link_to(h.glyph('', 'arrow-up', 'disabled'), '#', {:class => 'icon icon-disabled_up_arrow'})
+      h.link_to(h.glyph('', 'arrow-up', 'disabled'), '#', {class: 'icon icon-disabled-up-arrow'})
     end
   end
 
@@ -90,16 +90,16 @@ class ApplicationDecorator < Draper::Decorator
   # @param [String] path to the controller.
   def dec_position_link(collection_size, path)
     if model.position < collection_size
-      h.link_to h.glyph('', 'arrow-down'), path, {:class => 'icon icon-down_arrow change_position inc'}
+      h.link_to h.glyph('', 'arrow-down'), path, {class: 'icon icon-down-arrow change-position inc'}
     else
-      h.link_to h.glyph('', 'arrow-down', 'disabled'), '#', {:class => 'icon icon-disabled_down_arrow'}
+      h.link_to h.glyph('', 'arrow-down', 'disabled'), '#', {class: 'icon icon-disabled-down-arrow'}
     end
   end
 
   # Render a link to add a comment. Can be used by all commentable model.
   def new_comment_link
     if User.current.allowed_to?('comment', h.controller_name, model.project)
-      h.link_to h.glyph(h.t(:link_comment), 'comment'), '#add_comment', {id: 'new_comment_link', class: 'button'}
+      h.link_to h.glyph(h.t(:link_comment), 'comment'), '#add-comment', {id: 'new-comment-link', class: 'button'}
     end
   end
 
@@ -159,7 +159,7 @@ class ApplicationDecorator < Draper::Decorator
 
   # @return [String] an indicator if model has attachments.
   def attachment_presence_indicator
-    h.content_tag :span, nil, {class: "octicon octicon-attachment #{model.attachments.empty? ? 'smooth_gray' : ''}"}
+    h.content_tag :span, nil, {class: "octicon octicon-attachment #{model.attachments.empty? ? 'smooth-gray' : ''}"}
   end
 
   # @param [Numeric] length : number or characters.

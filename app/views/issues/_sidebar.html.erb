@@ -14,7 +14,7 @@
         <%= link_to t(:label_gantt_chart), {:controller => 'roadmaps', :action => 'gantt', :project_id => @project.slug} %>
       </li>
     </ul>
-    <div id="custom_queries">
+    <div id="custom-queries">
       <%= render :partial => 'issues/custom_queries' if User.current.allowed_to?('apply_custom_query', 'Issues', @project) %>
     </div>
 

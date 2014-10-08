@@ -3,7 +3,7 @@ class IssueDecorator < ApplicationDecorator
 
   # Render document creation info.
   def creation_info
-    h.content_tag :div, class: 'creation_info' do
+    h.content_tag :div, class: 'creation-info' do
       h.content_tag :p do
         h.content_tag :em do
           h.safe_concat "#{h.t(:label_added)} #{h.distance_of_time_in_words(model.created_at, Time.now)} #{h.t(:label_ago)}, #{h.t(:label_by)} "
@@ -51,7 +51,7 @@ class IssueDecorator < ApplicationDecorator
   end
 
   def display_status
-    h.content_tag :span, {class: 'issue_status', style: "background-color: #{model.status.color}"} do
+    h.content_tag :span, {class: 'issue-status', style: "background-color: #{model.status.color}"} do
       model.status.caption
     end
   end
@@ -67,13 +67,13 @@ class IssueDecorator < ApplicationDecorator
 
   # @return [String] link to start today action (if user has the permission).
   def start_today_link
-    link_to_with_permissions h.glyph(h.t(:link_start_today), 'today'), h.start_today_issues_path(context[:project].slug, model.id), context[:project], nil, {:id => 'start_today', :data => {:confirm => h.t(:text_set_start_date_today)}, :method => :post, :remote => true}
+    link_to_with_permissions h.glyph(h.t(:link_start_today), 'today'), h.start_today_issues_path(context[:project].slug, model.id), context[:project], nil, {id: 'start-today', :data => {:confirm => h.t(:text_set_start_date_today)}, :method => :post, :remote => true}
   end
 
   # @return [String] link to log time action.
   def log_time_link
     if User.current.allowed_to?('new', 'time_entries', context[:project])
-      h.link_to h.glyph(h.t(:link_log_time), 'clock'), h.fill_overlay_time_entries_path(model.id), {:id => 'log_time', class: 'button'}
+      h.link_to h.glyph(h.t(:link_log_time), 'clock'), h.fill_overlay_time_entries_path(model.id), {id: 'log-time', class: 'button'}
     end
   end
 

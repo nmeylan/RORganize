@@ -3,7 +3,7 @@ class DocumentDecorator < ApplicationDecorator
 
   # Render document creation info.
   def creation_info
-    h.content_tag :div, class: 'creation_info' do
+    h.content_tag :div, class: 'creation-info' do
       h.content_tag :p do
         h.content_tag :em do
           h.safe_concat "#{h.t(:label_added)} #{h.distance_of_time_in_words(model.created_at, Time.now)} #{h.t(:label_ago)}, #{h.t(:label_by)} "

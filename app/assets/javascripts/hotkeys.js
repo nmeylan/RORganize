@@ -29,7 +29,7 @@ function bind_hotkeys() {
     });
 }
 function on_keydown_highlight_search(e) {
-    var search_box = $('#highlight_search');
+    var search_box = $('#highlight-search');
     var input = search_box.find('input');
     search_box.keydown(function (e) {
         highlight_result(e, input)
@@ -62,8 +62,8 @@ function highlight_result(event, input) {
     if (event !== undefined && event.keyCode === 8) {
         filter = filter.substring(0, filter.length - 1);
     }
-    $('.highlight_search_result').removeClass('highlight_search_result');
-    $("#highlight_search_result_count").text('');
+    $('.highlight-search-result').removeClass('highlight-search-result');
+    $("#highlight-search-result-count").text('');
 
     if (filter.trim() !== '') {
         var count = 0;
@@ -73,7 +73,7 @@ function highlight_result(event, input) {
         var matches_size = matches.length;
         if (matches_size > 0 && matches_size < 5000) {
             matches.each(function (a) {
-                $(this).addClass('highlight_search_result');
+                $(this).addClass('highlight-search-result');
             });
         }
 
@@ -84,19 +84,19 @@ function highlight_result(event, input) {
                 $(this).addClass('highlight_search_result');
             });
         }
-        count = $('.highlight_search_result').length;
+        count = $('.highlight-search-result').length;
         if (count > 0) {
-            $("#highlight_search_result_count").text(count);
+            $("#highlight-search-result-count").text(count);
         }
     }
 }
 //h
 function help_overlay() {
-    $("#hotkeys_overlay").overlay().load();
+    $("#hotkeys-overlay").overlay().load();
 }
 //gt
 function go_next_tab() {
-    var current_tab = $("#main_menu").find('li.selected');
+    var current_tab = $("#main-menu").find('li.selected');
     var next_tab = current_tab.next();
     if (next_tab !== undefined) {
         next_tab.find('a').get(0).click();
@@ -105,7 +105,7 @@ function go_next_tab() {
 }
 //gT
 function go_previous_tab() {
-    var current_tab = $("#main_menu").find('li.selected');
+    var current_tab = $("#main-menu").find('li.selected');
     var prev_tab = current_tab.prev();
     if (prev_tab !== undefined) {
         prev_tab.find('a').get(0).click();
@@ -149,7 +149,7 @@ function enter_actions(e) {
     var list = $('table.list');
     if (list[0] !== undefined) {
         var row = list.find('tr.hover');
-        var link = row.find('a:not(.delete_link)');
+        var link = row.find('a:not(.delete-link)');
         if (link[0] !== undefined) {
             console.log(link);
             link[0].click();

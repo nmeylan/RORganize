@@ -14,7 +14,7 @@ module CategoriesHelper
         safe_concat content_tag :td, nil
       }
       safe_concat(collection.collect do |category|
-        content_tag :tr, {class: 'odd_even', id: %Q(category-#{category.id})} do
+        content_tag :tr, {class: 'odd-even', id: %Q(category-#{category.id})} do
           safe_concat content_tag :td, category.edit_link, class: 'name'
           safe_concat content_tag :td, category.delete_link, class: 'action'
         end

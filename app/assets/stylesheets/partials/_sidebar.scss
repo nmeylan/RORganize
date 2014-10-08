@@ -94,11 +94,11 @@
   color: white !important;
 }
 
-ul.filter_sidebar {
+ul.filter-sidebar {
   list-style-type: none;
   padding: 0;
   li {
-    .filter_item {
+    .filter-item {
       display: block;
       padding: 8px 10px;
       margin: 0 0 5px;
@@ -115,29 +115,29 @@ ul.filter_sidebar {
         font-weight: bold;
       }
     }
-    .filter_item.selected {
+    .filter-item.selected {
       color: #fff;
       background: #4183c4 !important;
       .octicon {
         color: #fff;
       }
     }
-    .filter_item:hover {
+    .filter-item:hover {
       background-color: $default-box-header-background-color;
     }
   }
 }
 
-ul.filter_sidebar.small {
+ul.filter-sidebar.small {
   li {
-    .filter_item {
+    .filter-item {
 
       font-size: 12px;
     }
   }
 }
 
-.left_sidebar {
+.left-sidebar {
   float: left;
   width: 20%;
   margin-top: 6px;
