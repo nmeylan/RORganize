@@ -248,8 +248,8 @@ module Rorganize
 
         def find_watchers(objects, project_id)
           ids = objects.collect { |obj| obj.id }
-          unwatch = Watcher.includes(author: :preferences).where(watchable_type: self.to_s, watchable_id: ids, is_unwatch: true, project_id: project_id).pluck('user_id')
-          w = Watcher.includes(author: :preferences).where(watchable_type: self.to_s, watchable_id: ids, project_id: project_id)
+          unwatch = Watcher.includes(author: :preferences).where(watchable_type: type, watchable_id: ids, is_unwatch: true, project_id: project_id).pluck('user_id')
+          w = Watcher.includes(author: :preferences).where(watchable_type: type, watchable_id: ids, project_id: project_id)
           project_w = Watcher.includes(author: :preferences).where(watchable_type: 'Project', watchable_id: project_id)
           sum = project_w.to_a + w.to_a
           sum.flatten(0).delete_if { |watcher| unwatch.include? watcher.user_id }.collect { |watcher| watcher.author unless watcher.author.eql?(User.current) }.compact
