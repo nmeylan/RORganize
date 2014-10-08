@@ -19,6 +19,7 @@ class Project < ActiveRecord::Base
   has_many :documents, :dependent => :destroy
   has_many :journals, :dependent => :destroy
   #Triggers
+  before_create :set_created_by
   after_create :create_member, :add_modules
   after_update :save_attachments, :remove_all_non_member
   #Validators
@@ -36,6 +37,10 @@ class Project < ActiveRecord::Base
 
   def self.permit_attributes
     [:name, :description, :identifier, :trackers, :is_public, :new_attachment_attributes => Attachment.permit_attributes, :existing_attachment_attributes => Attachment.permit_attributes]
+  end
+
+  def set_created_by
+    self.created_by = User.current.id
   end
 
   def create_member

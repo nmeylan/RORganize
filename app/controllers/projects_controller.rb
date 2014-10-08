@@ -52,7 +52,6 @@ class ProjectsController < ApplicationController
   #POST /project/new
   def create
     @project_decorator = Project.new(project_params).decorate
-    @project_decorator.created_by = User.current.id
     respond_to do |format|
       if @project_decorator.save
         @project_decorator.update_info({}, params[:trackers])
