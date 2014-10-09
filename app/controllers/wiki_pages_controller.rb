@@ -26,17 +26,16 @@ class WikiPagesController < ApplicationController
   end
 
   def create
-    @wiki_page_decorator = WikiPage.new(wiki_page_params).decorate
     wiki = Wiki.find_by_project_id(@project.id)
-    @wiki_page_decorator.wiki_id = wiki.id
-    @wiki_page_decorator.author_id = User.current.id
+    @wiki_page_decorator = wiki.pages.build(wiki_page_params).decorate
+    @wiki_page_decorator.author = User.current
     if params[:wiki_page][:parent_id]
-      @wiki_page_decorator.parent_id = WikiPage.find_by_slug(params[:wiki_page][:parent_id]).id
+      @wiki_page_decorator.parent = WikiPage.find_by_slug(params[:wiki_page][:parent_id])
     end
     respond_to do |format|
       if @wiki_page_decorator.save
         if  params[:wiki] && params[:wiki][:home_page] && wiki.home_page_id.nil?
-          wiki.home_page_id = @wiki_page_decorator.id
+          wiki.home_page = @wiki_page_decorator
           if wiki.save
             flash[:notice] = t(:successful_creation)
             format.html { redirect_to wiki_page_path(@project.slug, @wiki_page_decorator.slug) }

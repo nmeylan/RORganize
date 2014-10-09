@@ -27,12 +27,9 @@ class VersionsController < ApplicationController
   end
 
   def create
-    @version = Version.new(version_params)
-    @version.project_id = @project.id
+    @version = @project.versions.build(version_params)
     respond_to do |format|
       if @version.save
-        @project.versions << @version
-        @project.save
         flash[:notice] = t(:successful_creation)
         format.html { redirect_to versions_path }
         format.json { render :json => @version,

@@ -29,9 +29,7 @@ class DocumentsController < ApplicationController
   end
 
   def create
-    @document_decorator = Document.new(document_params).decorate(context: {project: @project})
-    @document_decorator.project_id = @project.id
-    @document_decorator.created_at = Time.now.to_formatted_s(:db)
+    @document_decorator = @project.documents.build(document_params).decorate(context: {project: @project})
     respond_to do |format|
       if @document_decorator.save
         flash[:notice] = t(:successful_creation)

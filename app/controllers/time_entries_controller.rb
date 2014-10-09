@@ -24,11 +24,10 @@ class TimeEntriesController < ApplicationController
   end
 
   def create
-    @time_entry = TimeEntry.new(time_entry_params)
     issue = Issue.find_by_id(params[:issue_id])
-    @time_entry.issue_id = issue.id
-    @time_entry.project_id = issue.project_id
-    @time_entry.user_id = User.current.id
+    @time_entry = issue.time_entries.build(time_entry_params)
+    @time_entry.project = issue.project
+    @time_entry.user = User.current
     saved = @time_entry.save
     respond_to do |format|
       format.js do

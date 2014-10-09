@@ -40,8 +40,7 @@ class WikiController < ApplicationController
   end
 
   def create
-    @wiki = Wiki.new
-    @wiki.project_id = @project.id
+    @wiki = @project.build_wiki
     @wiki.home_page = WikiPage.new
     respond_to do |format|
       if @wiki.save

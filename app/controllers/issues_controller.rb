@@ -52,11 +52,8 @@ class IssuesController < ApplicationController
 
   #POST/project/:project_identifier/issues/
   def create
-    @issue_decorator = Issue.new(issue_params).decorate(context: {project: @project})
-    @issue_decorator.created_at = Time.now.to_formatted_s(:db)
-    @issue_decorator.updated_at = Time.now.to_formatted_s(:db)
-    @issue_decorator.project_id = @project.id
-    @issue_decorator.author_id = User.current.id
+    @issue_decorator = @project.issues.build(issue_params).decorate(context: {project: @project})
+    @issue_decorator.author = User.current
     respond_to do |format|
       if date_valid?(params[:issue][:due_date]) && @issue_decorator.save
         flash[:notice] = t(:successful_creation)

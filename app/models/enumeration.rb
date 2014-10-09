@@ -1,7 +1,7 @@
 class Enumeration < ActiveRecord::Base
   include Rorganize::Models::SmartRecords
 
-  before_save :inc_position
+  before_create :inc_position
   after_destroy :dec_position_on_destroy
   validates :name, :presence => true, :length => 2..255
 

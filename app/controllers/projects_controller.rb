@@ -13,7 +13,7 @@ class ProjectsController < ApplicationController
   #Project overview
   def overview
     respond_to do |format|
-      format.html { render :action => 'overview' }
+      format.html { render :overview }
     end
   end
 

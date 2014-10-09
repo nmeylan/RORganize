@@ -28,8 +28,7 @@ class CategoriesController < ApplicationController
   end
 
   def create
-    @category = Category.new(category_params)
-    @category.project_id = @project.id
+    @category = @project.categories.build(category_params)
     respond_to do |format|
       if @category.save
         flash[:notice] = t(:successful_creation)

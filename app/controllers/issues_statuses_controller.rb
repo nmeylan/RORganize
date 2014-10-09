@@ -31,7 +31,7 @@ class IssuesStatusesController < ApplicationController
     @status = IssuesStatus.find_by_id(params[:id])
     @enumeration = @status.enumeration
     respond_to do |format|
-      if @status.update_attributes(issue_statutes_params) && @enumeration.update_column(:name, enumeration_params[:name])
+      if @status.update_attributes(issue_statutes_params) && @enumeration.update_attributes(:name => enumeration_params[:name])
         flash[:notice] = t(:successful_update)
         format.html { redirect_to issues_statuses_path }
       else

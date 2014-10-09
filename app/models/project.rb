@@ -18,6 +18,7 @@ class Project < ActiveRecord::Base
   has_many :enabled_modules, :dependent => :destroy
   has_many :documents, :dependent => :destroy
   has_many :journals, :dependent => :destroy
+  has_one :wiki
   #Triggers
   before_create :set_created_by
   after_create :create_member, :add_modules

@@ -34,8 +34,8 @@ class QueriesController < ApplicationController
   def create
     find_project
     @query = Query.new(query_params)
-    @query.author_id = User.current.id
-    @query.project_id = @project.id
+    @query.user = User.current
+    @query.project = @project
     filter = @query.object_type.constantize.conditions_string(params[:filter])
     @query.stringify_query = filter
     @query.stringify_params = params[:filter].inspect
