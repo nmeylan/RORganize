@@ -5,7 +5,7 @@
 # File: list.html.erb
 %>
 
-<%= contextual "#{t(:link_permissions)} - #{params[:role_name].gsub('_', ' ')}" do -%>
+<%= contextual "#{t(:link_permissions)} - #{params[:role_name].tr('_', ' ')}" do -%>
     <%= @permissions_decorator.new_link %>
 <% end -%>
 

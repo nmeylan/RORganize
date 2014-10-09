@@ -9,7 +9,7 @@ class PermissionsDecorator < ApplicationCollectionDecorator
   def display_collection
     controllers_groups = context[:controller_list]
     permission_hash = {}
-    role = Role.eager_load(:permissions).where(name: context[:role_name].gsub('_', ' '))[0]
+    role = Role.eager_load(:permissions).where(name: context[:role_name].tr('_', ' '))[0]
     selected_permissions = role.permissions.collect { |permission| permission.id }
     controllers_groups.each do |group, controllers|
       controllers.each do |controller|

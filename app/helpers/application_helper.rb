@@ -264,21 +264,21 @@ autocomplete-combobox-high',
   # @param [String] body : content.
   # @param [String] names : glyph names.
   def mega_glyph(body, *names)
-    content_tag(:span, nil, :class => names.map { |name| "octicon-#{name.to_s.gsub('_', '-')}" }.push('mega-octicon')) + body
+    content_tag(:span, nil, :class => names.map { |name| "octicon-#{name.to_s.tr('_', '-')}" }.push('mega-octicon')) + body
   end
 
   # Build a 24x24 glyph render.
   # @param [String] body : content.
   # @param [String] names : glyph names.
   def medium_glyph(body, *names)
-    content_tag(:span, nil, :class => names.map { |name| "octicon-#{name.to_s.gsub('_', '-')}" }.push('medium-octicon')) + body
+    content_tag(:span, nil, :class => names.map { |name| "octicon-#{name.to_s.tr('_', '-')}" }.push('medium-octicon')) + body
   end
 
   # Build a 16x16 glyph render.
   # @param [String] body : content.
   # @param [String] names : glyph names.
   def glyph(body, *names)
-    content_tag(:span, nil, :class => names.map { |name| "octicon-#{name.to_s.gsub('_', '-')}" }.push('octicon')) + body
+    content_tag(:span, nil, :class => names.map { |name| "octicon-#{name.to_s.tr('_', '-')}" }.push('octicon')) + body
   end
 
   # Build a 16x16 glyph render, if condition is true else return raw content.
@@ -440,8 +440,8 @@ autocomplete-combobox-high',
   def generics_filter_radio_button(name, ary)
     content_tag :span do
       ary.each do |v|
-        safe_concat radio_button_tag %Q(filter[#{name}][operator]), v, v.eql?('all'), {class: name, id: %Q(#{name}_#{v.gsub(' ', '_')}), align: 'center'}
-        safe_concat label_tag %Q(#{name}_#{v}), v.gsub('_', ' ').capitalize
+        safe_concat radio_button_tag %Q(filter[#{name}][operator]), v, v.eql?('all'), {class: name, id: %Q(#{name}_#{v.tr(' ', '_')}), align: 'center'}
+        safe_concat label_tag %Q(#{name}_#{v}), v.tr('_', ' ').capitalize
       end
     end
   end

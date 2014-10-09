@@ -193,7 +193,7 @@ module Rorganize
               participants |= @trigger.thread.collect { |comment| comment.author unless comment.eql?(@trigger) }
             end
             participants << model_assigned_to
-            mentioned_slugs = mentioned_slugs.map { |slug| slug.gsub(/@/, '') unless slug.eql?(User.current.slug) }
+            mentioned_slugs = mentioned_slugs.map { |slug| slug.tr('@', '') unless slug.eql?(User.current.slug) }
             participants |= User.where(slug: mentioned_slugs).eager_load(:preferences) if mentioned_slugs.any?
           end
           participants.delete_if { |user| user.eql?(from) }

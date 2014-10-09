@@ -99,7 +99,7 @@ class PermissionsController < ApplicationController
   end
 
   def update_permissions
-    @role = Role.find_by_name(params[:role_name].gsub('_', ' '))
+    @role = Role.find_by_name(params[:role_name].tr('_', ' '))
     saved = @role.update_permissions(params[:permissions])
     if saved
       reload_permission(@role.id)

@@ -13,7 +13,7 @@
   <% @roles.each do |role| %>
       <li>
         <% if User.current.allowed_to?('list', 'Permissions') %>
-            <%= link_to role.name, list_permissions_path(role.name.gsub(' ', '_')) %>
+            <%= link_to role.name, list_permissions_path(role.name.tr(' ', '_')) %>
         <% else %>
             <%= role.name %>
         <% end %>

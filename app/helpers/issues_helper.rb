@@ -21,7 +21,7 @@ module IssuesHelper
     form_hash['tracker'] = generic_filter(:simple_select, 'Tracker', 'tracker', hash_for_radio['tracker'], hash_for_select['tracker'])
     form_hash['version'] = generic_filter(:simple_select, 'Version', 'version', hash_for_radio['version'], hash_for_select['version'])
     form_hash['updated_at'] = generic_filter(:date, 'Updated at', 'updated_at', hash_for_radio['updated'])
-    form_hash.each { |_, v| v.gsub(/"/, "'").gsub(/\n/, '') }
+    form_hash.each { |_, v| v.tr('"', "'").gsub(/\n/, '') }
     form_hash.to_json
   end
 
@@ -78,7 +78,7 @@ module IssuesHelper
   def display_overview_groups(groups, title = nil, group_name = nil, group_class_name = nil)
     groups.collect do |group_hash|
       group_hash.collect do |k, v|
-        gn = group_name.nil? ? k.to_s.capitalize.gsub(/_/, ' ') : group_name
+        gn = group_name.nil? ? k.to_s.capitalize.tr('_', ' ') : group_name
         t = if title.nil? then
               k.eql?(:status) ? 'Issues' : 'Opened issues'
             else

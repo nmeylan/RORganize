@@ -45,7 +45,7 @@ module DocumentsHelper
     form_hash['name'] = generic_filter(:text, 'Name', 'name', hash_for_radio['name'])
     form_hash['version'] = generic_filter(:simple_select, 'Version', 'version', hash_for_radio['version'], hash_for_select['version'])
     form_hash['updated_at'] = generic_filter(:date, 'Updated', 'updated_at', hash_for_radio['updated'])
-    form_hash.each { |_, v| v.gsub(/"/, "'").gsub(/\n/, '') }
+    form_hash.each { |_, v| v.tr('"', "'").gsub(/\n/, '') }
     form_hash.to_json
   end
 

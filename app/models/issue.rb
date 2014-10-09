@@ -49,7 +49,7 @@ class Issue < ActiveRecord::Base
 
   #Attributes name without id
   def self.attributes_formalized_names
-    Issue.attribute_names.map { |attribute| attribute.gsub(/_id/, '').gsub(/id/, '').gsub(/_/, ' ').capitalize unless attribute.eql?('id') }.compact
+    Issue.attribute_names.map { |attribute| attribute.tr('_id', '').tr('id', '').tr('_', ' ').capitalize unless attribute.eql?('id') }.compact
   end
 
   #  Custom validator
