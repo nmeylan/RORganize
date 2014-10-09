@@ -33,8 +33,8 @@ class CommentDecorator < ApplicationDecorator
   # @return [String] link to project if not nil.
   def display_project_link(project)
     unless project
-      h.safe_concat h.content_tag :span, class: 'object-type', &Proc.new {
-        h.safe_concat ' on '
+      h.safe_concat h.content_tag :span, class: 'project', &Proc.new {
+        h.safe_concat 'at '
         h.safe_concat project_link
       }
     end
@@ -97,7 +97,7 @@ class CommentDecorator < ApplicationDecorator
     h.safe_concat h.content_tag :span, h.t(:text_added_a) + ' '
     h.safe_concat h.content_tag :span, self.remote_show_link + ' '
     h.safe_concat h.content_tag :span, h.t(:text_to) + ' '
-    h.content_tag :span, self.display_object_type
+    h.content_tag :span, self.display_object_type, class: 'object-type'
   end
 
 end

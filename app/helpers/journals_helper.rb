@@ -155,29 +155,32 @@ module JournalsHelper
 
   # Build a render for journal detail.
   # @param [JournalDetail] detail.
-  def activity_history_detail_render(detail)
+  def activity_history_detail_render(detail, journal_decorator)
     if detail.old_value && (detail.value.nil? || detail.value.eql?(''))
       content_tag :li do
-        safe_concat "#{t(:text_deleted)}"
-        safe_concat content_tag :b, "#{detail.property} #{detail.old_value.to_s} "
+        safe_concat "#{t(:text_deleted)} "
+        safe_concat content_tag :b, "#{detail.property} "
+        safe_concat history_detail_value_render(detail, detail.old_value)
       end
     elsif detail.old_value && detail.value
       content_tag :li do
         safe_concat t(:text_changed)
         safe_concat content_tag :b, " #{detail.property} "
         safe_concat "#{t(:text_from)} "
-        safe_concat content_tag :b, "#{detail.old_value.to_s} "
-        safe_concat "#{t(:text_to)} "
-        safe_concat content_tag :b, "#{detail.value.to_s}"
+        safe_concat history_detail_value_render(detail, detail.old_value)
+        safe_concat " #{t(:text_to)} "
+        safe_concat history_detail_value_render(detail, detail.value)
       end
     else
       content_tag :li do
         safe_concat content_tag :b, "#{detail.property} "
         safe_concat "#{t(:text_set_at)} "
-        safe_concat content_tag :b, "#{detail.value.to_s}"
+        safe_concat history_detail_value_render(detail, detail.value)
       end
     end
   end
+
+
 
   # Build a render for the activities' sidebar.
   # @param [String] types : class name of Journalizable items.

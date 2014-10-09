@@ -35,8 +35,8 @@ class JournalDecorator < ApplicationDecorator
   # @return [String] link to project if not nil.
   def display_project_link(project)
     unless project
-      h.safe_concat h.content_tag :span, class: 'object-type', &Proc.new {
-        h.safe_concat ' at '
+      h.safe_concat h.content_tag :span, class: 'project', &Proc.new {
+        h.safe_concat 'at '
         h.safe_concat project_link
       }
     end
@@ -53,7 +53,7 @@ class JournalDecorator < ApplicationDecorator
     h.safe_concat h.content_tag :span, self.display_author, class: 'author'
     if model.action_type.eql?(Journal::ACTION_UPDATE) && model.details.to_a.any?
       h.safe_concat h.content_tag :span, nil, class: 'octicon octicon-pencil activity-icon' unless no_icon
-      h.content_tag(:ul, (model.details.collect { |detail| h.activity_history_detail_render(detail) }).join.html_safe)
+      h.content_tag(:ul, (model.details.collect { |detail| h.activity_history_detail_render(detail, self) }).join.html_safe)
     elsif model.action_type.eql?(Journal::ACTION_CREATE)
       h.safe_concat h.content_tag :span, nil, class: 'octicon octicon-plus activity-icon' unless no_icon
       if model.journalizable_type.eql?('Issue')

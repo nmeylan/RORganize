@@ -47,8 +47,7 @@ module Rorganize
           drill_params(params)
         end
         if project_id.is_a? String
-          @project = Project.includes(:attachments).references(:attachments).where(slug: project_id) #this always return 1 result. Don't use .first(AR) because it generate two query (due to ActiveRecord::FinderMethods::apply_join_dependency(..))
-          @project = @project.to_a.first
+          @project = Project.includes(:attachments).references(:attachments).find_by_slug(project_id)
           gon.project_id = @project.slug
           render_404 if @project.nil?
         end

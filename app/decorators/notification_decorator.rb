@@ -4,7 +4,7 @@ class NotificationDecorator < ApplicationDecorator
 
   def link_to_notifiable
     icon = notification_type_icon
-    caption = resize_text(model.notifiable.caption, 80)
+    caption = h.resize_text(model.notifiable.caption, 80)
     caption = model.notifiable_type.eql?('Issue') ? "##{model.notifiable_id} : #{caption}" : caption
     h.link_to h.glyph(caption, icon), h.notification_path(model.id), {method: :delete}
   end

@@ -164,13 +164,9 @@ class ApplicationDecorator < Draper::Decorator
 
   # @param [Numeric] length : number or characters.
   def resized_caption(length = 50)
-    resize_text(model.caption, length)
+    h.resize_text(model.caption, length)
   end
 
-  # @param [String] text : text to resize.
-  # @param [Numeric] length : number of characters.
-  def resize_text(text, length = 50)
-    text.length > length ? "#{text[0..length]}..." : text
-  end
+
 
 end

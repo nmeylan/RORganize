@@ -57,7 +57,7 @@ module ApplicationHelper
       if glyph
         safe_concat (glyph('', glyph))
       end
-     safe_concat content_tag :h3, text ? text : t(:text_no_data)
+      safe_concat content_tag :h3, text ? text : t(:text_no_data)
     end
   end
 
@@ -113,9 +113,9 @@ module ApplicationHelper
     content_tag :div, class: 'autocomplete-combobox nosearch per-page
 autocomplete-combobox-high',
                 &Proc.new {
-      safe_concat content_tag :label, t(:label_per_page), {for: 'per_page', class: 'per-page'}
-      safe_concat select_tag 'per_page', options_for_select([%w(25 25), %w(50 50), %w(100 100)], session[:per_page]), :class => 'chzn-select cbb-small cbb-high', id: 'per-page', :'data-link' => "#{path}"
-    }
+                  safe_concat content_tag :label, t(:label_per_page), {for: 'per_page', class: 'per-page'}
+                  safe_concat select_tag 'per_page', options_for_select([%w(25 25), %w(50 50), %w(100 100)], session[:per_page]), :class => 'chzn-select cbb-small cbb-high', id: 'per-page', :'data-link' => "#{path}"
+                }
   end
 
   # Build a filter form for given criteria.
@@ -314,7 +314,7 @@ autocomplete-combobox-high',
   # @param [Journal] journal : to render.
   def history_block_render(journal)
     user = journal.display_author(false)
-    content_tag :div, {class: 'history-block', id: "watch-link-#{journal.id}"} do
+    content_tag :div, {class: 'history-block', id: "journal-#{journal.id}"} do
       safe_concat journal.display_author_avatar
       safe_concat content_tag :div, class: "history-header #{'display-avatar' if journal.user_avatar?}", &Proc.new {
         safe_concat content_tag :span, user, {class: 'author'}
@@ -331,27 +331,45 @@ autocomplete-combobox-high',
   # @param [JournalDetail] detail to render.
   # @param [Boolean] no_icon : if true don't display for the updated field, else display the icon. Rendered icons are depending of the object's updated field.
   # for the list of icons @see Rorganize::ACTION_ICON.
-  def history_detail_render(detail, no_icon = false)
+  def history_detail_render(detail, no_icon = false, enhanced_detail_render = true)
     content_tag :li do
       icon = Rorganize::ACTION_ICON[detail.property_key.to_sym]
       icon ||= 'pencil'
       safe_concat content_tag :span, nil, class: "octicon octicon-#{icon} activity-icon" unless no_icon
       safe_concat content_tag :span, class: 'detail', &Proc.new {
         if detail.old_value && (detail.value.nil? || detail.value.eql?(''))
-          safe_concat content_tag :b, "#{detail.property} #{detail.old_value.to_s} "
-          safe_concat "#{t(:text_deleted)}"
+          safe_concat content_tag :b, "#{detail.property} "
+          safe_concat history_detail_value_render(detail, detail.old_value)
+          safe_concat " #{t(:text_deleted)}"
         elsif detail.old_value && detail.value
           safe_concat content_tag :b, "#{detail.property} #{t(:text_changed)} "
           safe_concat "#{t(:text_from)} "
-          safe_concat content_tag :b, "#{detail.old_value.to_s} "
-          safe_concat "#{t(:text_to)} "
-          safe_concat content_tag :b, "#{detail.value.to_s}"
+          safe_concat history_detail_value_render(detail, detail.old_value)
+          safe_concat " #{t(:text_to)} "
+          safe_concat history_detail_value_render(detail, detail.value)
         else
           safe_concat content_tag :b, "#{detail.property} "
           safe_concat "#{t(:text_set_at)} "
-          safe_concat content_tag :b, "#{detail.value.to_s}"
+          safe_concat history_detail_value_render(detail, detail.value)
         end
       }
+    end
+  end
+
+  def history_detail_value_render(detail, value, enhanced_detail_render = true, options = {})
+    truncated_value = resize_text(value, 35)
+    if enhanced_detail_render
+      case detail.property_key
+        when 'status_id'
+          content_tag :b, value, {class: 'issue-status issue-status-small',
+                                  style: "background-color: #{Rorganize::Managers::IssueStatusesColorManager.colors[value]}"}
+        when 'assigned_to_id'
+          fast_profile_link(value)
+        else
+          content_tag :b, "#{truncated_value} "
+      end
+    else
+      content_tag :b, "#{truncated_value} "
     end
   end
 
@@ -493,9 +511,11 @@ autocomplete-combobox-high',
   # Build a link to user profile.
   # Use this instead of link_to .., .._path due to performance issue. Indeed when we call link_to .. ; .. rails try check path validity and slow the application
   # in case of big render.
-  # @param [User] user.
+  # @param [User|String] user or user name.
   def fast_profile_link(user)
-    "<a href='/#{user.slug}' class='author-link' >#{user.caption}</a>"
+    slug = user.is_a?(User) ? user.slug : user.downcase.tr(' ', '-')
+    caption = user.is_a?(User) ? user.caption : user
+    "<a href='/#{slug}' class='author-link' >#{caption}</a>"
   end
 
   # Build a link to project overview.
@@ -512,7 +532,7 @@ autocomplete-combobox-high',
   # @param [Issue] issue.
   # @param [Project] project.
   def fast_issue_link(issue, project)
-    "<a href='/projects/#{project.slug}/issues/#{issue.id}'>#{issue.caption}</a>"
+    "<a href='/projects/#{project.slug}/issues/#{issue.id}'>#{resize_text(issue.caption, 35)}</a>"
   end
 
 
@@ -528,7 +548,7 @@ autocomplete-combobox-high',
   # @param [Document] document.
   # @param [Project] project.
   def fast_document_link(document, project)
-    "<b>document</b> <a href='/projects/#{project.slug}/documents/#{document.id}'>#{document.caption}</a>"
+    "<b>document</b> <a href='/projects/#{project.slug}/documents/#{document.id}'>#{resize_text(document.caption, 35)}</a>"
   end
 
   #id is the id of the tab
@@ -566,6 +586,8 @@ autocomplete-combobox-high',
     link_to glyph(t(:link_unwatch), 'eye'), watcher_path(project.slug, watchable.class.to_s, watchable.id, watcher.id), {id: "unwatch-link-#{watchable.id}", class: 'tooltipped tooltipped-s button', remote: true, method: :delete, label: t(:text_unwatch)}
   end
 
+  # @param [User] user : current user.
+  # @return [String] build a link to notifications panel. Link changed if there are new notifications or not.
   def notification_link(user)
     if user.notified?
       link_to notifications_path, {class: "tooltipped tooltipped-s indicator #{params[:controller].eql?('notifications') ? 'selected' : ''}", label: t(:text_unread_notifications)} do
@@ -577,11 +599,22 @@ autocomplete-combobox-high',
     end
   end
 
+  # @param [Fixnum] count : number to display.
+  # @return [String] build a <span> do display a number with the "count" css class.
   def sidebar_count_tag(count)
     content_tag :span, count, class: 'count'
   end
 
+  # @param [Form] form : the form in which the field will be placed.
+  # @param [Symbol] field : the name of the field.
+  # @return [String] build a color picker text field. Behaviour is bind on page load (JS).
   def color_field_tag(form, field)
     form.text_field field, autocomplete: 'off', maxlength: 7, class: 'color-editor-field'
+  end
+
+  # @param [String] text : text to resize.
+  # @param [Numeric] length : number of characters.
+  def resize_text(text, length = 50)
+    text.length > length ? "#{text[0..length]}..." : text
   end
 end

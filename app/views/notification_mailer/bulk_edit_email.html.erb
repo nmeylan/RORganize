@@ -20,5 +20,5 @@
       <% end %>
     </ul>
     <hr>
-    <%= content_tag(:ul, (journal.details.collect { |detail| history_detail_render(detail) }).join.html_safe) %>
+    <%= content_tag(:ul, (journal.details.collect { |detail| history_detail_render(detail, false, false) }).join.html_safe) %>
 <% end %>

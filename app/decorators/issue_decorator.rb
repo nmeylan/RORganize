@@ -17,7 +17,7 @@ class IssueDecorator < ApplicationDecorator
 
   # @return [String] tracker name.
   def tracker_str
-    model.tracker ? resize_text(model.tracker.caption, 15) : '-'
+    model.tracker ? h.resize_text(model.tracker.caption, 15) : '-'
   end
 
   # @return [String] version name.
@@ -81,7 +81,6 @@ class IssueDecorator < ApplicationDecorator
   def delete_link
     super(h.t(:link_delete), h.issue_path(context[:project].slug, model.id), context[:project], model.author_id)
   end
-
 
   # see #ApplicationDecorator::delete_attachment_link
   def delete_attachment_link(attachment)
