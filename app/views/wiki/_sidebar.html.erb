@@ -7,8 +7,8 @@
 
 <%= content_for :sidebar do %>
     <ul>
-      <li><%= link_to t(:home), wiki_index_path(@project.slug) %></li>
-      <li><%= link_to t(:link_pages), pages_wiki_index_path(@project.slug) %></li>
+      <li><%= link_to t(:home), wiki_index_path(project.slug) %></li>
+      <li><%= link_to t(:link_pages), pages_wiki_index_path(project.slug) %></li>
     </ul>
 <% end %>
 

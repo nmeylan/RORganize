@@ -19,8 +19,8 @@
 </ul>
 <%# OVERLAY renderer %>
 <%= render :partial => 'shared/delete_overlay', :locals => {:collection => @issues_toolbox} %>
-<%= render :partial => 'queries/create_overlay' %>
+<%= render :partial => 'queries/create_overlay', locals: {query: @query, project: @project} %>
 
-<%= render :partial => 'issues/sidebar' %>
+<%= render :partial => 'issues/sidebar', locals: {custom_queries_decorator: @custom_queries_decorator, project: @project}%>
 
 

@@ -6,9 +6,9 @@
 %>
 
 <h2><%= t(:label_children) %> :</h2>
-<% if @issue_decorator.children.any? %>
+<% if issue_decorator.children.any? %>
     <ul>
-      <% @issue_decorator.children.each do |child| %>
+      <% issue_decorator.children.each do |child| %>
           <li>#<%= child.id %>
             : <%= link_to child.subject, {:action => 'show', :controller => 'issues', :id => child.id} %></li>
       <% end %>

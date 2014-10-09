@@ -26,7 +26,7 @@
   </h1>
 </div>
 <% if display_menu?(@project) %>
-    <%= render :partial => 'layouts/main_menu' %>
+    <%= render :partial => 'layouts/main_menu', locals: {project: @project} %>
 <% end %>
 <%= tag('div', {:id => 'main', :class => (sidebar_content? ? '' : 'nosidebar')}, true) %>
 <%= render :partial => 'flashs/flash' %>

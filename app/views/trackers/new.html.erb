@@ -8,6 +8,6 @@
 <%= contextual t(:link_new_tracker) %>
 
 <%= form_for @tracker, :url => {:controller => 'trackers'}, :html => {:class => 'form'} do |f| %>
-    <%= render :partial => 'trackers/form', :locals => {:f => f} %>
+    <%= render :partial => 'trackers/form', :locals => {:f => f, tracker: @tracker} %>
     <%= submit_tag t(:button_create) %>
 <% end %>

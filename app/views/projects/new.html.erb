@@ -6,4 +6,4 @@
 %>
 <%= contextual t(:link_new_project) %>
 
-<%= render :partial => 'projects/form' %>
+<%= render :partial => 'projects/form', locals: {project_decorator: @project_decorator, trackers_decorator: @trackers_decorator} %>

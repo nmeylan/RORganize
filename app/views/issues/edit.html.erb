@@ -6,6 +6,6 @@
 %>
 <%= contextual t(:label_edit_issue) %>
 <%= form_for(@issue_decorator, :url => issue_path, :method => :put, :html => {:class => 'form', :multipart => true}) do |f| %>
-    <%= render :partial => 'issues/form', :locals => {:f => f, :form_content => form_content} %>
+    <%= render :partial => 'issues/form', :locals => {:f => f, :form_content => form_content, issue_decorator: @issue_decorator, project: @project} %>
     <%= submit_tag t(:button_save) %>
 <% end %>

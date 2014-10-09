@@ -4,9 +4,9 @@
 # Encoding: UTF-8
 # File: _form.erb.erb
 %>
-<%= form_for(@project_decorator, :url => projects_path, :html => {:class => 'form', :multipart => true}) do |f| %>
+<%= form_for(project_decorator, :url => projects_path, :html => {:class => 'form', :multipart => true}) do |f| %>
     <%= %>
-    <%= raw error_messages(@project_decorator.errors.full_messages) %>
+    <%= raw error_messages(project_decorator.errors.full_messages) %>
     <div class="box">
       <p>
         <label for="project_name"><%= t(:field_name) %><span class="required">
@@ -26,14 +26,14 @@
       </p>
 
       <p>
-        <% @trackers_decorator.settings_list %>
+        <% trackers_decorator.settings_list %>
       </p>
 
       <div id="attachments">
         <p>
           <label><%= t(:field_attachments) %></label>
         </p>
-        <%= render :partial => 'shared/attachments', :collection => @project_decorator.attachments, locals: {object: @project_decorator, type: 'project'} %>
+        <%= render :partial => 'shared/attachments', :collection => project_decorator.attachments, locals: {object: project_decorator, type: 'project'} %>
       </div>
     </div>
 

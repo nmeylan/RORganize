@@ -10,6 +10,6 @@ File: pages.html
     <%= @wiki_decorator.organize_pages_link %>
     <%= @wiki_decorator.new_page_link %>
 <% end %>
-<%= render :partial => 'wiki/sidebar' %>
+<%= render :partial => 'wiki/sidebar', locals: {project: @project} %>
 <%= @wiki_decorator.display_pages %>
 

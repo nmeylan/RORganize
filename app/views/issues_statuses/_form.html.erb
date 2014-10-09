@@ -1,8 +1,8 @@
-<%= raw error_messages(@status.errors.full_messages) %>
+<%= raw error_messages(status.errors.full_messages) %>
 <div class="box">
   <p>
     <label for="enumeration_name"><%= t(:field_name) %><span class="required">*</span></label>
-    <%= text_field_tag 'enumeration[name]', @status.enumeration ? @status.enumeration.name : '', :size => 80, maxlength: 255 %>
+    <%= text_field_tag 'enumeration[name]', status.enumeration ? status.enumeration.name : '', :size => 80, maxlength: 255 %>
   </p>
 
   <div class="autocomplete-combobox cbb-medium nosearch">

@@ -8,5 +8,5 @@
 <div class="contextual">
   <h1><%= contextual "#{t(:label_setting_plural)} - #{t(:link_update_informations)}" %></h1>
 </div>
-<%= render :partial => 'settings/project_informations_form' %>
-<%= render :partial => 'settings/sidebar' %>
+<%= render :partial => 'settings/project_informations_form', locals: {project_decorator: @project_decorator, project: @project, trackers_decorator: @trackers_decorator} %>
+<%= render :partial => 'settings/sidebar', locals: {project: @project} %>

@@ -7,6 +7,6 @@
 <%= contextual t(:link_new_document) %>
 
 <%= form_for @document_decorator, :html => {:class => 'form', :multipart => true} do |f| %>
-    <%= render :partial => 'documents/form', :locals => {:f => f} %>
+    <%= render :partial => 'documents/form', :locals => {:f => f, document_decorator: @document_decorator, project: @project} %>
     <%= submit_tag t(:button_save) %>
 <% end %>

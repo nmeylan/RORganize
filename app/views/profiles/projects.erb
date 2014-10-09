@@ -12,4 +12,4 @@
 <%= @projects_decorator.display_collection %>
 <%= submit_tag t(:button_save), {:id => 'save-position', 'data-link' => save_project_position_profile_path} %>
 
-<%= render :partial => 'profiles/sidebar' %>
+<%= render :partial => 'profiles/sidebar', locals: {user: @user} %>

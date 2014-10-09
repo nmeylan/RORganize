@@ -9,6 +9,6 @@
     <%= @permission_decorator.delete_link %>
 <% end %>
 <%= form_for @permission_decorator, :url => permission_path, :method => :put, :html => {:class => 'form'} do |f| %>
-    <%= render :partial => 'permissions/form', :locals => {:f => f, :controllers => controllers} %>
+    <%= render :partial => 'permissions/form', :locals => {:f => f, :controllers => controllers, permission_decorator: @permission_decorator} %>
     <%= submit_tag t(:button_save) %>
 <% end %>

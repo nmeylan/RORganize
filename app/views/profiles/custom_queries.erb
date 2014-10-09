@@ -4,7 +4,7 @@
 # Encoding: UTF-8
 # File: custom_queries.erb
 %>
-<%= render :partial => 'profiles/sidebar' %>
+<%= render :partial => 'profiles/sidebar', locals: {user: @user} %>
 <%= contextual t(:link_custom_queries) %>
 
-<%= render :partial => 'queries/list' %>
+<%= render :partial => 'queries/list', locals: {queries_decorator: @queries_decorator} %>

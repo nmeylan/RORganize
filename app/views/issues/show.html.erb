@@ -55,11 +55,11 @@
 <%= clear_both %>
 <div class="content gantt-informations">
   <div id="predecessor">
-    <%= render :partial => 'issues/predecessor' %>
+    <%= render :partial => 'issues/predecessor', locals: {issue_decorator: @issue_decorator, project: @project} %>
   </div>
   <hr/>
   <div id="children">
-    <%= render :partial => 'issues/children' %>
+    <%= render :partial => 'issues/children', locals: {issue_decorator: @issue_decorator} %>
   </div>
 </div>
 
@@ -71,4 +71,4 @@
 <%= @issue_decorator.display_history(history) %>
 
 <%= @issue_decorator.add_comment_block %>
-<%= render :partial => 'time_entries/log_issue_spent_time', :locals => {:issue_id => @issue_decorator.id, :tracker_name => @issue_decorator.tracker} %>
+<%= render :partial => 'time_entries/log_issue_spent_time', :locals => {:issue_id => @issue_decorator.id, :tracker_name => @issue_decorator.tracker, time_entry: @time_entry} %>

@@ -5,7 +5,7 @@
 # File: _form.html.erb
 %>
 
-<%= raw error_messages(@role.errors.full_messages) %>
+<%= raw error_messages(role.errors.full_messages) %>
 <div class="box">
   <p>
     <label for="role_name"><%= t(:field_name) %><span class="required"> *</span></label>
@@ -16,8 +16,8 @@
 
   <p>
     <label><%= t(:link_issues_statuses) %></label>
-    <% @issues_statuses.sort { |x, y| x.enumeration.position <=> y.enumeration.position }.each do |status| %>
-        <label class="normal-label"><%= status.enumeration.name %><%= check_box_tag "[issues_statuses][#{status.enumeration.name}]", status.enumeration.id.to_i, @role.issues_statuses.include?(status) %></label>
+    <% issues_statuses.sort { |x, y| x.enumeration.position <=> y.enumeration.position }.each do |status| %>
+        <label class="normal-label"><%= status.enumeration.name %><%= check_box_tag "[issues_statuses][#{status.enumeration.name}]", status.enumeration.id.to_i, role.issues_statuses.include?(status) %></label>
     <% end %>
   </p>
 </div>

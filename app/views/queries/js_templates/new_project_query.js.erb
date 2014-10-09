@@ -4,7 +4,7 @@
  * Time: 08:03
  %>
 <% if new %>
-jQuery('#create-query-overlay').replaceWith("<%= escape_javascript (render :partial => 'queries/create_overlay' )%>");
+jQuery('#create-query-overlay').replaceWith("<%= escape_javascript (render :partial => 'queries/create_overlay', locals: {query: @query, project: @project} )%>");
 createOverlay("#create-query-overlay", 150);
 //bind info tag
 bind_info_tag();
@@ -29,6 +29,7 @@ jQuery("#query-creation-form").submit(function (e) {
 <% else %>
 <% if success %>
 jQuery('#create-query-overlay').overlay().close();
-on_addition_effect('#custom-queries', "<%= escape_javascript (render :partial => 'issues/custom_queries')%>");
+on_addition_effect('#custom-queries', "<%= escape_javascript (render :partial => 'issues/custom_queries',
+                                                               locals: {custom_queries_decorator: @custom_queries_decorator, project: @project})%>");
 <% end %>
 <% end  %>

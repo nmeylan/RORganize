@@ -8,14 +8,16 @@
 <%= content_for :sidebar do %>
     <h2><%= t(:label_request_plural) %></h2>
     <ul>
-      <li><%= link_to t(:link_view_all)+' '+t(:label_request_plural), issues_path(@project.slug, type: :all, commit: :Apply) %></li>
-      <li><%= link_to t(:label_overview), overview_issues_path(@project.slug) %></li>
+      <li><%= link_to t(:link_view_all)+' '+t(:label_request_plural), issues_path(project.slug, type: :all, commit: :Apply) %></li>
+      <li><%= link_to t(:label_overview), overview_issues_path(project.slug) %></li>
       <li>
-        <%= link_to t(:label_gantt_chart), {:controller => 'roadmaps', :action => 'gantt', :project_id => @project.slug} %>
+        <%= link_to t(:label_gantt_chart), {:controller => 'roadmaps', :action => 'gantt', :project_id => project.slug} %>
       </li>
     </ul>
     <div id="custom-queries">
-      <%= render :partial => 'issues/custom_queries' if User.current.allowed_to?('apply_custom_query', 'Issues', @project) %>
+      <% if User.current.allowed_to?('apply_custom_query', 'Issues', project) %>
+          <%= render :partial => 'issues/custom_queries', locals: {custom_queries_decorator: custom_queries_decorator, project: project} %>
+      <% end %>
     </div>
 
 <% end %>

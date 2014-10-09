@@ -7,16 +7,16 @@
 <div id="calendar-header">
   <p>
 
-    <%= link_to "<< #{t(:link_prev_month)}", spent_time_profile_path, {:style => 'float:left', :class => 'change-month ', :id => "#{@date.prev_month}"} %>
-    <%= @date.strftime('%B, %Y') %>
-    <%= link_to "#{t(:link_next_month)} >>", spent_time_profile_path, {:style => 'float:right', :class => 'change-month', :id => "#{@date.next_month}"} %>
+    <%= link_to "<< #{t(:link_prev_month)}", spent_time_profile_path, {:style => 'float:left', :class => 'change-month ', :id => "#{date_orig.prev_month}"} %>
+    <%= date_orig.strftime('%B, %Y') %>
+    <%= link_to "#{t(:link_next_month)} >>", spent_time_profile_path, {:style => 'float:right', :class => 'change-month', :id => "#{date_orig.next_month}"} %>
   </p>
 
 </div>
 <ul id="calendar-body">
   <% i = 1 %>
-  <% while i <= Time.days_in_month(@date.month) %>
-      <% date = Date.parse("#{@date.year}-#{@date.month}-#{i}") %>
+  <% while i <= Time.days_in_month(date_orig.month) %>
+      <% date = Date.parse("#{date_orig.year}-#{date_orig.month}-#{i}") %>
       <li class="li-calendar-item odd-even">
         <div class="calendar-item">
           <div class="calendar-item-header">
@@ -25,7 +25,7 @@
           <div class="calendar-item-body">
             <ul>
               <% total = 0 %>
-              <% @time_entries[date].each do |time_entry| %>
+              <% time_entries[date].each do |time_entry| %>
                   <li>
                     <span class="calendar-item-left">
                       <%= link_to "##{time_entry.issue_id}", issue_path(time_entry.project.slug, time_entry.issue_id) %>
@@ -52,4 +52,4 @@
   <% end %>
 </ul>
 <%= clear_both %>
-<%= render :partial => 'time_entries/log_issue_spent_time', :locals => {:issue_id => nil, :tracker_name => nil} %>
+<%= render :partial => 'time_entries/log_issue_spent_time', :locals => {:issue_id => nil, :tracker_name => nil, time_entry: time_entry} %>

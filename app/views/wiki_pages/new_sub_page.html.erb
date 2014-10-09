@@ -7,9 +7,9 @@ File: new_sub_page.html
 
 <%= contextual t(:label_new_sub_page) %>
 
-<%= render :partial => 'wiki/sidebar' %>
+<%= render :partial => 'wiki/sidebar', locals: {project: @project} %>
 <%= form_for @wiki_page_decorator, {:url => wiki_pages_path, :html => {:class => 'form'}, :method => :post} do |f| %>
     <%= hidden_field_tag 'wiki_page[parent_id]', params[:id] %>
-    <%= render :partial => 'wiki_pages/form', :locals => {:f => f} %>
+    <%= render :partial => 'wiki_pages/form', :locals => {:f => f, wiki_page_decorator: @wiki_page_decorator} %>
     <%= submit_tag t(:button_create) %>
 <% end %>

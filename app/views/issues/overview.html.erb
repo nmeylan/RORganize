@@ -4,5 +4,5 @@
  * Time: 23:55
 %>
 <%= contextual t(:label_overview) %>
-<%= render :partial => 'issues/sidebar' %>
+<%= render :partial => 'issues/sidebar', locals: {custom_queries_decorator: @custom_queries_decorator, project: @project}%>
 <%= display_overview_groups(overview.content) %>

@@ -5,7 +5,7 @@
 # File: _form.html.erb
 %>
 
-<%= form_for @query, :url => {:controller => 'queries', :project_id => @project.slug}, :html => {:class => 'form', id: 'query-creation-form'} do |f| %>
+<%= form_for query, :url => {:controller => 'queries', :project_id => project.slug}, :html => {:class => 'form', id: 'query-creation-form'} do |f| %>
     <div class="box">
       <p style="padding-right: 3px;">
         <label for="query_name"><%= t(:field_name) %><span class="required">
@@ -17,7 +17,7 @@
         <%= f.label :description %>
         <%= f.text_area :description, :rows => 12, :class => 'fancyEditor' %>
       </p>
-      <% if User.current.allowed_to?('public_queries', 'Queries', @project) %>
+      <% if User.current.allowed_to?('public_queries', 'Queries', project) %>
           <p>
             <%= f.label :is_public %>
             <%= f.check_box :is_public %>

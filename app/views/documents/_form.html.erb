@@ -5,7 +5,7 @@
 # File: _form.html.erb
 %>
 
-<%= raw error_messages(@document_decorator.errors.full_messages) %>
+<%= raw error_messages(document_decorator.errors.full_messages) %>
 <div class="box">
   <p>
     <label for="issue_name"><%= t(:field_name) %><span class="required">
@@ -19,13 +19,13 @@
   </p>
 
   <div class="splitcontentleft">
-    <div class="autocomplete-combobox cbb-medium nosearch">
+    <div class="autocomplete-combobox cbb-medium search">
       <label for="document_version"><%= t(:field_version) %></label>
-      <%= select_tag_versions('document_version_id', 'document[version_id]', @document_decorator.version_id) %>
+      <%= select_tag_versions('document_version_id', 'document[version_id]', document_decorator.version_id) %>
     </div>
-    <div class="autocomplete-combobox cbb-medium nosearch">
+    <div class="autocomplete-combobox cbb-medium search">
       <label for="document_category"><%= t(:field_category) %></label>
-      <%= f.select :category_id, @project.categories.collect { |category| [category.name, category.id] }, {:include_blank => true}, {:class => 'chzn-select-deselect cbb-medium'} %>
+      <%= f.select :category_id, project.categories.collect { |category| [category.name, category.id] }, {:include_blank => true}, {:class => 'chzn-select-deselect cbb-medium'} %>
     </div>
   </div>
   <div style="clear:both"></div>
@@ -33,11 +33,11 @@
     <div class="splitcontentleft">
       <p>
         <label><%= t(:field_attachments) %></label>
-        <%= add_attachments_link 'Add a file', @document_decorator, 'document' %>
+        <%= add_attachments_link 'Add a file', document_decorator, 'document' %>
       </p>
-      <%= render :partial => 'shared/attachments', collection: @document_decorator.attachments, locals: {object: @document_decorator, type: 'document'} %>
+      <%= render :partial => 'shared/attachments', collection: document_decorator.attachments, locals: {object: document_decorator, type: 'document'} %>
     </div>
-    <div class="splitcontentright attachment-box"><%= render :partial => 'shared/show_attachments', :locals => {:attachments => @document_decorator.attachments, :object => @document_decorator, no_header: true} %></div>
+    <div class="splitcontentright attachment-box"><%= render :partial => 'shared/show_attachments', :locals => {:attachments => document_decorator.attachments, :object => document_decorator, no_header: true} %></div>
     <%= clear_both %>
   </div>
 

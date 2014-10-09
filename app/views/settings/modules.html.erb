@@ -5,7 +5,7 @@
 # File: modules.html.erb
 %>
 
-<%= render :partial => 'settings/sidebar' %>
+<%= render :partial => 'settings/sidebar', locals: {project: @project} %>
 
 <%= contextual t(:link_modules) %>
 

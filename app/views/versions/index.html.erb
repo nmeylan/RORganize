@@ -8,5 +8,5 @@
 <%= contextual "#{t(:label_setting_plural)} - #{t(:link_versions)}" do %>
     <%= @versions_decorator.new_link %>
 <% end %>
-<%= render :partial => 'versions/list' %>
-<%= render :partial => 'settings/sidebar' %>
+<%= render :partial => 'versions/list', locals: {versions_decorator: @versions_decorator} %>
+<%= render :partial => 'settings/sidebar', locals: {project: @project} %>
