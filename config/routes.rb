@@ -53,7 +53,6 @@ RORganize::Application.routes.draw do
         delete 'delete_attachment', :path => 'delete_attachment/:id'
         get 'download_attachment', :path => 'download_attachment/:id'
         post 'edit_note', :path => 'edit_note/:note_id'
-        post 'start_today', :path => 'start_today/:id'
         delete 'delete_note', :path => 'delete_note/:note_id'
         get 'apply_custom_query', :path => 'filter/:query_id'
         post 'add_predecessor', :path => ':id/add_predecessor'

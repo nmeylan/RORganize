@@ -1,5 +1,5 @@
 #Author : Nicolas
-#Date: 25 juin 2013 
+#Date: 25 juin 2013
 #Encoding: UTF-8
 #File: wiki_pages_helper
 

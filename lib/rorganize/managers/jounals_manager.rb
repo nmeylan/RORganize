@@ -1,5 +1,5 @@
 #Author : Nicolas Meylan
-#Date: 19 juil. 2013 
+#Date: 19 juil. 2013
 #Encoding: UTF-8
 #File: journalizable_record_callback
 

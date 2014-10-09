@@ -35,11 +35,11 @@ module Rorganize
             record.position == max && operator.eql?('inc')
         elsif %w(inc dec).include? operator
           if operator.eql?('inc')
-            o_record = records_collection.select { |r| r.position.eql?(position + 1) }.first
+            o_record = records_collection.detect { |r| r.position.eql?(position + 1) }
             o_record.update_column(:position, position)
             record.update_column(:position, position + 1)
           else
-            o_record = records_collection.select { |r| r.position.eql?(position - 1) }.first
+            o_record = records_collection.detect { |r| r.position.eql?(position - 1) }
             o_record.update_column(:position, position)
             record.update_column(:position, position - 1)
           end

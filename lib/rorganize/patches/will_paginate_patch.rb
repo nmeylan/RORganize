@@ -4,7 +4,7 @@
 # File: will_paginate_patch.rb
 
 # Reason of this patch :
-# Will paginate count method add useless join ("outer") in the count query. 
+# Will paginate count method add useless join ("outer") in the count query.
 module Rorganize
   module Patches
     module WillPaginatePatch
