@@ -10,4 +10,5 @@ jQuery('#add-member-overlay').overlay().load();
 <% else %>
 jQuery('#add-member-overlay').overlay().close();
 on_replace_effect("#members-content", "<%= escape_javascript(@members_decorator.display_collection) %>");
+per_page();
 <% end %>
