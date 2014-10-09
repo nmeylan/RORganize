@@ -6,7 +6,6 @@
 require 'roadmaps/gantt_object'
 class RoadmapsController < ApplicationController
   helper VersionsHelper
-  include RoadmapsHelper
   before_filter { |c| c.add_action_alias = {'version' => 'show'} }
   before_filter :check_permission, only: [:gantt, :manage_gantt, :show, :version]
   before_filter { |c| c.menu_context :project_menu }
