@@ -43,7 +43,7 @@ class Document < ActiveRecord::Base
 
   # @return [Array] all attributes except id.
   def self.attributes_formalized_names
-    Document.attribute_names.map { |attribute| attribute.tr('_id', '').tr('id', '').tr('_', ' ').capitalize unless attribute.eql?('id') }.compact
+    Document.attribute_names.map { |attribute| attribute.gsub('_id', '').gsub('id', '').tr('_', ' ').capitalize unless attribute.eql?('id') }.compact
   end
 
   # @return [Array] with all attribute that can be filtered.
