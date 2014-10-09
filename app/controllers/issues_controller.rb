@@ -177,7 +177,7 @@ class IssuesController < ApplicationController
     query = Query.find_by_slug(params[:query_id])
     if query
       @sessions[@project.slug][:sql_filter] = query.stringify_query
-      @sessions[@project.slug][:json_filter] = eval(query.stringify_params) #eval data from DataBase, not user input.
+      @sessions[@project.slug][:json_filter] = JSON.parse(query.stringify_params.gsub('=>', ':'))
     end
     index
   end
