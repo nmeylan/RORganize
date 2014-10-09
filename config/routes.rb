@@ -4,7 +4,7 @@ RORganize::Application.routes.draw do
   get 'rorganize/:action', :controller => 'rorganize'
   post 'rorganize/:action', :controller => 'rorganize'
 
-  resources :projects do
+  resources :projects, except: [:edit, :update] do
     collection do
       post 'filter', :path => ':filter'
       get 'overview', :path => ':project_id/overview'
@@ -18,11 +18,11 @@ RORganize::Application.routes.draw do
     end
   end
 
-  resources :comments do
+  resources :comments, except: [:new, :index] do
 
   end
   scope 'projects/:project_id/:watchable_type/:watchable_id' do
-    resources :watchers do
+    resources :watchers, only: [:create, :destroy] do
     end
   end
   scope 'administration/' do
@@ -31,14 +31,14 @@ RORganize::Application.routes.draw do
         post 'register', path: 'register'
       end
     end
-    resources :permissions do
+    resources :permissions, except: [:show] do
       collection do
         get 'list', :path => ':role_name/list'
         post 'update_permissions', :path => ':role_name/update_permissions'
       end
     end
-    resources :roles
-    resources :trackers
+    resources :roles, except: [:show]
+    resources :trackers, except: [:show]
     resources :issues_statuses do
       collection do
         post 'change_position'
@@ -68,7 +68,7 @@ RORganize::Application.routes.draw do
         post 'toolbox'
       end
     end
-    resource :roadmap do
+    resource :roadmap, only: [:show] do
       collection do
         get 'calendar'
         get 'gantt'
@@ -84,13 +84,13 @@ RORganize::Application.routes.draw do
         put 'set_organization'
       end
     end
-    resources :wiki_pages do
+    resources :wiki_pages, except: [:index] do
       collection do
         get 'new_home_page'
         get 'new_sub_page', :path => ':id/new_sub_page'
       end
     end
-    resources :settings, :except => 'show' do
+    resources :settings, only: [:index, :update] do
       collection do
         post 'update_project_informations'
         get 'public_queries', :path => 'queries'
@@ -100,7 +100,7 @@ RORganize::Application.routes.draw do
       end
     end
   end
-  resources :queries do
+  resources :queries, except: [:new] do
     collection do
       get 'new_project_query', :path => 'new_project_query/:project_id/:query_type'
       put 'edit_query_filter', :path => 'edit_query_filter/:query_id'
@@ -112,8 +112,8 @@ RORganize::Application.routes.draw do
         post 'change_position'
       end
     end
-    resources :categories
-    resources :members, :except => 'show' do
+    resources :categories, except: [:show]
+    resources :members, except: [:show, :edit, :update] do
       collection do
         post 'change_role', :path => 'change_role/:member_id'
 
@@ -125,13 +125,13 @@ RORganize::Application.routes.draw do
 
   end
 
-  resources :notifications do
+  resources :notifications, only: [:destroy, :index] do
     collection do
       delete 'destroy_all_for_project', path: 'destroy_all_for_project/:project_slug'
     end
   end
 
-  resource :profile, path: 'my-account' do
+  resource :profile, only: [:show], path: 'my-account' do
     collection do
       get 'act_as'
       post 'change_password'
@@ -148,7 +148,7 @@ RORganize::Application.routes.draw do
     end
   end
 
-  resources :time_entries do
+  resources :time_entries, except: [:show, :index] do
     collection do
       get 'fill_overlay', :path => 'fill_overlay/:issue_id'
       get 'fill_overlay', :path => 'fill_overlay/:issue_id/:spent_on', :as => 'fill_overlay_with_date'
