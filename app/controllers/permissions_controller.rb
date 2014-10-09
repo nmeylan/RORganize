@@ -26,7 +26,7 @@ class PermissionsController < ApplicationController
   def new
     @permission_decorator = Permission.new.decorate
     respond_to do |format|
-      format.html { render :action => 'new', :locals => {:controllers => load_controllers.values} }
+      format.html { render :new, :locals => {:controllers => load_controllers.values} }
     end
   end
 
@@ -41,7 +41,7 @@ class PermissionsController < ApplicationController
                              :status => :created, :location => @permission_decorator }
       else
         Permission.controller_list
-        format.html { render :action => 'new' }
+        format.html { render :new }
         format.json { render :json => @permission_decorator.errors,
                              :status => :unprocessable_entity }
       end
@@ -67,12 +67,12 @@ class PermissionsController < ApplicationController
     respond_to do |format|
       if @permission_decorator.update_attributes(permission_params)
         flash[:notice] = t(:successful_update)
-        format.html { redirect_to :action => 'index', :controller => 'permissions' }
+        format.html { redirect_to permissions_path }
         format.json { render :json => @permission_decorator,
                              :status => :created, :location => @permission_decorator }
       else
 
-        format.html { render :action => 'edit', :locals => {:controllers => load_controllers.values} }
+        format.html { render :edit, :locals => {:controllers => load_controllers.values} }
         format.json { render :json => @permission_decorator.errors,
                              :status => :unprocessable_entity }
       end
@@ -94,7 +94,7 @@ class PermissionsController < ApplicationController
   def list
     @permissions_decorator = Permission.select('*').decorate(context: {role_name: params[:role_name], controller_list: load_controllers})
     respond_to do |format|
-      format.html { render :action => 'list' }
+      format.html { render :list }
     end
   end
 
@@ -106,7 +106,7 @@ class PermissionsController < ApplicationController
       @roles = Role.select('*')
       respond_to do |format|
         flash[:notice] = t(:successful_update)
-        format.html { redirect_to :action => 'index', :controller => 'permissions' }
+        format.html { redirect_to permissions_path }
       end
     else
       list

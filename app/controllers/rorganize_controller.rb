@@ -12,12 +12,17 @@ class RorganizeController < ApplicationController
   def index
     respond_to do |format|
       if current_user.nil?
-        format.html { render :action => 'index' }
+        format.html { render :index }
       else
         projects_decorator = User.current.owned_projects('starred').decorate(context: {allow_to_star: false})
-        overview_object_assigned = IssueOverviewHash.new({assigned_to: Issue.group_opened_by_project('issues.assigned_to_id', "assigned_to_id = #{User.current.id}")}, Issue.where(assigned_to_id: User.current.id).count, true)
-        overview_object_submitted = IssueOverviewHash.new({author: Issue.group_opened_by_project('issues.author_id', "author_id = #{User.current.id}")}, Issue.where(author_id: User.current.id).count, true)
-        format.html { render action: 'index', locals: {projects_decorator: projects_decorator, overview_object_assigned: overview_object_assigned, overview_object_submitted: overview_object_submitted} }
+        overview_object_assigned = IssueOverviewHash.new({assigned_to:
+                                                              Issue.group_opened_by_project('issues.assigned_to_id', "assigned_to_id = #{User.current.id}")},
+                                                         Issue.where(assigned_to_id: User.current.id).count, true)
+        overview_object_submitted = IssueOverviewHash.new({author: Issue.group_opened_by_project('issues.author_id', "author_id = #{User.current.id}")},
+                                                          Issue.where(author_id: User.current.id).count, true)
+        format.html { render :index, locals: {projects_decorator: projects_decorator,
+                                              overview_object_assigned: overview_object_assigned,
+                                              overview_object_submitted: overview_object_submitted} }
       end
     end
   end
@@ -34,10 +39,11 @@ class RorganizeController < ApplicationController
         activities_types = @sessions[:activities][:types]
         activities_period = @sessions[:activities][:period]
         from_date = @sessions[:activities][:from_date]
-        @activities = Activities.new(@user_decorator.activities(activities_types, activities_period, from_date), @user_decorator.comments(activities_types, activities_period, from_date))
+        @activities = Activities.new(@user_decorator.activities(activities_types, activities_period, from_date),
+                                     @user_decorator.comments(activities_types, activities_period, from_date))
       end
       respond_to do |format|
-        format.html { render :action => 'view_profile', locals: activities_data }
+        format.html { render :view_profile, locals: activities_data }
         format.js { respond_to_js action: 'activity', locals: activities_data }
       end
     else

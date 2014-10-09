@@ -15,7 +15,7 @@ class MembersController < ApplicationController
     .paginated(@sessions[:current_page], @sessions[:per_page], order('users.name')).fetch_dependencies
     .decorate(context: {project: @project, roles: Role.select('*')})
     respond_to do |format|
-      format.html { render :action => 'index', :locals => {:users => nil} }
+      format.html { render :index, :locals => {:users => nil} }
       format.js { respond_to_js }
     end
   end

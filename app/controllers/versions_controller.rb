@@ -34,11 +34,11 @@ class VersionsController < ApplicationController
         @project.versions << @version
         @project.save
         flash[:notice] = t(:successful_creation)
-        format.html { redirect_to :action => 'index', :controller => 'versions' }
+        format.html { redirect_to versions_path }
         format.json { render :json => @version,
                              :status => :created, :location => @version }
       else
-        format.html { render :action => 'new' }
+        format.html { render :new }
         format.json { render :json => @version.errors,
                              :status => :unprocessable_entity }
       end
@@ -55,16 +55,16 @@ class VersionsController < ApplicationController
     @version.attributes= version_params
     respond_to do |format|
       if !@version.changed?
-        format.html { redirect_to :action => 'index', :controller => 'versions' }
+        format.html { redirect_to versions_path }
         format.json { render :json => @version,
                              :status => :created, :location => @version }
       elsif @version.changed? && @version.save
         flash[:notice] = t(:successful_update)
-        format.html { redirect_to :action => 'index', :controller => 'versions' }
+        format.html { redirect_to versions_path}
         format.json { render :json => @version,
                              :status => :created, :location => @version }
       else
-        format.html { render :action => 'edit' }
+        format.html { render :edit }
         format.json { render :json => @version.errors,
                              :status => :unprocessable_entity }
       end
@@ -75,7 +75,9 @@ class VersionsController < ApplicationController
     @versions_decorator = @project.versions.decorate(context: {project: @project})
     success = @version.destroy
     respond_to do |format|
-      format.js { respond_to_js :response_header => success ? :success : :failure, :response_content => success ? t(:successful_deletion) : t(:failure_deletion), :locals => {:id => params[:id]} }
+      format.js { respond_to_js :response_header => success ? :success : :failure,
+                                :response_content => success ? t(:successful_deletion) : t(:failure_deletion),
+                                :locals => {:id => params[:id]} }
     end
   end
 

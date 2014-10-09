@@ -41,16 +41,16 @@ class WikiPagesController < ApplicationController
             flash[:notice] = t(:successful_creation)
             format.html { redirect_to wiki_page_path(@project.slug, @wiki_page_decorator.slug) }
           else
-            format.html { render :action => 'new_home_page' }
+            format.html { render :new_home_page }
           end
         end
         flash[:notice] = t(:successful_creation)
         format.html { redirect_to wiki_page_path(@project.slug, @wiki_page_decorator.slug) }
       else
         if params[:wiki] && params[:wiki][:home_page]
-          format.html { render :action => 'new_home_page' }
+          format.html { render :new_home_page }
         else
-          format.html { render :action => 'new' }
+          format.html { render :new }
         end
       end
     end
@@ -77,7 +77,7 @@ class WikiPagesController < ApplicationController
         flash[:notice] = t(:successful_update)
         format.html { redirect_to wiki_page_path(@project.slug, @wiki_page_decorator.slug) }
       else
-        format.html { render :action => 'edit' }
+        format.html { render :edit }
       end
     end
   end

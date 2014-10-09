@@ -22,7 +22,7 @@ class RoadmapsController < ApplicationController
     @version_decorator.to_a << unplanned.decorate
     old_versions = @project_decorator.old_versions.decorate
     respond_to do |format|
-      format.html { render :action => 'index', locals: {old_versions: old_versions} }
+      format.html { render :index, locals: {old_versions: old_versions} }
     end
   end
 
@@ -60,7 +60,7 @@ class RoadmapsController < ApplicationController
     @gantt_object = GanttObject.new(versions, @project_decorator, @sessions[@project.slug][:gantt][:edition])
     gon.Gantt_JSON = @gantt_object.json_data
     respond_to do |format|
-      format.html { render action: 'gantt', locals: {versions: @project_decorator.versions, selected_versions: versions} }
+      format.html { render :gantt, locals: {versions: @project_decorator.versions, selected_versions: versions} }
       format.js { respond_to_js action: 'gantt', locals: {json_data: @gantt_object.json_data, save: false} }
     end
   end

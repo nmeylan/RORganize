@@ -33,7 +33,7 @@ class ProjectsController < ApplicationController
       @activities = Activities.new(@project_decorator.activities(activities_types, activities_period, from_date), @project_decorator.comments(activities_types, activities_period, from_date))
     end
     respond_to do |format|
-      format.html { render action: 'activity', locals: locals }
+      format.html { render :activity, locals: locals }
       format.js { respond_to_js action: 'activity', locals: locals }
     end
   end
@@ -56,12 +56,12 @@ class ProjectsController < ApplicationController
       if @project_decorator.save
         @project_decorator.update_info({}, params[:trackers])
         flash[:notice] = t(:successful_creation)
-        format.html { redirect_to :action => 'overview', :controller => 'projects', project_id: @project_decorator.slug }
+        format.html { redirect_to overview_projects_path(@project_decorator.slug) }
         format.json { render :json => @project_decorator,
                              :status => :created, :location => @project_decorator }
       else
         @trackers_decorator = Tracker.all.decorate(context: {checked_ids: Tracker.where(name: ['Bug', 'Task']).collect(&:id)})
-        format.html { render :action => 'new' }
+        format.html { render :new }
         format.json { render :json => @project_decorator.errors,
                              :status => :unprocessable_entity }
       end
@@ -111,7 +111,7 @@ class ProjectsController < ApplicationController
     end
     @projects_decorator = User.current.owned_projects(session['project_selection_filter']).decorate(context: {allow_to_star: true})
     respond_to do |format|
-      format.html { render :action => 'index' }
+      format.html { render :index }
       format.js { respond_to_js :action => 'index' }
     end
   end

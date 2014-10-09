@@ -39,11 +39,11 @@ class UsersController < ApplicationController
     respond_to do |format|
       if @user.save
         flash[:notice] = t(:successful_creation)
-        format.html { redirect_to :action => 'show', :controller => 'users', :id => @user }
+        format.html { redirect_to user_path(@user.slug) }
         format.json { render :json => @user,
                              :status => :created, :location => @user }
       else
-        format.html { render :action => 'new' }
+        format.html { render :new }
         format.json { render :json => @user.errors, :status => :unprocessable_entity }
       end
     end
@@ -65,16 +65,16 @@ class UsersController < ApplicationController
     @user.attributes = user_params.delete_if { |k, _| k.eql?(:password) }
     respond_to do |format|
       if !@user.changed?
-        format.html { redirect_to :action => 'show', :controller => 'users', :id => @user }
+        format.html { redirect_to user_path(@user.slug) }
         format.json { render :json => @user,
                              :status => :created, :location => @user }
       elsif @user.save
         flash[:notice] = t(:successful_update)
-        format.html { redirect_to :action => 'show', :controller => 'users', :id => @user }
+        format.html { redirect_to user_path(@user.slug) }
         format.json { render :json => @user,
                              :status => :created, :location => @user }
       else
-        format.html { render :action => 'edit' }
+        format.html { render :edit }
         format.json { render :json => @user.errors,
                              :status => :unprocessable_entity }
       end

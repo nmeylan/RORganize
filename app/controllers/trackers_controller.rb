@@ -12,7 +12,9 @@ class TrackersController < ApplicationController
 
   #Get /administration/trackers
   def index
-    @trackers_decorator = Tracker.paginated(@sessions[:current_page], @sessions[:per_page], order('trackers.name')).decorate
+    @trackers_decorator = Tracker.paginated(@sessions[:current_page],
+                                            @sessions[:per_page],
+                                            order('trackers.name')).decorate
     respond_to do |format|
       format.html
       format.js { respond_to_js }
@@ -33,9 +35,9 @@ class TrackersController < ApplicationController
     respond_to do |format|
       if @tracker.save
         flash[:notice] = t(:successful_creation)
-        format.html { redirect_to :action => 'index' }
+        format.html { redirect_to trackers_path }
       else
-        format.html { render :action => 'new' }
+        format.html { render :new }
         format.json { render :json => @tracker.errors,
                              :status => :unprocessable_entity }
       end
@@ -56,9 +58,9 @@ class TrackersController < ApplicationController
     respond_to do |format|
       if @tracker.update_attributes(tracker_params)
         flash[:notice] = t(:successful_update)
-        format.html { redirect_to :action => 'index' }
+        format.html { redirect_to trackers_path }
       else
-        format.html { render :action => 'edit' }
+        format.html { render :edit }
       end
     end
   end
@@ -69,7 +71,7 @@ class TrackersController < ApplicationController
     @tracker.destroy
     @trackers = Tracker.select('*')
     respond_to do |format|
-      format.html { redirect_to :action => 'index' }
+      format.html { redirect_to trackers_path }
       format.js { respond_to_js :response_header => :success, :response_content => t(:successful_deletion), :locals => {:id => @tracker.id} }
     end
   end

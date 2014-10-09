@@ -33,11 +33,11 @@ class CategoriesController < ApplicationController
     respond_to do |format|
       if @category.save
         flash[:notice] = t(:successful_creation)
-        format.html { redirect_to :action => 'index', :controller => 'categories' }
+        format.html { redirect_to categories_path }
         format.json { render :json => @category,
                              :status => :created, :location => @category }
       else
-        format.html { render :action => 'new' }
+        format.html { render :new }
         format.json { render :json => @category.errors,
                              :status => :unprocessable_entity }
       end
@@ -54,14 +54,14 @@ class CategoriesController < ApplicationController
     @category.attributes = (category_params)
     respond_to do |format|
       if !@category.changed?
-        format.html { redirect_to :action => 'index', :controller => 'categories' }
+        format.html { redirect_to categories_path}
       elsif @category.changed? && @category.save
         flash[:notice] = t(:successful_update)
-        format.html { redirect_to :action => 'index', :controller => 'categories' }
+        format.html { redirect_to categories_path }
         format.json { render :json => @category,
                              :status => :created, :location => @category }
       else
-        format.html { render :action => 'edit' }
+        format.html { render :edit}
         format.json { render :json => @category.errors,
                              :status => :unprocessable_entity }
       end

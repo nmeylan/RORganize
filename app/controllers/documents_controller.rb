@@ -35,9 +35,9 @@ class DocumentsController < ApplicationController
     respond_to do |format|
       if @document_decorator.save
         flash[:notice] = t(:successful_creation)
-        format.html { redirect_to :action => 'show', :id => @document_decorator.id }
+        format.html { redirect_to document_path(@project.slug, @document_decorator.id) }
       else
-        format.html { render :action => 'new' }
+        format.html { render :new }
       end
     end
   end
@@ -59,7 +59,7 @@ class DocumentsController < ApplicationController
         flash[:notice] = t(:successful_update)
         format.html { redirect_to document_path(@project.slug, @document_decorator.id) }
       else
-        format.html { render :action => 'edit' }
+        format.html { render :edit }
       end
     end
   end
@@ -67,7 +67,7 @@ class DocumentsController < ApplicationController
   def show
     #this always return 1 result. Don't use .first(AR method) because it generate two query (due to ActiveRecord::FinderMethods::apply_join_dependency(..))
     respond_to do |format|
-      format.html { render :action => 'show', :locals => {:history => History.new(Journal.document_activities(@document_decorator.id), @document_decorator.comments)} }
+      format.html { render :show, :locals => {:history => History.new(Journal.document_activities(@document_decorator.id), @document_decorator.comments)} }
     end
   end
 
@@ -76,7 +76,6 @@ class DocumentsController < ApplicationController
     attachment = Attachment.find(params[:id])
     if attachment.destroy
       respond_to do |format|
-        format.html { redirect_to :action => 'show' }
         format.js { respond_to_js :response_header => :success, :response_content => t(:successful_deletion), :locals => {:id => attachment.id} }
       end
     end

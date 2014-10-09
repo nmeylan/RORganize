@@ -33,7 +33,7 @@ class SettingsController < ApplicationController
     @project.update_info(project_params, params[:trackers])
     respond_to do |format|
       flash[:notice] = t(:successful_update)
-      format.html { redirect_to :controller => 'settings', :action => 'index', :project_id => @project.slug }
+      format.html { redirect_to settings_path(@project.slug) }
     end
   end
 
@@ -52,7 +52,6 @@ class SettingsController < ApplicationController
       @project.attachments.build
       @project_decorator = @project.decorate
       respond_to do |format|
-        format.html { redirect_to :action => 'index', :controller => 'settings' }
         format.js { respond_to_js :response_header => :success, :response_content => t(:successful_deletion) }
       end
     end
@@ -73,7 +72,7 @@ class SettingsController < ApplicationController
     @modules = Rorganize::Managers::ModuleManager.modules(:project).module_items.delete_if { |mod| always_enabled.any? { |modules| modules[:controller].eql?(mod.controller) && modules[:action].eql?(mod.action) } }
     enabled_modules = @project.enabled_modules.collect { |mod| mod.name }
     respond_to do |format|
-      format.html { render action: 'modules', locals: {enabled_modules: enabled_modules} }
+      format.html { render :modules, locals: {enabled_modules: enabled_modules} }
     end
   end
 

@@ -29,7 +29,7 @@ class ProfilesController < ApplicationController
       @activities = Activities.new(@user.activities(activities_types, activities_period, from_date), @user.comments(activities_types, activities_period, from_date))
     end
     respond_to do |format|
-      format.html { render :action => 'show', locals: activities_data }
+      format.html { render :show, locals: activities_data }
       format.js { respond_to_js action: 'activity', locals: activities_data }
     end
   end
@@ -43,7 +43,7 @@ class ProfilesController < ApplicationController
       if user_params[:password].eql?(user_params[:retype_password]) && @user.update_attributes(password: user_params[:password])
         respond_to do |format|
           flash[:notice] = t(:successful_creation)
-          format.html { redirect_to :action => 'show', :id => @user.slug }
+          format.html { redirect_to profile_path}
         end
       else
         @user.errors.add(:passwords, ': do not match')
@@ -69,7 +69,7 @@ class ProfilesController < ApplicationController
   def projects
     @projects_decorator = @user.owned_projects(nil).decorate(context: {allow_to_star: true})
     respond_to do |format|
-      format.html { render :action => 'projects' }
+      format.html { render :projects }
     end
   end
 

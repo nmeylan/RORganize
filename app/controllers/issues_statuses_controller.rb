@@ -16,14 +16,14 @@ class IssuesStatusesController < ApplicationController
   def new
     @status = IssuesStatus.new(color: IssuesStatus::DEFAULT_OPENED_STATUS_COLOR)
     respond_to do |format|
-      format.html { render action: :new, locals: {done_ratio: done_ratio} }
+      format.html { render :new, locals: {done_ratio: done_ratio} }
     end
   end
 
   def edit
     @status = IssuesStatus.includes(:enumeration).find_by_id(params[:id])
     respond_to do |format|
-      format.html { render action: :edit, locals: {done_ratio: done_ratio} }
+      format.html { render :edit, locals: {done_ratio: done_ratio} }
     end
   end
 
@@ -31,12 +31,12 @@ class IssuesStatusesController < ApplicationController
     @status = IssuesStatus.find_by_id(params[:id])
     @enumeration = @status.enumeration
     respond_to do |format|
-      if @status.update_attributes(issue_statutes_params) && @enumeration.update_attributes(:name => enumeration_params[:name])
+      if @status.update_attributes(issue_statutes_params) && @enumeration.update_column(:name, enumeration_params[:name])
         flash[:notice] = t(:successful_update)
-        format.html { redirect_to :action => 'index' }
+        format.html { redirect_to issues_statuses_path }
       else
         @status.errors.add(:name, "can't be blank")
-        format.html { render action: :edit, locals: {done_ratio: done_ratio} }
+        format.html { render :edit, locals: {done_ratio: done_ratio} }
       end
     end
   end
@@ -49,15 +49,15 @@ class IssuesStatusesController < ApplicationController
         @status.enumeration_id = @enumeration.id
         if @status.save
           flash[:notice] = t(:successful_creation)
-          format.html { redirect_to :action => 'index' }
+          format.html { redirect_to issues_statuses_path }
         else
-          format.html { render action: :new, locals: {done_ratio: done_ratio} }
+          format.html { render :new, locals: {done_ratio: done_ratio} }
           format.json { render :json => @staus.errors,
                                :status => :unprocessable_entity }
         end
       else
         @status.errors.add(:name, "can't be blank")
-        format.html { render action: :new, locals: {done_ratio: done_ratio} }
+        format.html { render :new, locals: {done_ratio: done_ratio} }
       end
     end
   end
@@ -71,7 +71,7 @@ class IssuesStatusesController < ApplicationController
     @status.destroy
     get_statuses
     respond_to do |format|
-      format.html { redirect_to :action => 'index' }
+      format.html { redirect_to issues_statuses_path }
       format.js { respond_to_js :locals => {:id => params[:id]}, :response_header => :success, :response_content => t(:successful_deletion) }
     end
   end

@@ -7,7 +7,7 @@ require 'issues/issue_overview_hash'
 class IssuesController < ApplicationController
   before_filter { |c| c.add_action_alias= {'overview' => 'index', 'apply_custom_query' => 'index'} }
   before_filter :find_project_with_depedencies, only: [:index, :new, :create, :update, :edit, :toolbox, :apply_custom_query]
-  before_filter :check_permission, :except => [:toolbox, :start_today]
+  before_filter :check_permission, :except => [:toolbox]
   before_filter :find_issue, only: [:edit, :update, :destroy]
   before_filter :check_not_owner_permission, :only => [:edit, :update, :destroy]
   before_filter { |c| c.menu_context :project_menu }
@@ -24,7 +24,7 @@ class IssuesController < ApplicationController
     load_issues
     find_custom_queries
     respond_to do |format|
-      format.html { render 'issues/index' }
+      format.html { render :index }
       format.js { respond_to_js }
     end
   end
@@ -36,7 +36,7 @@ class IssuesController < ApplicationController
     else
       @issue_decorator = @issue_decorator.decorate(context: {project: @project})
       respond_to do |format|
-        format.html { render :action => 'show', :locals => {:history => History.new(Journal.issue_activities(@issue_decorator.id), @issue_decorator.comments)} }
+        format.html { render :show, :locals => {:history => History.new(Journal.issue_activities(@issue_decorator.id), @issue_decorator.comments)} }
       end
     end
   end
@@ -46,7 +46,7 @@ class IssuesController < ApplicationController
     @issue_decorator = Issue.new.decorate(context: {project: @project})
     @issue_decorator.attachments.build
     respond_to do |format|
-      format.html { render :action => 'new', :locals => {:form_content => form_content} }
+      format.html { render :new, :locals => {:form_content => form_content} }
     end
   end
 
@@ -60,12 +60,12 @@ class IssuesController < ApplicationController
     respond_to do |format|
       if date_valid?(params[:issue][:due_date]) && @issue_decorator.save
         flash[:notice] = t(:successful_creation)
-        format.html { redirect_to :action => 'show', :controller => 'issues', :id => @issue_decorator }
+        format.html { redirect_to issue_path(@project.slug, @issue_decorator.id) }
         format.json { render :json => @issue_decorator,
                              :status => :created, :location => @issue_decorator }
       else
         @issue_decorator.errors.add(:due_date, 'format is invalid') unless date_valid?(params[:issue][:due_date])
-        format.html { render :action => 'new', :locals => {:form_content => form_content} }
+        format.html { render :new, :locals => {:form_content => form_content} }
         format.json { render :json => @issue_decorator.errors,
                              :status => :unprocessable_entity }
       end
@@ -75,29 +75,28 @@ class IssuesController < ApplicationController
   #GET /project/:project_identifier/issues/:id/edit
   def edit
     respond_to do |format|
-      format.html { render :action => 'edit', :locals => {:form_content => form_content} }
+      format.html { render :edit, :locals => {:form_content => form_content} }
     end
   end
 
   #PUT /project/:project_identifier/issues/:id
   def update
     @issue_decorator.attributes = issue_params
-    @issue_decorator.notes = params[:notes]
     respond_to do |format|
-      if  !@issue_decorator.changed? && (params[:notes].nil? || params[:notes].eql?('')) && (issue_params[:existing_attachment_attributes].nil? && issue_params[:new_attachment_attributes].nil?)
-        format.html { redirect_to :action => 'show', :controller => 'issues', :id => @issue_decorator.id }
+      if  !@issue_decorator.changed? && issue_params[:existing_attachment_attributes].nil? && issue_params[:new_attachment_attributes].nil?
+        format.html { redirect_to issue_path(@project.slug, @issue_decorator.id) }
         format.json { render :json => @issue_decorator,
                              :status => :created, :location => @issue_decorator }
         #If attributes were updated
       elsif @issue_decorator.save && @issue_decorator.save_attachments
         flash[:notice] = t(:successful_update)
-        format.html { redirect_to :action => 'show', :controller => 'issues', :id => @issue_decorator.id }
+        format.html { redirect_to issue_path(@project.slug, @issue_decorator.id) }
         format.json { render :json => @issue_decorator,
                              :status => :created, :location => @issue_decorator }
       else
         @allowed_statuses = User.current.allowed_statuses(@project)
         @done_ratio = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
-        format.html { render :action => 'edit', :locals => {:form_content => form_content} }
+        format.html { render :edit, :locals => {:form_content => form_content} }
         format.json { render :json => @issue_decorator.errors,
                              :status => :unprocessable_entity }
       end
@@ -119,29 +118,10 @@ class IssuesController < ApplicationController
     attachment = Attachment.find(params[:id])
     if attachment.destroy
       respond_to do |format|
-        format.html { redirect_to :action => 'show' }
         format.js { respond_to_js :response_header => :success, :response_content => t(:successful_deletion), :locals => {:id => attachment.id} }
       end
     end
   end
-
-  def start_today
-    @issue_decorator = Issue.find_by_id(params[:id]).decorate(context: {project: @project})
-    @issue_decorator.start_date = Date.current
-
-    respond_to do |format|
-      format.html { redirect_to :action => 'show' }
-      format.js do
-        if @issue_decorator.save
-          flash[:notice] = t(:successful_update)
-        else
-          flash[:alert] = @issue_decorator.errors.full_messages
-        end
-        js_redirect_to(issue_path(@project.slug, @issue_decorator.id))
-      end
-    end
-  end
-
 
   #GET /project/:project_identifier/issues/toolbox
   def toolbox
@@ -199,7 +179,7 @@ class IssuesController < ApplicationController
     status_report = Issue.group_by_status(@project.id)
     overview_object = IssueOverviewHash.new({tracker: tracker_report, versions: version_report, category: category_report, author: author_report, assigned_to: assigned_to_report, status: status_report}, @project.issues.count)
     respond_to do |format|
-      format.html { render action: :overview, locals: {overview: overview_object} }
+      format.html { render :overview, locals: {overview: overview_object} }
     end
   end
 

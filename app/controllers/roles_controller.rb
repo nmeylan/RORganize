@@ -35,10 +35,10 @@ class RolesController < ApplicationController
     respond_to do |format|
       if @role.save
         flash[:notice] = t(:successful_creation)
-        format.html { redirect_to :action => 'index' }
+        format.html { redirect_to roles_path }
       else
         @issues_statuses = IssuesStatus.select('*').includes(:enumeration)
-        format.html { render :action => 'new' }
+        format.html { render :new }
         format.json { render :json => @role.errors,
                              :status => :unprocessable_entity }
       end
@@ -61,10 +61,10 @@ class RolesController < ApplicationController
     respond_to do |format|
       if @role.update_attributes(role_params)
         flash[:notice] = t(:successful_update)
-        format.html { redirect_to :action => 'index' }
+        format.html { redirect_to roles_path }
       else
         @issues_statuses = IssuesStatus.select('*').includes(:enumeration)
-        format.html { render :action => 'edit' }
+        format.html { render :edit }
       end
     end
   end
@@ -75,7 +75,7 @@ class RolesController < ApplicationController
     @role.destroy
     @roles_decorator = Role.select('*').paginated(@sessions[:current_page], @sessions[:per_page], order('roles.name')).decorate
     respond_to do |format|
-      format.html { redirect_to :action => 'index' }
+      format.html { redirect_to roles_path }
       format.js { respond_to_js :response_header => :success, :response_content => t(:successful_deletion), :locals => {:id => @role.id} }
     end
   end
