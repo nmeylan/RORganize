@@ -14,7 +14,7 @@ module DocumentsHelper
       safe_concat content_tag :tr, class: 'header', &Proc.new {
         safe_concat content_tag :th, link_to(glyph('', 'check'), '#', {class: 'icon-checked', id: 'check-all', 'cb_checked' => 'b'})
         safe_concat content_tag :th, sortable('documents.id', '#')
-        safe_concat content_tag :th, sortable('documents.name', 'Name')
+        safe_concat content_tag :th, sortable('documents.name', 'Name'), {class: 'list-left no-padding-left'}
         safe_concat content_tag :th, sortable('categories.name', 'Category')
         safe_concat content_tag :th, sortable('versions.name', 'Target phase')
         safe_concat content_tag :th, nil, {class: 'optional-cell'}
@@ -25,8 +25,8 @@ module DocumentsHelper
           safe_concat content_tag :td, check_box_tag("document-#{document.id.to_s}", document.id), {class: 'cell-checkbox'}
           safe_concat content_tag :td, document.id, class: 'list-center id'
           safe_concat content_tag :td, link_to(document.resized_caption(100), document_path(@project.slug, document.id)), {class: 'name', id: document.id}
-          safe_concat content_tag :td, document.category, class: 'list-center category'
-          safe_concat content_tag :td, document.version, class: 'list-center version'
+          safe_concat content_tag :td, document.display_category, class: 'list-center category'
+          safe_concat content_tag :td, document.display_version, class: 'list-center version'
           safe_concat content_tag :td, document.comment_presence_indicator, class: 'icon-information'
           safe_concat content_tag :td, document.attachment_presence_indicator, class: 'icon-information'
         end

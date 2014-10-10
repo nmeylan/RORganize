@@ -33,7 +33,7 @@ module IssuesHelper
         safe_concat content_tag :th, link_to(glyph('', 'check'), '#', {class: 'icon-checked', id: 'check-all', 'cb_checked' => 'b'})
         safe_concat content_tag :th, sortable('issues.id', '#')
         safe_concat content_tag :th, sortable('trackers.name', 'Tracker')
-        safe_concat content_tag :th, sortable('issues.subject', 'Subject')
+        safe_concat content_tag :th, sortable('issues.subject', 'Subject'), {class: 'list-left no-padding-left'}
         safe_concat content_tag :th, sortable('users.name', 'Assigned to')
         safe_concat content_tag :th, sortable('issues_statuses.enumeration_id', 'Status')
         safe_concat content_tag :th, sortable('categories.name', 'Category')
@@ -45,17 +45,17 @@ module IssuesHelper
         safe_concat content_tag :th, nil, {class: 'optional-cell'}
       }
       safe_concat(collection.collect do |issue|
-        content_tag :tr, class: "has-context-menu odd-even issue-tr #{'close' if issue.status.is_closed?}" do
+        content_tag :tr, class: "has-context-menu odd-even issue-tr" do
           safe_concat content_tag :td, check_box_tag("issue-#{issue.id.to_s}", issue.id), {class: 'cell-checkbox'}
           safe_concat content_tag :td, issue.id, class: 'list-center id'
           safe_concat content_tag :td, issue.tracker_str, class: 'list-center tracker'
           safe_concat content_tag :td, link_to(issue.resized_caption(35), issue_path(@project.slug, issue.id)), {class: 'name', id: issue.id}
           safe_concat content_tag :td, issue.display_assigned_to, class: 'list-center assigned-to'
           safe_concat content_tag :td, issue.display_status, class: 'list-center status'
-          safe_concat content_tag :td, issue.category, class: 'list-center category'
-          safe_concat content_tag :td, issue.version_str, class: 'list-center version'
+          safe_concat content_tag :td, issue.display_category, class: 'list-center category'
+          safe_concat content_tag :td, issue.display_version, class: 'list-center version'
           safe_concat content_tag :td, issue.due_date, class: 'list-center due-date'
-          safe_concat content_tag :td, issue.done, class: 'list-center done'
+          safe_concat content_tag :td, issue.display_done_progression, {class: 'list-center done tooltipped tooltipped-s', label: "#{issue.done}%"}
           safe_concat content_tag :td, issue.checklist_progression, class: 'icon-information'
           safe_concat content_tag :td, issue.comment_presence_indicator, class: 'icon-information'
           safe_concat content_tag :td, issue.attachment_presence_indicator, class: 'icon-information'

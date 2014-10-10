@@ -272,6 +272,10 @@ img.small-avatar {
   }
 }
 
+.width-100{
+  width: 100px;
+}
+
 /*
 *  FLASH MESSAGE
 */
@@ -609,6 +613,10 @@ img.small-avatar {
     color: #fff;
     text-shadow: 0 0 2px rgba(0, 0, 0, 0.7);
   }
+
+}
+.mini-progress-bar{
+  height: 8px;
 }
 
 /*
@@ -954,7 +962,7 @@ table.permissions-list {
 /*
   Statuses
 */
-.issue-status{
+.issue-status, .info-square{
   display: inline-block;
   font-weight: bold;
   line-height: 1;
@@ -965,6 +973,23 @@ table.permissions-list {
   box-shadow: none;
 }
 .issue-status.issue-status-small{
+  padding: 3px 5px;
+  font-size: 11px;
+}
+
+/*
+  CATEGORY
+*/
+.info-square{
+  color: #333333;
+  background-color: #ededed;
+  .octicon{
+    color: #333333;
+    margin-right: 4px;
+    vertical-align: middle;
+  }
+}
+.info-square.info-square-small{
   padding: 3px 5px;
   font-size: 11px;
 }

@@ -20,6 +20,12 @@ table.list {
   border-collapse: collapse;
   border: 1px solid #E4E4E4;
   overflow-x: auto;
+  .tooltipped-s:after{
+    top: 35px;
+  }
+  .tooltipped-s:before{
+    top: 30px;
+  }
 }
 
 .autoscroll {
@@ -42,7 +48,7 @@ table.list {
 
 .list th {
   text-align: center;
-  padding: 5px;
+  padding-right: 10px;
   white-space: nowrap;
 }
 
@@ -51,13 +57,11 @@ table.list {
   height: 60px;
   border-top: 1px solid #eeeeee;
 }
-.list td:first-child{
+.list td:first-child, .list th:first-child{
   padding-left: 5px;
 }
 .list td {
-  //  word-break: break-all;
   white-space: nowrap;
-  padding-right: 10px;
 }
 
 .list td.icon-information {
@@ -89,6 +93,9 @@ table.list {
 
 .list tr.close {
   text-decoration: line-through;
+}
+.list td.inherit_decoration{
+  text-decoration: inherit;
 }
 
 li.close {

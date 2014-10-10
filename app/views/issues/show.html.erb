@@ -32,15 +32,15 @@
   </tr>
   <tr>
     <th style="width:15%"><%= t(:field_version) %> :</th>
-    <td style="width:30%"><%= @issue_decorator.version_str %></td>
+    <td style="width:30%"><%= @issue_decorator.display_version %></td>
     <th style="width:15%"><%= t(:field_estimated_time) %> :</th>
     <td style="width:30%"><%= @issue_decorator.estimated_time %></td>
   </tr>
   <tr>
     <th style="width:15%"><%= t(:field_category) %> :</th>
-    <td style="width:30%"><%= @issue_decorator.category %></td>
+    <td style="width:30%"><%= @issue_decorator.display_category %></td>
     <th style="width:15%"><%= t(:field_done) %> :</th>
-    <td style="width:30%"><%= @issue_decorator.done %></td>
+    <td style="width:30%" class="tooltipped tooltipped-w" label="<%= @issue_decorator.done %>%"><%= @issue_decorator.display_done_progression('width-100') %></td>
   </tr>
 </table>
 <br/>

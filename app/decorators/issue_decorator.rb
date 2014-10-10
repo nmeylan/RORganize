@@ -21,13 +21,25 @@ class IssueDecorator < ApplicationDecorator
   end
 
   # @return [String] version name.
-  def version_str
-    model.version ? model.version.caption : '-'
+  def display_version
+    if model.version
+      h.content_tag :span, {class: 'info-square'} do
+        h.glyph(model.version.caption, 'milestone')
+      end
+    else
+      '-'
+    end
   end
 
   # @return [String] category name.
-  def category
-    model.category ? model.category.caption : '-'
+  def display_category
+    if model.category
+    h.content_tag :span, {class: 'info-square'} do
+      h.glyph(model.category.caption, 'tag')
+    end
+    else
+      '-'
+    end
   end
 
   # @return [String] due date.
@@ -54,6 +66,10 @@ class IssueDecorator < ApplicationDecorator
     h.content_tag :span, {class: 'issue-status', style: "background-color: #{model.status.color}"} do
       model.status.caption
     end
+  end
+
+  def display_done_progression(css_class = nil)
+    h.mini_progress_bar_tag(model.done, css_class)
   end
   # see #ApplicationDecorator::new_link.
   def new_link

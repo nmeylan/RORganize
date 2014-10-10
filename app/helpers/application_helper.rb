@@ -365,6 +365,10 @@ autocomplete-combobox-high',
                                   style: "background-color: #{Rorganize::Managers::IssueStatusesColorManager.colors[value]}"}
         when 'assigned_to_id'
           fast_profile_link(value)
+        when 'category_id'
+          content_tag :b, glyph(value, 'tag'), {class: 'info-square info-square-small'}
+        when 'version_id'
+          content_tag :b, glyph(value, 'milestone'), {class: 'info-square info-square-small'}
         else
           content_tag :b, "#{truncated_value} "
       end
@@ -501,10 +505,21 @@ autocomplete-combobox-high',
 
   # Build a dynamic progress bar for a given percentage.
   # @param [Numeric] percent : percentage of progression.
-  def progress_bar_tag(percent)
-    content_tag :span, class: 'progress-bar' do
+  # @param [String] css_class : extra css_class.
+  def progress_bar_tag(percent, css_class = nil)
+    css_class ||= ''
+    css_class += ' progress-bar'
+    content_tag :span, class: css_class do
       safe_concat content_tag :span, '&nbsp'.html_safe, {class: 'progress', style: "width:#{percent}%"}
       safe_concat content_tag :span, "#{percent}%", {class: 'percent'}
+    end
+  end
+
+  def mini_progress_bar_tag(percent, css_class = nil)
+    css_class ||= ''
+    css_class += ' progress-bar mini-progress-bar'
+    content_tag :span, {class: css_class} do
+      safe_concat content_tag :span, '&nbsp'.html_safe, {class: 'progress', style: "width:#{percent}%"}
     end
   end
 
