@@ -28,7 +28,6 @@ class Issue < ActiveRecord::Base
   #triggers
   before_validation :set_start_and_due_date
   before_save :set_done_ratio
-  before_update :set_done_ratio
   after_update :save_attachments
   #Validators
   validates :subject, :tracker_id, :status_id, presence: true
@@ -105,6 +104,7 @@ class Issue < ActiveRecord::Base
   def self.bulk_edit(issue_ids, value_param, project)
     issues, journals = super(issue_ids, value_param, project)
     # If version changed trigger the due and start date rules.
+    Issue.bulk_set_done_ratio(issue_ids, value_param[:status_id],journals) if value_param[:status_id]
     Issue.bulk_set_start_and_due_date(issues.collect { |issue| issue.id }, value_param[:version_id], journals) if value_param[:version_id]
   end
 
@@ -180,7 +180,7 @@ class Issue < ActiveRecord::Base
   # Version.start_date <= Issue.start_date < Issue.due_date <= Version.due_date
   # So when issue's version is changing we have to update issue start and due date to respect the previous rule.
   def set_start_and_due_date(version_update = false)
-    if self.version && !self.version.target_date.nil? && self.due_date >= version.target_date && (version_update || self.version_id_changed?)
+    if self.version && !self.version.target_date.nil? && (self.due_date.nil? || self.due_date >= version.target_date) && (version_update || self.version_id_changed?)
       self.due_date = self.version.target_date
     end
     if self.version && self.version.start_date && (version_update || self.version_id_changed?) && (self.start_date.nil? || (self.start_date && (self.start_date < self.version.start_date) || self.version.target_date && self.start_date > self.version.target_date))
@@ -213,8 +213,18 @@ class Issue < ActiveRecord::Base
     if merged_issues.any?
       Issue.where(id: issue_changes[:due_date].collect { |issue| issue.id }).update_all(due_date: version.target_date)
       Issue.where(id: issue_changes[:start_date].collect { |issue| issue.id }).update_all(start_date: version.start_date)
-      Issue.journal_update_creation(merged_issues, version.project, User.current.id, 'Issue')
+      Issue.journal_update_creation(merged_issues, version.project, User.current.id, 'Issue', journals)
     end
+  end
+
+  def self.bulk_set_done_ratio(issue_ids, status_id, journals)
+    status = IssuesStatus.find_by_id(status_id)
+    issues = Issue.where(id: issue_ids)
+    issues.each do |issue|
+      issue.done = status.default_done_ratio
+    end
+    issues.update_all(done: status.default_done_ratio)
+    Issue.journal_update_creation(issues, issues.first.project, User.current.id, 'Issue', journals)
   end
 
   #Permit attributes

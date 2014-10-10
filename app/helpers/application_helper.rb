@@ -341,7 +341,7 @@ autocomplete-combobox-high',
           safe_concat content_tag :b, "#{detail.property} "
           safe_concat history_detail_value_render(detail, detail.old_value)
           safe_concat " #{t(:text_deleted)}"
-        elsif detail.old_value && detail.value
+        elsif detail.old_value && detail.value && !detail.old_value.blank? && !detail.value.blank?
           safe_concat content_tag :b, "#{detail.property} #{t(:text_changed)} "
           safe_concat "#{t(:text_from)} "
           safe_concat history_detail_value_render(detail, detail.old_value)

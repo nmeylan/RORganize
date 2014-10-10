@@ -62,15 +62,18 @@ module Rorganize
       # @param [Project] project.
       # @param [Fixnum] user_id.
       # @param [String] class_name : name of the updated objects' class.
-      def journal_update_creation(objects, project, user_id, class_name)
+      def journal_update_creation(objects, project, user_id, class_name, journals = nil)
         if objects.any?
           insert = []
           created_at = Time.now.utc.to_formatted_s(:db)
           objects.each do |obj|
             insert << "(#{user_id}, #{obj.id}, '#{class_name}', '#{quote_string(obj.caption[0..127])}', '#{Journal::ACTION_UPDATE}', #{project.id}, '#{created_at}', '#{created_at}')"
           end
-          Journal.bulk_insert(insert)
-          journals = Journal.where(created_at: created_at)
+          if journals.nil?
+            Journal.bulk_insert(insert)
+            journals = Journal.where(created_at: created_at)
+          end
+
           journal_detail_insertion(journals, objects)
           if journals.any?
             Rorganize::Managers::NotificationsManager.create_bulk_notification(objects, journals, project, user_id)
