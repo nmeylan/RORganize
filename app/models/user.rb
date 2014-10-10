@@ -21,8 +21,7 @@ class User < ActiveRecord::Base
   has_many :notifications, dependent: :destroy
   has_many :preferences, dependent: :destroy
   #Validators
-  validates :login, :presence => true, :length => 4..50, :uniqueness => true
-  validates :name, :presence => true, :length => 4..50
+  validates :login, :name, :presence => true, :length => 4..50, :uniqueness => true
   #Triggers
   after_create :generate_default_avatar, :set_preferences
   #Scope
