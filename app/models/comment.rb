@@ -8,7 +8,7 @@ class Comment < ActiveRecord::Base
   ACTIVITIES_PERIODS = {ONE_DAY: 1, THREE_DAYS: 3, ONE_WEEK: 7, ONE_MONTH: 31}
 
   belongs_to :author, class_name: 'User', foreign_key: :user_id
-  belongs_to :commentable, :polymorphic => true
+  belongs_to :commentable, polymorphic: true
   belongs_to :issue, foreign_key: 'commentable_id', counter_cache: true
   belongs_to :document, foreign_key: 'commentable_id', counter_cache: true
   belongs_to :project

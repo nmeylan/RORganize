@@ -2,8 +2,8 @@
 class CreateScenarios < ActiveRecord::Migration
   def up
     create_table :scenarios do |t|
-      t.string :name, :limit => 255
-      t.text :description, :limit => 65555
+      t.string :name, limit: 255
+      t.text :description, limit: 65555
       t.integer :actor_id
       t.integer :version_id
       t.integer :project_id

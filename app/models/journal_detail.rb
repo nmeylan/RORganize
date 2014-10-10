@@ -4,7 +4,7 @@
 # File: journal_detail.rb
 
 class JournalDetail < ActiveRecord::Base
-  belongs_to :journal, :class_name => 'Journal'
+  belongs_to :journal, class_name: 'Journal'
 
 
 end

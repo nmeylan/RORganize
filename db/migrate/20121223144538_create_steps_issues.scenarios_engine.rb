@@ -6,7 +6,7 @@
 
 class CreateStepsIssues < ActiveRecord::Migration
   def up
-    create_table :issues_steps, :id => false do |t|
+    create_table :issues_steps, id: false do |t|
       t.integer :issue_id
       t.integer :step_id
     end

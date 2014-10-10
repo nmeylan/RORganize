@@ -32,12 +32,12 @@ class VersionsController < ApplicationController
       if @version.save
         flash[:notice] = t(:successful_creation)
         format.html { redirect_to versions_path }
-        format.json { render :json => @version,
-                             :status => :created, :location => @version }
+        format.json { render json: @version,
+                             status: :created, location: @version }
       else
         format.html { render :new }
-        format.json { render :json => @version.errors,
-                             :status => :unprocessable_entity }
+        format.json { render json: @version.errors,
+                             status: :unprocessable_entity }
       end
     end
   end
@@ -53,17 +53,17 @@ class VersionsController < ApplicationController
     respond_to do |format|
       if !@version.changed?
         format.html { redirect_to versions_path }
-        format.json { render :json => @version,
-                             :status => :created, :location => @version }
+        format.json { render json: @version,
+                             status: :created, location: @version }
       elsif @version.changed? && @version.save
         flash[:notice] = t(:successful_update)
         format.html { redirect_to versions_path}
-        format.json { render :json => @version,
-                             :status => :created, :location => @version }
+        format.json { render json: @version,
+                             status: :created, location: @version }
       else
         format.html { render :edit }
-        format.json { render :json => @version.errors,
-                             :status => :unprocessable_entity }
+        format.json { render json: @version.errors,
+                             status: :unprocessable_entity }
       end
     end
   end
@@ -72,9 +72,9 @@ class VersionsController < ApplicationController
     @versions_decorator = @project.versions.decorate(context: {project: @project})
     success = @version.destroy
     respond_to do |format|
-      format.js { respond_to_js :response_header => success ? :success : :failure,
-                                :response_content => success ? t(:successful_deletion) : t(:failure_deletion),
-                                :locals => {:id => params[:id]} }
+      format.js { respond_to_js response_header: success ? :success : :failure,
+                                response_content: success ? t(:successful_deletion) : t(:failure_deletion),
+                                locals: {id: params[:id]} }
     end
   end
 
@@ -87,9 +87,9 @@ class VersionsController < ApplicationController
     @versions_decorator = @project.versions.paginated(@sessions[:current_page], @sessions[:per_page], 'versions.position').decorate(context: {project: @project})
     respond_to do |format|
       if saved
-        format.js { respond_to_js :response_header => :success, :response_content => t(:successful_update) }
+        format.js { respond_to_js response_header: :success, response_content: t(:successful_update) }
       else
-        format.js { respond_to_js :response_header => :failure, :response_content => t(:text_negative_position) }
+        format.js { respond_to_js response_header: :failure, response_content: t(:text_negative_position) }
       end
     end
   end

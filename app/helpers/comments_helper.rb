@@ -77,7 +77,7 @@ module CommentsHelper
         safe_concat t(:field_content)
         safe_concat content_tag :span, '*', class: 'required'
       }
-      safe_concat f.text_area :content, :rows => 12, :class => 'fancyEditor', id: 'comment-form'
+      safe_concat f.text_area :content, rows: 12, class: 'fancyEditor', id: 'comment-form'
     }
     safe_concat submit_tag t(:button_submit)
   end

@@ -5,7 +5,7 @@
 
 class Watcher < ActiveRecord::Base
   belongs_to :author, class_name: 'User', foreign_key: :user_id
-  belongs_to :watchable, :polymorphic => true
+  belongs_to :watchable, polymorphic: true
   belongs_to :project
 
   validates :user_id, presence: true

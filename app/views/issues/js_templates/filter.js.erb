@@ -6,7 +6,7 @@
 
 jQuery('#delete-overlay').overlay();
 jQuery('#delete-overlay').overlay().close();
-on_addition_effect("#issues-content", "<%= escape_javascript(render :partial => 'issues/list')%>");
+on_addition_effect("#issues-content", "<%= escape_javascript(render partial: 'issues/list')%>");
 issues_index({dom_persisted_filter: "<%= escape_javascript(session["#{@project.slug}_controller_documents_filter_params"].to_json)%>"});
 
-on_replace_effect("#issue-filter", "<%= escape_javascript(render :partial => 'issues/filter')%>");
+on_replace_effect("#issue-filter", "<%= escape_javascript(render partial: 'issues/filter')%>");

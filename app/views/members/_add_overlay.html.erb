@@ -8,16 +8,16 @@
 <div class="overlayOuter" id="add-member-overlay">
   <div class="overlayInner">
     <% if users && users.to_a.any? %>
-        <%= form_tag(members_path, :remote => true) do -%>
+        <%= form_tag(members_path, remote: true) do -%>
             <p>
               <label for="users"><%= t(:field_user) %></label>
-              <%= select_tag('user', options_from_collection_for_select(users, 'id', 'name'), {:class => 'chzn-select cbb-medium'}) %>
+              <%= select_tag('user', options_from_collection_for_select(users, 'id', 'name'), {class: 'chzn-select cbb-medium'}) %>
             </p>
 
             <p>
               <!--<div class="autocomplete-combobox cbb-medium nosearch">-->
               <label for="roles"><%= t(:field_role) %></label>
-              <%= select_tag('role', options_from_collection_for_select(roles, 'id', 'name'), {:class => 'chzn-select cbb-medium nosearch'}) %>
+              <%= select_tag('role', options_from_collection_for_select(roles, 'id', 'name'), {class: 'chzn-select cbb-medium nosearch'}) %>
               <!--</div>-->
             </p>
 

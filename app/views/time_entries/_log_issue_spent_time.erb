@@ -3,7 +3,7 @@
     <div id="spent-time-overlay-content">
       <div id="spent-time-overlay-form">
         <% if time_entry %>
-            <%= render :partial => 'time_entries/log_issue_spent_time_form', locals: {time_entry: time_entry} %>
+            <%= render partial: 'time_entries/log_issue_spent_time_form', locals: {time_entry: time_entry} %>
         <% end %>
       </div>
     </div>

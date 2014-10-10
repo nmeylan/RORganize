@@ -9,7 +9,7 @@ module PermissionsHelper
   # @param [Hash] permissions_hash : hash with following structure {group: [controller_name, ..]}.
   # @param [Array] selected_permissions : array of selected permissions' id.
   def list(permissions_hash, selected_permissions)
-    form_tag({:action => 'update_permissions', :controller => 'permissions'}) do
+    form_tag({action: 'update_permissions', controller: 'permissions'}) do
       safe_concat content_tag :div, {id: 'project-tab'}, &Proc.new {
         permissions_table(permissions_hash[:project], selected_permissions, :project)
       }
@@ -32,23 +32,23 @@ module PermissionsHelper
       safe_concat content_tag :tr, {class: 'header'}, &Proc.new {
         safe_concat content_tag :td, 'Controller', {class: 'permissions-list controller header'}
         safe_concat content_tag :td, {class: 'permissions-list header'}, &Proc.new {
-          safe_concat (link_to glyph('', 'check'), '#', {class: 'check-all', id: "read-#{group_name}", 'cb_checked' => 'b', :title => 'check all'})
+          safe_concat (link_to glyph('', 'check'), '#', {class: 'check-all', id: "read-#{group_name}", 'cb_checked' => 'b', title: 'check all'})
           safe_concat medium_glyph(t(:label_read), 'eye')
         }
         safe_concat content_tag :td, {class: 'permissions-list header create'}, &Proc.new {
-          safe_concat (link_to glyph('', 'check'), '#', {class: 'check-all', id: "create-#{group_name}", 'cb_checked' => 'b', :title => 'check all'})
+          safe_concat (link_to glyph('', 'check'), '#', {class: 'check-all', id: "create-#{group_name}", 'cb_checked' => 'b', title: 'check all'})
           safe_concat medium_glyph(t(:label_create), 'plus')
         }
         safe_concat content_tag :td, {class: 'permissions-list header update'}, &Proc.new {
-          safe_concat (link_to glyph('', 'check'), '#', {class: 'check-all', id: "update-#{group_name}", 'cb_checked' => 'b', :title => 'check all'})
+          safe_concat (link_to glyph('', 'check'), '#', {class: 'check-all', id: "update-#{group_name}", 'cb_checked' => 'b', title: 'check all'})
           safe_concat medium_glyph(t(:label_update), 'pencil')
         }
         safe_concat content_tag :td, {class: 'permissions-list header delete'}, &Proc.new {
-          safe_concat (link_to glyph('', 'check'), '#', {class: 'check-all', id: "delete-#{group_name}", 'cb_checked' => 'b', :title => 'check all'})
+          safe_concat (link_to glyph('', 'check'), '#', {class: 'check-all', id: "delete-#{group_name}", 'cb_checked' => 'b', title: 'check all'})
           safe_concat medium_glyph(t(:label_delete), 'trashcan')
         }
         safe_concat content_tag :td, {class: 'permissions-list header no-category'}, &Proc.new {
-          safe_concat (link_to glyph('', 'check'), '#', {class: 'check-all', id: "misc-#{group_name}", 'cb_checked' => 'b', :title => 'check all'})
+          safe_concat (link_to glyph('', 'check'), '#', {class: 'check-all', id: "misc-#{group_name}", 'cb_checked' => 'b', title: 'check all'})
           safe_concat medium_glyph(t(:label_misc), '')
         }
       }
@@ -68,7 +68,7 @@ module PermissionsHelper
       if permissions.any?
         safe_concat content_tag :tr, {class: "body #{controller}"}, &Proc.new {
           safe_concat content_tag :td, {class: 'permissions-list controller body'}, &Proc.new {
-            safe_concat(link_to glyph('', 'check'), '#', {id: 'check-all-'+controller.to_s, 'cb_checked' => 'b', :title => 'check all'})
+            safe_concat(link_to glyph('', 'check'), '#', {id: 'check-all-'+controller.to_s, 'cb_checked' => 'b', title: 'check all'})
             safe_concat controller
           }
           permissions_tmp = []

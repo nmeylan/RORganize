@@ -5,7 +5,7 @@
   <title><%= title_tag %></title>
   <% favicon_link_tag 'rorganize_logo_2.svg', type: 'image/svg+xml' %>
   <%= favicon_link_tag 'rorganize_logo_3.png', type: 'image/png' %>
-  <%= include_gon :init => true %>
+  <%= include_gon init: true %>
   <%#= CSS Files %>
   <%= stylesheet_link_tag 'application' %>
   <%#= JS Files %>
@@ -16,20 +16,20 @@
 <%# HACK quick and dirty =( %>
 <% session['act_as'] ||= 'User' %>
 <% User.current.act_as_admin(session['act_as']) if User.current && session['act_as'] != User.current.act_as_admin_session %>
-<div id="top-menu"><%= render :partial => 'layouts/top_menu' %></div>
+<div id="top-menu"><%= render partial: 'layouts/top_menu' %></div>
 <div id="header">
   <h1>
     <% if @project && @project.attachments.to_a.any? && !@project.attachments.first.id.nil? %>
-        <%= image_tag @project.attachments.first.file.url(:logo), {:align => :left, :id => 'project-logo'} %>
+        <%= image_tag @project.attachments.first.file.url(:logo), {align: :left, id: 'project-logo'} %>
     <% end %>
     <%= @project ? @project.name : 'RORganize' %><%# Here what you want %>
   </h1>
 </div>
 <% if display_menu?(@project) %>
-    <%= render :partial => 'layouts/main_menu', locals: {project: @project} %>
+    <%= render partial: 'layouts/main_menu', locals: {project: @project} %>
 <% end %>
-<%= tag('div', {:id => 'main', :class => (sidebar_content? ? '' : 'nosidebar')}, true) %>
-<%= render :partial => 'flashs/flash' %>
+<%= tag('div', {id: 'main', class: (sidebar_content? ? '' : 'nosidebar')}, true) %>
+<%= render partial: 'flashs/flash' %>
 <div id="sidebar">
   <%= yield :sidebar %>
 </div>

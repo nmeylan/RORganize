@@ -6,8 +6,8 @@
 %>
 <%= contextual "#{t(:label_setting_plural)} - #{t(:link_categories)}" %>
 
-<%= form_for @category, :url => categories_path(@project.slug), :html => {:class => 'form'} do |f| %>
-    <%= render :partial => 'categories/form', :locals => {:f => f, category: @category} %>
+<%= form_for @category, url: categories_path(@project.slug), html: {class: 'form'} do |f| %>
+    <%= render partial: 'categories/form', locals: {f: f, category: @category} %>
     <%= submit_tag t(:button_create) %>
 <% end %>
-<%= render :partial => 'settings/sidebar', locals: {project: @project} %>
+<%= render partial: 'settings/sidebar', locals: {project: @project} %>

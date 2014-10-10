@@ -7,7 +7,7 @@
 
 <%= contextual t(:link_edit_user) %>
 
-<%= form_for @user, :url => user_path, :method => :put, :html => {:class => 'form'} do |f| %>
-    <%= render :partial => 'users/form', :locals => {:f => f, user: @user} %>
+<%= form_for @user, url: user_path, method: :put, html: {class: 'form'} do |f| %>
+    <%= render partial: 'users/form', locals: {f: f, user: @user} %>
     <%= submit_tag t(:button_save) %>
 <% end %>

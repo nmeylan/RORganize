@@ -8,7 +8,7 @@ class CreateTrackers < ActiveRecord::Migration
     create_table :trackers do |t|
       t.boolean :is_in_chlog
       t.boolean :is_in_roadmap
-      t.string :name, :limit => 255
+      t.string :name, limit: 255
       t.integer :position
     end
   end

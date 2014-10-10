@@ -6,11 +6,11 @@
 class Wiki < ActiveRecord::Base
   include Rorganize::Models::SmartRecords
   #Relations
-  belongs_to :home_page, :class_name => 'WikiPage', :foreign_key => :home_page_id
-  has_many :pages, :class_name => 'WikiPage', :foreign_key => :wiki_id, :dependent => :destroy
+  belongs_to :home_page, class_name: 'WikiPage', foreign_key: :home_page_id
+  has_many :pages, class_name: 'WikiPage', foreign_key: :wiki_id, dependent: :destroy
   belongs_to :project
   #Validations
-  validates :project_id, :uniqueness => true
+  validates :project_id, uniqueness: true
   #Triggers
 
   def caption
@@ -19,7 +19,7 @@ class Wiki < ActiveRecord::Base
 
   def self.organize_pages(organization)
     page_ids = organization.keys
-    wiki_pages = WikiPage.select('*').where(:id => page_ids)
+    wiki_pages = WikiPage.select('*').where(id: page_ids)
     parent = nil
     wiki_pages.each do |page|
       parent = organization[page.id.to_s][:parent_id]

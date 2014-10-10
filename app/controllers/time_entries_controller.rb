@@ -18,7 +18,7 @@ class TimeEntriesController < ApplicationController
     @time_entry.spent_on = params[:spent_on] ? params[:spent_on] : Time.now.to_date
     respond_to do |format|
       format.js do
-        respond_to_js :locals => {:issue_id => params[:issue_id]}
+        respond_to_js locals: {issue_id: params[:issue_id]}
       end
     end
   end
@@ -31,7 +31,7 @@ class TimeEntriesController < ApplicationController
     saved = @time_entry.save
     respond_to do |format|
       format.js do
-        respond_to_js :action => 'entries_operations', :locals => {:success => saved}, :response_header => saved ? :success : :failure, :response_content => saved ? t(:successful_time_entry_creation) : @time_entry.errors.full_messages
+        respond_to_js action: 'entries_operations', locals: {success: saved}, response_header: saved ? :success : :failure, response_content: saved ? t(:successful_time_entry_creation) : @time_entry.errors.full_messages
       end
     end
   end
@@ -39,7 +39,7 @@ class TimeEntriesController < ApplicationController
   def edit
     respond_to do |format|
       format.js do
-        respond_to_js :locals => {:issue_id => params[:issue_id]}
+        respond_to_js locals: {issue_id: params[:issue_id]}
       end
     end
   end
@@ -50,7 +50,7 @@ class TimeEntriesController < ApplicationController
     saved = @time_entry.save
     respond_to do |format|
       format.js do
-        respond_to_js :action => 'entries_operations', :locals => {:success => saved}, :response_header => saved ? :success : :failure, :response_content => saved ? t(:successful_time_entry_update) : @time_entry.errors.full_messages
+        respond_to_js action: 'entries_operations', locals: {success: saved}, response_header: saved ? :success : :failure, response_content: saved ? t(:successful_time_entry_update) : @time_entry.errors.full_messages
       end
     end
   end
@@ -61,7 +61,7 @@ class TimeEntriesController < ApplicationController
     success = trusted && @time_entry.destroy
     respond_to do |format|
       format.js do
-        js_redirect_to url_for(:controller => :profiles, :action => :spent_time, :id => User.current.slug, :date => params[:date])
+        js_redirect_to url_for(controller: :profiles, action: :spent_time, id: User.current.slug, date: params[:date])
         if trusted then
           success ? flash[:notice] = t(:successful_deletion) : flash[:alert] = t(:failure_deletion)
         else

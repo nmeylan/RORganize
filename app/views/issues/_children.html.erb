@@ -10,7 +10,7 @@
     <ul>
       <% issue_decorator.children.each do |child| %>
           <li>#<%= child.id %>
-            : <%= link_to child.subject, {:action => 'show', :controller => 'issues', :id => child.id} %></li>
+            : <%= link_to child.subject, {action: 'show', controller: 'issues', id: child.id} %></li>
       <% end %>
     </ul>
 <% else %>

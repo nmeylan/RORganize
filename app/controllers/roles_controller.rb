@@ -39,8 +39,8 @@ class RolesController < ApplicationController
       else
         @issues_statuses = IssuesStatus.select('*').includes(:enumeration)
         format.html { render :new }
-        format.json { render :json => @role.errors,
-                             :status => :unprocessable_entity }
+        format.json { render json: @role.errors,
+                             status: :unprocessable_entity }
       end
     end
   end
@@ -76,7 +76,7 @@ class RolesController < ApplicationController
     @roles_decorator = Role.select('*').paginated(@sessions[:current_page], @sessions[:per_page], order('roles.name')).decorate
     respond_to do |format|
       format.html { redirect_to roles_path }
-      format.js { respond_to_js :response_header => :success, :response_content => t(:successful_deletion), :locals => {:id => @role.id} }
+      format.js { respond_to_js response_header: :success, response_content: t(:successful_deletion), locals: {id: @role.id} }
     end
   end
 

@@ -6,6 +6,6 @@ File: organize_pages
 %>
 <%= contextual t(:link_pages) %>
 
-<%= render :partial => 'wiki/sidebar', locals: {project: @project} %>
+<%= render partial: 'wiki/sidebar', locals: {project: @project} %>
 <%= @wiki_decorator.display_pages %>
-<%= button_tag t(:button_save), :id => 'serialize', :type => 'button', 'data-link' => set_organization_wiki_index_path(@project.slug) %>
+<%= button_tag t(:button_save), id: 'serialize', type: 'button', 'data-link' => set_organization_wiki_index_path(@project.slug) %>

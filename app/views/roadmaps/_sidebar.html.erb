@@ -12,7 +12,7 @@
     <h2><%= t(:label_report_plural) %></h2>
     <ul>
       <li>
-        <%= link_to t(:label_gantt_chart), {:controller => 'roadmaps', :action => 'gantt', :project_id => project_decorator.slug} %>
+        <%= link_to t(:label_gantt_chart), {controller: 'roadmaps', action: 'gantt', project_id: project_decorator.slug} %>
       </li>
     </ul>
     <% if old_versions.to_a.any? %>

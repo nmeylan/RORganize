@@ -38,8 +38,8 @@ class TrackersController < ApplicationController
         format.html { redirect_to trackers_path }
       else
         format.html { render :new }
-        format.json { render :json => @tracker.errors,
-                             :status => :unprocessable_entity }
+        format.json { render json: @tracker.errors,
+                             status: :unprocessable_entity }
       end
     end
   end
@@ -72,7 +72,7 @@ class TrackersController < ApplicationController
     @trackers = Tracker.select('*')
     respond_to do |format|
       format.html { redirect_to trackers_path }
-      format.js { respond_to_js :response_header => :success, :response_content => t(:successful_deletion), :locals => {:id => @tracker.id} }
+      format.js { respond_to_js response_header: :success, response_content: t(:successful_deletion), locals: {id: @tracker.id} }
     end
   end
 

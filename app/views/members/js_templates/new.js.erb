@@ -4,7 +4,7 @@
  * Time: 10:45
  %>
 <% if new %>
-jQuery("#add-member-overlay").replaceWith("<%= escape_javascript(render :partial => 'members/add_overlay', :locals => {:roles => roles, :users => users}) %>");
+jQuery("#add-member-overlay").replaceWith("<%= escape_javascript(render partial: 'members/add_overlay', locals: {roles: roles, users: users}) %>");
 createOverlay("#add-member-overlay", 150);
 jQuery('#add-member-overlay').overlay().load();
 <% else %>

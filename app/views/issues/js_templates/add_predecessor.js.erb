@@ -5,5 +5,5 @@
  %>
 <% if success %>
 on_replace_effect("#history", "<%= escape_javascript (@issue_decorator.display_history(journals))%>");
-on_addition_effect("#predecessor", "<%= escape_javascript (render :partial => 'issues/predecessor', locals: {issue_decorator: @issue_decorator, project: @project})%>");
+on_addition_effect("#predecessor", "<%= escape_javascript (render partial: 'issues/predecessor', locals: {issue_decorator: @issue_decorator, project: @project})%>");
 <% end %>

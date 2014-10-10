@@ -11,20 +11,20 @@
     <label for="controller_name"><%= t(:field_controller_name) %>
       <span class="required"> *</span></label>
     <%= f.select :controller, controllers.collect { |controller| [controller, controller] },
-                 {:include_blank => false},
-                 {:class => 'chzn-select cbb-medium',
-                  :disabled => permission_decorator.is_locked} %>
+                 {include_blank: false},
+                 {class: 'chzn-select cbb-medium',
+                  disabled: permission_decorator.is_locked} %>
   </div>
   <p>
     <label for="action_name"><%= t(:field_action_name) %><span class="required">
       *</span></label>
-    <%= f.text_field :action, :size => 80, :disabled => permission_decorator.is_locked %>
+    <%= f.text_field :action, size: 80, disabled: permission_decorator.is_locked %>
   </p>
 
   <p>
     <label for="name"><%= t(:field_permission_name) %><span class="required">
       *</span></label>
-    <%= f.text_field :name, :size => 80 %>
+    <%= f.text_field :name, size: 80 %>
   </p>
 
 </div>

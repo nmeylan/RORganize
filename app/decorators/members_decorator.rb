@@ -9,6 +9,6 @@ class MembersDecorator < ApplicationCollectionDecorator
 
   # see #ApplicationCollectionDecorator::new_link
   def new_link
-    super(h.t(:link_add_member), h.new_member_path(context[:project]), context[:project], {:method => :get, :remote => true, id: 'add-members'})
+    super(h.t(:link_add_member), h.new_member_path(context[:project]), context[:project], {method: :get, remote: true, id: 'add-members'})
   end
 end

@@ -3,7 +3,7 @@ class Enumeration < ActiveRecord::Base
 
   before_create :inc_position
   after_destroy :dec_position_on_destroy
-  validates :name, :presence => true, :length => 2..255
+  validates :name, presence: true, length: 2..255
 
   def caption
     self.name

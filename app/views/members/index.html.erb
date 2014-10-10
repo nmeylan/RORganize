@@ -8,7 +8,7 @@
     <%= @members_decorator.new_link %>
 <% end %>
 
-<%= render :partial => 'settings/sidebar', locals: {project: @project} %>
+<%= render partial: 'settings/sidebar', locals: {project: @project} %>
 <%= @members_decorator.display_collection %>
-<%= render :partial => 'members/add_overlay', :locals => {:roles => @members_decorator.context[:role], :users => users} %>
+<%= render partial: 'members/add_overlay', locals: {roles: @members_decorator.context[:role], users: users} %>
 

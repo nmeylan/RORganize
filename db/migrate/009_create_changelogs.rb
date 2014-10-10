@@ -4,7 +4,7 @@ class CreateChangelogs < ActiveRecord::Migration
       t.integer :version_id
       t.integer :project_id
       t.integer :enumeration_id
-      t.text :description, :limit => 65535
+      t.text :description, limit: 65535
 
     end
   end

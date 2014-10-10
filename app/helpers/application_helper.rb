@@ -65,16 +65,16 @@ module ApplicationHelper
   # Page render for http 500
   def render_500
     respond_to do |format|
-      format.html { render :file => "#{Rails.root}/public/500.html.erb", :status => :not_found }
-      format.js { respond_to_js action: 'do_nothing', :response_header => :failure, :response_content => 'An unexpected error occured, please try again!' }
+      format.html { render file: "#{Rails.root}/public/500.html.erb", status: :not_found }
+      format.js { respond_to_js action: 'do_nothing', response_header: :failure, response_content: 'An unexpected error occured, please try again!' }
     end
   end
 
   # Page render for http 404
   def render_404
     respond_to do |format|
-      format.html { render :file => "#{Rails.root}/public/404.html.erb", :status => :not_found }
-      format.js { respond_to_js action: 'do_nothing', :response_header => :failure, :response_content => t(:error_404) }
+      format.html { render file: "#{Rails.root}/public/404.html.erb", status: :not_found }
+      format.js { respond_to_js action: 'do_nothing', response_header: :failure, response_content: t(:error_404) }
       format.xml { head :not_found }
       format.any { head :not_found }
     end
@@ -83,10 +83,10 @@ module ApplicationHelper
   # Page render for http 403
   def render_403
     respond_to do |format|
-      format.html { render :file => "#{Rails.root}/public/403.html.erb", :status => :forbidden }
-      format.js { respond_to_js action: 'do_nothing', :response_header => :failure, :response_content => t(:error_403) }
+      format.html { render file: "#{Rails.root}/public/403.html.erb", status: :forbidden }
+      format.js { respond_to_js action: 'do_nothing', response_header: :failure, response_content: t(:error_403) }
       format.xml { head :forbidden }
-      format.all { respond_to_js action: 'do_nothing', :response_header => :failure, :response_content => t(:error_403) }
+      format.all { respond_to_js action: 'do_nothing', response_header: :failure, response_content: t(:error_403) }
     end
   end
 
@@ -114,7 +114,7 @@ module ApplicationHelper
 autocomplete-combobox-high',
                 &Proc.new {
                   safe_concat content_tag :label, t(:label_per_page), {for: 'per_page', class: 'per-page'}
-                  safe_concat select_tag 'per_page', options_for_select([%w(25 25), %w(50 50), %w(100 100)], session[:per_page]), :class => 'chzn-select cbb-small cbb-high', id: 'per-page', :'data-link' => "#{path}"
+                  safe_concat select_tag 'per_page', options_for_select([%w(25 25), %w(50 50), %w(100 100)], session[:per_page]), class: 'chzn-select cbb-small cbb-high', id: 'per-page', :'data-link' => "#{path}"
                 }
   end
 
@@ -126,18 +126,18 @@ autocomplete-combobox-high',
   # @param [hash] save_button_options
   def filter_tag(label, filtered_attributes, submission_path, can_save = false, save_button_options = {})
     content_tag :fieldset, id: "#{label}-filter" do
-      safe_concat content_tag :legend, link_to(glyph(t(:link_filter), 'chevron-right'), '#', {:class => 'icon-collapsed toggle', :id => "#{label}"})
+      safe_concat content_tag :legend, link_to(glyph(t(:link_filter), 'chevron-right'), '#', {class: 'icon-collapsed toggle', id: "#{label}"})
       safe_concat content_tag :div, class: 'content', &Proc.new {
-        safe_concat form_tag submission_path, {:method => :get, class: 'filter-form', id: 'filter-form', :remote => true}, &Proc.new {
-          safe_concat radio_button_tag('type', 'all', true, {:align => 'center', id: 'type-all'})
+        safe_concat form_tag submission_path, {method: :get, class: 'filter-form', id: 'filter-form', remote: true}, &Proc.new {
+          safe_concat radio_button_tag('type', 'all', true, {align: 'center', id: 'type-all'})
           safe_concat label_tag('type-all', t(:label_all))
           safe_concat radio_button_tag 'type', 'filter', false, id: 'type-filter'
           safe_concat label_tag 'type-filter', t(:link_filter)
           safe_concat content_tag :div, class: 'autocomplete-combobox nosearch no-padding-left no-height', &Proc.new {
-            select_tag 'filters_list', options_for_select(filtered_attributes), :class => 'chzn-select cbb-verylarge', id: 'filters-list', :multiple => true
+            select_tag 'filters_list', options_for_select(filtered_attributes), class: 'chzn-select cbb-verylarge', id: 'filters-list', multiple: true
           }
           safe_concat content_tag :table, nil, id: 'filter-content'
-          safe_concat submit_tag t(:button_apply), {:style => 'margin-left:0px'}
+          safe_concat submit_tag t(:button_apply), {style: 'margin-left:0px'}
           if can_save
             safe_concat content_tag :span, save_filter_button_tag(save_button_options[:filter_content], save_button_options[:user], save_button_options[:project]), {id: 'save-query-button'}
           end
@@ -152,7 +152,7 @@ autocomplete-combobox-high',
   # @param [Project] project : current project.
   def save_filter_button_tag(filter_content, user, project)
     if !filter_content.eql?('') && user.allowed_to?('new', 'Queries', project) && params[:query_id].nil?
-      link_to t(:button_save), new_project_query_queries_path(project.slug, 'Issue'), {:remote => true}
+      link_to t(:button_save), new_project_query_queries_path(project.slug, 'Issue'), {remote: true}
     elsif !filter_content.eql?('') && user.allowed_to?('new', 'Queries', project) && !params[:query_id].nil?
       link_to t(:button_save), edit_query_filter_queries_path(params[:query_id]), {id: 'filter-edit-save'}
     end
@@ -180,10 +180,10 @@ autocomplete-combobox-high',
   # Build a toolbox render from a toolbox object.
   # @param [Toolbox] toolbox : the toolbox object.
   def toolbox_tag(toolbox)
-    form_tag toolbox.path, :remote => true, :id => 'toolbox-form', &Proc.new {
+    form_tag toolbox.path, remote: true, id: 'toolbox-form', &Proc.new {
       safe_concat(toolbox.menu.values.collect do |menu_item|
         content_tag :li do
-          safe_concat link_to glyph(menu_item.caption, menu_item.glyph_name), '#', {:id => menu_item.name}
+          safe_concat link_to glyph(menu_item.caption, menu_item.glyph_name), '#', {id: menu_item.name}
           safe_concat content_tag :ul, class: "submenu #{menu_item.attribute_name}", &Proc.new {
             if menu_item.all && menu_item.all.any?
               safe_concat hidden_field_tag "value[#{menu_item.attribute_name}]"
@@ -257,28 +257,28 @@ autocomplete-combobox-high',
              ''
            end
     direction = column == sort_column && sort_direction == 'asc' ? 'desc' : 'asc'
-    link_to glyph(title, icon), {:sort => column, :direction => direction, :action => default_action}, {:remote => true}
+    link_to glyph(title, icon), {sort: column, direction: direction, action: default_action}, {remote: true}
   end
 
   # Build a 32x32 glyph render.
   # @param [String] body : content.
   # @param [String] names : glyph names.
   def mega_glyph(body, *names)
-    content_tag(:span, nil, :class => names.map { |name| "octicon-#{name.to_s.tr('_', '-')}" }.push('mega-octicon')) + body
+    content_tag(:span, nil, class: names.map { |name| "octicon-#{name.to_s.tr('_', '-')}" }.push('mega-octicon')) + body
   end
 
   # Build a 24x24 glyph render.
   # @param [String] body : content.
   # @param [String] names : glyph names.
   def medium_glyph(body, *names)
-    content_tag(:span, nil, :class => names.map { |name| "octicon-#{name.to_s.tr('_', '-')}" }.push('medium-octicon')) + body
+    content_tag(:span, nil, class: names.map { |name| "octicon-#{name.to_s.tr('_', '-')}" }.push('medium-octicon')) + body
   end
 
   # Build a 16x16 glyph render.
   # @param [String] body : content.
   # @param [String] names : glyph names.
   def glyph(body, *names)
-    content_tag(:span, nil, :class => names.map { |name| "octicon-#{name.to_s.tr('_', '-')}" }.push('octicon')) + body
+    content_tag(:span, nil, class: names.map { |name| "octicon-#{name.to_s.tr('_', '-')}" }.push('octicon')) + body
   end
 
   # Build a 16x16 glyph render, if condition is true else return raw content.
@@ -378,7 +378,7 @@ autocomplete-combobox-high',
   # @param [ActiveRecord::Base] object that belongs to this attachment.
   # @param [Class] type : type of the object that belongs to this attachment.
   def add_attachments_link(caption, object, type)
-    content = escape_once(render :partial => 'shared/attachments', locals: {attachments: Attachment.new, object: object, type: type})
+    content = escape_once(render partial: 'shared/attachments', locals: {attachments: Attachment.new, object: object, type: type})
     link_to caption, '#', {class: 'add-attachment-link', 'data-content' => content}
   end
 
@@ -419,20 +419,20 @@ autocomplete-combobox-high',
   def generics_filter_simple_select(name, options_for_select, multiple = true, size = nil)
     size ||= 'cbb-large'
     content_tag :div, class: 'autocomplete-combobox nosearch no-padding-left no-height' do
-      select_tag("filter[#{name}][value][]", options_for_select(options_for_select), :class => 'chzn-select '+size, :id => name+'_list', :multiple => multiple)
+      select_tag("filter[#{name}][value][]", options_for_select(options_for_select), class: 'chzn-select '+size, id: name+'_list', multiple: multiple)
     end
   end
 
   # For filters that require data from text field: e.g subject.
   # @param [String] name : name of the input field.
   def generics_filter_text_field(name)
-    text_field_tag("filter[#{name}][value]", '', {:size => 80})
+    text_field_tag("filter[#{name}][value]", '', {size: 80})
   end
 
   # For filters that require data from date field: e.g created_at.
   # @param [String] name : name of the input field.
   def generics_filter_date_field(name)
-    date_field_tag("filter[#{name}][value]", '', {:size => 6, id: 'calendar-'+name, :class => 'calendar'})
+    date_field_tag("filter[#{name}][value]", '', {size: 6, id: 'calendar-'+name, class: 'calendar'})
   end
 
   # @param [String] name : name of the input field.

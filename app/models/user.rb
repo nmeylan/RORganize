@@ -16,12 +16,12 @@ class User < ActiveRecord::Base
   # Setup accessible (or protected) attributes for your model
   #attr_accessible :id, :login, :email, :name, :password, :password_confirmation, :remember_me
   #Relations
-  has_many :members, :class_name => 'Member', :dependent => :destroy
+  has_many :members, class_name: 'Member', dependent: :destroy
   has_many :assigned_issues, foreign_key: :assigned_to_id, class_name: 'Issue'
   has_many :notifications, dependent: :destroy
   has_many :preferences, dependent: :destroy
   #Validators
-  validates :login, :name, :presence => true, :length => 4..50, :uniqueness => true
+  validates :login, :name, presence: true, length: 4..50, uniqueness: true
   #Triggers
   after_create :generate_default_avatar, :set_preferences
   #Scope

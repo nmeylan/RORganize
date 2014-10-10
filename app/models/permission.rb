@@ -6,9 +6,9 @@
 class Permission < ActiveRecord::Base
   include Rorganize::Models::SmartRecords
 
-  has_and_belongs_to_many :roles, :class_name => 'Role'
+  has_and_belongs_to_many :roles, class_name: 'Role'
 
-  validates :name, :controller, :action, :presence => true
+  validates :name, :controller, :action, presence: true
 
   def self.permit_attributes
     [:name, :action, :controller]

@@ -4,10 +4,10 @@
 # Encoding: UTF-8
 # File: spent_time.erb
 %>
-<%= render :partial => 'profiles/sidebar', locals: {user: @user} %>
+<%= render partial: 'profiles/sidebar', locals: {user: @user} %>
 <%= contextual t(:label_calendar) %>
 <div id="spent-time">
   <div id="calendar">
-    <%= render :partial => 'profiles/calendar', locals: {date_orig: @date, time_entry: @time_entry, time_entries: @time_entries} %>
+    <%= render partial: 'profiles/calendar', locals: {date_orig: @date, time_entry: @time_entry, time_entries: @time_entries} %>
   </div>
 </div>

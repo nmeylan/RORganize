@@ -10,18 +10,18 @@ class Journal < ActiveRecord::Base
   ACTION_UPDATE = 'updated'
   ACTION_DELETE = 'deleted'
   ACTIVITIES_PERIODS = {ONE_DAY: 1, THREE_DAYS: 3, ONE_WEEK: 7, ONE_MONTH: 31}
-  has_many :details, :class_name => 'JournalDetail', :dependent => :destroy
-  belongs_to :journalizable, :polymorphic => true
+  has_many :details, class_name: 'JournalDetail', dependent: :destroy
+  belongs_to :journalizable, polymorphic: true
   belongs_to :issue, foreign_key: 'journalizable_id'
   belongs_to :document, foreign_key: 'journalizable_id'
-  belongs_to :user, :class_name => 'User'
+  belongs_to :user, class_name: 'User'
   belongs_to :category
   belongs_to :project
   #Scopes
   scope :fetch_dependencies, -> { includes(:details, :project, :user, :journalizable) }
   scope :document_activities, ->(document_id) { includes([:details, user: :avatar]).where(journalizable_type: 'Document', journalizable_id: document_id) }
   scope :issue_activities, ->(issuer_id) { includes([:details, user: :avatar]).where(journalizable_type: 'Issue', journalizable_id: issuer_id) }
-  scope :member_activities, ->(member) { where(:user_id => member.user_id, :project_id => member.project_id).order('created_at DESC') }
+  scope :member_activities, ->(member) { where(user_id: member.user_id, project_id: member.project_id).order('created_at DESC') }
   scope :activities, ->(journalizable_types, date_range, days, conditions = '1 = 1') {
     includes([:details, :project, user: :avatar]).where("journalizable_type IN (?) AND journals.created_at BETWEEN ? AND ?", journalizable_types, date_range.first, date_range.last).where(conditions).order('journals.created_at DESC').limit(days * 1000)
   }
@@ -46,7 +46,7 @@ class Journal < ActiveRecord::Base
   def detail_insertion(updated_attrs, journalizable_property, foreign_key_value = {})
     array = Journal.prepare_detail_insertion(updated_attrs, journalizable_property, foreign_key_value)
     array.each do |hash|
-      JournalDetail.create(:journal_id => self.id, property: hash[:property], property_key: hash[:property_key], old_value: hash[:old_value], value: hash[:value])
+      JournalDetail.create(journal_id: self.id, property: hash[:property], property_key: hash[:property_key], old_value: hash[:old_value], value: hash[:value])
     end
   end
 
@@ -54,8 +54,8 @@ class Journal < ActiveRecord::Base
     return_array = []
     updated_attrs.each do |attribute, old_new_value|
       if foreign_key_value && foreign_key_value[attribute]
-        old_value = old_new_value[0] && !foreign_key_value[attribute].nil? ? foreign_key_value[attribute].where(:id => old_new_value[0]).first.caption : nil
-        new_value = old_new_value[1] && !old_new_value[1].eql?('') ? foreign_key_value[attribute].where(:id => old_new_value[1]).first.caption : ''
+        old_value = old_new_value[0] && !foreign_key_value[attribute].nil? ? foreign_key_value[attribute].where(id: old_new_value[0]).first.caption : nil
+        new_value = old_new_value[1] && !old_new_value[1].eql?('') ? foreign_key_value[attribute].where(id: old_new_value[1]).first.caption : ''
       else
         old_value = old_new_value[0]
         new_value = old_new_value[1]

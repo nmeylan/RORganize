@@ -15,26 +15,26 @@ class Issue < ActiveRecord::Base
   assign_foreign_keys({status_id: IssuesStatus, category_id: Category, assigned_to_id: User, tracker_id: Tracker, version_id: Version})
   attr_accessor :notes
   #Relations
-  belongs_to :project, :class_name => 'Project', counter_cache: true
-  belongs_to :author, :class_name => 'User', :foreign_key => 'author_id'
-  belongs_to :assigned_to, :class_name => 'User', :foreign_key => 'assigned_to_id'
-  belongs_to :version, :class_name => 'Version', :foreign_key => 'version_id', :counter_cache => true
-  belongs_to :tracker, :class_name => 'Tracker'
-  belongs_to :status, :class_name => 'IssuesStatus'
-  belongs_to :category, :class_name => 'Category'
-  has_many :children, :foreign_key => 'predecessor_id', :class_name => 'Issue'
-  belongs_to :parent, :foreign_key => 'predecessor_id', :class_name => 'Issue'
-  has_many :time_entries, :dependent => :destroy
+  belongs_to :project, class_name: 'Project', counter_cache: true
+  belongs_to :author, class_name: 'User', foreign_key: 'author_id'
+  belongs_to :assigned_to, class_name: 'User', foreign_key: 'assigned_to_id'
+  belongs_to :version, class_name: 'Version', foreign_key: 'version_id', counter_cache: true
+  belongs_to :tracker, class_name: 'Tracker'
+  belongs_to :status, class_name: 'IssuesStatus'
+  belongs_to :category, class_name: 'Category'
+  has_many :children, foreign_key: 'predecessor_id', class_name: 'Issue'
+  belongs_to :parent, foreign_key: 'predecessor_id', class_name: 'Issue'
+  has_many :time_entries, dependent: :destroy
   #triggers
   before_validation :set_start_and_due_date
   before_save :set_done_ratio
   before_update :set_done_ratio
   after_update :save_attachments
   #Validators
-  validates :subject, :tracker_id, :status_id, :presence => true
+  validates :subject, :tracker_id, :status_id, presence: true
   validate :validate_start_date, :validate_predecessor, :validate_due_date
   #Scopes
-  scope :fetch_dependencies, -> { includes([:tracker, :version, :assigned_to, :category, :project, :attachments, :author, :status => [:enumeration]]) }
+  scope :fetch_dependencies, -> { includes([:tracker, :version, :assigned_to, :category, :project, :attachments, :author, status: [:enumeration]]) }
   scope :opened_issues, -> { joins(:status).where('issues_statuses.is_closed = false') }
   #Group
   scope :group_opened_by_attr, -> (project_id, table_name, attr, conditions = '1 = 1') { joins(:project, :status).joins("LEFT OUTER JOIN #{table_name} ON #{table_name}.id = issues.#{attr}_id").group('1').where('issues_statuses.is_closed = false AND issues.project_id = ? AND ?', project_id, conditions).pluck("#{table_name}.id, #{table_name}.name, count(issues.id), projects.slug") }
@@ -96,8 +96,8 @@ class Issue < ActiveRecord::Base
   def set_predecessor(predecessor_id)
     self.predecessor_id = predecessor_id
     saved = self.save
-    journals = Journal.where(:journalizable_type => 'Issue', :journalizable_id => self.id).includes([:details, :user])
-    {:saved => saved, :journals => journals}
+    journals = Journal.where(journalizable_type: 'Issue', journalizable_id: self.id).includes([:details, :user])
+    {saved: saved, journals: journals}
   end
 
   # @param [Array] doc_ids : array containing all ids of issues that will be bulk edited.
@@ -150,9 +150,9 @@ class Issue < ActiveRecord::Base
     }
     hash.each do |_, v|
       if v['operator'].eql?('open')
-        v['value'] = IssuesStatus.where(:is_closed => 0).collect { |status| status.id }
+        v['value'] = IssuesStatus.where(is_closed: 0).collect { |status| status.id }
       elsif v['operator'].eql?('close')
-        v['value'] = IssuesStatus.where(:is_closed => 1).collect { |status| status.id }
+        v['value'] = IssuesStatus.where(is_closed: 1).collect { |status| status.id }
       end
     end
     Rorganize::MagicFilter.generics_filter(hash, attributes)
@@ -219,7 +219,7 @@ class Issue < ActiveRecord::Base
 
   #Permit attributes
   def self.permit_attributes
-    [:assigned_to_id, :author_id, :version_id, :done, :category_id, :status_id, :start_date, :subject, :description, :tracker_id, :due_date, :estimated_time, {:new_attachment_attributes => Attachment.permit_attributes}, {:edit_attachment_attributes => Attachment.permit_attributes}]
+    [:assigned_to_id, :author_id, :version_id, :done, :category_id, :status_id, :start_date, :subject, :description, :tracker_id, :due_date, :estimated_time, {new_attachment_attributes: Attachment.permit_attributes}, {edit_attachment_attributes: Attachment.permit_attributes}]
   end
 
   def self.permit_bulk_edit_values

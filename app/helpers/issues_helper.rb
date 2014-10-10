@@ -30,7 +30,7 @@ module IssuesHelper
   def list(collection)
     content_tag :table, {class: 'issue list', 'data-link' => toolbox_issues_path(@project.slug)}, &Proc.new {
       safe_concat content_tag :tr, class: 'header', &Proc.new {
-        safe_concat content_tag :th, link_to(glyph('', 'check'), '#', {:class => 'icon-checked', id: 'check-all', 'cb_checked' => 'b'})
+        safe_concat content_tag :th, link_to(glyph('', 'check'), '#', {class: 'icon-checked', id: 'check-all', 'cb_checked' => 'b'})
         safe_concat content_tag :th, sortable('issues.id', '#')
         safe_concat content_tag :th, sortable('trackers.name', 'Tracker')
         safe_concat content_tag :th, sortable('issues.subject', 'Subject')

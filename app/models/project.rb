@@ -9,15 +9,15 @@ class Project < ActiveRecord::Base
   #Constants
   JOURNALIZABLE_ITEMS = %w(Issue Category Member Document Version Wiki WikiPage)
   #Relations
-  belongs_to :author, :class_name => 'User', :foreign_key => 'created_by'
-  has_many :members, :class_name => 'Member', :dependent => :destroy
-  has_and_belongs_to_many :trackers, :class_name => 'Tracker'
-  has_many :versions, :class_name => 'Version'
-  has_many :categories, :class_name => 'Category', :dependent => :destroy
-  has_many :issues, :class_name => 'Issue', :dependent => :destroy
-  has_many :enabled_modules, :dependent => :destroy
-  has_many :documents, :dependent => :destroy
-  has_many :journals, :dependent => :destroy
+  belongs_to :author, class_name: 'User', foreign_key: 'created_by'
+  has_many :members, class_name: 'Member', dependent: :destroy
+  has_and_belongs_to_many :trackers, class_name: 'Tracker'
+  has_many :versions, class_name: 'Version'
+  has_many :categories, class_name: 'Category', dependent: :destroy
+  has_many :issues, class_name: 'Issue', dependent: :destroy
+  has_many :enabled_modules, dependent: :destroy
+  has_many :documents, dependent: :destroy
+  has_many :journals, dependent: :destroy
   has_one :wiki
   #Triggers
   before_create :set_created_by
@@ -25,11 +25,11 @@ class Project < ActiveRecord::Base
   after_update :save_attachments, :remove_all_non_member
   #Validators
   validates_associated :attachments
-  validates :name, :presence => true, :uniqueness => true
-  validates :name, :length => {
-      :maximum => 255,
-      :tokenizer => lambda { |str| str.scan(/\w+/) },
-      :too_long => 'must have at most 255 words'
+  validates :name, presence: true, uniqueness: true
+  validates :name, length: {
+      maximum: 255,
+      tokenizer: lambda { |str| str.scan(/\w+/) },
+      too_long: 'must have at most 255 words'
   }
 
   def caption
@@ -37,7 +37,7 @@ class Project < ActiveRecord::Base
   end
 
   def self.permit_attributes
-    [:name, :description, :identifier, :trackers, :is_public, :new_attachment_attributes => Attachment.permit_attributes, :existing_attachment_attributes => Attachment.permit_attributes]
+    [:name, :description, :identifier, :trackers, :is_public, new_attachment_attributes: Attachment.permit_attributes, existing_attachment_attributes: Attachment.permit_attributes]
   end
 
   def set_created_by
@@ -46,7 +46,7 @@ class Project < ActiveRecord::Base
 
   def create_member
     role = Role.find_by_name('Project Manager')
-    Member.create(:project_id => self.id, :role_id => role.id, :user_id => self.created_by)
+    Member.create(project_id: self.id, role_id: role.id, user_id: self.created_by)
   end
 
   def add_modules
@@ -64,7 +64,7 @@ class Project < ActiveRecord::Base
   end
 
   def self.opened_projects_id
-    return Project.where(:is_archived => false).pluck('id')
+    return Project.where(is_archived: false).pluck('id')
   end
 
   def activities(journalizable_types, period, from_date)
@@ -80,7 +80,7 @@ class Project < ActiveRecord::Base
     self.trackers.clear
     unless trackers.nil?
       tracker_ids = trackers.values
-      trackers = Tracker.where(:id => tracker_ids)
+      trackers = Tracker.where(id: tracker_ids)
       tracker_ids.each do |id|
         tracker = trackers.select { |track| track.id == id.to_i }
         self.trackers << tracker

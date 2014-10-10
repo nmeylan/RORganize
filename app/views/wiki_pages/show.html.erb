@@ -11,10 +11,10 @@ File: show
     <%= @wiki_page_decorator.edit_link %>
     <%= @wiki_page_decorator.delete_link %>
 <% end %>
-<%= render :partial => 'wiki/sidebar', locals: {project: @project} %>
+<%= render partial: 'wiki/sidebar', locals: {project: @project} %>
 
 <%= @wiki_page_decorator.display_page %>
 
 <% if @wiki_page_decorator.sub_pages.any? %>
-    <%= render :partial => 'wiki_pages/sub_pages', :locals => {:page => @wiki_page_decorator} %>
+    <%= render partial: 'wiki_pages/sub_pages', locals: {page: @wiki_page_decorator} %>
 <% end %>

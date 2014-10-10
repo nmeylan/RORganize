@@ -5,7 +5,7 @@
 
 class CreateIssuesStatusesRoles < ActiveRecord::Migration
   def up
-    create_table :issues_statuses_roles, :id => false do |t|
+    create_table :issues_statuses_roles, id: false do |t|
       t.integer :role_id
       t.integer :issues_status_id
     end

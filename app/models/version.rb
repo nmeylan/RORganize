@@ -5,10 +5,10 @@ class Version < ActiveRecord::Base
   #Class variables
   assign_journalizable_properties({name: 'Name', target_date: 'Due date', start_date: 'Start date'})
   #Relations
-  belongs_to :project, :class_name => 'Project'
-  has_many :issues, :class_name => 'Issue', :dependent => :nullify
-  validates :name, :presence => true, :length => 2..20
-  validates :start_date, :presence => true
+  belongs_to :project, class_name: 'Project'
+  has_many :issues, class_name: 'Issue', dependent: :nullify
+  validates :name, presence: true, length: 2..20
+  validates :start_date, presence: true
   validate :validate_start_date
   include IssuesHelper
   #Triggers
@@ -32,7 +32,7 @@ class Version < ActiveRecord::Base
   # Version.start_date <= Issue.start_date < Issue.due_date <= Version.due_date
   # So when issue's version is changing we have to update issue start and due date to respect the previous rule.
   def update_issues_due_date
-    issues = Issue.where(:version_id => self.id).eager_load(:version)
+    issues = Issue.where(version_id: self.id).eager_load(:version)
     issue_changes = {due_date: [], start_date: []}
     issues.each do |issue|
       issue = issue.set_start_and_due_date(true)
@@ -85,7 +85,7 @@ class Version < ActiveRecord::Base
         versions_hash[version.target_date.to_formatted_s(:db)] = version
       end
     end
-    {:versions_hash => versions_hash, :date => date}
+    {versions_hash: versions_hash, date: date}
   end
 
   def self.define_gantt_data(project)

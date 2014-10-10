@@ -11,10 +11,10 @@ class Member < ActiveRecord::Base
   assign_journalizable_properties({role_id: 'Role'})
   assign_foreign_keys({role_id: Role})
   #Relations
-  belongs_to :project, :class_name => 'Project', counter_cache: true
+  belongs_to :project, class_name: 'Project', counter_cache: true
 
-  belongs_to :user, :class_name => 'User'
-  belongs_to :role, :class_name => 'Role'
+  belongs_to :user, class_name: 'User'
+  belongs_to :role, class_name: 'Role'
   has_many :assigned_issues, -> { where('issues.project_id = members.project_id') }, through: :user, class_name: 'Issue'
   #Triggers
   before_create :remove_old_member_role, :set_project_position
@@ -31,14 +31,14 @@ class Member < ActiveRecord::Base
 
   def create_journal
     unless self.role_id.eql?(Role.non_member.id)
-      created_journalizable_attributes = {:role_id => [nil, self.role_id]}
-      journal = Journal.create(:user_id => User.current.id,
-                               :journalizable_id => self.id,
-                               :journalizable_type => self.class.to_s,
-                               :journalizable_identifier => self.caption,
-                               :notes => '',
-                               :action_type => 'created',
-                               :project_id => self.project_id)
+      created_journalizable_attributes = {role_id: [nil, self.role_id]}
+      journal = Journal.create(user_id: User.current.id,
+                               journalizable_id: self.id,
+                               journalizable_type: self.class.to_s,
+                               journalizable_identifier: self.caption,
+                               notes: '',
+                               action_type: 'created',
+                               project_id: self.project_id)
       journal.detail_insertion(created_journalizable_attributes, self.class.journalizable_properties, self.class.foreign_keys)
     end
   end
@@ -46,12 +46,12 @@ class Member < ActiveRecord::Base
   #Change a member's role
   def change_role(value)
     success = self.update_attribute(:role_id, value)
-    members = Member.where(:project_id => self.project.id).eager_load(:role, :user)
-    {:saved => success, :members => members}
+    members = Member.where(project_id: self.project.id).eager_load(:role, :user)
+    {saved: success, members: members}
   end
 
   def set_project_position
-    self.project_position = Member.where(:user_id => self.user_id).count
+    self.project_position = Member.where(user_id: self.user_id).count
   end
 
   def unassigned_issues

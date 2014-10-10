@@ -9,7 +9,7 @@ module Rorganize
       include Rorganize::Managers::JounalsManager
       extend ActiveSupport::Concern
       included do |base|
-        has_many :journals, -> { where :journalizable_type => base }, :as => :journalizable, :dependent => :destroy
+        has_many :journals, -> { where journalizable_type: base }, as: :journalizable, dependent: :destroy
         after_create :create_journal
         after_update :update_journal
         after_destroy :destroy_journal

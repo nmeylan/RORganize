@@ -7,7 +7,7 @@ class CreateCategories < ActiveRecord::Migration
   def up
     create_table :categories do |t|
       t.integer :project_id
-      t.string :name, :limit => 255
+      t.string :name, limit: 255
     end
   end
 

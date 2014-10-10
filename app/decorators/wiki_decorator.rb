@@ -26,7 +26,7 @@ class WikiDecorator < ApplicationDecorator
 
   # see #ApplicationDecorator::new_link.
   def new_page_link
-    link_to_with_permissions(h.glyph(h.t(:link_new_page), 'file-text'), h.new_wiki_page_path(context[:project].slug), context[:project], nil, {:method => :get, class: 'button new'})
+    link_to_with_permissions(h.glyph(h.t(:link_new_page), 'file-text'), h.new_wiki_page_path(context[:project].slug), context[:project], nil, {method: :get, class: 'button new'})
   end
 
   # Render home page. If doesn't exists display new link.

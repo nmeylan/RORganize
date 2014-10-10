@@ -31,7 +31,7 @@ class IssuesStatusesController < ApplicationController
     @status = IssuesStatus.find_by_id(params[:id])
     @enumeration = @status.enumeration
     respond_to do |format|
-      if @status.update_attributes(issue_statutes_params) && @enumeration.update_attributes(:name => enumeration_params[:name])
+      if @status.update_attributes(issue_statutes_params) && @enumeration.update_attributes(name: enumeration_params[:name])
         flash[:notice] = t(:successful_update)
         format.html { redirect_to issues_statuses_path }
       else
@@ -43,7 +43,7 @@ class IssuesStatusesController < ApplicationController
 
   def create
     @status = IssuesStatus.new(issue_statutes_params)
-    @enumeration = Enumeration.new(:name => enumeration_params[:name], :opt => 'ISTS')
+    @enumeration = Enumeration.new(name: enumeration_params[:name], opt: 'ISTS')
     respond_to do |format|
       if @enumeration.save
         @status.enumeration = @enumeration
@@ -52,7 +52,7 @@ class IssuesStatusesController < ApplicationController
           format.html { redirect_to issues_statuses_path }
         else
           format.html { render :new, locals: {done_ratio: done_ratio} }
-          format.json { render :json => @staus.errors, :status => :unprocessable_entity }
+          format.json { render json: @staus.errors, status: :unprocessable_entity }
         end
       else
         @status.errors.add(:name, "can't be blank")
@@ -71,7 +71,7 @@ class IssuesStatusesController < ApplicationController
     get_statuses
     respond_to do |format|
       format.html { redirect_to issues_statuses_path }
-      format.js { respond_to_js :locals => {:id => params[:id]}, :response_header => :success, :response_content => t(:successful_deletion) }
+      format.js { respond_to_js locals: {id: params[:id]}, response_header: :success, response_content: t(:successful_deletion) }
     end
   end
 
@@ -81,9 +81,9 @@ class IssuesStatusesController < ApplicationController
     get_statuses
     respond_to do |format|
       if saved
-        format.js { respond_to_js :response_header => :success, :response_content => t(:successful_update) }
+        format.js { respond_to_js response_header: :success, response_content: t(:successful_update) }
       else
-        format.js { respond_to_js :response_header => :failure, :response_content => t(:text_negative_position) }
+        format.js { respond_to_js response_header: :failure, response_content: t(:text_negative_position) }
       end
     end
   end

@@ -71,7 +71,7 @@ class ApplicationDecorator < Draper::Decorator
   # @param [Object] owner the owner of the model. (e.g issue.author)
   # @param [Hash] options : html_options.
   def delete_link(label, path, project = nil, owner = nil, options = {})
-    default_options = {:method => :delete, :remote => true, :confirm => h.t(:text_delete_item), class: 'delete-link button danger'}
+    default_options = {method: :delete, remote: true, confirm: h.t(:text_delete_item), class: 'delete-link button danger'}
     link_to_with_permissions(h.glyph(label, 'trashcan'), path, project, owner, default_options.merge(options))
   end
 
@@ -146,7 +146,7 @@ class ApplicationDecorator < Draper::Decorator
   # @param [String] path : to controller to perform the action.
   # @param [Project] project : project belongs to the attachment.
   def delete_attachment_link(path, project)
-    link_to_with_permissions h.glyph(h.t(:link_delete), 'trashcan'), path, project, nil, {:remote => true, :confirm => h.t(:text_delete_item), :method => :delete, class: 'button danger'}
+    link_to_with_permissions h.glyph(h.t(:link_delete), 'trashcan'), path, project, nil, {remote: true, confirm: h.t(:text_delete_item), method: :delete, class: 'button danger'}
   end
 
   # Render a link to download an attachment.

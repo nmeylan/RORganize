@@ -5,8 +5,8 @@
 
 class InsertTrackers < ActiveRecord::Migration
   def up
-    Tracker.create(:name => 'Task', :is_in_chlog => true, :is_in_roadmap => true, :position => 1)
-    Tracker.create(:name => 'Bug', :is_in_chlog => true, :is_in_roadmap => true, :position => 2)
+    Tracker.create(name: 'Task', is_in_chlog: true, is_in_roadmap: true, position: 1)
+    Tracker.create(name: 'Bug', is_in_chlog: true, is_in_roadmap: true, position: 2)
   end
 
   def down

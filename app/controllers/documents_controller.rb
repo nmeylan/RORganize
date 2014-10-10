@@ -4,9 +4,9 @@
 # File: document_controller.rb
 require 'shared/history'
 class DocumentsController < ApplicationController
-  before_filter :load_documents, :only => [:index]
+  before_filter :load_documents, locals: [:index]
   before_filter :find_document, only: [:show, :edit, :destroy, :update]
-  before_filter :check_permission, :except => [:toolbox]
+  before_filter :check_permission, locals: [:toolbox]
   before_filter { |c| c.menu_context :project_menu }
   before_filter { |c| c.menu_item(params[:controller]) }
   before_filter { |c| c.top_menu_item('projects') }
@@ -65,7 +65,7 @@ class DocumentsController < ApplicationController
   def show
     #this always return 1 result. Don't use .first(AR method) because it generate two query (due to ActiveRecord::FinderMethods::apply_join_dependency(..))
     respond_to do |format|
-      format.html { render :show, :locals => {:history => History.new(Journal.document_activities(@document_decorator.id), @document_decorator.comments)} }
+      format.html { render :show, locals: {history: History.new(Journal.document_activities(@document_decorator.id), @document_decorator.comments)} }
     end
   end
 
@@ -74,7 +74,7 @@ class DocumentsController < ApplicationController
     attachment = Attachment.find(params[:id])
     if attachment.destroy
       respond_to do |format|
-        format.js { respond_to_js :response_header => :success, :response_content => t(:successful_deletion), :locals => {:id => attachment.id} }
+        format.js { respond_to_js response_header: :success, response_content: t(:successful_deletion), locals: {id: attachment.id} }
       end
     end
   end
@@ -93,9 +93,9 @@ class DocumentsController < ApplicationController
     #Displaying toolbox with GET request
     if !request.post? && params[:ids]
       #loading toolbox
-      @documents_toolbox = Document.where(:id => params[:ids]).eager_load(:version, :category)
+      @documents_toolbox = Document.where(id: params[:ids]).eager_load(:version, :category)
       respond_to do |format|
-        format.js { respond_to_js :locals => {:documents => @documents_toolbox} }
+        format.js { respond_to_js locals: {documents: @documents_toolbox} }
       end
     elsif !request.post?
       load_documents
@@ -105,14 +105,14 @@ class DocumentsController < ApplicationController
       Document.bulk_delete(params[:delete_ids], @project)
       respond_to do |format|
         load_documents
-        format.js { respond_to_js :action => :index, :response_header => :success, :response_content => t(:successful_deletion) }
+        format.js { respond_to_js action: :index, response_header: :success, response_content: t(:successful_deletion) }
       end
     else
       if User.current.allowed_to?('edit', 'documents', @project)
         Document.bulk_edit(params[:ids], value_params, @project)
         respond_to do |format|
           load_documents
-          format.js { respond_to_js :action => :index, :response_header => :success, :response_content => t(:successful_update) }
+          format.js { respond_to_js action: :index, response_header: :success, response_content: t(:successful_update) }
         end
       end
     end

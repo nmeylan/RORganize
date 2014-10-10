@@ -30,7 +30,7 @@ module Rorganize
 
         def permission_checker(path, project, owner_id, params = {})
           routes = Rails.application.routes
-          hash_path = routes.recognize_path(path, :method => params[:method])
+          hash_path = routes.recognize_path(path, method: params[:method])
           unless params[:confirm].nil?
             params[:data] ||= {}
             params[:data][:confirm] = params[:confirm].clone
@@ -134,7 +134,7 @@ module Rorganize
           roles.each do |role|
             permissions[role.id.to_s] = []
             role.permissions.each do |permission|
-              permissions[role.id.to_s] << {:action => permission.action, :controller => permission.controller.downcase}
+              permissions[role.id.to_s] << {action: permission.action, controller: permission.controller.downcase}
             end
           end
           return permissions
@@ -144,7 +144,7 @@ module Rorganize
           role = Role.find(role_id)
           @permissions[role_id.to_s].clear
           role.permissions.each do |perm|
-            @permissions[role_id.to_s] << {:action => perm.action, :controller => perm.controller.downcase}
+            @permissions[role_id.to_s] << {action: perm.action, controller: perm.controller.downcase}
           end
         end
 

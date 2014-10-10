@@ -51,24 +51,24 @@
 
 <div class="separator"></div>
 
-<%= link_to glyph('', 'chevron-right'), '#', {:class => 'icon icon-collapsed toggle right', :style => 'float:right', :id => 'gantt-informations'} %>
+<%= link_to glyph('', 'chevron-right'), '#', {class: 'icon icon-collapsed toggle right', style: 'float:right', id: 'gantt-informations'} %>
 <%= clear_both %>
 <div class="content gantt-informations">
   <div id="predecessor">
-    <%= render :partial => 'issues/predecessor', locals: {issue_decorator: @issue_decorator, project: @project} %>
+    <%= render partial: 'issues/predecessor', locals: {issue_decorator: @issue_decorator, project: @project} %>
   </div>
   <hr/>
   <div id="children">
-    <%= render :partial => 'issues/children', locals: {issue_decorator: @issue_decorator} %>
+    <%= render partial: 'issues/children', locals: {issue_decorator: @issue_decorator} %>
   </div>
 </div>
 
 <%#= ATTACHMENT %>
 <div id="attachments">
-  <%= render :partial => 'shared/show_attachments', :locals => {:attachments => @issue_decorator.attachments, :object => @issue_decorator} %>
+  <%= render partial: 'shared/show_attachments', locals: {attachments: @issue_decorator.attachments, object: @issue_decorator} %>
 </div>
 
 <%= @issue_decorator.display_history(history) %>
 
 <%= @issue_decorator.add_comment_block %>
-<%= render :partial => 'time_entries/log_issue_spent_time', :locals => {:issue_id => @issue_decorator.id, :tracker_name => @issue_decorator.tracker, time_entry: @time_entry} %>
+<%= render partial: 'time_entries/log_issue_spent_time', locals: {issue_id: @issue_decorator.id, tracker_name: @issue_decorator.tracker, time_entry: @time_entry} %>

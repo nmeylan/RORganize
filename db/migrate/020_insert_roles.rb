@@ -5,9 +5,9 @@
 
 class InsertRoles < ActiveRecord::Migration
   def up
-    Role.create(:name => 'Project Manager', :position => 2)
-    Role.create(:name => 'Team Member', :position => 1)
-    Role.create(:name => 'Engagement Manager', :position => 3)
+    Role.create(name: 'Project Manager', position: 2)
+    Role.create(name: 'Team Member', position: 1)
+    Role.create(name: 'Engagement Manager', position: 3)
   end
 
   def down

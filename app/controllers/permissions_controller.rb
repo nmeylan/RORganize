@@ -9,7 +9,7 @@ class PermissionsController < ApplicationController
   include Rorganize::Managers::PermissionManager::PermissionManagerHelper
   include Rorganize::Managers::PermissionManager::PermissionListCreator
 
-  before_filter :check_permission, :except => [:update_permissions]
+  before_filter :check_permission, except: [:update_permissions]
   before_filter { |c| c.menu_context :admin_menu }
   before_filter { |c| c.menu_item(params[:controller]) }
   before_filter { |c| c.top_menu_item('administration') }
@@ -26,7 +26,7 @@ class PermissionsController < ApplicationController
   def new
     @permission_decorator = Permission.new.decorate
     respond_to do |format|
-      format.html { render :new, :locals => {:controllers => load_controllers.values} }
+      format.html { render :new, locals: {controllers: load_controllers.values} }
     end
   end
 
@@ -36,14 +36,14 @@ class PermissionsController < ApplicationController
     respond_to do |format|
       if @permission_decorator.save
         flash[:notice] = t(:successful_creation)
-        format.html { redirect_to :action => 'index', :controller => 'permissions' }
-        format.json { render :json => @permission_decorator,
-                             :status => :created, :location => @permission_decorator }
+        format.html { redirect_to action: 'index', controller: 'permissions' }
+        format.json { render json: @permission_decorator,
+                             status: :created, location: @permission_decorator }
       else
         Permission.controller_list
         format.html { render :new }
-        format.json { render :json => @permission_decorator.errors,
-                             :status => :unprocessable_entity }
+        format.json { render json: @permission_decorator.errors,
+                             status: :unprocessable_entity }
       end
     end
   end
@@ -54,7 +54,7 @@ class PermissionsController < ApplicationController
     if @permission_decorator
       @permission_decorator = @permission_decorator.decorate
       respond_to do |format|
-        format.html { render :action => 'edit', :locals => {:controllers => load_controllers.values} }
+        format.html { render action: 'edit', locals: {controllers: load_controllers.values} }
       end
     else
       render_404
@@ -68,13 +68,13 @@ class PermissionsController < ApplicationController
       if @permission_decorator.update_attributes(permission_params)
         flash[:notice] = t(:successful_update)
         format.html { redirect_to permissions_path }
-        format.json { render :json => @permission_decorator,
-                             :status => :created, :location => @permission_decorator }
+        format.json { render json: @permission_decorator,
+                             status: :created, location: @permission_decorator }
       else
 
-        format.html { render :edit, :locals => {:controllers => load_controllers.values} }
-        format.json { render :json => @permission_decorator.errors,
-                             :status => :unprocessable_entity }
+        format.html { render :edit, locals: {controllers: load_controllers.values} }
+        format.json { render json: @permission_decorator.errors,
+                             status: :unprocessable_entity }
       end
     end
   end

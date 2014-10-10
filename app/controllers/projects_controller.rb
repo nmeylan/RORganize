@@ -1,8 +1,8 @@
 require 'shared/activities'
 class ProjectsController < ApplicationController
   before_filter { |c| c.add_action_alias = {'show' => 'overview'} }
-  before_filter :find_project, :only => [:overview, :show, :activity, :activity_filter, :members, :issues_completion]
-  before_filter :check_permission, :except => [:index, :filter, :members, :activity_filter, :issues_completion]
+  before_filter :find_project, only: [:overview, :show, :activity, :activity_filter, :members, :issues_completion]
+  before_filter :check_permission, except: [:index, :filter, :members, :activity_filter, :issues_completion]
   before_filter { |c| c.menu_context :project_menu }
   before_filter { |c| c.menu_item(params[:controller], params[:action].eql?('show') ? 'overview' : params[:action]) }
   before_filter { |c| c.top_menu_item('projects') }
@@ -57,13 +57,13 @@ class ProjectsController < ApplicationController
         @project_decorator.update_info({}, params[:trackers])
         flash[:notice] = t(:successful_creation)
         format.html { redirect_to overview_projects_path(@project_decorator.slug) }
-        format.json { render :json => @project_decorator,
-                             :status => :created, :location => @project_decorator }
+        format.json { render json: @project_decorator,
+                             status: :created, location: @project_decorator }
       else
         @trackers_decorator = Tracker.all.decorate(context: {checked_ids: Tracker.where(name: ['Bug', 'Task']).collect(&:id)})
         format.html { render :new }
-        format.json { render :json => @project_decorator.errors,
-                             :status => :unprocessable_entity }
+        format.json { render json: @project_decorator.errors,
+                             status: :unprocessable_entity }
       end
     end
   end
@@ -71,7 +71,7 @@ class ProjectsController < ApplicationController
   def destroy
     #Todo add check
     @project = Project.find(params[:id])
-    success = @project.destroy && Query.destroy_all(:project_id => @project.id, :is_for_all => false)
+    success = @project.destroy && Query.destroy_all(project_id: @project.id, is_for_all: false)
     respond_to do |format|
       flash[:notice] = t(:successful_deletion)
       format.html { redirect_to :root }
@@ -80,7 +80,7 @@ class ProjectsController < ApplicationController
           flash[:notice] = t(:successful_update)
           js_redirect_to url_for(:root)
         else
-          respond_to_js :action => :empty_action, :response_header => :failure, :response_content => t(:failure_update)
+          respond_to_js action: :empty_action, response_header: :failure, response_content: t(:failure_update)
         end
       end
     end
@@ -98,7 +98,7 @@ class ProjectsController < ApplicationController
           flash[:notice] = t(:successful_update)
           js_redirect_to url_for(:root)
         else
-          respond_to_js :action => :empty_action, :response_header => :failure, :response_content => t(:failure_update)
+          respond_to_js action: :empty_action, response_header: :failure, response_content: t(:failure_update)
         end
       end
     end
@@ -112,7 +112,7 @@ class ProjectsController < ApplicationController
     @projects_decorator = User.current.owned_projects(session['project_selection_filter']).decorate(context: {allow_to_star: true})
     respond_to do |format|
       format.html { render :index }
-      format.js { respond_to_js :action => 'index' }
+      format.js { respond_to_js action: 'index' }
     end
   end
 

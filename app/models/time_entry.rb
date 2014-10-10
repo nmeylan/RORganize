@@ -8,7 +8,7 @@ class TimeEntry < ActiveRecord::Base
   belongs_to :project
 
   #Validators
-  validates :spent_on, :spent_time, :project_id, :issue_id, :presence => true
+  validates :spent_on, :spent_time, :project_id, :issue_id, presence: true
 
   #Methods
   def self.permit_attributes

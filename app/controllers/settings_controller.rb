@@ -5,9 +5,9 @@
 
 class SettingsController < ApplicationController
   include Rorganize::RichController
-  before_filter :set_pagination, :only => [:public_queries]
-  before_filter :check_queries_permission, :only => [:public_queries]
-  before_filter :check_permission, :except => [:public_queries, :delete_attachment, :update]
+  before_filter :set_pagination, only: [:public_queries]
+  before_filter :check_queries_permission, only: [:public_queries]
+  before_filter :check_permission, except: [:public_queries, :delete_attachment, :update]
   before_filter { |c| c.menu_context :project_menu }
   before_filter { |c| c.menu_item(params[:controller]) }
   before_filter { |c| c.top_menu_item('projects') }
@@ -52,7 +52,7 @@ class SettingsController < ApplicationController
       @project.attachments.build
       @project_decorator = @project.decorate
       respond_to do |format|
-        format.js { respond_to_js :response_header => :success, :response_content => t(:successful_deletion) }
+        format.js { respond_to_js response_header: :success, response_content: t(:successful_deletion) }
       end
     end
   end
@@ -62,7 +62,7 @@ class SettingsController < ApplicationController
       @project.enabled_modules.clear
       params['modules']['name'].each do |mod|
         ary = mod.split('_')
-        m = EnabledModule.new(:controller => ary[0], :action => ary[1], :name => ary[2])
+        m = EnabledModule.new(controller: ary[0], action: ary[1], name: ary[2])
         @project.enabled_modules << m
       end
       @project.save

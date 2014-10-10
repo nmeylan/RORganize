@@ -9,8 +9,8 @@ class AddCommentsPermission < ActiveRecord::Migration
   end
 
   def down
-    Permission.delete_all(:action => 'comment')
-    Permission.delete_all(:action => 'edit_comment_not_owner')
-    Permission.delete_all(:action => 'destroy_comment_not_owner')
+    Permission.delete_all(action: 'comment')
+    Permission.delete_all(action: 'edit_comment_not_owner')
+    Permission.delete_all(action: 'destroy_comment_not_owner')
   end
 end

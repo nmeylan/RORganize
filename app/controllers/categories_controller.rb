@@ -33,12 +33,12 @@ class CategoriesController < ApplicationController
       if @category.save
         flash[:notice] = t(:successful_creation)
         format.html { redirect_to categories_path }
-        format.json { render :json => @category,
-                             :status => :created, :location => @category }
+        format.json { render json:  @category,
+                             status:  :created, location:  @category }
       else
         format.html { render :new }
-        format.json { render :json => @category.errors,
-                             :status => :unprocessable_entity }
+        format.json { render json:  @category.errors,
+                             status:  :unprocessable_entity }
       end
     end
   end
@@ -57,12 +57,12 @@ class CategoriesController < ApplicationController
       elsif @category.changed? && @category.save
         flash[:notice] = t(:successful_update)
         format.html { redirect_to categories_path }
-        format.json { render :json => @category,
-                             :status => :created, :location => @category }
+        format.json { render json:  @category,
+                             status: :created, location: @category }
       else
         format.html { render :edit}
-        format.json { render :json => @category.errors,
-                             :status => :unprocessable_entity }
+        format.json { render json: @category.errors,
+                             status: :unprocessable_entity }
       end
     end
   end
@@ -74,7 +74,7 @@ class CategoriesController < ApplicationController
         flash[:notice] = t(:successful_deletion)
         redirect_to category_path
       end
-      format.js { respond_to_js :locals => {:id => params[:id]}, :response_header => :success, :response_content => t(:successful_deletion) }
+      format.js { respond_to_js locals: {id: params[:id]}, response_header: :success, response_content: t(:successful_deletion) }
     end
   end
 

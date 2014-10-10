@@ -8,16 +8,16 @@ class IssuesStatus < ActiveRecord::Base
   DEFAULT_OPENED_STATUS_COLOR = '#6cc644'
   DEFAULT_CLOSED_STATUS_COLOR = '#bd2c00'
   # Relations
-  has_and_belongs_to_many :roles, :class_name => 'Role'
-  belongs_to :enumeration, :class_name => 'Enumeration', :dependent => :destroy
-  has_many :issues, :class_name => 'Issue', :foreign_key => :status_id, :dependent => :nullify
+  has_and_belongs_to_many :roles, class_name: 'Role'
+  belongs_to :enumeration, class_name: 'Enumeration', dependent: :destroy
+  has_many :issues, class_name: 'Issue', foreign_key: :status_id, dependent: :nullify
   # Scopes
   scope :fetch_dependencies, -> { eager_load(:enumeration) }
   # Triggers
   after_save :reload_colors
 
   def self.opened_statuses_id
-    return IssuesStatus.where(:is_closed => false).pluck('id')
+    return IssuesStatus.where(is_closed: false).pluck('id')
   end
 
   def self.permit_attributes

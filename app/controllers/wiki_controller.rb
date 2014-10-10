@@ -5,8 +5,8 @@
 
 class WikiController < ApplicationController
   before_filter :find_wiki, except: [:new, :create, :set_organization]
-  before_filter :check_permission, :except => [:organize_pages]
-  before_filter :check_organize_pages_permission, :only => [:organize_pages]
+  before_filter :check_permission, except: [:organize_pages]
+  before_filter :check_organize_pages_permission, only: [:organize_pages]
   before_filter { |c| c.menu_context :project_menu }
   before_filter { |c| c.menu_item(params[:controller]) }
   before_filter { |c| c.top_menu_item('projects') }
@@ -66,7 +66,7 @@ class WikiController < ApplicationController
   def set_organization
     Wiki.organize_pages(pages_organization_params)
     respond_to do |format|
-      format.js { respond_to_js :action => :empty_action, :response_header => :success, :response_content => t(:successful_update) }
+      format.js { respond_to_js action: :empty_action, response_header: :success, response_content: t(:successful_update) }
     end
   end
 
@@ -78,7 +78,7 @@ class WikiController < ApplicationController
   end
 
   def find_wiki
-    wiki = Wiki.where(:project_id => @project.id).eager_load([[pages: [:author, :sub_pages, :parent]], [home_page: :author]])[0]
+    wiki = Wiki.where(project_id: @project.id).eager_load([[pages: [:author, :sub_pages, :parent]], [home_page: :author]])[0]
     @wiki_decorator = wiki ? wiki.decorate(context: {project: @project}) : Wiki.new.decorate(context: {project: @project})
   end
 

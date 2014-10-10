@@ -9,7 +9,7 @@ module Rorganize
 
       extend ActiveSupport::Concern
       included do
-        scope :paginated, ->(page, per_page, order, includes = []) { paginate(:page => page, :per_page => per_page).smart_record_order(order, includes) }
+        scope :paginated, ->(page, per_page, order, includes = []) { paginate(page: page, per_page: per_page).smart_record_order(order, includes) }
         scope :smart_record_order, -> (order, includes) do
           if includes.any?
             dependent_attributes, attr, joins = Rorganize::Models::SmartRecords.smart_records_eager_load(self, includes, order)

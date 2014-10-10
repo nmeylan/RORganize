@@ -9,7 +9,7 @@ class CreateChecklistItems < ActiveRecord::Migration
       t.integer :enumeration_id
       t.integer :issue_id
       t.integer :position
-      t.string :name, :limit => 50
+      t.string :name, limit: 50
     end
   end
 

@@ -7,9 +7,9 @@
 <div id="calendar-header">
   <p>
 
-    <%= link_to "<< #{t(:link_prev_month)}", spent_time_profile_path, {:style => 'float:left', :class => 'change-month ', :id => "#{date_orig.prev_month}"} %>
+    <%= link_to "<< #{t(:link_prev_month)}", spent_time_profile_path, {style: 'float:left', class: 'change-month ', id: "#{date_orig.prev_month}"} %>
     <%= date_orig.strftime('%B, %Y') %>
-    <%= link_to "#{t(:link_next_month)} >>", spent_time_profile_path, {:style => 'float:right', :class => 'change-month', :id => "#{date_orig.next_month}"} %>
+    <%= link_to "#{t(:link_next_month)} >>", spent_time_profile_path, {style: 'float:right', class: 'change-month', id: "#{date_orig.next_month}"} %>
   </p>
 
 </div>
@@ -31,10 +31,10 @@
                       <%= link_to "##{time_entry.issue_id}", issue_path(time_entry.project.slug, time_entry.issue_id) %>
                     </span>
                     <span class="calendar-item-middle">
-                      <%= link_to glyph(time_entry.spent_time.to_s, 'calendar'), fill_overlay_with_date_time_entries_path(time_entry.issue_id, date), {:class => 'log-time'} %>
+                      <%= link_to glyph(time_entry.spent_time.to_s, 'calendar'), fill_overlay_with_date_time_entries_path(time_entry.issue_id, date), {class: 'log-time'} %>
                     </span>
                     <span class="calendar-item-right">
-                      <%= link_to glyph('', 'trashcan'), time_entry_path(time_entry.id), {:remote => true, :method => :delete, 'data-confirm'=> t(:text_delete_item)} %>
+                      <%= link_to glyph('', 'trashcan'), time_entry_path(time_entry.id), {remote: true, method: :delete, 'data-confirm'=> t(:text_delete_item)} %>
                     </span>
                   </li>
                   <% total += time_entry.spent_time %>
@@ -52,4 +52,4 @@
   <% end %>
 </ul>
 <%= clear_both %>
-<%= render :partial => 'time_entries/log_issue_spent_time', :locals => {:issue_id => nil, :tracker_name => nil, time_entry: time_entry} %>
+<%= render partial: 'time_entries/log_issue_spent_time', locals: {issue_id: nil, tracker_name: nil, time_entry: time_entry} %>

@@ -12,7 +12,7 @@ module DocumentsHelper
   def list(collection)
     content_tag :table, {class: 'document list', 'data-link' => toolbox_documents_path(@project.slug)}, &Proc.new {
       safe_concat content_tag :tr, class: 'header', &Proc.new {
-        safe_concat content_tag :th, link_to(glyph('', 'check'), '#', {:class => 'icon-checked', id: 'check-all', 'cb_checked' => 'b'})
+        safe_concat content_tag :th, link_to(glyph('', 'check'), '#', {class: 'icon-checked', id: 'check-all', 'cb_checked' => 'b'})
         safe_concat content_tag :th, sortable('documents.id', '#')
         safe_concat content_tag :th, sortable('documents.name', 'Name')
         safe_concat content_tag :th, sortable('categories.name', 'Category')

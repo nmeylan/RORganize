@@ -11,9 +11,9 @@
 
   </div>
 </div>
-<%= render :partial => 'wiki/sidebar', locals: {project: @project} %>
-<%= form_for @wiki_page_decorator, {:url => wiki_pages_path, :html => {:class => 'form'}, :method => :post} do |f| %>
+<%= render partial: 'wiki/sidebar', locals: {project: @project} %>
+<%= form_for @wiki_page_decorator, {url: wiki_pages_path, html: {class: 'form'}, method: :post} do |f| %>
     <%= hidden_field_tag 'wiki[home_page]', true %>
-    <%= render :partial => 'wiki_pages/form', :locals => {:f => f, wiki_page_decorator: @wiki_page_decorator} %>
+    <%= render partial: 'wiki_pages/form', locals: {f: f, wiki_page_decorator: @wiki_page_decorator} %>
     <%= submit_tag t(:button_create) %>
 <% end %>

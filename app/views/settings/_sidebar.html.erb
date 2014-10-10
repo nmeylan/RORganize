@@ -43,13 +43,13 @@
       <% if User.current.allowed_to?('archive', 'Projects', project) %>
           <li class="project-delete warning">
             <%= link_to !project.is_archived ? glyph(t(:text_close_this_project), 'lock') : glyph(t(:text_open_this_project), 'unlock'), archive_projects_path(project.id),
-                        {:remote => true, :data => {:confirm => !project.is_archived ? t(:text_archive_project) : t(:text_open_project)}, :method => :post} %>
+                        {remote: true, data: {confirm: !project.is_archived ? t(:text_archive_project) : t(:text_open_project)}, method: :post} %>
           </li>
       <% end %>
       <% if User.current.allowed_to?('destroy', 'Projects', project) %>
           <li class="project-delete alert">
             <%= link_to glyph(t(:text_delete_this_project), 'trashcan'), project_path(project.id),
-                        {:remote => true, :data => {:confirm => t(:text_delete_project)}, :method => :delete} %>
+                        {remote: true, data: {confirm: t(:text_delete_project)}, method: :delete} %>
           </li>
       <% end %>
     </ul>

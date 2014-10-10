@@ -9,7 +9,7 @@ class QueriesController < ApplicationController
   before_filter :set_pagination, only: [:index]
   before_filter :find_project, only: [:create]
   before_filter :check_permission, except: [:edit_query_filter]
-  before_filter :check_query_permission, :only => [:show, :edit, :destroy, :update, :edit_query_filter]
+  before_filter :check_query_permission, only: [:show, :edit, :destroy, :update, :edit_query_filter]
   before_filter { |c| c.top_menu_item('administration') }
 
   def index
@@ -27,7 +27,7 @@ class QueriesController < ApplicationController
     @query = Query.new
     @query.object_type = params[:query_type]
     respond_to do |format|
-      format.js { respond_to_js :locals => {:new => true} }
+      format.js { respond_to_js locals: {new: true} }
     end
   end
 
@@ -49,7 +49,7 @@ class QueriesController < ApplicationController
               js_redirect_to(apply_custom_query_issues_path(@query.project.slug, @query.slug))
           end
         else
-          respond_to_js :action => 'new_project_query', :locals => {:new => false, :success => success}, :response_header => :failure, :response_content => @query.errors.full_messages
+          respond_to_js action: 'new_project_query', locals: {new: false, success: success}, response_header: :failure, response_content: @query.errors.full_messages
         end
       end
     end
@@ -78,9 +78,9 @@ class QueriesController < ApplicationController
     respond_to do |format|
       format.js do
         if success
-          respond_to_js :action => 'do_nothing', :locals => {:new => false, :success => success}, :response_header => :success, :response_content => t(:successful_update)
+          respond_to_js action: 'do_nothing', locals: {new: false, success: success}, response_header: :success, response_content: t(:successful_update)
         else
-          respond_to_js :action => 'do_nothing', :locals => {:new => false, :success => success}, :response_header => :failure, :response_content => @query.errors.full_messages
+          respond_to_js action: 'do_nothing', locals: {new: false, success: success}, response_header: :failure, response_content: @query.errors.full_messages
         end
       end
     end
@@ -95,7 +95,7 @@ class QueriesController < ApplicationController
         end
       else
         format.html do
-          render :action => 'edit', :controller => 'queries', :id => @query.id
+          render action: 'edit', controller: 'queries', id: @query.id
         end
       end
     end
@@ -105,7 +105,7 @@ class QueriesController < ApplicationController
     @query.destroy
     respond_to do |format|
       format.js do
-        respond_to_js :response_header => :success, :response_content => t(:successful_deletion), :locals => {:id => @query.id}
+        respond_to_js response_header: :success, response_content: t(:successful_deletion), locals: {id: @query.id}
       end
     end
   end

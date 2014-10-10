@@ -5,13 +5,13 @@
 
 class InsertIssuesStatusesEnumerations < ActiveRecord::Migration
   def up
-    Enumeration.create(:opt => 'ISTS', :name => 'New', :position => 1)
-    Enumeration.create(:opt => 'ISTS', :name => 'In progress', :position => 2)
-    Enumeration.create(:opt => 'ISTS', :name => 'Closed', :position => 7)
-    Enumeration.create(:opt => 'ISTS', :name => 'Fixed to test', :position => 3)
-    Enumeration.create(:opt => 'ISTS', :name => 'Tested to be delivered', :position => 6)
-    Enumeration.create(:opt => 'ISTS', :name => 'Not satisfying', :position => 5)
-    Enumeration.create(:opt => 'ISTS', :name => 'Redo', :position => 4)
+    Enumeration.create(opt: 'ISTS', name: 'New', position: 1)
+    Enumeration.create(opt: 'ISTS', name: 'In progress', position: 2)
+    Enumeration.create(opt: 'ISTS', name: 'Closed', position: 7)
+    Enumeration.create(opt: 'ISTS', name: 'Fixed to test', position: 3)
+    Enumeration.create(opt: 'ISTS', name: 'Tested to be delivered', position: 6)
+    Enumeration.create(opt: 'ISTS', name: 'Not satisfying', position: 5)
+    Enumeration.create(opt: 'ISTS', name: 'Redo', position: 4)
   end
 
   def down

@@ -5,13 +5,13 @@
 
 class InsertIssuesStatuses < ActiveRecord::Migration
   def up
-    IssuesStatus.create(:is_closed => false, :default_done_ratio => 0, :enumeration_id => 1)
-    IssuesStatus.create(:is_closed => false, :default_done_ratio => 0, :enumeration_id => 2)
-    IssuesStatus.create(:is_closed => true, :default_done_ratio => 100, :enumeration_id => 3)
-    IssuesStatus.create(:is_closed => false, :default_done_ratio => 100, :enumeration_id => 4)
-    IssuesStatus.create(:is_closed => false, :default_done_ratio => 100, :enumeration_id => 5)
-    IssuesStatus.create(:is_closed => false, :default_done_ratio => 50, :enumeration_id => 6)
-    IssuesStatus.create(:is_closed => false, :default_done_ratio => 0, :enumeration_id => 7)
+    IssuesStatus.create(is_closed: false, default_done_ratio: 0, enumeration_id: 1)
+    IssuesStatus.create(is_closed: false, default_done_ratio: 0, enumeration_id: 2)
+    IssuesStatus.create(is_closed: true, default_done_ratio: 100, enumeration_id: 3)
+    IssuesStatus.create(is_closed: false, default_done_ratio: 100, enumeration_id: 4)
+    IssuesStatus.create(is_closed: false, default_done_ratio: 100, enumeration_id: 5)
+    IssuesStatus.create(is_closed: false, default_done_ratio: 50, enumeration_id: 6)
+    IssuesStatus.create(is_closed: false, default_done_ratio: 0, enumeration_id: 7)
 
     project_manager = Role.find_by_name('Project Manager')
     team_member = Role.find_by_name('Team Member')

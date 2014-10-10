@@ -4,7 +4,7 @@
 # File: 027_create_permissions_roles.rb
 class CreatePermissionsRoles < ActiveRecord::Migration
   def up
-    create_table :permissions_roles, :id => false do |t|
+    create_table :permissions_roles, id: false do |t|
       t.integer :permission_id
       t.integer :role_id
     end

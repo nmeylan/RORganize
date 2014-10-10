@@ -18,7 +18,7 @@ class Document < ActiveRecord::Base
   belongs_to :category
   belongs_to :project
   #Validators
-  validates :name, :presence => true, :length => 2..255
+  validates :name, presence: true, length: 2..255
   #triggers
   after_update :save_attachments
   #Scopes
@@ -34,7 +34,7 @@ class Document < ActiveRecord::Base
   end
 
   def self.permit_attributes
-    [:name, :description, :version_id, :category_id, {:new_attachment_attributes => Attachment.permit_attributes}, {:edit_attachment_attributes => Attachment.permit_attributes}]
+    [:name, :description, :version_id, :category_id, {new_attachment_attributes: Attachment.permit_attributes}, {edit_attachment_attributes: Attachment.permit_attributes}]
   end
 
   def self.permit_bulk_edit_values

@@ -5,11 +5,11 @@
 # File: modules.html.erb
 %>
 
-<%= render :partial => 'settings/sidebar', locals: {project: @project} %>
+<%= render partial: 'settings/sidebar', locals: {project: @project} %>
 
 <%= contextual t(:link_modules) %>
 
-<%= form_tag url_for({:action => 'modules', :controller => 'settings', :project_id => @project.slug}) %>
+<%= form_tag url_for({action: 'modules', controller: 'settings', project_id: @project.slug}) %>
 <div class="box">
   <ul style="list-style-type: none">
     <% @modules.each do |mod| %>

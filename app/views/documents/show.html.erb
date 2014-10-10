@@ -33,7 +33,7 @@
 
 <%#= ATTACHMENT %>
 <div id="attachments">
-  <%= render :partial => 'shared/show_attachments', :locals => {:attachments => @document_decorator.attachments, :object => @document_decorator} %>
+  <%= render partial: 'shared/show_attachments', locals: {attachments: @document_decorator.attachments, object: @document_decorator} %>
 </div>
 
 <%= @document_decorator.display_history(history) %>

@@ -39,7 +39,7 @@ association_actions_module = {
 Rorganize::Managers::ModuleManager.set_associations_actions_module(association_actions_module)
 
 #Modules enabled by default (on project creation)
-modules = [{:controller => 'projects', :action => 'activity', :name => 'activity'},
-           {:controller => 'roadmaps', :action => 'show', :name => 'roadmaps'},
-           {:controller => 'issues', :action => 'index', :name => 'requests'}]
+modules = [{controller: 'projects', action: 'activity', name: 'activity'},
+           {controller: 'roadmaps', action: 'show', name: 'roadmaps'},
+           {controller: 'issues', action: 'index', name: 'requests'}]
 Rorganize::Managers::ModuleManager.set_enabled_by_default_module(modules)

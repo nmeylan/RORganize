@@ -9,7 +9,7 @@ module Rorganize
         include Rorganize::Models::Attachable
         extend ActiveSupport::Concern
         included do |base|
-          has_many :attachments, -> { where attachable_type: base }, class_name: 'Attachment', foreign_key: :attachable_id, :dependent => :destroy
+          has_many :attachments, -> { where attachable_type: base }, class_name: 'Attachment', foreign_key: :attachable_id, dependent: :destroy
         end
       end
     end

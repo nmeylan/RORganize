@@ -43,7 +43,7 @@ module Rorganize
               css_class = item.params[:class] ? "#{item.params[:class]} #{css_selection}" : css_selection
               glyph = glyph(item.label, item.params[:glyph])
               item.url[:project_id] = project.slug if project
-              content += content_tag(:li, link_to(glyph, item.url, {:id => item.params[:id]}), :class => css_class)
+              content += content_tag(:li, link_to(glyph, item.url, {id: item.params[:id]}), class: css_class)
             end
           end
           content_for :main_menu, content.html_safe
@@ -52,13 +52,13 @@ module Rorganize
         def render_top_menu
           menu = Rorganize::Managers::MenuManager.items(:top_menu)
           content = ''
-          content += content_tag(:li, link_to(t(:home), :root, {:class => @current_top_menu_item.eql?('menu-home') ? 'selected square' : 'square'}))
+          content += content_tag(:li, link_to(t(:home), :root, {class: @current_top_menu_item.eql?('menu-home') ? 'selected square' : 'square'}))
           unless controller_name.eql?('sessions') || controller_name.eql?('registrations') || controller_name.eql?('passwords')
             menu.menu_items.each do |item|
               if User.current && User.current.allowed_to?(item.url[:action], item.url[:controller])
                 css_selection = item.params[:id].eql?(@current_top_menu_item) ? 'selected square' : 'square'
                 css_class = item.params[:class] ? "#{item.params[:class]} #{css_selection}" : css_selection
-                content += content_tag(:li, link_to(item.label, item.url, {:id => item.params[:id], :class => css_class}))
+                content += content_tag(:li, link_to(item.label, item.url, {id: item.params[:id], class: css_class}))
               end
             end
           end
@@ -135,7 +135,7 @@ module Rorganize
             @url[:action] = url[:action]
             @url[:controller] = url[:controller]
           else
-            raise "url param must have this structure : {:action => 'action', :controller => 'controller'}"
+            raise "url param must have this structure : {action: 'action', controller: 'controller'}"
           end
         end
       end

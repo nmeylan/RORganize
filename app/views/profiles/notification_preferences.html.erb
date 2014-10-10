@@ -4,7 +4,7 @@
  * Time: 16:57
 %>
 <%= contextual t(:link_notification_preferences) %>
-<%= render :partial => 'profiles/sidebar', locals: {user: @user} %>
+<%= render partial: 'profiles/sidebar', locals: {user: @user} %>
 
 <%= form_tag notification_preferences_profile_path, {method: :post} do %>
     <div class="box">

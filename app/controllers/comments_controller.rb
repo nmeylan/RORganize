@@ -4,8 +4,8 @@
 # File: comments_controller.rb
 
 class CommentsController < ApplicationController
-  before_filter :find_comment, :only => [:update, :destroy, :edit, :show]
-  before_filter :check_permission, :only => [:update, :destroy, :create]
+  before_filter :find_comment, only: [:update, :destroy, :edit, :show]
+  before_filter :check_permission, only: [:update, :destroy, :create]
 
   def create
     @comment = Comment.new(comment_params)
@@ -14,9 +14,9 @@ class CommentsController < ApplicationController
     respond_to do |format|
       if @comment.save
         @comment = @comment.decorate
-        format.js { respond_to_js :response_header => :success, :response_content => t(:successful_creation) }
+        format.js { respond_to_js response_header: :success, response_content: t(:successful_creation) }
       else
-        format.js { respond_to_js action: 'do_nothing', :response_header => :failure, :response_content => "#{t(:failure_creation)} : #{@comment.errors.full_messages.join(', ')}" }
+        format.js { respond_to_js action: 'do_nothing', response_header: :failure, response_content: "#{t(:failure_creation)} : #{@comment.errors.full_messages.join(', ')}" }
       end
     end
   end
@@ -38,9 +38,9 @@ class CommentsController < ApplicationController
     @comment.update(comment_params)
     respond_to do |format|
       if @comment.save
-        format.js { respond_to_js :response_header => :success, :response_content => t(:successful_update) }
+        format.js { respond_to_js response_header: :success, response_content: t(:successful_update) }
       else
-        format.js { respond_to_js action: 'do_nothing', :response_header => :failure, :response_content => t(:failure_update) }
+        format.js { respond_to_js action: 'do_nothing', response_header: :failure, response_content: t(:failure_update) }
       end
     end
   end
@@ -48,9 +48,9 @@ class CommentsController < ApplicationController
   def destroy
     respond_to do |format|
       if @comment.destroy
-        format.js { respond_to_js :response_header => :success, :response_content => t(:successful_deletion) }
+        format.js { respond_to_js response_header: :success, response_content: t(:successful_deletion) }
       else
-        format.js { respond_to_js action: 'do_nothing', :response_header => :failure, :response_content => t(:failure_deletion) }
+        format.js { respond_to_js action: 'do_nothing', response_header: :failure, response_content: t(:failure_deletion) }
       end
     end
   end

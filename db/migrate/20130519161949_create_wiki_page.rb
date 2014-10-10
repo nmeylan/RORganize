@@ -5,8 +5,8 @@ class CreateWikiPage < ActiveRecord::Migration
       t.integer :author_id
       t.integer :wiki_id
       t.integer :position
-      t.string :title, :limit => 255
-      t.text :content, :limit => 655555
+      t.string :title, limit: 255
+      t.text :content, limit: 655555
       t.timestamps :created_on
       t.timestamps :updated_on
       t.string :slug

@@ -35,13 +35,13 @@ module Rorganize
 
       def create_journal
         p_id = self.respond_to?('project_id') ? self.project_id : nil
-        Journal.create(:user_id => User.current.id,
-                       :journalizable_id => self.id,
-                       :journalizable_type => self.class.to_s,
-                       :journalizable_identifier => self.caption[0..127],
-                       :notes => '',
-                       :action_type => Journal::ACTION_CREATE,
-                       :project_id => p_id)
+        Journal.create(user_id: User.current.id,
+                       journalizable_id: self.id,
+                       journalizable_type: self.class.to_s,
+                       journalizable_identifier: self.caption[0..127],
+                       notes: '',
+                       action_type: Journal::ACTION_CREATE,
+                       project_id: p_id)
       end
 
       def update_journal
@@ -53,26 +53,26 @@ module Rorganize
         updated_journalizable_attributes = self.changes.delete_if { |attribute, _| !journalizable_attributes.include?(attribute.to_sym) }.inject({}) { |memo, (k, v)| memo[k.to_sym] = v; memo }
         #Create journalizable only if a relevant attribute has been updated
         if updated_journalizable_attributes.any? || (!notes.nil? && !notes.eql?(''))
-          journal = Journal.create(:user_id => User.current.id,
-                                   :journalizable_id => self.id,
-                                   :journalizable_type => self.class.to_s,
-                                   :journalizable_identifier => self.caption[0..127],
-                                   :notes => notes,
-                                   :action_type => Journal::ACTION_UPDATE,
-                                   :project_id => p_id)
+          journal = Journal.create(user_id: User.current.id,
+                                   journalizable_id: self.id,
+                                   journalizable_type: self.class.to_s,
+                                   journalizable_identifier: self.caption[0..127],
+                                   notes: notes,
+                                   action_type: Journal::ACTION_UPDATE,
+                                   project_id: p_id)
           journal.detail_insertion(updated_journalizable_attributes, properties, foreign_keys)
         end
       end
 
       def destroy_journal
         p_id = self.respond_to?('project_id') ? self.project_id : nil
-        Journal.create(:user_id => User.current.id,
-                       :journalizable_id => self.id,
-                       :journalizable_type => self.class.to_s,
-                       :journalizable_identifier => self.caption[0..127],
-                       :notes => '',
-                       :action_type => Journal::ACTION_DELETE,
-                       :project_id => p_id)
+        Journal.create(user_id: User.current.id,
+                       journalizable_id: self.id,
+                       journalizable_type: self.class.to_s,
+                       journalizable_identifier: self.caption[0..127],
+                       notes: '',
+                       action_type: Journal::ACTION_DELETE,
+                       project_id: p_id)
       end
     end
   end

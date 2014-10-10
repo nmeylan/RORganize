@@ -38,11 +38,11 @@ class UsersController < ApplicationController
       if @user.save
         flash[:notice] = t(:successful_creation)
         format.html { redirect_to user_path(@user.slug) }
-        format.json { render :json => @user,
-                             :status => :created, :location => @user }
+        format.json { render json: @user,
+                             status: :created, location: @user }
       else
         format.html { render :new }
-        format.json { render :json => @user.errors, :status => :unprocessable_entity }
+        format.json { render json: @user.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -64,17 +64,17 @@ class UsersController < ApplicationController
     respond_to do |format|
       if !@user.changed?
         format.html { redirect_to user_path(@user.slug) }
-        format.json { render :json => @user,
-                             :status => :created, :location => @user }
+        format.json { render json: @user,
+                             status: :created, location: @user }
       elsif @user.save
         flash[:notice] = t(:successful_update)
         format.html { redirect_to user_path(@user.slug) }
-        format.json { render :json => @user,
-                             :status => :created, :location => @user }
+        format.json { render json: @user,
+                             status: :created, location: @user }
       else
         format.html { render :edit }
-        format.json { render :json => @user.errors,
-                             :status => :unprocessable_entity }
+        format.json { render json: @user.errors,
+                             status: :unprocessable_entity }
       end
     end
   end
@@ -82,7 +82,7 @@ class UsersController < ApplicationController
   #Get /administration/users/:id
   def show
     @user_decorator = User.find_by_slug(params[:id]).decorate
-    @history = History.new(Journal.where(:journalizable_type => 'User', :journalizable_id => @user_decorator.id).eager_load([:details]))
+    @history = History.new(Journal.where(journalizable_type: 'User', journalizable_id: @user_decorator.id).eager_load([:details]))
     respond_to do |format|
       format.html
     end

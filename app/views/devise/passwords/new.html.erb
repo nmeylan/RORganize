@@ -1,12 +1,12 @@
 <%= contextual 'Forgot your password?' %>
 
-<%= form_for(resource, :as => resource_name, :url => password_path(resource_name), :html => {:method => :post, class: 'form'}) do |f| %>
+<%= form_for(resource, as: resource_name, url: password_path(resource_name), html: {method: :post, class: 'form'}) do |f| %>
     <div class="box">
       <%= devise_error_messages! %>
       <p><%= f.label :email %>
         <%= f.email_field :email %></p>
 
-      <%= f.submit 'Send' %> <%= render :partial => 'devise/shared/links' %>
+      <%= f.submit 'Send' %> <%= render partial: 'devise/shared/links' %>
     </div>
 <% end %>
 

@@ -4,8 +4,8 @@ class CreateTasks < ActiveRecord::Migration
       t.integer :enumeration_id
       t.integer :project_id
       t.integer :issue_id
-      t.string :name, :limit => 255
-      t.text :description, :limit => 65555
+      t.string :name, limit: 255
+      t.text :description, limit: 65555
       t.integer :position
       t.timestamps :created_on
       t.timestamps :updated_on

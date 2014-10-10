@@ -5,9 +5,9 @@
 
 class WikiPagesController < ApplicationController
   before_filter :find_page, except: [:new, :new_home_page, :new_sub_page, :create]
-  before_filter :check_permission, :except => [:new_home_page, :new_sub_page]
-  before_filter :check_new_permission, :only => [:new_home_page, :new_sub_page]
-  before_filter :check_not_owner_permission, :only => [:edit, :update, :destroy]
+  before_filter :check_permission, except: [:new_home_page, :new_sub_page]
+  before_filter :check_new_permission, only: [:new_home_page, :new_sub_page]
+  before_filter :check_not_owner_permission, only: [:edit, :update, :destroy]
   before_filter { |c| c.menu_context :project_menu }
   before_filter { |c| c.menu_item('wiki') }
   before_filter { |c| c.top_menu_item('projects') }

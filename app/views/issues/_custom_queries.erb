@@ -10,10 +10,10 @@
     <ul>
       <% custom_queries_decorator.each do |query| %>
           <li>
-            <%= link_to query.resized_caption(15), {:action => 'apply_custom_query',
-                                                    :query_id => query.slug,
-                                                    :controller => 'issues',
-                                                    :project_id => project.slug} %>
+            <%= link_to query.resized_caption(15), {action: 'apply_custom_query',
+                                                    query_id: query.slug,
+                                                    controller: 'issues',
+                                                    project_id: project.slug} %>
           </li>
       <% end %>
     </ul>
