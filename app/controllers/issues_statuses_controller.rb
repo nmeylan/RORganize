@@ -46,14 +46,13 @@ class IssuesStatusesController < ApplicationController
     @enumeration = Enumeration.new(:name => enumeration_params[:name], :opt => 'ISTS')
     respond_to do |format|
       if @enumeration.save
-        @status.enumeration_id = @enumeration.id
+        @status.enumeration = @enumeration
         if @status.save
           flash[:notice] = t(:successful_creation)
           format.html { redirect_to issues_statuses_path }
         else
           format.html { render :new, locals: {done_ratio: done_ratio} }
-          format.json { render :json => @staus.errors,
-                               :status => :unprocessable_entity }
+          format.json { render :json => @staus.errors, :status => :unprocessable_entity }
         end
       else
         @status.errors.add(:name, "can't be blank")

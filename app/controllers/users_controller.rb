@@ -7,7 +7,7 @@
 require 'shared/history'
 class UsersController < ApplicationController
   include Rorganize::RichController
-  before_filter :check_permission, :except => [:register]
+  before_filter :check_permission
   before_filter { |c| c.menu_context :admin_menu }
   before_filter { |c| c.menu_item(params[:controller]) }
   before_filter { |c| c.top_menu_item('administration') }
@@ -33,8 +33,6 @@ class UsersController < ApplicationController
   #Post /administration/users/new
   def create
     @user = User.new(user_params)
-    @user.created_at = Time.now.to_formatted_s(:db)
-    @user.updated_at = Time.now.to_formatted_s(:db)
     @user.admin = user_params[:admin]
     respond_to do |format|
       if @user.save
@@ -100,25 +98,6 @@ class UsersController < ApplicationController
       format.js { js_redirect_to(users_path) }
     end
   end
-
-  def register
-    @user = User.new(user_params.delete_if { |k, _| k.eql?('retype_password') })
-    @user.admin = false
-    @user.created_at = Time.now.to_formatted_s(:db)
-    @user.updated_at = Time.now.to_formatted_s(:db)
-    respond_to do |format|
-      if @user.save
-        flash[:notice] = t(:successful_creation)
-        format.html { redirect_to :action => 'index', :controller => 'rorganize' }
-        format.json { render :json => @user,
-                             :status => :created, :location => @user }
-      else
-        format.html { redirect_to new_user_registration_path }
-        format.json { render :json => @user.errors, :status => :unprocessable_entity }
-      end
-    end
-  end
-
 
   private
 
