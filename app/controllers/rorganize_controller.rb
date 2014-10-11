@@ -33,19 +33,9 @@ class RorganizeController < ApplicationController
       @user_decorator = @user_decorator.decorate
       init_activities_sessions
       activities_data = selected_filters
-      if @sessions[:activities][:types].include?('NIL')
-        @activities = Activities.new([])
-      else
-        activities_types = @sessions[:activities][:types]
-        activities_period = @sessions[:activities][:period]
-        from_date = @sessions[:activities][:from_date]
-        @activities = Activities.new(@user_decorator.activities(activities_types, activities_period, from_date),
-                                     @user_decorator.comments(activities_types, activities_period, from_date))
-      end
-      respond_to do |format|
-        format.html { render :view_profile, locals: activities_data }
-        format.js { respond_to_js action: 'activity', locals: activities_data }
-      end
+
+      load_activities(@user_decorator)
+      activity_callback(activities_data, :view_profile)
     else
       render_404
     end
@@ -123,7 +113,4 @@ class RorganizeController < ApplicationController
     params[:direction] ? params[:direction] : 'DESC'
   end
 
-  def load_activities
-
-  end
 end

@@ -20,18 +20,8 @@ class ProfilesController < ApplicationController
     @user_decorator = User.eager_load([members: [:role, :project, assigned_issues: :status]]).find_by_slug(User.current.slug).decorate
     init_activities_sessions
     activities_data = selected_filters
-    if @sessions[:activities][:types].include?('NIL')
-      @activities = Activities.new([])
-    else
-      activities_types = @sessions[:activities][:types]
-      activities_period = @sessions[:activities][:period]
-      from_date = @sessions[:activities][:from_date]
-      @activities = Activities.new(@user.activities(activities_types, activities_period, from_date), @user.comments(activities_types, activities_period, from_date))
-    end
-    respond_to do |format|
-      format.html { render :show, locals: activities_data }
-      format.js { respond_to_js action: 'activity', locals: activities_data }
-    end
+    load_activities(@user_decorator)
+    activity_callback(activities_data, :show)
   end
 
   def activity

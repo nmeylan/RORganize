@@ -27,7 +27,7 @@ class Project < ActiveRecord::Base
   validates_associated :attachments
   validates :name, presence: true, uniqueness: true
   validates :name, length: {
-      maximum: 255,
+      maximum: 90,
       tokenizer: lambda { |str| str.scan(/\w+/) },
       too_long: 'must have at most 255 words'
   }

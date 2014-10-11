@@ -13,6 +13,17 @@ module Rorganize
         @sessions[:activities][:from_date] ||= Date.today
       end
 
+      def load_activities(model)
+        if @sessions[:activities][:types].include?('NIL')
+          @activities = Activities.new([])
+        else
+          activities_types = @sessions[:activities][:types]
+          activities_period = @sessions[:activities][:period]
+          from_date = @sessions[:activities][:from_date]
+          @activities = Activities.new(model.activities(activities_types, activities_period, from_date), model.comments(activities_types, activities_period, from_date))
+        end
+      end
+
       def selected_filters
         to = @sessions[:activities][:from_date]
         period = @sessions[:activities][:period]
@@ -30,6 +41,13 @@ module Rorganize
           @sessions[:activities][:from_date] = date
         end
         activity
+      end
+
+      def activity_callback(locals, render = :activity)
+        respond_to do |format|
+          format.html { render render, locals: locals }
+          format.js { respond_to_js action: 'activity', locals: locals }
+        end
       end
     end
 

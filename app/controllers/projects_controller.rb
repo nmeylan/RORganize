@@ -1,7 +1,8 @@
 require 'shared/activities'
 class ProjectsController < ApplicationController
   before_filter { |c| c.add_action_alias = {'show' => 'overview'} }
-  before_filter :find_project, only: [:overview, :show, :activity, :activity_filter, :members, :issues_completion]
+  before_filter :find_project, only: [:archive, :destroy, :overview, :show, :activity, :activity_filter, :members, :issues_completion]
+  before_filter :find_trackers, only: [:new, :create]
   before_filter :check_permission, except: [:index, :filter, :members, :activity_filter, :issues_completion]
   before_filter { |c| c.menu_context :project_menu }
   before_filter { |c| c.menu_item(params[:controller], params[:action].eql?('show') ? 'overview' : params[:action]) }
@@ -24,25 +25,14 @@ class ProjectsController < ApplicationController
   def activity
     init_activities_sessions
     locals = selected_filters
-    if @sessions[:activities][:types].include?('NIL')
-      @activities = Activities.new([])
-    else
-      activities_types = @sessions[:activities][:types]
-      activities_period = @sessions[:activities][:period]
-      from_date = @sessions[:activities][:from_date]
-      @activities = Activities.new(@project_decorator.activities(activities_types, activities_period, from_date), @project_decorator.comments(activities_types, activities_period, from_date))
-    end
-    respond_to do |format|
-      format.html { render :activity, locals: locals }
-      format.js { respond_to_js action: 'activity', locals: locals }
-    end
+    load_activities(@project_decorator)
+    activity_callback(locals)
   end
 
 
   #GET /project/new
   def new
     @project_decorator = Project.new.decorate
-    @trackers_decorator = Tracker.all.decorate(context: {checked_ids: Tracker.where(name: ['Bug', 'Task']).collect(&:id)})
     @project_decorator.attachments.build
     respond_to do |format|
       format.html
@@ -57,51 +47,25 @@ class ProjectsController < ApplicationController
         @project_decorator.update_info({}, params[:trackers])
         flash[:notice] = t(:successful_creation)
         format.html { redirect_to overview_projects_path(@project_decorator.slug) }
-        format.json { render json: @project_decorator,
-                             status: :created, location: @project_decorator }
+        format.json { render json: @project_decorator, status: :created, location: @project_decorator }
       else
-        @trackers_decorator = Tracker.all.decorate(context: {checked_ids: Tracker.where(name: ['Bug', 'Task']).collect(&:id)})
         format.html { render :new }
-        format.json { render json: @project_decorator.errors,
-                             status: :unprocessable_entity }
+        format.json { render json: @project_decorator.errors, status: :unprocessable_entity }
       end
     end
   end
 
   def destroy
     #Todo add check
-    @project = Project.find(params[:id])
     success = @project.destroy && Query.destroy_all(project_id: @project.id, is_for_all: false)
-    respond_to do |format|
-      flash[:notice] = t(:successful_deletion)
-      format.html { redirect_to :root }
-      format.js do
-        if success
-          flash[:notice] = t(:successful_update)
-          js_redirect_to url_for(:root)
-        else
-          respond_to_js action: :empty_action, response_header: :failure, response_content: t(:failure_update)
-        end
-      end
-    end
+    archive_destroy_callback(success)
   end
 
 
   def archive
     #Todo add check
-    @project = Project.find(params[:id])
     success = @project.update_column(:is_archived, !@project.is_archived)
-    respond_to do |format|
-      format.html { redirect_to :root }
-      format.js do
-        if success
-          flash[:notice] = t(:successful_update)
-          js_redirect_to url_for(:root)
-        else
-          respond_to_js action: :empty_action, response_header: :failure, response_content: t(:failure_update)
-        end
-      end
-    end
+    archive_destroy_callback(success, false)
   end
 
   #GET /projects/
@@ -138,13 +102,25 @@ class ProjectsController < ApplicationController
   end
 
   private
-
+  def archive_destroy_callback(success, destroy = true)
+    flash[:notice] = destroy ? t(:successful_deletion) : t(:successful_update)
+    respond_to do |format|
+      format.html { redirect_to :root }
+      format.js do
+        if success
+          js_redirect_to url_for(:root)
+        else
+          respond_to_js action: :empty_action, response_header: :failure, response_content: t(:failure_update)
+        end
+      end
+    end
+  end
   def project_params
     params.require(:project).permit(Project.permit_attributes)
   end
 
   def find_project
-    id = action_name.eql?('show') ? params[:id] : params[:project_id]
+    id = params[:id] ? params[:id] : params[:project_id]
     @project_decorator = Project.includes(:attachments, members: [:role, user: :avatar]).where(slug: id)[0]
     if @project_decorator
       @project_decorator = @project_decorator.decorate
@@ -152,6 +128,10 @@ class ProjectsController < ApplicationController
     else
       render_404
     end
+  end
+
+  def find_trackers
+    @trackers_decorator = Tracker.all.decorate(context: {checked_ids: Tracker.where(name: ['Bug', 'Task']).collect(&:id)})
   end
 
 
