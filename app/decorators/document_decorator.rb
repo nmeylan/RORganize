@@ -1,45 +1,9 @@
 class DocumentDecorator < ApplicationDecorator
   delegate_all
 
-  # Render document creation info.
-  def creation_info
-    h.content_tag :div, class: 'creation-info' do
-      h.content_tag :p do
-        h.content_tag :em do
-          h.safe_concat "#{h.t(:label_added)} #{h.distance_of_time_in_words(model.created_at, Time.now)} #{h.t(:label_ago)}, #{h.t(:label_by)} "
-          h.safe_concat model.author.decorate.user_link(true)
-          h.safe_concat '.'
-          h.safe_concat " #{h.t(:label_updated)} #{h.distance_of_time_in_words(model.updated_at, Time.now)} #{h.t(:label_ago)}." unless model.created_at.eql?(model.updated_at)
-        end
-      end
-    end
-  end
-
   # see #ApplicationDecorator::display_history
   def display_history(journals)
     super(journals)
-  end
-
-  # @return [String] version name.
-  def display_version
-    if model.version
-      h.content_tag :span, {class: 'info-square'} do
-        h.glyph(model.version.caption, 'milestone')
-      end
-    else
-      '-'
-    end
-  end
-
-  # @return [String] category name.
-  def display_category
-    if model.category
-      h.content_tag :span, {class: 'info-square'} do
-        h.glyph(model.category.caption, 'tag')
-      end
-    else
-      '-'
-    end
   end
 
   # see #ApplicationDecorator::new_link

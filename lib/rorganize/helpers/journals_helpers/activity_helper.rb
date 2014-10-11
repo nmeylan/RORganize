@@ -41,7 +41,7 @@ module Rorganize
             safe_concat activity_author_render(user)
             safe_concat journal_action_type_render(journal)
             safe_concat journal_object_type_render(journal)
-            journal.display_project_link(@project)
+            safe_concat journal.display_project_link(@project)
             safe_concat activity_date_render(journal)
           else
             safe_concat journal_icon_render(journal)
@@ -49,7 +49,7 @@ module Rorganize
             safe_concat activity_author_render(user)
             safe_concat journal_action_type_render(journal)
             safe_concat journal_object_type_render(journal)
-            journal.display_project_link(@project)
+            safe_concat journal.display_project_link(@project)
           end
         end
 
@@ -86,14 +86,14 @@ module Rorganize
             safe_concat comment_icon_render
             safe_concat activity_author_render(comment.display_author)
             safe_concat comment.render_header
-            comment.display_project_link(@project)
+            safe_concat comment.display_project_link(@project)
             safe_concat activity_date_render(comment)
           else
             safe_concat comment_icon_render
             safe_concat activity_date_render(comment)
             safe_concat activity_author_render(comment.display_author)
             safe_concat comment.render_header
-            comment.display_project_link(@project)
+            safe_concat comment.display_project_link(@project)
           end
         end
 

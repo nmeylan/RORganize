@@ -299,4 +299,8 @@ module ApplicationHelper
   def resize_text(text, length = 50)
     text.length > length ? "#{text[0..length]}..." : text
   end
+
+  def concat_span_tag(content, options = {})
+    safe_concat content_tag :span, content, options
+  end
 end

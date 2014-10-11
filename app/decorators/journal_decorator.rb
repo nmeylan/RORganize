@@ -31,17 +31,6 @@ class JournalDecorator < ApplicationDecorator
     h.fast_project_link(model.project)
   end
 
-  # @param [Project] project.
-  # @return [String] link to project if not nil.
-  def display_project_link(project)
-    unless project
-      h.safe_concat h.content_tag :span, class: 'project', &Proc.new {
-        h.safe_concat 'at '
-        h.safe_concat project_link
-      }
-    end
-  end
-
   # @return [String] user avatar image.
   def user_avatar?
     model.user && model.user.avatar
@@ -50,18 +39,34 @@ class JournalDecorator < ApplicationDecorator
   # Render the details of a journal.
   # @param [Boolean] no_icon if true don't display icon. Otherwise display it.
   def render_details(no_icon = false)
-    h.safe_concat h.content_tag :span, self.display_author, class: 'author'
-    if model.action_type.eql?(Journal::ACTION_UPDATE) && model.details.to_a.any?
-      h.safe_concat h.content_tag :span, nil, class: 'octicon octicon-pencil activity-icon' unless no_icon
-      h.content_tag(:ul, (model.details.collect { |detail| h.activity_history_detail_render(detail, self) }).join.html_safe)
-    elsif model.action_type.eql?(Journal::ACTION_CREATE)
-      h.safe_concat h.content_tag :span, nil, class: 'octicon octicon-plus activity-icon' unless no_icon
-      if model.journalizable_type.eql?('Issue')
-        h.t(:text_created_this_issue)
-      else
-        h.t(:text_created_this) + ' ' + model.journalizable_type.downcase
-      end
+    h.concat_span_tag self.display_author, class: 'author'
+    if render_update_detail?
+      render_update_details(no_icon)
+    elsif render_create_detail?
+      render_create_details(no_icon)
     end
+  end
+
+  def render_create_details(no_icon)
+    h.concat_span_tag nil, class: 'octicon octicon-plus activity-icon' unless no_icon
+    if model.journalizable_type.eql?('Issue')
+      h.t(:text_created_this_issue)
+    else
+      h.t(:text_created_this) + ' ' + model.journalizable_type.downcase
+    end
+  end
+
+  def render_update_details(no_icon)
+    h.concat_span_tag nil, class: 'octicon octicon-pencil activity-icon' unless no_icon
+    h.content_tag(:ul, (model.details.collect { |detail| h.activity_history_detail_render(detail, self) }).join.html_safe)
+  end
+
+  def render_create_detail?
+    model.action_type.eql?(Journal::ACTION_CREATE)
+  end
+
+  def render_update_detail?
+    model.action_type.eql?(Journal::ACTION_UPDATE) && model.details.to_a.any?
   end
 
   # @return [String] the icon of the journal type.

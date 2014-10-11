@@ -29,17 +29,6 @@ class CommentDecorator < ApplicationDecorator
     h.fast_project_link(model.project)
   end
 
-  # @param [Project] project.
-  # @return [String] link to project if not nil.
-  def display_project_link(project)
-    unless project
-      h.safe_concat h.content_tag :span, class: 'project', &Proc.new {
-        h.safe_concat 'at '
-        h.safe_concat project_link
-      }
-    end
-  end
-
   # @return [String] user avatar image.
   def author_avatar
     author_avatar? ? h.image_tag(model.author.avatar.avatar.url(:thumb), {class: 'avatar'}) : ''
@@ -52,9 +41,13 @@ class CommentDecorator < ApplicationDecorator
 
   # see #ApplicationDecorator::edit_link
   def edit_link
-    if User.current.allowed_to?('edit_comment_not_owner', 'comments', model.project) || model.author?(User.current)
+    if user_allowed_to_edit?
       h.link_to h.glyph(h.t(:link_edit), 'pencil'), h.edit_comment_path(model.id), {class: 'edit-comment button', remote: true}
     end
+  end
+
+  def user_allowed_to_edit?
+    User.current.allowed_to?('edit_comment_not_owner', 'comments', model.project) || model.author?(User.current)
   end
 
   # see #ApplicationDecorator::delete_link
@@ -72,9 +65,8 @@ class CommentDecorator < ApplicationDecorator
   # Render the type of the commented object.
   def display_object_type
     type = self.commentable_type
-    if type.eql?('Issue') && self.issue
-      h.safe_concat h.content_tag :b, "#{self.issue.tracker.caption.downcase}  ##{self.issue.id} "
-      h.link_to self.issue.caption, h.issue_path(self.project.slug, self.commentable_id)
+    if is_a_issue?(type)
+      display_issue_type
     elsif type.eql?('Document')
       h.fast_document_link(self.document, self.project).html_safe
     else
@@ -82,21 +74,30 @@ class CommentDecorator < ApplicationDecorator
     end
   end
 
+  def display_issue_type
+    h.safe_concat h.content_tag :b, "#{self.issue.tracker.caption.downcase}  ##{self.issue.id} "
+    h.link_to self.issue.caption, h.issue_path(self.project.slug, self.commentable_id)
+  end
+
+  def is_a_issue?(type)
+    type.eql?('Issue') && self.issue
+  end
+
   # Render comment details.
   def render_details
     h.content_tag :span, class: 'comment' do
-      h.safe_concat h.content_tag :span, nil, class: 'octicon octicon-comment activity-icon'
-      h.safe_concat h.content_tag :span, self.display_author, class: 'author'
-      h.safe_concat h.content_tag :span, h.t(:text_added_a).capitalize + ' '
-      h.safe_concat h.content_tag :span, self.remote_show_link
+      h.concat_span_tag nil, class: 'octicon octicon-comment activity-icon'
+      h.concat_span_tag self.display_author, class: 'author'
+      h.concat_span_tag "#{h.t(:text_added_a).capitalize} "
+      h.concat_span_tag self.remote_show_link
     end
   end
 
   # Render comment header.
   def render_header
-    h.safe_concat h.content_tag :span, h.t(:text_added_a) + ' '
-    h.safe_concat h.content_tag :span, self.remote_show_link + ' '
-    h.safe_concat h.content_tag :span, h.t(:text_to) + ' '
+    h.concat_span_tag "#{h.t(:text_added_a)} "
+    h.concat_span_tag self.remote_show_link
+    h.concat_span_tag " #{h.t(:text_to)} "
     h.content_tag :span, self.display_object_type, class: 'object-type'
   end
 
