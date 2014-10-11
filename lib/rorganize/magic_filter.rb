@@ -131,21 +131,36 @@ module Rorganize
         link = ''
         inc_condition_item_ary = 0 #
         inc_condition_items = 0 #
+        query_str = build_query(attributes, hash, inc_condition_item_ary, inc_condition_items, link, query_str)
+        query_str += "#{'AND' if hash.size != 0}"
+      end
+
+      def build_query(attributes, hash, inc_condition_item_ary, inc_condition_items, link, query_str)
         hash.each do |k, v|
-          LINK_BETWEEN_QUERY.each_key { |key| link = LINK_BETWEEN_QUERY[key] if key.include?(v['operator']) }
-          if DATE_ATTRIBUTES.include?(k) #if attribute is a date, apply a specific mysql function to convert a datetime format to date format.
-            inc_condition_items += 1
-            query_str += build_query_for_date_value(attributes, hash, inc_condition_items, k, v)
-          elsif v['value'].class.eql?(Array) #if values are contains in an ary
-            inc_condition_items += 1
-            query_str = build_query_for_array_value(attributes, hash, inc_condition_item_ary, inc_condition_items, k, link, query_str, v)
-          else #if attribute has an uniq value
-            inc_condition_items += 1
-            query_str += "#{attributes[k]} #{OPERATORS[v['operator']]} \"%#{v['value']}%\" #{'AND' if inc_condition_items != hash.size} "
-          end
+          link = get_condition_link(v)
+          query_str = select_query_builder(attributes, hash, inc_condition_item_ary, inc_condition_items, k, link, query_str, v)
           inc_condition_item_ary = 0
         end
-        query_str += "#{'AND' if hash.size != 0}"
+        query_str
+      end
+
+      def select_query_builder(attributes, hash, inc_condition_item_ary, inc_condition_items, k, link, query_str, v)
+        if DATE_ATTRIBUTES.include?(k) #if attribute is a date, apply a specific mysql function to convert a datetime format to date format.
+          inc_condition_items += 1
+          query_str += build_query_for_date_value(attributes, hash, inc_condition_items, k, v)
+        elsif v['value'].class.eql?(Array) #if values are contains in an ary
+          inc_condition_items += 1
+          query_str = build_query_for_array_value(attributes, hash, inc_condition_item_ary, inc_condition_items, k, link, query_str, v)
+        else #if attribute has an uniq value
+          inc_condition_items += 1
+          query_str += "#{attributes[k]} #{OPERATORS[v['operator']]} \"%#{v['value']}%\" #{'AND' if inc_condition_items != hash.size} "
+        end
+        query_str
+      end
+
+      def get_condition_link(v)
+        LINK_BETWEEN_QUERY.each_key { |key| link = LINK_BETWEEN_QUERY[key] if key.include?(v['operator']) }
+        link
       end
 
       def build_query_for_array_value(attributes, hash, inc_condition_item_ary, inc_condition_items, k, link, query_str, v)
@@ -155,7 +170,6 @@ module Rorganize
           build_query_for_single_value(attributes, hash, inc_condition_items, k, query_str, v)
         end
       end
-
 
       def select_right_operator(v, value)
         if value.eql?('NULL')
