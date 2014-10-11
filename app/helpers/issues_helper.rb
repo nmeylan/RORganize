@@ -48,20 +48,24 @@ module IssuesHelper
 
   def list_row(issue)
     content_tag :tr, class: "has-context-menu odd-even issue-tr" do
-      safe_concat content_tag :td, check_box_tag("issue-#{issue.id.to_s}", issue.id), {class: 'cell-checkbox'}
-      safe_concat content_tag :td, issue.id, class: 'list-center id'
-      safe_concat content_tag :td, issue.tracker_str, class: 'list-center tracker'
-      safe_concat content_tag :td, issue.show_link, {class: 'name', id: issue.id}
-      safe_concat content_tag :td, issue.display_assigned_to, class: 'list-center assigned-to'
-      safe_concat content_tag :td, issue.display_status, class: 'list-center status'
-      safe_concat content_tag :td, issue.display_category, class: 'list-center category'
-      safe_concat content_tag :td, issue.display_version, class: 'list-center version'
-      safe_concat content_tag :td, issue.due_date, class: 'list-center due-date'
-      safe_concat content_tag :td, issue.display_done_progression, {class: 'list-center done tooltipped tooltipped-s', label: "#{issue.done}%"}
-      safe_concat content_tag :td, issue.checklist_progression, class: 'icon-information'
-      safe_concat content_tag :td, issue.comment_presence_indicator, class: 'icon-information'
-      safe_concat content_tag :td, issue.attachment_presence_indicator, class: 'icon-information'
+      safe_concat list_column(check_box_tag("issue-#{issue.id.to_s}", issue.id), class: 'cell-checkbox')
+      safe_concat list_column issue.id, class: 'list-center id'
+      safe_concat list_column issue.tracker_str, class: 'list-center tracker'
+      safe_concat list_column issue.show_link, {class: 'name', id: issue.id}
+      safe_concat list_column issue.display_assigned_to, class: 'list-center assigned-to'
+      safe_concat list_column issue.display_status, class: 'list-center status'
+      safe_concat list_column issue.display_category, class: 'list-center category'
+      safe_concat list_column issue.display_version, class: 'list-center version'
+      safe_concat list_column issue.due_date, class: 'list-center due-date'
+      safe_concat list_column issue.display_done_progression, {class: 'list-center done tooltipped tooltipped-s', label: "#{issue.done}%"}
+      safe_concat list_column issue.checklist_progression, class: 'icon-information'
+      safe_concat list_column issue.comment_presence_indicator, class: 'icon-information'
+      safe_concat list_column issue.attachment_presence_indicator, class: 'icon-information'
     end
+  end
+
+  def list_column(content, options = {})
+    content_tag :td, content, options
   end
 
   def list_header
