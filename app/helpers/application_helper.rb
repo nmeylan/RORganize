@@ -4,6 +4,9 @@ module ApplicationHelper
   include ToolboxHelper
   include HistoryHelper
   include FilterHelper
+  include LinksHelper
+  include CollectionHelper
+  include MarkdownRenderHelper
   # Check if there is any content for :sidebar
   def sidebar_content?
     content_for?(:sidebar)
@@ -120,29 +123,6 @@ module ApplicationHelper
     end
   end
 
-  #Define pagination for the given collection : session is the current selected per_page item, path is the path of the controller.
-  # @param [Enumerable] collection : the collection of items to display.
-  # @param [Session] session : the per_page argument for pagination.
-  # @param [String] path : to the controller to refresh the list when user change the per_page or current_page parameter.
-  def paginate(collection, session, path)
-    safe_concat will_paginate(collection, {renderer: 'RemoteLinkRenderer', next_label: t(:label_next), previous_label: t(:label_previous)})
-    pagination_per_page(path, session)
-  end
-
-  # @param [String] path : to the controller to refresh the list when user change the per_page or current_page parameter.
-  # @param [Session] session : the per_page argument for pagination.
-  def pagination_per_page(path, session)
-    content_tag :div, class: 'autocomplete-combobox nosearch per-page autocomplete-combobox-high' do
-        safe_concat content_tag :label, t(:label_per_page), {for: 'per_page', class: 'per-page'}
-        safe_concat select_tag 'per_page', pagination_options_tag(session), class: 'chzn-select cbb-small cbb-high', id: 'per-page', 'data-link' => "#{path}"
-    end
-  end
-
-  # @param [Session] session : the per_page argument for pagination.
-  def pagination_options_tag(session)
-    options_for_select([%w(25 25), %w(50 50), %w(100 100)], session[:per_page])
-  end
-
   # Build a header for the given title.
   # @param [String] title.
   def box_header_tag(title, css_class = 'header')
@@ -168,62 +148,6 @@ module ApplicationHelper
     if object.any?
       javascript_tag("error_explanation('#{content_tag :ul, object.collect { |error| content_tag :li, error }.join.html_safe}')")
     end
-  end
-
-  # The markdown to html render.
-  # @param [String] text : to be transform into html.
-  # @param [ActiveRecord::Base] rendered_element : The object that contains the content to be render. It use to define a context and let user click on task lists.
-  def markdown_to_html(text, rendered_element = nil, from_mail = false)
-    context = {}
-    if @project
-      context.merge!({project_slug: @project.slug})
-    end
-    if rendered_element
-      allow = markdown_task_list_enabled?(rendered_element)
-      context.merge!({element_type: rendered_element.class, element_id: rendered_element.id, allow_task_list: allow})
-    end
-    context[:from_mail] = from_mail
-    renderer = @project ? RorganizeMarkdownRenderer.new({issue_link_renderer: true}, context) : RorganizeMarkdownRenderer.new({}, context)
-    extensions = {quote: true, space_after_headers: true, autolink: true}
-    markdown = Redcarpet::Markdown.new(renderer, extensions)
-    markdown.render(text).html_safe
-  end
-
-  # @param [ActiveRecord::Base] rendered_element : The object that contains the content to be render. It use to define a context and let user click on task lists.
-  def markdown_task_list_enabled?(rendered_element)
-    allow = false
-    if rendered_element.class.eql?(Issue)
-      allow = can_user_check_issue_task?(rendered_element)
-    elsif rendered_element.class.eql?(Comment)
-      allow = can_user_check_comment_task?(rendered_element)
-    elsif rendered_element.class.eql?(Document)
-      allow = User.current.allowed_to?('edit', 'documents', @project)
-    end
-    allow
-  end
-
-  def can_user_check_comment_task?(rendered_element)
-    User.current.id.eql?(rendered_element.user_id) || User.current.allowed_to?('edit_comment_not_owner', 'comments', @project)
-  end
-
-  def can_user_check_issue_task?(rendered_element)
-    User.current.id.eql?(rendered_element.author_id) && User.current.allowed_to?('edit', 'issues', @project)|| User.current.allowed_to?('edit_not_owner', 'issues', @project)
-  end
-
-  # Build a sort link for table.
-  # @param [String] column.
-  # @param [String] title : if provide replace the default column name.
-  # @param [String] default_action : when link is clicked it will send an ajax query to the given default_action. (defaults 'index').
-  def sortable(column, title = nil, default_action = nil)
-    default_action ||= 'index'
-    title ||= column.titleize
-    icon = if column == sort_column then
-             sort_direction == 'asc' ? 'triangle-up' : 'triangle-down'
-           else
-             ''
-           end
-    direction = column == sort_column && sort_direction == 'asc' ? 'desc' : 'asc'
-    link_to glyph(title, icon), {sort: column, direction: direction, action: default_action}, {remote: true}
   end
 
   # Build a 32x32 glyph render.
@@ -257,15 +181,6 @@ module ApplicationHelper
     else
       body
     end
-  end
-
-  # Build an add attachments link
-  # @param [String] caption : link caption.
-  # @param [ActiveRecord::Base] object that belongs to this attachment.
-  # @param [Class] type : type of the object that belongs to this attachment.
-  def add_attachments_link(caption, object, type)
-    content = escape_once(render partial: 'shared/attachments', locals: {attachments: Attachment.new, object: object, type: type})
-    link_to caption, '#', {class: 'add-attachment-link', 'data-content' => content}
   end
 
   # Build a select tag for versions.
@@ -318,7 +233,6 @@ module ApplicationHelper
     content_tag :div, class: 'splitcontentright', &proc
   end
 
-
   # Build a breadcrumb div.
   # @param [String] content : breadcrumb content.
   def breadcrumb(content)
@@ -326,7 +240,6 @@ module ApplicationHelper
       content
     end
   end
-
 
   # Build a dynamic progress bar for a given percentage.
   # @param [Numeric] percent : percentage of progression.
@@ -348,49 +261,6 @@ module ApplicationHelper
     end
   end
 
-  # Build a link to user profile.
-  # Use this instead of link_to .., .._path due to performance issue. Indeed when we call link_to .. ; .. rails try check path validity and slow the application
-  # in case of big render.
-  # @param [User|String] user or user name.
-  def fast_profile_link(user)
-    slug = user.is_a?(User) ? user.slug : user.downcase.tr(' ', '-')
-    caption = user.is_a?(User) ? user.caption : user
-    "<a href='/#{slug}' class='author-link' >#{caption}</a>"
-  end
-
-  # Build a link to project overview.
-  # Use this instead of link_to .., .._path due to performance issue. Indeed when we call link_to .. ; .. rails try check path validity and slow the application
-  # in case of big render.
-  # @param [Project] project.
-  def fast_project_link(project)
-    "<a href='/projects/#{project.slug}/overview'>#{project.caption}</a>"
-  end
-
-  # Build a link to issue show action.
-  # Use this instead of link_to .., .._path due to performance issue. Indeed when we call link_to .. ; .. rails try check path validity and slow the application
-  # in case of big render.
-  # @param [Issue] issue.
-  # @param [Project] project.
-  def fast_issue_link(issue, project)
-    "<a href='/projects/#{project.slug}/issues/#{issue.id}'>#{resize_text(issue.caption, 35)}</a>"
-  end
-
-
-  # Build an avatar renderer for the given user.
-  # @param [User] user.
-  def fast_user_small_avatar(user)
-    "<img alt='' class='small-avatar' src='/system/attachments/Users/#{user.id}/#{user.avatar.id}/very_small/#{user.avatar.avatar_file_name}'>"
-  end
-
-  # Build a link to issue show action.
-  # Use this instead of link_to .., .._path due to performance issue. Indeed when we call link_to .. ; .. rails try check path validity and slow the application
-  # in case of big render.
-  # @param [Document] document.
-  # @param [Project] project.
-  def fast_document_link(document, project)
-    "<b>document</b> <a href='/projects/#{project.slug}/documents/#{document.id}'>#{resize_text(document.caption, 35)}</a>"
-  end
-
   #id is the id of the tab
   #array must contains hash with following keys
   # :name, the name of the tabs
@@ -408,38 +278,6 @@ module ApplicationHelper
     content_tag :span, {class: "#{number == 0 ? 'smooth-gray' : ''}"} do
       safe_concat content_tag :span, nil, {class: 'octicon octicon-comment'}
       safe_concat " #{number}"
-    end
-  end
-
-  # Render a link to watch all activities from watchable.
-  # @param [ActiveRecord::base] watchable : a model that include Watchable module.
-  # @param [Project] project : the project which belongs to watchable.
-  def watch_link(watchable, project)
-    link_to glyph(t(:link_watch), 'eye'), watchers_path(project.slug, watchable.class.to_s, watchable.id), {id: "watch-link-#{watchable.id}", class: 'tooltipped tooltipped-s button', remote: true, method: :post, label: t(:text_watch)}
-  end
-
-  # Render a link to unwatch all activities from watchable.
-  # @param [ActiveRecord::base] watchable : a model that include Watchable module.
-  # @param [Watcher] watcher : the watcher model (activeRecord).
-  # @param [Project] project : the project which belongs to watchable.
-  def unwatch_link(watchable, watcher, project)
-    link_to glyph(t(:link_unwatch), 'eye'), watcher_path(project.slug, watchable.class.to_s, watchable.id, watcher.id), {id: "unwatch-link-#{watchable.id}", class: 'tooltipped tooltipped-s button', remote: true, method: :delete, label: t(:text_unwatch)}
-  end
-
-  # @param [User] user : current user.
-  # @return [String] build a link to notifications panel. Link changed if there are new notifications or not.
-  def notification_link(user)
-    if user.notified?
-      new_notification_link
-    else
-      link_to glyph('', 'inbox'), notifications_path, {class: "#{params[:controller].eql?('notifications') ? 'selected' : ''}"}
-    end
-  end
-
-  def new_notification_link
-    link_to notifications_path, {class: "tooltipped tooltipped-s indicator #{params[:controller].eql?('notifications') ? 'selected' : ''}", label: t(:text_unread_notifications)} do
-      safe_concat content_tag :span, nil, {class: 'unread inbox'}
-      safe_concat glyph('', 'inbox')
     end
   end
 

@@ -21,10 +21,7 @@ module IssuesStatusesHelper
           safe_concat content_tag :td, status.edit_link, {class: 'list-left name'}
           safe_concat content_tag :td, status.default_done_ratio, {class: 'list-center done-ratio'}
           safe_concat content_tag :td, status.is_closed?, {class: 'list-center is-closed'}
-          safe_concat content_tag :td, {class: 'action'}, &Proc.new {
-            safe_concat status.inc_position_link
-            safe_concat status.dec_position_link(collection.size)
-          }
+          safe_concat list_sort_actions(collection, status)
           safe_concat content_tag :td, status.delete_link, {class: 'action'}
         end
       end.join.html_safe)
