@@ -8,8 +8,8 @@ class HomePageReport
 
   def initialize
     projects_decorator = User.current.owned_projects('starred').decorate(context: {allow_to_star: false})
-    overview_object_submitted = overview_issue_report(:assigned_to, :assigned_to_id)
-    overview_object_assigned = overview_issue_report(:author, :author_id)
+    overview_object_assigned = overview_issue_report(:assigned_to, :assigned_to_id)
+    overview_object_submitted = overview_issue_report(:author, :author_id)
     @content = {projects_decorator: projects_decorator,
      overview_object_assigned: overview_object_assigned,
      overview_object_submitted: overview_object_submitted}
