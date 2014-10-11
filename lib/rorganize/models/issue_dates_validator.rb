@@ -14,17 +14,17 @@ module Rorganize
         if start_date_gt_due_date?
           errors.add(:start_date, "must be inferior than due date : #{self.due_date.to_formatted_s(:db)}")
         elsif start_date_gt_version_due_date?
-          errors.add(:start_date, "must be inferior than version due date : #{self.version.target_date.to_formatted_s(:db)}")
+          add_error_gt_version_due_date(:star_date)
         elsif start_date_lt_version_start_date?
-          errors.add(:start_date, "must be superior or equal to version start date : #{self.version.start_date.to_formatted_s(:db)}")
+          add_error_lt_version_start_date(:start_date)
         end
       end
 
       def validate_due_date
         if due_date_gt_version_due_date?
-          errors.add(:due_date, "must be inferior or equals to version due date : #{self.version.target_date.to_formatted_s(:db)}")
+          add_error_gt_version_due_date(:due_date)
         elsif due_date_lt_version_start_date?
-          errors.add(:due_date, "must be superior than version start date : #{self.version.start_date.to_formatted_s(:db)}")
+          add_error_lt_version_start_date(:due_date)
         end
       end
 
@@ -77,6 +77,16 @@ module Rorganize
 
       def due_date_gt_version_due_date?
         (self.due_date && self.version && self.version.target_date) && self.due_date > self.version.target_date
+      end
+
+      private
+      def add_error_lt_version_start_date(attribute)
+        str = attribute.eql?(:due_date) ? 'superior' : 'superior or equal'
+        errors.add(attribute, "must be #{str} than version start date : #{self.version.start_date.to_formatted_s(:db)}")
+      end
+      def add_error_gt_version_due_date(attribute)
+        str = attribute.eql?(:start_date) ? 'inferior' : 'inferior or equal'
+        errors.add(attribute, "must be #{str} than version due date : #{self.version.target_date.to_formatted_s(:db)}")
       end
     end
 

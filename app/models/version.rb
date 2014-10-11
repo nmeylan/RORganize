@@ -34,11 +34,7 @@ class Version < ActiveRecord::Base
   def update_issues_due_date
     issues = Issue.where(version_id: self.id).eager_load(:version)
     issue_changes = {due_date: [], start_date: []}
-    issues.each do |issue|
-      issue = issue.set_start_and_due_date(true)
-      issue_changes[:due_date] << issue unless issue.changes[:due_date].nil?
-      issue_changes[:start_date] << issue unless issue.changes[:start_date].nil?
-    end
+    Issue.bulk_change_start_due_date(issue_changes, issues)
     merged_issues = issue_changes[:due_date] | issue_changes[:start_date]
     if merged_issues.any?
       Issue.where(id: issue_changes[:due_date].collect { |issue| issue.id }).update_all(due_date: self.target_date)
