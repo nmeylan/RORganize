@@ -81,6 +81,10 @@ class IssueDecorator < ApplicationDecorator
     super(h.t(:link_edit), h.edit_issue_path(context[:project].slug, model.id), context[:project], model.author_id)
   end
 
+  def show_link
+    super(h.issue_path(context[:project].slug, model.id), context[:project])
+  end
+
   # @return [String] link to start today action (if user has the permission).
   def start_today_link
     link_to_with_permissions h.glyph(h.t(:link_start_today), 'today'), h.start_today_issues_path(context[:project].slug, model.id), context[:project], nil, {id: 'start-today', data: {confirm: h.t(:text_set_start_date_today)}, method: :post, remote: true}

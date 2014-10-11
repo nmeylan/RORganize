@@ -5,10 +5,16 @@ module IssuesHelper
 
   # Build a json filter form.
   def issues_generics_form_to_json
-    form_hash = {}
-    filter_content_hash = IssueFilter.new(@project).content
+    issue_filter = IssueFilter.new(@project)
+    filter_content_hash = issue_filter.content
     hash_for_radio = filter_content_hash['hash_for_radio']
     hash_for_select = filter_content_hash['hash_for_select']
+    form_hash = build_form_hash(hash_for_radio, hash_for_select)
+    issue_filter.build_json_form(form_hash)
+  end
+
+  def build_form_hash(hash_for_radio, hash_for_select)
+    form_hash = {}
     form_hash['assigned_to'] = generic_filter(:simple_select, 'Assigned to', 'assigned_to', hash_for_radio['assigned'], hash_for_select['assigned'], true, nil)
     form_hash['author'] = generic_filter(:simple_select, 'Author', 'author', hash_for_radio['author'], hash_for_select['author'])
     form_hash['category'] = generic_filter(:simple_select, 'Category', 'category', hash_for_radio['category'], hash_for_select['category'])
@@ -21,8 +27,7 @@ module IssuesHelper
     form_hash['tracker'] = generic_filter(:simple_select, 'Tracker', 'tracker', hash_for_radio['tracker'], hash_for_select['tracker'])
     form_hash['version'] = generic_filter(:simple_select, 'Version', 'version', hash_for_radio['version'], hash_for_select['version'])
     form_hash['updated_at'] = generic_filter(:date, 'Updated at', 'updated_at', hash_for_radio['updated'])
-    form_hash.each { |_, v| v.tr('"', "'").gsub(/\n/, '') }
-    form_hash.to_json
+    form_hash
   end
 
   # Build a list of issues.
@@ -45,7 +50,7 @@ module IssuesHelper
       safe_concat content_tag :td, check_box_tag("issue-#{issue.id.to_s}", issue.id), {class: 'cell-checkbox'}
       safe_concat content_tag :td, issue.id, class: 'list-center id'
       safe_concat content_tag :td, issue.tracker_str, class: 'list-center tracker'
-      safe_concat content_tag :td, link_to(issue.resized_caption(35), issue_path(@project.slug, issue.id)), {class: 'name', id: issue.id}
+      safe_concat content_tag :td, issue.show_link, {class: 'name', id: issue.id}
       safe_concat content_tag :td, issue.display_assigned_to, class: 'list-center assigned-to'
       safe_concat content_tag :td, issue.display_status, class: 'list-center status'
       safe_concat content_tag :td, issue.display_category, class: 'list-center category'
@@ -135,7 +140,7 @@ module IssuesHelper
       safe_concat overview_table_header(class_name)
       display_overview_rows(group, group_name, only_opened_issues)
       na = no_affected_row(group)
-      display_overview_row(na, group_name, only_opened_issues) if na
+      safe_concat display_overview_row(na, group_name, only_opened_issues) if na
     end
   end
 
@@ -157,7 +162,7 @@ module IssuesHelper
     if element[:id].eql?('NULL')
       element
     else
-      display_overview_row(element, group_name, only_opened_issues)
+      safe_concat display_overview_row(element, group_name, only_opened_issues)
     end
   end
 
@@ -165,7 +170,7 @@ module IssuesHelper
   # @param [Array] group group of row (e.g : all versions row (version1, version2, unplanned))
   # @return [Hash] element : see #IssueOverviewHash.
   def no_affected_row(group)
-    group.detect {|element| element[:id].eql?('NULL')}
+    group.detect { |element| element[:id].eql?('NULL') }
   end
 
   # @param [String] class_name : css class name.
@@ -182,15 +187,29 @@ module IssuesHelper
   # @param [Symbol] group_name : the symbol of the object attribute (e.g :assigned_to, :status)
   # @param [Boolean] only_opened_issues : true display report only for opened issues else display report for all issues.
   def display_overview_row(element, group_name, only_opened_issues)
-    safe_concat content_tag :tr, class: 'issues-overview-group body', &Proc.new {
-      if only_opened_issues
-        safe_concat content_tag :td, filter_link(element[:caption], element[:project], [group_name, :status], {group_name => {operator: :equal, value: [element[:id]]}, status: {operator: :open}}), class: 'caption'
-      else
-        safe_concat content_tag :td, filter_link(element[:caption], element[:project], [group_name], {group_name => {operator: :equal, value: [element[:id]]}}), class: 'caption'
-      end
+    content_tag :tr, class: 'issues-overview-group body' do
+      safe_concat select_filter_link(element, group_name, only_opened_issues)
       safe_concat content_tag :td, element[:count], class: 'number'
       safe_concat content_tag :td, progress_bar_tag(element[:percent]), class: 'percentage'
-    }
+    end
+  end
+
+  def select_filter_link(element, group_name, only_opened_issues)
+    if only_opened_issues
+      content_tag :td,
+                  filter_link(element[:caption],
+                              element[:project],
+                              [group_name, :status],
+                              {group_name => {operator: :equal, value: [element[:id]]}, status: {operator: :open}}),
+                  class: 'caption'
+    else
+      content_tag :td,
+                  filter_link(element[:caption],
+                              element[:project],
+                              [group_name],
+                              {group_name => {operator: :equal, value: [element[:id]]}}),
+                  class: 'caption'
+    end
   end
 
   # Build a link to issues list with given filter.

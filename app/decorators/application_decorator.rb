@@ -64,6 +64,10 @@ class ApplicationDecorator < Draper::Decorator
     link_to_with_permissions(h.glyph(label, 'plus'), path, project, nil, options)
   end
 
+  def show_link(path, project = nil, owner = nil, options = {})
+    link_to_with_permissions(model.caption, path, project, nil, options)
+  end
+
   # Render a link to delete the model.
   # @param [String] label : link label.
   # @param [String] path to controller.

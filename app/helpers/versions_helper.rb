@@ -49,11 +49,15 @@ module VersionsHelper
   # @param [Hash] collection_detail : hash with following structure {version_id: {closed_issues_count: 'value', opened_issues_count: 'value', percent: 'value'}}
   def versions_list_overview(collection, collection_detail)
     collection.collect do |version|
-      version_overview(version,
-                       collection_detail[version.id][:closed_issues_count],
-                       collection_detail[version.id][:opened_issues_count],
-                       collection_detail[version.id][:percent])
+      call_version_overview(collection_detail, version)
     end.join.html_safe
+  end
+
+  def call_version_overview(collection_detail, version)
+    version_overview(version,
+                     collection_detail[version.id][:closed_issues_count],
+                     collection_detail[version.id][:opened_issues_count],
+                     collection_detail[version.id][:percent])
   end
 
   # Build a render for the project road map.
@@ -69,10 +73,7 @@ module VersionsHelper
   # @param [Version] version to render.
   def roadmap_version_block_render(collection_detail, version)
     content_tag :div, class: 'roadmap-version-block' do
-      safe_concat version_overview(version,
-                                   collection_detail[version.id][:closed_issues_count],
-                                   collection_detail[version.id][:opened_issues_count],
-                                   collection_detail[version.id][:percent])
+      safe_concat call_version_overview(collection_detail, version)
       safe_concat version.display_description
       safe_concat version_detail_render(collection_detail, version)
     end
