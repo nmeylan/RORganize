@@ -4,6 +4,7 @@ class User < ActiveRecord::Base
   include Rorganize::Managers::PermissionManager::PermissionManagerHelper
   include Rorganize::Managers::ModuleManager::ModuleManagerHelper
   include Rorganize::Models::Attachable::AvatarType
+  include Rorganize::Models::UserExtraMethods
   extend FriendlyId
 
   assign_journalizable_properties({name: 'Name', admin: 'Administrator', email: 'Email', login: 'Login'})
@@ -96,73 +97,19 @@ class User < ActiveRecord::Base
   end
 
   def allowed_statuses(project)
-    member = self.members.to_a.select { |member| member.project_id == project.id }.first
+    member = self.members.to_a.detect { |member| member.project_id == project.id }
     if member
-      member.role.issues_statuses.eager_load(:enumeration).sort { |x, y| x.enumeration.position <=> y.enumeration.position }
+      load_allowed_statuses member.role.issues_statuses
     else
-      Role.find_by_name('Anonymous').issues_statuses.eager_load(:enumeration).sort { |x, y| x.enumeration.position <=> y.enumeration.position }
+      load_allowed_statuses Role.find_by_name('Anonymous').issues_statuses
     end
   end
 
-  # @param [String] action : the action that user want to perform.
-  # @param [String] controller : the controller concern by the action.
-  # @param [Project] project the context of the action.
-  def allowed_to?(action, controller, project = nil)
-    return true if self.is_admin? && act_as_admin? && (project && module_enabled?(project.id.to_s, action, controller) || !project)
-    if self.id.eql?(AnonymousUser::ANON_ID) #Concern unconnected users.
-      if project
-        (project.is_public && module_enabled?(project.id.to_s, action, controller) &&
-            anonymous_permission_manager_allowed_to?(action.to_s, controller.downcase.to_s) &&
-            (!project.is_archived? || (project.is_archived? && project_archive_permissions(action, controller))))
-      else
-        if anonymous_permission_manager_allowed_to?(action.to_s, controller.downcase.to_s)
-          true
-        else
-          false
-        end
-      end
-    else
-      m = self.members
-      if project
-        member = m.to_a.select { |mb| mb.project_id == project.id }.first
-        if member
-          (module_enabled?(project.id.to_s, action, controller) &&
-              permission_manager_allowed_to?(member.role.id.to_s, action.to_s, controller.downcase.to_s) &&
-              (!project.is_archived? || (project.is_archived? && project_archive_permissions(action, controller))))
-        else
-          (project.is_public && module_enabled?(project.id.to_s, action, controller) &&
-              non_member_permission_manager_allowed_to?(action.to_s, controller.downcase.to_s) &&
-              (!project.is_archived? || (project.is_archived? && project_archive_permissions(action, controller))))
-        end
-      else
-        if m && m.any?
-          for mem in m do
-            if permission_manager_allowed_to?(mem.role_id.to_s, action.to_s, controller.downcase.to_s)
-              return true
-            end
-          end
-          return false
-        else
-          non_member_permission_manager_allowed_to?(action.to_s, controller.downcase.to_s)
-        end
-      end
-    end
+  def load_allowed_statuses(status_rel)
+    status_rel.eager_load(:enumeration).sort { |x, y| x.enumeration.position <=> y.enumeration.position }
   end
 
-  #use to debug
-  def allowed_to_do_actions_list(controller = nil, project = nil)
-    m = self.members
-    if project
-      member = m.to_a.select { |mb| mb.project_id == project.id }.first
-      puts "Current user is allowed to do following actions and has role #{member.role.caption} for project #{project.slug}"
-      p allowed_to_actions_list(member.role.id.to_s, controller)
-    else
-      for mem in m do
-        puts "Current user is allowed to do following actions and has role #{mem.role.caption} for project #{mem.project.slug}"
-        p allowed_to_actions_list(mem.role.id.to_s, controller)
-      end
-    end
-  end
+
 
   # Get projects when user is a member or when projects are public.
   # @param [String] filter which values are : 'opened' or 'archived' or 'starred'
