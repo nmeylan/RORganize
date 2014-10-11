@@ -9,6 +9,7 @@ class Issue < ActiveRecord::Base
   include Rorganize::Models::Watchable
   include Rorganize::Models::Notifiable
   include Rorganize::Models::Attachable::AttachmentType
+  include Rorganize::Models::IssueDatesValidator
   extend Rorganize::Managers::BulkEditManager
   #Class variables
   assign_journalizable_properties({status_id: 'Status', category_id: 'Category', assigned_to_id: 'Assigned to', tracker_id: 'Tracker', due_date: 'Due date', start_date: 'Start date', done: 'Done', estimated_time: 'Estimated time', version_id: 'Version', predecessor_id: 'Predecessor', subject: 'Subject'})
@@ -51,38 +52,32 @@ class Issue < ActiveRecord::Base
     Issue.attribute_names.map { |attribute| attribute.gsub('_id', '').gsub('id', '').tr('_', ' ').capitalize unless attribute.eql?('id') }.compact
   end
 
-  #  Custom validator
-  def validate_start_date
-    if (self.due_date && self.start_date) && self.start_date >= self.due_date
-      errors.add(:start_date, "must be inferior than due date : #{self.due_date.to_formatted_s(:db)}")
-    elsif (self.start_date && self.version && self.version.target_date) && self.start_date >= self.version.target_date
-      errors.add(:start_date, "must be inferior than version due date : #{self.version.target_date.to_formatted_s(:db)}")
-    elsif (self.start_date && self.version) && self.start_date < self.version.start_date
-      errors.add(:start_date, "must be superior or equal to version start date : #{self.version.start_date.to_formatted_s(:db)}")
-    end
-  end
-
-  def validate_due_date
-    if (self.due_date && self.version && self.version.target_date) && self.due_date > self.version.target_date
-      errors.add(:due_date, "must be inferior or equals to version due date : #{self.version.target_date.to_formatted_s(:db)}")
-    elsif (self.due_date && self.version && self.version.start_date) && self.due_date <= self.version.start_date
-      errors.add(:due_date, "must be superior than version start date : #{self.version.start_date.to_formatted_s(:db)}")
-    end
-  end
 
   def validate_predecessor
     unless self.predecessor_id.nil?
       issue = Issue.find(self.predecessor_id)
-      if !issue.nil? && !issue.project_id.eql?(self.project_id) || issue.nil?
+      if predecessor_not_exists?(issue)
         errors.add(:predecessor, 'not exist in this project')
-      elsif !issue.nil? && issue.id.eql?(self.id)
+      elsif predecessor_is_self?(issue)
         errors.add(:predecessor, "can't be self")
-      elsif !issue.nil? && self.children.include?(issue)
+      elsif predecessor_is_a_child(issue)
         errors.add(:predecessor, 'is already a child')
       end
     end
   rescue
     errors.add(:predecessor, 'not found')
+  end
+
+  def predecessor_is_a_child(issue)
+    !issue.nil? && self.children.include?(issue)
+  end
+
+  def predecessor_is_self?(issue)
+    !issue.nil? && issue.id.eql?(self.id)
+  end
+
+  def predecessor_not_exists?(issue)
+    !issue.nil? && !issue.project_id.eql?(self.project_id) || issue.nil?
   end
 
   # @return [Array] array with all attribute that can be filtered.
@@ -175,20 +170,6 @@ class Issue < ActiveRecord::Base
     self.has_task_list? ? self.description.scan(/- \[(\w|\s)\]/).count : 0
   end
 
-  # Set start date and due date based on version.
-  # Rule :
-  # Version.start_date <= Issue.start_date < Issue.due_date <= Version.due_date
-  # So when issue's version is changing we have to update issue start and due date to respect the previous rule.
-  def set_start_and_due_date(version_update = false)
-    if self.version && !self.version.target_date.nil? && (self.due_date.nil? || self.due_date >= version.target_date) && (version_update || self.version_id_changed?)
-      self.due_date = self.version.target_date
-    end
-    if self.version && self.version.start_date && (version_update || self.version_id_changed?) && (self.start_date.nil? || (self.start_date && (self.start_date < self.version.start_date) || self.version.target_date && self.start_date > self.version.target_date))
-      self.start_date = self.version.start_date
-    end
-    self
-  end
-
   private
   def set_done_ratio
     unless self.status.nil?
@@ -196,24 +177,6 @@ class Issue < ActiveRecord::Base
       if done_ratio != 0 && !self.done_changed?
         self.done = done_ratio
       end
-    end
-  end
-
-
-  def self.bulk_set_start_and_due_date(issue_ids, version_id, journals)
-    version = Version.find_by_id(version_id)
-    issues = Issue.where(id: issue_ids)
-    issue_changes = {due_date: [], start_date: []}
-    issues.each do |issue|
-      issue = issue.set_start_and_due_date(true)
-      issue_changes[:due_date] << issue unless issue.changes[:due_date].nil?
-      issue_changes[:start_date] << issue unless issue.changes[:start_date].nil?
-    end
-    merged_issues = issue_changes[:due_date] | issue_changes[:start_date]
-    if merged_issues.any?
-      Issue.where(id: issue_changes[:due_date].collect { |issue| issue.id }).update_all(due_date: version.target_date)
-      Issue.where(id: issue_changes[:start_date].collect { |issue| issue.id }).update_all(start_date: version.start_date)
-      Issue.journal_update_creation(merged_issues, version.project, User.current.id, 'Issue', journals)
     end
   end
 
