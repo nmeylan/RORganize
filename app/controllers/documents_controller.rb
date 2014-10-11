@@ -7,12 +7,10 @@ class DocumentsController < ApplicationController
   before_filter :load_documents, locals: [:index]
   before_filter :find_document, only: [:show, :edit, :destroy, :update]
   before_filter :check_permission, locals: [:toolbox]
-  before_filter { |c| c.menu_context :project_menu }
-  before_filter { |c| c.menu_item(params[:controller]) }
-  before_filter { |c| c.top_menu_item('projects') }
   include Rorganize::RichController
   include Rorganize::Filters::NotificationFilter
   include Rorganize::RichController::ToolboxCallback
+  include Rorganize::RichController::ProjectContext
 
   def index
     respond_to do |format|

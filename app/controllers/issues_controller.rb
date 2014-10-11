@@ -10,12 +10,10 @@ class IssuesController < ApplicationController
   before_filter :check_permission, except: [:toolbox]
   before_filter :find_issue, only: [:edit, :update, :destroy]
   before_filter :check_not_owner_permission, only: [:edit, :update, :destroy]
-  before_filter { |c| c.menu_context :project_menu }
-  before_filter { |c| c.menu_item(params[:controller]) }
-  before_filter { |c| c.top_menu_item('projects') }
   include Rorganize::RichController
   include Rorganize::RichController::ToolboxCallback
   include Rorganize::Filters::NotificationFilter
+  include Rorganize::RichController::ProjectContext
   require 'will_paginate'
 
   #RESTFULL CRUD Methods
@@ -55,10 +53,9 @@ class IssuesController < ApplicationController
     @issue_decorator.author = User.current
     respond_to do |format|
       if @issue_decorator.save
-        create_update_callback(format)
+        success_generic_create_callback(format, issue_path(@project.slug, @issue_decorator.id))
       else
-        format.html { render :new, locals: {form_content: form_content} }
-        format.json { render json: @issue_decorator.errors, status: :unprocessable_entity }
+        error_generic_create_callback(format, @issue_decorator, {form_content: form_content})
       end
     end
   end
@@ -75,15 +72,12 @@ class IssuesController < ApplicationController
     @issue_decorator.attributes = issue_params
     respond_to do |format|
       if  !@issue_decorator.changed? && issue_params[:existing_attachment_attributes].nil? && issue_params[:new_attachment_attributes].nil?
-        format.html { redirect_to issue_path(@project.slug, @issue_decorator.id) }
-        format.json { render json: @issue_decorator,
-                             status: :created, location: @issue_decorator }
+        success_generic_update_callback(format, issue_path(@project.slug, @issue_decorator.id), false)
         #If attributes were updated
       elsif @issue_decorator.save && @issue_decorator.save_attachments
-        create_update_callback(format, false)
+        success_generic_update_callback(format, issue_path(@project.slug, @issue_decorator.id))
       else
-        format.html { render :edit, locals: {form_content: form_content} }
-        format.json { render json: @issue_decorator.errors, status: :unprocessable_entity }
+        error_generic_update_callback(format, @issue_decorator, {form_content: form_content})
       end
     end
   end
@@ -118,13 +112,8 @@ class IssuesController < ApplicationController
   end
 
   def overview
-    tracker_report = Issue.group_opened_by_attr(@project.id, 'trackers', :tracker)
-    version_report = Issue.group_opened_by_attr(@project.id, 'versions', :version)
-    category_report = Issue.group_opened_by_attr(@project.id, 'categories', :category)
-    author_report = Issue.group_opened_by_attr(@project.id, 'users', :author)
-    assigned_to_report = Issue.group_opened_by_attr(@project.id, 'users', :assigned_to)
-    status_report = Issue.group_by_status(@project.id)
-    overview_object = IssueOverviewHash.new({tracker: tracker_report, version: version_report, category: category_report, author: author_report, assigned_to: assigned_to_report, status: status_report}, @project.issues.count)
+    overview_report = Issue.overview_report(@project.id)
+    overview_object = IssueOverviewHash.new(overview_report, @project.issues.count)
     respond_to do |format|
       format.html { render :overview, locals: {overview: overview_object} }
     end
@@ -142,11 +131,6 @@ class IssuesController < ApplicationController
     end
   end
 
-  def create_update_callback(format, creation = true)
-    flash[:notice] = creation ? t(:successful_creation) : t(:successful_update)
-    format.html { redirect_to issue_path(@project.slug, @issue_decorator.id) }
-    format.json { render json: @issue_decorator, status: :created, location: @issue_decorator }
-  end
 
   #Check if current user is owner of issue
   def check_owner

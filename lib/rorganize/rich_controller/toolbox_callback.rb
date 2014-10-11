@@ -6,7 +6,6 @@ module Rorganize
         #Displaying toolbox with GET request
         if !request.post?
           #loading toolbox
-
           respond_to do |format|
             format.js { respond_to_js locals: {collection: collection} }
           end
@@ -30,8 +29,6 @@ module Rorganize
           end
         end
       end
-
-      private
 
     end
   end

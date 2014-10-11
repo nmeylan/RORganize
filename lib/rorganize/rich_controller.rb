@@ -8,6 +8,7 @@ module Rorganize
   module RichController
     include Rorganize::RichController::Pagination
     include Rorganize::RichController::AttachmentRemove
+    include Rorganize::RichController::GenericCallbacks
 
     def self.included(base)
       base.before_filter :set_pagination, only: [:index]
@@ -54,20 +55,7 @@ module Rorganize
       end
     end
 
-    def generic_destroy_callback(model, path)
-      model.destroy
-      flash[:notice] = t(:successful_deletion)
-      respond_to do |format|
-        format.html { redirect_to path }
-        format.js { js_redirect_to path }
-      end
-    end
 
-    def generic_show_callback(decorator)
-      respond_to do |format|
-        format.html { render :show, locals: {history: History.new(Journal.issue_activities(decorator.id), decorator.comments)} }
-      end
-    end
 
 
   end

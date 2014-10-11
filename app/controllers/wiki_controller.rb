@@ -7,11 +7,10 @@ class WikiController < ApplicationController
   before_filter :find_wiki, except: [:new, :create, :set_organization]
   before_filter :check_permission, except: [:organize_pages]
   before_filter :check_organize_pages_permission, only: [:organize_pages]
-  before_filter { |c| c.menu_context :project_menu }
-  before_filter { |c| c.menu_item(params[:controller]) }
-  before_filter { |c| c.top_menu_item('projects') }
+
   include WikiHelper
   include Rorganize::RichController
+  include Rorganize::RichController::ProjectContext
   helper WikiPagesHelper
 
   def index

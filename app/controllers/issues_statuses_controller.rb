@@ -36,7 +36,7 @@ class IssuesStatusesController < ApplicationController
         format.html { redirect_to issues_statuses_path }
       else
         @status.errors.add(:name, "can't be blank")
-        format.html { render :edit, locals: {done_ratio: done_ratio} }
+        error_generic_update_callback(format, @status, {done_ratio: done_ratio})
       end
     end
   end
@@ -51,12 +51,11 @@ class IssuesStatusesController < ApplicationController
           flash[:notice] = t(:successful_creation)
           format.html { redirect_to issues_statuses_path }
         else
-          format.html { render :new, locals: {done_ratio: done_ratio} }
-          format.json { render json: @staus.errors, status: :unprocessable_entity }
+          error_generic_create_callback(format, @status, {done_ratio: done_ratio})
         end
       else
         @status.errors.add(:name, "can't be blank")
-        format.html { render :new, locals: {done_ratio: done_ratio} }
+        error_generic_create_callback(format, @status, {done_ratio: done_ratio})
       end
     end
   end

@@ -119,6 +119,18 @@ class Issue < ActiveRecord::Base
     self.has_task_list? ? self.description.scan(/- \[(\w|\s)\]/).count : 0
   end
 
+  def self.overview_report(project_id)
+    tracker_report = Issue.group_opened_by_attr(project_id, 'trackers', :tracker)
+    version_report = Issue.group_opened_by_attr(project_id, 'versions', :version)
+    category_report = Issue.group_opened_by_attr(project_id, 'categories', :category)
+    author_report = Issue.group_opened_by_attr(project_id, 'users', :author)
+    assigned_to_report = Issue.group_opened_by_attr(project_id, 'users', :assigned_to)
+    status_report = Issue.group_by_status(project_id)
+    {assigned_to: assigned_to_report, author: author_report,
+     category: category_report, status: status_report, tracker: tracker_report,
+     versionß: version_report}
+  end
+
   private
   def set_done_ratio
     unless self.status.nil?
