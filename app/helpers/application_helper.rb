@@ -1,7 +1,8 @@
 require 'rorganize/redcarpet/rorganize_markdown_renderer'
 module ApplicationHelper
   include Rorganize::Managers::PermissionManager::PermissionHandler
-
+  include ToolboxHelper
+  include HistoryHelper
   # Check if there is any content for :sidebar
   def sidebar_content?
     content_for?(:sidebar)
@@ -12,34 +13,48 @@ module ApplicationHelper
   def title_tag
     title = ''
     if controller_name.eql?('exception')
-      case @status
-        when 404
-          title += 'Page not found '
-        when 403
-          title += 'Permissions required '
-        else
-          title += 'Something went wrong '
-      end
-      title += '- RORganize'
+      title = title_tag_exception_pages(title)
     else
-      if @project && !@project.new_record?
-        title += @project.slug.capitalize + ' '
-      elsif controller_name.eql?('profiles')
-        title += User.current.login + " (#{User.current.caption}) "
-      else
-        title += 'RORganize '
-      end
-      if action_name.eql?('activity')
-        title += t(:label_activity)
-      elsif action_name.eql?('overview')
-        title += t(:label_overview)
-      elsif controller_name.eql?('rorganize')
-        title += t(:home)
-      elsif !controller_name.eql?('profiles')
-        title += controller_name.capitalize
-      end
+      title = title_tag_context_pages(title)
+      title = title_tag_specific_pages(title)
     end
     title
+  end
+
+  def title_tag_context_pages(title)
+    if @project && !@project.new_record?
+      title += @project.slug.capitalize + ' '
+    elsif controller_name.eql?('profiles')
+      title += User.current.login + " (#{User.current.caption}) "
+    else
+      title += 'RORganize '
+    end
+    title
+  end
+
+  def title_tag_specific_pages(title)
+    if action_name.eql?('activity')
+      title += t(:label_activity)
+    elsif action_name.eql?('overview')
+      title += t(:label_overview)
+    elsif controller_name.eql?('rorganize')
+      title += t(:home)
+    elsif !controller_name.eql?('profiles')
+      title += controller_name.capitalize
+    end
+    title
+  end
+
+  def title_tag_exception_pages(title)
+    case @status
+      when 404
+        title += 'Page not found '
+      when 403
+        title += 'Permissions required '
+      else
+        title += 'Something went wrong '
+    end
+    title += '- RORganize'
   end
 
 
@@ -110,11 +125,11 @@ module ApplicationHelper
   # @param [String] path : to the controller to refresh the list when user change the per_page or current_page parameter.
   def paginate(collection, session, path)
     safe_concat will_paginate(collection, {renderer: 'RemoteLinkRenderer', next_label: t(:label_next), previous_label: t(:label_previous)})
-    content_tag :div, class: 'autocomplete-combobox nosearch per-page
-autocomplete-combobox-high',
+    content_tag :div, class: 'autocomplete-combobox nosearch per-page autocomplete-combobox-high',
                 &Proc.new {
                   safe_concat content_tag :label, t(:label_per_page), {for: 'per_page', class: 'per-page'}
-                  safe_concat select_tag 'per_page', options_for_select([%w(25 25), %w(50 50), %w(100 100)], session[:per_page]), class: 'chzn-select cbb-small cbb-high', id: 'per-page', :'data-link' => "#{path}"
+                  safe_concat select_tag 'per_page', options_for_select([%w(25 25), %w(50 50), %w(100 100)], session[:per_page]),
+                                         class: 'chzn-select cbb-small cbb-high', id: 'per-page', :'data-link' => "#{path}"
                 }
   end
 
@@ -128,22 +143,26 @@ autocomplete-combobox-high',
     content_tag :fieldset, id: "#{label}-filter" do
       safe_concat content_tag :legend, link_to(glyph(t(:link_filter), 'chevron-right'), '#', {class: 'icon-collapsed toggle', id: "#{label}"})
       safe_concat content_tag :div, class: 'content', &Proc.new {
-        safe_concat form_tag submission_path, {method: :get, class: 'filter-form', id: 'filter-form', remote: true}, &Proc.new {
-          safe_concat radio_button_tag('type', 'all', true, {align: 'center', id: 'type-all'})
-          safe_concat label_tag('type-all', t(:label_all))
-          safe_concat radio_button_tag 'type', 'filter', false, id: 'type-filter'
-          safe_concat label_tag 'type-filter', t(:link_filter)
-          safe_concat content_tag :div, class: 'autocomplete-combobox nosearch no-padding-left no-height', &Proc.new {
-            select_tag 'filters_list', options_for_select(filtered_attributes), class: 'chzn-select cbb-verylarge', id: 'filters-list', multiple: true
-          }
-          safe_concat content_tag :table, nil, id: 'filter-content'
-          safe_concat submit_tag t(:button_apply), {style: 'margin-left:0px'}
-          if can_save
-            safe_concat content_tag :span, save_filter_button_tag(save_button_options[:filter_content], save_button_options[:user], save_button_options[:project]), {id: 'save-query-button'}
-          end
-        }
+        safe_concat filter_form_tag(filtered_attributes, save_button_options, can_save, submission_path)
       }
     end
+  end
+
+  # @param [Array] filtered_attributes : an array of filtered attribute @see Document.filtered_attributes.
+  # @param [String] submission_path : the path to controller when the filter form is submit.
+  # @param [Boolean] can_save : false when save button is hidden, true otherwise.
+  # @param [hash] save_button_options
+  def filter_form_tag(filtered_attributes, save_button_options, can_save, submission_path)
+    form_tag submission_path, {method: :get, class: 'filter-form', id: 'filter-form', remote: true}, &Proc.new {
+      filter_type_choice_tag
+      safe_concat filter_attribute_choice_tag(filtered_attributes)
+      safe_concat content_tag :table, nil, id: 'filter-content'
+      safe_concat submit_tag t(:button_apply), {style: 'margin-left:0px'}
+      safe_concat content_tag :span, save_filter_button_tag(save_button_options[:filter_content],
+                                                            save_button_options[:user],
+                                                            save_button_options[:project]),
+                              {id: 'save-query-button'} if can_save
+    }
   end
 
   # Build a save button for filter : based on user permissions (does user is allowed to create custom queries?)
@@ -151,11 +170,29 @@ autocomplete-combobox-high',
   # @param [User] user : the current user.
   # @param [Project] project : current project.
   def save_filter_button_tag(filter_content, user, project)
-    if !filter_content.eql?('') && user.allowed_to?('new', 'Queries', project) && params[:query_id].nil?
+    if can_user_save_query?(filter_content, project, user)
       link_to t(:button_save), new_project_query_queries_path(project.slug, 'Issue'), {remote: true}
-    elsif !filter_content.eql?('') && user.allowed_to?('new', 'Queries', project) && !params[:query_id].nil?
+    elsif can_user_save_query?(filter_content, project, user)
       link_to t(:button_save), edit_query_filter_queries_path(params[:query_id]), {id: 'filter-edit-save'}
     end
+  end
+
+  def can_user_save_query?(filter_content, project, user)
+    !filter_content.eql?('') && user.allowed_to?('new', 'Queries', project) && params[:query_id].nil?
+  end
+
+  def filter_attribute_choice_tag(filtered_attributes)
+    content_tag :div, class: 'autocomplete-combobox nosearch no-padding-left no-height' do
+      select_tag 'filters_list', options_for_select(filtered_attributes), class: 'chzn-select cbb-verylarge', id: 'filters-list', multiple: true
+    end
+  end
+
+  # @return [String] build filter type choice.
+  def filter_type_choice_tag
+    safe_concat radio_button_tag('type', 'all', true, {align: 'center', id: 'type-all'})
+    safe_concat label_tag('type-all', t(:label_all))
+    safe_concat radio_button_tag 'type', 'filter', false, id: 'type-filter'
+    safe_concat label_tag 'type-filter', t(:link_filter)
   end
 
   # Build a header for the given title.
@@ -177,39 +214,6 @@ autocomplete-combobox-high',
     content_tag :span, nil, default_options.merge(options)
   end
 
-  # Build a toolbox render from a toolbox object.
-  # @param [Toolbox] toolbox : the toolbox object.
-  def toolbox_tag(toolbox)
-    form_tag toolbox.path, remote: true, id: 'toolbox-form', &Proc.new {
-      safe_concat(toolbox.menu.values.collect do |menu_item|
-        content_tag :li do
-          safe_concat link_to glyph(menu_item.caption, menu_item.glyph_name), '#', {id: menu_item.name}
-          safe_concat content_tag :ul, class: "submenu #{menu_item.attribute_name}", &Proc.new {
-            if menu_item.all && menu_item.all.any?
-              safe_concat hidden_field_tag "value[#{menu_item.attribute_name}]"
-              safe_concat(menu_item.all.collect do |element|
-                content_tag :li do
-                  caption = element.respond_to?(:caption) ? element.caption : element.to_s
-                  id = element.respond_to?(:id) ? element.id : element
-                  safe_concat link_to(conditional_glyph(caption, menu_item.currents.include?(element), 'check'), '#', {:'data-id' => id})
-                end
-              end.join.html_safe)
-              if menu_item.none_allowed
-                safe_concat content_tag :li, link_to(conditional_glyph('None', menu_item.currents.include?(nil), 'check'), '#', {:'data-id' => -1})
-              end
-            end
-          }
-        end
-      end.join.html_safe)
-      safe_concat(toolbox.extra_actions.collect do |action|
-        content_tag :li, action
-      end.join.html_safe)
-      safe_concat(toolbox.collection_ids.collect do |id|
-        hidden_field_tag 'ids[]', id
-      end.join.html_safe)
-    }
-  end
-
   # Build error message render, when a form is submitted with validation errors.
   # @param [Array] object : all errors contains on an ActiveRecord object.
   def error_messages(object)
@@ -227,14 +231,7 @@ autocomplete-combobox-high',
       context.merge!({project_slug: @project.slug})
     end
     if rendered_element
-      allow = false
-      if rendered_element.class.eql?(Issue)
-        allow = User.current.id.eql?(rendered_element.author_id) && User.current.allowed_to?('edit', 'issues', @project)|| User.current.allowed_to?('edit_not_owner', 'issues', @project)
-      elsif rendered_element.class.eql?(Comment)
-        allow = User.current.id.eql?(rendered_element.user_id) || User.current.allowed_to?('edit_comment_not_owner', 'comments', @project)
-      elsif rendered_element.class.eql?(Document)
-        allow = User.current.allowed_to?('edit', 'documents', @project)
-      end
+      allow = markdown_task_list_enabled?(rendered_element)
       context.merge!({element_type: rendered_element.class, element_id: rendered_element.id, allow_task_list: allow})
     end
     context[:from_mail] = from_mail
@@ -242,6 +239,19 @@ autocomplete-combobox-high',
     extensions = {quote: true, space_after_headers: true, autolink: true}
     markdown = Redcarpet::Markdown.new(renderer, extensions)
     markdown.render(text).html_safe
+  end
+
+  # @param [ActiveRecord::Base] rendered_element : The object that contains the content to be render. It use to define a context and let user click on task lists.
+  def markdown_task_list_enabled?(rendered_element)
+    allow = false
+    if rendered_element.class.eql?(Issue)
+      allow = User.current.id.eql?(rendered_element.author_id) && User.current.allowed_to?('edit', 'issues', @project)|| User.current.allowed_to?('edit_not_owner', 'issues', @project)
+    elsif rendered_element.class.eql?(Comment)
+      allow = User.current.id.eql?(rendered_element.user_id) || User.current.allowed_to?('edit_comment_not_owner', 'comments', @project)
+    elsif rendered_element.class.eql?(Document)
+      allow = User.current.allowed_to?('edit', 'documents', @project)
+    end
+    allow
   end
 
   # Build a sort link for table.
@@ -308,73 +318,6 @@ autocomplete-combobox-high',
         end
       end.join.html_safe
     }
-  end
-
-  # Build a history block for one Journal.
-  # @param [Journal] journal : to render.
-  def history_block_render(journal)
-    user = journal.display_author(false)
-    content_tag :div, {class: 'history-block', id: "journal-#{journal.id}"} do
-      safe_concat journal.display_author_avatar
-      safe_concat content_tag :div, class: "history-header #{'display-avatar' if journal.user_avatar?}", &Proc.new {
-        safe_concat content_tag :span, user, {class: 'author'}
-        safe_concat " #{t(:label_updated).downcase} #{t(:text_this)} "
-        safe_concat "#{distance_of_time_in_words(journal.created_at, Time.now)} #{t(:label_ago)}. "
-        safe_concat content_tag :span, journal.created_at.strftime(Rorganize::TIME_FORMAT), {class: 'history-date'}
-      }
-      safe_concat clear_both
-      safe_concat content_tag(:ul, (journal.details.collect { |detail| history_detail_render(detail) }).join.html_safe)
-    end
-  end
-
-  # Build a history detail block.
-  # @param [JournalDetail] detail to render.
-  # @param [Boolean] no_icon : if true don't display for the updated field, else display the icon. Rendered icons are depending of the object's updated field.
-  # for the list of icons @see Rorganize::ACTION_ICON.
-  def history_detail_render(detail, no_icon = false, enhanced_detail_render = true)
-    content_tag :li do
-      icon = Rorganize::ACTION_ICON[detail.property_key.to_sym]
-      icon ||= 'pencil'
-      safe_concat content_tag :span, nil, class: "octicon octicon-#{icon} activity-icon" unless no_icon
-      safe_concat content_tag :span, class: 'detail', &Proc.new {
-        if detail.old_value && (detail.value.nil? || detail.value.eql?(''))
-          safe_concat content_tag :b, "#{detail.property} "
-          safe_concat history_detail_value_render(detail, detail.old_value)
-          safe_concat " #{t(:text_deleted)}"
-        elsif detail.old_value && detail.value && !detail.old_value.blank? && !detail.value.blank?
-          safe_concat content_tag :b, "#{detail.property} #{t(:text_changed)} "
-          safe_concat "#{t(:text_from)} "
-          safe_concat history_detail_value_render(detail, detail.old_value)
-          safe_concat " #{t(:text_to)} "
-          safe_concat history_detail_value_render(detail, detail.value)
-        else
-          safe_concat content_tag :b, "#{detail.property} "
-          safe_concat "#{t(:text_set_at)} "
-          safe_concat history_detail_value_render(detail, detail.value)
-        end
-      }
-    end
-  end
-
-  def history_detail_value_render(detail, value, enhanced_detail_render = true, options = {})
-    truncated_value = resize_text(value, 35)
-    if enhanced_detail_render
-      case detail.property_key
-        when 'status_id'
-          content_tag :b, value, {class: 'issue-status issue-status-small',
-                                  style: "background-color: #{Rorganize::Managers::IssueStatusesColorManager.colors[value]}"}
-        when 'assigned_to_id'
-          fast_profile_link(value)
-        when 'category_id'
-          content_tag :b, glyph(value, 'tag'), {class: 'info-square info-square-small'}
-        when 'version_id'
-          content_tag :b, glyph(value, 'milestone'), {class: 'info-square info-square-small'}
-        else
-          content_tag :b, "#{truncated_value} "
-      end
-    else
-      content_tag :b, "#{truncated_value} "
-    end
   end
 
   # Build an add attachments link
@@ -484,14 +427,19 @@ autocomplete-combobox-high',
   def contextual(title = nil)
     content_for :contextual do
       if title
-        safe_concat content_tag :h1, title
-        safe_concat content_tag :div, class: 'splitcontentright', &Proc.new {
-          yield if block_given?
-        }
+        contextual_title(title)
       else
         yield if block_given?
       end
     end
+  end
+
+  # @param [String] title of the contextual.
+  def contextual_title(title)
+    safe_concat content_tag :h1, title
+    safe_concat content_tag :div, class: 'splitcontentright', &Proc.new {
+      yield if block_given?
+    }
   end
 
   # Build a breadcrumb div.
