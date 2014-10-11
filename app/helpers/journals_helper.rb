@@ -10,16 +10,22 @@ module JournalsHelper
   # @param [Date] to : date range right border.(from..to)
   # @param [Date] from : date range left border.
   def display_activities(activities, to, from)
-    activities_range(to, from) +
-        (content_tag :div, class: 'activities', &Proc.new {
-          if activities.content.to_a.any?
-            activities.content.each do |date, objects|
-              render_activities_for_date(activities, date, objects)
-            end
-          else
-            no_data(t(:text_no_activities), 'rss', true)
-          end
-        })
+    content_tag :div do
+      safe_concat activities_range(to, from)
+      safe_concat render_all_activities(activities)
+    end
+  end
+
+  def render_all_activities(activities)
+    content_tag :div, class: 'activities' do
+      if activities.content.to_a.any?
+        activities.content.each do |date, objects|
+          render_activities_for_date(activities, date, objects)
+        end
+      else
+        no_data(t(:text_no_activities), 'rss', true)
+      end
+    end
   end
 
   # Build a render for activities that occurred at the given date.
@@ -38,13 +44,13 @@ module JournalsHelper
   # @param [Date] to : date range right border.(from..to)
   # @param [Date] from : date range left border.
   def activities_range(to, from)
-    content_tag :div, {class: 'activities-range'}, &Proc.new {
-      safe_concat t(:text_from).capitalize + ' '
+    content_tag :div, {class: 'activities-range'} do
+      safe_concat "#{t(:text_from).capitalize} "
       safe_concat content_tag :span, from
-      safe_concat ' ' + t(:text_to) + ' '
+      safe_concat " #{t(:text_to)} "
       safe_concat content_tag :span, to
       safe_concat '.'
-    }
+    end
   end
 
   # Build a render of the activities date.
@@ -72,8 +78,6 @@ module JournalsHelper
       i += 1
     end
   end
-
-
 
 
 end
