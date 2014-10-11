@@ -59,24 +59,31 @@ module Rorganize
         (version_update || self.version_id_changed?)
       end
 
-      def start_date_lt_version_start_date?
-        (self.start_date && self.version) && self.start_date < self.version.start_date
-      end
-
-      def start_date_gt_version_due_date?
-        (self.start_date && self.version && self.version.target_date) && self.start_date >= self.version.target_date
-      end
-
       def start_date_gt_due_date?
         (self.due_date && self.start_date) && self.start_date >= self.due_date
       end
 
-      def due_date_lt_version_start_date?
-        (self.due_date && self.version && self.version.start_date) && self.due_date <= self.version.start_date
+      def start_date_lt_version_start_date?
+        lt_version_start_date?(self.start_date)
       end
 
+      def due_date_lt_version_start_date?
+        lt_version_start_date?(self.due_date)
+      end
+      def lt_version_start_date?(date)
+        (date && self.version && self.version.start_date) && date <= self.version.start_date
+      end
+      # Start date and due date greater than version due date?
       def due_date_gt_version_due_date?
-        (self.due_date && self.version && self.version.target_date) && self.due_date > self.version.target_date
+        gt_version_due_date?(self.due_date)
+      end
+
+      def start_date_gt_version_due_date?
+        gt_version_due_date?(self.start_date)
+      end
+
+      def gt_version_due_date?(date)
+        (date && self.version && self.version.target_date) && date > self.version.target_date
       end
 
       private
