@@ -11,6 +11,7 @@ class WikiController < ApplicationController
   before_filter { |c| c.menu_item(params[:controller]) }
   before_filter { |c| c.top_menu_item('projects') }
   include WikiHelper
+  include Rorganize::RichController
   helper WikiPagesHelper
 
   def index
@@ -31,12 +32,7 @@ class WikiController < ApplicationController
   end
 
   def destroy
-    @wiki_decorator.destroy
-    flash[:notice] = t(:successful_deletion)
-    respond_to do |format|
-      format.html { redirect_to wiki_index_path }
-      format.js { js_redirect_to wiki_index_path }
-    end
+    generic_destroy_callback(@wiki_decorator, wiki_index_path)
   end
 
   def create

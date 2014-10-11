@@ -1,7 +1,7 @@
 # Author: Nicolas Meylan
 # Date: 11 nov. 2012
 # Encoding: UTF-8
-# File: attachment.rb
+# File: attachment_remove.rb
 
 class Attachment < ActiveRecord::Base
   include Rorganize::Models::SmartRecords

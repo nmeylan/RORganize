@@ -14,6 +14,7 @@ class IssuesController < ApplicationController
   before_filter { |c| c.menu_item(params[:controller]) }
   before_filter { |c| c.top_menu_item('projects') }
   include Rorganize::RichController
+  include Rorganize::RichController::ToolboxCallback
   include Rorganize::Filters::NotificationFilter
   require 'will_paginate'
 
@@ -35,9 +36,7 @@ class IssuesController < ApplicationController
       render_404
     else
       @issue_decorator = @issue_decorator.decorate(context: {project: @project})
-      respond_to do |format|
-        format.html { render :show, locals: {history: History.new(Journal.issue_activities(@issue_decorator.id), @issue_decorator.comments)} }
-      end
+      generic_show_callback(@issue_decorator)
     end
   end
 
@@ -55,16 +54,11 @@ class IssuesController < ApplicationController
     @issue_decorator = @project.issues.build(issue_params).decorate(context: {project: @project})
     @issue_decorator.author = User.current
     respond_to do |format|
-      if date_valid?(params[:issue][:due_date]) && @issue_decorator.save
-        flash[:notice] = t(:successful_creation)
-        format.html { redirect_to issue_path(@project.slug, @issue_decorator.id) }
-        format.json { render json: @issue_decorator,
-                             status: :created, location: @issue_decorator }
+      if @issue_decorator.save
+        create_update_callback(format)
       else
-        @issue_decorator.errors.add(:due_date, 'format is invalid') unless date_valid?(params[:issue][:due_date])
         format.html { render :new, locals: {form_content: form_content} }
-        format.json { render json: @issue_decorator.errors,
-                             status: :unprocessable_entity }
+        format.json { render json: @issue_decorator.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -86,68 +80,24 @@ class IssuesController < ApplicationController
                              status: :created, location: @issue_decorator }
         #If attributes were updated
       elsif @issue_decorator.save && @issue_decorator.save_attachments
-        flash[:notice] = t(:successful_update)
-        format.html { redirect_to issue_path(@project.slug, @issue_decorator.id) }
-        format.json { render json: @issue_decorator,
-                             status: :created, location: @issue_decorator }
+        create_update_callback(format, false)
       else
-        @allowed_statuses = User.current.allowed_statuses(@project)
-        @done_ratio = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
         format.html { render :edit, locals: {form_content: form_content} }
-        format.json { render json: @issue_decorator.errors,
-                             status: :unprocessable_entity }
+        format.json { render json: @issue_decorator.errors, status: :unprocessable_entity }
       end
     end
   end
 
   #DELETE /project/:project_identifier/issues/:id
   def destroy
-    @issue_decorator.destroy
-    flash[:notice] = t(:successful_deletion)
-    respond_to do |format|
-      format.html { redirect_to issues_path }
-      format.js { js_redirect_to issues_path }
-    end
+    generic_destroy_callback(@issue_decorator, issues_path)
   end
 
-  #OTHERS PUBLIC METHODS
-  def delete_attachment
-    attachment = Attachment.find(params[:id])
-    if attachment.destroy
-      respond_to do |format|
-        format.js { respond_to_js response_header: :success, response_content: t(:successful_deletion), locals: {id: attachment.id} }
-      end
-    end
-  end
 
   #GET /project/:project_identifier/issues/toolbox
   def toolbox
-    #Displaying toolbox with GET request
-    if !request.post?
-      #loading toolbox
-      @issues_toolbox = Issue.where(id: params[:ids]).eager_load(:version, :assigned_to, :category, status: [:enumeration])
-      respond_to do |format|
-        format.js { respond_to_js locals: {issues: @issues_toolbox} }
-      end
-    elsif params[:delete_ids]
-      #Multi delete
-      Issue.bulk_delete(params[:delete_ids], @project)
-      load_issues
-      respond_to do |format|
-        format.js { respond_to_js action: :index, response_header: :success, response_content: t(:successful_deletion) }
-      end
-    else
-      if User.current.allowed_to?('edit', 'issues', @project)
-        #Editing with toolbox
-        Issue.bulk_edit(params[:ids], value_params, @project)
-        load_issues
-        respond_to do |format|
-          format.js { respond_to_js action: :index, response_header: :success, response_content: t(:successful_update) }
-        end
-      else
-        render_403
-      end
-    end
+    collection = Issue.where(id: params[:ids]).eager_load(:version, :assigned_to, :category, status: [:enumeration])
+    toolbox_callback(collection, Issue, @project)
   end
 
   def apply_custom_query
@@ -190,6 +140,12 @@ class IssuesController < ApplicationController
         respond_to_js action: 'add_predecessor', locals: {journals: History.new(result[:journals]), success: result[:saved]}, response_header: result[:saved] ? :success : :failure, response_content: result[:saved] ? t(:successful_update) : @issue_decorator.errors.full_messages
       end
     end
+  end
+
+  def create_update_callback(format, creation = true)
+    flash[:notice] = creation ? t(:successful_creation) : t(:successful_update)
+    format.html { redirect_to issue_path(@project.slug, @issue_decorator.id) }
+    format.json { render json: @issue_decorator, status: :created, location: @issue_decorator }
   end
 
   #Check if current user is owner of issue
@@ -247,6 +203,8 @@ class IssuesController < ApplicationController
       render_404
     end
   end
+
+  alias :load_collection :load_issues
 
 
 end

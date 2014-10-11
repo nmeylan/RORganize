@@ -1,7 +1,7 @@
 # Author: Nicolas Meylan
 # Date: 04.08.14
 # Encoding: UTF-8
-# File: attachment.rb
+# File: attachment_remove.rb
 module Rorganize
   module Models
     module Attachable

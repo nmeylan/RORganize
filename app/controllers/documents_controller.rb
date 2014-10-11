@@ -12,6 +12,7 @@ class DocumentsController < ApplicationController
   before_filter { |c| c.top_menu_item('projects') }
   include Rorganize::RichController
   include Rorganize::Filters::NotificationFilter
+  include Rorganize::RichController::ToolboxCallback
 
   def index
     respond_to do |format|
@@ -63,59 +64,17 @@ class DocumentsController < ApplicationController
   end
 
   def show
-    #this always return 1 result. Don't use .first(AR method) because it generate two query (due to ActiveRecord::FinderMethods::apply_join_dependency(..))
-    respond_to do |format|
-      format.html { render :show, locals: {history: History.new(Journal.document_activities(@document_decorator.id), @document_decorator.comments)} }
-    end
-  end
-
-  #OTHERS PUBLIC METHODS
-  def delete_attachment
-    attachment = Attachment.find(params[:id])
-    if attachment.destroy
-      respond_to do |format|
-        format.js { respond_to_js response_header: :success, response_content: t(:successful_deletion), locals: {id: attachment.id} }
-      end
-    end
+    generic_show_callback(@document_decorator)
   end
 
   def destroy
-    @document_decorator.destroy
-    flash[:notice] = t(:successful_deletion)
-    respond_to do |format|
-      format.html { redirect_to documents_path }
-      format.js { js_redirect_to documents_path }
-    end
+    generic_destroy_callback(@document_decorator, documents_path)
   end
 
   #GET /project/:project_identifier/documents/toolbox
   def toolbox
-    #Displaying toolbox with GET request
-    if !request.post? && params[:ids]
-      #loading toolbox
-      @documents_toolbox = Document.where(id: params[:ids]).eager_load(:version, :category)
-      respond_to do |format|
-        format.js { respond_to_js locals: {documents: @documents_toolbox} }
-      end
-    elsif !request.post?
-      load_documents
-      index
-    elsif params[:delete_ids]
-      #Multi delete
-      Document.bulk_delete(params[:delete_ids], @project)
-      respond_to do |format|
-        load_documents
-        format.js { respond_to_js action: :index, response_header: :success, response_content: t(:successful_deletion) }
-      end
-    else
-      if User.current.allowed_to?('edit', 'documents', @project)
-        Document.bulk_edit(params[:ids], value_params, @project)
-        respond_to do |format|
-          load_documents
-          format.js { respond_to_js action: :index, response_header: :success, response_content: t(:successful_update) }
-        end
-      end
-    end
+    collection = Document.where(id: params[:ids]).eager_load(:version, :category)
+    toolbox_callback(collection, Document, @project)
   end
 
   def filter
@@ -157,6 +116,8 @@ class DocumentsController < ApplicationController
     end
 
   end
+
+  alias :load_collection :load_documents
 
 
 end
