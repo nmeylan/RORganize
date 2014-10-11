@@ -8,25 +8,37 @@ module UsersHelper
   # @param [Array] collection of users.
   def list(collection)
     content_tag :table, {class: 'user list'}, &Proc.new {
-      safe_concat content_tag :tr, class: 'header', &Proc.new {
-        safe_concat content_tag :th, sortable('users.id', '#')
-        safe_concat content_tag :th, sortable('users.login', 'Login')
-        safe_concat content_tag :th, sortable('users.name', 'Name')
-        safe_concat content_tag :th, sortable('users.email', 'Email')
-        safe_concat content_tag :th, sortable('users.admin', 'Administrator')
-        safe_concat content_tag :th, sortable('users.last_sign_in_at', 'Last sign in')
-      }
-      safe_concat(collection.collect do |user|
-        content_tag :tr, class: 'odd-even user-tr' do
-          safe_concat content_tag :td, user.id, class: 'list-center id'
-          safe_concat content_tag :td, user.login, class: 'list-center login'
-          safe_concat content_tag :td, user.show_link, class: 'list-center name'
-          safe_concat content_tag :td, user.email, class: 'list-center email'
-          safe_concat content_tag :td, user.display_is_admin, class: 'list-center admin'
-          safe_concat content_tag :td, user.sign_in, class: 'list-center last-sign-in'
-        end
-      end.join.html_safe)
+      safe_concat list_header
+      safe_concat list_body(collection)
     }
+  end
+
+  def list_header
+    content_tag :tr, class: 'header' do
+      list_th sortable('users.id', '#')
+      list_th sortable('users.login', 'Login')
+      list_th sortable('users.name', 'Name')
+      list_th sortable('users.email', 'Email')
+      list_th sortable('users.admin', 'Administrator')
+      list_th sortable('users.last_sign_in_at', 'Last sign in')
+    end
+  end
+
+  def list_body(collection)
+    collection.collect do |user|
+      list_row(user)
+    end.join.html_safe
+  end
+
+  def list_row(user)
+    content_tag :tr, class: 'odd-even user-tr' do
+      list_td user.id, class: 'list-center id'
+      list_td user.login, class: 'list-center login'
+      list_td user.show_link, class: 'list-center name'
+      list_td user.email, class: 'list-center email'
+      list_td user.display_is_admin, class: 'list-center admin'
+      list_td user.sign_in, class: 'list-center last-sign-in'
+    end
   end
 
   # Build a list of projects in which the given user is member.
@@ -34,12 +46,32 @@ module UsersHelper
   def projects(user)
     content_tag :ul, {class: 'profile profile-user-projects'} do
       user.members.collect do |member|
-        content_tag :li do
-          safe_concat link_to member.project.caption.capitalize, overview_projects_path(member.project.slug)
-          safe_concat " (#{link_to member.assigned_issues.to_a.count { |issue| issue.open? }, issues_path(member.project.slug, {type: :filter, filters_list: [:assigned_to, :status], filter: {assigned_to: {operator: :equal, value: [user.id]}, status: {operator: :open}}}) } #{t(:text_assigned_issues)}) "
-          safe_concat content_tag :span, member.role.caption, {class: 'badge'}
-        end
+        projects_list_row(member, user)
       end.join.html_safe
     end
+  end
+
+  def projects_list_row(member, user)
+    content_tag :li do
+      safe_concat link_to member.project.caption.capitalize, overview_projects_path(member.project.slug)
+      safe_concat assigned_to_user_issues(member, user)
+      safe_concat content_tag :span, member.role.caption, {class: 'badge'}
+    end
+  end
+
+  # Build a filter link to opened issues assigned to "user".
+  # @param [Member] member
+  # @param [User] user
+  def assigned_to_user_issues(member, user)
+    " (#{link_to member.assigned_issues.to_a.count { |issue| issue.open? }, assigned_to_user_filter_path(member, user) } #{t(:text_assigned_issues)}) "
+  end
+
+  # Build a filter link path to opened issues assigned to "user".
+  # @param [Member] member
+  # @param [User] user
+  def assigned_to_user_filter_path(member, user)
+    issues_path(member.project.slug, {type: :filter,
+                                      filters_list: [:assigned_to, :status],
+                                      filter: {assigned_to: {operator: :equal, value: [user.id]}, status: {operator: :open}}})
   end
 end

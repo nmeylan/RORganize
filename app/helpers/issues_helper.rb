@@ -9,7 +9,7 @@ module IssuesHelper
   def list(collection)
     content_tag :table, {class: 'issue list', 'data-link' => toolbox_issues_path(@project.slug)} do
       safe_concat list_header
-      safe_concat(list_body(collection))
+      safe_concat list_body(collection)
     end
   end
 

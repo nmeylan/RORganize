@@ -21,7 +21,8 @@ class ApplicationCollectionDecorator < Draper::CollectionDecorator
   def display_collection(no_pagination = false, no_data_text = nil, no_scroll = false)
     h.content_tag :div, {id: "#{h.controller_name.tr('_', '-')}-content"} do
       if object.to_a.any?
-        collection_content(no_scroll)
+        proc = Proc.new if block_given?
+        collection_content(no_scroll, proc)
         collection_pagination(no_pagination)
       else
         h.no_data(no_data_text, no_data_glyph_name, true)
@@ -29,10 +30,10 @@ class ApplicationCollectionDecorator < Draper::CollectionDecorator
     end
   end
 
-  def collection_content(no_scroll)
+  def collection_content(no_scroll, proc = nil)
     h.safe_concat h.content_tag :div, {class: "#{no_scroll ? '' : 'autoscroll'}"}, &Proc.new {
-      if block_given?
-        h.safe_concat yield
+      if proc
+        proc.call
       else
         h.safe_concat h.list(self)
       end

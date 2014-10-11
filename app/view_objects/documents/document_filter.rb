@@ -30,4 +30,9 @@ class DocumentFilter
     content_hash['hash_for_radio']['updated'] = %w(all equal superior inferior today)
     content_hash
   end
+
+  def build_json_form(form_hash)
+    form_hash.each { |_, v| v.tr('"', "'").gsub(/\n/, '') }
+    form_hash.to_json
+  end
 end

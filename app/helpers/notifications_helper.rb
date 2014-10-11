@@ -19,11 +19,15 @@ module NotificationsHelper
   def notifications_block(project_slug, notifications)
     content_tag :div, class: 'box notification-list' do
       safe_concat notification_block_header(project_slug)
-      safe_concat content_tag :ul, class: 'fancy-list fancy-list-mini', &Proc.new {
-        notifications.collect do |notification|
-          notification_block_row(notification)
-        end.join.html_safe
-      }
+      safe_concat notification_block_content(notifications)
+    end
+  end
+
+  def notification_block_content(notifications)
+    content_tag :ul, class: 'fancy-list fancy-list-mini' do
+      notifications.collect do |notification|
+        notification_block_row(notification)
+      end.join.html_safe
     end
   end
 
