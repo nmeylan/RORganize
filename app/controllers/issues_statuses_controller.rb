@@ -78,13 +78,7 @@ class IssuesStatusesController < ApplicationController
     issue_status = IssuesStatus.find_by_id(params[:id].to_i)
     saved = issue_status.change_position(params[:operator])
     get_statuses
-    respond_to do |format|
-      if saved
-        format.js { respond_to_js response_header: :success, response_content: t(:successful_update) }
-      else
-        format.js { respond_to_js response_header: :failure, response_content: t(:text_negative_position) }
-      end
-    end
+    generic_repond_js(saved)
   end
 
   private

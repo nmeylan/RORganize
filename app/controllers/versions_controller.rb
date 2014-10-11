@@ -30,14 +30,9 @@ class VersionsController < ApplicationController
     @version = @project.versions.build(version_params)
     respond_to do |format|
       if @version.save
-        flash[:notice] = t(:successful_creation)
-        format.html { redirect_to versions_path }
-        format.json { render json: @version,
-                             status: :created, location: @version }
+        success_generic_create_callback(format, versions_path)
       else
-        format.html { render :new }
-        format.json { render json: @version.errors,
-                             status: :unprocessable_entity }
+        error_generic_create_callback(format, @user)
       end
     end
   end
@@ -52,18 +47,11 @@ class VersionsController < ApplicationController
     @version.attributes= version_params
     respond_to do |format|
       if !@version.changed?
-        format.html { redirect_to versions_path }
-        format.json { render json: @version,
-                             status: :created, location: @version }
+        success_generic_update_callback(format, versions_path, false)
       elsif @version.changed? && @version.save
-        flash[:notice] = t(:successful_update)
-        format.html { redirect_to versions_path}
-        format.json { render json: @version,
-                             status: :created, location: @version }
+        success_generic_update_callback(format, versions_path)
       else
-        format.html { render :edit }
-        format.json { render json: @version.errors,
-                             status: :unprocessable_entity }
+        error_generic_update_callback(format, @version)
       end
     end
   end
@@ -85,14 +73,10 @@ class VersionsController < ApplicationController
   def change_position
     saved = @version.change_position(@project, params[:operator])
     @versions_decorator = @project.versions.paginated(@sessions[:current_page], @sessions[:per_page], 'versions.position').decorate(context: {project: @project})
-    respond_to do |format|
-      if saved
-        format.js { respond_to_js response_header: :success, response_content: t(:successful_update) }
-      else
-        format.js { respond_to_js response_header: :failure, response_content: t(:text_negative_position) }
-      end
-    end
+    generic_repond_js(saved)
   end
+
+
 
   private
   def version_params
@@ -107,4 +91,6 @@ class VersionsController < ApplicationController
       render_404
     end
   end
+
+
 end

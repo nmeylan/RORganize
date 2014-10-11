@@ -15,6 +15,7 @@ class ProfilesController < ApplicationController
   helper QueriesHelper
   helper UsersHelper
   include Rorganize::Managers::ActivityManager
+  include Rorganize::RichController::ProjectsPreferenceCallback
 
   def show
     @user_decorator = User.eager_load([members: [:role, :project, assigned_issues: :status]]).find_by_slug(User.current.slug).decorate
@@ -30,17 +31,7 @@ class ProfilesController < ApplicationController
 
   def change_password
     if request.post?
-      if user_params[:password].eql?(user_params[:retype_password]) && @user.update_attributes(password: user_params[:password])
-        respond_to do |format|
-          flash[:notice] = t(:successful_creation)
-          format.html { redirect_to profile_path}
-        end
-      else
-        @user.errors.add(:passwords, ': do not match')
-        respond_to do |format|
-          format.html
-        end
-      end
+      change_password!
     else
       respond_to do |format|
         format.html {}
@@ -64,37 +55,14 @@ class ProfilesController < ApplicationController
   end
 
   def star_project
-    members = @user.members
-    member = members.select { |member| member.project.slug.eql?(params[:project_id]) }.first
-    project = Project.find_by_slug(params[:project_id])
-    if member.nil? && project.is_public
-      non_member_role = Role.find_by_name('Non member')
-      member = Member.create({project_id: project.id, user_id: User.current.id, role_id: non_member_role.id})
-    end
-    member.is_project_starred = !member.is_project_starred
-    member.save
-    message = "#{t(:text_project)} #{member.project.name} #{member.is_project_starred ? t(:successful_starred) : t(:successful_unstarred)}"
+    member, message = save_star_project
     respond_to do |format|
       format.js { respond_to_js response_header: :success, response_content: message, locals: {id: params[:project_id], is_starred: member.is_project_starred} }
     end
   end
 
   def save_project_position
-    members = @user.members.includes(:project)
-    project_ids = params[:ids]
-    member_project_slug = members.map { |member| member.project.slug }
-    diff = project_ids - member_project_slug
-    if diff.any?
-      non_member_projects = Project.where(slug: diff)
-      non_member_role = Role.find_by_name('Non member')
-      non_member_projects.each do |project|
-        members << Member.create({project_id: project.id, user_id: User.current.id, role_id: non_member_role.id}) if project.is_public
-      end
-    end
-    members.each do |member|
-      member.project_position = project_ids.index(member.project.slug)
-      member.save
-    end
+    update_project_position
     respond_to do |format|
       format.js { respond_to_js action: 'do_nothing', response_header: :success, response_content: t(:successful_update) }
     end
@@ -107,10 +75,7 @@ class ProfilesController < ApplicationController
       @date = Date.today
     end
     time_entries = @user.time_entries_for_month(@date.year, @date.month)
-    @time_entries = Hash.new { |h, k| h[k] = [] }
-    time_entries.each do |time_entry|
-      @time_entries[time_entry.spent_on] << time_entry
-    end
+    @time_entries = time_entries.inject(Hash.new { |h, k| h[k] = [] }){|memo, time_entry| memo[time_entry.spent_on] << time_entry; memo}
     respond_to do |format|
       format.html
       format.js { respond_to_js }
@@ -128,22 +93,26 @@ class ProfilesController < ApplicationController
 
   def notification_preferences
     @keys = Preference.notification_keys
-
     if request.post?
-      Preference.delete_all(key: @keys.values, user_id: @user.id)
-      if params[:preferences]
-        params[:preferences].values.each do |preference_key|
-          @user.preferences << Preference.new(key: preference_key.to_i, boolean_value: true)
-        end
-      end
-      @user.save
-      respond_to do |format|
-        flash[:notice] = t(:successful_preferences)
-        format.html { redirect_to action: 'notification_preferences' }
+      save_preferences
+    else
+      @preferences = @user.preferences.where(key: @keys.values)
+    end
+
+  end
+
+  def save_preferences
+    Preference.delete_all(key: @keys.values, user_id: @user.id)
+    if params[:preferences]
+      params[:preferences].values.each do |preference_key|
+        @user.preferences << Preference.new(key: preference_key.to_i, boolean_value: true)
       end
     end
-    @preferences = @user.preferences.where(key: @keys.values)
-
+    @user.save
+    respond_to do |format|
+      flash[:notice] = t(:successful_preferences)
+      format.html { redirect_to action: 'notification_preferences' }
+    end
   end
 
   private
@@ -156,5 +125,23 @@ class ProfilesController < ApplicationController
     params.require(:user).permit(User.permit_attributes)
   end
 
+
+  def change_password!
+    if password_match_retype?
+      respond_to do |format|
+        flash[:notice] = t(:successful_creation)
+        format.html { redirect_to profile_path }
+      end
+    else
+      @user.errors.add(:passwords, ': do not match')
+      respond_to do |format|
+        format.html
+      end
+    end
+  end
+
+  def password_match_retype?
+    user_params[:password].eql?(user_params[:retype_password]) && @user.update_attributes(password: user_params[:password])
+  end
 
 end
