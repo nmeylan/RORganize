@@ -3,10 +3,12 @@
 # Encoding: UTF-8
 # File: issues_controller.rb
 require 'shared/history'
+require 'issues/overview_report'
+require 'issues/form_content'
 require 'issues/issue_overview_hash'
 class IssuesController < ApplicationController
   before_filter { |c| c.add_action_alias= {'overview' => 'index', 'apply_custom_query' => 'index'} }
-  before_filter :find_project_with_depedencies, only: [:index, :new, :create, :update, :edit, :toolbox, :apply_custom_query]
+  before_filter :find_project_with_dependencies, only: [:index, :new, :create, :update, :edit, :toolbox, :apply_custom_query]
   before_filter :check_permission, except: [:toolbox]
   before_filter :find_issue, only: [:edit, :update, :destroy]
   before_filter :check_not_owner_permission, only: [:edit, :update, :destroy]
@@ -14,6 +16,7 @@ class IssuesController < ApplicationController
   include Rorganize::RichController::ToolboxCallback
   include Rorganize::Filters::NotificationFilter
   include Rorganize::RichController::ProjectContext
+  include Rorganize::RichController::GanttCallbacks
   require 'will_paginate'
 
   #RESTFULL CRUD Methods
@@ -43,7 +46,7 @@ class IssuesController < ApplicationController
     @issue_decorator = Issue.new.decorate(context: {project: @project})
     @issue_decorator.attachments.build
     respond_to do |format|
-      format.html { render :new, locals: {form_content: form_content} }
+      format.html { render :new, locals: {form_content: FormContent.new(@project).content} }
     end
   end
 
@@ -55,7 +58,7 @@ class IssuesController < ApplicationController
       if @issue_decorator.save
         success_generic_create_callback(format, issue_path(@project.slug, @issue_decorator.id))
       else
-        error_generic_create_callback(format, @issue_decorator, {form_content: form_content})
+        error_generic_create_callback(format, @issue_decorator, {form_content: FormContent.new(@project).content})
       end
     end
   end
@@ -63,7 +66,7 @@ class IssuesController < ApplicationController
   #GET /project/:project_identifier/issues/:id/edit
   def edit
     respond_to do |format|
-      format.html { render :edit, locals: {form_content: form_content} }
+      format.html { render :edit, locals: {form_content: FormContent.new(@project).content} }
     end
   end
 
@@ -71,16 +74,18 @@ class IssuesController < ApplicationController
   def update
     @issue_decorator.attributes = issue_params
     respond_to do |format|
-      if  !@issue_decorator.changed? && issue_params[:existing_attachment_attributes].nil? && issue_params[:new_attachment_attributes].nil?
+      if  !@issue_decorator.changed? && !any_attachement_uploaded?
         success_generic_update_callback(format, issue_path(@project.slug, @issue_decorator.id), false)
         #If attributes were updated
       elsif @issue_decorator.save && @issue_decorator.save_attachments
         success_generic_update_callback(format, issue_path(@project.slug, @issue_decorator.id))
       else
-        error_generic_update_callback(format, @issue_decorator, {form_content: form_content})
+        error_generic_update_callback(format, @issue_decorator, {form_content: FormContent.new(@project).content})
       end
     end
   end
+
+
 
   #DELETE /project/:project_identifier/issues/:id
   def destroy
@@ -103,17 +108,11 @@ class IssuesController < ApplicationController
     index
   end
 
-  def add_predecessor
-    set_predecessor(params[:issue][:predecessor_id])
-  end
 
-  def del_predecessor
-    set_predecessor(nil)
-  end
 
   def overview
-    overview_report = Issue.overview_report(@project.id)
-    overview_object = IssueOverviewHash.new(overview_report, @project.issues.count)
+    overview_report = OverviewReport.new(@project.id)
+    overview_object = IssueOverviewHash.new(overview_report.content, @project.issues.count)
     respond_to do |format|
       format.html { render :overview, locals: {overview: overview_object} }
     end
@@ -121,17 +120,6 @@ class IssuesController < ApplicationController
 
   #Private methods
   private
-  def set_predecessor(predecessor_id)
-    @issue_decorator = Issue.find(params[:id]).decorate(context: {project: @project})
-    result = @issue_decorator.set_predecessor(predecessor_id)
-    respond_to do |format|
-      format.js do
-        respond_to_js action: 'add_predecessor', locals: {journals: History.new(result[:journals]), success: result[:saved]}, response_header: result[:saved] ? :success : :failure, response_content: result[:saved] ? t(:successful_update) : @issue_decorator.errors.full_messages
-      end
-    end
-  end
-
-
   #Check if current user is owner of issue
   def check_owner
     @issue_decorator.author_id.eql?(User.current.id)
@@ -154,16 +142,6 @@ class IssuesController < ApplicationController
     @issues_decorator = Issue.filter(filter, @project.id).paginated(@sessions[:current_page], @sessions[:per_page], order('issues.id'), [:tracker, :version, :assigned_to, :category, :project, :attachments, :author, status: [:enumeration]]).decorate(context: {project: @project})
   end
 
-  def form_content
-    form_content = {}
-    form_content['allowed_statuses'] = User.current.allowed_statuses(@project).collect { |status| [status.enumeration.name, status.id] }
-    form_content['done_ratio'] = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
-    form_content['members'] = @project.real_members.collect { |member| [member.user.name, member.user.id] }
-    form_content['categories'] = @project.categories.collect { |category| [category.name, category.id] }
-    form_content['trackers'] = @project.trackers.collect { |tracker| [tracker.name, tracker.id] }
-    form_content
-  end
-
   def issue_params
     params.require(:issue).permit(Issue.permit_attributes)
   end
@@ -172,7 +150,7 @@ class IssuesController < ApplicationController
     params.require(:value).permit(Issue.permit_bulk_edit_values)
   end
 
-  def find_project_with_depedencies
+  def find_project_with_dependencies
     @project = Project.includes(:attachments, :versions, :categories, :trackers, members: :user).where(slug: params[:project_id])[0]
     gon.project_id = @project.slug
   rescue => e
@@ -186,6 +164,10 @@ class IssuesController < ApplicationController
     else
       render_404
     end
+  end
+
+  def any_attachement_uploaded?
+    issue_params[:existing_attachment_attributes] || issue_params[:new_attachment_attributes]
   end
 
   alias :load_collection :load_issues
