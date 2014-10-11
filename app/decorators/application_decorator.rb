@@ -4,6 +4,7 @@ class ApplicationDecorator < Draper::Decorator
   include Rails.application.routes.url_helpers
   include Rorganize::Managers::PermissionManager::PermissionHandler
   include ActivityDecorator
+  include GenericDecorator
 
   # @return [Boolean] true if the model description exists.
   def description?
@@ -54,15 +55,6 @@ class ApplicationDecorator < Draper::Decorator
   def edit_link(label, path, project = nil, owner = nil, options = {})
     options = options.merge({class: 'button'})
     link_to_with_permissions(h.glyph(label, 'pencil'), path, project, owner, options)
-  end
-
-  # Render a link to create the model.
-  # @param [String] label : link label.
-  # @param [String] path to controller.
-  # @param [Project] project the project that belongs to the model.
-  def new_link(label, path, project = nil, options = {})
-    options = options.merge({class: 'button new'})
-    link_to_with_permissions(h.glyph(label, 'plus'), path, project, nil, options)
   end
 
   def show_link(path, project = nil, owner = nil, options = {})

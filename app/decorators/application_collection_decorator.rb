@@ -8,6 +8,7 @@ class ApplicationCollectionDecorator < Draper::CollectionDecorator
   include ActionDispatch::Routing
   include Rails.application.routes.url_helpers
   include Rorganize::Managers::PermissionManager::PermissionHandler
+  include GenericDecorator
 
   # @return [String] path to the default pagination action.
   def pagination_path
@@ -20,28 +21,28 @@ class ApplicationCollectionDecorator < Draper::CollectionDecorator
   def display_collection(no_pagination = false, no_data_text = nil, no_scroll = false)
     h.content_tag :div, {id: "#{h.controller_name.tr('_', '-')}-content"} do
       if object.to_a.any?
-        h.safe_concat h.content_tag :div, {class: "#{no_scroll ? '' : 'autoscroll'}"}, &Proc.new {
-          if block_given?
-            h.safe_concat yield
-          else
-            h.safe_concat h.list(self)
-          end
-        }
-        h.safe_concat(h.paginate(object, h.session[h.controller_name.to_sym], pagination_path)) unless no_pagination || (object.to_a.size < 25 && h.session[h.controller_name.to_sym][:current_page].to_i < 2)
+        collection_content(no_scroll)
+        collection_pagination(no_pagination)
       else
         h.no_data(no_data_text, no_data_glyph_name, true)
       end
     end
   end
 
-  # Generic new link.
-  # @param [String] label : link label.
-  # @param [String] path to controller.
-  # @param [Project] project the project that belongs to the model.
-  # @param [Hash] options : html_options.
-  def new_link(label, path, project = nil, options = {})
-    options = options.merge({class: 'button new'})
-    link_to_with_permissions(h.glyph(label, 'plus'), path, project, nil, options)
+  def collection_content(no_scroll)
+    h.safe_concat h.content_tag :div, {class: "#{no_scroll ? '' : 'autoscroll'}"}, &Proc.new {
+      if block_given?
+        h.safe_concat yield
+      else
+        h.safe_concat h.list(self)
+      end
+    }
+  end
+
+  def collection_pagination(no_pagination)
+    unless no_pagination || (object.to_a.size < 25 && h.session[h.controller_name.to_sym][:current_page].to_i < 2)
+      h.safe_concat(h.paginate(object, h.session[h.controller_name.to_sym], pagination_path))
+    end
   end
 
   def no_data_glyph_name

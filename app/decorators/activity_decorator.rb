@@ -17,28 +17,34 @@ module ActivityDecorator
   end
 
   def creation_info_content
-    h.safe_concat "#{h.t(:label_added)} #{h.distance_of_time_in_words(model.created_at, Time.now)} #{h.t(:label_ago)}, #{h.t(:label_by)} "
+    h.safe_concat creation_info_date
     h.safe_concat model.author.decorate.user_link(true)
     h.safe_concat '.'
-    h.safe_concat " #{h.t(:label_updated)} #{h.distance_of_time_in_words(model.updated_at, Time.now)} #{h.t(:label_ago)}." unless model.created_at.eql?(model.updated_at)
+    h.safe_concat update_info_date unless model.created_at.eql?(model.updated_at)
+  end
+
+  def update_info_date
+    " #{h.t(:label_updated)} #{h.distance_of_time_in_words(model.updated_at, Time.now)} #{h.t(:label_ago)}."
+  end
+
+  def creation_info_date
+    "#{h.t(:label_added)} #{h.distance_of_time_in_words(model.created_at, Time.now)} #{h.t(:label_ago)}, #{h.t(:label_by)} "
   end
 
   # @return [String] version name.
   def display_version
-    if model.version
-      h.content_tag :span, {class: 'info-square'} do
-        h.glyph(model.version.caption, 'milestone')
-      end
-    else
-      '-'
-    end
+    display_info_square(model.version, 'milestone')
   end
 
   # @return [String] category name.
   def display_category
-    if model.category
+    display_info_square(model.category, 'tag')
+  end
+
+  def display_info_square(attribute, glyph)
+    if attribute
       h.content_tag :span, {class: 'info-square'} do
-        h.glyph(model.category.caption, 'tag')
+        h.glyph(attribute.caption, glyph)
       end
     else
       '-'

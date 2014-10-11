@@ -17,18 +17,6 @@ class WikiPageDecorator < ApplicationDecorator
     parents.reverse
   end
 
-  # @return [String] creation info.
-  def creation_info
-    "#{h.t(:label_created)} #{h.distance_of_time_in_words(model.created_at, Time.now)} #{h.t(:label_ago)}, #{h.t(:label_by)} #{self.author_name}. #{self.update_info}"
-  end
-
-  # @return [String] update info.
-  def update_info
-    unless model.created_at.eql?(model.updated_at)
-      "#{h.t(:label_updated)} #{h.distance_of_time_in_words(model.updated_at, Time.now)}  #{h.t(:label_ago)}."
-    end
-  end
-
   # @return [String] author name.
   def author_name
     model.author ? model.author.name : h.t(:label_unknown)
