@@ -1,10 +1,13 @@
 require 'shared/activities'
 require 'issues/issue_overview_hash'
+require 'rorganize/home_page_report'
 class RorganizeController < ApplicationController
   helper ProjectsHelper
   helper IssuesHelper
   helper UsersHelper
   include Rorganize::Managers::ActivityManager
+  include Rorganize::RichController::TaskListCallback
+
   before_filter { |c| c.top_menu_item('home') }
   helper_method :sort_column, :sort_direction
 
@@ -14,15 +17,7 @@ class RorganizeController < ApplicationController
       if current_user.nil?
         format.html { render :index }
       else
-        projects_decorator = User.current.owned_projects('starred').decorate(context: {allow_to_star: false})
-        overview_object_assigned = IssueOverviewHash.new({assigned_to:
-                                                              Issue.group_opened_by_project('issues.assigned_to_id', "assigned_to_id = #{User.current.id}")},
-                                                         Issue.where(assigned_to_id: User.current.id).count, true)
-        overview_object_submitted = IssueOverviewHash.new({author: Issue.group_opened_by_project('issues.author_id', "author_id = #{User.current.id}")},
-                                                          Issue.where(author_id: User.current.id).count, true)
-        format.html { render :index, locals: {projects_decorator: projects_decorator,
-                                              overview_object_assigned: overview_object_assigned,
-                                              overview_object_submitted: overview_object_submitted} }
+        format.html { render :index, locals: HomePageReport.new.content }
       end
     end
   end
@@ -48,49 +43,6 @@ class RorganizeController < ApplicationController
   def preview_markdown
     respond_to do |format|
       format.json { render json: markdown_to_html(params[:content]) }
-    end
-  end
-
-  def task_list_action_markdown
-    element_types = {'Comment' => Comment, 'Issue' => Issue, 'Document' => Document}
-    params.require(:is_check)
-    params.require(:element_type)
-    params.require(:element_id)
-    params.require(:check_index)
-    element_type = element_types[params[:element_type]]
-    element = element_type.find_by_id(params[:element_id]) if element_type
-    unless element.nil?
-      project = Project.find_by_id(element.project_id)
-      if params[:element_type].eql?('Comment') && (User.current.allowed_to?('edit_comment_not_owner', 'comments', project) || element.user_id.eql?(User.current.id))
-        content = element.content
-      elsif (params[:element_type].eql?('Issue') && (element.author.eql?(User.current) || User.current.allowed_to?('edit_not_owner', 'issues', project))) || (params[:element_type].eql?('Document') && (User.current.allowed_to?('edit', 'documents', project)))
-        content = element.description
-      else #User try to cheat.
-        content = nil
-        message = "Don't try to brain the master. You now you haven't the permission to perform this action!"
-        header = :failure
-      end
-      unless content.nil?
-        count = -1
-        content.gsub!(/- \[(\w|\s)\]/) do |task|
-          count += 1
-          if count == params[:check_index].to_i
-            params[:is_check].eql?('true') ? '- [x]' : '- [ ]'
-          else
-            task
-          end
-        end
-        if params[:element_type].eql?('Comment')
-          element.update_column(:content, content)
-        elsif params[:element_type].eql?('Issue') || params[:element_type].eql?('Document')
-          element.update_column(:description, content)
-        end
-        message = t(:successful_update)
-        header = :success
-      end
-    end
-    respond_to do |format|
-      format.js { respond_to_js action: 'do_nothing', response_header: header, response_content: message }
     end
   end
 

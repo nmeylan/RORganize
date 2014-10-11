@@ -64,14 +64,4 @@ module IssuesHelper
     toolbox_tag(IssueToolbox.new(issues_toolbox, @project, User.current))
   end
 
-
-  # Build a link to issues list with given filter.
-  # @param [String] label of the link.
-  # @param [String] project_slug : the slug of the project.
-  # @param [Array] filter_list : list of filtered field(attribute).
-  # @param [Hash] filter : hash with following structure {attribute: {operator: 'operator', value: ['values']}}.
-  def filter_link(label, project_slug, filter_list, filter)
-    link_to label, issues_path(project_slug, {type: :filter, filters_list: filter_list, filter: filter})
-  end
-
 end

@@ -11,18 +11,18 @@ module Rorganize
         # @param [String] title : title of the report. (e.g : Opened assigned issue, Closed issues)
         # @param [String] group_name : name of the group (e.g: project)
         # @param [String] group_class_name : css class for the group.
-        def display_overview_groups(groups, title = nil, group_class_name = nil)
+        def display_overview_groups(groups, title = nil, optional_group_name = nil, group_class_name = nil)
           groups.collect do |group_hash|
             group_hash.collect do |group_name, group|
-              group_name_string = group_name_string(group_name)
+              group_name_string = group_name_string(optional_group_name, group_name)
               t = overview_group_title(group_name, title)
               display_overview_group_by("#{t} : By #{group_name_string}", group, group_name, !group_name.eql?(:status), group_class_name)
             end.join.html_safe
           end.join.html_safe
         end
 
-        def group_name_string(group_name)
-          group_name.nil? ? group_name.to_s.capitalize.tr('_', ' ') : group_name
+        def group_name_string(optional_group_name, group_name)
+          optional_group_name.nil? ? group_name.to_s.capitalize.tr('_', ' ') : optional_group_name
         end
 
         def overview_group_title(k, title)
@@ -130,6 +130,15 @@ module Rorganize
                                     {group_name => {operator: :equal, value: [element[:id]]}}),
                         class: 'caption'
           end
+        end
+
+        # Build a link to issues list with given filter.
+        # @param [String] label of the link.
+        # @param [String] project_slug : the slug of the project.
+        # @param [Array] filter_list : list of filtered field(attribute).
+        # @param [Hash] filter : hash with following structure {attribute: {operator: 'operator', value: ['values']}}.
+        def filter_link(label, project_slug, filter_list, filter)
+          link_to label, issues_path(project_slug, {type: :filter, filters_list: filter_list, filter: filter})
         end
       end
     end
