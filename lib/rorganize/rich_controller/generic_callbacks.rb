@@ -27,13 +27,16 @@ module Rorganize
         generic_rediction(format, path)
       end
 
-      def error_generic_update_callback(format, model, locals = nil)
-        format.html { render :edit, locals: locals }
-        format.json { render json: model.errors, status: :unprocessable_entity }
+      def error_generic_update_callback(format, model, locals = {})
+        generic_error_render(:edit, format, model, locals)
       end
 
-      def error_generic_create_callback(format, model, locals = nil)
-        format.html { render :new, locals: locals }
+      def error_generic_create_callback(format, model, locals = {})
+        generic_error_render(:new, format, model, locals)
+      end
+
+      def generic_error_render(action, format, model, locals = {})
+        format.html { render action, locals: locals }
         format.json { render json: model.errors, status: :unprocessable_entity }
       end
 
