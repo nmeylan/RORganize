@@ -28,8 +28,39 @@ module IssuesHelper
   # Build a list of issues.
   # @param [Array] collection of issues.
   def list(collection)
-    content_tag :table, {class: 'issue list', 'data-link' => toolbox_issues_path(@project.slug)}, &Proc.new {
-      safe_concat content_tag :tr, class: 'header', &Proc.new {
+    content_tag :table, {class: 'issue list', 'data-link' => toolbox_issues_path(@project.slug)} do
+      safe_concat list_header
+      safe_concat(list_body(collection))
+    end
+  end
+
+  def list_body(collection)
+    collection.collect do |issue|
+      list_row(issue)
+    end.join.html_safe
+  end
+
+  def list_row(issue)
+    content_tag :tr, class: "has-context-menu odd-even issue-tr" do
+      safe_concat content_tag :td, check_box_tag("issue-#{issue.id.to_s}", issue.id), {class: 'cell-checkbox'}
+      safe_concat content_tag :td, issue.id, class: 'list-center id'
+      safe_concat content_tag :td, issue.tracker_str, class: 'list-center tracker'
+      safe_concat content_tag :td, link_to(issue.resized_caption(35), issue_path(@project.slug, issue.id)), {class: 'name', id: issue.id}
+      safe_concat content_tag :td, issue.display_assigned_to, class: 'list-center assigned-to'
+      safe_concat content_tag :td, issue.display_status, class: 'list-center status'
+      safe_concat content_tag :td, issue.display_category, class: 'list-center category'
+      safe_concat content_tag :td, issue.display_version, class: 'list-center version'
+      safe_concat content_tag :td, issue.due_date, class: 'list-center due-date'
+      safe_concat content_tag :td, issue.display_done_progression, {class: 'list-center done tooltipped tooltipped-s', label: "#{issue.done}%"}
+      safe_concat content_tag :td, issue.checklist_progression, class: 'icon-information'
+      safe_concat content_tag :td, issue.comment_presence_indicator, class: 'icon-information'
+      safe_concat content_tag :td, issue.attachment_presence_indicator, class: 'icon-information'
+    end
+  end
+
+  def list_header
+    content_tag :thead do
+      content_tag :tr, class: 'header' do
         safe_concat content_tag :th, link_to(glyph('', 'check'), '#', {class: 'icon-checked', id: 'check-all', 'cb_checked' => 'b'})
         safe_concat content_tag :th, sortable('issues.id', '#')
         safe_concat content_tag :th, sortable('trackers.name', 'Tracker')
@@ -43,25 +74,9 @@ module IssuesHelper
         safe_concat content_tag :th, nil, {class: 'optional-cell'}
         safe_concat content_tag :th, nil, {class: 'optional-cell'}
         safe_concat content_tag :th, nil, {class: 'optional-cell'}
-      }
-      safe_concat(collection.collect do |issue|
-        content_tag :tr, class: "has-context-menu odd-even issue-tr" do
-          safe_concat content_tag :td, check_box_tag("issue-#{issue.id.to_s}", issue.id), {class: 'cell-checkbox'}
-          safe_concat content_tag :td, issue.id, class: 'list-center id'
-          safe_concat content_tag :td, issue.tracker_str, class: 'list-center tracker'
-          safe_concat content_tag :td, link_to(issue.resized_caption(35), issue_path(@project.slug, issue.id)), {class: 'name', id: issue.id}
-          safe_concat content_tag :td, issue.display_assigned_to, class: 'list-center assigned-to'
-          safe_concat content_tag :td, issue.display_status, class: 'list-center status'
-          safe_concat content_tag :td, issue.display_category, class: 'list-center category'
-          safe_concat content_tag :td, issue.display_version, class: 'list-center version'
-          safe_concat content_tag :td, issue.due_date, class: 'list-center due-date'
-          safe_concat content_tag :td, issue.display_done_progression, {class: 'list-center done tooltipped tooltipped-s', label: "#{issue.done}%"}
-          safe_concat content_tag :td, issue.checklist_progression, class: 'icon-information'
-          safe_concat content_tag :td, issue.comment_presence_indicator, class: 'icon-information'
-          safe_concat content_tag :td, issue.attachment_presence_indicator, class: 'icon-information'
-        end
-      end.join.html_safe)
-    }
+
+      end
+    end
   end
 
   # Build a toolbox render for issue toolbox.
@@ -77,16 +92,20 @@ module IssuesHelper
   # @param [String] group_class_name : css class for the group.
   def display_overview_groups(groups, title = nil, group_name = nil, group_class_name = nil)
     groups.collect do |group_hash|
-      group_hash.collect do |k, v|
-        gn = group_name.nil? ? k.to_s.capitalize.tr('_', ' ') : group_name
-        t = if title.nil? then
-              k.eql?(:status) ? 'Issues' : 'Opened issues'
-            else
-              title
-            end
-        display_overview_group_by("#{t} : By #{gn}", v, k, !k.eql?(:status), group_class_name)
+      group_hash.collect do |group_name, group|
+        gn = group_name.nil? ? group_name.to_s.capitalize.tr('_', ' ') : group_name
+        t = overview_group_title(group_name, title)
+        display_overview_group_by("#{t} : By #{gn}", group, group_name, !group_name.eql?(:status), group_class_name)
       end.join.html_safe
     end.join.html_safe
+  end
+
+  def overview_group_title(k, title)
+    if title.nil?
+      k.eql?(:status) ? 'Issues' : 'Opened issues'
+    else
+      title
+    end
   end
 
   # Build a render for group of issues.
@@ -100,25 +119,61 @@ module IssuesHelper
     content_tag :div, class: class_name do
       safe_concat content_tag :h2, title, class: "#{class_name} title"
       if group.any?
-        safe_concat content_tag :table, class: class_name, &Proc.new {
-          safe_concat content_tag :tr, class: "#{class_name} header", &Proc.new {
-            safe_concat content_tag :th, t(:field_name), class: 'caption'
-            safe_concat content_tag :th, t(:label_issue_plural), class: 'number'
-            safe_concat content_tag :th, t(:label_percentage), class: 'percentage'
-          }
-          na = nil
-          group.sort_by { |e| e[:caption] }.collect do |element|
-            if element[:id].eql?('NULL')
-              na = element
-            else
-              display_overview_row(element, group_name, only_opened_issues)
-            end
-          end.join.html_safe
-          display_overview_row(na, group_name, only_opened_issues) if na
-        }
+        safe_concat overview_table(class_name, group, group_name, only_opened_issues)
       else
         safe_concat no_data(t(:text_no_issues), 'issue-opened')
       end
+    end
+  end
+
+  # @param [String] class_name css.
+  # @param [Array] group : the group of issues
+  # @param [Symbol] group_name : the symbol of the object attribute (e.g :assigned_to, :status)
+  # @param [Boolean] only_opened_issues : true display report only for opened issues else display report for all issues.
+  def overview_table(class_name, group, group_name, only_opened_issues)
+    content_tag :table, class: class_name do
+      safe_concat overview_table_header(class_name)
+      display_overview_rows(group, group_name, only_opened_issues)
+      na = no_affected_row(group)
+      display_overview_row(na, group_name, only_opened_issues) if na
+    end
+  end
+
+  # Build overview report rows.
+  # @param [Array] group : the group of issues
+  # @param [Symbol] group_name : the symbol of the object attribute (e.g :assigned_to, :status)
+  # @param [Boolean] only_opened_issues : true display report only for opened issues else display report for all issues.
+  def display_overview_rows(group, group_name, only_opened_issues)
+    group.sort_by { |e| e[:caption] }.collect do |element|
+      select_overview_row_type(element, group_name, only_opened_issues)
+    end.join.html_safe
+  end
+
+  # Select and build the right row to display.
+  # @param [Hash] element : see #IssueOverviewHash.
+  # @param [Symbol] group_name : the symbol of the object attribute (e.g :assigned_to, :status)
+  # @param [Boolean] only_opened_issues : true display report only for opened issues else display report for all issues.
+  def select_overview_row_type(element, group_name, only_opened_issues)
+    if element[:id].eql?('NULL')
+      element
+    else
+      display_overview_row(element, group_name, only_opened_issues)
+    end
+  end
+
+  # Return the non affected row.
+  # @param [Array] group group of row (e.g : all versions row (version1, version2, unplanned))
+  # @return [Hash] element : see #IssueOverviewHash.
+  def no_affected_row(group)
+    group.detect {|element| element[:id].eql?('NULL')}
+  end
+
+  # @param [String] class_name : css class name.
+  def overview_table_header(class_name)
+    content_tag :tr, class: "#{class_name} header" do
+      safe_concat content_tag :th, t(:field_name), class: 'caption'
+      safe_concat content_tag :th, t(:label_issue_plural), class: 'number'
+      safe_concat content_tag :th, t(:label_percentage), class: 'percentage'
     end
   end
 

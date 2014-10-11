@@ -7,15 +7,19 @@ module VersionsHelper
   # Build a list of versions.
   # @param [Array] collection of versions.
   def list(collection)
-    content_tag :table, {class: 'version list'}, &Proc.new {
+    content_tag :table, {class: 'version list'} do
       safe_concat list_header
-      safe_concat(collection.collect do |version|
-        list_body(collection, version)
-      end.join.html_safe)
-    }
+      safe_concat list_body(collection)
+    end
   end
 
-  def list_body(collection, version)
+  def list_body(collection)
+    collection.collect do |version|
+      list_row(collection, version)
+    end.join.html_safe
+  end
+
+  def list_row(collection, version)
     content_tag :tr, {class: 'odd-even', id: version.id} do
       safe_concat content_tag :td, version.edit_link, {class: 'list-left name'}
       safe_concat content_tag :td, version.start_date, {class: 'list-center start-date'}
@@ -40,7 +44,6 @@ module VersionsHelper
   end
 
 
-
   # Build a list of version overview report.
   # @param [Array] collection : array of versions.
   # @param [Hash] collection_detail : hash with following structure {version_id: {closed_issues_count: 'value', opened_issues_count: 'value', percent: 'value'}}
@@ -55,21 +58,28 @@ module VersionsHelper
 
   # Build a render for the project road map.
   # @param [Array] collection : array of versions.
-  # @param [Object] collection_detail
   # @param [Hash] collection_detail : hash with following structure {version_id: {closed_issues_count: 'value', opened_issues_count: 'value', percent: 'value'}}
   def draw_roadmap(collection, collection_detail)
     collection.collect do |version|
-      content_tag :div, class: 'roadmap-version-block' do
-        safe_concat version_overview(version,
-                                     collection_detail[version.id][:closed_issues_count],
-                                     collection_detail[version.id][:opened_issues_count],
-                                     collection_detail[version.id][:percent])
-        safe_concat version.display_description
-        safe_concat version_detail_render(collection_detail, version)
-      end
+      roadmap_version_block_render(collection_detail, version)
     end.join(content_tag :div, nil, class: 'separator').html_safe
   end
 
+  # @param [Hash] collection_detail : hash with following structure {version_id: {closed_issues_count: 'value', opened_issues_count: 'value', percent: 'value'}}
+  # @param [Version] version to render.
+  def roadmap_version_block_render(collection_detail, version)
+    content_tag :div, class: 'roadmap-version-block' do
+      safe_concat version_overview(version,
+                                   collection_detail[version.id][:closed_issues_count],
+                                   collection_detail[version.id][:opened_issues_count],
+                                   collection_detail[version.id][:percent])
+      safe_concat version.display_description
+      safe_concat version_detail_render(collection_detail, version)
+    end
+  end
+
+  # @param [Hash] collection_detail : hash with following structure {version_id: {closed_issues_count: 'value', opened_issues_count: 'value', percent: 'value'}}
+  # @param [Version] version to render detail.
   def version_detail_render(collection_detail, version)
     if collection_detail[version.id][:issues]
       content_tag :fieldset do
@@ -89,10 +99,12 @@ module VersionsHelper
 
   def version_detail_issues_render(collection_detail, version)
     collection_detail[version.id][:issues].collect do |issue|
-      content_tag :li, link_to("#{issue.tracker.name} ##{issue.id} : #{issue.caption}",
-                               issue_path(version.project.slug, issue.id)),
-                  class: "#{'close' if issue.status.is_closed?}"
+      content_tag :li, version_detail_issue_render(issue, version), class: "#{'close' if issue.status.is_closed?}"
     end.join.html_safe
+  end
+
+  def version_detail_issue_render(issue, version)
+    link_to("#{issue.tracker.name} ##{issue.id} : #{issue.caption}", issue_path(version.project.slug, issue.id))
   end
 
   def version_detail_header_render(version)
