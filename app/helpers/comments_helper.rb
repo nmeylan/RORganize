@@ -26,27 +26,46 @@ module CommentsHelper
   # @param [Booelan] avatar : if true display user avatar, hide avatar otherwise.
   def comment_block_render(comment, selected_comment_id = nil, avatar = true)
     css_class = comment.id.eql?(selected_comment_id) ? 'comment-content selected' : 'comment-content'
-    content_tag :div, {id: "comment-#{comment.id}", class: 'comment-block'}, &Proc.new {
+    content_tag :div, {id: "comment-#{comment.id}", class: 'comment-block'} do
       safe_concat comment.author_avatar unless avatar
-      safe_concat content_tag :div, class: "comment-header #{'display-avatar' if comment.author_avatar?}", &Proc.new {
-        safe_concat content_tag :span, comment.display_author(avatar) + ' ', class: 'author'
-        safe_concat content_tag :span, t(:text_added_comment) + ' ', class: 'text'
-        safe_concat "#{distance_of_time_in_words(comment.created_at, Time.now)} #{t(:label_ago)}. "
-        safe_concat content_tag :span, comment.creation_date, {class: 'history-date'}
-        if comment.edited?
-          safe_concat content_tag(:span, {class: 'edited'}, &Proc.new {
-            safe_concat "#{t(:text_edited)} on"
-            safe_concat content_tag(:span, comment.update_date, {class: 'history-date'}) })
-        end
-        safe_concat content_tag :div, class: 'right actions', &Proc.new {
-          safe_concat comment.edit_link
-          safe_concat comment.delete_link
-        }
-      }
-      safe_concat content_tag :div, class: css_class, &Proc.new {
-        markdown_to_html comment.content, comment.model
-      }
-    }
+      safe_concat comment_block_header(avatar, comment)
+      safe_concat comment_block_content(comment, css_class)
+    end
+  end
+
+  def comment_block_content(comment, css_class)
+    content_tag :div, class: css_class do
+      markdown_to_html comment.content, comment.model
+    end
+  end
+
+  def comment_block_header(avatar, comment)
+    content_tag :div, class: "comment-header #{'display-avatar' if comment.author_avatar?}" do
+      comment_block_header_author_info(avatar, comment)
+      safe_concat content_tag :span, comment.creation_date, {class: 'history-date'}
+      safe_concat comment_block_header_edited_indicator(comment) if comment.edited?
+      safe_concat comment_block_header_actions(comment)
+    end
+  end
+
+  def comment_block_header_author_info(avatar, comment)
+    concat_span_tag comment.display_author(avatar) + ' ', class: 'author'
+    concat_span_tag "#{t(:text_added_comment)} ", class: 'text'
+    safe_concat "#{distance_of_time_in_words(comment.created_at, Time.now)} #{t(:label_ago)}. "
+  end
+
+  def comment_block_header_actions(comment)
+    content_tag :div, class: 'right actions' do
+      safe_concat comment.edit_link
+      safe_concat comment.delete_link
+    end
+  end
+
+  def comment_block_header_edited_indicator(comment)
+    content_tag :span, {class: 'edited'} do
+      safe_concat "#{t(:text_edited)} on"
+      concat_span_tag comment.update_date, {class: 'history-date'}
+    end
   end
 
   # Build comment creation form.
@@ -73,12 +92,16 @@ module CommentsHelper
   # @param [Form] f : the form.
   def comment_form_content(f)
     safe_concat content_tag :p, &Proc.new {
-      safe_concat f.label :content, &Proc.new {
-        safe_concat t(:field_content)
-        safe_concat content_tag :span, '*', class: 'required'
-      }
+      safe_concat comment_form_label(f)
       safe_concat f.text_area :content, rows: 12, class: 'fancyEditor', id: 'comment-form'
     }
     safe_concat submit_tag t(:button_submit)
+  end
+
+  def comment_form_label(f)
+    f.label :content do
+      safe_concat t(:field_content)
+      safe_concat content_tag :span, '*', class: 'required'
+    end
   end
 end
