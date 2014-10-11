@@ -74,18 +74,16 @@ class IssuesController < ApplicationController
   def update
     @issue_decorator.attributes = issue_params
     respond_to do |format|
-      if  !@issue_decorator.changed? && !any_attachement_uploaded?
+      if !issue_changed?
         success_generic_update_callback(format, issue_path(@project.slug, @issue_decorator.id), false)
         #If attributes were updated
-      elsif @issue_decorator.save && @issue_decorator.save_attachments
+      elsif issue_saved?
         success_generic_update_callback(format, issue_path(@project.slug, @issue_decorator.id))
       else
         error_generic_update_callback(format, @issue_decorator, {form_content: FormContent.new(@project).content})
       end
     end
   end
-
-
 
   #DELETE /project/:project_identifier/issues/:id
   def destroy
@@ -168,6 +166,14 @@ class IssuesController < ApplicationController
 
   def any_attachement_uploaded?
     issue_params[:existing_attachment_attributes] || issue_params[:new_attachment_attributes]
+  end
+
+  def issue_saved?
+    @issue_decorator.save && @issue_decorator.save_attachments
+  end
+
+  def issue_changed?
+    @issue_decorator.changed? || any_attachement_uploaded?
   end
 
   alias :load_collection :load_issues
