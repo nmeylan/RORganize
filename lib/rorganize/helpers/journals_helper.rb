@@ -6,6 +6,8 @@ module Rorganize
   module Helpers
     module JournalsHelper
       include JournalsHelpers::ActivityHelper
+      include JournalsHelpers::ActivityDetailsHelper
+      include JournalsHelpers::ActivitySidebarHelper
 
     end
   end

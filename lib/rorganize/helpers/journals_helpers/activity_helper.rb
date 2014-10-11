@@ -6,7 +6,6 @@ module Rorganize
   module Helpers
     module JournalsHelpers
       module ActivityHelper
-        include JournalsHelpers::ActivityDetailsHelper
         # Build a render for one journalizable for same journalizable items. if two or more journals exists for one item the same day,
         # they will be compact into one.
         # @param [Array] activities containing Journal or Comment.
@@ -21,6 +20,9 @@ module Rorganize
           }
         end
 
+        # Build the right activity header.
+        # @param [Journal|Comment] activity : the activity to render.
+        # @param [Numeric] nth : the number of the activity to render for the same day.
         def select_right_activity_renderer(activity, nth)
           if activity.is_a?(Journal)
             journal_header_render(activity, nth)
@@ -51,22 +53,27 @@ module Rorganize
           end
         end
 
+        # Render the journal object type.
         def journal_object_type_render(journal)
           content_tag :span, journal.display_object_type, class: 'object-type'
         end
 
+        # Render the journal action type.
         def journal_action_type_render(journal)
           content_tag :span, journal.display_action_type, class: 'action-type'
         end
 
+        # Render the activity time.
         def activity_date_render(journal)
           content_tag :span, journal.display_creation_at, class: 'date'
         end
 
+        # Render the activity's author.
         def activity_author_render(user)
           content_tag :span, user, class: 'author'
         end
 
+        # Render the icon related to the journal.
         def journal_icon_render(journal)
           content_tag :span, nil, class: "#{journal.display_action_type_icon}"
         end
@@ -90,6 +97,7 @@ module Rorganize
           end
         end
 
+        # Render the comment icon.
         def comment_icon_render
           content_tag :span, nil, class: 'octicon octicon-comment activity-icon'
         end
