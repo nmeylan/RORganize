@@ -18,8 +18,8 @@ function permissions_index() {
     });
     bind_tab_nav('permissions-tab');
     $('table.permissions-list').each(function () {
-        if ($(this).find('.permissions-list.body.no-category').children().length == 0) {
-            $(this).find('td.no-category').hide();
+        if ($(this).find('.permissions-list.body.misc').children().length == 0) {
+            $(this).find('td.misc').hide();
         }
     });
 }

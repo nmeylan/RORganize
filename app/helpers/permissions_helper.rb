@@ -10,16 +10,28 @@ module PermissionsHelper
   # @param [Array] selected_permissions : array of selected permissions' id.
   def list(permissions_hash, selected_permissions)
     form_tag({action: 'update_permissions', controller: 'permissions'}) do
-      safe_concat content_tag :div, {id: 'project-tab'}, &Proc.new {
-        permissions_table(permissions_hash[:project], selected_permissions, :project)
-      }
-      safe_concat content_tag :div, {id: 'adminstration-tab', style: 'display:none'}, &Proc.new {
-        permissions_table(permissions_hash[:administration], selected_permissions, :administration)
-      }
-      safe_concat content_tag :div, {id: 'misc-tab', style: 'display:none'}, &Proc.new {
-        permissions_table(permissions_hash[:misc], selected_permissions, :misc)
-      }
+      safe_concat permission_project_tab_render(permissions_hash, selected_permissions)
+      safe_concat permission_administration_tab_render(permissions_hash, selected_permissions)
+      safe_concat permission_misc_tab_render(permissions_hash, selected_permissions)
       safe_concat submit_tag 'save'
+    end
+  end
+
+  def permission_misc_tab_render(permissions_hash, selected_permissions)
+    content_tag :div, {id: 'misc-tab', style: 'display:none'} do
+      permissions_table(permissions_hash[:misc], selected_permissions, :misc)
+    end
+  end
+
+  def permission_administration_tab_render(permissions_hash, selected_permissions)
+    content_tag :div, {id: 'adminstration-tab', style: 'display:none'} do
+      permissions_table(permissions_hash[:administration], selected_permissions, :administration)
+    end
+  end
+
+  def permission_project_tab_render(permissions_hash, selected_permissions)
+    content_tag :div, {id: 'project-tab'} do
+      permissions_table(permissions_hash[:project], selected_permissions, :project)
     end
   end
 
@@ -29,32 +41,28 @@ module PermissionsHelper
   # @param [Symbol] group_name : the name of controllers group.
   def permissions_table(permissions_array, selected_permissions, group_name)
     content_tag :table, {class: 'permissions-list'} do
-      safe_concat content_tag :tr, {class: 'header'}, &Proc.new {
-        safe_concat content_tag :td, 'Controller', {class: 'permissions-list controller header'}
-        safe_concat content_tag :td, {class: 'permissions-list header'}, &Proc.new {
-          safe_concat (link_to glyph('', 'check'), '#', {class: 'check-all', id: "read-#{group_name}", 'cb_checked' => 'b', title: 'check all'})
-          safe_concat medium_glyph(t(:label_read), 'eye')
-        }
-        safe_concat content_tag :td, {class: 'permissions-list header create'}, &Proc.new {
-          safe_concat (link_to glyph('', 'check'), '#', {class: 'check-all', id: "create-#{group_name}", 'cb_checked' => 'b', title: 'check all'})
-          safe_concat medium_glyph(t(:label_create), 'plus')
-        }
-        safe_concat content_tag :td, {class: 'permissions-list header update'}, &Proc.new {
-          safe_concat (link_to glyph('', 'check'), '#', {class: 'check-all', id: "update-#{group_name}", 'cb_checked' => 'b', title: 'check all'})
-          safe_concat medium_glyph(t(:label_update), 'pencil')
-        }
-        safe_concat content_tag :td, {class: 'permissions-list header delete'}, &Proc.new {
-          safe_concat (link_to glyph('', 'check'), '#', {class: 'check-all', id: "delete-#{group_name}", 'cb_checked' => 'b', title: 'check all'})
-          safe_concat medium_glyph(t(:label_delete), 'trashcan')
-        }
-        safe_concat content_tag :td, {class: 'permissions-list header no-category'}, &Proc.new {
-          safe_concat (link_to glyph('', 'check'), '#', {class: 'check-all', id: "misc-#{group_name}", 'cb_checked' => 'b', title: 'check all'})
-          safe_concat medium_glyph(t(:label_misc), '')
-        }
-      }
+      safe_concat permission_table_header_render(group_name)
       safe_concat permissions_table_row_spacer(true)
       safe_concat permissions_table_row_spacer
-      permissions_table_row_render(permissions_array, selected_permissions, group_name)
+      permissions_table_rows_render(permissions_array, selected_permissions, group_name)
+    end
+  end
+
+  def permission_table_header_render(group_name)
+    content_tag :tr, {class: 'header'} do
+      safe_concat content_tag :td, 'Controller', {class: 'permissions-list controller header'}
+      safe_concat permission_table_header_col_render('read', t(:label_read), group_name, 'eye')
+      safe_concat permission_table_header_col_render('create', t(:label_create), group_name, 'plus')
+      safe_concat permission_table_header_col_render('update', t(:label_update), group_name, 'pencil')
+      safe_concat permission_table_header_col_render('delete', t(:label_delete), group_name, 'trashcan')
+      safe_concat permission_table_header_col_render('misc', t(:label_misc),group_name, '')
+    end
+  end
+
+  def permission_table_header_col_render(col_name, label, group_name, glyph_name)
+    content_tag :td, {class: "permissions-list header #{col_name}"} do
+      safe_concat (link_to glyph('', 'check'), '#', {class: 'check-all', id: "#{col_name}-#{group_name}", 'cb_checked' => 'b', title: 'check all'})
+      safe_concat medium_glyph(label, glyph_name)
     end
   end
 
@@ -62,55 +70,95 @@ module PermissionsHelper
   # @param [Array] permissions_array : array of controllers name.
   # @param [Array] selected_permissions : array of selected permissions' id.
   # @param [Symbol] group_name : the name of controllers group.
-  def permissions_table_row_render(permissions_array, selected_permissions, group_name)
-    row_categories = Rorganize::PERMISSIONS_LIST_ROW_CATEGORIES
+  def permissions_table_rows_render(permissions_array, selected_permissions, group_name)
+    col_categories = Rorganize::PERMISSIONS_LIST_COL_CATEGORIES
     permissions_array.sort { |x, y| x <=> y }.each do |controller, permissions|
       if permissions.any?
-        safe_concat content_tag :tr, {class: "body #{controller}"}, &Proc.new {
-          safe_concat content_tag :td, {class: 'permissions-list controller body'}, &Proc.new {
-            safe_concat(link_to glyph('', 'check'), '#', {id: 'check-all-'+controller.to_s, 'cb_checked' => 'b', title: 'check all'})
-            safe_concat controller
-          }
-          permissions_tmp = []
-          row_categories.each do |category, actions|
-            safe_concat content_tag :td, {class: "permissions-list body #{category} #{group_name}"}, &Proc.new {
-              permissions.sort { |x, y| x.name <=> y.name }.collect do |permission|
-                if permission.name.downcase.start_with?(*actions)
-                  permissions_tmp << permission
-                  content_tag :div, {class: 'permissions-list body permission'} do
-                    safe_concat check_box_tag "[permissions][#{permission.controller}_#{permission.action}]", permission.id, selected_permissions.include?(permission.id)
-                    safe_concat content_tag :label, permission.edit_link
-                  end
-                end
-              end.join.html_safe
-            }
-          end
-          safe_concat content_tag :td, {class: "permissions-list body no-category #{group_name}"}, &Proc.new {
-            (permissions - permissions_tmp).collect do |permission|
-              content_tag :div, {class: 'permissions-list body permission'} do
-                safe_concat check_box_tag "[permissions][#{permission.controller}_#{permission.action}]", permission.id, selected_permissions.include?(permission.id)
-                safe_concat content_tag :label, permission.edit_link
-              end
-            end.join.html_safe
-          }
-        }
+        safe_concat permissions_table_row_render(col_categories, controller, group_name, permissions, selected_permissions)
         safe_concat permissions_table_row_spacer(true)
         safe_concat permissions_table_row_spacer
       end
     end
   end
 
+
+  # @param [Hash] col_categories hash with following structure :  e.g {read: %w(view access consult use), ..}.
+  # @param [String] controller name.
+  # @param [Symbol] group_name : the name of controllers group (e.g : projects, administrations, misc).
+  # @param [Array] permissions collection of permissions for a specific controller.
+  # @param [Array] selected_permissions collection of checked permissions.
+  def permissions_table_row_render(col_categories, controller, group_name, permissions, selected_permissions)
+    content_tag :tr, {class: "body #{controller}"} do
+      safe_concat permission_table_first_column_render(controller)
+      permissions_tmp = []
+      permission_table_column_render(group_name, permissions, permissions_tmp, col_categories, selected_permissions)
+      safe_concat permission_table_extra_column_render(group_name, permissions, permissions_tmp, selected_permissions)
+    end
+  end
+
+  # @param [Symbol] group_name : the name of controllers group (e.g : projects, administrations, misc).
+  # @param [Array] permissions collection of permissions for a specific controller.
+  # @param [Array] permissions_tmp collection of permission already rendered.
+  # @param [Array] selected_permissions collection of checked permissions.
+  def permission_table_extra_column_render(group_name, permissions, permissions_tmp, selected_permissions)
+    content_tag :td, {class: "permissions-list body misc #{group_name}"} do
+      (permissions - permissions_tmp).collect do |permission|
+        permission_table_column_content(permission, selected_permissions)
+      end.join.html_safe
+    end
+  end
+
+  # @param [String] controller name.
+  def permission_table_first_column_render(controller)
+    content_tag :td, {class: 'permissions-list controller body'} do
+      safe_concat(link_to glyph('', 'check'), '#', {id: 'check-all-'+controller.to_s, 'cb_checked' => 'b', title: 'check all'})
+      safe_concat controller
+    end
+  end
+
+  # @param [Symbol] group_name : the name of controllers group (e.g : projects, administrations, misc).
+  # @param [Array] permissions collection of permissions for a specific controller.
+  # @param [Array] permissions_tmp collection of permission already rendered.
+  # @param [Hash] col_categories hash with following structure :  e.g {read: %w(view access consult use), ..}.
+  # @param [Array] selected_permissions collection of checked permissions.
+  def permission_table_column_render(group_name, permissions, permissions_tmp, col_categories, selected_permissions)
+    col_categories.each do |category, actions|
+      safe_concat content_tag :td, {class: "permissions-list body #{category} #{group_name}"}, &Proc.new {
+        render_column_permissions(actions, permissions, permissions_tmp, selected_permissions)
+      }
+    end
+  end
+
+  # @param [Array] actions : list of actions names include in the group name.
+  # @param [Array] permissions collection of permissions for a specific controller.
+  # @param [Array] permissions_tmp collection of permission already rendered.
+  # @param [Array] selected_permissions collection of checked permissions.
+  def render_column_permissions(actions, permissions, permissions_tmp, selected_permissions)
+    permissions.sort { |x, y| x.name <=> y.name }.collect do |permission|
+      if permission.name.downcase.start_with?(*actions)
+        permissions_tmp << permission
+        permission_table_column_content(permission, selected_permissions)
+      end
+    end.join.html_safe
+  end
+
+  # @param [Permission] permission collection of permissions for a specific controller.
+  # @param [Array] selected_permissions collection of checked permissions.
+  def permission_table_column_content(permission, selected_permissions)
+    content_tag :div, {class: 'permissions-list body permission'} do
+      safe_concat check_box_tag "[permissions][#{permission.controller}_#{permission.action}]", permission.id, selected_permissions.include?(permission.id)
+      safe_concat content_tag :label, permission.edit_link
+    end
+  end
+
   # Build an empty row for table.
   # @param [Boolean] border : if false don't display a border, else display it.
   def permissions_table_row_spacer(border = false)
-    content_tag :tr, {class: "permissions-list spacer body #{border ? 'border' : ''}"}, &Proc.new {
-      safe_concat content_tag :td, nil
-      safe_concat content_tag :td, nil
-      safe_concat content_tag :td, nil
-      safe_concat content_tag :td, nil
-      safe_concat content_tag :td, nil
-      safe_concat content_tag :td, nil
-    }
+    content_tag :tr, {class: "permissions-list spacer body #{border ? 'border' : ''}"} do
+      6.times do
+        safe_concat content_tag :td, nil
+      end
+    end
   end
 
 end

@@ -21,5 +21,5 @@ Rorganize::Managers::PermissionManager.set_controllers_groups(groups)
 
 module Rorganize
   #Define permissions categories here (only use to group permissions on the list render)
-  PERMISSIONS_LIST_ROW_CATEGORIES = {read: %w(view access consult use), create: %w(create add new), update: %w(edit update change organize manage archive), delete: %w(delete destroy remove)}
+  PERMISSIONS_LIST_COL_CATEGORIES = {read: %w(view access consult use), create: %w(create add new), update: %w(edit update change organize manage archive), delete: %w(delete destroy remove)}
 end
