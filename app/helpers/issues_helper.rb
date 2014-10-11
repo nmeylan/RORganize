@@ -4,33 +4,6 @@ module IssuesHelper
   include CommentsHelper
   include Rorganize::Helpers::IssuesHelper
 
-  # Build a json filter form.
-  def issues_generics_form_to_json
-    issue_filter = IssueFilter.new(@project)
-    filter_content_hash = issue_filter.content
-    hash_for_radio = filter_content_hash['hash_for_radio']
-    hash_for_select = filter_content_hash['hash_for_select']
-    form_hash = build_form_hash(hash_for_radio, hash_for_select)
-    issue_filter.build_json_form(form_hash)
-  end
-
-  def build_form_hash(hash_for_radio, hash_for_select)
-    form_hash = {}
-    form_hash['assigned_to'] = generic_filter(:simple_select, 'Assigned to', 'assigned_to', hash_for_radio['assigned'], hash_for_select['assigned'], true, nil)
-    form_hash['author'] = generic_filter(:simple_select, 'Author', 'author', hash_for_radio['author'], hash_for_select['author'])
-    form_hash['category'] = generic_filter(:simple_select, 'Category', 'category', hash_for_radio['category'], hash_for_select['category'])
-    form_hash['created_at'] = generic_filter(:date, 'Created at', 'created_at', hash_for_radio['created'])
-    form_hash['done'] = generic_filter(:simple_select, 'Done', 'done', hash_for_radio['done'], hash_for_select['done'], false, 'cbb-small')
-    form_hash['due_date'] = generic_filter(:date, 'Due date', 'due_date', hash_for_radio['due_date'])
-    form_hash['start_date'] = generic_filter(:date, 'Start date', 'start_date', hash_for_radio['start'])
-    form_hash['status'] = generic_filter(:simple_select, 'Status', 'status', hash_for_radio['status'], hash_for_select['status'])
-    form_hash['subject'] = generic_filter(:text, 'Subject', 'subject', hash_for_radio['subject'])
-    form_hash['tracker'] = generic_filter(:simple_select, 'Tracker', 'tracker', hash_for_radio['tracker'], hash_for_select['tracker'])
-    form_hash['version'] = generic_filter(:simple_select, 'Version', 'version', hash_for_radio['version'], hash_for_select['version'])
-    form_hash['updated_at'] = generic_filter(:date, 'Updated at', 'updated_at', hash_for_radio['updated'])
-    form_hash
-  end
-
   # Build a list of issues.
   # @param [Array] collection of issues.
   def list(collection)
@@ -48,38 +21,38 @@ module IssuesHelper
 
   def list_row(issue)
     content_tag :tr, class: "has-context-menu odd-even issue-tr" do
-      list_column(check_box_tag("issue-#{issue.id.to_s}", issue.id), class: 'cell-checkbox')
-      list_column issue.id, class: 'list-center id'
-       list_column issue.tracker_str, class: 'list-center tracker'
-       list_column issue.show_link, {class: 'name', id: issue.id}
-       list_column issue.display_assigned_to, class: 'list-center assigned-to'
-       list_column issue.display_status, class: 'list-center status'
-       list_column issue.display_category, class: 'list-center category'
-       list_column issue.display_version, class: 'list-center version'
-       list_column issue.due_date, class: 'list-center due-date'
-       list_column issue.display_done_progression, {class: 'list-center done tooltipped tooltipped-s', label: "#{issue.done}%"}
-       list_column issue.checklist_progression, class: 'icon-information'
-       list_column issue.comment_presence_indicator, class: 'icon-information'
-       list_column issue.attachment_presence_indicator, class: 'icon-information'
+      list_td(check_box_tag("issue-#{issue.id.to_s}", issue.id), class: 'cell-checkbox')
+      list_td issue.id, class: 'list-center id'
+      list_td issue.tracker_str, class: 'list-center tracker'
+      list_td issue.show_link, {class: 'name', id: issue.id}
+      list_td issue.display_assigned_to, class: 'list-center assigned-to'
+      list_td issue.display_status, class: 'list-center status'
+      list_td issue.display_category, class: 'list-center category'
+      list_td issue.display_version, class: 'list-center version'
+      list_td issue.due_date, class: 'list-center due-date'
+      list_td issue.display_done_progression, {class: 'list-center done tooltipped tooltipped-s', label: "#{issue.done}%"}
+      list_td issue.checklist_progression, class: 'icon-information'
+      list_td issue.comment_presence_indicator, class: 'icon-information'
+      list_td issue.attachment_presence_indicator, class: 'icon-information'
     end
   end
 
   def list_header
     content_tag :thead do
       content_tag :tr, class: 'header' do
-        safe_concat content_tag :th, link_to(glyph('', 'check'), '#', {class: 'icon-checked', id: 'check-all', 'cb_checked' => 'b'})
-        safe_concat content_tag :th, sortable('issues.id', '#')
-        safe_concat content_tag :th, sortable('trackers.name', 'Tracker')
-        safe_concat content_tag :th, sortable('issues.subject', 'Subject'), {class: 'list-left no-padding-left'}
-        safe_concat content_tag :th, sortable('users.name', 'Assigned to')
-        safe_concat content_tag :th, sortable('issues_statuses.enumeration_id', 'Status')
-        safe_concat content_tag :th, sortable('categories.name', 'Category')
-        safe_concat content_tag :th, sortable('versions.name', 'Target phase')
-        safe_concat content_tag :th, sortable('issues.due_date', 'Due date')
-        safe_concat content_tag :th, sortable('issues.done', 'Done')
-        safe_concat content_tag :th, nil, {class: 'optional-cell'}
-        safe_concat content_tag :th, nil, {class: 'optional-cell'}
-        safe_concat content_tag :th, nil, {class: 'optional-cell'}
+        list_th link_to(glyph('', 'check'), '#', {class: 'icon-checked', id: 'check-all', 'cb_checked' => 'b'})
+        list_th sortable('issues.id', '#')
+        list_th sortable('trackers.name', 'Tracker')
+        list_th sortable('issues.subject', 'Subject'), {class: 'list-left no-padding-left'}
+        list_th sortable('users.name', 'Assigned to')
+        list_th sortable('issues_statuses.enumeration_id', 'Status')
+        list_th sortable('categories.name', 'Category')
+        list_th sortable('versions.name', 'Target phase')
+        list_th sortable('issues.due_date', 'Due date')
+        list_th sortable('issues.done', 'Done')
+        list_th nil, {class: 'optional-cell'}
+        list_th nil, {class: 'optional-cell'}
+        list_th nil, {class: 'optional-cell'}
 
       end
     end
@@ -90,7 +63,6 @@ module IssuesHelper
   def issue_toolbox(issues_toolbox)
     toolbox_tag(IssueToolbox.new(issues_toolbox, @project, User.current))
   end
-
 
 
   # Build a link to issues list with given filter.

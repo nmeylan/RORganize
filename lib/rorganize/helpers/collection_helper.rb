@@ -53,8 +53,12 @@ module Rorganize
         }
       end
 
-      def list_column(content, options = {})
+      def list_td(content, options = {})
         safe_concat content_tag :td, content, options
+      end
+
+      def list_th(content, options = {})
+        safe_concat content_tag :th, content, options
       end
     end
   end

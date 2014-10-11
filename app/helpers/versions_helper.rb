@@ -22,24 +22,24 @@ module VersionsHelper
 
   def list_row(collection, version)
     content_tag :tr, {class: 'odd-even', id: version.id} do
-      safe_concat content_tag :td, version.edit_link, {class: 'list-left name'}
-      safe_concat content_tag :td, version.start_date, {class: 'list-center start-date'}
-      safe_concat content_tag :td, version.display_target_date, {class: 'list-center version'}
-      safe_concat content_tag :td, version.is_done, {class: 'list-center is-done'}
+      list_td version.edit_link, {class: 'list-left name'}
+      list_td version.start_date, {class: 'list-center start-date'}
+      list_td version.display_target_date, {class: 'list-center version'}
+      list_td version.is_done, {class: 'list-center is-done'}
       safe_concat list_sort_actions(collection, version)
-      safe_concat content_tag :td, version.delete_link, {class: 'action'}
+      list_td version.delete_link, {class: 'action'}
     end
   end
 
   def list_header
     content_tag :thead do
       content_tag :tr, class: 'header' do
-        safe_concat content_tag :th, 'Name', {class: 'list-left'}
-        safe_concat content_tag :th, 'Start date'
-        safe_concat content_tag :th, 'Target date'
-        safe_concat content_tag :th, 'Is done'
-        safe_concat content_tag :th, nil
-        safe_concat content_tag :th, nil
+        list_th 'Name', {class: 'list-left'}
+        list_th 'Start date'
+        list_th 'Target date'
+        list_th 'Is done'
+        list_th nil
+        list_th nil
       end
     end
   end
