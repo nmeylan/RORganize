@@ -1,3 +1,4 @@
+[![Code Climate](https://codeclimate.com/github/nmeylan/RORganize/badges/gpa.svg)](https://codeclimate.com/github/nmeylan/RORganize)
 #Welcome to RORganize
 ### Started on June 20, 2012 - Last update : September 16, 2014
 
