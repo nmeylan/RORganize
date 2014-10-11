@@ -52,6 +52,10 @@ module Rorganize
           safe_concat element.dec_position_link(collection.size)
         }
       end
+
+      def list_column(content, options = {})
+        safe_concat content_tag :td, content, options
+      end
     end
   end
 end
