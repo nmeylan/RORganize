@@ -47,12 +47,6 @@ class Issue < ActiveRecord::Base
     self.subject
   end
 
-  #Attributes name without id
-  def self.attributes_formalized_names
-    Issue.attribute_names.map { |attribute| attribute.gsub('_id', '').gsub('id', '').tr('_', ' ').capitalize unless attribute.eql?('id') }.compact
-  end
-
-
   def validate_predecessor
     unless self.predecessor_id.nil?
       issue = Issue.find(self.predecessor_id)

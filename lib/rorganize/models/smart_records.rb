@@ -19,6 +19,7 @@ module Rorganize
           end
         end
         scope :filter, ->(filter, project_id) { where("#{filter} #{self.table_name}.project_id = #{project_id}") }
+        self.extend(ClassMethods)
       end
 
       #Change a record's position from a collection. E.g: change_position([a, b, c, d], c, inc)
@@ -48,9 +49,13 @@ module Rorganize
         saved
       end
 
+      module ClassMethods
+        def attributes_formalized_names
+          self.attribute_names.map { |attribute| attribute.gsub('_id', '').gsub('id', '').tr('_', ' ').capitalize unless attribute.eql?('id') }.compact
+        end
+      end
+
       class << self
-
-
         # This methods will split the eager lod strategy in two part :
         # 1. if eager_loaded attribute is not the ordered one, we will passed it in the "includes" method.
         # 2. the ordered attribute will be passed in the "joins" method.
