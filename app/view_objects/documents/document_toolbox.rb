@@ -16,28 +16,10 @@ class DocumentToolbox < Toolbox
   def build_menu
     #Menu item names
     if @user.allowed_to?('edit', 'Documents', @project)
-      build_menu_version
-      build_menu_category
+      generic_toolbox_menu_builder(h.t(:field_category), :categories, :category_id, @project.categories.collect { |category| category }, Proc.new(&:category), true)
+      generic_toolbox_menu_builder(h.t(:field_version), :versions, :version_id, @project.versions.collect { |version| version }, Proc.new(&:version), true)
     end
     add_extra_action_edit('Documents',  h.edit_document_path(@project.slug, @collection_ids[0]))
     add_extra_action_delete('Documents')
-  end
-
-  def build_menu_category
-    @menu[:categories].caption = h.t(:field_category)
-    @menu[:categories].glyph_name = Rorganize::ACTION_ICON[:category_id]
-    @menu[:categories].all = @project.categories.collect { |category| category }
-    @menu[:categories].currents = @collection.collect { |document| document.category }.uniq
-    @menu[:categories].attribute_name = 'category_id'
-    @menu[:categories].none_allowed = true
-  end
-
-  def build_menu_version
-    @menu[:versions].caption = h.t(:field_version)
-    @menu[:versions].glyph_name = Rorganize::ACTION_ICON[:version_id]
-    @menu[:versions].all = @project.versions.collect { |version| version }
-    @menu[:versions].currents = @collection.collect { |document| document.version }.uniq
-    @menu[:versions].attribute_name = 'version_id'
-    @menu[:versions].none_allowed = true
   end
 end

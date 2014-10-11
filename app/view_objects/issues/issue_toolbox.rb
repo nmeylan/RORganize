@@ -37,44 +37,25 @@ class IssueToolbox < Toolbox
 
   def build_menu_category
     if @user.allowed_to?('change_category', 'Issues', @project)
-      @menu[:category].caption = h.t(:field_category)
-      @menu[:category].glyph_name = Rorganize::ACTION_ICON[:category_id]
-      @menu[:category].all = @project.categories.collect { |category| category }
-      @menu[:category].currents = @collection.collect { |issue| issue.category }.uniq
-      @menu[:category].attribute_name = 'category_id'
-      @menu[:category].none_allowed = true
+      generic_toolbox_menu_builder(h.t(:field_category), :categories, :category_id, @project.categories.collect { |category| category }, Proc.new(&:category), true)
     end
   end
 
   def build_menu_status
     if @user.allowed_to?('change_status', 'Issues', @project)
-      @menu[:status].caption = h.t(:field_status)
-      @menu[:status].glyph_name = Rorganize::ACTION_ICON[:status_id]
-      @menu[:status].all = @user.allowed_statuses(@project).collect { |status| status }
-      @menu[:status].currents = @collection.collect { |issue| issue.status }.uniq
-      @menu[:status].attribute_name = 'status_id'
+      generic_toolbox_menu_builder(h.t(:field_status), :status, :status_id, @user.allowed_statuses(@project).collect { |status| status }, Proc.new(&:status))
     end
   end
 
   def build_menu_version
     if @user.allowed_to?('change_version', 'Issues', @project)
-      @menu[:version].caption = h.t(:field_version)
-      @menu[:version].glyph_name = Rorganize::ACTION_ICON[:version_id]
-      @menu[:version].all = @project.versions.collect { |version| version }
-      @menu[:version].currents = @collection.collect { |issue| issue.version }.uniq
-      @menu[:version].attribute_name = 'version_id'
-      @menu[:version].none_allowed = true
+      generic_toolbox_menu_builder(h.t(:field_version), :versions, :version_id, @project.versions.collect { |version| version }, Proc.new(&:version), true)
     end
   end
 
   def build_menu_assigned_to
     if @user.allowed_to?('change_assigned', 'Issues', @project)
-      @menu[:assigned_to].caption = h.t(:field_assigned_to)
-      @menu[:assigned_to].glyph_name = Rorganize::ACTION_ICON[:assigned_to_id]
-      @menu[:assigned_to].all = @project.real_members.collect { |member| member.user }
-      @menu[:assigned_to].currents = @collection.collect { |issue| issue.assigned_to }.uniq
-      @menu[:assigned_to].attribute_name = 'assigned_to_id'
-      @menu[:assigned_to].none_allowed = true
+      generic_toolbox_menu_builder(h.t(:field_assigned_to), :assigned_to, :assigned_to_id, @project.real_members.collect { |member| member.user }, Proc.new(&:assigned_to), true)
     end
   end
 
