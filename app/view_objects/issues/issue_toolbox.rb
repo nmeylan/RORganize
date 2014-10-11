@@ -15,32 +15,27 @@ class IssueToolbox < Toolbox
   end
 
   def build_menu
-    if @user.allowed_to?('change_assigned', 'Issues', @project)
-      @menu[:assigned_to].caption = h.t(:field_assigned_to)
-      @menu[:assigned_to].glyph_name = Rorganize::ACTION_ICON[:assigned_to_id]
-      @menu[:assigned_to].all = @project.real_members.collect { |member| member.user }
-      @menu[:assigned_to].currents = @collection.collect { |issue| issue.assigned_to }.uniq
-      @menu[:assigned_to].attribute_name = 'assigned_to_id'
-      @menu[:assigned_to].none_allowed = true
-    end
+    build_menu_assigned_to
+    build_menu_version
+    build_menu_status
+    build_menu_category
+    build_menu_done
 
-    if @user.allowed_to?('change_version', 'Issues', @project)
-      @menu[:version].caption = h.t(:field_version)
-      @menu[:version].glyph_name = Rorganize::ACTION_ICON[:version_id]
-      @menu[:version].all = @project.versions.collect { |version| version }
-      @menu[:version].currents = @collection.collect { |issue| issue.version }.uniq
-      @menu[:version].attribute_name = 'version_id'
-      @menu[:version].none_allowed = true
-    end
+    add_extra_action_edit('Issues', h.edit_issue_path(@project.slug, @collection_ids[0]))
+    add_extra_action_delete('Issues')
+  end
 
-    if @user.allowed_to?('change_status', 'Issues', @project)
-      @menu[:status].caption = h.t(:field_status)
-      @menu[:status].glyph_name = Rorganize::ACTION_ICON[:status_id]
-      @menu[:status].all = @user.allowed_statuses(@project).collect { |status| status }
-      @menu[:status].currents = @collection.collect { |issue| issue.status }.uniq
-      @menu[:status].attribute_name = 'status_id'
+  def build_menu_done
+    if @user.allowed_to?('change_progress', 'Issues', @project)
+      @menu[:done].caption = h.t(:field_done)
+      @menu[:done].glyph_name = Rorganize::ACTION_ICON[:done]
+      @menu[:done].all = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
+      @menu[:done].currents = @collection.collect { |issue| issue.done }.uniq
+      @menu[:done].attribute_name = 'done'
     end
+  end
 
+  def build_menu_category
     if @user.allowed_to?('change_category', 'Issues', @project)
       @menu[:category].caption = h.t(:field_category)
       @menu[:category].glyph_name = Rorganize::ACTION_ICON[:category_id]
@@ -49,20 +44,37 @@ class IssueToolbox < Toolbox
       @menu[:category].attribute_name = 'category_id'
       @menu[:category].none_allowed = true
     end
+  end
 
-    if @user.allowed_to?('change_progress', 'Issues', @project)
-      @menu[:done].caption = h.t(:field_done)
-      @menu[:done].glyph_name = Rorganize::ACTION_ICON[:done]
-      @menu[:done].all = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
-      @menu[:done].currents = @collection.collect { |issue| issue.done }.uniq
-      @menu[:done].attribute_name = 'done'
+  def build_menu_status
+    if @user.allowed_to?('change_status', 'Issues', @project)
+      @menu[:status].caption = h.t(:field_status)
+      @menu[:status].glyph_name = Rorganize::ACTION_ICON[:status_id]
+      @menu[:status].all = @user.allowed_statuses(@project).collect { |status| status }
+      @menu[:status].currents = @collection.collect { |issue| issue.status }.uniq
+      @menu[:status].attribute_name = 'status_id'
     end
+  end
 
-    if @user.allowed_to?('edit', 'Issues', @project)
-      @extra_actions << h.link_to(h.glyph(h.t(:link_edit), 'pencil'), h.edit_issue_path(@project.slug, @collection_ids[0])) if @collection.size == 1
+  def build_menu_version
+    if @user.allowed_to?('change_version', 'Issues', @project)
+      @menu[:version].caption = h.t(:field_version)
+      @menu[:version].glyph_name = Rorganize::ACTION_ICON[:version_id]
+      @menu[:version].all = @project.versions.collect { |version| version }
+      @menu[:version].currents = @collection.collect { |issue| issue.version }.uniq
+      @menu[:version].attribute_name = 'version_id'
+      @menu[:version].none_allowed = true
     end
-    if @user.allowed_to?('destroy', 'Issues', @project)
-      @extra_actions << h.link_to(h.glyph(h.t(:link_delete), 'trashcan'), '#', {class: 'icon icon-del', id: 'open-delete-overlay'})
+  end
+
+  def build_menu_assigned_to
+    if @user.allowed_to?('change_assigned', 'Issues', @project)
+      @menu[:assigned_to].caption = h.t(:field_assigned_to)
+      @menu[:assigned_to].glyph_name = Rorganize::ACTION_ICON[:assigned_to_id]
+      @menu[:assigned_to].all = @project.real_members.collect { |member| member.user }
+      @menu[:assigned_to].currents = @collection.collect { |issue| issue.assigned_to }.uniq
+      @menu[:assigned_to].attribute_name = 'assigned_to_id'
+      @menu[:assigned_to].none_allowed = true
     end
   end
 

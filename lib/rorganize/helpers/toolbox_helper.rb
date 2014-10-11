@@ -9,11 +9,11 @@ module Rorganize
       # Build a toolbox render from a toolbox object.
       # @param [Toolbox] toolbox : the toolbox object.
       def toolbox_tag(toolbox)
-        form_tag toolbox.path, remote: true, id: 'toolbox-form', &Proc.new {
+        form_tag toolbox.path, remote: true, id: 'toolbox-form' do
           safe_concat toolbox_menu_items(toolbox)
           safe_concat toolbox_extra_menu_item(toolbox)
           safe_concat toolbox_hidden_tag(toolbox)
-        }
+        end
       end
 
       def toolbox_hidden_tag(toolbox)
@@ -22,12 +22,16 @@ module Rorganize
         end.join.html_safe
       end
 
+      # build extra menu item for the toolbox. (e.g : delete / edit link)
+      # @param [Toolbox] toolbox.
       def toolbox_extra_menu_item(toolbox)
         toolbox.extra_actions.collect do |action|
           content_tag :li, action
         end.join.html_safe
       end
 
+      # Build all menu contains by the toolbox.
+      # @param [Toolbox] toolbox.
       def toolbox_menu_items(toolbox)
         toolbox.menu.values.collect do |menu_item|
           toolbox_menu_item(menu_item)
@@ -39,13 +43,18 @@ module Rorganize
       def toolbox_menu_item(menu_item)
         content_tag :li do
           safe_concat link_to glyph(menu_item.caption, menu_item.glyph_name), '#', {id: menu_item.name}
-          safe_concat content_tag :ul, class: "submenu #{menu_item.attribute_name}", &Proc.new {
-            if menu_contains_sub_item?(menu_item)
-              safe_concat hidden_field_tag "value[#{menu_item.attribute_name}]"
-              safe_concat toolbox_sub_menu_items(menu_item)
-              safe_concat toolbox_none_sub_menu_item(menu_item)
-            end
-          }
+          safe_concat toolbox_sub_menu(menu_item)
+        end
+      end
+
+      # @param [ToolboxMenuItem] menu_item the menu taht contains the sub menu to build.
+      def toolbox_sub_menu(menu_item)
+        content_tag :ul, class: "submenu #{menu_item.attribute_name}" do
+          if menu_contains_sub_item?(menu_item)
+            safe_concat hidden_field_tag "value[#{menu_item.attribute_name}]"
+            safe_concat toolbox_sub_menu_items(menu_item)
+            safe_concat toolbox_none_sub_menu_item(menu_item)
+          end
         end
       end
 
