@@ -3,6 +3,7 @@ module ApplicationHelper
   include Rorganize::Managers::PermissionManager::PermissionHandler
   include ToolboxHelper
   include HistoryHelper
+  include FilterHelper
   # Check if there is any content for :sidebar
   def sidebar_content?
     content_for?(:sidebar)
@@ -125,74 +126,21 @@ module ApplicationHelper
   # @param [String] path : to the controller to refresh the list when user change the per_page or current_page parameter.
   def paginate(collection, session, path)
     safe_concat will_paginate(collection, {renderer: 'RemoteLinkRenderer', next_label: t(:label_next), previous_label: t(:label_previous)})
-    content_tag :div, class: 'autocomplete-combobox nosearch per-page autocomplete-combobox-high',
-                &Proc.new {
-                  safe_concat content_tag :label, t(:label_per_page), {for: 'per_page', class: 'per-page'}
-                  safe_concat select_tag 'per_page', options_for_select([%w(25 25), %w(50 50), %w(100 100)], session[:per_page]),
-                                         class: 'chzn-select cbb-small cbb-high', id: 'per-page', :'data-link' => "#{path}"
-                }
+    pagination_per_page(path, session)
   end
 
-  # Build a filter form for given criteria.
-  # @param [String] label : what is filtered (e.g : issues, documents).
-  # @param [Array] filtered_attributes : an array of filtered attribute @see Document.filtered_attributes.
-  # @param [String] submission_path : the path to controller when the filter form is submit.
-  # @param [Boolean] can_save : false when save button is hidden, true otherwise.
-  # @param [hash] save_button_options
-  def filter_tag(label, filtered_attributes, submission_path, can_save = false, save_button_options = {})
-    content_tag :fieldset, id: "#{label}-filter" do
-      safe_concat content_tag :legend, link_to(glyph(t(:link_filter), 'chevron-right'), '#', {class: 'icon-collapsed toggle', id: "#{label}"})
-      safe_concat content_tag :div, class: 'content', &Proc.new {
-        safe_concat filter_form_tag(filtered_attributes, save_button_options, can_save, submission_path)
-      }
+  # @param [String] path : to the controller to refresh the list when user change the per_page or current_page parameter.
+  # @param [Session] session : the per_page argument for pagination.
+  def pagination_per_page(path, session)
+    content_tag :div, class: 'autocomplete-combobox nosearch per-page autocomplete-combobox-high' do
+        safe_concat content_tag :label, t(:label_per_page), {for: 'per_page', class: 'per-page'}
+        safe_concat select_tag 'per_page', pagination_options_tag(session), class: 'chzn-select cbb-small cbb-high', id: 'per-page', 'data-link' => "#{path}"
     end
   end
 
-  # @param [Array] filtered_attributes : an array of filtered attribute @see Document.filtered_attributes.
-  # @param [String] submission_path : the path to controller when the filter form is submit.
-  # @param [Boolean] can_save : false when save button is hidden, true otherwise.
-  # @param [hash] save_button_options
-  def filter_form_tag(filtered_attributes, save_button_options, can_save, submission_path)
-    form_tag submission_path, {method: :get, class: 'filter-form', id: 'filter-form', remote: true}, &Proc.new {
-      filter_type_choice_tag
-      safe_concat filter_attribute_choice_tag(filtered_attributes)
-      safe_concat content_tag :table, nil, id: 'filter-content'
-      safe_concat submit_tag t(:button_apply), {style: 'margin-left:0px'}
-      safe_concat content_tag :span, save_filter_button_tag(save_button_options[:filter_content],
-                                                            save_button_options[:user],
-                                                            save_button_options[:project]),
-                              {id: 'save-query-button'} if can_save
-    }
-  end
-
-  # Build a save button for filter : based on user permissions (does user is allowed to create custom queries?)
-  # @param [Array] filtered_content : an array of previous submitted filter, it use because if nothing were filtered then whe don't display the button.
-  # @param [User] user : the current user.
-  # @param [Project] project : current project.
-  def save_filter_button_tag(filter_content, user, project)
-    if can_user_save_query?(filter_content, project, user)
-      link_to t(:button_save), new_project_query_queries_path(project.slug, 'Issue'), {remote: true}
-    elsif can_user_save_query?(filter_content, project, user)
-      link_to t(:button_save), edit_query_filter_queries_path(params[:query_id]), {id: 'filter-edit-save'}
-    end
-  end
-
-  def can_user_save_query?(filter_content, project, user)
-    !filter_content.eql?('') && user.allowed_to?('new', 'Queries', project) && params[:query_id].nil?
-  end
-
-  def filter_attribute_choice_tag(filtered_attributes)
-    content_tag :div, class: 'autocomplete-combobox nosearch no-padding-left no-height' do
-      select_tag 'filters_list', options_for_select(filtered_attributes), class: 'chzn-select cbb-verylarge', id: 'filters-list', multiple: true
-    end
-  end
-
-  # @return [String] build filter type choice.
-  def filter_type_choice_tag
-    safe_concat radio_button_tag('type', 'all', true, {align: 'center', id: 'type-all'})
-    safe_concat label_tag('type-all', t(:label_all))
-    safe_concat radio_button_tag 'type', 'filter', false, id: 'type-filter'
-    safe_concat label_tag 'type-filter', t(:link_filter)
+  # @param [Session] session : the per_page argument for pagination.
+  def pagination_options_tag(session)
+    options_for_select([%w(25 25), %w(50 50), %w(100 100)], session[:per_page])
   end
 
   # Build a header for the given title.
@@ -245,13 +193,21 @@ module ApplicationHelper
   def markdown_task_list_enabled?(rendered_element)
     allow = false
     if rendered_element.class.eql?(Issue)
-      allow = User.current.id.eql?(rendered_element.author_id) && User.current.allowed_to?('edit', 'issues', @project)|| User.current.allowed_to?('edit_not_owner', 'issues', @project)
+      allow = can_user_check_issue_task?(rendered_element)
     elsif rendered_element.class.eql?(Comment)
-      allow = User.current.id.eql?(rendered_element.user_id) || User.current.allowed_to?('edit_comment_not_owner', 'comments', @project)
+      allow = can_user_check_comment_task?(rendered_element)
     elsif rendered_element.class.eql?(Document)
       allow = User.current.allowed_to?('edit', 'documents', @project)
     end
     allow
+  end
+
+  def can_user_check_comment_task?(rendered_element)
+    User.current.id.eql?(rendered_element.user_id) || User.current.allowed_to?('edit_comment_not_owner', 'comments', @project)
+  end
+
+  def can_user_check_issue_task?(rendered_element)
+    User.current.id.eql?(rendered_element.author_id) && User.current.allowed_to?('edit', 'issues', @project)|| User.current.allowed_to?('edit_not_owner', 'issues', @project)
   end
 
   # Build a sort link for table.
@@ -301,23 +257,6 @@ module ApplicationHelper
     else
       body
     end
-  end
-
-
-  # Build a generic history for journalizable models.
-  # @param [History] history : object.
-  def history_render(history) #If come from show action
-    safe_concat content_tag :div, nil, class: 'separator'
-    safe_concat content_tag :h2, t(:label_history)
-    safe_concat content_tag :div, id: 'history-blocks', &Proc.new {
-      history.content.collect do |activity|
-        if activity.is_a?(Journal)
-          safe_concat history_block_render(activity).html_safe
-        else
-          safe_concat comment_block_render(activity, nil, false).html_safe
-        end
-      end.join.html_safe
-    }
   end
 
   # Build an add attachments link
@@ -416,9 +355,7 @@ module ApplicationHelper
     content_for :contextual do
       safe_concat content_tag :h1, title
       safe_concat breadcrumb
-      safe_concat content_tag :div, class: 'splitcontentright', &Proc.new {
-        yield if block_given?
-      }
+      safe_concat contextual_right_content(Proc.new) if block_given?
     end
   end
 
@@ -427,20 +364,24 @@ module ApplicationHelper
   def contextual(title = nil)
     content_for :contextual do
       if title
-        contextual_title(title)
-      else
-        yield if block_given?
+        proc = Proc.new if block_given?
+        contextual_with_title(title, proc)
+      elsif block_given?
+        yield
       end
     end
   end
 
   # @param [String] title of the contextual.
-  def contextual_title(title)
+  def contextual_with_title(title, proc = nil)
     safe_concat content_tag :h1, title
-    safe_concat content_tag :div, class: 'splitcontentright', &Proc.new {
-      yield if block_given?
-    }
+    safe_concat contextual_right_content(proc) if proc
   end
+
+  def contextual_right_content(proc)
+    content_tag :div, class: 'splitcontentright', &proc
+  end
+
 
   # Build a breadcrumb div.
   # @param [String] content : breadcrumb content.
@@ -553,12 +494,16 @@ module ApplicationHelper
   # @return [String] build a link to notifications panel. Link changed if there are new notifications or not.
   def notification_link(user)
     if user.notified?
-      link_to notifications_path, {class: "tooltipped tooltipped-s indicator #{params[:controller].eql?('notifications') ? 'selected' : ''}", label: t(:text_unread_notifications)} do
-        safe_concat content_tag :span, nil, {class: 'unread inbox'}
-        safe_concat glyph('', 'inbox')
-      end
+      new_notification_link
     else
       link_to glyph('', 'inbox'), notifications_path, {class: "#{params[:controller].eql?('notifications') ? 'selected' : ''}"}
+    end
+  end
+
+  def new_notification_link
+    link_to notifications_path, {class: "tooltipped tooltipped-s indicator #{params[:controller].eql?('notifications') ? 'selected' : ''}", label: t(:text_unread_notifications)} do
+      safe_concat content_tag :span, nil, {class: 'unread inbox'}
+      safe_concat glyph('', 'inbox')
     end
   end
 

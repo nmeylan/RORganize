@@ -4,8 +4,33 @@
 # File: history_helper.rb
 
 module HistoryHelper
-# Build a history block for one Journal.
-# @param [Journal] journal : to render.
+
+  # Build a generic history for journalizable models.
+  # @param [History] history : object.
+  def history_render(history) #If come from show action
+    safe_concat content_tag :div, nil, class: 'separator'
+    safe_concat content_tag :h2, t(:label_history)
+    safe_concat history_blocks_render(history)
+  end
+
+  def history_blocks_render(history)
+    content_tag :div, id: 'history-blocks', &Proc.new {
+      history.content.collect do |activity|
+        select_history_renderer(activity)
+      end.join.html_safe
+    }
+  end
+
+  def select_history_renderer(activity)
+    if activity.is_a?(Journal)
+      history_block_render(activity).html_safe
+    else
+      comment_block_render(activity, nil, false).html_safe
+    end
+  end
+
+  # Build a history block for one Journal.
+  # @param [Journal] journal : to render.
   def history_block_render(journal)
     content_tag :div, {class: 'history-block', id: "journal-#{journal.id}"} do
       safe_concat journal.display_author_avatar

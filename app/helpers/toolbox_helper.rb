@@ -9,16 +9,28 @@ module ToolboxHelper
   # @param [Toolbox] toolbox : the toolbox object.
   def toolbox_tag(toolbox)
     form_tag toolbox.path, remote: true, id: 'toolbox-form', &Proc.new {
-      safe_concat(toolbox.menu.values.collect do |menu_item|
-        toolbox_menu_item(menu_item)
-      end.join.html_safe)
-      safe_concat(toolbox.extra_actions.collect do |action|
-        content_tag :li, action
-      end.join.html_safe)
-      safe_concat(toolbox.collection_ids.collect do |id|
-        hidden_field_tag 'ids[]', id
-      end.join.html_safe)
+      safe_concat toolbox_menu_items(toolbox)
+      safe_concat toolbox_extra_menu_item(toolbox)
+      safe_concat toolbox_hidden_tag(toolbox)
     }
+  end
+
+  def toolbox_hidden_tag(toolbox)
+    toolbox.collection_ids.collect do |id|
+      hidden_field_tag 'ids[]', id
+    end.join.html_safe
+  end
+
+  def toolbox_extra_menu_item(toolbox)
+    toolbox.extra_actions.collect do |action|
+      content_tag :li, action
+    end.join.html_safe
+  end
+
+  def toolbox_menu_items(toolbox)
+    toolbox.menu.values.collect do |menu_item|
+      toolbox_menu_item(menu_item)
+    end.join.html_safe
   end
 
   # build a toolbox menu.
@@ -27,13 +39,17 @@ module ToolboxHelper
     content_tag :li do
       safe_concat link_to glyph(menu_item.caption, menu_item.glyph_name), '#', {id: menu_item.name}
       safe_concat content_tag :ul, class: "submenu #{menu_item.attribute_name}", &Proc.new {
-        if menu_item.all && menu_item.all.any?
+        if menu_contains_sub_item?(menu_item)
           safe_concat hidden_field_tag "value[#{menu_item.attribute_name}]"
           safe_concat toolbox_sub_menu_items(menu_item)
           safe_concat toolbox_none_sub_menu_item(menu_item)
         end
       }
     end
+  end
+
+  def menu_contains_sub_item?(menu_item)
+    menu_item.all && menu_item.all.any?
   end
 
   # build a toolbox none option sub menu.
