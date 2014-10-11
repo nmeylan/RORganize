@@ -81,8 +81,9 @@
         initialize_chosen();
         bind_task_list_click();
         //MarkItUp
-        if (options.dataType !== 'JSON')
+        if (options.dataType !== 'JSON') {
             markdown_textarea();
+        }
         $("#loading").hide();
         if (xhr.getResponseHeader('flash-message')) {
             $.jGrowl(xhr.getResponseHeader('flash-message'), {
@@ -95,7 +96,7 @@
             });
         }
         var first_char = xhr.status.toString().charAt(0);
-        var is_error = first_char == '5' || first_char == '4';
+        var is_error = first_char === '5' || first_char === '4';
         if (is_error) {
             var text = xhr.status.toString() === '403' ? "You don't have the required permissions to do this action" : 'An unexpected error occured, please try again!';
             $.jGrowl(text, {
@@ -112,13 +113,13 @@
     $.fn.serializeJSON = function () {
         var json = {};
         jQuery.map($(this).serializeArray(), function (n, i) {
-            if (n['name'].endsWith('[]')) {
-                if (json[n['name']] === undefined)
-                    json[n['name']] = [];
-                json[n['name']].push(n['value']);
+            if (n.name.endsWith('[]')) {
+                if (json[n.name] === undefined)
+                    json[n.name] = [];
+                json[n.name].push(n.value);
             }
             else
-                json[n['name']] = n['value'];
+                json[n.name] = n.value;
         });
         return json;
     };
@@ -178,7 +179,7 @@ function display_flash() {
     var el;
     jQuery(".flash").each(function () {
         el = jQuery(this);
-        if (el.text().trim() != "") {
+        if (el.text().trim() !== "") {
             el.css("display", "block");
             el.find(".close-flash").click(function (e) {
                 jQuery(this).parent().fadeOut();
@@ -191,7 +192,7 @@ function display_flash() {
 //Flash message
 function error_explanation(message) {
     var el = jQuery(".flash.alert");
-    if (message != null) {
+    if (message !== null) {
         el.append(message).css("display", "block");
     }
 }
@@ -265,7 +266,7 @@ $.tools.overlay.addEffect("slide",
     function (position, done) {
         this.getOverlay().removeClass('animated bounceOutUp');
         this.getOverlay().css(position).show().addClass('animated bounceInDown').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function () {
-            $(this).removeClass('animated bounceInDown')
+            $(this).removeClass('animated bounceInDown');
         });
     },
     // close function
@@ -273,7 +274,7 @@ $.tools.overlay.addEffect("slide",
         // fade out the overlay
         this.getOverlay().removeClass('animated bounceInDown');
         this.getOverlay().addClass('animated bounceOutUp').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function () {
-            $(this).removeClass('animated bounceOutUp').hide()
+            $(this).removeClass('animated bounceOutUp').hide();
         });
     }
 );
@@ -318,7 +319,7 @@ function checkAllBox(selector, context) {
     jQuery(selector).click(function (e) {
         e.preventDefault();
         var cases = jQuery(context).find(':checkbox');
-        var checked = jQuery(this).attr("cb_checked") == 'b';
+        var checked = jQuery(this).attr("cb_checked") === 'b';
         cases.attr('checked', checked);
         jQuery(this).attr("cb_checked", checked ? "a" : "b");
     });
@@ -331,7 +332,11 @@ function checkAll(selector, context) {
         var checked = jQuery(this).attr("cb_checked") === 'b';
         cases.attr('checked', checked);
         jQuery(this).attr("cb_checked", checked ? "a" : "b");
-        checked ? jQuery('.issue-tr').addClass("toolbox-selection") : jQuery('.issue-tr').removeClass("toolbox-selection");
+        if (checked) {
+            jQuery('.issue-tr').addClass("toolbox-selection");
+        } else {
+            jQuery('.issue-tr').removeClass("toolbox-selection");
+        }
     });
 }
 
@@ -342,8 +347,9 @@ function checkboxToolbox(selector) {
             jQuery(".toolbox-selection").removeClass("toolbox-last");
             row.addClass("toolbox-selection").addClass("toolbox-last");
         }
-        else
+        else {
             row.removeClass("toolbox-selection").removeClass("toolbox-last");
+        }
     });
 }
 
@@ -383,7 +389,7 @@ function init_toolbox(selector, id, options) {
     var self_element = jQuery(selector);
     self_element.jeegoocontext(id);
     self_element.mousedown(function (e) {
-            if (e.which == 3) {
+            if (e.which === 3) {
                 var self_element = jQuery(this);
                 self_element.find(':checkbox').attr('checked', true);
                 menu_item_updater(options);
@@ -397,12 +403,12 @@ function init_toolbox(selector, id, options) {
 function menu_item_updater(options) {
     var array = [];
     var i = 0;
-    jQuery(options["list"] + ' input:checked').each(function () {
+    jQuery(options.list + ' input:checked').each(function () {
         array[i] = jQuery(this).val();
         i++;
     });
     jQuery.ajax({
-        url: jQuery(options["list"]).data("link"),
+        url: jQuery(options.list).data("link"),
         type: 'GET',
         dateType: 'script',
         data: {
@@ -468,9 +474,9 @@ function uniq_toogle(trigger_id, content) {
 function radio_button_behaviour(selector) {
     var ary = ["all", "open", "close", "today", "finished"]; //for option that don't use select box
     var id = "#td-" + jQuery(selector).attr('class');
-    if (jQuery.inArray(jQuery(selector).val(), ary) == -1)
+    if (jQuery.inArray(jQuery(selector).val(), ary) === -1) {
         jQuery(id).show();
-    else {
+    }else {
         jQuery(id).hide();
         jQuery(id + " input").val();
     }
@@ -490,16 +496,17 @@ function add_filters(json_content) {
         jQuery(this).find("option").each(function () {
             tmp = jQuery(this).val();
             selector = "tr." + tmp.toLowerCase().replace(' ', '_');
-            if ((jQuery(selector).length < 1) && jQuery.inArray(jQuery(this).val(), selected) != -1) {
+            if ((jQuery(selector).length < 1) && jQuery.inArray(jQuery(this).val(), selected) !== -1) {
                 jQuery("#filter-content").append(domobject[0][tmp]);
 
                 //binding radio button action
                 binding_radio_button("#filter-content " + selector + " input[type=radio]");
                 radio_button_behaviour("#filter-content " + selector + " input[type=radio]");
-                if (tmp == 'Status')
+                if (tmp === 'Status'){
                     jQuery("#filter-content " + selector + " input[type=radio]#status-open").attr('checked', 'checked');
+                }
 
-            } else if (jQuery(selector).length > 0 && jQuery.inArray(jQuery(this).val(), selected) == -1) {
+            } else if (jQuery(selector).length > 0 && jQuery.inArray(jQuery(this).val(), selected) === -1) {
                 jQuery(selector).remove();
             }
         });
@@ -527,8 +534,9 @@ function load_filter(json_content, present_filters) {
             //binding radio button action
             binding_radio_button("#filter-content " + selector + " input[type=radio]");
             radio_button_behaviour("#filter-content " + selector + " input[type=radio]");
-            if (value.operator != 'open')
+            if (value.operator !== 'open'){
                 jQuery("#td-" + key).show();
+            }
             jQuery("#td-" + key).find("input").val(value.value);
             if (_.isArray(value.value)) {
                 _.each(value.value, function (v) {
@@ -594,7 +602,7 @@ function bind_version_change_positions() {
         var vid = self_element.parents("tr").attr("id");
         var ope = self_element.attr("class").split(" ");
         ope = ope[3];
-        if (ope == "inc" || ope == "dec") {
+        if (ope === "inc" || ope === "dec") {
             jQuery.ajax({
                 url: self_element.attr("href"),
                 type: "post",
@@ -658,8 +666,7 @@ function add_sub_item(selector) {
     jQuery(selector).click(function (e) {
         e.preventDefault();
         var parent_id = jQuery(this).parent("li").attr("id").split("_")[1];
-        jQuery(this).parent().after("<li class='parent' style='list-style:none'>\n\
-                <ul id='parent-" + parent_id + "' class='connectedSortable'></ul></li>");
+        jQuery(this).parent().after("<li class='parent' style='list-style:none'><ul id='parent-" + parent_id + "' class='connectedSortable'></ul></li>");
         bind_organization_behaviour(".connectedSortable");
     });
 }
@@ -668,7 +675,7 @@ function bind_set_organization_button(main_selector, list_selector) {
         var dom_pages = jQuery(main_selector);
         //{page_id => {parent_id : value, position : value},...}
         var serialized_hash = {};
-        var parent_ids = new Array();
+        var parent_ids = [];
         var tmp_parent_id = null;
         var tmp_item_id = 0;
         var is_undifined = false;
@@ -705,9 +712,9 @@ function project_selection_filter() {
 // LOG TIME
 //Date is optional
 function fill_log_issue_time_overlay(url, context, date) {
-    if (jQuery(context).attr("id") === "pick-calendar")
-        date = jQuery(context).valueAsDate ;
-
+    if (jQuery(context).attr("id") === "pick-calendar"){
+        date = jQuery(context).valueAsDate;
+    }
     jQuery.ajax({
         url: url,
         type: 'GET',
@@ -735,14 +742,14 @@ function on_replace_effect(element_id, content) {
 }
 
 function replace_list_content(content) {
-    on_replace_effect("#" + gon.controller.replace('_','-') + "-content", content);
+    on_replace_effect("#" + gon.controller.replace('_', '-') + "-content", content);
 }
 
 function initialize_filters(options) {
     if (gon) {
         //Display or hide filter's conditions
         add_filters(gon.DOM_filter);
-        load_filter(gon.DOM_filter, (options && options["dom_persisted_filter"]) ? options["dom_persisted_filter"] : gon.DOM_persisted_filter);
+        load_filter(gon.DOM_filter, (options && options.dom_persisted_filter) ? options.dom_persisted_filter : gon.DOM_persisted_filter);
     }
     $("#type-filter").click(function (e) {
         $("#filters_list_chzn").show();
@@ -780,9 +787,9 @@ function save_edit_filter(link_id, form_id) {
             type: 'put',
             dataType: 'script',
             data: json
-        })
+        });
 
-    })
+    });
 }
 
 function bind_info_tag() {
@@ -796,7 +803,7 @@ function bind_info_tag() {
         }
         else {
             el.find('.help').fadeOut(function () {
-                this.remove()
+                this.remove();
             });
         }
     });
@@ -861,16 +868,16 @@ function bind_tab_nav(tab_id) {
     });
 }
 
-function bind_color_editor(){
-    var editor_field =  $(".color-editor-field");
+function bind_color_editor() {
+    var editor_field = $(".color-editor-field");
     var color_bg = $("<span class='color-editor-bg'></span>");
     var container = $("<div class='color-editor'></div>");
     editor_field.wrap(container);
     color_bg.insertBefore(editor_field);
     color_bg.css('background-color', '#' + editor_field.val());
-    editor_field.keydown(function(e){
+    editor_field.keydown(function (e) {
         var val = editor_field.val();
-        if(val.indexOf('#') != 0)
+        if (val.indexOf('#') !== 0)
             editor_field.val('#' + val);
         color_bg.css('background-color', '#' + editor_field.val());
         editor_field.css('color', '#' + editor_field.val());
