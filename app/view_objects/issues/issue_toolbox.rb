@@ -36,27 +36,31 @@ class IssueToolbox < Toolbox
   end
 
   def build_menu_category
-    if @user.allowed_to?('change_category', 'Issues', @project)
+    if allowed_to_change('category')
       generic_toolbox_menu_builder(h.t(:field_category), :categories, :category_id, @project.categories.collect { |category| category }, Proc.new(&:category), true)
     end
   end
 
   def build_menu_status
-    if @user.allowed_to?('change_status', 'Issues', @project)
+    if allowed_to_change('status')
       generic_toolbox_menu_builder(h.t(:field_status), :status, :status_id, @user.allowed_statuses(@project).collect { |status| status }, Proc.new(&:status))
     end
   end
 
   def build_menu_version
-    if @user.allowed_to?('change_version', 'Issues', @project)
+    if allowed_to_change('version')
       generic_toolbox_menu_builder(h.t(:field_version), :versions, :version_id, @project.versions.collect { |version| version }, Proc.new(&:version), true)
     end
   end
 
   def build_menu_assigned_to
-    if @user.allowed_to?('change_assigned', 'Issues', @project)
+    if allowed_to_change('assigned')
       generic_toolbox_menu_builder(h.t(:field_assigned_to), :assigned_to, :assigned_to_id, @project.real_members.collect { |member| member.user }, Proc.new(&:assigned_to), true)
     end
+  end
+
+  def allowed_to_change(attr_name)
+    @user.allowed_to?("change_#{attr_name}", 'Issues', @project)
   end
 
 end

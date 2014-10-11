@@ -16,10 +16,18 @@ class DocumentToolbox < Toolbox
   def build_menu
     #Menu item names
     if @user.allowed_to?('edit', 'Documents', @project)
-      generic_toolbox_menu_builder(h.t(:field_category), :categories, :category_id, @project.categories.collect { |category| category }, Proc.new(&:category), true)
-      generic_toolbox_menu_builder(h.t(:field_version), :versions, :version_id, @project.versions.collect { |version| version }, Proc.new(&:version), true)
+      build_menu_category
+      build_menu_version
     end
     add_extra_action_edit('Documents',  h.edit_document_path(@project.slug, @collection_ids[0]))
     add_extra_action_delete('Documents')
+  end
+
+  def build_menu_version
+    generic_toolbox_menu_builder(h.t(:field_version), :versions, :version_id, @project.versions.collect { |version| version }, Proc.new(&:version), true)
+  end
+
+  def build_menu_category
+    generic_toolbox_menu_builder(h.t(:field_category), :categories, :category_id, @project.categories.collect { |category| category }, Proc.new(&:category), true)
   end
 end
