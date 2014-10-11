@@ -9,7 +9,7 @@ class Issue < ActiveRecord::Base
   include Rorganize::Models::Watchable
   include Rorganize::Models::Notifiable
   include Rorganize::Models::Attachable::AttachmentType
-  include Rorganize::Models::IssueDatesValidator
+  include Rorganize::Models::IssueExtraMethods
   extend Rorganize::Managers::BulkEditManager
   #Class variables
   assign_journalizable_properties({status_id: 'Status', category_id: 'Category', assigned_to_id: 'Assigned to', tracker_id: 'Tracker', due_date: 'Due date', start_date: 'Start date', done: 'Done', estimated_time: 'Estimated time', version_id: 'Version', predecessor_id: 'Predecessor', subject: 'Subject'})
@@ -47,33 +47,6 @@ class Issue < ActiveRecord::Base
     self.subject
   end
 
-  def validate_predecessor
-    unless self.predecessor_id.nil?
-      issue = Issue.find(self.predecessor_id)
-      if predecessor_not_exists?(issue)
-        errors.add(:predecessor, 'not exist in this project')
-      elsif predecessor_is_self?(issue)
-        errors.add(:predecessor, "can't be self")
-      elsif predecessor_is_a_child(issue)
-        errors.add(:predecessor, 'is already a child')
-      end
-    end
-  rescue
-    errors.add(:predecessor, 'not found')
-  end
-
-  def predecessor_is_a_child(issue)
-    !issue.nil? && self.children.include?(issue)
-  end
-
-  def predecessor_is_self?(issue)
-    !issue.nil? && issue.id.eql?(self.id)
-  end
-
-  def predecessor_not_exists?(issue)
-    !issue.nil? && !issue.project_id.eql?(self.project_id) || issue.nil?
-  end
-
   # @return [Array] array with all attribute that can be filtered.
   def self.filtered_attributes
     unused_attributes = ['Project', 'Description', 'Estimated time', 'Predecessor', 'Attachments count', 'Comments count', 'Link type']
@@ -94,25 +67,7 @@ class Issue < ActiveRecord::Base
     issues, journals = super(issue_ids, value_param, project)
     # If version changed trigger the due and start date rules.
     Issue.bulk_set_done_ratio(issue_ids, value_param[:status_id],journals) if value_param[:status_id]
-    Issue.bulk_set_start_and_due_date(issues.collect { |issue| issue.id }, value_param[:version_id], journals) if value_param[:version_id]
-  end
-
-  # @param [Hash] hash containing {issue_id: {attribute: new_value}}
-  def self.gantt_edit(hash)
-    errors = []
-    Issue.transaction do
-      hash.each do |k, v|
-        issue = Issue.find_by_id(k)
-        if issue
-          issue.attributes = v
-          if issue.changed?
-            issue.save
-            errors << issue.errors.messages if issue.errors.messages.any?
-          end
-        end
-      end
-      errors
-    end
+    bulk_set_start_and_due_date(issues.collect { |issue| issue.id }, value_param[:version_id], journals) if value_param[:version_id]
   end
 
   # @param [Array] issue_ids : array containing all ids of issues that will be bulk deleted.

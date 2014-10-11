@@ -135,6 +135,7 @@ class RoadmapsController < ApplicationController
     end
     Version.gantt_edit(version_changes)
     Issue.gantt_edit(issue_changes)
+
   end
 
 end
