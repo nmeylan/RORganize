@@ -75,7 +75,7 @@ class CommentDecorator < ApplicationDecorator
   end
 
   def display_issue_type
-    h.safe_concat h.content_tag :b, "#{self.issue.tracker.caption.downcase}  ##{self.issue.id} "
+    activity_issue_caption
     h.link_to self.issue.caption, h.issue_path(self.project.slug, self.commentable_id)
   end
 
