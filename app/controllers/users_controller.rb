@@ -18,7 +18,6 @@ class UsersController < ApplicationController
     respond_to do |format|
       format.html
       format.js { respond_to_js }
-
     end
   end
 
@@ -33,16 +32,11 @@ class UsersController < ApplicationController
   #Post /administration/users/new
   def create
     @user = User.new(user_params)
-    @user.admin = user_params[:admin]
     respond_to do |format|
       if @user.save
-        flash[:notice] = t(:successful_creation)
-        format.html { redirect_to user_path(@user.slug) }
-        format.json { render json: @user,
-                             status: :created, location: @user }
+        success_generic_create_callback(format, user_path(@user.slug))
       else
-        format.html { render :new }
-        format.json { render json: @user.errors, status: :unprocessable_entity }
+        error_generic_create_callback(format, @user)
       end
     end
   end
@@ -58,24 +52,9 @@ class UsersController < ApplicationController
   #Put /administration/users/edit/:id
   def update
     @user = User.find_by_slug(params[:id])
-    @user.admin = (user_params[:admin].eql?('1'))
-    user_params[:updated_at] = Time.now.to_formatted_s(:db)
-    @user.attributes = user_params.delete_if { |k, _| k.eql?(:password) }
+    @user.attributes = user_params
     respond_to do |format|
-      if !@user.changed?
-        format.html { redirect_to user_path(@user.slug) }
-        format.json { render json: @user,
-                             status: :created, location: @user }
-      elsif @user.save
-        flash[:notice] = t(:successful_update)
-        format.html { redirect_to user_path(@user.slug) }
-        format.json { render json: @user,
-                             status: :created, location: @user }
-      else
-        format.html { render :edit }
-        format.json { render json: @user.errors,
-                             status: :unprocessable_entity }
-      end
+      select_update_callback(format)
     end
   end
 
@@ -91,15 +70,19 @@ class UsersController < ApplicationController
   #DELETE /administration/users/:id
   def destroy
     @user = User.find_by_slug(params[:id])
-    @user.destroy
-    flash[:notice] = t(:successful_deletion)
-    respond_to do |format|
-      format.html { redirect_to users_path }
-      format.js { js_redirect_to(users_path) }
-    end
+    generic_destroy_callback(@user, users_path)
   end
 
   private
+  def select_update_callback(format)
+    if !@user.changed?
+      success_generic_update_callback(format, user_path(@user.slug), false)
+    elsif @user.save
+      success_generic_update_callback(format, user_path(@user.slug))
+    else
+      error_generic_update_callback(format, @user)
+    end
+  end
 
   def user_params
     params.require(:user).permit(User.permit_attributes)

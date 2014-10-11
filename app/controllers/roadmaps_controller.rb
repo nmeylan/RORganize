@@ -4,8 +4,10 @@
 # File: roadmaps_controller.rb
 
 require 'roadmaps/gantt_object'
+require 'roadmap/roadmap_report'
 class RoadmapsController < ApplicationController
   helper VersionsHelper
+  include Rorganize::RichController::GanttCallbacks
   before_filter { |c| c.add_action_alias = {'version' => 'show'} }
   before_filter :check_permission, only: [:gantt, :manage_gantt, :show, :version]
   before_filter { |c| c.menu_context :project_menu }
@@ -14,12 +16,9 @@ class RoadmapsController < ApplicationController
 
   #GET/project/:project_id/roadmaps
   def show
-    @version_decorator = @project_decorator.current_versions.eager_load(issues: [:status, :tracker]).order(:position).decorate
-    unplanned = Version.new(name: 'Unplanned')
-    unplanned.issues << Issue.where(project_id: @project_decorator.id, version_id: nil).eager_load(:status, :tracker)
-    unplanned.project = @project_decorator.model
-    @version_decorator.to_a << unplanned.decorate
-    old_versions = @project_decorator.old_versions.decorate
+    roadmap = RoadmapReport.new(@project_decorator)
+    @version_decorator = roadmap.version_decorator
+    old_versions = roadmap.old_versions
     respond_to do |format|
       format.html { render :index, locals: {old_versions: old_versions} }
     end
@@ -47,47 +46,6 @@ class RoadmapsController < ApplicationController
     end
   end
 
-  def gantt
-    gantt_initialize_sessions
-    if params[:value]
-      @sessions[@project.slug][:gantt][:versions] = params[:value]
-    end
-    if params[:mode]
-      @sessions[@project.slug][:gantt][:edition] = params[:mode].eql?('edition')
-    end
-    versions = gantt_load_versions
-    @gantt_object = GanttObject.new(versions, @project_decorator, @sessions[@project.slug][:gantt][:edition])
-    gon.Gantt_JSON = @gantt_object.json_data
-    respond_to do |format|
-      format.html { render :gantt, locals: {versions: @project_decorator.versions, selected_versions: versions} }
-      format.js { respond_to_js action: 'gantt', locals: {json_data: @gantt_object.json_data, save: false} }
-    end
-  end
-
-  def manage_gantt
-    if request.post?
-      errors = persist_gantt(params[:gantt])
-      versions = gantt_load_versions
-      @gantt_object = GanttObject.new(versions, @project_decorator, @sessions[@project.slug][:gantt][:edition])
-      message = errors && errors.any? ? errors : t(:successful_update)
-      header = errors && errors.any? ? :failure : :success
-      respond_to do |format|
-        format.js { respond_to_js action: 'gantt', response_header: header, response_content: message, locals: {json_data: @gantt_object.json_data, save: true} }
-      end
-    else
-      if params[:mode] && params[:mode].eql?('edition')
-        @sessions[@project.slug][:gantt][:edition] = true
-        versions = gantt_load_versions
-        @gantt_object = GanttObject.new(versions, @project_decorator, @sessions[@project.slug][:gantt][:edition])
-        respond_to do |format|
-          format.js { respond_to_js action: 'gantt', locals: {json_data: @gantt_object.json_data, save: false} }
-        end
-      else
-        gantt
-      end
-
-    end
-  end
 
   private
   def find_project
@@ -98,44 +56,6 @@ class RoadmapsController < ApplicationController
     else
       render_404
     end
-  end
-
-  def gantt_initialize_sessions
-    @sessions[@project.slug] ||= {}
-    @sessions[@project.slug][:gantt] ||= {}
-    @sessions[@project.slug][:gantt][:edition] ||= false
-  end
-
-  def gantt_load_versions
-    if @sessions[@project.slug][:gantt][:versions]
-      Version.includes(issues: [:parent, :children, :tracker, :assigned_to, :status]).where(id: @sessions[@project.slug][:gantt][:versions])
-    else
-      @project_decorator.versions.includes(issues: [:parent, :children, :tracker, :assigned_to, :status]).where('versions.is_done = false')
-    end
-  end
-
-  def persist_gantt(gantt)
-    version_changes = {}
-    issue_changes = {}
-    if gantt[:data]
-      gantt[:data].each do |_, task|
-        if task[:id].start_with?('version')
-          version_changes[task[:id].split('_').last] = {start_date: task[:start_date], target_date: task[:context][:due_date]}
-        else
-          issue_changes[task[:id]] = {start_date: task[:start_date], due_date: task[:context][:due_date]}
-        end
-      end
-    end
-    if gantt[:links]
-      gantt[:links].each do |_, link|
-        unless link[:source].start_with?('version') || link[:target].start_with?('version')
-          issue_changes[link[:target]] = issue_changes[link[:target]] ? issue_changes[link[:target]].merge({predecessor_id: link[:source], link_type: link[:type]}) : {predecessor_id: link[:source], link_type: link[:type]}
-        end
-      end
-    end
-    Version.gantt_edit(version_changes)
-    Issue.gantt_edit(issue_changes)
-
   end
 
 end
