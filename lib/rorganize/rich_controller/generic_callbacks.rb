@@ -43,6 +43,24 @@ module Rorganize
       def generic_rediction(format, path)
         format.html { redirect_to path }
       end
+
+      def generic_repond_js(saved)
+        header, message = generic_notice_builder(saved)
+        respond_to do |format|
+          format.js { respond_to_js response_header: header, response_content: message }
+        end
+      end
+
+      def generic_notice_builder(saved)
+        if saved
+          header = :success
+          message = t(:successful_update)
+        else
+          header = :failure
+          message = t(:failure_update)
+        end
+        return header, message
+      end
     end
   end
 end
