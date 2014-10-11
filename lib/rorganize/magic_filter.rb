@@ -92,8 +92,9 @@ module Rorganize
 
     module SingleValueQueryBuilder
       def build_query_for_date_value(attributes, hash, inc_condition_items, k, v)
+        inc_condition_items += 1
         date_value = v['operator'].eql?('today') ? Date.today.to_s : v['value']
-        "DATE_FORMAT(#{attributes[k]},'%Y-%m-%d') #{OPERATORS[v['operator']]} '#{date_value}' #{'AND' if inc_condition_items != hash.size} "
+        return inc_condition_items, "DATE_FORMAT(#{attributes[k]},'%Y-%m-%d') #{OPERATORS[v['operator']]} '#{date_value}' #{'AND' if inc_condition_items != hash.size} "
       end
 
       def build_query_for_single_value(attributes, hash, inc_condition_items, k, query_str, v)
@@ -132,43 +133,50 @@ module Rorganize
         inc_condition_item_ary = 0 #
         inc_condition_items = 0 #
         query_str = build_query(attributes, hash, inc_condition_item_ary, inc_condition_items, link, query_str)
+
         query_str += "#{'AND' if hash.size != 0}"
       end
 
       def build_query(attributes, hash, inc_condition_item_ary, inc_condition_items, link, query_str)
-        hash.each do |k, v|
-          link = get_condition_link(v)
-          query_str = select_query_builder(attributes, hash, inc_condition_item_ary, inc_condition_items, k, link, query_str, v)
+        hash.each do |attribute_name, sub_hash|
+          link = get_condition_link(sub_hash, link)
+          inc_condition_items, query_str = select_query_builder(attributes, hash, inc_condition_item_ary, inc_condition_items, attribute_name, link, query_str, sub_hash)
           inc_condition_item_ary = 0
         end
         query_str
       end
 
-      def select_query_builder(attributes, hash, inc_condition_item_ary, inc_condition_items, k, link, query_str, v)
-        if DATE_ATTRIBUTES.include?(k) #if attribute is a date, apply a specific mysql function to convert a datetime format to date format.
-          inc_condition_items += 1
-          query_str += build_query_for_date_value(attributes, hash, inc_condition_items, k, v)
-        elsif v['value'].class.eql?(Array) #if values are contains in an ary
-          inc_condition_items += 1
-          query_str = build_query_for_array_value(attributes, hash, inc_condition_item_ary, inc_condition_items, k, link, query_str, v)
+      def select_query_builder(attributes, hash, inc_condition_item_ary, inc_condition_items, attribute_name, link, query_str, sub_hash)
+        if DATE_ATTRIBUTES.include?(attribute_name) #if attribute is a date, apply a specific mysql function to convert a datetime format to date format.
+          inc_condition_items, q = build_query_for_date_value(attributes, hash, inc_condition_items, attribute_name, sub_hash)
+          query_str += q
+        elsif sub_hash['value'].class.eql?(Array) #if values are contains in an ary
+          inc_condition_items, query_str = build_query_for_array_value(attributes, hash, inc_condition_item_ary, inc_condition_items, attribute_name, link, query_str, sub_hash)
         else #if attribute has an uniq value
-          inc_condition_items += 1
-          query_str += "#{attributes[k]} #{OPERATORS[v['operator']]} \"%#{v['value']}%\" #{'AND' if inc_condition_items != hash.size} "
+          inc_condition_items, query_str = build_uniq_value_query(attribute_name, attributes, hash, inc_condition_items, query_str, sub_hash)
         end
-        query_str
+        return inc_condition_items, query_str
       end
 
-      def get_condition_link(v)
+      def build_uniq_value_query(attribute_name, attributes, hash, inc_condition_items, query_str, sub_hash)
+        inc_condition_items += 1
+        query_str += "#{attributes[attribute_name]} #{OPERATORS[sub_hash['operator']]} \"%#{sub_hash['value']}%\" #{'AND' if inc_condition_items != hash.size} "
+        return inc_condition_items, query_str
+      end
+
+      def get_condition_link(v, link)
         LINK_BETWEEN_QUERY.each_key { |key| link = LINK_BETWEEN_QUERY[key] if key.include?(v['operator']) }
         link
       end
 
       def build_query_for_array_value(attributes, hash, inc_condition_item_ary, inc_condition_items, k, link, query_str, v)
+        inc_condition_items += 1
         if v['value'].size > 1 #if ary contains more than 1 value
-          build_query_for_values(attributes, hash, inc_condition_item_ary, inc_condition_items, k, link, query_str, v)
+          q = build_query_for_values(attributes, hash, inc_condition_item_ary, inc_condition_items, k, link, query_str, v)
         else #if ary contains less than 2 value
-          build_query_for_single_value(attributes, hash, inc_condition_items, k, query_str, v)
+          q = build_query_for_single_value(attributes, hash, inc_condition_items, k, query_str, v)
         end
+        return inc_condition_items, q
       end
 
       def select_right_operator(v, value)
