@@ -78,7 +78,7 @@ class IssuesStatusesController < ApplicationController
     issue_status = IssuesStatus.find_by_id(params[:id].to_i)
     saved = issue_status.change_position(params[:operator])
     get_statuses
-    generic_repond_js(saved)
+    simple_js_callback(saved, :update)
   end
 
   private

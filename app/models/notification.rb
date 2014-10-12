@@ -17,4 +17,18 @@ class Notification < ActiveRecord::Base
   def make_uniq
     Notification.where.not(id: self.id).delete_all(user_id: self.user_id, notifiable_id: self.notifiable_id, notifiable_type: self.notifiable_type)
   end
+
+  def self.filter_notifications(filter, project, user)
+    notifications = Notification.includes(:project, :notifiable, :from).where(user_id: user.id).where(filter).order('notifications.created_at DESC')
+
+    count_participating = Notification.where(user_id: user.id, recipient_type: 'participants').count('id')
+    count_watching = Notification.where(user_id: user.id, recipient_type: 'watchers').count('id')
+    projects = {}
+    notifications.map(&:project).uniq.each do |notification_project|
+      projects[notification_project.slug] = {count: notifications.to_a.count { |notif| notif.project_id.eql?(notification_project.id) }, id: notification_project.id}
+    end
+    filters = {all: count_participating + count_watching, participants: count_participating, watchers: count_watching}
+
+    return notifications.where(project), filters, projects
+  end
 end

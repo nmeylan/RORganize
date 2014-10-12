@@ -45,4 +45,27 @@ class WikiPage < ActiveRecord::Base
   def project_id
     self.wiki.project_id
   end
+
+  def self.page_creation(project_id, wiki_page_params, params)
+    wiki = Wiki.find_by_project_id(project_id)
+    wiki_page = wiki.pages.build(wiki_page_params)
+    wiki_page.author = User.current
+    if wiki_page_params[:parent_id]
+      wiki_page.parent = WikiPage.find_by_slug(wiki_page_params[:parent_id])
+    end
+    perform_creation(params, wiki, wiki_page)
+  end
+
+  private
+  def self.perform_creation(params, wiki, wiki_page)
+    wiki_page_success = wiki_page.save
+    home_page_success = true
+    if wiki_page_success
+      if params[:wiki] && params[:wiki][:home_page] && wiki.home_page_id.nil?
+        wiki.home_page = wiki_page
+        home_page_success = wiki.save
+      end
+    end
+    return wiki_page, wiki, wiki_page_success, home_page_success
+  end
 end

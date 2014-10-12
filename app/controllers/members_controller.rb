@@ -11,9 +11,7 @@ class MembersController < ApplicationController
   before_filter { |c| c.top_menu_item('projects') }
   #GET /projects/
   def index
-    @members_decorator = Member.where(project_id: @project.id).where('members.role_id <> ?', Role.non_member.id)
-    .paginated(@sessions[:current_page], @sessions[:per_page], order('users.name')).fetch_dependencies
-    .decorate(context: {project: @project, roles: Role.select('*')})
+    load_members
     respond_to do |format|
       format.html { render :index, locals: {users: nil} }
       format.js { respond_to_js }
@@ -30,10 +28,7 @@ class MembersController < ApplicationController
   end
 
   def new
-    members = Member.eager_load(:user, :role).where(project_id: @project.id)
-    non_member_id = Role.non_member.id
-    ids = members.collect { |member| member.user.id unless member.role_id.eql?(non_member_id) }
-    users = User.where('users.id NOT IN (?)', ids.compact)
+    users= @project.non_member_users
     @member = Member.new
     respond_to do |format|
       format.js { respond_to_js locals: {roles: Role.select('*'), users: users, new: true} }
@@ -42,9 +37,7 @@ class MembersController < ApplicationController
 
   def create
     success = Member.create(project_id: @project.id, role_id: params[:role], user_id: params[:user])
-    @members_decorator = Member.where(project_id: @project.id).where('members.role_id <> ?', Role.non_member.id)
-    .paginated(@sessions[:current_page], @sessions[:per_page], order('users.name')).fetch_dependencies
-    .decorate(context: {project: @project, roles: Role.select('*')})
+    load_members
     respond_to do |format|
       format.js { respond_to_js action: :new, locals: {users: nil, new: false}, response_header: :success, response_content: t(:successful_creation) }
     end
@@ -58,6 +51,11 @@ class MembersController < ApplicationController
     respond_to do |format|
       format.js { respond_to_js response_header: change_role_result[:saved] ? :success : :failure, response_content: change_role_result[:saved] ? t(:successful_update) : t(:failure_operation) }
     end
+  end
+
+  def load_members
+    @members_decorator = Member.members_by_project(@project.id, @sessions[:current_page], @sessions[:per_page], order('users.name'))
+    .decorate(context: {project: @project, roles: Role.select('*')})
   end
 
 end

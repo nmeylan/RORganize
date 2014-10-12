@@ -44,22 +44,33 @@ module Rorganize
         format.html { redirect_to path }
       end
 
-      def generic_repond_js(saved)
-        header, message = generic_notice_builder(saved)
+      # @param [Boolean] success : if the action is a success.
+      # @param [Array] messages : array length 2. first index success message, second index error message.
+      def js_callback(success, messages, action = nil)
+        header = success ? :success : :failure
+        message = success ? messages[0] : messages[1]
+        action ||= 'do_nothing' unless success
         respond_to do |format|
-          format.js { respond_to_js response_header: header, response_content: message }
+          format.js { respond_to_js action: action , response_header: header, response_content: message }
+        end
+      end
+        # @param [Boolean] success : if the action is a success.
+        # @param [Symbol] action_type :update / :delete / :create
+      def simple_js_callback(success, action_type, locals = {})
+        header, message = generic_notice_builder(success, action_type)
+        do_nothing_action = success ? nil : 'do_nothing'
+        respond_to do |format|
+          format.js { respond_to_js action: do_nothing_action, response_header: header, response_content: message, locals: locals }
         end
       end
 
-      def generic_notice_builder(saved)
-        if saved
-          header = :success
-          message = t(:successful_update)
-        else
-          header = :failure
-          message = t(:failure_update)
-        end
-        return header, message
+      def generic_notice_builder(success, action_type)
+        hash = {update: {failure: t(:failure_update), success: t(:successful_update)},
+                create: {failure: t(:failure_creation), success: t(:successful_creation)},
+                delete: {failure: t(:failure_deletion), success: t(:successful_deletion)}
+        }
+        header = success ? :success : :failure
+        return header, hash[action_type][header]
       end
     end
   end

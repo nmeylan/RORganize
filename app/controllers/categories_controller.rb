@@ -31,14 +31,9 @@ class CategoriesController < ApplicationController
     @category = @project.categories.build(category_params)
     respond_to do |format|
       if @category.save
-        flash[:notice] = t(:successful_creation)
-        format.html { redirect_to categories_path }
-        format.json { render json:  @category,
-                             status:  :created, location:  @category }
+        success_generic_create_callback(format, categories_path)
       else
-        format.html { render :new }
-        format.json { render json:  @category.errors,
-                             status:  :unprocessable_entity }
+        error_generic_create_callback(format, @category)
       end
     end
   end
@@ -53,29 +48,18 @@ class CategoriesController < ApplicationController
     @category.attributes = (category_params)
     respond_to do |format|
       if !@category.changed?
-        format.html { redirect_to categories_path}
+        success_generic_update_callback(format, categories_path, false)
       elsif @category.changed? && @category.save
-        flash[:notice] = t(:successful_update)
-        format.html { redirect_to categories_path }
-        format.json { render json:  @category,
-                             status: :created, location: @category }
+        success_generic_update_callback(format, categories_path)
       else
-        format.html { render :edit}
-        format.json { render json: @category.errors,
-                             status: :unprocessable_entity }
+        error_generic_update_callback(format, @category)
       end
     end
   end
 
   def destroy
     @category.destroy
-    respond_to do |format|
-      format.html do
-        flash[:notice] = t(:successful_deletion)
-        redirect_to category_path
-      end
-      format.js { respond_to_js locals: {id: params[:id]}, response_header: :success, response_content: t(:successful_deletion) }
-    end
+    simple_js_callback(@category.destroy, :delete, {id: params[:id]})
   end
 
   private

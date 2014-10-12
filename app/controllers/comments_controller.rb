@@ -6,19 +6,13 @@
 class CommentsController < ApplicationController
   before_filter :find_comment, only: [:update, :destroy, :edit, :show]
   before_filter :check_permission, only: [:update, :destroy, :create]
+  include Rorganize::RichController
 
   def create
     @comment = Comment.new(comment_params)
     @comment.project = @project
     @comment.author = User.current
-    respond_to do |format|
-      if @comment.save
-        @comment = @comment.decorate
-        format.js { respond_to_js response_header: :success, response_content: t(:successful_creation) }
-      else
-        format.js { respond_to_js action: 'do_nothing', response_header: :failure, response_content: "#{t(:failure_creation)} : #{@comment.errors.full_messages.join(', ')}" }
-      end
-    end
+    js_callback(@comment.save, [t(:successful_creation), "#{t(:failure_creation)} : #{@comment.errors.full_messages.join(', ')}"])
   end
 
   def show
@@ -36,23 +30,11 @@ class CommentsController < ApplicationController
 
   def update
     @comment.update(comment_params)
-    respond_to do |format|
-      if @comment.save
-        format.js { respond_to_js response_header: :success, response_content: t(:successful_update) }
-      else
-        format.js { respond_to_js action: 'do_nothing', response_header: :failure, response_content: t(:failure_update) }
-      end
-    end
+    simple_js_callback(@comment.save, :update)
   end
 
   def destroy
-    respond_to do |format|
-      if @comment.destroy
-        format.js { respond_to_js response_header: :success, response_content: t(:successful_deletion) }
-      else
-        format.js { respond_to_js action: 'do_nothing', response_header: :failure, response_content: t(:failure_deletion) }
-      end
-    end
+    simple_js_callback(@comment.destroy, :delete)
   end
 
   private
@@ -62,22 +44,35 @@ class CommentsController < ApplicationController
 
   def find_comment
     @comment = Comment.find_by_id(params[:id])
-    @project = @comment.project
-    unless @comment
+    if @comment
+      @project = @comment.project
+    else
       render_404
     end
   end
 
   def check_permission
-    if action_name.eql?('create') && User.current.allowed_to?('comment', params[:comment][:commentable_type].pluralize, @project)
+    if user_allowed_to_add_comment?
       true
-    elsif action_name.eql?('update') && (User.current.allowed_to?('edit_comment_not_owner', 'comments', @project) || @comment.author?(User.current))
+    elsif user_allowed_to_update_this_comment?
       true
-    elsif action_name.eql?('destroy') && (User.current.allowed_to?('destroy_comment_not_owner', 'comments', @project) || @comment.author?(User.current))
+    elsif user_allowed_to_destroy_this_comment
       true
     else
       render_403
     end
+  end
+
+  def user_allowed_to_destroy_this_comment
+    action_name.eql?('destroy') && (User.current.allowed_to?('destroy_comment_not_owner', 'comments', @project) || @comment.author?(User.current))
+  end
+
+  def user_allowed_to_update_this_comment?
+    action_name.eql?('update') && (User.current.allowed_to?('edit_comment_not_owner', 'comments', @project) || @comment.author?(User.current))
+  end
+
+  def user_allowed_to_add_comment?
+    action_name.eql?('create') && User.current.allowed_to?('comment', params[:comment][:commentable_type].pluralize, @project)
   end
 
 end

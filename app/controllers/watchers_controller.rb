@@ -6,6 +6,7 @@
 class WatchersController < ApplicationController
   before_filter :find_watcher, only: [:create, :destroy]
   before_filter :check_permission, only: [:destroy, :create]
+  include Rorganize::RichController::GenericCallbacks
 
   def create
     if @watcher
@@ -14,25 +15,13 @@ class WatchersController < ApplicationController
       new_watcher
       success = @watcher.save
     end
-    respond_to do |format|
-      if success
-        format.js { respond_to_js response_header: :success, response_content: t(:successful_watched) }
-      else
-        format.js { respond_to_js action: 'do_nothing', response_header: :failure, response_content: "#{t(:failure_deletion)} : #{@watcher.errors.full_messages.join(', ')}" }
-      end
-    end
+    js_callback(success, [t(:successful_watched), "#{t(:failure_deletion)} : #{@watcher.errors.full_messages.join(', ')}"])
   end
 
   def destroy
     if @watcher && @watcher.user_id.eql?(User.current.id)
       @model = @watcher.watchable
-      respond_to do |format|
-        if @watcher.destroy
-          format.js { respond_to_js action: 'destroy', response_header: :success, response_content: t(:successful_unwatched) }
-        else
-          format.js { respond_to_js action: 'do_nothing', response_header: :failure, response_content: "#{t(:failure_deletion)} : #{@watcher.errors.full_messages.join(', ')}" }
-        end
-      end
+      js_callback(@watcher.destroy, [t(:successful_unwatched), "#{t(:failure_deletion)} : #{@watcher.errors.full_messages.join(', ')}"])
     else
       new_watcher
       @watcher.is_unwatch = true

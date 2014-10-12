@@ -23,7 +23,8 @@ class Member < ActiveRecord::Base
 
   validates_uniqueness_of :user_id, scope: [:project_id, :role_id]
   #Scopes
-  scope :fetch_dependencies, -> { eager_load(:role, :user) }
+  scope :fetch_dependencies, -> { includes(:role, :user) }
+   scope :members_by_project, -> (project_id, current_page, per_page, order) {where(project_id: project_id).where('members.role_id <> ?', Role.non_member.id).paginated(current_page, per_page, order, [:role, :user])}
   #Methods
   def caption
     self.user.name

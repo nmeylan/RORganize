@@ -26,23 +26,11 @@ class WikiPagesController < ApplicationController
   end
 
   def create
-    wiki = Wiki.find_by_project_id(@project.id)
-    @wiki_page_decorator = wiki.pages.build(wiki_page_params).decorate
-    @wiki_page_decorator.author = User.current
-    if params[:wiki_page][:parent_id]
-      @wiki_page_decorator.parent = WikiPage.find_by_slug(params[:wiki_page][:parent_id])
-    end
+    @wiki_page_decorator, wiki, page_success, home_page_success = WikiPage.page_creation(@project.id, wiki_page_params, params)
+    @wiki_page_decorator = @wiki_page_decorator.decorate
     respond_to do |format|
-      if @wiki_page_decorator.save
-        if  params[:wiki] && params[:wiki][:home_page] && wiki.home_page_id.nil?
-          wiki.home_page = @wiki_page_decorator
-          if wiki.save
-            flash[:notice] = t(:successful_creation)
-            format.html { redirect_to wiki_page_path(@project.slug, @wiki_page_decorator.slug) }
-          else
-            format.html { render :new_home_page }
-          end
-        end
+      if page_success
+        home_page_creation(wiki, format, home_page_success)
         flash[:notice] = t(:successful_creation)
         format.html { redirect_to wiki_page_path(@project.slug, @wiki_page_decorator.slug) }
       else
@@ -51,6 +39,17 @@ class WikiPagesController < ApplicationController
         else
           format.html { render :new }
         end
+      end
+    end
+  end
+
+  def home_page_creation(wiki, format, home_page_success)
+    if  params[:wiki] && params[:wiki][:home_page] && wiki.home_page_id.nil?
+      if home_page_success
+        flash[:notice] = t(:successful_creation)
+        format.html { redirect_to wiki_page_path(@project.slug, @wiki_page_decorator.slug) }
+      else
+        format.html { render :new_home_page }
       end
     end
   end

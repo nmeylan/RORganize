@@ -12,21 +12,14 @@ class NotificationsController < ApplicationController
     filter = @sessions[:filter_recipient_type].eql?('all') ? '1 = 1' : {recipient_type: @sessions[:filter_recipient_type]}
     project = @sessions[:filter_project].eql?('all') ? '1 = 1' : {project_id: @sessions[:filter_project]}
 
-    @notifications_decorator = Notification.includes(:project, :notifiable, :from).where(user_id: @user.id).where(filter).order('notifications.created_at DESC')
-
-    count_participating = Notification.where(user_id: @user.id, recipient_type: 'participants').count('id')
-    count_watching = Notification.where(user_id: @user.id, recipient_type: 'watchers').count('id')
-    projects = {}
-    @notifications_decorator.map(&:project).uniq.each do |project|
-      projects[project.slug] = {count: @notifications_decorator.to_a.count { |notif| notif.project_id.eql?(project.id) }, id: project.id}
-    end
-    filters = {all: count_participating + count_watching, participants: count_participating, watchers: count_watching}
-
-    @notifications_decorator = @notifications_decorator.where(project).decorate(context: {filters: filters, projects: projects})
+    @notifications_decorator, filters, projects = Notification.filter_notifications(filter, project, @user)
+    @notifications_decorator = @notifications_decorator.decorate(context: {filters: filters, projects: projects})
     respond_to do |format|
       format.html { render :index }
     end
   end
+
+
 
   def destroy
     notification = Notification.includes(:notifiable, :project).find_by_id(params[:id])

@@ -73,7 +73,7 @@ class VersionsController < ApplicationController
   def change_position
     saved = @version.change_position(@project, params[:operator])
     @versions_decorator = @project.versions.paginated(@sessions[:current_page], @sessions[:per_page], 'versions.position').decorate(context: {project: @project})
-    generic_repond_js(saved)
+    simple_js_callback(saved, :update)
   end
 
 

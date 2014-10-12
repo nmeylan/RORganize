@@ -126,6 +126,13 @@ class Project < ActiveRecord::Base
     self.members.collect { |member| member unless member.role_id.eql?(non_member.id) }.compact
   end
 
+  def non_member_users
+    members = Member.eager_load(:user, :role).where(project_id: self.id)
+    non_member_id = Role.non_member.id
+    ids = members.collect { |member| member.user.id unless member.role_id.eql?(non_member_id) }
+    User.where('users.id NOT IN (?)', ids.compact)
+  end
+
   def remove_all_non_member
     if self.is_public_changed? && !self.is_public
       Member.destroy_all(project_id: self.id, role_id: Role.non_member.id)
