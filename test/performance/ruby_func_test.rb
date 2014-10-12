@@ -130,8 +130,25 @@ class RubyFuncTest
       end
     end
   end
+
+  def inject_test
+    array = [0.20000000]
+    Benchmark.bm(27) do |bm|
+      bm.report('Inject') do
+        ITERATION.times do
+          array.inject({}){|memo, value| memo[value] = value + 1; memo}
+        end
+      end
+      bm.report('Ugly way') do
+        ITERATION.times do
+          h = {}
+          array.each{|value| h[value] = value + 1}
+        end
+      end
+    end
+  end
 end
 
 test = RubyFuncTest.new
 
-test.array_concat_test
+test.inject_test

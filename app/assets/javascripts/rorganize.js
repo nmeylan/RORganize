@@ -79,6 +79,7 @@
     $(document).ajaxComplete(function (e, xhr, options) {
         //BIND_CHZN-SELECT
         initialize_chosen();
+        bind_table_list_actions();
         bind_task_list_click();
         //MarkItUp
         if (options.dataType !== 'JSON') {

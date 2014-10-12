@@ -7,19 +7,10 @@ module TrackersHelper
   # Build a list of trackers.
   # @param [Array] collection of trackers.
   def list(collection)
-    content_tag :table, class: 'tracker list' do
-      safe_concat content_tag :tr, class: 'header', &Proc.new {
-        safe_concat content_tag :td, sortable('trackers.name', t(:field_name))
-        safe_concat content_tag :td, nil
-      }
-      safe_concat(collection.collect do |tracker|
-        content_tag :tr, {class: 'odd-even', id: %Q(tracker-#{tracker.id})} do
-          safe_concat content_tag :td, tracker.edit_link, class: 'name'
-          safe_concat content_tag :td, tracker.delete_link, class: 'action'
-        end
-      end.join.html_safe)
-    end
+    collection_one_column_renderer(collection, 'tracker', 'trackers.name')
   end
+
+
 
   # @param [Array] collection : array of trackers.
   # @param [Array] checked_ids : array of trackers id used by project.

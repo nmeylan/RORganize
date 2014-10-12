@@ -29,25 +29,11 @@ class ProjectDecorator < ApplicationDecorator
   # Render an overview report of running versions of the project.
   def display_version_overview
     versions = model.current_versions.decorate
-    condition = %Q(`versions`.`id` IN (#{current_versions.collect { |version| version.id }.join(',')})) if versions.to_a.any?
+    condition = %Q(`versions`.`id` IN (#{current_versions.collect(&:id).join(',')})) if versions.to_a.any?
     versions_overviews = Version.overviews(self.id, condition)
-    structure = Hash.new { |k, v| k[v] = {} }
-    versions_overviews.each do |version_overview|
-      structure[version_overview.first] = {
-          percent: version_overview[3].truncate, closed_issues_count: version_overview[2], opened_issues_count: version_overview[1]
-      }
-    end
-    if versions.to_a.any?
-      versions.each do |version|
-        unless structure.keys.include?(version.id)
-          structure[version.id] = {
-              percent: 100, closed_issues_count: 0, opened_issues_count: 0
-          }
-        end
-      end
+    structure = build_overview_report_stats(versions_overviews)
+    render_versions_overview(structure, versions, h.t(:text_no_versions)) do
       h.versions_list_overview(versions, structure)
-    else
-      h.no_data h.t(:text_no_running_versions), 'milestone'
     end
   end
 
@@ -55,24 +41,36 @@ class ProjectDecorator < ApplicationDecorator
   # @param [Array] versions an array of running versions.
   def display_roadmap(versions)
     versions_overviews = Version.overviews(self.id)
-    structure = Hash.new { |k, v| k[v] = {} }
-    versions_overviews.each do |version_overview|
-      version = versions.select { |v| v.id.eql?(version_overview[0]) }.first
-      issues = version ? version.issues : []
-      structure[version_overview.first] = {
-          percent: version_overview[3].truncate, closed_issues_count: version_overview[2], opened_issues_count: version_overview[1], issues: issues} if issues.any?
-    end
-    if versions.to_a.any? && structure.any?
-      versions.each do |version|
-        unless structure.keys.include?(version.id)
-          structure[version.id] = {
-              percent: 100, closed_issues_count: 0, opened_issues_count: 0
-          }
-        end
-      end
+    issues = versions.inject({}){|memo, version| memo[version.id] = version.issues; memo}
+    structure = build_overview_report_stats(versions_overviews, issues)
+    render_versions_overview(structure, versions, h.t(:text_no_versions), true) do
       h.draw_roadmap(versions.delete_if { |version| version.issues.empty? }, structure)
+    end
+  end
+
+  def build_overview_report_stats(versions_overviews, issues = {})
+    versions_overviews.inject({})do |structure, version_overview|
+
+      structure[version_overview.first] = { percent: version_overview[3].truncate,
+                                            closed_issues_count: version_overview[2],
+                                            opened_issues_count: version_overview[1]}
+      structure[version_overview.first].merge!({issues: issues[version_overview[0]]}) unless issues.empty?
+      structure
+    end
+  end
+
+  def render_versions_overview(structure, versions, no_data_text, no_data_large = false)
+    if versions.to_a.any? && structure.any?
+      version_overview_init_nil_structure(structure, versions)
+      yield if block_given?
     else
-      h.no_data(h.t(:text_no_versions), 'milestone', true)
+      h.no_data(no_data_text, 'milestone', no_data_large)
+    end
+  end
+
+  def version_overview_init_nil_structure(structure, versions)
+    versions.each do |version|
+      structure[version.id] = {percent: 100, closed_issues_count: 0, opened_issues_count: 0} unless structure.keys.include?(version.id)
     end
   end
 

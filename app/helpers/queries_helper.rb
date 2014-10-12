@@ -8,21 +8,33 @@ module QueriesHelper
   # @param [Array] collection of queries.
   def query_list(collection)
     content_tag :table, class: 'query list' do
-      safe_concat content_tag :tr, class: 'header', &Proc.new {
-        safe_concat content_tag :td, sortable('queries.name', t(:field_name), collection.sortable_action)
-        safe_concat content_tag :td, sortable('users.name', t(:label_author), collection.sortable_action)
-        safe_concat content_tag :td, nil
+      safe_concat list_header(collection)
+      safe_concat(list_body(collection))
+    end
+  end
+
+  def list_body(collection)
+    collection.collect do |query|
+      list_row(query)
+    end.join.html_safe
+  end
+
+  def list_row(query)
+    content_tag :tr, {class: 'odd-even query-tr', id: "#{query.id}"} do
+      list_td query.show_link, class: 'list-left name'
+      list_td query.author, class: 'list-left author'
+      list_td nil, {class: 'action list-right'}, &Proc.new {
+        safe_concat query.edit_link
+        safe_concat query.delete_link
       }
-      safe_concat(collection.collect do |query|
-        content_tag :tr, {class: 'odd-even query-tr', id: "#{query.id}"} do
-          safe_concat content_tag :td, query.show_link, class: 'list-left name'
-          safe_concat content_tag :td, query.author, class: 'list-left author'
-          safe_concat content_tag :td, class: 'action', &Proc.new {
-            safe_concat query.edit_link
-            safe_concat query.delete_link
-          }
-        end
-      end.join.html_safe)
+    end
+  end
+
+  def list_header(collection)
+    content_tag :tr, class: 'header' do
+      list_th sortable('queries.name', t(:field_name), collection.sortable_action), class: 'list-left'
+      list_th sortable('users.name', t(:label_author), collection.sortable_action), class: 'list-left'
+      list_th nil
     end
   end
 end

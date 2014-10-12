@@ -102,7 +102,7 @@ class Project < ActiveRecord::Base
   end
 
   def current_versions
-    self.versions.where('versions.start_date <= ? AND versions.is_done = false', Date.today)
+    self.versions.where('versions.start_date <= ? AND versions.is_done = false', Date.today).includes(:issues)
   end
 
   def old_versions

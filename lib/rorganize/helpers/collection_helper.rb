@@ -54,12 +54,46 @@ module Rorganize
       end
 
       def list_td(content, options = {})
-        safe_concat content_tag :td, content, options
+        if block_given?
+          safe_concat content_tag :td, options, &Proc.new
+        else
+          safe_concat content_tag :td, content, options
+        end
+
       end
 
       def list_th(content, options = {})
         safe_concat content_tag :th, content, options
       end
+
+      def collection_one_column_renderer(collection, class_name, sort_attribute)
+        content_tag :table, class: "#{class_name} list" do
+          safe_concat collection_one_column_header(sort_attribute)
+          safe_concat collection_one_column_body(collection, class_name)
+        end
+      end
+      def collection_one_column_body(collection, class_name)
+        collection.collect do |decorated_object|
+          collection_one_column_row(decorated_object, class_name)
+        end.join.html_safe
+      end
+
+      def collection_one_column_row(decorated_object, class_name)
+        content_tag :tr, {class: 'odd-even', id: %Q(#{class_name}-#{decorated_object.id})} do
+          list_td decorated_object.edit_link, class: 'name'
+          list_td decorated_object.delete_link, class: 'action'
+        end
+      end
+
+      def collection_one_column_header(sort_attribute)
+        content_tag :thead do
+          content_tag :tr, class: 'header' do
+            list_th sortable(sort_attribute, t(:field_name)), class: 'list-left'
+            list_th nil
+          end
+        end
+      end
+
     end
   end
 end

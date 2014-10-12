@@ -28,6 +28,9 @@ class Version < ActiveRecord::Base
     !self.target_date.nil? && (self.target_date && self.target_date < Date.today)
   end
 
+  def issues_count
+    self.issues.to_a.count
+  end
   # The rule for issue start and due date is :
   # Version.start_date <= Issue.start_date < Issue.due_date <= Version.due_date
   # So when issue's version is changing we have to update issue start and due date to respect the previous rule.
