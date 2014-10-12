@@ -22,12 +22,16 @@ class ApplicationCollectionDecorator < Draper::CollectionDecorator
     h.content_tag :div, {id: "#{h.controller_name.tr('_', '-')}-content"} do
       if object.to_a.any?
         proc = Proc.new if block_given?
-        collection_content(no_scroll, proc)
-        collection_pagination(no_pagination)
+        render_list(no_pagination, no_scroll, proc)
       else
         h.no_data(no_data_text, no_data_glyph_name, true)
       end
     end
+  end
+
+  def render_list(no_pagination, no_scroll, proc = nil)
+    collection_content(no_scroll, proc)
+    collection_pagination(no_pagination)
   end
 
   def collection_content(no_scroll, proc = nil)
@@ -41,9 +45,13 @@ class ApplicationCollectionDecorator < Draper::CollectionDecorator
   end
 
   def collection_pagination(no_pagination)
-    unless no_pagination || (object.to_a.size < 25 && h.session[h.controller_name.to_sym][:current_page].to_i < 2)
+    unless no_pagination?(no_pagination)
       h.safe_concat(h.paginate(object, h.session[h.controller_name.to_sym], pagination_path))
     end
+  end
+
+  def no_pagination?(no_pagination)
+    no_pagination || (object.to_a.size < 25 && h.session[h.controller_name.to_sym][:current_page].to_i < 2)
   end
 
   def no_data_glyph_name
