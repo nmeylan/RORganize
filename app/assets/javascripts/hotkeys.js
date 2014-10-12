@@ -32,15 +32,16 @@ function on_keydown_highlight_search(e) {
     var search_box = $('#highlight-search');
     var input = search_box.find('input');
     search_box.keydown(function (e) {
-        highlight_result(e, input)
+        highlight_result(e, input);
     });
 
     if (search_box.is(':visible')) {
         close_highlight_search(search_box);
     } else {
         $('html').append('<div id="searchMask" style="position: fixed; top: 0px; left: 0px; width: 100%; height: 100%; display: block; opacity: 0.3; z-index: 10; background-color: rgb(0, 0, 0);"></div>').keydown(function (e) {
-            if (e.keyCode === 27)
+            if (e.keyCode === 27) {
                 close_highlight_search(search_box);
+            }
         });
         search_box.css('display', 'block').css('z-index', ' 9999');
         input.focus();
@@ -137,7 +138,7 @@ function line_upward() {
             var prev = row.prev(':not(.header)');
             if (prev[0] !== undefined) {
                 row.removeClass('hover');
-                prev.addClass('hover')
+                prev.addClass('hover');
             }
         } else {
             list.find('tr:not(.header)').last().addClass('hover');
