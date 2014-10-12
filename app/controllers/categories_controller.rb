@@ -29,13 +29,7 @@ class CategoriesController < ApplicationController
 
   def create
     @category = @project.categories.build(category_params)
-    respond_to do |format|
-      if @category.save
-        success_generic_create_callback(format, categories_path)
-      else
-        error_generic_create_callback(format, @category)
-      end
-    end
+    generic_create(@category, categories_path)
   end
 
   def edit
@@ -46,15 +40,7 @@ class CategoriesController < ApplicationController
 
   def update
     @category.attributes = (category_params)
-    respond_to do |format|
-      if !@category.changed?
-        success_generic_update_callback(format, categories_path, false)
-      elsif @category.changed? && @category.save
-        success_generic_update_callback(format, categories_path)
-      else
-        error_generic_update_callback(format, @category)
-      end
-    end
+    generic_update(@category, categories_path)
   end
 
   def destroy

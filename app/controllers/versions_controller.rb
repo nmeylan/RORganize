@@ -28,13 +28,7 @@ class VersionsController < ApplicationController
 
   def create
     @version = @project.versions.build(version_params)
-    respond_to do |format|
-      if @version.save
-        success_generic_create_callback(format, versions_path)
-      else
-        error_generic_create_callback(format, @user)
-      end
-    end
+    generic_create(@version, versions_path)
   end
 
   def edit
@@ -45,15 +39,7 @@ class VersionsController < ApplicationController
 
   def update
     @version.attributes= version_params
-    respond_to do |format|
-      if !@version.changed?
-        success_generic_update_callback(format, versions_path, false)
-      elsif @version.changed? && @version.save
-        success_generic_update_callback(format, versions_path)
-      else
-        error_generic_update_callback(format, @version)
-      end
-    end
+    generic_update(@version, versions_path)
   end
 
   def destroy

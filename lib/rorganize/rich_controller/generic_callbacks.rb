@@ -17,6 +17,28 @@ module Rorganize
         end
       end
 
+      def generic_create(model, path)
+        respond_to do |format|
+          if model.save
+            success_generic_create_callback(format, path)
+          else
+            error_generic_create_callback(format, model)
+          end
+        end
+      end
+
+      def generic_update(model, path)
+        respond_to do |format|
+          if !model.changed?
+            success_generic_update_callback(format, path, false)
+          elsif model.changed? && model.save
+            success_generic_update_callback(format, path)
+          else
+            error_generic_update_callback(format, model)
+          end
+        end
+      end
+
       def success_generic_update_callback(format, path, notice = true)
         flash[:notice] = t(:successful_creation) if notice
         generic_rediction(format, path)
