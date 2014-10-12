@@ -100,6 +100,8 @@ class User < ActiveRecord::Base
     member = self.members.to_a.detect { |member| member.project_id == project.id }
     if member
       load_allowed_statuses member.role.issues_statuses
+    elsif project.is_public
+      load_allowed_statuses Role.non_member.issues_statuses
     else
       load_allowed_statuses Role.find_by_name('Anonymous').issues_statuses
     end
@@ -108,7 +110,6 @@ class User < ActiveRecord::Base
   def load_allowed_statuses(status_rel)
     status_rel.eager_load(:enumeration).sort { |x, y| x.enumeration.position <=> y.enumeration.position }
   end
-
 
 
   # Get projects when user is a member or when projects are public.
