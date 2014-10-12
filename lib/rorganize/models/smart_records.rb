@@ -22,6 +22,8 @@ module Rorganize
         self.extend(ClassMethods)
       end
 
+
+
       #Change a record's position from a collection. E.g: change_position([a, b, c, d], c, inc)
       # => c position change from 3 to 4 and d position change from 4 to 3, collection order is [a, b, d, c]
       #Available operator are : inc or dec
@@ -32,22 +34,32 @@ module Rorganize
         max = records_collection.size
         saved = false
         position = record.position
-        if record.position == 1 && operator.eql?('dec') ||
-            record.position == max && operator.eql?('inc')
+        if out_of_bounds?(max, operator, record)
         elsif %w(inc dec).include? operator
-          if operator.eql?('inc')
-            o_record = records_collection.detect { |r| r.position.eql?(position + 1) }
-            o_record.update_column(:position, position)
-            record.update_column(:position, position + 1)
-          else
-            o_record = records_collection.detect { |r| r.position.eql?(position - 1) }
-            o_record.update_column(:position, position)
-            record.update_column(:position, position - 1)
-          end
+          select_operator(operator, position, record, records_collection)
           saved = true
         end
         saved
       end
+
+      def select_operator(operator, position, record, records_collection)
+        if operator.eql?('inc')
+          change_position!(position, record, records_collection, position + 1)
+        else
+          change_position!(position, record, records_collection, position - 1)
+        end
+      end
+
+      def change_position!(position, record, records_collection, new_position)
+        o_record = records_collection.detect { |r| r.position.eql?(new_position) }
+        o_record.update_column(:position, position)
+        record.update_column(:position, new_position)
+      end
+
+      def out_of_bounds?(max, operator, record)
+        record.position == 1 && operator.eql?('dec') || record.position == max && operator.eql?('inc')
+      end
+
 
       module ClassMethods
         def attributes_formalized_names

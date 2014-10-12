@@ -34,45 +34,46 @@ module Rorganize
       end
 
       def create_journal
-        p_id = self.respond_to?('project_id') ? self.project_id : nil
-        Journal.create(user_id: User.current.id,
-                       journalizable_id: self.id,
-                       journalizable_type: self.class.to_s,
-                       journalizable_identifier: self.caption[0..127],
-                       notes: '',
-                       action_type: Journal::ACTION_CREATE,
-                       project_id: p_id)
+        project_id = self.respond_to?('project_id') ? self.project_id : nil
+        action = Journal::ACTION_CREATE
+        insert_journal!(action, project_id)
       end
 
       def update_journal
-        p_id = self.respond_to?('project_id') ? self.project_id : nil
-        notes = self.respond_to?('notes') && !self.notes.nil? ? self.notes : ''
-        properties = self.class.journalizable_properties
-        foreign_keys = self.class.foreign_keys
-        journalizable_attributes = properties.keys
-        updated_journalizable_attributes = self.changes.delete_if { |attribute, _| !journalizable_attributes.include?(attribute.to_sym) }.inject({}) { |memo, (k, v)| memo[k.to_sym] = v; memo }
+        project_id = self.respond_to?('project_id') ? self.project_id : nil
+        action = Journal::ACTION_UPDATE
+        journalizable_attributes = self.class.journalizable_properties.keys
+        updated_journalizable_attributes = updated_attributes(journalizable_attributes)
         #Create journalizable only if a relevant attribute has been updated
-        if updated_journalizable_attributes.any? || (!notes.nil? && !notes.eql?(''))
-          journal = Journal.create(user_id: User.current.id,
-                                   journalizable_id: self.id,
-                                   journalizable_type: self.class.to_s,
-                                   journalizable_identifier: self.caption[0..127],
-                                   notes: notes,
-                                   action_type: Journal::ACTION_UPDATE,
-                                   project_id: p_id)
-          journal.detail_insertion(updated_journalizable_attributes, properties, foreign_keys)
+        if updated_journalizable_attributes.any?
+          journal = insert_journal!(action, project_id)
+          journal.detail_insertion(updated_journalizable_attributes, self.class.journalizable_properties, self.class.foreign_keys)
+        end
+      end
+
+      def updated_attributes(journalizable_attributes)
+        self.changes.delete_if do |attribute, _|
+          !journalizable_attributes.include?(attribute.to_sym)
+        end.inject({}) do |memo, (k, v)|
+          memo[k.to_sym] = v
+          memo
         end
       end
 
       def destroy_journal
-        p_id = self.respond_to?('project_id') ? self.project_id : nil
+        action = Journal::ACTION_DELETE
+        project_id = self.respond_to?('project_id') ? self.project_id : nil
+        insert_journal!(action, project_id)
+      end
+
+      def insert_journal!(action, project_id)
         Journal.create(user_id: User.current.id,
                        journalizable_id: self.id,
                        journalizable_type: self.class.to_s,
                        journalizable_identifier: self.caption[0..127],
                        notes: '',
-                       action_type: Journal::ACTION_DELETE,
-                       project_id: p_id)
+                       action_type: action,
+                       project_id: project_id)
       end
     end
   end
