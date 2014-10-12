@@ -60,13 +60,13 @@ module Rorganize
         end
 
         def non_member_permission_manager_allowed_to?(action, controller)
-          anonymous_role = Rorganize::Managers::PermissionManager.non_member_role
-          Rorganize::Managers::PermissionManager.permissions[anonymous_role.id.to_s].any? { |permission| permission[:action] == action && permission[:controller] == controller }
+          non_member_role = Rorganize::Managers::PermissionManager.non_member_role
+          permission_manager_allowed_to?(non_member_role.id.to_s, action, controller)
         end
 
         def anonymous_permission_manager_allowed_to?(action, controller)
           anonymous_role = Rorganize::Managers::PermissionManager.anonymous_role
-          Rorganize::Managers::PermissionManager.permissions[anonymous_role.id.to_s].any? { |permission| permission[:action] == action && permission[:controller] == controller }
+          permission_manager_allowed_to?(anonymous_role.id.to_s, action, controller)
         end
 
         def reload_permission(role_id)
@@ -130,22 +130,23 @@ module Rorganize
 
         def load_permissions
           roles = Role.all
-          permissions = Hash.new { |h, k| h[k] = [] }
-          roles.each do |role|
-            permissions[role.id.to_s] = []
-            role.permissions.each do |permission|
-              permissions[role.id.to_s] << {action: permission.action, controller: permission.controller.downcase}
-            end
+          roles.inject(Hash.new { |h, k| h[k] = [] }) do |memo, role|
+            memo[role.id.to_s] = role_permissions_hash(role)
+            memo
           end
-          return permissions
+        end
+
+        def role_permissions_hash(role)
+          role.permissions.inject([]) do |memo_perm, permission|
+            memo_perm << {action: permission.action, controller: permission.controller.downcase}
+            memo_perm
+          end
         end
 
         def load_permissions_spec_role(role_id)
           role = Role.find(role_id)
           @permissions[role_id.to_s].clear
-          role.permissions.each do |perm|
-            @permissions[role_id.to_s] << {action: perm.action, controller: perm.controller.downcase}
-          end
+          @permissions[role_id.to_s] = role_permissions_hash(role)
         end
 
         def set_controllers_groups(controllers_groups)

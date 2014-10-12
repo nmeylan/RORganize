@@ -18,51 +18,81 @@ module Rorganize
         end
 
         def display_project_menu?(project)
-          if project
-            unless project.slug.nil?
-              return true
-            end
-          end
-          return false
+          project && project.slug
         end
 
+        # Select which main menu to render.
+        # @param [Project] project.
         def render_menu(project = nil)
           if @menu_context.include?(:project_menu)
             render_main_menu(Rorganize::Managers::MenuManager.items(:project_menu), project)
           elsif @menu_context.include?(:admin_menu)
             render_main_menu(Rorganize::Managers::MenuManager.items(:admin_menu), nil)
           end
-
         end
 
+        # Render main menu.
+        # @param [Menu] menu.
+        # @param [Project] project.
         def render_main_menu(menu, project)
-          content = ''
-          menu.menu_items.each do |item|
-            if User.current.allowed_to?(item.url[:action], item.url[:controller], project)
-              css_selection = item.params[:id].eql?(@current_menu_item) ? 'selected' : ''
-              css_class = item.params[:class] ? "#{item.params[:class]} #{css_selection}" : css_selection
-              glyph = glyph(item.label, item.params[:glyph])
-              item.url[:project_id] = project.slug if project
-              content += content_tag(:li, link_to(glyph, item.url, {id: item.params[:id]}), class: css_class)
-            end
+          content_for :main_menu do
+            menu.menu_items.collect do |item|
+              render_main_menu_item(item, project) if allowed_to_view_menu_item?(item, project)
+            end.join.html_safe
           end
-          content_for :main_menu, content.html_safe
         end
 
+        # Render a main menu item.
+        # @param [MenuItem] item
+        # @param [Project] project
+        def render_main_menu_item(item, project)
+          css_selection = item.params[:id].eql?(@current_menu_item) ? 'selected' : ''
+          css_class = item.params[:class] ? "#{item.params[:class]} #{css_selection}" : css_selection
+          glyph = glyph(item.label, item.params[:glyph])
+          item.url[:project_id] = project.slug if project
+          content_tag(:li, link_to(glyph, item.url, {id: item.params[:id]}), class: css_class)
+        end
+
+        # Is user allowed to view this menu item in the menu bar?
+        # @param [MenuItem] item
+        # @param [Project] project
+        def allowed_to_view_menu_item?(item, project)
+          User.current.allowed_to?(item.url[:action], item.url[:controller], project)
+        end
+
+        # Render the top menu bar.
         def render_top_menu
           menu = Rorganize::Managers::MenuManager.items(:top_menu)
-          content = ''
-          content += content_tag(:li, link_to(t(:home), :root, {class: @current_top_menu_item.eql?('menu-home') ? 'selected square' : 'square'}))
-          unless controller_name.eql?('sessions') || controller_name.eql?('registrations') || controller_name.eql?('passwords')
-            menu.menu_items.each do |item|
-              if User.current && User.current.allowed_to?(item.url[:action], item.url[:controller])
-                css_selection = item.params[:id].eql?(@current_top_menu_item) ? 'selected square' : 'square'
-                css_class = item.params[:class] ? "#{item.params[:class]} #{css_selection}" : css_selection
-                content += content_tag(:li, link_to(item.label, item.url, {id: item.params[:id], class: css_class}))
-              end
-            end
+          content_for :top_menu_items do
+            safe_concat content_tag(:li, link_to(t(:home), :root, {class: @current_top_menu_item.eql?('menu-home') ? 'selected square' : 'square'}))
+            render_top_menu_items(menu) unless in_devise_context?
           end
-          content_for :top_menu_items, content.html_safe
+        end
+
+        # Render top menu items.
+        # @param [Menu] menu.
+        def render_top_menu_items(menu)
+          safe_concat(menu.menu_items.collect do |item|
+            render_top_menu_item(item) if allowed_to_view_top_menu_item?(item)
+          end.join.html_safe)
+        end
+
+        # @param [MenuItem] item
+        def render_top_menu_item(item)
+          css_selection = item.params[:id].eql?(@current_top_menu_item) ? 'selected square' : 'square'
+          css_class = item.params[:class] ? "#{item.params[:class]} #{css_selection}" : css_selection
+          content_tag(:li, link_to(item.label, item.url, {id: item.params[:id], class: css_class}))
+        end
+
+        # Is user allowed to view this top menu item in the bar.
+        # @param [MenuItem] item
+        def allowed_to_view_top_menu_item?(item)
+          User.current && User.current.allowed_to?(item.url[:action], item.url[:controller])
+        end
+
+        # Is user in devise context (Devise gem). Registration / connection / forgotten password.
+        def in_devise_context?
+          controller_name.eql?('sessions') || controller_name.eql?('registrations') || controller_name.eql?('passwords')
         end
       end
 
