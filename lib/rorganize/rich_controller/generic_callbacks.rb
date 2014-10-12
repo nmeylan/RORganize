@@ -11,41 +11,51 @@ module Rorganize
         end
       end
 
-      def generic_show_callback(decorator)
+      def generic_show_callback(locals = {})
         respond_to do |format|
-          format.html { render :show, locals: {history: History.new(Journal.issue_activities(decorator.id), decorator.comments)} }
+          format.html { render :show, locals: locals }
         end
       end
 
-      def generic_create(model, path)
+      # @param [ActiveRecord::Base] model
+      # @param [Lambda|String] path
+      # @param [Hash] locals
+      def generic_create_callback(model, path, locals = {})
         respond_to do |format|
           if model.save
-            success_generic_create_callback(format, path)
+            success_generic_create_callback(format, path, true, locals)
           else
-            error_generic_create_callback(format, model)
+            error_generic_create_callback(format, model, locals)
           end
         end
       end
 
-      def generic_update(model, path)
+      # @param [ActiveRecord::Base] model
+      # @param [Lambda|String] path
+      # @param [Hash] locals
+      def generic_update_callback(model, path, locals = {})
         respond_to do |format|
           if !model.changed?
-            success_generic_update_callback(format, path, false)
+            success_generic_update_callback(format, path, false, locals)
           elsif model.changed? && model.save
-            success_generic_update_callback(format, path)
+            success_generic_update_callback(format, path, true, locals)
           else
-            error_generic_update_callback(format, model)
+            error_generic_update_callback(format, model, locals)
           end
         end
       end
 
-      def success_generic_update_callback(format, path, notice = true)
-        flash[:notice] = t(:successful_creation) if notice
+      # @param [Format] format
+      # @param [Lambda|String] path
+      # @param [Boolean] notice display or not the flash notice.
+      # @param [Hash] locals
+      def success_generic_update_callback(format, path, notice = true, locals = {})
+        flash[:notice] = t(:successful_update) if notice
         generic_rediction(format, path)
       end
 
-      def success_generic_create_callback(format, path, notice = true)
-        flash[:notice] = t(:successful_update) if notice
+      def success_generic_create_callback(format, path, notice = true, locals = {})
+        flash[:notice] = t(:successful_creation) if notice
         generic_rediction(format, path)
       end
 
@@ -68,12 +78,12 @@ module Rorganize
 
       # @param [Boolean] success : if the action is a success.
       # @param [Array] messages : array length 2. first index success message, second index error message.
-      def js_callback(success, messages, action = nil)
+      def js_callback(success, messages, action = nil, locals = {})
         header = success ? :success : :failure
         message = success ? messages[0] : messages[1]
         action ||= 'do_nothing' unless success
         respond_to do |format|
-          format.js { respond_to_js action: action , response_header: header, response_content: message }
+          format.js { respond_to_js action: action , response_header: header, response_content: message, locals: locals }
         end
       end
         # @param [Boolean] success : if the action is a success.

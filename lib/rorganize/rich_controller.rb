@@ -7,13 +7,11 @@
 module Rorganize
   module RichController
     include Rorganize::RichController::Pagination
-    include Rorganize::RichController::AttachmentRemove
     include Rorganize::RichController::GenericCallbacks
 
     def self.included(base)
       base.before_filter :set_pagination, only: [:index]
     end
-
 
 
     # Klazz : type of the filtered content, e.g : Issue

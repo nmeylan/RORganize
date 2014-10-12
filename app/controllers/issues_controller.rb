@@ -10,13 +10,14 @@ class IssuesController < ApplicationController
   before_filter { |c| c.add_action_alias= {'overview' => 'index', 'apply_custom_query' => 'index'} }
   before_filter :find_project_with_dependencies, only: [:index, :new, :create, :update, :edit, :toolbox, :apply_custom_query]
   before_filter :check_permission, except: [:toolbox]
-  before_filter :find_issue, only: [:edit, :update, :destroy]
+  before_filter :find_issue, only: [:edit, :update, :destroy, :show]
   before_filter :check_not_owner_permission, only: [:edit, :update, :destroy]
   include Rorganize::RichController
   include Rorganize::RichController::ToolboxCallback
   include Rorganize::Filters::NotificationFilter
   include Rorganize::RichController::ProjectContext
   include Rorganize::RichController::GanttCallbacks
+  include Rorganize::RichController::AttachableCallbacks
   require 'will_paginate'
 
   #RESTFULL CRUD Methods
@@ -32,13 +33,8 @@ class IssuesController < ApplicationController
   end
 
   def show
-    @issue_decorator = Issue.eager_load([:tracker, :version, :assigned_to, :category, :attachments, :parent, :author, status: :enumeration, comments: :author]).find_by_id(params[:id])
-    if @issue_decorator.nil?
-      render_404
-    else
-      @issue_decorator = @issue_decorator.decorate(context: {project: @project})
-      generic_show_callback(@issue_decorator)
-    end
+    @issue_decorator = @issue_decorator.decorate(context: {project: @project})
+    generic_show_callback({history: History.new(Journal.issue_activities(@issue_decorator.id), @issue_decorator.comments)})
   end
 
   #GET /project/:project_identifier/issues/new
@@ -54,13 +50,7 @@ class IssuesController < ApplicationController
   def create
     @issue_decorator = @project.issues.build(issue_params).decorate(context: {project: @project})
     @issue_decorator.author = User.current
-    respond_to do |format|
-      if @issue_decorator.save
-        success_generic_create_callback(format, issue_path(@project.slug, @issue_decorator.id))
-      else
-        error_generic_create_callback(format, @issue_decorator, {form_content: FormContent.new(@project).content})
-      end
-    end
+    generic_create_callback(@issue_decorator, -> { issue_path(@project.slug, @issue_decorator.id) }, {form_content: FormContent.new(@project).content})
   end
 
   #GET /project/:project_identifier/issues/:id/edit
@@ -73,16 +63,7 @@ class IssuesController < ApplicationController
   #PUT /project/:project_identifier/issues/:id
   def update
     @issue_decorator.attributes = issue_params
-    respond_to do |format|
-      if !issue_changed?
-        success_generic_update_callback(format, issue_path(@project.slug, @issue_decorator.id), false)
-        #If attributes were updated
-      elsif issue_saved?
-        success_generic_update_callback(format, issue_path(@project.slug, @issue_decorator.id))
-      else
-        error_generic_update_callback(format, @issue_decorator, {form_content: FormContent.new(@project).content})
-      end
-    end
+    update_attachable_callback(@issue_decorator, issue_path(@project.slug, @issue_decorator.id), issue_params, {form_content: FormContent.new(@project).content})
   end
 
   #DELETE /project/:project_identifier/issues/:id
@@ -105,7 +86,6 @@ class IssuesController < ApplicationController
     end
     index
   end
-
 
 
   def overview
@@ -156,24 +136,12 @@ class IssuesController < ApplicationController
   end
 
   def find_issue
-    @issue_decorator = Issue.eager_load(:attachments).where(id: params[:id])[0]
+    @issue_decorator = Issue.eager_load([:tracker, :version, :assigned_to, :category, :attachments, :parent, :author, status: :enumeration, comments: :author]).find_by_id(params[:id])
     if @issue_decorator
       @issue_decorator = @issue_decorator.decorate(context: {project: @project})
     else
       render_404
     end
-  end
-
-  def any_attachement_uploaded?
-    issue_params[:existing_attachment_attributes] || issue_params[:new_attachment_attributes]
-  end
-
-  def issue_saved?
-    @issue_decorator.save && @issue_decorator.save_attachments
-  end
-
-  def issue_changed?
-    @issue_decorator.changed? || any_attachement_uploaded?
   end
 
   alias :load_collection :load_issues

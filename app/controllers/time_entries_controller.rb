@@ -3,6 +3,7 @@
 # Encoding: UTF-8
 # File: ${FILE_NAME}
 class TimeEntriesController < ApplicationController
+  include Rorganize::RichController::GenericCallbacks
 
   def fill_overlay
     issue_id = params[:issue_id]
@@ -29,11 +30,7 @@ class TimeEntriesController < ApplicationController
     @time_entry.project = issue.project
     @time_entry.user = User.current
     saved = @time_entry.save
-    respond_to do |format|
-      format.js do
-        respond_to_js action: 'entries_operations', locals: {success: saved}, response_header: saved ? :success : :failure, response_content: saved ? t(:successful_time_entry_creation) : @time_entry.errors.full_messages
-      end
-    end
+    js_callback(saved, [t(:successful_time_entry_creation), @time_entry.errors.full_messages], 'entries_operations', {success: saved})
   end
 
   def edit
@@ -48,11 +45,7 @@ class TimeEntriesController < ApplicationController
     @time_entry = TimeEntry.find(params[:id])
     @time_entry.attributes = time_entry_params
     saved = @time_entry.save
-    respond_to do |format|
-      format.js do
-        respond_to_js action: 'entries_operations', locals: {success: saved}, response_header: saved ? :success : :failure, response_content: saved ? t(:successful_time_entry_update) : @time_entry.errors.full_messages
-      end
-    end
+    js_callback(saved, [t(:successful_time_entry_update), @time_entry.errors.full_messages], 'entries_operations', {success: saved})
   end
 
   def destroy
@@ -62,12 +55,16 @@ class TimeEntriesController < ApplicationController
     respond_to do |format|
       format.js do
         js_redirect_to url_for(controller: :profiles, action: :spent_time, id: User.current.slug, date: params[:date])
-        if trusted then
-          success ? flash[:notice] = t(:successful_deletion) : flash[:alert] = t(:failure_deletion)
-        else
-          flash[:alert] = t(:text_time_entry_not_owner_deletion)
-        end
+        destroy_message_selection(success, trusted)
       end
+    end
+  end
+
+  def destroy_message_selection(success, trusted)
+    if trusted
+      success ? flash[:notice] = t(:successful_deletion) : flash[:alert] = t(:failure_deletion)
+    else
+      flash[:alert] = t(:text_time_entry_not_owner_deletion)
     end
   end
 

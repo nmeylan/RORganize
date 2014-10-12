@@ -29,7 +29,7 @@ class CategoriesController < ApplicationController
 
   def create
     @category = @project.categories.build(category_params)
-    generic_create(@category, categories_path)
+    generic_create_callback(@category, categories_path)
   end
 
   def edit
@@ -40,7 +40,7 @@ class CategoriesController < ApplicationController
 
   def update
     @category.attributes = (category_params)
-    generic_update(@category, categories_path)
+    generic_update_callback(@category, categories_path)
   end
 
   def destroy

@@ -32,17 +32,9 @@ class RolesController < ApplicationController
   def create
     @role = Role.new(role_params)
     @role.set_statuses(params[:issues_statuses])
-    respond_to do |format|
-      if @role.save
-        flash[:notice] = t(:successful_creation)
-        format.html { redirect_to roles_path }
-      else
-        @issues_statuses = IssuesStatus.select('*').includes(:enumeration)
-        format.html { render :new }
-        format.json { render json: @role.errors,
-                             status: :unprocessable_entity }
-      end
-    end
+
+    @issues_statuses = IssuesStatus.select('*').includes(:enumeration)
+    generic_create_callback(@role, roles_path)
   end
 
   #GET /administration/roles/edit/:id
@@ -58,8 +50,9 @@ class RolesController < ApplicationController
   def update
     @role = Role.find_by_id(params[:id])
     @role.set_statuses(params[:issues_statuses])
+    @role.attributes = role_params
     respond_to do |format|
-      if @role.update_attributes(role_params)
+      if @role.save
         flash[:notice] = t(:successful_update)
         format.html { redirect_to roles_path }
       else
@@ -72,12 +65,7 @@ class RolesController < ApplicationController
   #DELETE /administration/roles/:id
   def destroy
     @role = Role.find_by_id(params[:id])
-    @role.destroy
-    @roles_decorator = Role.select('*').paginated(@sessions[:current_page], @sessions[:per_page], order('roles.name')).decorate
-    respond_to do |format|
-      format.html { redirect_to roles_path }
-      format.js { respond_to_js response_header: :success, response_content: t(:successful_deletion), locals: {id: @role.id} }
-    end
+    simple_js_callback(@role.destroy, :delete, {id: params[:id]})
   end
 
   private

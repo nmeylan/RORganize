@@ -10,6 +10,7 @@ class ProjectsController < ApplicationController
   helper VersionsHelper
   helper TrackersHelper
   include Rorganize::Managers::ActivityManager
+  include Rorganize::RichController::GenericCallbacks
   #GET /project/:project_id
   #Project overview
   def overview
@@ -42,17 +43,7 @@ class ProjectsController < ApplicationController
   #POST /project/new
   def create
     @project_decorator = Project.new(project_params).decorate
-    respond_to do |format|
-      if @project_decorator.save
-        @project_decorator.update_info({}, params[:trackers])
-        flash[:notice] = t(:successful_creation)
-        format.html { redirect_to overview_projects_path(@project_decorator.slug) }
-        format.json { render json: @project_decorator, status: :created, location: @project_decorator }
-      else
-        format.html { render :new }
-        format.json { render json: @project_decorator.errors, status: :unprocessable_entity }
-      end
-    end
+    generic_create_callback(@project_decorator, -> {overview_projects_path(@project_decorator.slug)})
   end
 
   def destroy

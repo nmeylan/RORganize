@@ -8,6 +8,7 @@ class DocumentsController < ApplicationController
   before_filter :find_document, only: [:show, :edit, :destroy, :update]
   before_filter :check_permission, locals: [:toolbox]
   include Rorganize::RichController
+  include Rorganize::RichController::AttachableCallbacks
   include Rorganize::Filters::NotificationFilter
   include Rorganize::RichController::ToolboxCallback
   include Rorganize::RichController::ProjectContext
@@ -29,14 +30,7 @@ class DocumentsController < ApplicationController
 
   def create
     @document_decorator = @project.documents.build(document_params).decorate(context: {project: @project})
-    respond_to do |format|
-      if @document_decorator.save
-        flash[:notice] = t(:successful_creation)
-        format.html { redirect_to document_path(@project.slug, @document_decorator.id) }
-      else
-        format.html { render :new }
-      end
-    end
+    generic_create_callback(@document_decorator, -> { document_path(@project.slug, @document_decorator.id) })
   end
 
   def edit
@@ -47,22 +41,11 @@ class DocumentsController < ApplicationController
 
   def update
     @document_decorator.attributes = document_params
-    respond_to do |format|
-      if !@document_decorator.changed? &&
-          (document_params[:existing_attachment_attributes].nil? &&
-              document_params[:new_attachment_attributes].nil?)
-        format.html { redirect_to document_path(@project.slug, @document_decorator.id) }
-      elsif @document_decorator.save && @document_decorator.save_attachments
-        flash[:notice] = t(:successful_update)
-        format.html { redirect_to document_path(@project.slug, @document_decorator.id) }
-      else
-        format.html { render :edit }
-      end
-    end
+    update_attachable_callback(@document_decorator, document_path(@project.slug, @document_decorator.id), document_params)
   end
 
   def show
-    generic_show_callback(@document_decorator)
+    generic_show_callback({history: History.new(Journal.document_activities(@document_decorator.id), @document_decorator.comments)})
   end
 
   def destroy

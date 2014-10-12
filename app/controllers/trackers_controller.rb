@@ -12,9 +12,7 @@ class TrackersController < ApplicationController
 
   #Get /administration/trackers
   def index
-    @trackers_decorator = Tracker.paginated(@sessions[:current_page],
-                                            @sessions[:per_page],
-                                            order('trackers.name')).decorate
+    @trackers_decorator = Tracker.paginated(@sessions[:current_page],@sessions[:per_page], order('trackers.name')).decorate
     respond_to do |format|
       format.html
       format.js { respond_to_js }
@@ -32,16 +30,7 @@ class TrackersController < ApplicationController
   #POST /administration/trackers/new
   def create
     @tracker = Tracker.new(tracker_params)
-    respond_to do |format|
-      if @tracker.save
-        flash[:notice] = t(:successful_creation)
-        format.html { redirect_to trackers_path }
-      else
-        format.html { render :new }
-        format.json { render json: @tracker.errors,
-                             status: :unprocessable_entity }
-      end
-    end
+    generic_create_callback(@tracker, trackers_path)
   end
 
   #GET /administration/trackers/edit/:id
@@ -55,25 +44,14 @@ class TrackersController < ApplicationController
   #PUT /administration/trackers/edit/:id
   def update
     @tracker = Tracker.find_by_id(params[:id])
-    respond_to do |format|
-      if @tracker.update_attributes(tracker_params)
-        flash[:notice] = t(:successful_update)
-        format.html { redirect_to trackers_path }
-      else
-        format.html { render :edit }
-      end
-    end
+    @tracker.attributes = tracker_params
+    generic_update_callback(@tracker, trackers_path)
   end
 
   #DELETE /administration/roles/:id
   def destroy
     @tracker = Tracker.find_by_id(params[:id])
-    @tracker.destroy
-    @trackers = Tracker.select('*')
-    respond_to do |format|
-      format.html { redirect_to trackers_path }
-      format.js { respond_to_js response_header: :success, response_content: t(:successful_deletion), locals: {id: @tracker.id} }
-    end
+    simple_js_callback(@tracker.destroy, :delete, {id: params[:id]})
   end
 
   private

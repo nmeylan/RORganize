@@ -2,6 +2,7 @@ module Rorganize
   module RichController
     module GanttCallbacks
 
+      # Call in issues controller.
       def add_predecessor
         set_predecessor(params[:issue][:predecessor_id])
       end
@@ -20,6 +21,7 @@ module Rorganize
         end
       end
 
+      # Call in roadmaps controller.
       def gantt_initialize_sessions
         @sessions[@project.slug] ||= {}
         @sessions[@project.slug][:gantt] ||= {}

@@ -12,6 +12,7 @@ class WikiPagesController < ApplicationController
   before_filter { |c| c.menu_item('wiki') }
   before_filter { |c| c.top_menu_item('projects') }
   helper WikiHelper
+  include Rorganize::RichController::GenericCallbacks
 
   def new
     new_form
@@ -31,8 +32,7 @@ class WikiPagesController < ApplicationController
     respond_to do |format|
       if page_success
         home_page_creation(wiki, format, home_page_success)
-        flash[:notice] = t(:successful_creation)
-        format.html { redirect_to wiki_page_path(@project.slug, @wiki_page_decorator.slug) }
+        success_generic_create_callback(format, wiki_page_path(@project.slug, @wiki_page_decorator.slug))
       else
         if params[:wiki] && params[:wiki][:home_page]
           format.html { render :new_home_page }
@@ -46,8 +46,7 @@ class WikiPagesController < ApplicationController
   def home_page_creation(wiki, format, home_page_success)
     if  params[:wiki] && params[:wiki][:home_page] && wiki.home_page_id.nil?
       if home_page_success
-        flash[:notice] = t(:successful_creation)
-        format.html { redirect_to wiki_page_path(@project.slug, @wiki_page_decorator.slug) }
+        success_generic_create_callback(format, wiki_page_path(@project.slug, @wiki_page_decorator.slug))
       else
         format.html { render :new_home_page }
       end
@@ -68,27 +67,11 @@ class WikiPagesController < ApplicationController
 
   def update
     @wiki_page_decorator.attributes = wiki_page_params
-    respond_to do |format|
-      if !@wiki_page_decorator.changed?
-        format.html { redirect_to wiki_page_path(@project.slug, @wiki_page_decorator.slug) }
-      elsif @wiki_page_decorator.changed? && @wiki_page_decorator.save
-        flash[:notice] = t(:successful_update)
-        format.html { redirect_to wiki_page_path(@project.slug, @wiki_page_decorator.slug) }
-      else
-        format.html { render :edit }
-      end
-    end
+    generic_update_callback(@wiki_page_decorator, wiki_page_path(@project.slug, @wiki_page_decorator.slug))
   end
 
   def destroy
-    respond_to do |format|
-      if @wiki_page_decorator.destroy
-        flash[:notice] = t(:successful_deletion)
-        format.js { js_redirect_to pages_wiki_index_path(@project.slug) }
-      else
-
-      end
-    end
+    generic_destroy_callback(@wiki_page_decorator, pages_wiki_index_path(@project.slug))
   end
 
   private
