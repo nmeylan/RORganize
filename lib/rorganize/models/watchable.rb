@@ -15,7 +15,23 @@ module Rorganize
         # w = Watcher.where(user_id: user.id, watchable_type: self.class.to_s, watchable_id: self.id).first
         is_a_project = self.is_a?(Project)
         parent_watch = parent_watch_by?(user)
-        (!is_a_project && ((parent_watch &&(w.nil? || (w && !w.is_unwatch))) ||(!parent_watch && (w && !w.is_unwatch)))) || (is_a_project && !w.nil?)
+        is_watched?(is_a_project, parent_watch, w)
+      end
+
+      def is_watched?(is_a_project, parent_watch, w)
+        (!is_a_project && (parent_is_watched?(parent_watch, w) || is_not_excluded(parent_watch, w))) || project_is_watched?(is_a_project, w)
+      end
+
+      def project_is_watched?(is_a_project, w)
+        (is_a_project && !w.nil?)
+      end
+
+      def is_not_excluded(parent_watch, w)
+        (!parent_watch && (w && !w.is_unwatch))
+      end
+
+      def parent_is_watched?(parent_watch, w)
+        (parent_watch &&(w.nil? || (w && !w.is_unwatch)))
       end
 
       def watcher_for(user)
@@ -25,11 +41,23 @@ module Rorganize
       end
 
       def real_watchers
-        unwatch = Watcher.includes(author: :preferences).where(watchable_type: self.class.to_s, watchable_id: self.id, is_unwatch: true, project_id: self.project_id).pluck('user_id')
-        w = Watcher.includes(author: :preferences).where(watchable_type: self.class.to_s, watchable_id: self.id, project_id: self.project_id)
-        project_w = Watcher.includes(author: :preferences).where(watchable_type: 'Project', watchable_id: self.project_id) if !self.is_a?(Project)
+        unwatch = excluded_watchables
+        w = user_watchers
+        project_w = parent_watchers if !self.is_a?(Project)
         sum = project_w.to_a + w.to_a
         sum.flatten(0).delete_if { |watcher| unwatch.include? watcher.user_id }
+      end
+
+      def parent_watchers
+        Watcher.includes(author: :preferences).where(watchable_type: 'Project', watchable_id: self.project_id)
+      end
+
+      def user_watchers
+        Watcher.includes(author: :preferences).where(watchable_type: self.class.to_s, watchable_id: self.id, project_id: self.project_id)
+      end
+
+      def excluded_watchables
+        Watcher.includes(author: :preferences).where(watchable_type: self.class.to_s, watchable_id: self.id, is_unwatch: true, project_id: self.project_id).pluck('user_id')
       end
 
       def parent_watch_by?(user)

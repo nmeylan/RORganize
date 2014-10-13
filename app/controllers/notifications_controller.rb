@@ -48,10 +48,18 @@ class NotificationsController < ApplicationController
   end
 
   def notifiable_path(notification)
-    if notification.notifiable.is_a? Issue
-      issue_path(notification.project.slug, notification.notifiable.id, anchor: "#{notification.trigger_type.downcase}-#{notification.trigger_id}")
-    elsif notification.notifiable.is_a? Document
-      document_path(notification.project.slug, notification.notifiable.id, anchor: "#{notification.trigger_type.downcase}-#{notification.trigger_id}")
+    if notifiable_is_a?(notification, Issue)
+      issue_path(*notification_path_params(notification))
+    elsif notifiable_is_a?(notification, Document)
+      document_path(*notification_path_params(notification))
     end
+  end
+
+  def notifiable_is_a?(notification, klazz)
+    notification.notifiable.is_a? klazz
+  end
+
+  def notification_path_params(notification)
+    return notification.project.slug, notification.notifiable.id, {anchor: "#{notification.trigger_type.downcase}-#{notification.trigger_id}"}
   end
 end

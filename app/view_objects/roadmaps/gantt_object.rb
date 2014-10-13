@@ -32,16 +32,22 @@ class GanttObject
   def build_json
     output_hash = {data: [], links: []}
     @versions_hash.each do |version, issues|
-      duration = version.target_date ? (version.target_date - version.start_date) : (Date.today - version.start_date)
-      if duration > 0
-        output_hash[:data] << build_version_output(version, duration)
-        issues_start_date = issues.select { |issue| issue.start_date }
-        issues_no_start_date = issues.select { |issue| issue.start_date.nil? }
-        build_issue_json(output_hash, issues_start_date, version)
-        build_issue_json(output_hash, issues_no_start_date, version)
-      end
+      duration = version_duration(version)
+      build_version_json(duration, issues, output_hash, version) if duration > 0
     end
     output_hash.to_json
+  end
+
+  def build_version_json(duration, issues, output_hash, version)
+    output_hash[:data] << build_version_output(version, duration)
+    issues_start_date = issues.select { |issue| issue.start_date }
+    issues_no_start_date = issues.select { |issue| issue.start_date.nil? }
+    build_issue_json(output_hash, issues_start_date, version)
+    build_issue_json(output_hash, issues_no_start_date, version)
+  end
+
+  def version_duration(version)
+    version.target_date ? (version.target_date - version.start_date) : (Date.today - version.start_date)
   end
 
   # @param [Version] version
@@ -49,13 +55,17 @@ class GanttObject
   # @param [Array] issues.
   def build_issue_json(output_hash, issues, version)
     issues.sort_by(&:start_date).each do |issue|
-      if issue.start_date && issue.due_date && issue.due_date >= issue.start_date
+      if issue_due_date_gte_start_date?(issue)
         output_hash[:data] << build_issue_output(issue, version, true)
       elsif @edition
         output_hash[:data] << build_issue_output(issue, version, false)
       end
       output_hash[:links] << build_link(issue) unless issue.predecessor_id.nil?
     end
+  end
+
+  def issue_due_date_gte_start_date?(issue)
+    issue.start_date && issue.due_date && issue.due_date >= issue.start_date
   end
 
   def build_version_output(version, duration)
@@ -77,13 +87,9 @@ class GanttObject
   end
 
   def build_issue_output(issue, version, are_data_provided)
-    start_date = issue.start_date ? issue.start_date : version.start_date
-    due_date = if issue.due_date then
-                 issue.due_date
-               else
-                 version.target_date ? version.target_date : Date.today
-               end
-    caption = issue.caption.length > 40 ? "#{issue.caption[0..40]}..." : issue.caption
+    start_date = issue_start_date(issue, version)
+    due_date = issue_due_date(issue, version)
+    caption = issue_caption(issue)
     {
         id: issue.id,
         start_date: start_date.strftime(DATE_FORMAT),
@@ -103,6 +109,22 @@ class GanttObject
             are_data_provided: are_data_provided
         }
     }
+  end
+
+  def issue_start_date(issue, version)
+    issue.start_date ? issue.start_date : version.start_date
+  end
+
+  def issue_caption(issue)
+    issue.caption.length > 40 ? "#{issue.caption[0..40]}..." : issue.caption
+  end
+
+  def issue_due_date(issue, version)
+    if issue.due_date
+      issue.due_date
+    else
+      version.target_date ? version.target_date : Date.today
+    end
   end
 
   def build_link(issue)

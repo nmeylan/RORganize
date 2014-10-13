@@ -21,28 +21,76 @@ class IssueFilter
     members = @project.real_members
     content_hash['hash_for_select'] = {}
     content_hash['hash_for_radio'] = Hash.new { |k, v| k[v] = [] }
-    content_hash['hash_for_select']['assigned'] = members.collect { |member| [member.user.name, member.user.id] }
-    content_hash['hash_for_radio']['assigned'] = %w(all equal different)
-    content_hash['hash_for_select']['assigned'] << %w(Nobody NULL)
-    content_hash['hash_for_select']['author'] = members.collect { |member| [member.user.name, member.user.id] }
-    content_hash['hash_for_radio']['author'] = %w(all equal different)
-    content_hash['hash_for_select']['category'] = @project.categories.collect { |category| [category.name, category.id] }
-    content_hash['hash_for_radio']['category'] = %w(all equal different)
-    content_hash['hash_for_radio']['created'] = %w(all equal superior inferior today)
-    content_hash['hash_for_radio']['done'] = %w(all equal superior inferior)
-    content_hash['hash_for_select']['done'] = [[0, 0], [10, 10], [20, 20], [30, 30], [40, 40], [50, 50], [60, 60], [70, 70], [80, 80], [90, 90], [100, 100]]
-    content_hash['hash_for_radio']['due_date'] = %w(all equal superior inferior today)
-    content_hash['hash_for_select']['status'] = IssuesStatus.eager_load(:enumeration).collect { |status| [status.enumeration.name, status.id] }
-    content_hash['hash_for_radio']['status'] = %w(all equal different open close)
-    content_hash['hash_for_radio']['start'] = %w(all equal superior inferior today)
-    content_hash['hash_for_radio']['subject'] = %w(all contains not_contains)
-    content_hash['hash_for_select']['tracker'] = @project.trackers.collect { |tracker| [tracker.name, tracker.id] }
-    content_hash['hash_for_radio']['tracker'] = %w(all equal different)
+    assigned_to_filter(content_hash, members)
+    author_filter(content_hash, members)
+    category_filter(content_hash)
+    create_at_filter(content_hash)
+    done_filter(content_hash)
+    due_date_filter(content_hash)
+    status_filter(content_hash)
+    start_date_filter(content_hash)
+    subject_filter(content_hash)
+    tracker_filter(content_hash)
+    version_filter(content_hash)
+    updated_at_filter(content_hash)
+    content_hash
+  end
+
+  def updated_at_filter(content_hash)
+    content_hash['hash_for_radio']['updated'] = %w(all equal superior inferior today)
+  end
+
+  def version_filter(content_hash)
     content_hash['hash_for_select']['version'] = @project.versions.collect { |version| [version.name, version.id] }
     content_hash['hash_for_select']['version'] << %w(Unplanned NULL)
     content_hash['hash_for_radio']['version'] = %w(all equal different)
-    content_hash['hash_for_radio']['updated'] = %w(all equal superior inferior today)
-    content_hash
+  end
+
+  def tracker_filter(content_hash)
+    content_hash['hash_for_select']['tracker'] = @project.trackers.collect { |tracker| [tracker.name, tracker.id] }
+    content_hash['hash_for_radio']['tracker'] = %w(all equal different)
+  end
+
+  def subject_filter(content_hash)
+    content_hash['hash_for_radio']['subject'] = %w(all contains not_contains)
+  end
+
+  def start_date_filter(content_hash)
+    content_hash['hash_for_radio']['start'] = %w(all equal superior inferior today)
+  end
+
+  def status_filter(content_hash)
+    content_hash['hash_for_select']['status'] = IssuesStatus.eager_load(:enumeration).collect { |status| [status.enumeration.name, status.id] }
+    content_hash['hash_for_radio']['status'] = %w(all equal different open close)
+  end
+
+  def due_date_filter(content_hash)
+    content_hash['hash_for_radio']['due_date'] = %w(all equal superior inferior today)
+  end
+
+  def done_filter(content_hash)
+    content_hash['hash_for_radio']['done'] = %w(all equal superior inferior)
+    content_hash['hash_for_select']['done'] = [[0, 0], [10, 10], [20, 20], [30, 30], [40, 40], [50, 50], [60, 60], [70, 70], [80, 80], [90, 90], [100, 100]]
+  end
+
+  def create_at_filter(content_hash)
+    content_hash['hash_for_radio']['created'] = %w(all equal superior inferior today)
+  end
+
+  def category_filter(content_hash)
+    content_hash['hash_for_select']['category'] = @project.categories.collect { |category| [category.name, category.id] }
+    content_hash['hash_for_radio']['category'] = %w(all equal different)
+  end
+
+  def author_filter(content_hash, members)
+    content_hash['hash_for_select']['author'] = members.collect { |member| [member.user.name, member.user.id] }
+    content_hash['hash_for_radio']['author'] = %w(all equal different)
+  end
+
+  def assigned_to_filter(content_hash, members)
+    content_hash['hash_for_select']['assigned'] = members.collect { |member| [member.user.name, member.user.id] }
+    content_hash['hash_for_radio']['assigned'] = %w(all equal different)
+    content_hash['hash_for_select']['assigned'] << %w(Nobody NULL)
   end
 
   def build_json_form(form_hash)
