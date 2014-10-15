@@ -93,7 +93,7 @@ module Rorganize
         end
 
         def lt_version_start_date?(date)
-          (date && self.version && self.version.start_date) && date <= self.version.start_date
+          (date && self.version && self.version.start_date) && date < self.version.start_date
         end
 
         # Start date and due date greater than version due date?
