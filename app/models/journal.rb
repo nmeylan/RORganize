@@ -53,9 +53,9 @@ class Journal < ActiveRecord::Base
   def self.prepare_detail_insertion(updated_attrs, journalizable_property, foreign_key_value = {})
     return_array = []
     updated_attrs.each do |attribute, old_new_value|
-      if foreign_key_value && foreign_key_value[attribute]
-        old_value = old_new_value[0] && !foreign_key_value[attribute].nil? ? foreign_key_value[attribute].where(id: old_new_value[0]).first.caption : nil
-        new_value = old_new_value[1] && !old_new_value[1].eql?('') ? foreign_key_value[attribute].where(id: old_new_value[1]).first.caption : ''
+      if is_a_foreign_attribute?(attribute, foreign_key_value)
+        old_value = old_foreign_value(attribute, foreign_key_value, old_new_value)
+        new_value = new_foreign_value(attribute, foreign_key_value, old_new_value)
       else
         old_value = old_new_value[0]
         new_value = old_new_value[1]
@@ -63,6 +63,18 @@ class Journal < ActiveRecord::Base
       return_array << {property: journalizable_property[attribute], property_key: attribute, old_value: old_value, value: new_value}
     end
     return_array
+  end
+
+  def self.is_a_foreign_attribute?(attribute, foreign_key_value)
+    foreign_key_value && foreign_key_value[attribute]
+  end
+
+  def self.new_foreign_value(attribute, foreign_key_value, old_new_value)
+    old_new_value[1] && !old_new_value[1].eql?('') ? foreign_key_value[attribute].where(id: old_new_value[1]).first.caption : ''
+  end
+
+  def self.old_foreign_value(attribute, foreign_key_value, old_new_value)
+    old_new_value[0] && !foreign_key_value[attribute].nil? ? foreign_key_value[attribute].where(id: old_new_value[0]).first.caption : nil
   end
 
 
