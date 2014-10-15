@@ -31,13 +31,13 @@ class VersionDecorator < ApplicationDecorator
   end
 
   # @return [String] start date.
-  def start_date
+  def display_start_date
     model.start_date ? model.start_date : '-'
   end
 
   # @return [String] target_date.
   def display_target_date
-    model.target_date ? model.target_date : '-'
+    model.target_date ? model.target_date : h.t(:text_no_due_date)
   end
 
   # @return [String] is done.

@@ -50,7 +50,6 @@ class ProjectDecorator < ApplicationDecorator
 
   def build_overview_report_stats(versions_overviews, issues = {})
     versions_overviews.inject({})do |structure, version_overview|
-
       structure[version_overview.first] = { percent: version_overview[3].truncate,
                                             closed_issues_count: version_overview[2],
                                             opened_issues_count: version_overview[1]}

@@ -640,8 +640,14 @@ ul.project-list {
   h1 {
     float: left;
   }
-  .version-due-date {
+  .version-dates-header {
     float: right;
+    color: $default-smooth-color;
+    .version-dates-separator{
+      font-weight: bold;
+      margin-right: 5px;
+      margin-left: 5px;
+    }
   }
   .requests-stats {
     float: left;

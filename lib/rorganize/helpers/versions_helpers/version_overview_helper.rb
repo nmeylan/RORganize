@@ -29,7 +29,7 @@ module Rorganize
         def version_overview(version, closed_issues_count, opened_issues_count, percent)
           content_tag :div, class: 'version-overview' do
             safe_concat content_tag :h1, version.name, id: "v-#{version.display_id}"
-            safe_concat content_tag :div, version.display_target_date, {class: 'version-due-date'}
+            safe_concat version_dates_header(version) unless version.id.nil?
             safe_concat clear_both
             safe_concat progress_bar_tag(percent)
             safe_concat version_overview_request_stats(closed_issues_count, opened_issues_count, version)
@@ -37,6 +37,15 @@ module Rorganize
             safe_concat clear_both
           end
 
+        end
+
+        def version_dates_header(version)
+          content_tag :div, class: 'version-dates-header' do
+            concat_span_tag glyph(' ', 'calendar')
+            concat_span_tag version.display_start_date, {class: 'version-start-date'}
+            concat_span_tag '-', {class: 'version-dates-separator'}
+            concat_span_tag version.display_target_date, {class: 'version-due-date'}
+          end
         end
 
         def version_overview_over_run_tag(version)

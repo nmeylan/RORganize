@@ -6,7 +6,7 @@
 class RoadmapReport
   attr_reader :version_decorator, :old_versions
   def initialize(project_decorator)
-    @version_decorator = project_decorator.current_versions.eager_load(issues: [:status, :tracker]).order(:position).decorate
+    @version_decorator = project_decorator.versions.where(is_done: false).eager_load(issues: [:status, :tracker]).order(:position).decorate
     unplanned = Version.new(name: 'Unplanned')
     unplanned.issues << Issue.where(project_id: project_decorator.id, version_id: nil).eager_load(:status, :tracker)
     unplanned.project = project_decorator.model
