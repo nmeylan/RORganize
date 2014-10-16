@@ -115,21 +115,26 @@ module Rorganize
       # @param [Array] journals : array of journals.
       # @param [Array] objects : bulk updated objects.
       def journal_detail_insertion(journals, objects)
-        properties = self.journalizable_properties
-        foreign_keys = self.foreign_keys
-
-        objects = build_detail_hash(objects, properties)
-
+        excluded_attributes = self.excluded_from_journal_attrs
+        objects = build_detail_hash(objects, excluded_attributes)
         insert = []
         journals.each do |journal|
-          insertion_hash = Journal.prepare_detail_insertion(objects[journal.journalizable_id], properties, foreign_keys).first if objects[journal.journalizable_id]
+          insertion_hash = Journal.prepare_detail_insertion(self, objects[journal.journalizable_id]).first if objects[journal.journalizable_id]
           if insertion_hash
-            old = insertion_hash[:old_value].is_a?(String) ? quote_string(insertion_hash[:old_value]) : insertion_hash[:old_value]
-            new = insertion_hash[:value].is_a?(String) ? quote_string(insertion_hash[:value]) : insertion_hash[:value]
+            old = build_old_value_query_part(insertion_hash)
+            new = build_new_value_query_part(insertion_hash)
             insert << "(#{journal.id}, '#{insertion_hash[:property]}', '#{insertion_hash[:property_key]}', '#{old}', '#{new}')"
           end
         end
         perform_insertion(insert)
+      end
+
+      def build_new_value_query_part(insertion_hash)
+        insertion_hash[:value].is_a?(String) ? quote_string(insertion_hash[:value]) : insertion_hash[:value]
+      end
+
+      def build_old_value_query_part(insertion_hash)
+        insertion_hash[:old_value].is_a?(String) ? quote_string(insertion_hash[:old_value]) : insertion_hash[:old_value]
       end
 
       # @param [Array] insert an array of all values.
@@ -146,7 +151,7 @@ module Rorganize
       # @param [Hash] properties : attributes that are print in journals details when they changed..
       def build_detail_hash(objects, properties)
         objects.inject({}) do |memo, obj|
-          memo[obj.id] = obj.changes.delete_if { |attribute, _| !properties.keys.include?(attribute.to_sym) }.inject({}) do |memo_2, (k, v)|
+          memo[obj.id] = obj.changes.delete_if { |attribute, _| properties.include?(attribute.to_sym) }.inject({}) do |memo_2, (k, v)|
             memo_2[k.to_sym] = v
             memo_2
           end

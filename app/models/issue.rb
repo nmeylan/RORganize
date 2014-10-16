@@ -12,8 +12,7 @@ class Issue < ActiveRecord::Base
   include Rorganize::Models::IssueExtraMethods
   extend Rorganize::Managers::BulkEditManager
   #Class variables
-  assign_journalizable_properties({status_id: 'Status', category_id: 'Category', assigned_to_id: 'Assigned to', tracker_id: 'Tracker', due_date: 'Due date', start_date: 'Start date', done: 'Done', estimated_time: 'Estimated time', version_id: 'Version', predecessor_id: 'Predecessor', subject: 'Subject'})
-  assign_foreign_keys({status_id: IssuesStatus, category_id: Category, assigned_to_id: User, tracker_id: Tracker, version_id: Version})
+  exclude_attributes_from_journal(:description, :attachments_count, :link_type, :comments_count)
   attr_accessor :notes
   #Relations
   belongs_to :project, class_name: 'Project', counter_cache: true

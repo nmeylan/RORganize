@@ -11,8 +11,7 @@ class Document < ActiveRecord::Base
   include Rorganize::Models::Notifiable
   extend Rorganize::Managers::BulkEditManager
   #Class variables
-  assign_journalizable_properties({name: 'Name', category_id: 'Category', version_id: 'Version'})
-  assign_foreign_keys({category_id: Category, version_id: Version})
+  exclude_attributes_from_journal(:description, :comments_count)
   #Relations
   belongs_to :version
   belongs_to :category

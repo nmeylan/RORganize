@@ -3,7 +3,7 @@ class Version < ActiveRecord::Base
   include Rorganize::Models::Journalizable
   extend Rorganize::Managers::BulkEditManager
   #Class variables
-  assign_journalizable_properties({name: 'Name', target_date: 'Due date', start_date: 'Start date'})
+  exclude_attributes_from_journal(:description, :position)
   #Relations
   belongs_to :project, class_name: 'Project'
   has_many :issues, class_name: 'Issue', dependent: :nullify

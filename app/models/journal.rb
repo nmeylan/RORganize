@@ -40,43 +40,39 @@ class Journal < ActiveRecord::Base
     query
   end
 
-  # @param [Hash] updated_attr : a hash containing all updated attributes with their old and new value (e.g {attr_name: [old_value, new_value]}).
-  # @param [Hash] journalizable_property : a hash with the following structure : {attr_name: 'Attribute name'}
-  # @param [Hash] foreign_key_value : a hash with following structure : {attr_name: foreign_key}
-  def detail_insertion(updated_attrs, journalizable_property, foreign_key_value = {})
-    array = Journal.prepare_detail_insertion(updated_attrs, journalizable_property, foreign_key_value)
+  # @param [ActiveRecord::Base] klazz : the class that is updated.
+  # @param [Hash] updated_attrs : a hash containing all updated attributes with their old and new value (e.g {attr_name: [old_value, new_value]}).
+  def detail_insertion(klazz, updated_attrs)
+    array = Journal.prepare_detail_insertion(klazz, updated_attrs)
     array.each do |hash|
       JournalDetail.create(journal_id: self.id, property: hash[:property], property_key: hash[:property_key], old_value: hash[:old_value], value: hash[:value])
     end
   end
 
-  def self.prepare_detail_insertion(updated_attrs, journalizable_property, foreign_key_value = {})
+  def self.prepare_detail_insertion(klazz, updated_attrs)
     return_array = []
+    foreign_keys_hash = klazz.foreign_keys
     updated_attrs.each do |attribute, old_new_value|
-      if is_a_foreign_attribute?(attribute, foreign_key_value)
-        old_value = old_foreign_value(attribute, foreign_key_value, old_new_value)
-        new_value = new_foreign_value(attribute, foreign_key_value, old_new_value)
+      if foreign_keys_hash[attribute.to_sym]
+        old_value = foreign_attribute_value(foreign_keys_hash[attribute.to_sym], old_new_value[0])
+        new_value = foreign_attribute_value(foreign_keys_hash[attribute.to_sym], old_new_value[1])
       else
         old_value = old_new_value[0]
         new_value = old_new_value[1]
       end
-      return_array << {property: journalizable_property[attribute], property_key: attribute, old_value: old_value, value: new_value}
+      return_array << {property: make_attribute_readable(attribute), property_key: attribute, old_value: old_value, value: new_value}
     end
     return_array
   end
 
-  def self.is_a_foreign_attribute?(attribute, foreign_key_value)
-    foreign_key_value && foreign_key_value[attribute]
+  def self.make_attribute_readable(attribute)
+    attribute.to_s.tr('_', ' ').gsub('id','').capitalize
   end
 
-  def self.new_foreign_value(attribute, foreign_key_value, old_new_value)
-    old_new_value[1] && !old_new_value[1].eql?('') ? foreign_key_value[attribute].where(id: old_new_value[1]).first.caption : ''
+  def self.foreign_attribute_value(association, value)
+    foreign_attribute = association.find_by_id(value)
+    foreign_attribute.caption unless foreign_attribute.nil?
   end
-
-  def self.old_foreign_value(attribute, foreign_key_value, old_new_value)
-    old_new_value[0] && !foreign_key_value[attribute].nil? ? foreign_key_value[attribute].where(id: old_new_value[0]).first.caption : nil
-  end
-
 
   def polymorphic_identifier
     "#{self.journalizable_type}_#{self.journalizable_id}".to_sym

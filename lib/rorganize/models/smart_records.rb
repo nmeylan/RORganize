@@ -65,6 +65,13 @@ module Rorganize
         def attributes_formalized_names
           self.attribute_names.map { |attribute| attribute.gsub('_id', '').gsub('id', '').tr('_', ' ').capitalize unless attribute.eql?('id') }.compact
         end
+
+        def foreign_keys
+          self.reflect_on_all_associations(:belongs_to).inject({}) do |memo, association|
+            memo[association.foreign_key.to_sym] = association.klass
+            memo
+          end
+        end
       end
 
       class << self

@@ -8,8 +8,7 @@ class Member < ActiveRecord::Base
   include Rorganize::Models::Journalizable
   include Rorganize::Models::Watchable
   #Constants
-  assign_journalizable_properties({role_id: 'Role'})
-  assign_foreign_keys({role_id: Role})
+  exclude_attributes_from_journal(:is_project_starred, :project_position)
   #Relations
   belongs_to :project, class_name: 'Project', counter_cache: true
 
@@ -40,7 +39,7 @@ class Member < ActiveRecord::Base
                                notes: '',
                                action_type: 'created',
                                project_id: self.project_id)
-      journal.detail_insertion(created_journalizable_attributes, self.class.journalizable_properties, self.class.foreign_keys)
+      journal.detail_insertion(created_journalizable_attributes, self.class.excluded_from_journal_attrs, self.class.foreign_keys)
     end
   end
 

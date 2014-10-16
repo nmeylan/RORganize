@@ -7,30 +7,13 @@ module Rorganize
   module Managers
     module JounalsManager
       module ClassMethods
-        def init_journals_manager
-          @foreign_keys = {}
+        def exclude_attributes_from_journal(*properties)
+          @excluded_from_journal_attrs = [:created_at, :updated_at] | properties
         end
 
-        def assign_journalizable_properties(properties)
-          @journalizable_properties = properties
+        def excluded_from_journal_attrs
+          @excluded_from_journal_attrs ||= []
         end
-
-        def journalizable_properties
-          @journalizable_properties
-        end
-
-        def assign_foreign_keys(foreign_keys)
-          @foreign_keys = foreign_keys
-        end
-
-        def foreign_keys
-          @foreign_keys
-        end
-      end
-
-      def self.included(base)
-        base.extend ClassMethods
-        base.init_journals_manager
       end
 
       def create_journal
@@ -42,18 +25,17 @@ module Rorganize
       def update_journal
         project_id = self.respond_to?('project_id') ? self.project_id : nil
         action = Journal::ACTION_UPDATE
-        journalizable_attributes = self.class.journalizable_properties.keys
-        updated_journalizable_attributes = updated_attributes(journalizable_attributes)
+        updated_journalizable_attributes = updated_attributes(self.class.excluded_from_journal_attrs)
         #Create journalizable only if a relevant attribute has been updated
         if updated_journalizable_attributes.any?
           journal = insert_journal!(action, project_id)
-          journal.detail_insertion(updated_journalizable_attributes, self.class.journalizable_properties, self.class.foreign_keys)
+          journal.detail_insertion(self.class, updated_journalizable_attributes)
         end
       end
 
       def updated_attributes(journalizable_attributes)
         self.changes.delete_if do |attribute, _|
-          !journalizable_attributes.include?(attribute.to_sym)
+          journalizable_attributes.include?(attribute.to_sym)
         end.inject({}) do |memo, (k, v)|
           memo[k.to_sym] = v
           memo
