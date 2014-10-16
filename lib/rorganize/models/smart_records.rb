@@ -66,6 +66,7 @@ module Rorganize
           self.attribute_names.map { |attribute| attribute.gsub('_id', '').gsub('id', '').tr('_', ' ').capitalize unless attribute.eql?('id') }.compact
         end
 
+        # @return [Hash] hash with the following structure : {foreign_key: association class}
         def foreign_keys
           self.reflect_on_all_associations(:belongs_to).inject({}) do |memo, association|
             memo[association.foreign_key.to_sym] = association.klass

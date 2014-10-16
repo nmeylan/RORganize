@@ -35,6 +35,11 @@ class Journal < ActiveRecord::Base
   scope :fetch_dependencies_categories, -> { includes(:category) }
 
   #Scopes methods
+  # This scope method give all activities.
+  # @param [String] conditions.
+  # @param [Range] date_range.
+  # @param [Numeric] days.
+  # @param [Array] journalizable_types : all journalizable types. e.g [Issue, Document, Member].
   def self.activities_method(conditions, date_range, days, journalizable_types)
     includes([:details, :project, user: :avatar]).
         where("journalizable_type IN (?) AND DATE_FORMAT(journals.created_at, '%Y-%m-%d') BETWEEN ? AND ?",
@@ -83,6 +88,8 @@ class Journal < ActiveRecord::Base
     end
   end
 
+  # @param [ActiveRecord::Base] klazz : the class that is updated.
+  # @param [Hash] updated_attrs : a hash containing all updated attributes with their old and new value (e.g {attr_name: [old_value, new_value]}).
   def self.prepare_detail_insertion(klazz, updated_attrs)
     return_array = []
     foreign_keys_hash = klazz.foreign_keys
@@ -99,6 +106,8 @@ class Journal < ActiveRecord::Base
     return_array
   end
 
+  # Make the attribute name more readable (remove id, underscore then capitalize).
+  # @param [Symbol] attribute that was updated.
   def self.make_attribute_readable(attribute)
     attribute.to_s.tr('_', ' ').gsub('id','').capitalize
   end
