@@ -7,9 +7,10 @@
 <%= contextual t(:label_issue_plural) do %>
     <%= @issues_decorator.new_link %>
 <% end %>
+<%= issue_list_type_nav %>
 
 <%= filter_tag('issue', Issue.filtered_attributes, issues_path(@project.slug), true, {user: User.current, project: @project, filter_content: session["#{@project.slug}_controller_issues_filter"]}) %>
-
+<%= clear_both %>
 
 <%= @issues_decorator.display_collection %>
 <ul id="issues-toolbox" class="jeegoocontext box toolbox">
@@ -21,6 +22,6 @@
 <%= render partial: 'shared/delete_overlay', locals: {collection: @issues_toolbox} %>
 <%= render partial: 'queries/create_overlay', locals: {query: @query, project: @project} %>
 
-<%= render partial: 'issues/sidebar', locals: {custom_queries_decorator: @custom_queries_decorator, project: @project}%>
+<%= render partial: 'issues/sidebar', locals: {custom_queries_decorator: @custom_queries_decorator, project: @project} %>
 
 

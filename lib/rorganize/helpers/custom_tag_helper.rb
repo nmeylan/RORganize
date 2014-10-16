@@ -116,6 +116,15 @@ module Rorganize
           safe_concat content_tag :h3, text ? text : t(:text_no_data)
         end
       end
+
+      def subnav_tag(css_class, id, *links)
+        content_tag :div, {class: "subnav #{css_class}", id: id} do
+           links.collect do |link|
+             options = {class: 'subnav-item', remote: true}.merge(link[:options] || {})
+             link_to link[:caption], link[:path], options
+           end.join.html_safe
+        end
+      end
     end
   end
 end

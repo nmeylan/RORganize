@@ -23,6 +23,7 @@ class IssuesController < ApplicationController
   #RESTFULL CRUD Methods
   #GET /project/:project_identifier/issues
   def index
+    session_list_type
     filter
     load_issues
     find_custom_queries
@@ -118,6 +119,11 @@ class IssuesController < ApplicationController
     gon.DOM_persisted_filter = @sessions[@project.slug][:json_filter].to_json
     filter = @sessions[@project.slug][:sql_filter]
     @issues_decorator = Issue.filter(filter, @project.id).paginated(@sessions[:current_page], @sessions[:per_page], order('issues.id'), [:tracker, :version, :assigned_to, :category, :project, :attachments, :author, status: [:enumeration]]).decorate(context: {project: @project})
+  end
+
+  def session_list_type
+    @sessions[:list_type] ||= :overview
+    @sessions[:list_type] = params[:list_type].to_sym if params[:list_type]
   end
 
   def issue_params

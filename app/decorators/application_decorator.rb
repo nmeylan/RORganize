@@ -58,7 +58,7 @@ class ApplicationDecorator < Draper::Decorator
   end
 
   def show_link(path, project = nil, owner = nil, options = {})
-    link_to_with_permissions(model.caption, path, project, nil, options)
+    link_to_with_permissions(self.resized_caption, path, project, nil, options)
   end
 
   # Render a link to delete the model.

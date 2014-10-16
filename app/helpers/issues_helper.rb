@@ -27,10 +27,31 @@ module IssuesHelper
       list_td issue.show_link, {class: 'name', id: issue.id}
       list_td issue.display_assigned_to, class: 'list-center assigned-to'
       list_td issue.display_status, class: 'list-center status'
-      list_td issue.display_category, class: 'list-center category'
       list_td issue.display_version, class: 'list-center version'
-      list_td issue.due_date, class: 'list-center due-date'
+      issue_overview_list_type_rows(issue)
+      issue_gantt_list_type_rows(issue)
       list_td issue.display_done_progression, {class: 'list-center done tooltipped tooltipped-s', label: "#{issue.done}%"}
+      issue_list_indicators_rows(issue)
+    end
+  end
+
+  def issue_gantt_list_type_rows(issue)
+    if is_list_displayed_with_type?(:gantt)
+      list_td issue.display_start_date, class: 'list-center'
+      list_td issue.display_due_date, class: 'list-center'
+      list_td issue.estimated_time, class: 'list-center'
+    end
+  end
+
+  def issue_overview_list_type_rows(issue)
+    if is_list_displayed_with_type?(:overview)
+      list_td issue.display_category, class: 'list-center category'
+      list_td issue.display_updated_at, class: 'list-center updated-at'
+    end
+  end
+
+  def issue_list_indicators_rows(issue)
+    if is_list_displayed_with_type?(:overview)
       list_td issue.checklist_progression, class: 'icon-information'
       list_td issue.comment_presence_indicator, class: 'icon-information'
       list_td issue.attachment_presence_indicator, class: 'icon-information'
@@ -46,16 +67,53 @@ module IssuesHelper
         list_th sortable('issues.subject', 'Subject'), {class: 'list-left no-padding-left'}
         list_th sortable('users.name', 'Assigned to')
         list_th sortable('issues_statuses.enumeration_id', 'Status')
-        list_th sortable('categories.name', 'Category')
         list_th sortable('versions.name', 'Target phase')
-        list_th sortable('issues.due_date', 'Due date')
+        issue_gantt_list_type_headers
+        issue_overview_list_type_headers
         list_th sortable('issues.done', 'Done')
-        list_th nil, {class: 'optional-cell'}
-        list_th nil, {class: 'optional-cell'}
-        list_th nil, {class: 'optional-cell'}
-
+        issue_list_indicators_header
       end
     end
+  end
+
+  def issue_gantt_list_type_headers
+    if is_list_displayed_with_type?(:gantt)
+      list_th sortable('issues.start_date', 'Start date')
+      list_th sortable('issues.due_date', 'Due date')
+      list_th sortable('issues.estimated_time', 'Estimated time')
+    end
+  end
+
+  def issue_overview_list_type_headers
+    if is_list_displayed_with_type?(:overview)
+      list_th sortable('categories.name', 'Category')
+      list_th sortable('issues.updated_at', 'Last update')
+    end
+  end
+
+  def issue_list_indicators_header
+    if is_list_displayed_with_type?(:overview)
+      list_th nil, {class: 'optional-cell'}
+      list_th nil, {class: 'optional-cell'}
+      list_th nil, {class: 'optional-cell'}
+    end
+  end
+
+  def is_list_displayed_with_type?(type)
+    @sessions[:list_type].eql?(type)
+  end
+
+  def issue_list_type_nav
+    subnav_tag('subnav-right',
+               'issue-list-type-nav',
+               issue_list_type_nav_item('overview', 'three-bars', :overview, t(:text_issue_list_type_overview)),
+               issue_list_type_nav_item('gantt', 'clock', :gantt, t(:text_issue_list_type_gantt)))
+  end
+
+  def issue_list_type_nav_item(label, glyph, type, text = '')
+    {caption: glyph(label, glyph),
+     path: issues_path(@project.slug, list_type: type),
+     options: {class: "#{'selected' if is_list_displayed_with_type?(type.to_sym)} subnav-item tooltipped tooltipped-s", label: text}}
   end
 
   # Build a toolbox render for issue toolbox.

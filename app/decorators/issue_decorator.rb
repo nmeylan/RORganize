@@ -8,8 +8,8 @@ class IssueDecorator < ApplicationDecorator
 
 
   # @return [String] due date.
-  def due_date
-    model.due_date ? model.due_date : '-'
+  def display_due_date
+    model.due_date ? model.due_date.strftime(Rorganize::DATE_FORMAT_Y) : '-'
   end
 
   # @return [String] assigned to user name.
@@ -23,8 +23,12 @@ class IssueDecorator < ApplicationDecorator
   end
 
   # @return [String] start date.
-  def start_date
-    model.start_date ? model.start_date : '-'
+  def display_start_date
+    model.start_date ? model.start_date.strftime(Rorganize::DATE_FORMAT_Y) : '-'
+  end
+
+  def display_updated_at
+    model.updated_at.strftime(Rorganize::TIME_FORMAT_Y)
   end
 
   def display_status

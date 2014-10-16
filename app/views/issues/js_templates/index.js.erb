@@ -17,3 +17,5 @@ $('#issue.toggle').switchClass('icon-collapsed', 'icon-expanded');
 $('#issue.toggle .octicon-chevron-right').switchClass('octicon-chevron-right', 'octicon-chevron-down');
 $('#issue-filter .content').show();
 <% end %>
+
+$('#issue-list-type-nav').replaceWith("<%= escape_javascript issue_list_type_nav %>");
