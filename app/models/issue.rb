@@ -32,16 +32,42 @@ class Issue < ActiveRecord::Base
   #Validators
   validates :subject, :tracker_id, :status_id, presence: true
   validate :validate_start_date, :validate_predecessor, :validate_due_date
+
   #Scopes
-  scope :fetch_dependencies, -> { includes([:tracker, :version, :assigned_to, :category, :project, :attachments, :author, status: [:enumeration]]) }
+  scope :fetch_dependencies, -> { fetch_dependencies_method }
   scope :opened_issues, -> { joins(:status).where('issues_statuses.is_closed = false') }
   #Group
-  scope :group_opened_by_attr, -> (project_id, table_name, attr, conditions = '1 = 1') { joins(:project, :status).joins("LEFT OUTER JOIN #{table_name} ON #{table_name}.id = issues.#{attr}_id").group('1').where('issues_statuses.is_closed = false AND issues.project_id = ? AND ?', project_id, conditions).pluck("#{table_name}.id, #{table_name}.name, count(issues.id), projects.slug") }
+  scope :group_opened_by_attr, -> (project_id, table_name, attr, conditions = '1 = 1') { group_opened_by_attr_method(attr, conditions, project_id, table_name) }
+  scope :group_by_status, -> (project_id) { group_by_status_method(project_id) }
+  scope :group_opened_by_project, -> (attr, conditions = '1 = 1') { group_opened_by_project_method(attr, conditions) }
 
-  scope :group_by_status, -> (project_id) { joins(:project, status: [:enumeration]).group('1').where('issues.project_id = ?', project_id).pluck('issues_statuses.id, enumerations.name, count(issues.id), projects.slug') }
+  # Scopes methods
+  def self.fetch_dependencies_method
+    includes([:tracker, :version, :assigned_to, :category, :project, :attachments, :author, status: [:enumeration]])
+  end
 
-  scope :group_opened_by_project, -> (attr, conditions = '1 = 1') { joins(:project, status: [:enumeration]).group('2').where("issues_statuses.is_closed = false AND #{conditions}").pluck("#{attr}, projects.id, projects.slug, count(issues.id), projects.slug") }
+  def self.group_by_status_method(project_id)
+    joins(:project, status: [:enumeration]).
+        group('1').
+        where('issues.project_id = ?', project_id).
+        pluck('issues_statuses.id, enumerations.name, count(issues.id), projects.slug')
+  end
+  def self.group_opened_by_attr_method(attr, conditions, project_id, table_name)
+    joins(:project, :status).
+        joins("LEFT OUTER JOIN #{table_name} ON #{table_name}.id = issues.#{attr}_id").
+        group('1').
+        where('issues_statuses.is_closed = false AND issues.project_id = ? AND ?', project_id, conditions).
+        pluck("#{table_name}.id, #{table_name}.name, count(issues.id), projects.slug")
+  end
 
+  def self.group_opened_by_project_method(attr, conditions)
+    joins(:project, status: [:enumeration]).
+        group('2').
+        where("issues_statuses.is_closed = false AND #{conditions}").
+        pluck("#{attr}, projects.id, projects.slug, count(issues.id), projects.slug")
+  end
+
+  # Methods
   def caption
     self.subject
   end

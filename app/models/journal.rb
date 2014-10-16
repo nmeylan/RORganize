@@ -17,17 +17,51 @@ class Journal < ActiveRecord::Base
   belongs_to :user, class_name: 'User'
   belongs_to :category
   belongs_to :project
+
   #Scopes
-  scope :fetch_dependencies, -> { includes(:details, :project, :user, :journalizable) }
-  scope :document_activities, ->(document_id) { includes([:details, user: :avatar]).where(journalizable_type: 'Document', journalizable_id: document_id) }
-  scope :issue_activities, ->(issuer_id) { includes([:details, user: :avatar]).where(journalizable_type: 'Issue', journalizable_id: issuer_id) }
-  scope :member_activities, ->(member) { where(user_id: member.user_id, project_id: member.project_id).order('created_at DESC') }
+  scope :fetch_dependencies, -> { fetch_dependencies_method }
+
+  scope :document_activities, ->(document_id) { document_activities_method(document_id) }
+
+  scope :issue_activities, ->(issuer_id) { issue_activities_method(issuer_id) }
+
+  scope :member_activities, ->(member) { member_activities_method(member) }
+
   scope :activities, ->(journalizable_types, date_range, days, conditions = '1 = 1') {
-    includes([:details, :project, user: :avatar]).where("journalizable_type IN (?) AND DATE_FORMAT(journals.created_at, '%Y-%m-%d') BETWEEN ? AND ?", journalizable_types, date_range.first, date_range.last).where(conditions).order('journals.created_at DESC').limit(days * 1000)
+    activities_method(conditions, date_range, days, journalizable_types)
   }
   scope :fetch_dependencies_issues, -> { includes(issue: :tracker) }
   scope :fetch_dependencies_documents, -> { includes(:document) }
   scope :fetch_dependencies_categories, -> { includes(:category) }
+
+  #Scopes methods
+  def self.activities_method(conditions, date_range, days, journalizable_types)
+    includes([:details, :project, user: :avatar]).
+        where("journalizable_type IN (?) AND DATE_FORMAT(journals.created_at, '%Y-%m-%d') BETWEEN ? AND ?",
+              journalizable_types, date_range.first, date_range.last).
+        where(conditions).
+        order('journals.created_at DESC').
+        limit(days * 1000)
+  end
+
+  def self.member_activities_method(member)
+    where(user_id: member.user_id, project_id: member.project_id).
+        order('created_at DESC')
+  end
+
+  def self.document_activities_method(document_id)
+    includes([:details, user: :avatar]).where(journalizable_type: 'Document', journalizable_id: document_id)
+  end
+
+  def self.issue_activities_method(issuer_id)
+    includes([:details, user: :avatar]).where(journalizable_type: 'Issue', journalizable_id: issuer_id)
+  end
+
+  def self.fetch_dependencies_method
+    includes(:details, :project, :user, :journalizable)
+  end
+
+  # Methods
 
   def self.activities_eager_load(journalizable_types, period, date, conditions)
     periods = ACTIVITIES_PERIODS
