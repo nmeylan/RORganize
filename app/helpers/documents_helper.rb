@@ -8,13 +8,8 @@ module DocumentsHelper
   include CommentsHelper
   include Rorganize::Helpers::DocumentsHelper
 
-  # Build a list of documents.
-  # @param [Array] collection of documents.
   def list(collection)
-    content_tag :table, {class: 'document list', 'data-link' => toolbox_documents_path(@project.slug)} do
-      safe_concat list_header
-      safe_concat list_body(collection)
-    end
+    generic_list(collection, {class: 'document list', 'data-link' => toolbox_documents_path(@project.slug)})
   end
 
   def list_header
@@ -31,12 +26,6 @@ module DocumentsHelper
     end
   end
 
-  def list_body(collection)
-    collection.collect do |document|
-      list_row(document)
-    end.join.html_safe
-  end
-
   def list_row(document)
     content_tag :tr, class: 'odd-even document-tr has-context-menu' do
       list_td check_box_tag("document-#{document.id.to_s}", document.id), {class: 'cell-checkbox'}
@@ -48,7 +37,6 @@ module DocumentsHelper
       list_td document.attachment_presence_indicator, class: 'icon-information'
     end
   end
-
 
 
   # Build a toolbox render for document toolbox

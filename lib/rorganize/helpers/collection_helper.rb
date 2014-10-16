@@ -43,6 +43,20 @@ module Rorganize
         direction = column == sort_column && sort_direction == 'asc' ? 'desc' : 'asc'
         link_to glyph(title, icon), {sort: column, direction: direction, action: default_action}, {remote: true}
       end
+      # Build a list of issues.
+      # @param [Array] collection of issues.
+      def generic_list(collection, options = {})
+        content_tag :table, options do
+          safe_concat list_header
+          safe_concat list_body(collection)
+        end
+      end
+
+      def list_body(collection)
+        collection.collect do |element|
+          list_row(element)
+        end.join.html_safe
+      end
 
       # @param [Array] collection that containing the element to sort.
       # @param [SmartRecord] element to sort.
