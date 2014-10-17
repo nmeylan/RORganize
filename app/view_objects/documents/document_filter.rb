@@ -2,14 +2,11 @@
 # Date: 26.06.14
 # Encoding: UTF-8
 # File: document_filter.rb
-
-class DocumentFilter
+require 'shared/Filter'
+require 'projects/shared_filters_module'
+class DocumentFilter < Filter
+  include Rorganize::SharedFiltersModule
   attr_reader :content
-
-  def initialize(project)
-    @project = project
-    @content = build_filter
-  end
 
   #Return a hash with the content requiered for the filter's construction
   #Can define 2 type of filters:
@@ -21,18 +18,9 @@ class DocumentFilter
     content_hash['hash_for_select'] = {}
     content_hash['hash_for_radio'] = Hash.new { |k, v| k[v] = [] }
     content_hash['hash_for_radio']['name'] = %w(all contains not_contains)
-    content_hash['hash_for_select']['category'] = @project.categories.collect { |category| [category.name, category.id] }
-    content_hash['hash_for_radio']['category'] = %w(all equal different)
-    content_hash['hash_for_radio']['created'] = %w(all equal superior inferior today)
-    content_hash['hash_for_select']['version'] = @project.versions.collect { |version| [version.name, version.id] }
-    content_hash['hash_for_select']['version'] << %w(Unplanned NULL)
-    content_hash['hash_for_radio']['version'] = %w(all equal different)
-    content_hash['hash_for_radio']['updated'] = %w(all equal superior inferior today)
+    category_filter(content_hash)
+    version_filter(content_hash)
+    updated_at_filter(content_hash)
     content_hash
-  end
-
-  def build_json_form(form_hash)
-    form_hash.each { |_, v| v.tr('"', "'").gsub(/\n/, '') }
-    form_hash.to_json
   end
 end

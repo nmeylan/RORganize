@@ -3,14 +3,10 @@
 # Encoding: UTF-8
 # File: issue_filter.rb
 
-class IssueFilter
-  attr_reader :content
-
-  def initialize(project)
-    @project = project
-    @content = build_filter
-  end
-
+require 'shared/Filter'
+require 'projects/shared_filters_module'
+class IssueFilter < Filter
+  include Rorganize::SharedFiltersModule
   # Return a hash with the content requiered for the filter's construction
   # Can define 2 type of filters:
   # Radio : with values : all - equal/contains - different/not contains
@@ -36,65 +32,49 @@ class IssueFilter
     content_hash
   end
 
-  def updated_at_filter(content_hash)
-    content_hash['hash_for_radio']['updated'] = %w(all equal superior inferior today)
-  end
-
-  def version_filter(content_hash)
-    content_hash['hash_for_select']['version'] = @project.versions.collect { |version| [version.name, version.id] }
-    content_hash['hash_for_select']['version'] << %w(Unplanned NULL)
-    content_hash['hash_for_radio']['version'] = %w(all equal different)
-  end
-
   def tracker_filter(content_hash)
-    content_hash['hash_for_select']['tracker'] = @project.trackers.collect { |tracker| [tracker.name, tracker.id] }
-    content_hash['hash_for_radio']['tracker'] = %w(all equal different)
+    tracker_options = @project.trackers.collect { |tracker| [tracker.name, tracker.id] }
+    build_hash_for_radio(content_hash, 'tracker')
+    build_hash_for_select(content_hash, 'tracker', tracker_options)
   end
 
   def subject_filter(content_hash)
-    content_hash['hash_for_radio']['subject'] = %w(all contains not_contains)
+    build_hash_for_radio(content_hash, 'subject', %w(all contains not_contains))
   end
 
   def start_date_filter(content_hash)
-    content_hash['hash_for_radio']['start'] = %w(all equal superior inferior today)
+    build_hash_for_radio_date(content_hash, 'start')
   end
 
   def status_filter(content_hash)
-    content_hash['hash_for_select']['status'] = IssuesStatus.eager_load(:enumeration).collect { |status| [status.enumeration.name, status.id] }
-    content_hash['hash_for_radio']['status'] = %w(all equal different open close)
+    status_options = IssuesStatus.eager_load(:enumeration).collect { |status| [status.enumeration.name, status.id] }
+    build_hash_for_select(content_hash, 'status', status_options)
+    build_hash_for_radio(content_hash, 'status', %w(all equal different open close))
   end
 
   def due_date_filter(content_hash)
-    content_hash['hash_for_radio']['due_date'] = %w(all equal superior inferior today)
+    build_hash_for_radio_date(content_hash, 'due_date')
   end
 
   def done_filter(content_hash)
-    content_hash['hash_for_radio']['done'] = %w(all equal superior inferior)
-    content_hash['hash_for_select']['done'] = [[0, 0], [10, 10], [20, 20], [30, 30], [40, 40], [50, 50], [60, 60], [70, 70], [80, 80], [90, 90], [100, 100]]
+    done_options = [[0, 0], [10, 10], [20, 20], [30, 30], [40, 40], [50, 50], [60, 60], [70, 70], [80, 80], [90, 90], [100, 100]]
+    build_hash_for_radio(content_hash, 'done', %w(all equal superior inferior))
+    build_hash_for_select(content_hash, 'done', done_options)
   end
 
   def create_at_filter(content_hash)
-    content_hash['hash_for_radio']['created'] = %w(all equal superior inferior today)
-  end
-
-  def category_filter(content_hash)
-    content_hash['hash_for_select']['category'] = @project.categories.collect { |category| [category.name, category.id] }
-    content_hash['hash_for_radio']['category'] = %w(all equal different)
+    build_hash_for_radio_date(content_hash, 'created')
   end
 
   def author_filter(content_hash, members)
-    content_hash['hash_for_select']['author'] = members.collect { |member| [member.user.name, member.user.id] }
-    content_hash['hash_for_radio']['author'] = %w(all equal different)
+    author_options = members.collect { |member| [member.user.name, member.user.id] }
+    build_hash_for_select(content_hash, 'author', author_options)
+    build_hash_for_radio(content_hash, 'author')
   end
 
   def assigned_to_filter(content_hash, members)
-    content_hash['hash_for_select']['assigned'] = members.collect { |member| [member.user.name, member.user.id] }
-    content_hash['hash_for_radio']['assigned'] = %w(all equal different)
-    content_hash['hash_for_select']['assigned'] << %w(Nobody NULL)
-  end
-
-  def build_json_form(form_hash)
-    form_hash.each { |_, v| v.tr('"', "'").gsub(/\n/, '') }
-    form_hash.to_json
+    assigned_to_options = members.collect { |member| [member.user.name, member.user.id] } << %w(Nobody NULL)
+    build_hash_for_select(content_hash, 'assigned', assigned_to_options)
+    build_hash_for_radio(content_hash, 'assigned')
   end
 end
