@@ -6,8 +6,7 @@
 function on_load_documents_scripts(options) {
     switch (gon.action) {
         case 'index' :
-            documents_index(options);
-            uniq_toogle("#document.toggle", ".content");
+            rich_list_index_callback('document', options);
             break;
         case 'show' :
             documents_show();
@@ -25,8 +24,7 @@ function on_load_documents_scripts(options) {
             on_load_attachments_scripts();
             break;
         case 'apply_custom_query' :
-            issues_index(options);
-            uniq_toogle("#document.toggle", ".content");
+            rich_list_index_callback('document', options);
             break;
     }
 }

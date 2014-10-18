@@ -17,3 +17,8 @@ function rich_list_index_binder(class_name, options){
 
     save_edit_filter("#filter-edit-save", "#filter-form");
 }
+
+function rich_list_index_callback(class_name, options){
+    rich_list_index_binder(class_name, options);
+    uniq_toogle("#"+class_name+".toggle", ".content");
+}

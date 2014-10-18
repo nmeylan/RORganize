@@ -7,8 +7,7 @@
 function on_load_issues_scripts(options) {
     switch (gon.action) {
         case 'index' :
-            issues_index(options);
-            uniq_toogle("#issue.toggle", ".content");
+            rich_list_index_callback('issue', options);
             break;
         case 'show' :
             issues_show();
@@ -26,8 +25,7 @@ function on_load_issues_scripts(options) {
             issues_form();
             break;
         case 'apply_custom_query' :
-            issues_index(options);
-            uniq_toogle("#issue.toggle", ".content");
+            rich_list_index_callback('issue', options);
             break;
     }
 
