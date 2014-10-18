@@ -51,6 +51,19 @@ class User < ActiveRecord::Base
     Comment.comments_eager_load(journalizable_types, period, from_date, "comments.user_id = #{self.id}")
   end
 
+  def member_for(project_id)
+    Member.find_by_user_id_and_project_id(self.id, project_id)
+  end
+
+  def allowed_roles(project)
+    if admin_act_as_admin?
+      Role.all_non_locked
+    else
+      member = self.member_for(project.id)
+      member.role.assignable_roles
+    end
+  end
+
   #Override devise
   def self.serialize_from_session(key, salt)
     record = self.eager_load(members: :role).where(id: key)[0]
@@ -100,7 +113,7 @@ class User < ActiveRecord::Base
   end
 
   def allowed_statuses(project)
-    member = self.members.to_a.detect { |member| member.project_id == project.id }
+    member = self.member_for(project.id)
     if member
       load_allowed_statuses member.role.issues_statuses
     elsif project.is_public

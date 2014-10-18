@@ -9,10 +9,12 @@ class Role < ActiveRecord::Base
   has_many :members, class_name: 'Member', dependent: :nullify
   has_and_belongs_to_many :issues_statuses, -> { includes([:enumeration]) }, class_name: 'IssuesStatus'
   has_and_belongs_to_many :permissions, class_name: 'Permission'
-  # This relation is use, when a member with a defined role whant to assigne role for another member.
+  # this relations symbolise which roles (role_id) can be granted for a given role (assignable_by_role_id).
+  # E.g : a ProjectManager can assign "TeamMember" and "ProjectManager" roles to members.
+  # But an EngagementManager can assign "TeamMember", "ProjectManager" and "EngagementManager" roles to members.
   has_and_belongs_to_many :assignable_roles, class_name: 'Role', join_table: 'assignable_roles', foreign_key: 'assignable_by_role_id', dependent: :destroy
-  # has_many :assignable_by_roles, class_name: 'Role', through: 'AssignableRole', foreign_key: 'role_id'
   scope :non_member, -> { where(name: Rorganize::NON_MEMBER_ROLE).first }
+  scope :all_non_locked, -> { where(is_locked: false) }
   validates :name, presence: true, uniqueness: true, length: 2..255
 
   def self.permit_attributes
@@ -56,7 +58,7 @@ class Role < ActiveRecord::Base
     if role_ids && role_ids.any?
       self.assignable_roles.clear
       roles = Role.where(id: role_ids.values)
-      roles.each{|role| self.assignable_roles << role}
+      roles.each { |role| self.assignable_roles << role }
     end
   end
 end

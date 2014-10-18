@@ -28,7 +28,11 @@ module Rorganize
         end
 
         def admin_free_access(action, controller, project)
-          self.is_admin? && act_as_admin? && (project && module_enabled?(project.id.to_s, action, controller) || !project)
+          admin_act_as_admin? && (project && module_enabled?(project.id.to_s, action, controller) || !project)
+        end
+
+        def admin_act_as_admin?
+          self.is_admin? && act_as_admin?
         end
 
         def out_project_allowed_to?(action, controller, members)

@@ -4,7 +4,7 @@ class MemberDecorator < ApplicationDecorator
   # Render a select for roles if user has the permissions to change members roles. Else render the role name.
   # @param [Array] roles an array with all roles.
   def role_selection(roles)
-    if User.current.allowed_to?('change_role', 'Members', context[:project])
+    if User.current.allowed_to?('change_role', 'Members', context[:project]) && roles.include?(member.role)
       h.select_tag('roles_'+member.id.to_s, h.options_from_collection_for_select(roles, 'id', 'name', member.role ? member.role.id.to_s : ''),
                    {class: 'chzn-select cbb-medium', include_blank: true, 'data-link' => h.change_role_members_path(context[:project].slug, member.id)})
     else

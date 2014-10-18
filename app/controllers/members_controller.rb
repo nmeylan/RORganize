@@ -6,6 +6,8 @@
 class MembersController < ApplicationController
   include Rorganize::RichController
   before_filter :check_permission
+  before_filter :find_member, only: [:change_role]
+  before_filter :check_change_member_role, only: [:change_role, :create]
   before_filter { |c| c.menu_context :project_menu }
   before_filter { |c| c.menu_item('settings') }
   before_filter { |c| c.top_menu_item('projects') }
@@ -28,10 +30,10 @@ class MembersController < ApplicationController
   end
 
   def new
-    users= @project.non_member_users
+    users = @project.non_member_users
     @member = Member.new
     respond_to do |format|
-      format.js { respond_to_js locals: {roles: Role.select('*'), users: users, new: true} }
+      format.js { respond_to_js locals: {roles: User.current.allowed_roles(@project), users: users, new: true} }
     end
   end
 
@@ -45,17 +47,36 @@ class MembersController < ApplicationController
 
   #Others method
   def change_role
-    member = Member.find_by_id(params[:member_id])
-    change_role_result = member.change_role(params[:value])
+    change_role_result = @member.change_role(params[:value])
     @members = change_role_result[:members]
     respond_to do |format|
       format.js { respond_to_js response_header: change_role_result[:saved] ? :success : :failure, response_content: change_role_result[:saved] ? t(:successful_update) : t(:failure_operation) }
     end
   end
 
+  private
+
+  def find_member
+    @member = Member.includes(:role).find_by_id(params[:member_id])
+  end
+
+  def check_change_member_role
+    role_id = params[:role] ? params[:role] : params[:value]
+    new_role = Role.find_by_id(role_id)
+    if not_allowed_to_grant_this_role?(new_role)
+      render_403
+    end
+  end
+
+  def not_allowed_to_grant_this_role?(new_role)
+    allowed_roles = User.current.allowed_roles(@project)
+    # Does user can't grant this role or try (by modify html) to downgrade a coworker role.
+    !allowed_roles.include?(new_role) || (!@member.nil? && !allowed_roles.include?(@member.role))
+  end
+
   def load_members
     @members_decorator = Member.members_by_project(@project.id, @sessions[:current_page], @sessions[:per_page], order('users.name'))
-    .decorate(context: {project: @project, roles: Role.select('*')})
+    .decorate(context: {project: @project, roles: User.current.allowed_roles(@project)})
   end
 
 end
