@@ -2,7 +2,6 @@
 # Date: 26.06.14
 # Encoding: UTF-8
 # File: document_filter.rb
-require 'shared/Filter'
 require 'projects/project_item_filter_part'
 class DocumentFilter < ProjectItemFilterPart
   attr_reader :content

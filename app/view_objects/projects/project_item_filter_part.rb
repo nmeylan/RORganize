@@ -3,6 +3,7 @@
 # Encoding: UTF-8
 # File: project_item_filter_part.rb
 
+require 'shared/filter'
 class ProjectItemFilterPart < Filter
   def updated_at_filter(content_hash)
     build_hash_for_radio_date(content_hash, 'updated')

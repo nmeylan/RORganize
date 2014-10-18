@@ -3,7 +3,6 @@
 # Encoding: UTF-8
 # File: issue_filter.rb
 
-require 'shared/Filter'
 require 'projects/project_item_filter_part'
 class IssueFilter < ProjectItemFilterPart
   # Return a hash with the content requiered for the filter's construction
