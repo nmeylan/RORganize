@@ -18,7 +18,6 @@ class IssuesController < ApplicationController
   include Rorganize::RichController::ProjectContext
   include Rorganize::RichController::GanttCallbacks
   include Rorganize::RichController::AttachableCallbacks
-  require 'will_paginate'
 
   #RESTFULL CRUD Methods
   #GET /project/:project_identifier/issues

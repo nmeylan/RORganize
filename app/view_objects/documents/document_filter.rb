@@ -3,9 +3,8 @@
 # Encoding: UTF-8
 # File: document_filter.rb
 require 'shared/Filter'
-require 'projects/shared_filters_module'
-class DocumentFilter < Filter
-  include Rorganize::SharedFiltersModule
+require 'projects/project_item_filter_part'
+class DocumentFilter < ProjectItemFilterPart
   attr_reader :content
 
   #Return a hash with the content requiered for the filter's construction

@@ -4,9 +4,8 @@
 # File: issue_filter.rb
 
 require 'shared/Filter'
-require 'projects/shared_filters_module'
-class IssueFilter < Filter
-  include Rorganize::SharedFiltersModule
+require 'projects/project_item_filter_part'
+class IssueFilter < ProjectItemFilterPart
   # Return a hash with the content requiered for the filter's construction
   # Can define 2 type of filters:
   # Radio : with values : all - equal/contains - different/not contains
