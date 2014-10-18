@@ -5,7 +5,7 @@
 # File: index.html.erb
 %>
 
-<%= contextual t(:link_trackers) do %>
+<%= contextual @trackers_decorator.collection_contextual_title t(:link_trackers) do %>
     <%= @trackers_decorator.new_link %>
 <% end %>
 

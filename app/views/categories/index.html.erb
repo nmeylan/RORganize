@@ -4,7 +4,7 @@
 # Encoding: UTF-8
 # File: index.html.erb
 %>
-<%= contextual "#{t(:label_setting_plural)} - #{t(:link_categories)}" do -%>
+<%= contextual @categories_decorator.collection_contextual_title("#{t(:label_setting_plural)} - #{t(:link_categories)}") do -%>
     <%= @categories_decorator.new_link %>
 <% end -%>
 

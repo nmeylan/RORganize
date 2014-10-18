@@ -5,7 +5,7 @@
 # File: index.html.erb
 %>
 
-<%= contextual t(:label_documents) do %>
+<%= contextual @documents_decorator.collection_contextual_title(t(:label_documents)) do %>
     <%= @documents_decorator.new_link %>
 <% end %>
 <%= filter_tag('document', Document.filtered_attributes, documents_path(@project.slug)) %>

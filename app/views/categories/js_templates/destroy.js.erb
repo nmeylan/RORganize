@@ -1,1 +1,3 @@
 on_deletion_effect("#category-<%= escape_javascript(id) %>");
+var total_entries_el = $('.total-entries');
+total_entries_el.text(parseInt(total_entries_el.text()) - 1);

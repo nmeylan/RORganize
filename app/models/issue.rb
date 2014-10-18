@@ -62,6 +62,7 @@ class Issue < ActiveRecord::Base
         where('issues.project_id = ?', project_id).
         pluck('issues_statuses.id, enumerations.name, count(issues.id), projects.slug')
   end
+
   def self.group_opened_by_attr_method(attr, conditions, project_id, table_name)
     joins(:project, :status).
         joins("LEFT OUTER JOIN #{table_name} ON #{table_name}.id = issues.#{attr}_id").

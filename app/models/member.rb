@@ -39,7 +39,7 @@ class Member < ActiveRecord::Base
                                notes: '',
                                action_type: 'created',
                                project_id: self.project_id)
-      journal.detail_insertion(created_journalizable_attributes, self.class.excluded_from_journal_attrs, self.class.foreign_keys)
+      journal.detail_insertion(Member, created_journalizable_attributes)
     end
   end
 

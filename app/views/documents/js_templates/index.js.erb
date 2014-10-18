@@ -16,3 +16,5 @@ $('#document.toggle').switchClass('icon-collapsed', 'icon-expanded');
 $('#document.toggle .octicon-chevron-right').switchClass('octicon-chevron-right', 'octicon-chevron-down');
 $('#document-filter .content').show();
 <% end %>
+
+$('.total-entries').replaceWith("<%= escape_javascript @documents_decorator.display_total_entries %>");

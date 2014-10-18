@@ -14,4 +14,9 @@ class IssuesDecorator < ApplicationCollectionDecorator
     super(false, h.t(:text_no_issues))
   end
 
+  def collection_contextual_title
+    title = context[:query].nil? ? h.t(:label_issue_plural) : "#{h.t(:label_issue_plural)} : #{context[:query].name}"
+    super(title)
+  end
+
 end

@@ -4,3 +4,5 @@
  * Time: 11:48
  %>
 on_deletion_effect("#<%= id %>");
+var total_entries_el = $('.total-entries');
+total_entries_el.text(parseInt(total_entries_el.text()) - 1);

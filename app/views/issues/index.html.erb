@@ -4,11 +4,11 @@
 # Encoding: UTF-8
 # File: index.html.erb
 %>
-<%= contextual t(:label_issue_plural) do %>
+<%= contextual @issues_decorator.collection_contextual_title do %>
     <%= @issues_decorator.new_link %>
 <% end %>
-<%= issue_list_type_nav %>
 
+<%= issue_list_type_nav %>
 <%= filter_tag('issue', Issue.filtered_attributes, issues_path(@project.slug), true, {user: User.current, project: @project, filter_content: session["#{@project.slug}_controller_issues_filter"]}) %>
 <%= clear_both %>
 

@@ -5,7 +5,7 @@
 # File: versions.html.erb
 %>
 
-<%= contextual "#{t(:label_setting_plural)} - #{t(:link_versions)}" do %>
+<%= contextual @versions_decorator.collection_contextual_title("#{t(:label_setting_plural)} - #{t(:link_versions)}") do %>
     <%= @versions_decorator.new_link %>
 <% end %>
 <%= render partial: 'versions/list', locals: {versions_decorator: @versions_decorator} %>

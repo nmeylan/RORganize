@@ -18,4 +18,5 @@ $('#issue.toggle .octicon-chevron-right').switchClass('octicon-chevron-right', '
 $('#issue-filter .content').show();
 <% end %>
 
-$('#issue-list-type-nav').replaceWith("<%= escape_javascript issue_list_type_nav %>");
+$('#issue-list-type-nav').replaceWith("<%= escape_javascript issue_list_type_nav %>"); //Refresh list type nav
+$('.total-entries').replaceWith("<%= escape_javascript @issues_decorator.display_total_entries %>");

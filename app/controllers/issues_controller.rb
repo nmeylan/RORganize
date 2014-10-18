@@ -79,10 +79,10 @@ class IssuesController < ApplicationController
   end
 
   def apply_custom_query
-    query = Query.find_by_slug(params[:query_id])
-    if query
-      @sessions[@project.slug][:sql_filter] = query.stringify_query
-      @sessions[@project.slug][:json_filter] = JSON.parse(query.stringify_params.gsub('=>', ':'))
+    @query = Query.find_by_slug(params[:query_id])
+    if @query
+      @sessions[@project.slug][:sql_filter] = @query.stringify_query
+      @sessions[@project.slug][:json_filter] = JSON.parse(@query.stringify_params.gsub('=>', ':'))
     end
     index
   end
@@ -118,7 +118,7 @@ class IssuesController < ApplicationController
     gon.DOM_persisted_filter = @sessions[@project.slug][:json_filter].to_json
     filter = @sessions[@project.slug][:sql_filter]
     @issues_decorator = Issue.paginated_issues(@sessions[:current_page], @sessions[:per_page], order('issues.id'), filter, @project.id).
-        decorate(context: {project: @project})
+        decorate(context: {project: @project, query: @query})
   end
 
   def session_list_type

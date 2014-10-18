@@ -5,7 +5,7 @@
 # File: index.html.erb
 %>
 
-<%= contextual t(:link_roles) do %>
+<%= contextual @roles_decorator.collection_contextual_title t(:link_roles) do %>
     <%= @roles_decorator.new_link %>
 <% end %>
 
