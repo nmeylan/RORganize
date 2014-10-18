@@ -8,6 +8,6 @@
 <%= contextual t(:link_new_role) %>
 
 <%= form_for @role, url: {controller: 'roles'}, html: {class: 'form'} do |f| %>
-    <%= render partial: 'roles/form', locals: {f: f, role: @role, issues_statuses: @issues_statuses} %>
+    <%= render partial: 'roles/form', locals: {f: f, role: @role, issues_statuses: @issues_statuses, roles: @roles} %>
     <%= submit_tag t(:button_create) %>
 <% end %>

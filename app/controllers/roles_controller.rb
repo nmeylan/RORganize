@@ -22,7 +22,7 @@ class RolesController < ApplicationController
   #GET /administration/roles/new
   def new
     @role = Role.new
-    @issues_statuses = IssuesStatus.all.includes(:enumeration)
+    load_form_content
     respond_to do |format|
       format.html
     end
@@ -30,17 +30,15 @@ class RolesController < ApplicationController
 
   #POST /administration/roles/new
   def create
-    @role = Role.new(role_params)
-    @role.set_statuses(params[:issues_statuses])
-
-    @issues_statuses = IssuesStatus.select('*').includes(:enumeration)
+    @role = Role.update_role_attributes(role_params, params)
+    load_form_content
     generic_create_callback(@role, roles_path)
   end
 
   #GET /administration/roles/edit/:id
   def edit
-    @role = Role.find_by_id(params[:id])
-    @issues_statuses = IssuesStatus.select('*').includes(:enumeration)
+    @role = Role.includes(:issues_statuses, :assignable_roles).find_by_id(params[:id])
+    load_form_content
     respond_to do |format|
       format.html
     end
@@ -48,15 +46,13 @@ class RolesController < ApplicationController
 
   #PUT /administration/roles/edit/:id
   def update
-    @role = Role.find_by_id(params[:id])
-    @role.set_statuses(params[:issues_statuses])
-    @role.attributes = role_params
+    @role = Role.update_role_attributes(role_params, params)
     respond_to do |format|
       if @role.save
         flash[:notice] = t(:successful_update)
         format.html { redirect_to roles_path }
       else
-        @issues_statuses = IssuesStatus.select('*').includes(:enumeration)
+        load_form_content
         format.html { render :edit }
       end
     end
@@ -71,5 +67,12 @@ class RolesController < ApplicationController
   private
   def role_params
     params.require(:role).permit(Role.permit_attributes)
+  end
+
+
+
+  def load_form_content
+    @roles = Role.all
+    @issues_statuses = IssuesStatus.all.includes(:enumeration)
   end
 end
