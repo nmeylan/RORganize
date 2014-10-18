@@ -5,10 +5,10 @@
 # File: index.html.erb
 %>
 
-<%= contextual @documents_decorator.collection_contextual_title(t(:label_documents)) do %>
+<%= contextual @documents_decorator.collection_contextual_title do %>
     <%= @documents_decorator.new_link %>
 <% end %>
-<%= filter_tag('document', Document.filtered_attributes, documents_path(@project.slug)) %>
+<%= filter_tag('document', Document.filtered_attributes, documents_path(@project.slug, query_id: params[:query_id]), true, {user: User.current, project: @project, filter_content: session["#{@project.slug}_controller_document_filter"], type: 'Document'}) %>
 
 <%= @documents_decorator.display_collection %>
 
@@ -19,3 +19,5 @@
   <% end %>
 </ul>
 <%= render partial: 'shared/delete_overlay', locals: {collection: @documents_toolbox} %>
+<%= render partial: 'queries/create_overlay', locals: {query: @query, project: @project} %>
+<%= render partial: 'documents/sidebar', locals: {custom_queries_decorator: @custom_queries_decorator, project: @project} %>

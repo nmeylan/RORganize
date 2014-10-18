@@ -7,9 +7,6 @@
 
         //BIND ACTIONS : depending on which controller is called
         switch (gon.controller) {
-            case 'coworkers' :
-                on_load_coworkers_scripts();
-                break;
             case 'documents' :
                 on_load_documents_scripts();
                 break;
@@ -783,12 +780,17 @@ function save_edit_filter(link_id, form_id) {
         e.preventDefault();
         var self_element = jQuery(this);
         json = jQuery(form_id).serializeJSON();
-        jQuery.ajax({
-            url: self_element[0].href,
-            type: 'put',
-            dataType: 'script',
-            data: json
+        apprise(self_element.data('confirm-message'), {confirm: true}, function (response) {
+            if (response) {
+                jQuery.ajax({
+                    url: self_element[0].href,
+                    type: 'put',
+                    dataType: 'script',
+                    data: json
+                });
+            }
         });
+
 
     });
 }

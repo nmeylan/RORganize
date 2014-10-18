@@ -33,20 +33,16 @@ class QueriesController < ApplicationController
 
   def create
     find_project
-    @query = Query.new(query_params)
-    @query.user = User.current
-    @query.project = @project
-    filter = @query.object_type.constantize.conditions_string(params[:filter])
-    @query.stringify_query = filter
-    @query.stringify_params = params[:filter].inspect
+    @query = Query.create_query(query_params, @project, params[:filter])
     success = @query.save
-
     respond_to do |format|
       format.js do
         if success
           case @query.object_type
             when 'Issue' then
               js_redirect_to(apply_custom_query_issues_path(@query.project.slug, @query.slug))
+            when 'Document' then
+              js_redirect_to(apply_custom_query_documents_path(@query.project.slug, @query.slug))
           end
         else
           respond_to_js action: 'new_project_query', locals: {new: false, success: success}, response_header: :failure, response_content: @query.errors.full_messages

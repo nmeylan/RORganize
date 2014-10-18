@@ -4,7 +4,6 @@
 # File: document_controller.rb
 require 'shared/history'
 class DocumentsController < ApplicationController
-  before_filter :load_documents, locals: [:index]
   before_filter :find_document, only: [:show, :edit, :destroy, :update]
   before_filter :check_permission, locals: [:toolbox]
   include Rorganize::RichController
@@ -12,10 +11,13 @@ class DocumentsController < ApplicationController
   include Rorganize::Filters::NotificationFilter
   include Rorganize::RichController::ToolboxCallback
   include Rorganize::RichController::ProjectContext
+  include Rorganize::RichController::CustomQueriesCallback
 
   def index
+    load_documents
+    find_custom_queries
     respond_to do |format|
-      format.html
+      format.html { render :index }
       format.js { respond_to_js action: 'index' }
     end
   end
@@ -58,19 +60,19 @@ class DocumentsController < ApplicationController
     toolbox_callback(collection, Document, @project)
   end
 
-  def filter
-    @sessions[@project.slug] ||= {}
-    apply_filter(Document, params, @sessions[@project.slug])
-  end
-
   private
 
   def load_documents
-    filter
+    filter(Document)
     gon.DOM_filter = view_context.documents_generics_form_to_json
     gon.DOM_persisted_filter = @sessions[@project.slug][:json_filter].to_json
     filter = @sessions[@project.slug][:sql_filter]
-    @documents_decorator = Document.filter(filter, @project.id).paginated(@sessions[:current_page], @sessions[:per_page], order('documents.id'), [:version, :category, :attachments]).fetch_dependencies.decorate(context: {project: @project})
+    @documents_decorator = Document.filter(filter, @project.id).paginated(@sessions[:current_page], @sessions[:per_page], order('documents.id'), [:version, :category, :attachments]).fetch_dependencies.decorate(context: {project: @project, query: @query})
+  end
+
+  #Find custom queries
+  def find_custom_queries
+    super(Document.to_s)
   end
 
   def document_params

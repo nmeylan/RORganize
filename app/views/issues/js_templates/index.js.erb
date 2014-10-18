@@ -6,7 +6,7 @@
 jQuery('#delete-overlay').overlay();
 jQuery('#delete-overlay').overlay().close();
 on_replace_effect("#issues-content", "<%= escape_javascript(@issues_decorator.display_collection)%>");
-on_replace_effect("#issue-filter", "<%= escape_javascript(filter_tag('issue', Issue.filtered_attributes, issues_path(@project.slug), true, {user: User.current, project: @project, filter_content: session[controller_name][@project.slug][:json_filter]}))%>");
+on_replace_effect("#issue-filter", "<%= escape_javascript(filter_tag('issue', Issue.filtered_attributes, issues_path(@project.slug, query_id: params[:query_id]), true, {user: User.current, project: @project, filter_content: session[controller_name][@project.slug][:json_filter], type: 'Issue'}))%>");
 per_page();
 
 uniq_toogle("#issue.toggle", ".content");

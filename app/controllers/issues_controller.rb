@@ -18,12 +18,13 @@ class IssuesController < ApplicationController
   include Rorganize::RichController::ProjectContext
   include Rorganize::RichController::GanttCallbacks
   include Rorganize::RichController::AttachableCallbacks
+  include Rorganize::RichController::CustomQueriesCallback
 
   #RESTFULL CRUD Methods
   #GET /project/:project_identifier/issues
   def index
     session_list_type
-    filter
+    filter(Issue)
     load_issues
     find_custom_queries
     respond_to do |format|
@@ -78,16 +79,6 @@ class IssuesController < ApplicationController
     toolbox_callback(collection, Issue, @project)
   end
 
-  def apply_custom_query
-    @query = Query.find_by_slug(params[:query_id])
-    if @query
-      @sessions[@project.slug][:sql_filter] = @query.stringify_query
-      @sessions[@project.slug][:json_filter] = JSON.parse(@query.stringify_params.gsub('=>', ':'))
-    end
-    index
-  end
-
-
   def overview
     overview_report = OverviewReport.new(@project.id)
     overview_object = IssueOverviewHash.new(overview_report.content, @project.issues.count)
@@ -103,14 +94,9 @@ class IssuesController < ApplicationController
     @issue_decorator.author_id.eql?(User.current.id)
   end
 
-  def filter
-    @sessions[@project.slug] ||= {}
-    apply_filter(Issue, params, @sessions[@project.slug])
-  end
-
   #Find custom queries
   def find_custom_queries
-    @custom_queries_decorator = Query.available_for(User.current, @project.id).decorate
+    super(Issue.to_s)
   end
 
   def load_issues

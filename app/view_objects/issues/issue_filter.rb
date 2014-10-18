@@ -19,7 +19,7 @@ class IssueFilter < ProjectItemFilterPart
     assigned_to_filter(content_hash, members)
     author_filter(content_hash, members)
     category_filter(content_hash)
-    create_at_filter(content_hash)
+    created_at_filter(content_hash)
     done_filter(content_hash)
     due_date_filter(content_hash)
     status_filter(content_hash)
@@ -59,10 +59,6 @@ class IssueFilter < ProjectItemFilterPart
     done_options = [[0, 0], [10, 10], [20, 20], [30, 30], [40, 40], [50, 50], [60, 60], [70, 70], [80, 80], [90, 90], [100, 100]]
     build_hash_for_radio(content_hash, 'done', %w(all equal superior inferior))
     build_hash_for_select(content_hash, 'done', done_options)
-  end
-
-  def create_at_filter(content_hash)
-    build_hash_for_radio_date(content_hash, 'created')
   end
 
   def author_filter(content_hash, members)

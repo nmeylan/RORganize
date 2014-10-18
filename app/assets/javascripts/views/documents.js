@@ -24,6 +24,10 @@ function on_load_documents_scripts(options) {
         case 'update' :
             on_load_attachments_scripts();
             break;
+        case 'apply_custom_query' :
+            issues_index(options);
+            uniq_toogle("#document.toggle", ".content");
+            break;
     }
 }
 
@@ -33,6 +37,8 @@ function documents_index(options) {
     checkboxToolbox(".list");
     init_toolbox('.document.list .document-tr', 'documents-toolbox', {list: '.document.list'});
     initialize_filters(options);
+
+    save_edit_filter("#filter-edit-save", "#filter-form");
 }
 
 function documents_show() {

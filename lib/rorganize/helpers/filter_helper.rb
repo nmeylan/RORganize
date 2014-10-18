@@ -34,9 +34,7 @@ module Rorganize
           safe_concat filter_attribute_choice_tag(filtered_attributes)
           safe_concat content_tag :table, nil, id: 'filter-content'
           safe_concat submit_tag t(:button_apply), {style: 'margin-left:0px'}
-          safe_concat content_tag :span, save_filter_button_tag(can_save, save_button_options[:filter_content],
-                                                                save_button_options[:user],
-                                                                save_button_options[:project]),
+          safe_concat content_tag :span, save_filter_button_tag(can_save, save_button_options),
                                   {id: 'save-query-button'}
         end
       end
@@ -46,11 +44,14 @@ module Rorganize
       # @param [Array] filtered_content : an array of previous submitted filter, it use because if nothing were filtered then whe don't display the button.
       # @param [User] user : the current user.
       # @param [Project] project : current project.
-      def save_filter_button_tag(can_save, filter_content, user, project)
+      def save_filter_button_tag(can_save, options)
+        project = options[:project]
+        user = options[:user]
+        filter_content = options[:filter_content]
         if can_user_save_query?(can_save, filter_content, project, user, params[:query_id].nil?)
-          link_to t(:button_save), new_project_query_queries_path(project.slug, 'Issue'), {remote: true}
+          link_to t(:button_save), new_project_query_queries_path(project.slug, options[:type]), {remote: true}
         elsif can_user_save_query?(can_save, filter_content, project, user, !params[:query_id].nil?)
-          link_to t(:button_save), edit_query_filter_queries_path(params[:query_id]), {id: 'filter-edit-save'}
+          link_to t(:button_save), edit_query_filter_queries_path(params[:query_id]), {id: 'filter-edit-save', 'data-confirm-message' => t(:text_confirm_update_filter)}
         end
       end
 

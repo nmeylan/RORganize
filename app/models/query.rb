@@ -14,7 +14,7 @@ class Query < ActiveRecord::Base
   validates :name, :stringify_query, :stringify_params, :object_type, presence: true
   validates :name, uniqueness: true, length: 2..50
   #Scopes
-  scope :available_for, ->(user, project_id) { where('(project_id = ? AND (author_id = ? OR is_public = ?)) OR (is_for_all = ? AND (author_id = ? OR is_public = ?)) AND object_type = ?', project_id, user.id, true, true, user.id, true, Issue.to_s) }
+  scope :available_for, ->(user, project_id, type) { where('((project_id = ? AND (author_id = ? OR is_public = ?)) OR (is_for_all = ? AND (author_id = ? OR is_public = ?))) AND object_type = ?', project_id, user.id, true, true, user.id, true, type) }
   scope :created_by, ->(user) { where(['author_id = ? AND is_public = false', user.id]) }
   scope :public_queries, ->(project_id) { where('project_id = ? AND is_public = ? AND is_for_all = ?', project_id, true, false) }
 
@@ -24,6 +24,16 @@ class Query < ActiveRecord::Base
 
   def caption
     self.name
+  end
+
+  def self.create_query(query_params, project, params_filter)
+    query = self.new(query_params)
+    query.user = User.current
+    query.project = project
+    filter = query.object_type.constantize.conditions_string(params_filter)
+    query.stringify_query = filter
+    query.stringify_params = params_filter.inspect
+    query
   end
 
 end

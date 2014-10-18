@@ -8,6 +8,10 @@ class ProjectItemFilterPart < Filter
     build_hash_for_radio_date(content_hash, 'updated')
   end
 
+  def created_at_filter(content_hash)
+    build_hash_for_radio_date(content_hash, 'created')
+  end
+
   def version_filter(content_hash)
     version_options = @project.versions.collect { |version| [version.name, version.id] }
     version_options << %w(Unplanned NULL)

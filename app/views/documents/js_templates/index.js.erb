@@ -6,7 +6,7 @@
 jQuery('#delete-overlay').overlay();
 jQuery('#delete-overlay').overlay().close();
 on_replace_effect("#documents-content", "<%= escape_javascript(@documents_decorator.display_collection)%>");
-on_replace_effect("#document-filter", "<%= escape_javascript(filter_tag('document', Document.filtered_attributes, documents_path(@project.slug)) )%>");
+on_replace_effect("#document-filter", "<%= escape_javascript(filter_tag('document', Document.filtered_attributes, documents_path(@project.slug, query_id: params[:query_id]), true, {user: User.current, project: @project, filter_content: session[controller_name][@project.slug][:json_filter], type: 'Document'}) )%>");
 per_page();
 
 uniq_toogle("#document.toggle", ".content");

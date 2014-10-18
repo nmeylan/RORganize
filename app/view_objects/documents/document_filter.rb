@@ -20,6 +20,7 @@ class DocumentFilter < ProjectItemFilterPart
     category_filter(content_hash)
     version_filter(content_hash)
     updated_at_filter(content_hash)
+    created_at_filter(content_hash)
     content_hash
   end
 end
