@@ -6,6 +6,6 @@
 %>
 <%= render partial: 'settings/sidebar', locals: {project: @project} %>
 
-<%= contextual t(:link_custom_queries) %>
+<%= contextual @queries_decorator.collection_contextual_title t(:link_custom_queries) %>
 
 <%= render partial: 'queries/list', locals: {queries_decorator: @queries_decorator} %>
