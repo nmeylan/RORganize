@@ -64,6 +64,7 @@ RORganize::Application.routes.draw do
       collection do
         delete 'delete_attachment', path: 'delete_attachment/:id'
         get 'download_attachment', path: 'download_attachment/:id'
+        get 'apply_custom_query', path: 'filter/:query_id'
         get 'toolbox'
         post 'toolbox'
       end
