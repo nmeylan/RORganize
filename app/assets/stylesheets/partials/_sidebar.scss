@@ -11,17 +11,18 @@
 #sidebar a, #sidebar a:link, #sidebar a:visited {
   display: block;
   color: $link-color;
+  border-radius: 3px;
   text-decoration: none;
 }
 
-#sidebar a:hover, #sidebar a:visited:hover {
-  color: $link-hover-color;
-}
 
 /**
   TABS
 */
 #sidebar {
+  ul {
+    padding-left: 10px;
+  }
   ul.tabs {
     margin: 0 -1px 0 0;
     padding-left: 0px;
@@ -51,6 +52,28 @@
       a {
         color: $link-hover-color !important;
       }
+      a:hover{
+        background-color: inherit;
+
+      }
+    }
+  }
+  li {
+    a {
+      padding: 4px 7px;
+      overflow: hidden;
+      font-size: 14px;
+      color: $default-smooth-color;
+    }
+    a.selected, a.selected:hover{
+      color: #fff;
+      background: #4183c4 !important;
+      .octicon {
+        color: #fff;
+      }
+    }
+    a:hover {
+      background-color: $default-box-header-background-color;
     }
   }
 }
@@ -75,6 +98,9 @@
   background-image: linear-gradient(#dc5f59, #b33630);
   background-repeat: repeat-x;
   border-left: 3px solid #cd504a;
+  .octicon{
+    color: white;
+  }
 }
 
 #sidebar .tabs .alert:hover a {
@@ -92,6 +118,9 @@
 
 #sidebar .tabs .warning:hover a {
   color: white !important;
+  .octicon{
+    color: white;
+  }
 }
 
 ul.filter-sidebar {

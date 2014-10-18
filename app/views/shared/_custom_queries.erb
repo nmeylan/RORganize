@@ -13,7 +13,8 @@
             <%= link_to query.resized_caption(15), {action: 'apply_custom_query',
                                                     query_id: query.slug,
                                                     controller: controller_name,
-                                                    project_id: project.slug} %>
+                                                    project_id: project.slug},
+                        {class: "#{'selected' if selected_query && query.id.eql?(selected_query.id)}"} %>
           </li>
       <% end %>
     </ul>
