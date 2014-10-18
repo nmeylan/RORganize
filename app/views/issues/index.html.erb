@@ -4,7 +4,7 @@
 # Encoding: UTF-8
 # File: index.html.erb
 %>
-<%= contextual @issues_decorator.collection_contextual_title do %>
+<%= contextual @issues_decorator.filtered_collection_contextual_title(t(:label_issue_plural)) do %>
     <%= @issues_decorator.new_link %>
 <% end %>
 

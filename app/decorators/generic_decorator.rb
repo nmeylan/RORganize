@@ -13,4 +13,9 @@ module GenericDecorator
     options = options.merge({class: 'button new'})
     link_to_with_permissions(h.glyph(label, 'plus'), path, project, nil, options)
   end
+
+  def filtered_collection_contextual_title(title)
+    title = context[:query].nil? ? title : "#{title} : #{context[:query].name}"
+    collection_contextual_title(title)
+  end
 end

@@ -32,13 +32,8 @@ function on_load_documents_scripts(options) {
 }
 
 function documents_index(options) {
-    checkAll("#check-all", ".list");
-    listTrClick(".list .document-tr");
-    checkboxToolbox(".list");
-    init_toolbox('.document.list .document-tr', 'documents-toolbox', {list: '.document.list'});
-    initialize_filters(options);
 
-    save_edit_filter("#filter-edit-save", "#filter-form");
+    rich_list_index_binder('document', options);
 }
 
 function documents_show() {

@@ -35,18 +35,7 @@ function on_load_issues_scripts(options) {
 }
 
 function issues_index(options) {
-    //Paginate
-    //Checkboxes
-    checkAll("#check-all", ".list");
-    listTrClick(".list .issue-tr");
-    //Toolbox
-    checkboxToolbox(".list");
-    init_toolbox('.issue.list .issue-tr', 'issues-toolbox', {list: '.issue.list'});
-    //Filters
-
-    initialize_filters(options);
-
-    save_edit_filter("#filter-edit-save", "#filter-form");
+    rich_list_index_binder('issue', options);
 
 
 }

@@ -5,7 +5,7 @@
 # File: index.html.erb
 %>
 
-<%= contextual @documents_decorator.collection_contextual_title do %>
+<%= contextual @documents_decorator.filtered_collection_contextual_title(t(:label_documents)) do %>
     <%= @documents_decorator.new_link %>
 <% end %>
 <%= filter_tag('document', Document.filtered_attributes, documents_path(@project.slug, query_id: params[:query_id]), true, {user: User.current, project: @project, filter_content: session["#{@project.slug}_controller_document_filter"], type: 'Document'}) %>

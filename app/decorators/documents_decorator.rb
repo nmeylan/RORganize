@@ -14,9 +14,4 @@ class DocumentsDecorator < ApplicationCollectionDecorator
     super(false, h.t(:text_no_documents))
   end
 
-  def collection_contextual_title
-    title = context[:query].nil? ? h.t(:label_documents) : "#{h.t(:label_documents)} : #{context[:query].name}"
-    super(title)
-  end
-
 end

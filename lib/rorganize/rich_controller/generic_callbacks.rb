@@ -1,6 +1,12 @@
 module Rorganize
   module RichController
     module GenericCallbacks
+      def generic_index_callback
+        respond_to do |format|
+          format.html { render :index }
+          format.js { respond_to_js action: 'index' }
+        end
+      end
 
       def generic_destroy_callback(model, path)
         model.destroy
