@@ -72,7 +72,7 @@ class RolesController < ApplicationController
 
 
   def load_form_content
-    @roles = Role.all
+    @roles = Role.all_non_locked
     @issues_statuses = IssuesStatus.all.includes(:enumeration)
   end
 end

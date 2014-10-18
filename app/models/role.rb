@@ -41,24 +41,16 @@ class Role < ActiveRecord::Base
   def self.update_role_attributes(role_params, params)
     role = params[:id] ? self.find_by_id(params[:id]) : Role.new(role_params)
     role.attributes = role_params
-    role.set_statuses(params[:issues_statuses])
-    role.set_assignable_roles(params[:roles])
+    role.set_association_values(params[:issues_statuses], role.issues_statuses, IssuesStatus)
+    role.set_association_values(params[:roles], role.assignable_roles, Role)
     role
   end
 
-  def set_statuses(statuses)
-    if statuses && statuses.any?
-      self.issues_statuses.clear
-      issues_statuses = IssuesStatus.where(id: statuses.values)
-      issues_statuses.each { |status| self.issues_statuses << status }
-    end
-  end
-
-  def set_assignable_roles(role_ids)
-    if role_ids && role_ids.any?
-      self.assignable_roles.clear
-      roles = Role.where(id: role_ids.values)
-      roles.each { |role| self.assignable_roles << role }
+  def set_association_values(value_ids, association, association_class)
+    association.clear
+    if value_ids && value_ids.any?
+      collection = association_class.where(id: value_ids.values)
+      collection.each { |element| association << element }
     end
   end
 end
