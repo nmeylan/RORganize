@@ -36,7 +36,7 @@ class Issue < ActiveRecord::Base
   #Scopes
   scope :fetch_dependencies, -> { fetch_dependencies_method }
 
-  scope :paginated_issues, -> (current_page, per_page, order, filter, project_id) {
+  scope :prepare_paginated, -> (current_page, per_page, order, filter, project_id) {
     paginated_issues_method(current_page, filter, order, per_page, project_id)
   }
   scope :opened_issues, -> { joins(:status).where('issues_statuses.is_closed = false') }

@@ -61,7 +61,7 @@ class DocumentsController < ApplicationController
   private
 
   def load_documents
-    @documents_decorator = Document.paginated_documents(@sessions[:current_page], @sessions[:per_page], order('documents.id'), gon_filter_initialize, @project.id).decorate(context: {project: @project, query: @query})
+    @documents_decorator = load_paginated_collection(Document, 'documents.id')
   end
 
   #Find custom queries

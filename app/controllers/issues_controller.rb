@@ -100,8 +100,7 @@ class IssuesController < ApplicationController
   end
 
   def load_issues
-    @issues_decorator = Issue.paginated_issues(@sessions[:current_page], @sessions[:per_page], order('issues.id'), gon_filter_initialize, @project.id).
-        decorate(context: {project: @project, query: @query})
+    @issues_decorator = load_paginated_collection(Issue, 'issues.id')
   end
 
   def session_list_type

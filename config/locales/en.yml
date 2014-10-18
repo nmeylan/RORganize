@@ -330,6 +330,7 @@ en:
   text_notification_recipient_type_participant: You received this notification because you are participating on this item.
   text_issue_list_type_overview: Display issues' general informations
   text_issue_list_type_gantt: Display issues' gantt informations
+  text_confirm_update_filter: Are you sure you want to replace this filter's content.
 
   password: "Password"
   field_steps: "Steps"

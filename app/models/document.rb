@@ -22,7 +22,7 @@ class Document < ActiveRecord::Base
   after_update :save_attachments
   #Scopes
   scope :fetch_dependencies, -> { includes([:version, :category, :attachments]) }
-  scope :paginated_documents, -> (current_page, per_page, order, filter, project_id) {
+  scope :prepare_paginated, -> (current_page, per_page, order, filter, project_id) {
     paginated_documents_method(current_page, filter, order, per_page, project_id)
   }
   #Scopes methods
