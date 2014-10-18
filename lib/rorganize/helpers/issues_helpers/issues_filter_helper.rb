@@ -7,7 +7,7 @@ module Rorganize
     module IssuesHelpers
       module IssuesFilterHelper
         # Build a json filter form.
-        def issues_generics_form_to_json
+        def generics_form_to_json
           issue_filter = IssueFilter.new(@project)
           filter_content_hash = issue_filter.content
           hash_for_radio = filter_content_hash['hash_for_radio']

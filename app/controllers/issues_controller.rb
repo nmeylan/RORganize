@@ -100,10 +100,7 @@ class IssuesController < ApplicationController
   end
 
   def load_issues
-    gon.DOM_filter = view_context.issues_generics_form_to_json
-    gon.DOM_persisted_filter = @sessions[@project.slug][:json_filter].to_json
-    filter = @sessions[@project.slug][:sql_filter]
-    @issues_decorator = Issue.paginated_issues(@sessions[:current_page], @sessions[:per_page], order('issues.id'), filter, @project.id).
+    @issues_decorator = Issue.paginated_issues(@sessions[:current_page], @sessions[:per_page], order('issues.id'), gon_filter_initialize, @project.id).
         decorate(context: {project: @project, query: @query})
   end
 

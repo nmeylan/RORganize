@@ -7,7 +7,7 @@ module Rorganize
     module DocumentsHelpers
       module DocumentsFilterHelper
         # Build a json filter form.
-        def documents_generics_form_to_json
+        def generics_form_to_json
           form_hash = {}
           document_filter = DocumentFilter.new(@project)
           filter_content_hash = document_filter.content

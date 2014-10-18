@@ -61,10 +61,7 @@ class DocumentsController < ApplicationController
   private
 
   def load_documents
-    gon.DOM_filter = view_context.documents_generics_form_to_json
-    gon.DOM_persisted_filter = @sessions[@project.slug][:json_filter].to_json
-    filter = @sessions[@project.slug][:sql_filter]
-    @documents_decorator = Document.paginated_documents(@sessions[:current_page], @sessions[:per_page], order('documents.id'), filter, @project.id).decorate(context: {project: @project, query: @query})
+    @documents_decorator = Document.paginated_documents(@sessions[:current_page], @sessions[:per_page], order('documents.id'), gon_filter_initialize, @project.id).decorate(context: {project: @project, query: @query})
   end
 
   #Find custom queries

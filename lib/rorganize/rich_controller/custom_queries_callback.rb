@@ -2,6 +2,12 @@ module Rorganize
   module RichController
     module CustomQueriesCallback
 
+      def gon_filter_initialize
+        gon.DOM_filter = view_context.generics_form_to_json
+        gon.DOM_persisted_filter = @sessions[@project.slug][:json_filter].to_json
+        @sessions[@project.slug][:sql_filter]
+      end
+
       def apply_custom_query
         @query = Query.find_by_slug(params[:query_id])
         if @query
