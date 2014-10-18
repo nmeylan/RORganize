@@ -117,7 +117,8 @@ class IssuesController < ApplicationController
     gon.DOM_filter = view_context.issues_generics_form_to_json
     gon.DOM_persisted_filter = @sessions[@project.slug][:json_filter].to_json
     filter = @sessions[@project.slug][:sql_filter]
-    @issues_decorator = Issue.filter(filter, @project.id).paginated(@sessions[:current_page], @sessions[:per_page], order('issues.id'), [:tracker, :version, :assigned_to, :category, :project, :attachments, :author, status: [:enumeration]]).decorate(context: {project: @project})
+    @issues_decorator = Issue.paginated_issues(@sessions[:current_page], @sessions[:per_page], order('issues.id'), filter, @project.id).
+        decorate(context: {project: @project})
   end
 
   def session_list_type

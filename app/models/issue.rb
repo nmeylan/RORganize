@@ -35,15 +35,25 @@ class Issue < ActiveRecord::Base
 
   #Scopes
   scope :fetch_dependencies, -> { fetch_dependencies_method }
+
+  scope :paginated_issues, -> (current_page, per_page, order, filter, project_id) {
+    paginated_issues_method(current_page, filter, order, per_page, project_id)
+  }
   scope :opened_issues, -> { joins(:status).where('issues_statuses.is_closed = false') }
   #Group
-  scope :group_opened_by_attr, -> (project_id, table_name, attr, conditions = '1 = 1') { group_opened_by_attr_method(attr, conditions, project_id, table_name) }
+  scope :group_opened_by_attr, -> (project_id, table_name, attr, conditions = '1 = 1') {
+    group_opened_by_attr_method(attr, conditions, project_id, table_name)
+  }
   scope :group_by_status, -> (project_id) { group_by_status_method(project_id) }
   scope :group_opened_by_project, -> (attr, conditions = '1 = 1') { group_opened_by_project_method(attr, conditions) }
 
   # Scopes methods
   def self.fetch_dependencies_method
     includes([:tracker, :version, :assigned_to, :category, :project, :attachments, :author, status: [:enumeration]])
+  end
+
+  def self.paginated_issues_method(current_page, filter, order, per_page, project_id)
+    filter(filter, project_id).paginated(current_page, per_page, order, [:tracker, :version, :assigned_to, :category, :project, :attachments, :author, status: [:enumeration]])
   end
 
   def self.group_by_status_method(project_id)

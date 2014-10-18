@@ -38,7 +38,6 @@ module IssuesHelper
     list_td issue.checklist_progression, class: 'icon-information'
     list_td issue.comment_presence_indicator, class: 'icon-information'
     list_td issue.attachment_presence_indicator, class: 'icon-information'
-    issue_list_indicators_rows(issue)
   end
 
   def list_header
