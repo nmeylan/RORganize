@@ -55,11 +55,18 @@ class ApplicationController < ActionController::Base
       User.current = AnonymousUser.instance
     else
       User.current = current_user
+      set_current_user_act_as
     end
     yield
   ensure
     # to address the thread variable leak issues in Puma/Thin webserver
     User.current = nil
+  end
+
+  def set_current_user_act_as
+    if User.current
+      User.current.act_as_admin(session['act_as'])
+    end
   end
 
   #Define for JavaScript files wich must be loaded

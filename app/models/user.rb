@@ -92,17 +92,17 @@ class User < ActiveRecord::Base
   end
 
   def act_as_admin?
-    @@session ||= 'User'
-    return @@session.eql?('Admin')
+    Thread.current[:user_act_as] ||= 'User'
+    Thread.current[:user_act_as].eql?('Admin')
   end
 
   def act_as_admin(session)
-    @@session = session
+    Thread.current[:user_act_as] = session
   end
 
   def act_as_admin_session
-    @@session ||= 'User'
-    return @@session
+    Thread.current[:user_act_as] ||= 'User'
+    Thread.current[:user_act_as]
   end
 
   def time_entries_for_month(year, month)

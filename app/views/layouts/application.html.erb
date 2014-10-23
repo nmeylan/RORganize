@@ -13,9 +13,6 @@
 </head>
 <body>
 <%= render 'peek/bar' %>
-<%# HACK quick and dirty =( %>
-<% session['act_as'] ||= 'User' %>
-<% User.current.act_as_admin(session['act_as']) if User.current && session['act_as'] != User.current.act_as_admin_session %>
 <div id="top-menu"><%= render partial: 'layouts/top_menu' %></div>
 <div id="header">
   <h1>
