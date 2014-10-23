@@ -102,7 +102,7 @@ class Issue < ActiveRecord::Base
   def self.bulk_edit(issue_ids, value_param, project)
     issues, journals = super(issue_ids, value_param, project)
     # If version changed trigger the due and start date rules.
-    Issue.bulk_set_done_ratio(issue_ids, value_param[:status_id],journals) if value_param[:status_id]
+    Issue.bulk_set_done_ratio(issue_ids, value_param[:status_id], journals) if value_param[:status_id]
     bulk_set_start_and_due_date(issues.collect { |issue| issue.id }, value_param[:version_id], journals) if value_param[:version_id]
   end
 
@@ -156,13 +156,11 @@ class Issue < ActiveRecord::Base
   end
 
 
-
-
   private
   def set_done_ratio
     unless self.status.nil?
       done_ratio = self.status.default_done_ratio
-      if done_ratio != 0 && !self.done_changed?
+      if done_ratio && !self.done_changed?
         self.done = done_ratio
       end
     end
@@ -170,12 +168,15 @@ class Issue < ActiveRecord::Base
 
   def self.bulk_set_done_ratio(issue_ids, status_id, journals)
     status = IssuesStatus.find_by_id(status_id)
-    issues = Issue.where(id: issue_ids)
-    issues.each do |issue|
-      issue.done = status.default_done_ratio
+    done_ratio = status.default_done_ratio
+    if done_ratio
+      issues = Issue.where(id: issue_ids)
+      issues.each do |issue|
+        issue.done = status.default_done_ratio
+      end
+      issues.update_all(done: status.default_done_ratio)
+      Issue.journal_update_creation(issues, issues.first.project, User.current.id, 'Issue', journals)
     end
-    issues.update_all(done: status.default_done_ratio)
-    Issue.journal_update_creation(issues, issues.first.project, User.current.id, 'Issue', journals)
   end
 
   #Permit attributes
