@@ -25,7 +25,7 @@ module Rorganize
       end
 
       def model_saved?(model)
-        model.save && model.save_attachments
+        model.save
       end
 
       def model_changed?(model, params)

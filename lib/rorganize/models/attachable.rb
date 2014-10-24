@@ -5,7 +5,6 @@
 module Rorganize
   module Models
     module Attachable
-
       #ATTACHMENT METHODS
       def new_attachment_attributes=(attachment_attributes)
         attachment_attributes.each do |attributes|
@@ -23,6 +22,24 @@ module Rorganize
             attachment.delete
           end
         end
+      end
+
+      def save
+        save_result = super
+        add_attachments_error_messages unless self.errors.messages[:attachments].nil?
+        save_result
+      end
+
+      def add_attachments_error_messages
+        self.errors.messages[:attachments].clear
+        self.errors.messages[:attachment] = []
+        self.attachments.each do |attachment|
+          self.errors.messages[:attachment] << build_attachment_error_message(attachment) unless attachment.valid?
+        end
+      end
+
+      def build_attachment_error_message(attachment)
+        "#{attachment.file_file_name} #{attachment.errors.messages.values.flatten.uniq.join('. Attachment ')}"
       end
 
       def save_attachments
