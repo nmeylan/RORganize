@@ -100,13 +100,16 @@ module Rorganize
       class << self
         def map(menu_name)
           @items ||= {}
-          if !self.items(menu_name)
-            menu = Menu.new(menu_name)
-            @items[menu_name] = menu
-            yield menu
-          else
-            yield self.items(menu_name)
+          if block_given?
+            if !self.items(menu_name)
+              menu = Menu.new(menu_name)
+              @items[menu_name] = menu
+              yield menu
+            else
+              yield self.items(menu_name)
+            end
           end
+          @items[menu_name]
         end
 
         def items(menu_name)

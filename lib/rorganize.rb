@@ -6,6 +6,7 @@
 require 'rorganize/managers/menu_manager'
 require 'rorganize/managers/permission_manager'
 require 'rorganize/managers/module_manager'
+require 'rorganize/managers/plugin_manager'
 
 module Rorganize
   TIME_FORMAT = '%a. %-d %b. %I:%M %p.'
@@ -58,4 +59,8 @@ unless $0.end_with?('rake')
 
   Rorganize::Managers::PermissionManager.initialize
   Rorganize::Managers::IssueStatusesColorManager.initialize
+  Rorganize::Managers::PluginManager.load
+  require 'module_configuration'
+  require 'permissions_configuration'
 end
+

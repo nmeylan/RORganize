@@ -48,17 +48,5 @@ module RORganize
 
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
-
-
-    #Engines
-    config.railties_order = [self]
-
-    #MODULES
-    config.after_initialize do
-      unless $0.end_with?('rake')
-        require 'module_configuration'
-        require 'permissions_configuration'
-      end
-    end
   end
 end

@@ -61,7 +61,7 @@ class SettingsController < ApplicationController
     if request.post?
       @project.enabled_modules.clear
       params['modules']['name'].each do |mod|
-        ary = mod.split('_')
+        ary = mod.split('-')
         m = EnabledModule.new(controller: ary[0], action: ary[1], name: ary[2])
         @project.enabled_modules << m
       end

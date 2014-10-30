@@ -160,9 +160,8 @@ RORganize::Application.routes.draw do
   get ':user', controller: 'rorganize', action: 'view_profile', as: 'view_profile'
 
   #MOUNT PLUGINS
+  # mount AgileBoard::Engine => '/', as: 'agile_boards_route'
   mount Peek::Railtie => '/peek'
-
-  get 'projects/:project_id/scenarios/:action', controller: 'scenarios'
 
   root to: 'rorganize#index'
 
