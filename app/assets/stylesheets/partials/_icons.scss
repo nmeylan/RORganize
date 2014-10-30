@@ -1037,8 +1037,8 @@ a {
 }
 
 .octicon-progress:before {
-  content: '\F0DC'
-}
+   content: '\F0DC'
+ }
 
 .octicon-unclip:before{
   content: '\F0E2'
@@ -1046,4 +1046,16 @@ a {
 
 .octicon-tasks:before{
   content: '\F0E3'
+}
+
+.octicon-scrum:before {
+  content: '\F0E4'
+}
+
+.octicon-sprint:before{
+  content: '\F0E5'
+}
+
+.octicon-sword:before{
+  content: '\F0E6'
 }
