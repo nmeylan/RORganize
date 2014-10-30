@@ -160,7 +160,6 @@ RORganize::Application.routes.draw do
   get ':user', controller: 'rorganize', action: 'view_profile', as: 'view_profile'
 
   #MOUNT PLUGINS
-  mount Scenarios::Engine => '/', as: 'scenarios_route' #/scenarios
   mount Peek::Railtie => '/peek'
 
   get 'projects/:project_id/scenarios/:action', controller: 'scenarios'
