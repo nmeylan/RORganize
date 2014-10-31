@@ -35,12 +35,26 @@ module Rorganize
             params[:data][:confirm] = params[:confirm].clone
             params[:confirm] = nil
           end
-          if (owner_id.nil? && User.current.allowed_to?(find_action_alias(hash_path[:action]), hash_path[:controller], project)) ||
-              (!owner_id.nil? && (User.current.allowed_to?(find_action_alias(hash_path[:action]), hash_path[:controller], project) &&
-                  owner_id.eql?(User.current.id) ||
-                  User.current.allowed_to?("#{hash_path[:action]}_not_owner", hash_path[:controller], project)))
+          if allowed_to_without_owner_check?(hash_path, owner_id, project) ||
+              allowed_to_with_owner_check?(hash_path, owner_id, project)
             yield
           end
+        end
+
+        def allowed_to_without_owner_check?(hash_path, owner_id, project)
+          (owner_id.nil? && User.current.allowed_to?(find_action_alias(hash_path[:action]), hash_path[:controller], project))
+        end
+
+        def allowed_to_with_owner_check?(hash_path, owner_id, project)
+          (!owner_id.nil? && (owner_and_allowed?(hash_path, owner_id, project) || not_owner_and_allowed?(hash_path, project)))
+        end
+
+        def not_owner_and_allowed?(hash_path, project)
+          User.current.allowed_to?("#{hash_path[:action]}_not_owner", hash_path[:controller], project)
+        end
+
+        def owner_and_allowed?(hash_path, owner_id, project)
+          User.current.allowed_to?(find_action_alias(hash_path[:action]), hash_path[:controller], project) && owner_id.eql?(User.current.id)
         end
 
         def find_action_alias(action)
@@ -60,20 +74,29 @@ module Rorganize
           Rails::Engine.subclasses.each do |engine|
             engine_instance = engine.instance
             # Find the route to the engine, e.g. '/blog' -> Blog::Engine (a.k.a. "mount")
-            engine_route = Rails.application.routes.routes.find { |r| r.app.to_s == engine_instance.class.to_s }
+            engine_route = find_route_to_the_engine(engine_instance)
             next unless engine_route
 
             # The engine won't recognize the "mount", so strip it off the path,
             # e.g. '/blog/posts/new'.gsub(%r(^/blog), '') #=> '/posts/new', which will be recognized by the engine
             path_for_engine = path.gsub(%r(^#{engine_route.path.spec.to_s}), '')
-            begin
-              recognized_path = engine_instance.routes.recognize_path(path_for_engine, options)
-            rescue ActionController::RoutingError => e
-              nil
-            end
+            recognized_path = handle_path_recognition(engine_instance, options, path_for_engine)
           end
 
           recognized_path
+        end
+
+        def handle_path_recognition(engine_instance, options, path_for_engine)
+          begin
+            recognized_path = engine_instance.routes.recognize_path(path_for_engine, options)
+          rescue ActionController::RoutingError => e
+            nil
+          end
+          recognized_path
+        end
+
+        def find_route_to_the_engine(engine_instance)
+          Rails.application.routes.routes.find { |r| r.app.to_s == engine_instance.class.to_s }
         end
       end
 
