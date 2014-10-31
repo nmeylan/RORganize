@@ -24,7 +24,7 @@ module Rorganize
         end
       end
 
-      def save
+      def save(*)
         save_result = super
         add_attachments_error_messages unless self.errors.messages[:attachments].nil?
         save_result

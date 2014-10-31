@@ -180,7 +180,9 @@
 .clear-both {
   clear: both;
 }
-
+.sortable{
+  cursor : move;
+}
 #content .no-data {
   position: relative;
   padding: 30px;

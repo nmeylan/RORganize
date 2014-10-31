@@ -50,17 +50,28 @@ module Rorganize
         end
 
         def set_associations_actions_module(associations_hash)
-          @associations = associations_hash
+          if @associations.nil?
+            @associations = associations_hash
+          else
+            @associations.merge!(associations_hash)
+          end
         end
 
         def initialize_modules(always_enabled_module)
           @enabled_by_default_modules = []
           @always_enabled_module = always_enabled_module
+        end
+
+        def load_modules
           Rorganize::Managers::ModuleManager.map :project do |mod|
             Rorganize::Managers::MenuManager.items(:project_menu).menu_items.each do |item|
               mod.add(item.name, item.controller, item.action)
             end
           end
+        end
+
+        def add_always_enabled_modules(always_enabled_module)
+          @always_enabled_module += always_enabled_module
         end
 
         # @param [Array] modules : enabled by default on project creation.

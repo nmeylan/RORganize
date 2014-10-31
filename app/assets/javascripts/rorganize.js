@@ -558,7 +558,6 @@ function bind_save_project_position() {
         jQuery.each(jQuery(".project-list.sortable li.project"), function (project) {
             p_ids.push(jQuery(this).attr("id"));
         });
-        console.log(p_ids);
         jQuery.ajax({
             url: url,
             type: "post",

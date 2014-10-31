@@ -20,6 +20,10 @@ module Rorganize
           yield plugin
           plugin.directory = File.join(self.directory, id.to_s) if plugin.directory.nil?
           Rails.application.config.i18n.load_path += Dir.glob(File.join(plugin.directory, 'config', 'locales', '*.yml'))
+          Dir.glob File.expand_path(File.join(plugin.directory, 'app', '{decorators}')) do |dir|
+            ActiveSupport::Dependencies.autoload_paths += [dir]
+          end
+
           @@registered_plugins[id.to_sym] = plugin
         end
 
@@ -63,6 +67,14 @@ module Rorganize
 
         def menu(menu, name, label, url, options={})
           Rorganize::Managers::MenuManager.map(menu).add(name, label, url, options)
+        end
+
+        def add_to_always_enabled_modules(always_enabled_modules)
+          Rorganize::Managers::ModuleManager.add_always_enabled_modules(always_enabled_modules)
+        end
+
+        def add_modules_associations(association_actions_module)
+          Rorganize::Managers::ModuleManager.set_associations_actions_module(association_actions_module)
         end
       end
     end

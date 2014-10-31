@@ -29,8 +29,7 @@ module Rorganize
         end
 
         def permission_checker(path, project, owner_id, params = {})
-          routes = Rails.application.routes
-          hash_path = routes.recognize_path(path, method: params[:method])
+          hash_path = recognize_path(path, method: params[:method])
           unless params[:confirm].nil?
             params[:data] ||= {}
             params[:data][:confirm] = params[:confirm].clone
@@ -52,6 +51,30 @@ module Rorganize
           end
         end
 
+        def recognize_path(path, options)
+          recognized_path = Rails.application.routes.recognize_path(path, options)
+          # We have a route that catches everything and sends it to 'errors#not_found', you might
+          # need to rescue ActionController::RoutingError
+        rescue ActionController::RoutingError
+          # The main app didn't recognize the path, try the engines...
+          Rails::Engine.subclasses.each do |engine|
+            engine_instance = engine.instance
+            # Find the route to the engine, e.g. '/blog' -> Blog::Engine (a.k.a. "mount")
+            engine_route = Rails.application.routes.routes.find { |r| r.app.to_s == engine_instance.class.to_s }
+            next unless engine_route
+
+            # The engine won't recognize the "mount", so strip it off the path,
+            # e.g. '/blog/posts/new'.gsub(%r(^/blog), '') #=> '/posts/new', which will be recognized by the engine
+            path_for_engine = path.gsub(%r(^#{engine_route.path.spec.to_s}), '')
+            begin
+              recognized_path = engine_instance.routes.recognize_path(path_for_engine, options)
+            rescue ActionController::RoutingError => e
+              nil
+            end
+          end
+
+          recognized_path
+        end
       end
 
       module PermissionManagerHelper

@@ -59,8 +59,11 @@ unless $0.end_with?('rake')
 
   Rorganize::Managers::PermissionManager.initialize
   Rorganize::Managers::IssueStatusesColorManager.initialize
-  Rorganize::Managers::PluginManager.load
   require 'module_configuration'
   require 'permissions_configuration'
+
+
+  Rorganize::Managers::PluginManager.load
+  Rorganize::Managers::ModuleManager.load_modules
 end
 
