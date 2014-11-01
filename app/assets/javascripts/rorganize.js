@@ -793,8 +793,9 @@ function bind_dropdown() {
 }
 
 function bind_date_field() {
+    var test_input = $('<input type="date" name="bday">');
     var input_date = $('[type="date"]');
-    if (input_date.prop('type') != 'date') { //if browser doesn't support input type="date", load files for jQuery UI Date Picker
+    if (test_input.prop('type') != 'date') { //if browser doesn't support input type="date", load files for jQuery UI Date Picker
         if(input_date.hasClass('hasDatepicker')){
             input_date.datepicker("destroy");
         }
