@@ -171,6 +171,7 @@ li.close {
       float: right;
       list-style-type: none;
       margin-right: 0px;
+      margin-top: 0px;
       li {
         float: left;
         margin-left: 10px;
@@ -201,6 +202,9 @@ li.close {
   }
   .octicon {
     font-size: 20px;
+  }
+  .button .octicon {
+    font-size: 16px;
   }
 }
 .list td.done{
