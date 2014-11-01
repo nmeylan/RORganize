@@ -756,6 +756,8 @@ function bind_tab_nav(tab_id) {
     var tabs = $('#' + tab_id);
     var links = tabs.find('a');
     var content_tabs = [];
+    var selected_type_id = $('#' + tab_id).find('ul > li a.selected').data('tab_id');
+    $('#'+selected_type_id).css('display', 'block');
     links.each(function () {
         content_tabs.push($('#' + $(this).data('tab_id')));
     });
@@ -773,18 +775,22 @@ function bind_tab_nav(tab_id) {
 }
 
 function bind_color_editor() {
-    var editor_field = $(".color-editor-field");
-    var color_bg = $("<span class='color-editor-bg'></span>");
-    var container = $("<div class='color-editor'></div>");
-    editor_field.wrap(container);
-    color_bg.insertBefore(editor_field);
-    color_bg.css('background-color', '#' + editor_field.val());
-    editor_field.keydown(function (e) {
-        var val = editor_field.val();
-        if (val.indexOf('#') !== 0)
-            editor_field.val('#' + val);
+    var editor_fields = $(".color-editor-field");
+    var editor_field;
+    editor_fields.each(function(){
+        editor_field = $(this);
+        var color_bg = $("<span class='color-editor-bg'></span>");
+        var container = $("<div class='color-editor'></div>");
+        editor_field.wrap(container);
+        color_bg.insertBefore(editor_field);
         color_bg.css('background-color', '#' + editor_field.val());
-        editor_field.css('color', '#' + editor_field.val());
+        editor_field.keydown(function (e) {
+            var val = editor_field.val();
+            if (val.indexOf('#') !== 0)
+                editor_field.val('#' + val);
+            color_bg.css('background-color', '#' + editor_field.val());
+            editor_field.css('color', '#' + editor_field.val());
+        });
     });
 }
 
