@@ -68,7 +68,7 @@ module ApplicationHelper
   # @param [String] id : id of the select_tag.
   # @param [String] name : name of the select_tag.
   # @param [String] select_key : selected item key.
-  def select_tag_versions(id, name, select_key)
+  def select_tag_versions(id, name, select_key, options = {})
     versions = @project.versions
     hash = {Open: [], Close: []}
     versions.each do |v|
@@ -76,7 +76,8 @@ module ApplicationHelper
       version_info = build_version_info(v)
       hash[key] << [v.caption, v.id, {'data-target_date' => v.target_date, 'data-start_date' => v.start_date, 'data-version_info' => version_info}]
     end
-    select_tag name, grouped_options_for_select(hash, select_key), {class: 'chzn-select-deselect  cbb-medium search', id: id, include_blank: true}
+    default_options = options.merge({class: 'chzn-select-deselect  cbb-medium search', id: id, include_blank: true})
+    select_tag name, grouped_options_for_select(hash, select_key), default_options
   end
 
   def build_version_info(v)

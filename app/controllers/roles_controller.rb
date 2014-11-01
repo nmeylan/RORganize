@@ -61,7 +61,7 @@ class RolesController < ApplicationController
   #DELETE /administration/roles/:id
   def destroy
     @role = Role.find_by_id(params[:id])
-    simple_js_callback(@role.destroy, :delete, {id: params[:id]})
+    simple_js_callback(@role.destroy, :delete, @role, {id: params[:id]})
   end
 
   private

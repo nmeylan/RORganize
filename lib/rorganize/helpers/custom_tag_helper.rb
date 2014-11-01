@@ -120,13 +120,12 @@ module Rorganize
 
       def subnav_tag(css_class, id, *links)
         content_tag :div, {class: "subnav #{css_class}", id: id} do
-           links.collect do |link|
-             options = {class: 'subnav-item', remote: true}.merge(link[:options] || {})
-             link_to link[:caption], link[:path], options
-           end.join.html_safe
+          links.collect do |link|
+            options = {class: 'subnav-item', remote: true}.merge(link[:options] || {})
+            link_to link[:caption], link[:path], options
+          end.join.html_safe
         end
       end
-
 
       def overlay_tag(id, style = 'width:600px')
         content_tag :div, {class: 'overlayOuter', id: id} do
@@ -135,6 +134,13 @@ module Rorganize
               yield if block_given?
             end
           end
+        end
+      end
+
+      def required_form_label(f, name, text)
+        f.label name do
+          safe_concat text
+          safe_concat content_tag(:span, '*', class: 'required')
         end
       end
     end

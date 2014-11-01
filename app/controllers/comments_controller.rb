@@ -9,7 +9,7 @@ class CommentsController < ApplicationController
   include Rorganize::RichController
 
   def create
-    @comment = Comment.new(comment_params)
+    @comment = Comment.new(comment_params).decorate
     @comment.project = @project
     @comment.author = User.current
     js_callback(@comment.save, [t(:successful_creation), "#{t(:failure_creation)} : #{@comment.errors.full_messages.join(', ')}"])
@@ -30,11 +30,11 @@ class CommentsController < ApplicationController
 
   def update
     @comment.update(comment_params)
-    simple_js_callback(@comment.save, :update)
+    simple_js_callback(@comment.save, :update, @comment)
   end
 
   def destroy
-    simple_js_callback(@comment.destroy, :delete)
+    simple_js_callback(@comment.destroy, :delete, @comment)
   end
 
   private

@@ -45,7 +45,7 @@ class CategoriesController < ApplicationController
 
   def destroy
     @category.destroy
-    simple_js_callback(@category.destroy, :delete, {id: params[:id]})
+    simple_js_callback(@category.destroy, :delete, @category, {id: params[:id]})
   end
 
   private

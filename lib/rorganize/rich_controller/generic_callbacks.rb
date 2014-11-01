@@ -94,16 +94,16 @@ module Rorganize
       end
         # @param [Boolean] success : if the action is a success.
         # @param [Symbol] action_type :update / :delete / :create
-      def simple_js_callback(success, action_type, locals = {})
-        header, message = generic_notice_builder(success, action_type)
+      def simple_js_callback(success, action_type, model, locals = {})
+        header, message = generic_notice_builder(success, action_type, model)
         do_nothing_action = success ? nil : 'do_nothing'
         respond_to do |format|
           format.js { respond_to_js action: do_nothing_action, response_header: header, response_content: message, locals: locals }
         end
       end
 
-      def generic_notice_builder(success, action_type)
-        hash = {update: {failure: t(:failure_update), success: t(:successful_update)},
+      def generic_notice_builder(success, action_type, model)
+        hash = {update: {failure: "#{t(:failure_update)} : #{model.errors.full_messages.join(', ')}", success: t(:successful_update)},
                 create: {failure: t(:failure_creation), success: t(:successful_creation)},
                 delete: {failure: t(:failure_deletion), success: t(:successful_deletion)}
         }

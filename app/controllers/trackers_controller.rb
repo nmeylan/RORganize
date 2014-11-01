@@ -51,7 +51,7 @@ class TrackersController < ApplicationController
   #DELETE /administration/roles/:id
   def destroy
     @tracker = Tracker.find_by_id(params[:id])
-    simple_js_callback(@tracker.destroy, :delete, {id: params[:id]})
+    simple_js_callback(@tracker.destroy, :delete, @tracker, {id: params[:id]})
   end
 
   private
