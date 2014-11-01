@@ -28,6 +28,7 @@ function add_filters(json_content) {
             }
         });
         $(".chzn-select").chosen();
+        bind_date_field();
         $(".chzn-select-deselect").chosen({allow_single_deselect: true});
     });
 }

@@ -3,6 +3,7 @@
 <head>
   <%= csrf_meta_tags %>
   <title><%= title_tag %></title>
+
   <% favicon_link_tag 'rorganize_logo_2.svg', type: 'image/svg+xml' %>
   <%= favicon_link_tag 'rorganize_logo_3.png', type: 'image/png' %>
   <%= include_gon init: true %>
@@ -40,5 +41,11 @@
   <input type="text" name="highlight_search" id="highlight-search-input" placeholder="search on page...">
 </div>
 <%= render partial: 'layouts/footer' %>
+<script type="text/javascript">
+  if(($('[type="date"]').prop('type') != 'date') ) { //if browser doesn't support input type="date", load files for jQuery UI Date Picker
+        document.write("<link rel='stylesheet' href='//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css'>");
+        document.write('<script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"><\/script>\n');
+    }
+</script>
 </body>
 </html>

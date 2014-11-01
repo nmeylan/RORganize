@@ -5,6 +5,7 @@
 module Rorganize
   module Helpers
     module CustomTagHelper
+      include DropdownTagHelper
       # Build a header for the given title.
       # @param [String] title.
       def box_header_tag(title, css_class = 'header')
@@ -123,6 +124,17 @@ module Rorganize
              options = {class: 'subnav-item', remote: true}.merge(link[:options] || {})
              link_to link[:caption], link[:path], options
            end.join.html_safe
+        end
+      end
+
+
+      def overlay_tag(id, style = 'width:600px')
+        content_tag :div, {class: 'overlayOuter', id: id} do
+          content_tag :div, {style: style} do
+            content_tag :div, {class: 'overlayInner'} do
+              yield if block_given?
+            end
+          end
         end
       end
     end

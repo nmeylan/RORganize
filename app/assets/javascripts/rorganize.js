@@ -1,5 +1,6 @@
 //
 (function ($) {
+
     $(document).ready(function () {
         // hide flash messages
         display_flash();
@@ -57,6 +58,7 @@
         bind_commentable();
         bind_task_list_click();
         bind_color_editor();
+        bind_dropdown();
 
         //help overlay
         createOverlay("#hotkeys-overlay", 150);
@@ -78,6 +80,7 @@
         initialize_chosen();
         bind_table_list_actions();
         bind_task_list_click();
+        bind_date_field();
         //MarkItUp
         if (options.dataType !== 'JSON') {
             markdown_textarea();
@@ -474,7 +477,7 @@ function radio_button_behaviour(selector) {
     var id = "#td-" + jQuery(selector).attr('class');
     if (jQuery.inArray(jQuery(selector).val(), ary) === -1) {
         jQuery(id).show();
-    }else {
+    } else {
         jQuery(id).hide();
         jQuery(id + " input").val();
     }
@@ -644,7 +647,7 @@ function project_selection_filter() {
 // LOG TIME
 //Date is optional
 function fill_log_issue_time_overlay(url, context, date) {
-    if (jQuery(context).attr("id") === "pick-calendar"){
+    if (jQuery(context).attr("id") === "pick-calendar") {
         date = jQuery(context).valueAsDate;
     }
     jQuery.ajax({
@@ -676,7 +679,6 @@ function on_replace_effect(element_id, content) {
 function replace_list_content(content) {
     on_replace_effect("#" + gon.controller.replace('_', '-') + "-content", content);
 }
-
 
 
 function ajax_trigger(element, event, method) {
@@ -784,4 +786,20 @@ function bind_color_editor() {
         color_bg.css('background-color', '#' + editor_field.val());
         editor_field.css('color', '#' + editor_field.val());
     });
+}
+
+function bind_dropdown() {
+    $('.dropdown-link').dropdown();
+}
+
+function bind_date_field() {
+    var input_date = $('[type="date"]');
+    if (input_date.prop('type') != 'date') { //if browser doesn't support input type="date", load files for jQuery UI Date Picker
+        if(input_date.hasClass('hasDatepicker')){
+            input_date.datepicker("destroy");
+        }
+        input_date.datepicker({dateFormat: 'dd/mm/yy'});
+    }
+
+
 }

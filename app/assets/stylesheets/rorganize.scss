@@ -27,6 +27,7 @@
 @import 'partials/text_complete';
 @import 'partials/tabs';
 @import 'partials/markdown_renderer';
+@import 'partials/dropdown';
 
 /*
 *  HEADER CONTENT
@@ -433,6 +434,9 @@ img.small-avatar {
   .actions {
     margin-top: 4px;
   }
+  .counter{
+    background-color: white;
+  }
 }
 
 .box > .header-left {
@@ -442,6 +446,7 @@ img.small-avatar {
 
 .box .header h2, .box .header h1 {
   color: $default-box-header-color !important;
+  display: inline-block;
 }
 
 .edit-note {
