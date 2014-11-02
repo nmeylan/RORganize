@@ -65,6 +65,7 @@ en:
   label_document: Document
   label_unknown: Unknown
   label_issues_statuses: Issues statuses
+  label_issues_status: Issues status
   label_gantt_chart: Gantt chart
   label_predecessor: Predecessor
   label_children: Children
