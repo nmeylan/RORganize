@@ -48,6 +48,7 @@
 
         //MarkItUp
         markdown_textarea();
+        focus_first_input_text();
         //BIND_CHZN-SELECT
         initialize_chosen();
         //Paginate
@@ -81,6 +82,7 @@
         bind_table_list_actions();
         bind_task_list_click();
         bind_date_field();
+        focus_first_input_text();
         //MarkItUp
         if (options.dataType !== 'JSON') {
             markdown_textarea();
@@ -197,6 +199,9 @@ function error_explanation(message) {
         el.append(message).css("display", "block");
     }
 }
+function focus_first_input_text(){
+    var el = $('.form input[type=text] :visible').first().focus();
+}
 function markdown_textarea() {
     var el = jQuery('.fancyEditor');
     var cacheResponse = [];
@@ -250,7 +255,6 @@ function markdown_textarea() {
             cache: false
         }
     ]);
-    el.focus();
 }
 
 function bind_table_list_actions() {

@@ -92,8 +92,10 @@ module Rorganize
       # @param [Form] form : the form in which the field will be placed.
       # @param [Symbol] field : the name of the field.
       # @return [String] build a color picker text field. Behaviour is bind on page load (JS).
-      def color_field_tag(form, field)
-        form.text_field field, autocomplete: 'off', maxlength: 7, class: 'color-editor-field'
+      def color_field_tag(form, field, options = {})
+        default_options = {autocomplete: 'off', maxlength: 7, class: 'color-editor-field'}
+        p default_options.merge(options)
+        form.text_field field, default_options.merge(options)
       end
 
       def concat_span_tag(content, options = {})
@@ -120,16 +122,13 @@ module Rorganize
 
       def subnav_tag(css_class, id, *links)
         content_tag :div, {class: "subnav #{css_class}", id: id} do
-          links.collect do |link|
-            options = {class: 'subnav-item', remote: true}.merge(link[:options] || {})
-            link_to link[:caption], link[:path], options
-          end.join.html_safe
+          special_links_builder(links, 'subnav-item')
         end
       end
 
       def overlay_tag(id, style = 'width:600px')
         content_tag :div, {class: 'overlayOuter', id: id} do
-          content_tag :div, {style: style} do
+          content_tag :div, {style: style, class: 'overlayContent'} do
             content_tag :div, {class: 'overlayInner'} do
               yield if block_given?
             end
@@ -142,6 +141,19 @@ module Rorganize
           safe_concat text
           safe_concat content_tag(:span, '*', class: 'required')
         end
+      end
+
+      def group_button_tag(*links)
+        content_tag :div, {class: "button-group"} do
+          special_links_builder(links, 'minibutton')
+        end
+      end
+
+      def special_links_builder(links, css_class)
+        links.collect do |link|
+          options = {class: css_class, remote: true}.merge(link[:options] || {})
+          link_to link[:caption], link[:path], options
+        end.join.html_safe
       end
     end
   end

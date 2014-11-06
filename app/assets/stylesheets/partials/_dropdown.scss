@@ -87,6 +87,9 @@
 
 .dropdown-menu>li>a:hover, .dropdown-menu>li>a.danger-dropdown:hover{
   color: white;
+  background-image: inherit;
+  background-color: transparent;
+  border: solid 1px transparent;
   .octicon{
     color: white;
   }

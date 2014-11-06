@@ -12,7 +12,7 @@ class ApplicationController < ActionController::Base
   before_filter :authenticate unless RORganize::Application.config.rorganize_anonymous_access
   before_filter :smart_js_loader, :set_sessions
   around_filter :set_current_user
-  after_filter :set_sessions
+  before_action :set_sessions
 
   def peek_enabled?
     Rails.env.eql?('development')
