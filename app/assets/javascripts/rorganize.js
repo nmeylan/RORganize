@@ -306,6 +306,7 @@ function createOverlay(id, top) {
         onBeforeLoad: function (e) {
             var self = this;
             var overlay = self.getOverlay();
+            $('.dropdown').removeClass('active');
             $(self).removeClass('animated bounceInDown bounceOutUp');
             overlay.find('.close-button').remove();
             var close_button = $('<span class="medium-octicon octicon-x close-button"></span>');

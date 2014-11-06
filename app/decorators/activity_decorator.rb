@@ -18,7 +18,7 @@ module ActivityDecorator
 
   def creation_info_content
     h.safe_concat creation_info_date
-    h.safe_concat model.author.decorate.user_link(true)
+    h.safe_concat model.author ? model.author.decorate.user_link(true) : h.t(:label_unknown)
     h.safe_concat '.'
     h.safe_concat update_info_date unless model.created_at.eql?(model.updated_at)
   end
@@ -41,13 +41,13 @@ module ActivityDecorator
     display_info_square(model.category, 'tag')
   end
 
-  def display_info_square(attribute, glyph)
+  def display_info_square(attribute, glyph, none_indicator = true)
     if attribute
       h.content_tag :span, {class: 'info-square'} do
         h.glyph(attribute.caption, glyph)
       end
     else
-      '-'
+      '-' if none_indicator
     end
   end
 
