@@ -1,4 +1,5 @@
 class IssueDecorator < ApplicationDecorator
+  decorates_association :assigned_to
   delegate_all
 
   # @return [String] tracker name.
@@ -14,7 +15,14 @@ class IssueDecorator < ApplicationDecorator
 
   # @return [String] assigned to user name.
   def display_assigned_to
-    model.assigned_to ? model.assigned_to.decorate.user_link(true) : '-'
+    model.assigned_to ? self.assigned_to.user_link(true) : '-'
+  end
+
+  def display_assigned_to_avatar(format = :thumb)
+    if model.assigned_to
+      h.link_to self.assigned_to.display_avatar(format), h.view_profile_path(self.assigned_to.slug),
+                {class: 'tooltipped tooltipped-s', label: "#{h.t(:field_assigned_to)} #{self.assigned_to.caption}"}
+    end
   end
 
   # @return [String] estimated time.

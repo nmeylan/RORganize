@@ -20,8 +20,7 @@ class CommentDecorator < ApplicationDecorator
   # Render the link to user.
   # @param [Boolean] avatar : if true display the user's avatar else don't display it.
   def display_author(avatar = true)
-    model.author = model.author.decorate unless model.author.decorated?
-    model.author ? model.author.user_link(avatar) : h.t(:label_unknown)
+    self.author ? self.author.user_link(avatar) : h.t(:label_unknown)
   end
 
   # @return [String] link to model project.

@@ -46,8 +46,8 @@ class UserDecorator < ApplicationDecorator
   end
 
   # Render user avatar.
-  def display_avatar
-    h.image_tag user.avatar.avatar.url(:thumb), {class: 'user-profile avatar'} if avatar && user.avatar
+  def display_avatar(format = :thumb)
+    h.image_tag user.avatar.avatar.url(format), {class: 'user-profile avatar'} if avatar && user.avatar
   end
 
   # Display user projects.
