@@ -15,6 +15,11 @@ tr.odd-even:nth-child(odd) {
 //  background: $default-table-tr-odd-background-color;
 }
 
+table.detail{
+  tr{
+    line-height: 24px;
+  }
+}
 table.list {
   width: 100%;
   border-collapse: collapse;
