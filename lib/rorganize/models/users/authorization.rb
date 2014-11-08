@@ -6,17 +6,32 @@ module Rorganize
   module Models
     module Users
       module Authorization
+        attr_accessor :checked_permissions
         # @param [String] action : the action that user want to perform.
         # @param [String] controller : the controller concern by the action.
         # @param [Project] project the context of the action.
         def allowed_to?(action, controller, project = nil)
-          return true if admin_free_access(action, controller, project)
+          project_key = project ? project.id : 'nil'
+          if self.checked_permissions["#{project_key}_#{controller}_#{action}"]
+            true
+          else
+            unchecked_permissions_verifier(action, controller, project, project_key)
+          end
+        end
+
+        def unchecked_permissions_verifier(action, controller, project, project_key)
+          if admin_free_access(action, controller, project)
+            checked_permissions["#{project_key}_#{controller}_#{action}"] = true
+            return true
+          end
           if self.id.eql?(AnonymousUser::ANON_ID) #Concern unconnected users.
-            anonymous_allowed_to?(action, controller, project)
+            checked_permission_result = anonymous_allowed_to?(action, controller, project)
           else
             members = self.members
-            signed_in_user_allowed_to?(action, controller, members, project)
+            checked_permission_result = signed_in_user_allowed_to?(action, controller, members, project)
           end
+          self.checked_permissions["#{project_key}_#{controller}_#{action}"] = checked_permission_result
+          checked_permission_result
         end
 
         def signed_in_user_allowed_to?(action, controller, members, project)

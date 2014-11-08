@@ -77,7 +77,7 @@ class RubyFuncTest
   end
 
   def array_flatten_test
-    array = [0.200000]
+    array = [0..200000]
     Benchmark.bm(27) do |bm|
       bm.report('with flatten') do
         ITERATION.times do
@@ -94,7 +94,7 @@ class RubyFuncTest
   end
 
   def array_any_test
-    array = [0.200000]
+    array = [0..200000]
     Benchmark.bm(27) do |bm|
       bm.report('Any?') do
         ITERATION.times do
@@ -111,7 +111,7 @@ class RubyFuncTest
   end
 
   def array_concat_test
-    array = [0.20000]
+    array = [0..20000]
     Benchmark.bm(27) do |bm|
       bm.report('concat') do
         ITERATION.times do
@@ -132,7 +132,7 @@ class RubyFuncTest
   end
 
   def inject_test
-    array = [0.20000000]
+    array = *(0..20000)
     Benchmark.bm(27) do |bm|
       bm.report('Inject') do
         ITERATION.times do
@@ -147,8 +147,24 @@ class RubyFuncTest
       end
     end
   end
+
+  def find_test
+    array = *(0..20000)
+    Benchmark.bm(27) do |bm|
+      bm.report('find') do
+        ITERATION.times do
+          array.find{|e| e % 2 == 0}
+        end
+      end
+      bm.report('detect') do
+        ITERATION.times do
+          array.detect{|e| e % 2 == 0}
+        end
+      end
+    end
+  end
 end
 
 test = RubyFuncTest.new
 
-test.inject_test
+test.find_test

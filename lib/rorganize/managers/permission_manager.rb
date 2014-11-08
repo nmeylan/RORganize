@@ -67,8 +67,8 @@ module Rorganize
 
         def recognize_path(path, options)
           recognized_path = Rails.application.routes.recognize_path(path, options)
-          # We have a route that catches everything and sends it to 'errors#not_found', you might
-          # need to rescue ActionController::RoutingError
+            # We have a route that catches everything and sends it to 'errors#not_found', you might
+            # need to rescue ActionController::RoutingError
         rescue ActionController::RoutingError
           # The main app didn't recognize the path, try the engines...
           Rails::Engine.subclasses.each do |engine|
@@ -82,21 +82,20 @@ module Rorganize
             path_for_engine = path.gsub(%r(^#{engine_route.path.spec.to_s}), '')
             recognized_path = handle_path_recognition(engine_instance, options, path_for_engine)
           end
-
           recognized_path
         end
 
         def handle_path_recognition(engine_instance, options, path_for_engine)
           begin
-            recognized_path = engine_instance.routes.recognize_path(path_for_engine, options)
+            engine_instance.routes.recognize_path(path_for_engine, options)
           rescue ActionController::RoutingError => e
             nil
           end
-          recognized_path
         end
 
         def find_route_to_the_engine(engine_instance)
-          Rails.application.routes.routes.find { |r| r.app.to_s == engine_instance.class.to_s }
+          engine_class = engine_instance.class
+          Rails.application.routes.routes.find { |r| r.app == engine_class }
         end
       end
 
