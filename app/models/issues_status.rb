@@ -13,6 +13,7 @@ class IssuesStatus < ActiveRecord::Base
   has_many :issues, class_name: 'Issue', foreign_key: :status_id, dependent: :nullify
   # Scopes
   scope :fetch_dependencies, -> { eager_load(:enumeration) }
+  scope :find_by_name, ->(name) { joins(:enumeration).where('enumerations.opt = ? AND enumerations.name = ?','ISTS',name).first}
   # Triggers
   after_save :reload_colors
 

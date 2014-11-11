@@ -163,8 +163,27 @@ class RubyFuncTest
       end
     end
   end
+
+  def send_test
+    Benchmark.bm(27) do |bm|
+      bm.report('send') do
+        ITERATION.times do
+          self.send(:a)
+        end
+      end
+      bm.report('call') do
+        ITERATION.times do
+          self.a
+        end
+      end
+    end
+  end
+
+  def a
+    a = {}
+  end
 end
 
 test = RubyFuncTest.new
 
-test.find_test
+test.send_test

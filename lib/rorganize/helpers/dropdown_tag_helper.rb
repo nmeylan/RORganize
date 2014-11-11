@@ -12,8 +12,9 @@ module Rorganize
         end
       end
 
+      # Draw a link for dropdown : don't use link-to because it is too slow.
       def dropdown_link
-        link_to dropdown_caret, '#', { class: 'dropdown-link', 'data-toggle' => 'dropdown'}
+        "<a href='#' class='dropdown-link', data-toggle='dropdown'><span class='dropdown-caret'></span></a>".html_safe
       end
 
       def dropdown_caret
