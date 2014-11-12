@@ -62,15 +62,15 @@ module Rorganize
           member = members.to_a.detect { |mb| mb.project_id == project.id }
           if member
             generic_permission_condition(action, controller, project) && permission_manager_allowed_to?(member.role_id.to_s, action.to_s, controller.downcase.to_s)
-          else
+          elsif project.is_public
             generic_permission_condition(action, controller, project) && non_member_permission_manager_allowed_to?(action.to_s, controller.downcase.to_s)
           end
         end
 
         def anonymous_allowed_to?(action, controller, project)
-          if project
+          if project && project.is_public
             generic_permission_condition(action, controller, project) && anonymous_permission_manager_allowed_to?(action.to_s, controller.downcase.to_s)
-          else
+          elsif project.nil?
             anonymous_permission_manager_allowed_to?(action.to_s, controller.downcase.to_s)
           end
         end
