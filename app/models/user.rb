@@ -99,7 +99,6 @@ class User < ActiveRecord::Base
 
   def act_as_admin(session)
     Thread.current[:user_act_as] = session
-    Thread.current[:user].checked_permissions = {} if Thread.current[:user]
   end
 
   def act_as_admin_session

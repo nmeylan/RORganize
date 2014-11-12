@@ -12,7 +12,8 @@ module Rorganize
         # @param [Project] project the context of the action.
         def allowed_to?(action, controller, project = nil)
           project_key = project ? project.id : 'nil'
-          if self.checked_permissions["#{project_key}_#{controller}_#{action}"]
+          # TODO fix this part
+          if false && self.checked_permissions["#{project_key}_#{controller}_#{action}"]
             true
           else
             unchecked_permissions_verifier(action, controller, project, project_key)
