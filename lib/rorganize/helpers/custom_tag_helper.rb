@@ -150,7 +150,7 @@ module Rorganize
       end
 
       def special_links_builder(links, css_class)
-        links.collect do |link|
+        links.compact.collect do |link|
           options = {class: css_class, remote: true}.merge(link[:options] || {})
           link_to link[:caption], link[:path], options
         end.join.html_safe

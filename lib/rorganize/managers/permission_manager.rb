@@ -6,6 +6,7 @@
 module Rorganize
   module Managers
     module PermissionManager
+
       module PermissionHandler
         #Params hash content:
         #method : possible values :post, :get , :put, :delete
@@ -93,6 +94,7 @@ module Rorganize
           end
         end
 
+
         def find_route_to_the_engine(engine_instance)
           engine_class = engine_instance.class
           Rails.application.routes.routes.find { |r| r.app == engine_class }
@@ -141,6 +143,9 @@ module Rorganize
       module PermissionListCreator
         def load_controllers
           controllers = Rails.application.routes.routes.collect { |route| route.defaults[:controller] }
+          controllers += Rails::Engine.subclasses.collect do |engine|
+            engine.routes.routes.collect { |route| route.defaults[:controller] }
+          end.flatten
           controllers = controllers.uniq!.select { |controller_name| controller_name && !controller_name.match(/.*\/.*/) }
           result_group = nil
           controllers_hash = {project: [], administration: [], misc: []}

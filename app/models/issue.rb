@@ -158,7 +158,9 @@ class Issue < ActiveRecord::Base
 
   private
   def set_done_ratio
-    unless self.status.nil?
+    if self.new_record? && self.status && self.status.default_done_ratio.nil?
+      self.done = 0
+    elsif !self.status.nil?
       done_ratio = self.status.default_done_ratio
       if done_ratio && !self.done_changed?
         self.done = done_ratio
