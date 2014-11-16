@@ -41,6 +41,9 @@
             case 'versions' :
                 on_load_versions_scripts();
                 break;
+            case 'trackers' :
+                on_load_trackers_scripts();
+                break;
             case 'wiki' :
                 on_load_wiki_scripts();
                 break;

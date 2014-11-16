@@ -4,12 +4,35 @@
 # File: trackers_helper.rb
 
 module TrackersHelper
-  # Build a list of trackers.
-  # @param [Array] collection of trackers.
+
   def list(collection)
-    collection_one_column_renderer(collection, 'tracker', 'trackers.name')
+    content_tag :table, {class: 'tracker list'} do
+      safe_concat list_header
+      safe_concat list_body(collection)
+    end
   end
 
+  def list_body(collection)
+    collection.sort_by(&:position).collect do |tracker|
+      list_row(collection, tracker)
+    end.join.html_safe
+  end
+
+  def list_row(collection, tracker)
+    content_tag :tr, {class: 'odd-even', id: tracker.id} do
+      list_td tracker.edit_link, {class: 'list-left name'}
+      safe_concat list_sort_actions(collection, tracker)
+      list_td tracker.delete_link, {class: 'delete-action action'}
+    end
+  end
+
+  def list_header
+    content_tag :tr, class: 'header' do
+      list_th 'Name', class: 'list-left'
+      list_th nil
+      list_th nil
+    end
+  end
 
 
   # @param [Array] collection : array of trackers.

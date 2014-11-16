@@ -38,7 +38,11 @@ RORganize::Application.routes.draw do
       end
     end
     resources :roles, except: [:show]
-    resources :trackers, except: [:show]
+    resources :trackers, except: [:show] do
+      collection do
+        post 'change_position'
+      end
+    end
     resources :issues_statuses do
       collection do
         post 'change_position'

@@ -11,7 +11,7 @@ class FormContent
     @content['done_ratio'] = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
     @content['members'] = project.real_members.collect { |member| [member.user.name, member.user.id] }
     @content['categories'] = project.categories.collect { |category| [category.name, category.id] }
-    @content['trackers'] = project.trackers.collect { |tracker| [tracker.name, tracker.id] }
+    @content['trackers'] = project.trackers.sort_by(&:position).collect { |tracker| [tracker.name, tracker.id] }
     @content
   end
 end

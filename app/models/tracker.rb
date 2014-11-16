@@ -10,12 +10,30 @@ class Tracker < ActiveRecord::Base
   has_many :issues, class_name: 'Issue', dependent: :nullify
 
   validates :name, presence: true, uniqueness: true, length: 2..50
+  before_create :set_initial_position
+  after_destroy :dec_position_on_destroy
 
   def caption
     self.name
   end
 
+  def set_initial_position
+    count = Tracker.count
+    self.position = count + 1
+  end
+
   def self.permit_attributes
     [:name]
+  end
+
+
+  #Change position
+  def change_position(operator)
+    apply_change_position(Tracker.all, self, operator)
+  end
+
+  def dec_position_on_destroy
+    position = self.position
+    Tracker.where("position > ?", position).update_all('position = position - 1')
   end
 end
