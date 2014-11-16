@@ -1,4 +1,5 @@
 @import "utilities/variables";
+
 .form .box {
   border: inherit;
   border-bottom: 1px solid $default-border-color;
@@ -42,12 +43,13 @@ fieldset.settings {
   width: 155px;
 }
 
-.form{
-  input[type=submit]{
-//    margin-left: 140px;
-//    width: 65px;
+.form {
+  input[type=submit] {
+    //    margin-left: 140px;
+    //    width: 65px;
   }
 }
+
 .normal-label {
   font-weight: normal !important;
   float: none !important;
@@ -60,9 +62,10 @@ button, input[type=button], input[type=submit] {
   margin-left: 10px;
 }
 
-.color-editor{
+.color-editor {
   position: relative;
-  .color-editor-bg{
+  width: 120px;
+  .color-editor-bg {
     position: absolute;
     left: 0;
     z-index: 10;
@@ -73,9 +76,43 @@ button, input[type=button], input[type=submit] {
     cursor: pointer;
     border-radius: 3px;
   }
-  .color-editor-field{
+  .color-editor-field {
     width: 120px;
     padding-left: 28px;
     border-color: #ccc
   }
+
+  .colors {
+    position: absolute;
+    left: 0;
+    float: left;
+    display: none;
+    width: auto;
+    margin-left: 0;
+    padding: 5px;
+  }
+  .color-chooser {
+    display: table-row;
+    height: 25px;
+    list-style: none;
+    li {
+      border-top: inherit;
+      display: table-cell;
+      width: 1%;
+      padding: 0px;
+    }
+    .color-chooser-color {
+      display: block;
+      width: 25px;
+      height: 25px;
+      text-align: center;
+      cursor: pointer;
+    }
+    .color-chooser-color:hover{
+      border: solid 2px white;
+      width: 21px;
+      height: 21px;
+    }
+  }
+
 }
