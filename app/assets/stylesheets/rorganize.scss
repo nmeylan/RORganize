@@ -181,8 +181,12 @@
 .clear-both {
   clear: both;
 }
-.ui-sortable{
+.ui-sortable li{
   cursor : move;
+}
+.ui-state-highlight{
+  border: dashed 2px $default-border-color;
+  list-style-type: none;
 }
 #content .no-data {
   position: relative;
