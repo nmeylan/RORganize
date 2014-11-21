@@ -4,6 +4,7 @@
 # File: notifications_controller.rb
 
 class NotificationsController < ApplicationController
+  include Rorganize::Managers::UrlManager
   before_filter :find_user
 
   def index
@@ -48,18 +49,10 @@ class NotificationsController < ApplicationController
   end
 
   def notifiable_path(notification)
-    if notifiable_is_a?(notification, Issue)
-      issue_path(*notification_path_params(notification))
-    elsif notifiable_is_a?(notification, Document)
-      document_path(*notification_path_params(notification))
-    end
-  end
-
-  def notifiable_is_a?(notification, klazz)
-    notification.notifiable.is_a? klazz
+    url_for_with_engine_lookup({controller: ActiveModel::Naming.plural(notification.notifiable), action: :show}.merge(notification_path_params(notification)))
   end
 
   def notification_path_params(notification)
-    return notification.project.slug, notification.notifiable.id, {anchor: "#{notification.trigger_type.downcase}-#{notification.trigger_id}"}
+    {project_id: notification.project.slug, id: notification.notifiable.id, anchor: "#{notification.trigger_type.downcase}-#{notification.trigger_id}"}
   end
 end
