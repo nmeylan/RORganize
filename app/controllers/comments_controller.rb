@@ -72,7 +72,7 @@ class CommentsController < ApplicationController
   end
 
   def user_allowed_to_add_comment?
-    action_name.eql?('create') && User.current.allowed_to?('comment', params[:comment][:commentable_type].pluralize, @project)
+    action_name.eql?('create') && User.current.allowed_to?('comment', class_name_to_controller_name(params[:comment][:commentable_type]), @project)
   end
 
 end

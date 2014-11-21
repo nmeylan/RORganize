@@ -103,6 +103,11 @@ class ApplicationController < ActionController::Base
     render js: %(window.location.href='#{path}') and return
   end
 
+  def class_name_to_controller_name(class_name)
+    i = 0
+    class_name.pluralize.gsub(/([A-Z])/){|occurrence|  i += 1; i == 1 ? occurrence : '_'+occurrence }
+  end
+
   def configure_permitted_parameters
     devise_parameter_sanitizer.for(:sign_up) << User.permit_attributes
   end
