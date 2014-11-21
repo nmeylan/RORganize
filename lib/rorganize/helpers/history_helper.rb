@@ -122,8 +122,10 @@ module Rorganize
         if enhanced_detail_render
           case detail.property_key
             when 'status_id'
+              color = Rorganize::Managers::IssueStatusesColorManager.colors[value]
+              color ||= '#333333'
               content_tag :b, value, {class: 'issue-status issue-status-small',
-                                      style: "background-color: #{Rorganize::Managers::IssueStatusesColorManager.colors[value]}"}
+                                      style: "background-color: #{color}"}
             when 'assigned_to_id'
               fast_profile_link(value)
             when 'category_id'
