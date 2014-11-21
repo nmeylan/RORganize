@@ -394,7 +394,7 @@ a {
 }
 
 /*  */
-.octicon-file-text:before {
+.octicon-document:before, .octicon-file-text:before {
   content: '\f011'
 }
 
@@ -517,7 +517,7 @@ a {
 }
 
 /*  */
-.octicon-issue-opened:before {
+.octicon-issue:before, .octicon-issue-opened:before {
   content: '\f026'
 }
 
@@ -1044,7 +1044,7 @@ a {
   content: '\F0E2'
 }
 
-.octicon-tasks:before{
+.octicon-userstory:before,.octicon-tasks:before{
   content: '\F0E3'
 }
 
