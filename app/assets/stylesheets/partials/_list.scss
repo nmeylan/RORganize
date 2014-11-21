@@ -166,17 +166,21 @@ li.close {
 .fancy-list {
   list-style-type: none;
   .fancy-list-item {
+    position: relative;
     margin: 0px 30px 30px -15px;
     border-bottom: 1px solid $default-border-color;
     > a {
       font-size: 20px;
     }
     .right-content-list {
-      position: relative;
-      float: right;
+      position: absolute;
+      right: 0;
+      padding-right: 6px;
       list-style-type: none;
       margin-right: 0px;
       margin-top: 0px;
+      background-color: white;
+      padding-left: 5px;
       li {
         float: left;
         margin-left: 10px;

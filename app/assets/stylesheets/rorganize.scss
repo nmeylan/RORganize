@@ -435,6 +435,8 @@ img.small-avatar {
   text-align: center;
   margin: -6px -6px 10px;
   border-bottom: 1px solid #DADEE5;
+  position: relative;
+//  overflow-x: auto;
   .actions {
     margin-top: 4px;
   }
@@ -617,7 +619,7 @@ img.small-avatar {
   }
   .percent {
     position: absolute;
-    top: 0px;
+    top: 2px;
     left: 7px;
     font-size: 13px;
     font-weight: bold;
