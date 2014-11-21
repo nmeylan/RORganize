@@ -45,9 +45,14 @@ class UserDecorator < ApplicationDecorator
     end
   end
 
+  def user_avatar_link(text = '', format = :thumb)
+    h.link_to self.display_avatar('user-avatar-link', format), h.view_profile_path(self.slug),
+              {class: 'tooltipped tooltipped-s', label: "#{text} #{self.caption}"}
+  end
+
   # Render user avatar.
-  def display_avatar(format = :thumb)
-    h.image_tag user.avatar.avatar.url(format), {class: 'user-profile avatar'} if avatar && user.avatar
+  def display_avatar(css_class = '', format = :thumb)
+    h.image_tag user.avatar.avatar.url(format), {class: "user-profile avatar #{css_class}"} if avatar && user.avatar
   end
 
   # Display user projects.

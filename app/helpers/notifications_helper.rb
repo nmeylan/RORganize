@@ -41,7 +41,7 @@ module NotificationsHelper
   def notification_block_row_right_content(notification)
     content_tag :span, {class: 'right-content-list'} do
       safe_concat notification.notification_info
-      safe_concat notification.from.user_link
+      safe_concat notification.from.user_avatar_link
       safe_concat notification.recipient_type
     end
   end
