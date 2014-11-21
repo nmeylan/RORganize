@@ -45,7 +45,7 @@ class DocumentsController < ApplicationController
   end
 
   def show
-    generic_show_callback({history: History.new(Journal.document_activities(@document_decorator.id), @document_decorator.comments)})
+    generic_show_callback({history: History.new(Journal.journalizable_activities(@document_decorator.id, 'Document'), @document_decorator.comments)})
   end
 
   def destroy

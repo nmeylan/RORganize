@@ -35,7 +35,7 @@ class IssuesController < ApplicationController
 
   def show
     @issue_decorator = @issue_decorator.decorate(context: {project: @project})
-    generic_show_callback({history: History.new(Journal.issue_activities(@issue_decorator.id), @issue_decorator.comments)})
+    generic_show_callback({history: History.new(Journal.journalizable_activities(@issue_decorator.id, 'Issue'), @issue_decorator.comments)})
   end
 
   #GET /project/:project_identifier/issues/new

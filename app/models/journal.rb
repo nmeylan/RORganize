@@ -21,9 +21,7 @@ class Journal < ActiveRecord::Base
   #Scopes
   scope :fetch_dependencies, -> { fetch_dependencies_method }
 
-  scope :document_activities, ->(document_id) { document_activities_method(document_id) }
-
-  scope :issue_activities, ->(issuer_id) { issue_activities_method(issuer_id) }
+  scope :journalizable_activities, ->(journalizable_id, journalizable_type) { journalizable_activities_method(journalizable_id, journalizable_type) }
 
   scope :member_activities, ->(member) { member_activities_method(member) }
 
@@ -54,12 +52,8 @@ class Journal < ActiveRecord::Base
         order('created_at DESC')
   end
 
-  def self.document_activities_method(document_id)
-    includes([:details, user: :avatar]).where(journalizable_type: 'Document', journalizable_id: document_id)
-  end
-
-  def self.issue_activities_method(issuer_id)
-    includes([:details, user: :avatar]).where(journalizable_type: 'Issue', journalizable_id: issuer_id)
+  def self.journalizable_activities_method(journalizable_id, journalizable_type)
+    includes([:details, user: :avatar]).where(journalizable_type: journalizable_type, journalizable_id: journalizable_id)
   end
 
   def self.fetch_dependencies_method
