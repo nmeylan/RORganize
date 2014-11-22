@@ -1,6 +1,7 @@
 class NotificationMailer < ActionMailer::Base
   helper ApplicationHelper
   helper JournalsHelper
+  include Rorganize::Managers::UrlManager
   layout 'mail'
 
   def notification_email(notification)

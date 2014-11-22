@@ -215,17 +215,8 @@ module Rorganize
 
         # @return [Hash] a hash for url of the "model" to create a link in emails.
         def model_url
-          controller = nil
           action = 'show'
-          case @model.class.to_s
-            when 'Issue'
-              controller = 'issues'
-            when 'Document'
-              controller = 'documents'
-            when 'WikiPage'
-              controller = 'wiki_pages'
-          end
-          {controller: controller, action: action, project_id: @project.slug}
+          {controller: ActiveModel::Naming.plural(@model), action: action, project_id: @project.slug}
         end
       end
 
@@ -235,6 +226,7 @@ module Rorganize
         def initialize(objects, journals, project, from_id)
           @objects = objects.collect { |model| {id: model.id, caption: model.caption} }
           @type = objects[0].class
+          @model = objects[0]
           @journals_hash = {}
           journals.each do |journal|
             @journals_hash[journal.journalizable_id] = journal.id
@@ -265,17 +257,8 @@ module Rorganize
 
         # @return [Hash] a hash for url of the "model" to create a link in emails.
         def model_url
-          controller = nil
           action = 'show'
-          case @type.to_s
-            when 'Issue'
-              controller = 'issues'
-            when 'Document'
-              controller = 'documents'
-            when 'WikiPage'
-              controller = 'wiki_pages'
-          end
-          {controller: controller, action: action, project_id: @project.slug}
+          {controller: ActiveModel::Naming.plural(@model), action: action, project_id: @project.slug}
         end
       end
     end

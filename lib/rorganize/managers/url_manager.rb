@@ -33,9 +33,10 @@ module Rorganize
         # Try to build an url for the given path
         url = url_for(path)
       rescue ActionController::UrlGenerationError # If fail
+        path.merge!({only_path: true})
         Rails::Engine.subclasses.each do |engine| #Looking for this path in engines
           begin
-            url = engine.routes.url_for(path.merge({only_path: true})) # Try to build an url for the given path from this engine
+            url = engine.routes.url_for(path) # Try to build an url for the given path from this engine
           rescue ActionController::UrlGenerationError
             nil
           end
