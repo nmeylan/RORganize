@@ -28,7 +28,7 @@ module Rorganize
         to = @sessions[:activities][:from_date]
         period = @sessions[:activities][:period]
         from = to.to_date - Journal::ACTIVITIES_PERIODS[period.to_sym]
-        {types: Project::JOURNALIZABLE_ITEMS, selected_types: @sessions[:activities][:types], selected_period: period, selected_date: to, from_date: from}
+        {types: Project.journalizable_items, selected_types: @sessions[:activities][:types], selected_period: period, selected_date: to, from_date: from}
       end
 
       def activity_filter

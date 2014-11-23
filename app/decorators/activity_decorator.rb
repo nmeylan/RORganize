@@ -62,10 +62,6 @@ module ActivityDecorator
     end
   end
 
-  def activity_issue_caption
-    h.safe_concat h.content_tag :b, "#{self.issue.tracker.caption.downcase} ##{self.issue.id} "
-  end
-
   # Render a link to add a comment. Can be used by all commentable model.
   def new_comment_link
     if User.current.allowed_to?('comment', h.controller_name, model.project)
@@ -89,4 +85,5 @@ module ActivityDecorator
   def comment_presence_indicator
     h.comment_presence(model.comments_count)
   end
+
 end

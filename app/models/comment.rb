@@ -27,6 +27,7 @@ class Comment < ActiveRecord::Base
 
     query = self.comments(commentable_types, date_range, conditions)
     query = query.fetch_dependencies_issues if commentable_types.include?('Issue')
+    query = query.preload(:commentable)
     query
   end
 

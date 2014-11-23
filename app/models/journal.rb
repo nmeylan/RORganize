@@ -28,9 +28,6 @@ class Journal < ActiveRecord::Base
   scope :activities, ->(journalizable_types, date_range, days, conditions = '1 = 1') {
     activities_method(conditions, date_range, days, journalizable_types)
   }
-  scope :fetch_dependencies_issues, -> { includes(issue: :tracker) }
-  scope :fetch_dependencies_documents, -> { includes(:document) }
-  scope :fetch_dependencies_categories, -> { includes(:category) }
 
   #Scopes methods
   # This scope method give all activities.
@@ -68,8 +65,7 @@ class Journal < ActiveRecord::Base
     days = periods[period.to_sym]
     date_range = (date - days)..date
     query = self.activities(journalizable_types, date_range, days, conditions)
-    query = query.fetch_dependencies_issues if journalizable_types.include?('Issue')
-    query = query.fetch_dependencies_documents if journalizable_types.include?('Document')
+    query = query.preload(:journalizable)
     query
   end
 

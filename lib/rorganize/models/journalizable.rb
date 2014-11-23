@@ -7,9 +7,8 @@ module Rorganize
   module Models
     module Journalizable
       include Rorganize::Managers::JounalsManager
-
-
       extend ActiveSupport::Concern
+
       included do |base|
         base.extend Rorganize::Managers::JounalsManager::ClassMethods
         has_many :journals, -> { where journalizable_type: base }, as: :journalizable, dependent: :destroy

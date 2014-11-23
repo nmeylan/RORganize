@@ -31,4 +31,11 @@ class DocumentDecorator < ApplicationDecorator
     super(attachment, h.download_attachment_documents_path(context[:project].slug))
   end
 
+
+
+  def display_object_type(project)
+    h.safe_concat h.content_tag :b, "#{h.t(:label_document).downcase} "
+    h.fast_document_link(self, project).html_safe
+  end
+
 end

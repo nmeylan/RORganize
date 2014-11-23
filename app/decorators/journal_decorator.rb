@@ -1,5 +1,6 @@
 class JournalDecorator < ApplicationDecorator
   decorates_association :user
+  decorates_association :journalizable
   delegate_all
 
   # @return [String] type of the journal.
@@ -13,29 +14,14 @@ class JournalDecorator < ApplicationDecorator
     end
   end
 
-  # Render the type of the journalized object.
+
+  # Render the type of the commented object.
   def display_object_type
-    type = self.journalizable_type
-    if is_a_issue?(type)
-      display_issue_type
-    elsif is_a_document?(type)
-      h.fast_document_link(self.document, self.project).html_safe
+    if self.journalizable && self.journalizable.respond_to?(:display_object_type)
+      self.journalizable.display_object_type(self.project)
     else
-      h.content_tag :b, "#{type.downcase} #{self.journalizable_identifier}"
+      h.content_tag :b, "#{model.journalizable_type.downcase} #{model.journalizable_identifier}"
     end
-  end
-
-  def display_issue_type
-    activity_issue_caption
-    h.fast_issue_link(self.issue, self.project).html_safe
-  end
-
-  def is_a_document?(type)
-    type.eql?('Document') && !self.action_type.eql?(Journal::ACTION_DELETE)
-  end
-
-  def is_a_issue?(type)
-    type.eql?('Issue') && !self.action_type.eql?(Journal::ACTION_DELETE)
   end
 
   # @return [String] link to model project.

@@ -54,7 +54,7 @@ module Rorganize
       # @param [Document] document.
       # @param [Project] project.
       def fast_document_link(document, project)
-        "<b>document</b> <a href='/projects/#{project.slug}/documents/#{document.id}'>#{resize_text(document.caption, 35)}</a>"
+        "<a href='/projects/#{project.slug}/documents/#{document.id}'>#{resize_text(document.caption, 35)}</a>"
       end
 
       # Render a link to watch all activities from watchable.

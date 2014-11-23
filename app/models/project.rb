@@ -6,17 +6,15 @@ class Project < ActiveRecord::Base
   #SLug
   extend FriendlyId
   friendly_id :name, use: :slugged
-  #Constants
-  JOURNALIZABLE_ITEMS = %w(Issue Category Member Document Version Wiki WikiPage)
   #Relations
+  has_many :issues, class_name: 'Issue', dependent: :destroy
+  has_many :enabled_modules, dependent: :destroy
+  has_many :documents, dependent: :destroy
   belongs_to :author, class_name: 'User', foreign_key: 'created_by'
   has_many :members, class_name: 'Member', dependent: :destroy
   has_and_belongs_to_many :trackers, class_name: 'Tracker'
   has_many :versions, class_name: 'Version'
   has_many :categories, class_name: 'Category', dependent: :destroy
-  has_many :issues, class_name: 'Issue', dependent: :destroy
-  has_many :enabled_modules, dependent: :destroy
-  has_many :documents, dependent: :destroy
   has_many :journals, dependent: :destroy
   has_one :wiki
   #Triggers
@@ -34,6 +32,18 @@ class Project < ActiveRecord::Base
 
   def caption
     self.slug
+  end
+
+  def self.journalizable_items
+    Project.reflect_on_all_associations.map do |relation|
+      if relation.macro.eql?(:has_one)
+        relation.klass.reflect_on_all_associations(:has_many).map do |sub_relation|
+          sub_relation.class_name if sub_relation.klass.included_modules.include?(Rorganize::Models::Journalizable)
+        end.compact
+      elsif relation.macro.eql?(:has_many)
+        relation.class_name if relation.klass.included_modules.include?(Rorganize::Models::Journalizable)
+      end
+    end.compact.flatten
   end
 
   def self.permit_attributes

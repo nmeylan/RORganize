@@ -1,6 +1,7 @@
 class CommentDecorator < ApplicationDecorator
   delegate_all
   decorates_association :author
+  decorates_association :commentable
 
   # @return [String] formatted creation date.
   def creation_date
@@ -63,23 +64,7 @@ class CommentDecorator < ApplicationDecorator
 
   # Render the type of the commented object.
   def display_object_type
-    type = self.commentable_type
-    if is_a_issue?(type)
-      display_issue_type
-    elsif type.eql?('Document')
-      h.fast_document_link(self.document, self.project).html_safe
-    else
-      h.content_tag :b, "#{type.downcase} #{self.journalizable_identifier}"
-    end
-  end
-
-  def display_issue_type
-    activity_issue_caption
-    h.link_to self.issue.caption, h.issue_path(self.project.slug, self.commentable_id)
-  end
-
-  def is_a_issue?(type)
-    type.eql?('Issue') && self.issue
+    self.commentable.display_object_type(self.project)
   end
 
   # Render comment details.

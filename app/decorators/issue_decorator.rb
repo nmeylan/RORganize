@@ -7,6 +7,14 @@ class IssueDecorator < ApplicationDecorator
     model.tracker ? h.resize_text(model.tracker.caption, 15) : '-'
   end
 
+  def activity_issue_caption
+    h.safe_concat h.content_tag :b, "#{model.tracker.caption.downcase} ##{self.issue.id} "
+  end
+
+  def display_object_type(project)
+    h.safe_concat h.content_tag :b, "#{h.t(:label_issue).downcase} ##{self.id} "
+    h.fast_issue_link(model, project).html_safe
+  end
 
   # @return [String] due date.
   def display_due_date
