@@ -72,7 +72,8 @@ class CommentsController < ApplicationController
   end
 
   def user_allowed_to_add_comment?
-    action_name.eql?('create') && User.current.allowed_to?('comment', class_name_to_controller_name(params[:comment][:commentable_type]), @project)
+    ctrl_name = Rorganize::Utils::class_name_to_controller_name(params[:comment][:commentable_type])
+    action_name.eql?('create') && User.current.allowed_to?('comment', ctrl_name, @project)
   end
 
 end

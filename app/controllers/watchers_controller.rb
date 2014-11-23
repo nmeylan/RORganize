@@ -43,7 +43,7 @@ class WatchersController < ApplicationController
   end
 
   def check_permission
-    controller = class_name_to_controller_name(@watcher ? @watcher.watchable_type : params[:watchable_type])
+    controller = Rorganize::Utils::class_name_to_controller_name(@watcher ? @watcher.watchable_type : params[:watchable_type])
     project = params[:watchable_type].eql?('Project') ? nil : @project
     if User.current.allowed_to?('watch', controller, project)
       true
