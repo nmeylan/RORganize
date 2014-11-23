@@ -36,14 +36,26 @@ class Project < ActiveRecord::Base
 
   def self.journalizable_items
     Project.reflect_on_all_associations.map do |relation|
-      if relation.macro.eql?(:has_one)
-        relation.klass.reflect_on_all_associations(:has_many).map do |sub_relation|
-          sub_relation.class_name if sub_relation.klass.included_modules.include?(Rorganize::Models::Journalizable)
-        end.compact
-      elsif relation.macro.eql?(:has_many)
-        relation.class_name if relation.klass.included_modules.include?(Rorganize::Models::Journalizable)
-      end
+      find_relation_journalizable(relation)
     end.compact.flatten
+  end
+
+  def self.find_relation_journalizable(relation)
+    if relation.macro.eql?(:has_one)
+      sub_relation_lookup(relation).compact
+    elsif relation.macro.eql?(:has_many)
+      journalizable_item_class_name(relation)
+    end
+  end
+
+  def self.sub_relation_lookup(relation)
+    relation.klass.reflect_on_all_associations(:has_many).map do |sub_relation|
+      journalizable_item_class_name(sub_relation)
+    end
+  end
+
+  def self.journalizable_item_class_name(sub_relation)
+    sub_relation.class_name if sub_relation.klass.included_modules.include?(Rorganize::Models::Journalizable)
   end
 
   def self.permit_attributes
