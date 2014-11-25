@@ -71,7 +71,7 @@
             $("#hotkeys-overlay").overlay().load();
         });
         bind_table_list_actions();
-
+        bind_date_field();
     });
     jQuery(document).ajaxSend(function (e, xhr, options) {
         jQuery("#loading").show();
