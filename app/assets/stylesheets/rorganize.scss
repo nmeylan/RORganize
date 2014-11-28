@@ -650,6 +650,16 @@ ul.project-list {
 #project-description {
   min-height: 300px;
 }
+#project-running-versions .version-overview {
+  padding-bottom: 15px;
+  margin-top: 10px;
+  .percent{
+    top: 0px;
+  }
+}
+#project-running-versions .version-overview:not(:last-child){
+  border-bottom: solid 1px $default-border-color;
+}
 
 .version-overview {
   h1 {

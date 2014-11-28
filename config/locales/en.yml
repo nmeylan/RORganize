@@ -113,6 +113,7 @@ en:
   label_next: Next
   label_previous: Previous
   label_color: Color
+  label_progress: Progress
 # LINK
   link_new_project: New project
   link_new_issue: New issue
@@ -263,6 +264,8 @@ en:
   text_changed: changed
   text_from: from
   text_to: to
+  text_in: in
+  text_with: with
   text_set_at: set at
   text_deleted: deleted
   text_no_data: There are no data to display
