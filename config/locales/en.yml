@@ -336,6 +336,7 @@ en:
   text_issue_list_type_overview: Display issues' general informations
   text_issue_list_type_gantt: Display issues' gantt informations
   text_confirm_update_filter: Are you sure you want to replace this filter's content.
+  text_of: of
 
   password: "Password"
   field_steps: "Steps"
