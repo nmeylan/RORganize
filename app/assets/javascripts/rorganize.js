@@ -85,11 +85,12 @@
         bind_table_list_actions();
         bind_task_list_click();
         bind_date_field();
-        focus_first_input_text();
         //MarkItUp
-        if (options.dataType !== 'JSON') {
+        if (!(options.dataType === 'json' || options.dataType === 'JSON')) {
             markdown_textarea();
+            focus_first_input_text();
         }
+
         $("#loading").hide();
         if (xhr.getResponseHeader('flash-message')) {
             $.jGrowl(xhr.getResponseHeader('flash-message'), {
@@ -203,7 +204,7 @@ function error_explanation(message) {
     }
 }
 function focus_first_input_text(){
-    var el = $('.form input[type=text] :visible').first().focus();
+    $('.form input:visible[type=text]:not(.chzn-search-input)').first().focus();
 }
 function markdown_textarea() {
     var el = jQuery('.fancyEditor');
