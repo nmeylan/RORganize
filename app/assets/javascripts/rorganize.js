@@ -709,7 +709,7 @@ function bind_info_tag() {
     jQuery("span.octicon-info").click(function (e) {
         e.preventDefault();
         var el = jQuery(this);
-        if (el.html() === "" || el.find('.help').css('display') === 'none') {
+        if ((el.html() === "" || el.find('.help').css('display') === 'none') && el.attr('title') !== undefined) {
             var info = $(write_info(el.attr('title')));
             el.html(info);
             info.hide().fadeIn();

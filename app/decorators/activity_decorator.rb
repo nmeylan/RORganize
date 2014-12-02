@@ -43,9 +43,7 @@ module ActivityDecorator
 
   def display_info_square(attribute, glyph, none_indicator = true)
     if attribute
-      h.content_tag :span, {class: 'info-square'} do
-        h.glyph(attribute.caption, glyph)
-      end
+      h.content_tag :span,h.glyph(attribute.caption, glyph), {class: 'info-square'}
     else
       '-' if none_indicator
     end
