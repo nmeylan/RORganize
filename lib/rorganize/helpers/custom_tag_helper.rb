@@ -28,27 +28,28 @@ module Rorganize
       # Build a 32x32 glyph render.
       # @param [String] body : content.
       # @param [String] names : glyph names.
-      def mega_glyph(body, *names)
-        generic_glyph(body, 'mega', *names)
+      def mega_glyph(body, name)
+        generic_glyph(body, 'mega'.freeze, name)
       end
 
       # Build a 24x24 glyph render.
       # @param [String] body : content.
       # @param [String] names : glyph names.
-      def medium_glyph(body, *names)
-        generic_glyph(body, 'medium', *names)
+      def medium_glyph(body, name)
+        generic_glyph(body, 'medium'.freeze, name)
       end
 
       # Build a 16x16 glyph render.
       # @param [String] body : content.
       # @param [String] names : glyph names.
-      def glyph(body, *names)
-        generic_glyph(body, '', *names)
+      def glyph(body, name)
+        generic_glyph(body, ''.freeze, name)
       end
 
-      def generic_glyph(body, type, *names)
-        type += '-' unless type.blank?
-        content_tag(:span, nil, class: names.map { |name| "octicon-#{name.to_s.tr('_', '-')}" }.push("#{type}octicon")) + body
+      def generic_glyph(body, type, name)
+        type += '-'.freeze unless type.blank?
+        class_css = "octicon-#{name} #{type}octicon".freeze
+        content_tag(:span, nil, class: class_css)+ body
       end
 
       # Build a 16x16 glyph render, if condition is true else return raw content.

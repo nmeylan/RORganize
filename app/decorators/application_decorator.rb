@@ -6,6 +6,9 @@ class ApplicationDecorator < Draper::Decorator
   include ActivityDecorator
   include GenericDecorator
 
+  EDIT_LINK = h.t(:link_edit)
+  DELETE_LINK  = h.t(:link_delete)
+
   # @return [Boolean] true if the model description exists.
   def description?
     model.description && !model.description.eql?('')

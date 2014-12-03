@@ -11,17 +11,17 @@ module Rorganize
         # @param [String] controller : the controller concern by the action.
         # @param [Project] project the context of the action.
         def allowed_to?(action, controller, project = nil)
-          project_key = project ? project.id : 'nil'
-          if self.checked_permissions["#{project_key}_#{controller}_#{action}"]
+          hash_key = "#{(project ? project.id : 'nil').freeze}_#{controller.freeze}_#{action.freeze}".freeze
+          if self.checked_permissions[hash_key]
             true
           else
-            unchecked_permissions_verifier(action, controller, project, project_key)
+            unchecked_permissions_verifier(action, controller, project, hash_key)
           end
         end
 
-        def unchecked_permissions_verifier(action, controller, project, project_key)
+        def unchecked_permissions_verifier(action, controller, project, hash_key)
           if admin_free_access(action, controller, project)
-            checked_permissions["#{project_key}_#{controller}_#{action}"] = true
+            checked_permissions[hash_key] = true
             return true
           end
           if self.id.eql?(AnonymousUser::ANON_ID) #Concern unconnected users.
@@ -30,7 +30,7 @@ module Rorganize
             members = self.members
             checked_permission_result = signed_in_user_allowed_to?(action, controller, members, project)
           end
-          self.checked_permissions["#{project_key}_#{controller}_#{action}"] = checked_permission_result
+          self.checked_permissions[hash_key] = checked_permission_result
           checked_permission_result
         end
 
