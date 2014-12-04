@@ -18,7 +18,7 @@ namespace :ffaker do
         member.role = roles[rand(0..roles_count)]
         member.user = users[rand(0..users_count)]
         member.project_id = project_id
-        member.save
+        member.save unless member.role.nil?
       end
     end
   end
