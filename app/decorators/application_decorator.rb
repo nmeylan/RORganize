@@ -81,7 +81,7 @@ class ApplicationDecorator < Draper::Decorator
     if model.position > 1
       h.link_to(h.glyph('', 'arrow-up'), path, {class: 'icon icon-up-arrow change-position dec'})
     else
-      h.link_to(h.glyph('', 'arrow-up', 'disabled'), '#', {class: 'icon icon-disabled-up-arrow'})
+      h.link_to(h.glyph('', 'arrow-up'), '#', {class: 'icon icon-disabled-up-arrow'})
     end
   end
 
@@ -92,7 +92,7 @@ class ApplicationDecorator < Draper::Decorator
     if model.position < collection_size
       h.link_to h.glyph('', 'arrow-down'), path, {class: 'icon icon-down-arrow change-position inc'}
     else
-      h.link_to h.glyph('', 'arrow-down', 'disabled'), '#', {class: 'icon icon-disabled-down-arrow'}
+      h.link_to h.glyph('', 'arrow-down'), '#', {class: 'icon icon-disabled-down-arrow'}
     end
   end
 
