@@ -1,11 +1,12 @@
+require 'ffaker'
+
 namespace :ffaker do
   namespace :generate do
     desc 'Generate fake data for issues with ffaker.'
     task :users => :environment do
-      require 'ffaker'
       User.current = User.find_by_id(1)
       users_iterations = 100
-      users_iterations.times do |x|
+      users_iterations.times do
         user = User.new
         user.name = Faker::Name.first_name + ' ' + Faker::Name.last_name
         user.login = Faker::Internet.user_name(user.name)
