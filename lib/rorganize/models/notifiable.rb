@@ -8,7 +8,7 @@ module Rorganize
     module Notifiable
       extend ActiveSupport::Concern
       included do |base|
-        has_many :notifications, -> { where(notifiable_type: base) }, as: :notifiable, dependent: :destroy
+        has_many :notifications, -> { where(notifiable_type: base) }, as: :notifiable, dependent: :delete_all
       end
 
       class << self

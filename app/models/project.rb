@@ -7,15 +7,19 @@ class Project < ActiveRecord::Base
   extend FriendlyId
   friendly_id :name, use: :slugged
   #Relations
-  has_many :issues, class_name: 'Issue', dependent: :destroy
-  has_many :enabled_modules, dependent: :destroy
-  has_many :documents, dependent: :destroy
+  has_many :issues, class_name: 'Issue', dependent: :delete_all
+  has_many :enabled_modules, dependent: :delete_all
+  has_many :documents, dependent: :delete_all
   belongs_to :author, class_name: 'User', foreign_key: 'created_by'
-  has_many :members, class_name: 'Member', dependent: :destroy
+  has_many :members, class_name: 'Member', dependent: :delete_all
   has_and_belongs_to_many :trackers, class_name: 'Tracker'
-  has_many :versions, class_name: 'Version'
-  has_many :categories, class_name: 'Category', dependent: :destroy
-  has_many :journals, dependent: :destroy
+  has_many :versions, class_name: 'Version', dependent: :delete_all
+  has_many :categories, class_name: 'Category', dependent: :delete_all
+  has_many :journals, dependent: :delete_all
+  has_many :comments, dependent: :delete_all
+  has_many :watchers, dependent: :delete_all
+  has_many :notifications, dependent: :delete_all
+  has_many :queries, dependent: :delete_all
   has_one :wiki
   #Triggers
   before_create :set_created_by

@@ -7,7 +7,7 @@ module Rorganize
     module Watchable
       extend ActiveSupport::Concern
       included do |base|
-        has_many :watchers, -> { (where watchable_type: base).eager_load(:project, :author) }, as: :watchable, dependent: :destroy
+        has_many :watchers, -> { (where watchable_type: base).eager_load(:project, :author) }, as: :watchable, dependent: :delete_all
       end
 
       def watch_by?(user)
