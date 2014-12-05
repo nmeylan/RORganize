@@ -7,6 +7,7 @@ module Rorganize
   module Managers
     module MenuManager
       module MenuHelper
+        include Rorganize::Managers::UrlManager
         def display_menu?(project = nil)
           if @menu_context
             if @menu_context.include?(:project_menu)
@@ -50,7 +51,7 @@ module Rorganize
           css_class = item.params[:class] ? "#{item.params[:class]} #{css_selection}" : css_selection
           glyph = glyph(item.label, item.params[:glyph])
           item.url[:project_id] = project.slug if project
-          content_tag(:li, link_to(glyph, item.url, {id: item.params[:id]}), class: css_class)
+          content_tag(:li, link_to(glyph, url_for_with_engine_lookup(item.url), {id: item.params[:id]}), class: css_class)
         end
 
         # Is user allowed to view this menu item in the menu bar?
