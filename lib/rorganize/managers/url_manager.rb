@@ -26,6 +26,7 @@ module Rorganize
           path_for_engine = path.gsub(%r(^#{engine_route.path.spec.to_s}), '')
           recognized_path = handle_path_recognition(engine_instance, options, path_for_engine)
         end
+        raise ActionController::RoutingError, "No route were found, in any engines, for path : #{path} #{options}" unless recognized_path
         recognized_path
       end
 
