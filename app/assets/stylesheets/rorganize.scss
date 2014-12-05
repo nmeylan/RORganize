@@ -7,19 +7,23 @@
 @import 'partials/top_menu';
 @import 'partials/horizontal_menu';
 @import 'partials/pagination';
-@import 'partials/list';
 //Tables style.
-@import 'partials/combobox';
-//Chosen select.
+@import 'partials/list';
+//Sidebar style
 @import 'partials/sidebar';
+//Chosen select.
+@import 'partials/combobox';
+//Fancy editor toolbar
 @import 'partials/toolbar';
-// Textile toolbar.
-@import 'partials/overlay';
+
 // Overlay.
-@import 'partials/growl_popup';
+@import 'partials/overlay';
 // Growl osx like.
+@import 'partials/growl_popup';
 @import 'partials/toolbox';
+//Form style
 @import 'partials/form';
+//Js comfirm style.
 @import 'partials/apprise';
 @import 'partials/activities';
 @import 'partials/comments';
@@ -309,7 +313,7 @@ img.small-avatar {
   background: #a00;
   border-radius: 4px;
   -webkit-font-smoothing: antialiased;
-  border-color: 1px solid #cd504a;
+//  border: solid 1px #cd504a;
   margin-bottom: 2px;
   color: white;
   .octicon {
