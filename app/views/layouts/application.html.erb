@@ -12,9 +12,12 @@
   <%#= JS Files %>
   <%= javascript_include_tag 'application' %>
 </head>
+
 <body>
 <%= render 'peek/bar' %>
+
 <div id="top-menu"><%= render partial: 'layouts/top_menu' %></div>
+
 <div id="header">
   <h1>
     <% if @project && @project.attachments.to_a.any? && !@project.attachments.first.id.nil? %>
@@ -23,27 +26,39 @@
     <%= @project ? @project.name : 'RORganize' %><%# Here what you want %>
   </h1>
 </div>
+
 <% if display_menu?(@project) %>
     <%= render partial: 'layouts/main_menu', locals: {project: @project} %>
 <% end %>
+
 <%= tag('div', {id: 'main', class: (sidebar_content? ? '' : 'nosidebar')}, true) %>
+
 <%= render partial: 'flashs/flash' %>
+
+<div id="contextual">
+  <%= yield :contextual %>
+</div>
 <div id="sidebar">
   <%= yield :sidebar %>
 </div>
+
 <div id="content">
-  <div id="contextual"><%= yield :contextual %></div>
   <%= yield %>
 </div>
+
+
 <div id="loading"><p>Sending request...</p></div>
+
 <div id="highlight-search" class="octicon octicon-search">
   <span id="highlight-search-result-count"></span>
   <input type="text" name="highlight_search" id="highlight-search-input" placeholder="search on page...">
 </div>
+
 <%= render partial: 'layouts/footer' %>
+
 <script type="text/javascript">
-  var input_date = $('<input type="date" name="bday">');
-  if((input_date.prop('type') != 'date') ) { //if browser doesn't support input type="date", load files for jQuery UI Date Picker
+    var input_date = $('<input type="date" name="bday">');
+    if ((input_date.prop('type') != 'date')) { //if browser doesn't support input type="date", load files for jQuery UI Date Picker
         document.write("<link rel='stylesheet' href='//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css'>");
         document.write('<script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"><\/script>\n');
     }
