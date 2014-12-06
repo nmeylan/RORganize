@@ -1005,6 +1005,9 @@ table.permissions-list {
   padding: 6px 10px;
   font-size: 12px;
   box-shadow: none;
+  .octicon{
+    color: inherit !important;
+  }
 }
 .issue-status.issue-status-small{
   padding: 3px 5px;

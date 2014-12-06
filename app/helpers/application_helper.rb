@@ -152,4 +152,12 @@ module ApplicationHelper
   def resize_text(text, length = 50)
     text.length > length ? "#{text[0..length]}..." : text
   end
+
+  def style_background_color(color)
+    color_tmp = color.tr('#', '')
+    r = color_tmp[0,2].to_i(16)
+    g = color_tmp[2,2].to_i(16)
+    b = color_tmp[4,2].to_i(16)
+    "background-color:#{color}; color:#{Math.sqrt((r*r*0.241) + (g*g*0.691) + (b*b*0.068))> 180 ? '#484848' : 'white'}"
+  end
 end

@@ -125,7 +125,7 @@ module Rorganize
               color = Rorganize::Managers::IssueStatusesColorManager.colors[value]
               color ||= '#333333'
               content_tag :b, value, {class: 'issue-status issue-status-small',
-                                      style: "background-color: #{color}"}
+                                      style: "#{style_background_color(color)}"}
             when 'assigned_to_id'
               fast_profile_link(value)
             when 'category_id'

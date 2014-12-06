@@ -47,7 +47,7 @@ class IssueDecorator < ApplicationDecorator
   end
 
   def display_status
-    h.content_tag :span, {class: 'issue-status', style: "background-color: #{model.status.color}"} do
+    h.content_tag :span, {class: 'issue-status', style: "#{h.style_background_color(model.status.color)}"} do
       model.status.caption
     end
   end
