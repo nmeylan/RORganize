@@ -34,6 +34,10 @@ class Project < ActiveRecord::Base
       too_long: 'must have at most 255 words'
   }
 
+  def should_generate_new_friendly_id?
+    name_changed?
+  end
+
   def caption
     self.slug
   end
