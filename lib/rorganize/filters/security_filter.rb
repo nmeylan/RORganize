@@ -60,6 +60,10 @@ module Rorganize
         @aliases = {'update' => 'edit', 'create' => 'new', 'toolbox' => 'edit'}
       end
 
+      # Set an alias for actions, if two(or more) actions depends on the same permissions, then
+      # it is possible to define an alias.
+      # E.g
+      # before_filter { |c| c.add_action_alias = {'health' => 'index', 'show_stories' => 'index'} }
       def add_action_alias=(hash)
         @aliases.merge!(hash)
       end
