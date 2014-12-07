@@ -1,10 +1,10 @@
 module Rorganize
   module RichController
     module GenericCallbacks
-      def generic_index_callback
+      def generic_index_callback(locals = {})
         respond_to do |format|
-          format.html { render :index }
-          format.js { respond_to_js action: 'index' }
+          format.html { render :index, locals: locals }
+          format.js { respond_to_js action: 'index', locals: locals }
         end
       end
 
