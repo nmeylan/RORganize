@@ -187,7 +187,7 @@ module Rorganize
           if @model
             if @trigger.is_a?(Journal)
               model_assigned_to = @model.assigned_to if @model.respond_to?(:assigned_to)
-              mentioned_slugs |= @model.description.scan(/@[^\s]+/) if @model.respond_to?(:description)
+              mentioned_slugs |= @model.description.scan(/@[^\s]+/) if @model.respond_to?(:description) && @model.description
             elsif @trigger.is_a? Comment
               mentioned_slugs |= @trigger.content.scan(/@[^\s]+/)
               participants |= @trigger.thread.collect { |comment| comment.author unless comment.eql?(@trigger) }
