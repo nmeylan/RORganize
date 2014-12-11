@@ -13,6 +13,9 @@
   color: $link-color;
   border-radius: 3px;
   text-decoration: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 
