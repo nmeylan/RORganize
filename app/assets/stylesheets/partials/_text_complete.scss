@@ -2,7 +2,7 @@
 
 /* Sample */
 
-.dropdown-menu {
+.dropdown-menu-text-complete, .dropdown-menu {
   border: 1px solid #ddd;
   background-color: white;
   -webkit-border-radius: 3px;
@@ -10,12 +10,12 @@
   border-radius: 3px;
 }
 
-.dropdown-menu li {
+.dropdown-menu-text-complete li, .dropdown-menu li {
   border-top: 1px solid #ddd;
   padding: 2px 5px;
 }
 
-.dropdown-menu li:first-child {
+.dropdown-menu-text-complete li:first-child, .dropdown-menu li:first-child {
   border-top: none;
 
   -webkit-border-top-left-radius: 3px;
@@ -26,7 +26,7 @@
   border-top-right-radius: 3px;
 }
 
-.dropdown-menu li:last-child {
+.dropdown-menu-text-complete li:last-child, .dropdown-menu li:last-child {
   -webkit-border-bottom-left-radius: 3px;
   -moz-border-bottom-left-radius: 3px;
   border-bottom-left-radius: 3px;
@@ -35,23 +35,28 @@
   border-bottom-right-radius: 3px;
 }
 
+.dropdown-menu-text-complete li:hover,
+.dropdown-menu-text-complete .active,
 .dropdown-menu li:hover,
 .dropdown-menu .active {
   background-color: $combobox-hover;
 }
 
-.dropdown-menu li a {
+.dropdown-menu-text-complete li a, .dropdown-menu li a {
   color: $link-hover-color;
 }
 
 /* SHOULD not modify */
 
-.dropdown-menu {
+.dropdown-menu-text-complete, .dropdown-menu {
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
+.dropdown-menu-text-complete li:hover a,
+.dropdown-menu-text-complete .active a,
+.dropdown-menu-text-complete a:hover,
 .dropdown-menu li:hover a,
 .dropdown-menu .active a,
 .dropdown-menu a:hover {
