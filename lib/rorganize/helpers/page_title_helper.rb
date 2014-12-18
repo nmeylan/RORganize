@@ -11,35 +11,90 @@ module Rorganize
         title = ''
         if controller_name.eql?('exception')
           title = title_tag_exception_pages(title)
+        elsif controller_name.eql?('rorganize')
+          title = title_home_controller
         else
-          title = title_tag_context_pages(title)
           title = title_tag_specific_pages(title)
+          title = title_tag_project_name(title)
         end
         title
       end
 
-      def title_tag_context_pages(title)
-        if @project && !@project.new_record?
-          title += @project.slug.capitalize + ' '
-        elsif controller_name.eql?('profiles')
-          title += User.current.login + " (#{User.current.caption}) "
+      def title_home_controller
+        if action_name.eql?('view_profile')
+          "#{params[:user]} (#{title_capitalize_text(params[:user].split('-'))})"
         else
-          title += 'RORganize '
+          'RORganize'.freeze
+        end
+      end
+
+      def title_tag_project_name(title)
+        if @project && !@project.new_record?
+          title += " · #{@project.slug.capitalize}"
+        elsif controller_name.eql?('profiles')
+          title += User.current.login + " (#{User.current.caption})"
+        else
+          title += ' · RORganize'.freeze
         end
         title
       end
 
       def title_tag_specific_pages(title)
-        if action_name.eql?('activity')
-          title += t(:label_activity)
-        elsif action_name.eql?('overview')
-          title += t(:label_overview)
-        elsif controller_name.eql?('rorganize')
-          title += t(:home)
-        elsif !controller_name.eql?('profiles')
-          title += controller_name.capitalize
+        unless controller_name.eql?('profiles')
+          title += title_tag_action(title)
         end
         title
+      end
+
+      def title_tag_action(title)
+        case action_name
+          when 'activity'
+            title += t(:label_activity)
+          when 'overview'
+            title += t(:label_overview)
+          when 'show'
+            title += title_tag_show_action(title)
+          when 'edit'
+            title += title_tag_edit_action(title)
+          when 'new'
+            title += title_tag_new_action(title)
+          else
+            title += humanize_controller_name
+        end
+      end
+
+      def title_tag_show_action(title)
+        title += singular_controller_name
+        if params[:id]
+          title += " · ##{params[:id]}"
+        end
+        title
+      end
+
+      def title_tag_edit_action(title)
+        title += 'Edit '
+        title += singular_controller_name
+        if params[:id]
+          title += " · ##{params[:id]}"
+        end
+        title
+      end
+
+      def title_tag_new_action(title)
+        title += 'New '
+        title += singular_controller_name
+      end
+
+      def singular_controller_name
+        humanize_controller_name.singularize
+      end
+
+      def humanize_controller_name
+        title_capitalize_text(controller_name.split('_'))
+      end
+
+      def title_capitalize_text(array)
+        array.collect{ |chunk| chunk.capitalize }.join(' ')
       end
 
       def title_tag_exception_pages(title)
