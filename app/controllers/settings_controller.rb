@@ -5,12 +5,12 @@
 
 class SettingsController < ApplicationController
   include Rorganize::RichController
-  before_filter :set_pagination, only: [:public_queries]
-  before_filter :check_queries_permission, only: [:public_queries]
-  before_filter :check_permission, except: [:public_queries, :delete_attachment, :update]
-  before_filter { |c| c.menu_context :project_menu }
-  before_filter { |c| c.menu_item(params[:controller]) }
-  before_filter { |c| c.top_menu_item('projects') }
+  before_action :set_pagination, only: [:public_queries]
+  before_action :check_queries_permission, only: [:public_queries]
+  before_action :check_permission, except: [:public_queries, :delete_attachment, :update]
+  before_action { |c| c.menu_context :project_menu }
+  before_action { |c| c.menu_item(params[:controller]) }
+  before_action { |c| c.top_menu_item('projects') }
   helper QueriesHelper
   helper TrackersHelper
   include Rorganize::Managers::ModuleManager::ModuleManagerHelper

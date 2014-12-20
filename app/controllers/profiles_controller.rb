@@ -6,9 +6,9 @@
 require 'shared/activities'
 class ProfilesController < ApplicationController
   include Rorganize::RichController
-  before_filter :authenticate_user!
-  before_filter :find_user
-  before_filter :set_pagination, only: [:custom_queries]
+  before_action :authenticate_user!
+  before_action :find_user
+  before_action :set_pagination, only: [:custom_queries]
   helper_method :sort_column, :sort_direction
   helper ProjectsHelper
   helper IssuesHelper

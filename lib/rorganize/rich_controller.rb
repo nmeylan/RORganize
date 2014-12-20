@@ -10,7 +10,7 @@ module Rorganize
     include Rorganize::RichController::GenericCallbacks
 
     def self.included(base)
-      base.before_filter :set_pagination, only: [:index]
+      base.before_action :set_pagination, only: [:index]
     end
 
 

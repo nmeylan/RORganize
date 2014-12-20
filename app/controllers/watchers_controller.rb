@@ -4,8 +4,8 @@
 # File: watchers_controller.rb
 
 class WatchersController < ApplicationController
-  before_filter :find_watcher, only: [:create, :destroy]
-  before_filter :check_permission, only: [:destroy, :create]
+  before_action :find_watcher, only: [:create, :destroy]
+  before_action :check_permission, only: [:destroy, :create]
   include Rorganize::RichController::GenericCallbacks
 
   def create

@@ -4,8 +4,8 @@
 # File: document_controller.rb
 require 'shared/history'
 class DocumentsController < ApplicationController
-  before_filter :find_document, only: [:show, :edit, :destroy, :update]
-  before_filter :check_permission, locals: [:toolbox]
+  before_action :find_document, only: [:show, :edit, :destroy, :update]
+  before_action :check_permission, locals: [:toolbox]
   include Rorganize::RichController
   include Rorganize::RichController::AttachableCallbacks
   include Rorganize::Filters::NotificationFilter

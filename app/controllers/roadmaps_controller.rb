@@ -8,11 +8,11 @@ require 'roadmap/roadmap_report'
 class RoadmapsController < ApplicationController
   helper VersionsHelper
   include Rorganize::RichController::GanttCallbacks
-  before_filter { |c| c.add_action_alias = {'version' => 'show'} }
-  before_filter :check_permission, only: [:gantt, :manage_gantt, :show, :version]
-  before_filter { |c| c.menu_context :project_menu }
-  before_filter { |c| c.menu_item(params[:controller]) }
-  before_filter { |c| c.top_menu_item('projects') }
+  before_action { |c| c.add_action_alias = {'version' => 'show'} }
+  before_action :check_permission, only: [:gantt, :manage_gantt, :show, :version]
+  before_action { |c| c.menu_context :project_menu }
+  before_action { |c| c.menu_item(params[:controller]) }
+  before_action { |c| c.top_menu_item('projects') }
 
   #GET/project/:project_id/roadmaps
   def show

@@ -6,8 +6,8 @@ module Rorganize
   module Filters
     module SecurityFilter
       def self.included(base)
-        base.before_filter :find_project
-        base.before_filter :set_action_alias
+        base.before_action :find_project
+        base.before_action :set_action_alias
       end
 
 
@@ -63,7 +63,7 @@ module Rorganize
       # Set an alias for actions, if two(or more) actions depends on the same permissions, then
       # it is possible to define an alias.
       # E.g
-      # before_filter { |c| c.add_action_alias = {'health' => 'index', 'show_stories' => 'index'} }
+      # before_action { |c| c.add_action_alias = {'health' => 'index', 'show_stories' => 'index'} }
       def add_action_alias=(hash)
         @aliases.merge!(hash)
       end

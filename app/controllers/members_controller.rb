@@ -5,12 +5,12 @@
 
 class MembersController < ApplicationController
   include Rorganize::RichController
-  before_filter :check_permission
-  before_filter :find_member, only: [:change_role]
-  before_filter :check_change_member_role, only: [:change_role, :create]
-  before_filter { |c| c.menu_context :project_menu }
-  before_filter { |c| c.menu_item('settings') }
-  before_filter { |c| c.top_menu_item('projects') }
+  before_action :check_permission
+  before_action :find_member, only: [:change_role]
+  before_action :check_change_member_role, only: [:change_role, :create]
+  before_action { |c| c.menu_context :project_menu }
+  before_action { |c| c.menu_item('settings') }
+  before_action { |c| c.top_menu_item('projects') }
   #GET /projects/
   def index
     load_members

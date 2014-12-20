@@ -4,8 +4,8 @@
 # File: comments_controller.rb
 
 class CommentsController < ApplicationController
-  before_filter :find_comment, only: [:update, :destroy, :edit, :show]
-  before_filter :check_permission, only: [:update, :destroy, :create]
+  before_action :find_comment, only: [:update, :destroy, :edit, :show]
+  before_action :check_permission, only: [:update, :destroy, :create]
   include Rorganize::RichController
 
   def create

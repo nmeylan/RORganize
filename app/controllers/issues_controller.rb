@@ -7,11 +7,11 @@ require 'issues/overview_report'
 require 'issues/form_content'
 require 'issues/issue_overview_hash'
 class IssuesController < ApplicationController
-  before_filter { |c| c.add_action_alias= {'overview' => 'index', 'apply_custom_query' => 'index'} }
-  before_filter :find_project_with_dependencies, only: [:index, :new, :create, :update, :edit, :toolbox, :apply_custom_query]
-  before_filter :check_permission, except: [:toolbox]
-  before_filter :find_issue, only: [:edit, :update, :destroy, :show]
-  before_filter :check_not_owner_permission, only: [:edit, :update, :destroy]
+  before_action { |c| c.add_action_alias= {'overview' => 'index', 'apply_custom_query' => 'index'} }
+  before_action :find_project_with_dependencies, only: [:index, :new, :create, :update, :edit, :toolbox, :apply_custom_query]
+  before_action :check_permission, except: [:toolbox]
+  before_action :find_issue, only: [:edit, :update, :destroy, :show]
+  before_action :check_not_owner_permission, only: [:edit, :update, :destroy]
   include Rorganize::RichController
   include Rorganize::RichController::ToolboxCallback
   include Rorganize::Filters::NotificationFilter

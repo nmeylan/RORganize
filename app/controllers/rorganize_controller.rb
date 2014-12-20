@@ -8,7 +8,7 @@ class RorganizeController < ApplicationController
   include Rorganize::Managers::ActivityManager
   include Rorganize::RichController::TaskListCallback
 
-  before_filter { |c| c.top_menu_item('home') }
+  before_action { |c| c.top_menu_item('home') }
   helper_method :sort_column, :sort_direction
 
 

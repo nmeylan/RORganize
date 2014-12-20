@@ -5,7 +5,7 @@
 
 class NotificationsController < ApplicationController
   include Rorganize::Managers::UrlManager
-  before_filter :find_user
+  before_action :find_user
 
   def index
     @sessions[:filter_recipient_type] = params[:filter] ? params[:filter] : 'all'

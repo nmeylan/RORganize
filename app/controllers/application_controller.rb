@@ -8,9 +8,9 @@ class ApplicationController < ActionController::Base
   helper Rorganize::Managers::ModuleManager::ModuleManagerHelper
   include Rorganize::Filters::SecurityFilter
   helper_method :sort_column, :sort_direction
-  before_filter :configure_permitted_parameters, if: :devise_controller?
-  before_filter :authenticate unless RORganize::Application.config.rorganize_anonymous_access
-  before_filter :smart_js_loader, :set_sessions
+  before_action :configure_permitted_parameters, if: :devise_controller?
+  before_action :authenticate unless RORganize::Application.config.rorganize_anonymous_access
+  before_action :smart_js_loader, :set_sessions
   around_filter :set_current_user
   before_action :set_sessions
 

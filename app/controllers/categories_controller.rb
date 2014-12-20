@@ -4,12 +4,12 @@
 # File: categories_controller.rb
 
 class CategoriesController < ApplicationController
-  before_filter :find_project
-  before_filter :find_category, only: [:edit, :update, :destroy]
-  before_filter :check_permission
-  before_filter { |c| c.menu_context :project_menu }
-  before_filter { |c| c.menu_item('settings') }
-  before_filter { |c| c.top_menu_item('projects') }
+  before_action :find_project
+  before_action :find_category, only: [:edit, :update, :destroy]
+  before_action :check_permission
+  before_action { |c| c.menu_context :project_menu }
+  before_action { |c| c.menu_item('settings') }
+  before_action { |c| c.top_menu_item('projects') }
   include Rorganize::RichController
 
   def index

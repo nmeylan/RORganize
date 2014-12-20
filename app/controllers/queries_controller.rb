@@ -5,12 +5,12 @@
 
 class QueriesController < ApplicationController
   include Rorganize::RichController
-  before_filter { |c| c.add_action_alias = {'new_project_query' => 'new'} }
-  before_filter :set_pagination, only: [:index]
-  before_filter :find_project, only: [:create]
-  before_filter :check_permission, except: [:edit_query_filter]
-  before_filter :check_query_permission, only: [:show, :edit, :destroy, :update, :edit_query_filter]
-  before_filter { |c| c.top_menu_item('administration') }
+  before_action { |c| c.add_action_alias = {'new_project_query' => 'new'} }
+  before_action :set_pagination, only: [:index]
+  before_action :find_project, only: [:create]
+  before_action :check_permission, except: [:edit_query_filter]
+  before_action :check_query_permission, only: [:show, :edit, :destroy, :update, :edit_query_filter]
+  before_action { |c| c.top_menu_item('administration') }
 
   def index
     self.menu_context :admin_menu

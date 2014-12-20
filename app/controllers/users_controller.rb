@@ -7,10 +7,10 @@
 require 'shared/history'
 class UsersController < ApplicationController
   include Rorganize::RichController
-  before_filter :check_permission
-  before_filter { |c| c.menu_context :admin_menu }
-  before_filter { |c| c.menu_item(params[:controller]) }
-  before_filter { |c| c.top_menu_item('administration') }
+  before_action :check_permission
+  before_action { |c| c.menu_context :admin_menu }
+  before_action { |c| c.menu_item(params[:controller]) }
+  before_action { |c| c.top_menu_item('administration') }
 
   #GET /administration/users
   def index
