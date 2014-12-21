@@ -8,11 +8,11 @@ class IssueDecorator < ApplicationDecorator
   end
 
   def activity_issue_caption
-    h.safe_concat h.content_tag :b, "#{model.tracker.caption.downcase} ##{self.issue.id} "
+    h.concat h.content_tag :b, "#{model.tracker.caption.downcase} ##{self.issue.id} "
   end
 
   def display_object_type(project)
-    h.safe_concat h.content_tag :b, "#{h.t(:label_issue).downcase} ##{self.id} "
+    h.concat h.content_tag :b, "#{h.t(:label_issue).downcase} ##{self.id} "
     h.fast_issue_link(model, project).html_safe
   end
 
@@ -99,8 +99,8 @@ class IssueDecorator < ApplicationDecorator
   def checklist_progression
     if model.has_task_list?
       h.content_tag :span do
-        h.safe_concat h.content_tag :span, nil, {class: 'octicon octicon-checklist'}
-        h.safe_concat " #{model.count_checked_tasks} of #{model.count_tasks}"
+        h.concat h.content_tag :span, nil, {class: 'octicon octicon-checklist'}
+        h.concat " #{model.count_checked_tasks} of #{model.count_tasks}"
       end
     end
   end

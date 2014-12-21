@@ -65,7 +65,7 @@ module Rorganize
         def render_top_menu
           menu = Rorganize::Managers::MenuManager.items(:top_menu)
           content_for :top_menu_items do
-            safe_concat content_tag(:li, link_to(t(:home), :root, {class: @current_top_menu_item.eql?('menu-home') ? 'selected square' : 'square'}))
+            concat content_tag(:li, link_to(t(:home), :root, {class: @current_top_menu_item.eql?('menu-home') ? 'selected square' : 'square'}))
             render_top_menu_items(menu) unless in_devise_context?
           end
         end
@@ -73,7 +73,7 @@ module Rorganize
         # Render top menu items.
         # @param [Menu] menu.
         def render_top_menu_items(menu)
-          safe_concat(menu.menu_items.collect do |item|
+          concat(menu.menu_items.collect do |item|
             render_top_menu_item(item) if allowed_to_view_top_menu_item?(item)
           end.join.html_safe)
         end

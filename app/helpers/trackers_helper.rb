@@ -7,8 +7,8 @@ module TrackersHelper
 
   def list(collection)
     content_tag :table, {class: 'tracker list'} do
-      safe_concat list_header
-      safe_concat list_body(collection)
+      concat list_header
+      concat list_body(collection)
     end
   end
 
@@ -21,7 +21,7 @@ module TrackersHelper
   def list_row(collection, tracker)
     content_tag :tr, {class: 'odd-even', id: tracker.id} do
       list_td tracker.edit_link, {class: 'list-left name'}
-      safe_concat list_sort_actions(collection, tracker)
+      concat list_sort_actions(collection, tracker)
       list_td tracker.delete_link, {class: 'delete-action action'}
     end
   end
@@ -38,10 +38,10 @@ module TrackersHelper
   # @param [Array] collection : array of trackers.
   # @param [Array] checked_ids : array of trackers id used by project.
   def project_tracker_list(collection, checked_ids)
-    safe_concat content_tag :label, t(:link_trackers)
+    concat content_tag :label, t(:link_trackers)
     collection.collect do |tracker|
-      safe_concat label_tag "[trackers][#{tracker.name}]", tracker.caption, {class: 'normal-label'}
-      safe_concat check_box_tag "[trackers][#{tracker.name}]", tracker.id, checked_ids.include?(tracker.id)
+      concat label_tag "[trackers][#{tracker.name}]", tracker.caption, {class: 'normal-label'}
+      concat check_box_tag "[trackers][#{tracker.name}]", tracker.id, checked_ids.include?(tracker.id)
     end.join.html_safe
   end
 end

@@ -34,7 +34,7 @@ class DocumentDecorator < ApplicationDecorator
 
 
   def display_object_type(project)
-    h.safe_concat h.content_tag :b, "#{h.t(:label_document).downcase} "
+    h.concat h.content_tag :b, "#{h.t(:label_document).downcase} "
     h.fast_document_link(self, project).html_safe
   end
 

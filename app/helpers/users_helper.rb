@@ -8,8 +8,8 @@ module UsersHelper
   # @param [Array] collection of users.
   def list(collection)
     content_tag :table, {class: 'user list'}, &Proc.new {
-      safe_concat list_header
-      safe_concat list_body(collection)
+      concat list_header
+      concat list_body(collection)
     }
   end
 
@@ -53,9 +53,9 @@ module UsersHelper
 
   def projects_list_row(member, user)
     content_tag :li do
-      safe_concat link_to member.project.caption.capitalize, overview_projects_path(member.project.slug)
-      safe_concat assigned_to_user_issues(member, user)
-      safe_concat content_tag :span, member.role.caption, {class: 'badge'}
+      concat link_to member.project.caption.capitalize, overview_projects_path(member.project.slug)
+      concat assigned_to_user_issues(member, user)
+      concat content_tag :span, member.role.caption, {class: 'badge'}
     end
   end
 

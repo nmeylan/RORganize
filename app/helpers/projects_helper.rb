@@ -13,8 +13,8 @@ module ProjectsHelper
 
   def members_list_block(members, role)
     content_tag :div, class: 'members-block' do
-      safe_concat content_tag :h4, "#{role}", {class: 'badge badge-role'}
-      safe_concat member_list_row(members)
+      concat content_tag :h4, "#{role}", {class: 'badge badge-role'}
+      concat member_list_row(members)
     end
   end
 
@@ -35,10 +35,10 @@ module ProjectsHelper
 
   def project_list_row(allow_to_star, project)
     content_tag :li, class: "fancy-list-item project #{project.is_archived ? 'archived' : ''}", id: project.slug do
-      safe_concat project_stats(project).html_safe
-      safe_concat link_to mega_glyph(project.name, 'repo'), overview_projects_path(project.slug)
-      safe_concat project_last_activity_info(project)
-      safe_concat project_list_star_button(project) if allow_to_star && current_user
+      concat project_stats(project).html_safe
+      concat link_to mega_glyph(project.name, 'repo'), overview_projects_path(project.slug)
+      concat project_last_activity_info(project)
+      concat project_list_star_button(project) if allow_to_star && current_user
     end
   end
 
@@ -52,10 +52,10 @@ module ProjectsHelper
   # @param [Project] project.
   def project_stats(project)
     content_tag :ul, class: 'right-content-list project-stats' do
-      safe_concat content_tag :li, (content_tag :span, nil, {class: 'octicon octicon-broadcast'}), {class: 'tooltipped tooltipped-s', label: t(:text_public_project)} if project.is_public
-      safe_concat content_tag :li, (content_tag :span, project.members_count, class: 'octicon octicon-organization')
-      safe_concat content_tag :li, (content_tag :span, project.issues_count, class: 'octicon octicon-issue-opened')
-      safe_concat content_tag :li, (content_tag :span, nil, class: 'octicon octicon-lock') if project.is_archived
+      concat content_tag :li, (content_tag :span, nil, {class: 'octicon octicon-broadcast'}), {class: 'tooltipped tooltipped-s', label: t(:text_public_project)} if project.is_public
+      concat content_tag :li, (content_tag :span, project.members_count, class: 'octicon octicon-organization')
+      concat content_tag :li, (content_tag :span, project.issues_count, class: 'octicon octicon-issue-opened')
+      concat content_tag :li, (content_tag :span, nil, class: 'octicon octicon-lock') if project.is_archived
     end
   end
 
@@ -63,16 +63,16 @@ module ProjectsHelper
   # @param [Project] project.
   def project_list_star_button(project)
     content_tag :div, class: 'star-project' do
-      safe_concat project.display_watch_button
+      concat project.display_watch_button
       render_project_star_button(project)
     end
   end
 
   def render_project_star_button(project)
     if project.starred?
-      safe_concat star_project_link(project)
+      concat star_project_link(project)
     else
-      safe_concat unstar_project_link(project)
+      concat unstar_project_link(project)
     end
   end
 

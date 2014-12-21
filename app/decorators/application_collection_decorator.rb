@@ -35,18 +35,18 @@ class ApplicationCollectionDecorator < Draper::CollectionDecorator
   end
 
   def collection_content(no_scroll, proc = nil)
-    h.safe_concat h.content_tag :div, {class: "#{no_scroll ? '' : 'autoscroll'}"}, &Proc.new {
+    h.concat h.content_tag :div, {class: "#{no_scroll ? '' : 'autoscroll'}"}, &Proc.new {
       if proc
         proc.call
       else
-        h.safe_concat h.list(self)
+        h.concat h.list(self)
       end
     }
   end
 
   def collection_pagination(no_pagination)
     unless no_pagination?(no_pagination)
-      h.safe_concat(h.paginate(object, h.session[h.controller_name.to_sym], pagination_path))
+      h.concat(h.paginate(object, h.session[h.controller_name.to_sym], pagination_path))
     end
   end
 
@@ -64,8 +64,8 @@ class ApplicationCollectionDecorator < Draper::CollectionDecorator
 
   def collection_contextual_title(title)
     h.content_tag :span do
-      h.safe_concat "#{title} "
-      h.safe_concat display_total_entries
+      h.concat "#{title} "
+      h.concat display_total_entries
     end
   end
 

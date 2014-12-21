@@ -7,8 +7,8 @@ module WikiPagesHelper
   # Build render of a wiki page.
   # @param [WikiPage] page : the current page.
   def display_page(page)
-    safe_concat content_tag :h1, page.caption
-    safe_concat content_tag :em, page.creation_info
+    concat content_tag :h1, page.caption
+    concat content_tag :em, page.creation_info
     content_tag :p, page.content
   end
 

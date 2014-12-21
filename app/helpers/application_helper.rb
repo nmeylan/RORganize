@@ -90,9 +90,9 @@ module ApplicationHelper
   # @param [String] breadcrumb : breadcrump to display.
   def contextual_with_breadcrumb(title, breadcrumb)
     content_for :contextual do
-      safe_concat content_tag :h1, title
-      safe_concat breadcrumb
-      safe_concat contextual_right_content(Proc.new) if block_given?
+      concat content_tag :h1, title
+      concat breadcrumb
+      concat contextual_right_content(Proc.new) if block_given?
     end
   end
 
@@ -111,8 +111,8 @@ module ApplicationHelper
 
   # @param [String] title of the contextual.
   def contextual_with_title(title, proc = nil)
-    safe_concat content_tag :h1, title
-    safe_concat contextual_right_content(proc) if proc
+    concat content_tag :h1, title
+    concat contextual_right_content(proc) if proc
   end
 
   def contextual_right_content(proc)
@@ -142,8 +142,8 @@ module ApplicationHelper
   # @param [Numeric] number of comments that belongs to the model.
   def comment_presence(number)
     content_tag :span, {class: "#{number == 0 ? 'smooth-gray' : ''}"} do
-      safe_concat content_tag :span, nil, {class: 'octicon octicon-comment'}
-      safe_concat " #{number}"
+      concat content_tag :span, nil, {class: 'octicon octicon-comment'}
+      concat " #{number}"
     end
   end
 

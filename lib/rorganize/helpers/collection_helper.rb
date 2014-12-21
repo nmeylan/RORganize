@@ -10,7 +10,7 @@ module Rorganize
       # @param [Session] session : the per_page argument for pagination.
       # @param [String] path : to the controller to refresh the list when user change the per_page or current_page parameter.
       def paginate(collection, session, path)
-        safe_concat will_paginate(collection, {renderer: 'RemoteLinkRenderer', next_label: t(:label_next), previous_label: t(:label_previous)})
+        concat will_paginate(collection, {renderer: 'RemoteLinkRenderer', next_label: t(:label_next), previous_label: t(:label_previous)})
         pagination_per_page(path, session)
       end
 
@@ -18,8 +18,8 @@ module Rorganize
       # @param [Session] session : the per_page argument for pagination.
       def pagination_per_page(path, session)
         content_tag :div, class: 'autocomplete-combobox nosearch per-page autocomplete-combobox-high' do
-          safe_concat content_tag :label, t(:label_per_page), {for: 'per_page', class: 'per-page'}
-          safe_concat select_tag 'per_page', pagination_options_tag(session), class: 'chzn-select cbb-small cbb-high', id: 'per-page', 'data-link' => "#{path}"
+          concat content_tag :label, t(:label_per_page), {for: 'per_page', class: 'per-page'}
+          concat select_tag 'per_page', pagination_options_tag(session), class: 'chzn-select cbb-small cbb-high', id: 'per-page', 'data-link' => "#{path}"
         end
       end
 
@@ -47,8 +47,8 @@ module Rorganize
       # @param [Array] collection of issues.
       def generic_list(collection, options = {})
         content_tag :table, options do
-          safe_concat list_header
-          safe_concat list_body(collection)
+          concat list_header
+          concat list_body(collection)
         end
       end
 
@@ -62,28 +62,28 @@ module Rorganize
       # @param [SmartRecord] element to sort.
       def list_sort_actions(collection, element)
         content_tag :td, {class: 'action'}, &Proc.new {
-          safe_concat element.inc_position_link
-          safe_concat element.dec_position_link(collection.size)
+          concat element.inc_position_link
+          concat element.dec_position_link(collection.size)
         }
       end
 
       def list_td(content, options = {})
         if block_given?
-          safe_concat content_tag :td, options, &Proc.new
+          concat content_tag :td, options, &Proc.new
         else
-          safe_concat content_tag :td, content, options
+          concat content_tag :td, content, options
         end
 
       end
 
       def list_th(content, options = {})
-        safe_concat content_tag :th, content, options
+        concat content_tag :th, content, options
       end
 
       def collection_one_column_renderer(collection, class_name, sort_attribute)
         content_tag :table, class: "#{class_name} list" do
-          safe_concat collection_one_column_header(sort_attribute)
-          safe_concat collection_one_column_body(collection, class_name)
+          concat collection_one_column_header(sort_attribute)
+          concat collection_one_column_body(collection, class_name)
         end
       end
       def collection_one_column_body(collection, class_name)

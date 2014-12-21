@@ -10,10 +10,10 @@ module Rorganize
         # @param [Array] activities containing Journal or Comment.
         # @param [Numeric] nth : the number of the activity to render for the same day.
         def activity_detail_render(activities, nth)
-          safe_concat first_activity_detail_render(activities)
+          concat first_activity_detail_render(activities)
           if activities.size - 1 > 0
-            safe_concat more_activities_link
-            safe_concat more_activities_render(activities)
+            concat more_activities_link
+            concat more_activities_render(activities)
           end
         end
 
@@ -21,7 +21,7 @@ module Rorganize
           content_tag :div, class: 'journal-details hide more' do
             i = 0
             activities.each do |activity|
-              safe_concat more_details_render(activity) unless i == 0
+              concat more_details_render(activity) unless i == 0
               i += 1
             end
           end
@@ -29,10 +29,10 @@ module Rorganize
 
         def more_details_render(activity)
           content_tag :div, class: 'detail more' do
-            safe_concat content_tag :span, class: 'date', &Proc.new {
-              safe_concat activity.display_creation_at
+            concat content_tag :span, class: 'date', &Proc.new {
+              concat activity.display_creation_at
             }
-            safe_concat activity.render_details
+            concat activity.render_details
           end
         end
 
@@ -63,28 +63,28 @@ module Rorganize
 
         def tree_render_deleted_attribute(detail)
           content_tag :li do
-            safe_concat "#{t(:text_deleted)} "
-            safe_concat content_tag :b, "#{detail.property} "
-            safe_concat history_detail_value_render(detail, detail.old_value)
+            concat "#{t(:text_deleted)} "
+            concat content_tag :b, "#{detail.property} "
+            concat history_detail_value_render(detail, detail.old_value)
           end
         end
 
         def tree_render_changed_attribute(detail)
           content_tag :li do
-            safe_concat t(:text_changed)
-            safe_concat content_tag :b, " #{detail.property} "
-            safe_concat "#{t(:text_from)} "
-            safe_concat history_detail_value_render(detail, detail.old_value)
-            safe_concat " #{t(:text_to)} "
-            safe_concat history_detail_value_render(detail, detail.value)
+            concat t(:text_changed)
+            concat content_tag :b, " #{detail.property} "
+            concat "#{t(:text_from)} "
+            concat history_detail_value_render(detail, detail.old_value)
+            concat " #{t(:text_to)} "
+            concat history_detail_value_render(detail, detail.value)
           end
         end
 
         def tree_render_affected_attribute(detail)
           content_tag :li do
-            safe_concat content_tag :b, "#{detail.property} "
-            safe_concat "#{t(:text_set_at)} "
-            safe_concat history_detail_value_render(detail, detail.value)
+            concat content_tag :b, "#{detail.property} "
+            concat "#{t(:text_set_at)} "
+            concat history_detail_value_render(detail, detail.value)
           end
         end
 

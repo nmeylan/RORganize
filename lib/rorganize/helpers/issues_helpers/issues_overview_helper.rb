@@ -42,11 +42,11 @@ module Rorganize
         def display_overview_group_by(title, group, group_name, only_opened_issues = true, group_class_name = nil)
           class_name = group_class_name.nil? ? 'issues-overview-group' : group_class_name
           content_tag :div, class: class_name do
-            safe_concat content_tag :h2, title, class: "#{class_name} title"
+            concat content_tag :h2, title, class: "#{class_name} title"
             if group.any?
-              safe_concat overview_table(class_name, group, group_name, only_opened_issues)
+              concat overview_table(class_name, group, group_name, only_opened_issues)
             else
-              safe_concat no_data(t(:text_no_issues), 'issue-opened')
+              concat no_data(t(:text_no_issues), 'issue-opened')
             end
           end
         end
@@ -57,10 +57,10 @@ module Rorganize
         # @param [Boolean] only_opened_issues : true display report only for opened issues else display report for all issues.
         def overview_table(class_name, group, group_name, only_opened_issues)
           content_tag :table, class: class_name do
-            safe_concat overview_table_header(class_name)
+            concat overview_table_header(class_name)
             display_overview_rows(group, group_name, only_opened_issues)
             na = no_affected_row(group)
-            safe_concat display_overview_row(na, group_name, only_opened_issues) if na
+            concat display_overview_row(na, group_name, only_opened_issues) if na
           end
         end
 
@@ -82,7 +82,7 @@ module Rorganize
           if element[:id].eql?('NULL')
             element
           else
-            safe_concat display_overview_row(element, group_name, only_opened_issues)
+            concat display_overview_row(element, group_name, only_opened_issues)
           end
         end
 
@@ -96,9 +96,9 @@ module Rorganize
         # @param [String] class_name : css class name.
         def overview_table_header(class_name)
           content_tag :tr, class: "#{class_name} header" do
-            safe_concat content_tag :th, t(:field_name), class: 'caption'
-            safe_concat content_tag :th, t(:label_issue_plural), class: 'number'
-            safe_concat content_tag :th, t(:label_percentage), class: 'percentage'
+            concat content_tag :th, t(:field_name), class: 'caption'
+            concat content_tag :th, t(:label_issue_plural), class: 'number'
+            concat content_tag :th, t(:label_percentage), class: 'percentage'
           end
         end
 
@@ -108,9 +108,9 @@ module Rorganize
         # @param [Boolean] only_opened_issues : true display report only for opened issues else display report for all issues.
         def display_overview_row(element, group_name, only_opened_issues)
           content_tag :tr, class: 'issues-overview-group body' do
-            safe_concat select_filter_link(element, group_name, only_opened_issues)
-            safe_concat content_tag :td, element[:count], class: 'number'
-            safe_concat content_tag :td, progress_bar_tag(element[:percent]), class: 'percentage'
+            concat select_filter_link(element, group_name, only_opened_issues)
+            concat content_tag :td, element[:count], class: 'number'
+            concat content_tag :td, progress_bar_tag(element[:percent]), class: 'percentage'
           end
         end
 

@@ -26,8 +26,8 @@ module WikiHelper
   # @param [WikiPage] page
   def render_sub_pages_from_root(page)
     if page.parent.nil?
-      safe_concat page_link(page)
-      safe_concat display_sub_pages(page.id, page.sub_pages) if page.sub_pages && page.sub_pages.to_a.any?
+      concat page_link(page)
+      concat display_sub_pages(page.id, page.sub_pages) if page.sub_pages && page.sub_pages.to_a.any?
     end
   end
 
@@ -47,8 +47,8 @@ module WikiHelper
   # @param [Array] pages
   def render_sub_pages(pages)
     pages.sort { |x, y| x.position<=>y.position }.collect do |page|
-      safe_concat page_link(page)
-      safe_concat display_sub_pages(page.id, page.sub_pages) if page.sub_pages.any?
+      concat page_link(page)
+      concat display_sub_pages(page.id, page.sub_pages) if page.sub_pages.any?
     end.join.html_safe
   end
 
@@ -56,7 +56,7 @@ module WikiHelper
   # @param [WikiPage] page
   def page_link(page)
     content_tag :li, {class: 'item', id: "item-#{page.id}"} do
-      safe_concat link_to page.title, wiki_page_path(@project.slug, page.slug)
+      concat link_to page.title, wiki_page_path(@project.slug, page.slug)
     end
   end
 

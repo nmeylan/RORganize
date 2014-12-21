@@ -8,8 +8,8 @@ module MembersHelper
   # @param [Array] collection of members.
   def list(collection, roles)
     content_tag :table, {class: 'member list'}, &Proc.new {
-      safe_concat list_header
-      safe_concat list_body(collection, roles)
+      concat list_header
+      concat list_body(collection, roles)
     }
   end
 

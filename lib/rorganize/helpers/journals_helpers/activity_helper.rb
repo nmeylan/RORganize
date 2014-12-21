@@ -37,19 +37,19 @@ module Rorganize
         def journal_header_render(journal, nth)
           user = journal.display_author
           if nth % 2 == 0 #Render is depending on the parity
-            safe_concat journal_icon_render(journal)
-            safe_concat activity_author_render(user)
-            safe_concat journal_action_type_render(journal)
-            safe_concat journal_object_type_render(journal)
-            safe_concat journal.display_project_link(@project)
-            safe_concat activity_date_render(journal)
+            concat journal_icon_render(journal)
+            concat activity_author_render(user)
+            concat journal_action_type_render(journal)
+            concat journal_object_type_render(journal)
+            concat journal.display_project_link(@project)
+            concat activity_date_render(journal)
           else
-            safe_concat journal_icon_render(journal)
-            safe_concat activity_date_render(journal)
-            safe_concat activity_author_render(user)
-            safe_concat journal_action_type_render(journal)
-            safe_concat journal_object_type_render(journal)
-            safe_concat journal.display_project_link(@project)
+            concat journal_icon_render(journal)
+            concat activity_date_render(journal)
+            concat activity_author_render(user)
+            concat journal_action_type_render(journal)
+            concat journal_object_type_render(journal)
+            concat journal.display_project_link(@project)
           end
         end
 
@@ -83,17 +83,17 @@ module Rorganize
         # @param [Numeric] nth : the number of the activity to render for the same day.
         def comment_header_render(comment, nth)
           if nth % 2 == 0 #Render is depending on the parity
-            safe_concat comment_icon_render
-            safe_concat activity_author_render(comment.display_author)
-            safe_concat comment.render_header
-            safe_concat comment.display_project_link(@project)
-            safe_concat activity_date_render(comment)
+            concat comment_icon_render
+            concat activity_author_render(comment.display_author)
+            concat comment.render_header
+            concat comment.display_project_link(@project)
+            concat activity_date_render(comment)
           else
-            safe_concat comment_icon_render
-            safe_concat activity_date_render(comment)
-            safe_concat activity_author_render(comment.display_author)
-            safe_concat comment.render_header
-            safe_concat comment.display_project_link(@project)
+            concat comment_icon_render
+            concat activity_date_render(comment)
+            concat activity_author_render(comment.display_author)
+            concat comment.render_header
+            concat comment.display_project_link(@project)
           end
         end
 

@@ -13,14 +13,14 @@ module Rorganize
 # @param [hash] save_button_options
       def filter_tag(label, filtered_attributes, submission_path, can_save = false, save_button_options = {})
         content_tag :fieldset, id: "#{label}-filter" do
-          safe_concat content_tag :legend, link_to(glyph(t(:link_filter), 'chevron-right'), '#', {class: 'icon-collapsed toggle', id: "#{label}"})
-          safe_concat filter_tag_content(can_save, filtered_attributes, save_button_options, submission_path)
+          concat content_tag :legend, link_to(glyph(t(:link_filter), 'chevron-right'), '#', {class: 'icon-collapsed toggle', id: "#{label}"})
+          concat filter_tag_content(can_save, filtered_attributes, save_button_options, submission_path)
         end
       end
 
       def filter_tag_content(can_save, filtered_attributes, save_button_options, submission_path)
         content_tag :div, class: 'content' do
-          safe_concat filter_form_tag(filtered_attributes, save_button_options, can_save, submission_path)
+          concat filter_form_tag(filtered_attributes, save_button_options, can_save, submission_path)
         end
       end
 
@@ -31,10 +31,10 @@ module Rorganize
       def filter_form_tag(filtered_attributes, save_button_options, can_save, submission_path)
         form_tag submission_path, {method: :get, class: 'filter-form', id: 'filter-form', remote: true} do
           filter_type_choice_tag
-          safe_concat filter_attribute_choice_tag(filtered_attributes)
-          safe_concat content_tag :table, nil, id: 'filter-content'
-          safe_concat submit_tag t(:button_apply), {style: 'margin-left:0px'}
-          safe_concat content_tag :span, save_filter_button_tag(can_save, save_button_options),
+          concat filter_attribute_choice_tag(filtered_attributes)
+          concat content_tag :table, nil, id: 'filter-content'
+          concat submit_tag t(:button_apply), {style: 'margin-left:0px'}
+          concat content_tag :span, save_filter_button_tag(can_save, save_button_options),
                                   {id: 'save-query-button'}
         end
       end
@@ -67,10 +67,10 @@ module Rorganize
 
       # @return [String] build filter type choice.
       def filter_type_choice_tag
-        safe_concat radio_button_tag('type', 'all', true, {align: 'center', id: 'type-all'})
-        safe_concat label_tag('type-all', t(:label_all))
-        safe_concat radio_button_tag 'type', 'filter', false, id: 'type-filter'
-        safe_concat label_tag 'type-filter', t(:link_filter)
+        concat radio_button_tag('type', 'all', true, {align: 'center', id: 'type-all'})
+        concat label_tag('type-all', t(:label_all))
+        concat radio_button_tag 'type', 'filter', false, id: 'type-filter'
+        concat label_tag 'type-filter', t(:link_filter)
       end
 
 
@@ -95,9 +95,9 @@ module Rorganize
                      raise Exception, "Filter with type : :#{filter_type}, doesn't exist! Allowed types are : #{types.join(', ')}"
                  end
         content_tag :tr, class: name do
-          safe_concat content_tag :td, label, class: 'label'
-          safe_concat content_tag :td, generics_filter_radio_button(name, options_for_radio).html_safe, class: 'radio'
-          safe_concat content_tag :td, filter, id: "td-#{name}", class: 'value'
+          concat content_tag :td, label, class: 'label'
+          concat content_tag :td, generics_filter_radio_button(name, options_for_radio).html_safe, class: 'radio'
+          concat content_tag :td, filter, id: "td-#{name}", class: 'value'
         end
       end
 
@@ -131,8 +131,8 @@ module Rorganize
       def generics_filter_radio_button(name, ary)
         content_tag :span do
           ary.each do |v|
-            safe_concat radio_button_tag %Q(filter[#{name}][operator]), v, v.eql?('all'), {class: name, id: %Q(#{name}_#{v.tr(' ', '_')}), align: 'center'}
-            safe_concat label_tag %Q(#{name}_#{v}), v.tr('_', ' ').capitalize
+            concat radio_button_tag %Q(filter[#{name}][operator]), v, v.eql?('all'), {class: name, id: %Q(#{name}_#{v.tr(' ', '_')}), align: 'center'}
+            concat label_tag %Q(#{name}_#{v}), v.tr('_', ' ').capitalize
           end
         end
       end

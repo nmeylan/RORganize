@@ -21,7 +21,7 @@ module Rorganize
       def fast_profile_link(user)
         slug = user.is_a?(User) ? user.slug : user.downcase.tr(' ', '-')
         caption = user.is_a?(User) ? user.caption : user
-        "<a href='/#{slug}' class='author-link' >#{caption}</a>"
+        "<a href='/#{slug}' class='author-link' >#{caption}</a>".html_safe
       end
 
       # Build a link to project overview.
@@ -29,7 +29,7 @@ module Rorganize
       # in case of big render.
       # @param [Project] project.
       def fast_project_link(project)
-        "<a href='/projects/#{project.slug}/overview'>#{project.caption}</a>"
+        "<a href='/projects/#{project.slug}/overview'>#{project.caption}</a>".html_safe
       end
 
       # Build a link to issue show action.
@@ -38,14 +38,14 @@ module Rorganize
       # @param [Issue] issue.
       # @param [Project] project.
       def fast_issue_link(issue, project)
-        "<a href='/projects/#{project.slug}/issues/#{issue.id}'>#{resize_text(issue.caption, 35)}</a>"
+        "<a href='/projects/#{project.slug}/issues/#{issue.id}'>#{resize_text(issue.caption, 35)}</a>".html_safe
       end
 
 
       # Build an avatar renderer for the given user.
       # @param [User] user.
       def fast_user_small_avatar(user)
-        "<img alt='' class='small-avatar' src='/system/attachments/Users/#{user.id}/#{user.avatar.id}/very_small/#{user.avatar.avatar_file_name}'>"
+        "<img alt='' class='small-avatar' src='/system/attachments/Users/#{user.id}/#{user.avatar.id}/very_small/#{user.avatar.avatar_file_name}'>".html_safe
       end
 
       # Build a link to issue show action.
@@ -54,7 +54,7 @@ module Rorganize
       # @param [Document] document.
       # @param [Project] project.
       def fast_document_link(document, project)
-        "<a href='/projects/#{project.slug}/documents/#{document.id}'>#{resize_text(document.caption, 35)}</a>"
+        "<a href='/projects/#{project.slug}/documents/#{document.id}'>#{resize_text(document.caption, 35)}</a>".html_safe
       end
 
       # Render a link to watch all activities from watchable.
@@ -84,8 +84,8 @@ module Rorganize
 
       def new_notification_link
         link_to notifications_path, {class: "tooltipped tooltipped-s indicator #{params[:controller].eql?('notifications') ? 'selected' : ''}", label: t(:text_unread_notifications)} do
-          safe_concat content_tag :span, nil, {class: 'unread inbox'}
-          safe_concat glyph('', 'inbox')
+          concat content_tag :span, nil, {class: 'unread inbox'}
+          concat glyph('', 'inbox')
         end
       end
     end

@@ -29,13 +29,13 @@ module Rorganize
         # @param [Numeric] percent.
         def version_overview(version, closed_issues_count, opened_issues_count, percent)
           content_tag :div, class: 'version-overview' do
-            safe_concat content_tag :h1, version.name, id: "v-#{version.display_id}"
-            safe_concat version_dates_header(version)
-            safe_concat clear_both
-            safe_concat progress_bar_tag(percent)
-            safe_concat version_overview_request_stats(closed_issues_count, opened_issues_count, version)
-            safe_concat version_overview_over_run_tag(version)
-            safe_concat clear_both
+            concat content_tag :h1, version.name, id: "v-#{version.display_id}"
+            concat version_dates_header(version)
+            concat clear_both
+            concat progress_bar_tag(percent)
+            concat version_overview_request_stats(closed_issues_count, opened_issues_count, version)
+            concat version_overview_over_run_tag(version)
+            concat clear_both
           end
 
         end
@@ -60,12 +60,12 @@ module Rorganize
 
         def version_overview_request_stats(closed_issues_count, opened_issues_count, version)
           content_tag :span, class: 'requests-stats' do
-            safe_concat content_tag :b, "#{version.issues_count.to_s} "
-            safe_concat t(:label_request_plural) + ', '
-            safe_concat content_tag :b, "#{closed_issues_count.to_s} "
-            safe_concat t(:label_closed) + ', '
-            safe_concat content_tag :b, "#{opened_issues_count.to_s} "
-            safe_concat t(:label_opened) + '.'
+            concat content_tag :b, "#{version.issues_count.to_s} "
+            concat t(:label_request_plural) + ', '
+            concat content_tag :b, "#{closed_issues_count.to_s} "
+            concat t(:label_closed) + ', '
+            concat content_tag :b, "#{opened_issues_count.to_s} "
+            concat t(:label_opened) + '.'
           end
         end
       end

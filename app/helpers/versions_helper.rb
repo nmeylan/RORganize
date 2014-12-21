@@ -9,8 +9,8 @@ module VersionsHelper
   # @param [Array] collection of versions.
   def list(collection)
     content_tag :table, {class: 'version list'} do
-      safe_concat list_header
-      safe_concat list_body(collection)
+      concat list_header
+      concat list_body(collection)
     end
   end
 
@@ -26,7 +26,7 @@ module VersionsHelper
       list_td version.start_date, {class: 'list-center start-date'}
       list_td version.display_target_date, {class: 'list-center version'}
       list_td version.is_done, {class: 'list-center is-done'}
-      safe_concat list_sort_actions(collection, version)
+      concat list_sort_actions(collection, version)
       list_td version.delete_link, {class: 'action'}
     end
   end
@@ -57,9 +57,9 @@ module VersionsHelper
   # @param [Version] version to render.
   def roadmap_version_block_render(collection_detail, version)
     content_tag :div, class: 'roadmap-version-block' do
-      safe_concat call_version_overview(collection_detail, version)
-      safe_concat version.display_description
-      safe_concat version_detail_render(collection_detail, version)
+      concat call_version_overview(collection_detail, version)
+      concat version.display_description
+      concat version_detail_render(collection_detail, version)
     end
   end
 

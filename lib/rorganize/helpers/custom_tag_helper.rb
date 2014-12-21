@@ -11,9 +11,9 @@ module Rorganize
       def box_header_tag(title, css_class = 'header')
         content_tag :div, class: css_class do
           if block_given?
-            safe_concat content_tag :div, yield, class: 'right actions'
+            concat content_tag :div, yield, class: 'right actions'
           end
-          safe_concat content_tag(:h2, title)
+          concat content_tag(:h2, title)
         end
       end
 
@@ -71,8 +71,8 @@ module Rorganize
         css_class ||= ''
         css_class += ' progress-bar'
         content_tag :span, class: css_class do
-          safe_concat content_tag :span, '&nbsp'.html_safe, {class: 'progress', style: "width:#{percent}%"}
-          safe_concat content_tag :span, "#{percent}%", {class: 'percent'}
+          concat content_tag :span, '&nbsp'.html_safe, {class: 'progress', style: "width:#{percent}%"}
+          concat content_tag :span, "#{percent}%", {class: 'percent'}
         end
       end
 
@@ -80,7 +80,7 @@ module Rorganize
         css_class ||= ''
         css_class += ' progress-bar mini-progress-bar'
         content_tag :span, {class: css_class} do
-          safe_concat content_tag :span, '&nbsp'.html_safe, {class: 'progress', style: "width:#{percent}%"}
+          concat content_tag :span, '&nbsp'.html_safe, {class: 'progress', style: "width:#{percent}%"}
         end
       end
 
@@ -100,7 +100,7 @@ module Rorganize
       end
 
       def concat_span_tag(content, options = {})
-        safe_concat content_tag :span, content, options
+        concat content_tag :span, content, options
       end
 
       # @return [String] : div that clear left and right.
@@ -115,9 +115,9 @@ module Rorganize
       def no_data(text = nil, glyph = nil, large = false)
         content_tag :div, class: "no-data #{large ? 'large' : '' }" do
           if glyph
-            safe_concat (glyph('', glyph))
+            concat (glyph('', glyph))
           end
-          safe_concat content_tag :h3, text ? text : t(:text_no_data)
+          concat content_tag :h3, text ? text : t(:text_no_data)
         end
       end
 
@@ -139,8 +139,8 @@ module Rorganize
 
       def required_form_label(f, name, text)
         f.label name do
-          safe_concat text
-          safe_concat content_tag(:span, '*', class: 'required')
+          concat text
+          concat content_tag(:span, '*', class: 'required')
         end
       end
 

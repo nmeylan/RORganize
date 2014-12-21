@@ -10,9 +10,9 @@ module Rorganize
       # @param [Toolbox] toolbox : the toolbox object.
       def toolbox_tag(toolbox)
         form_tag toolbox.path, remote: true, id: 'toolbox-form' do
-          safe_concat toolbox_menu_items(toolbox)
-          safe_concat toolbox_extra_menu_item(toolbox)
-          safe_concat toolbox_hidden_tag(toolbox)
+          concat toolbox_menu_items(toolbox)
+          concat toolbox_extra_menu_item(toolbox)
+          concat toolbox_hidden_tag(toolbox)
         end
       end
 
@@ -42,8 +42,8 @@ module Rorganize
       # @param [ToolboxMenuItem] menu_item the menu to build.
       def toolbox_menu_item(menu_item)
         content_tag :li do
-          safe_concat link_to glyph(menu_item.caption, menu_item.glyph_name), '#', {id: menu_item.name}
-          safe_concat toolbox_sub_menu(menu_item)
+          concat link_to glyph(menu_item.caption, menu_item.glyph_name), '#', {id: menu_item.name}
+          concat toolbox_sub_menu(menu_item)
         end
       end
 
@@ -51,9 +51,9 @@ module Rorganize
       def toolbox_sub_menu(menu_item)
         content_tag :ul, class: "submenu #{menu_item.attribute_name}" do
           if menu_contains_sub_item?(menu_item)
-            safe_concat hidden_field_tag "value[#{menu_item.attribute_name}]"
-            safe_concat toolbox_sub_menu_items(menu_item)
-            safe_concat toolbox_none_sub_menu_item(menu_item)
+            concat hidden_field_tag "value[#{menu_item.attribute_name}]"
+            concat toolbox_sub_menu_items(menu_item)
+            concat toolbox_none_sub_menu_item(menu_item)
           end
         end
       end

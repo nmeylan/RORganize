@@ -35,8 +35,8 @@ module Rorganize
         def version_detail_render(collection_detail, version)
           if collection_detail[version.id][:issues]
             content_tag :fieldset do
-              safe_concat version_detail_header_render(version)
-              safe_concat version_detail_body_render(collection_detail, version)
+              concat version_detail_header_render(version)
+              concat version_detail_body_render(collection_detail, version)
             end
           end
         end

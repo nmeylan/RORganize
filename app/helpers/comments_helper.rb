@@ -12,9 +12,9 @@ module CommentsHelper
     content_tag :div, id: 'comments-block' do
       collection.collect do |comment|
         if selected_comment
-          safe_concat comment_block_render(comment, selected_comment.id, avatar)
+          concat comment_block_render(comment, selected_comment.id, avatar)
         else
-          safe_concat comment_block_render(comment, nil, avatar)
+          concat comment_block_render(comment, nil, avatar)
         end
       end.join.html_safe
     end
@@ -27,9 +27,9 @@ module CommentsHelper
   def comment_block_render(comment, selected_comment_id = nil, avatar = true)
     css_class = comment.id.eql?(selected_comment_id) ? 'comment-content selected' : 'comment-content'
     content_tag :div, {id: "comment-#{comment.id}", class: 'comment-block'} do
-      safe_concat comment.author_avatar unless avatar
-      safe_concat comment_block_header(avatar, comment)
-      safe_concat comment_block_content(comment, css_class)
+      concat comment.author_avatar unless avatar
+      concat comment_block_header(avatar, comment)
+      concat comment_block_content(comment, css_class)
     end
   end
 
@@ -42,28 +42,28 @@ module CommentsHelper
   def comment_block_header(avatar, comment)
     content_tag :div, class: "comment-header #{'display-avatar' if comment.author_avatar?}" do
       comment_block_header_author_info(avatar, comment)
-      safe_concat content_tag :span, comment.creation_date, {class: 'history-date'}
-      safe_concat comment_block_header_edited_indicator(comment) if comment.edited?
-      safe_concat comment_block_header_actions(comment)
+      concat content_tag :span, comment.creation_date, {class: 'history-date'}
+      concat comment_block_header_edited_indicator(comment) if comment.edited?
+      concat comment_block_header_actions(comment)
     end
   end
 
   def comment_block_header_author_info(avatar, comment)
     concat_span_tag comment.display_author(avatar) + ' ', class: 'author'
     concat_span_tag "#{t(:text_added_comment)} ", class: 'text'
-    safe_concat "#{distance_of_time_in_words(comment.created_at, Time.now)} #{t(:label_ago)}. "
+    concat "#{distance_of_time_in_words(comment.created_at, Time.now)} #{t(:label_ago)}. "
   end
 
   def comment_block_header_actions(comment)
     content_tag :div, class: 'right actions' do
-      safe_concat comment.edit_link
-      safe_concat comment.delete_link
+      concat comment.edit_link
+      concat comment.delete_link
     end
   end
 
   def comment_block_header_edited_indicator(comment)
     content_tag :span, {class: 'edited'} do
-      safe_concat "#{t(:text_edited)} on"
+      concat "#{t(:text_edited)} on"
       concat_span_tag comment.update_date, {class: 'history-date'}
     end
   end
@@ -72,9 +72,9 @@ module CommentsHelper
   # @param [ActiveRecord::Base] model : model that belongs to the new comment.
   def post_comment_form(model)
     form_for model.new_comment, url: comments_path, html: {class: 'form', remote: true} do |f|
-      safe_concat f.hidden_field :commentable_id, value: model.new_comment.commentable_id
-      safe_concat f.hidden_field :commentable_type, value: model.new_comment.commentable_type
-      safe_concat hidden_field_tag :project_id, model.project.slug
+      concat f.hidden_field :commentable_id, value: model.new_comment.commentable_id
+      concat f.hidden_field :commentable_type, value: model.new_comment.commentable_type
+      concat hidden_field_tag :project_id, model.project.slug
       comment_form_content(f)
     end
   end
@@ -83,7 +83,7 @@ module CommentsHelper
   # @param [Comment] model : the comment to edit.
   def put_comment_form(comment)
     form_for comment, html: {class: 'form', remote: true, method: :put} do |f|
-      safe_concat hidden_field_tag :project_id, comment.project.slug
+      concat hidden_field_tag :project_id, comment.project.slug
       comment_form_content(f)
     end
   end
@@ -91,17 +91,17 @@ module CommentsHelper
   # Build content for the forms.
   # @param [Form] f : the form.
   def comment_form_content(f)
-    safe_concat content_tag :p, &Proc.new {
-      safe_concat comment_form_label(f)
-      safe_concat f.text_area :content, rows: 12, class: 'fancyEditor', id: 'comment-form'
+    concat content_tag :p, &Proc.new {
+      concat comment_form_label(f)
+      concat f.text_area :content, rows: 12, class: 'fancyEditor', id: 'comment-form'
     }
-    safe_concat submit_tag t(:button_submit)
+    concat submit_tag t(:button_submit)
   end
 
   def comment_form_label(f)
     f.label :content do
-      safe_concat t(:field_content)
-      safe_concat content_tag :span, '*', class: 'required'
+      concat t(:field_content)
+      concat content_tag :span, '*', class: 'required'
     end
   end
 end

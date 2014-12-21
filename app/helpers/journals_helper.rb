@@ -11,8 +11,8 @@ module JournalsHelper
   # @param [Date] from : date range left border.
   def display_activities(activities, to, from)
     content_tag :div do
-      safe_concat activities_range(to, from)
-      safe_concat render_all_activities(activities)
+      concat activities_range(to, from)
+      concat render_all_activities(activities)
     end
   end
 
@@ -33,11 +33,11 @@ module JournalsHelper
   # @param [Date] date.
   # @param [Hash] objects a hash with this structure : {type_id: ['journalizable', 'journalizable', 'comment', 'journalizable']}
   def render_activities_for_date(activities, date, objects)
-    safe_concat activities_date(date)
-    safe_concat content_tag :div, class: 'journals', &Proc.new {
+    concat activities_date(date)
+    concat content_tag :div, class: 'journals', &Proc.new {
       activities_render(activities, date, objects)
     }
-    safe_concat clear_both
+    concat clear_both
   end
 
   # Build a render of the date range of activities.
@@ -45,11 +45,11 @@ module JournalsHelper
   # @param [Date] from : date range left border.
   def activities_range(to, from)
     content_tag :div, {class: 'activities-range'} do
-      safe_concat "#{t(:text_from).capitalize} "
-      safe_concat content_tag :span, from
-      safe_concat " #{t(:text_to)} "
-      safe_concat content_tag :span, to
-      safe_concat '.'
+      concat "#{t(:text_from).capitalize} "
+      concat content_tag :span, from
+      concat " #{t(:text_to)} "
+      concat content_tag :span, to
+      concat '.'
     end
   end
 
@@ -70,9 +70,9 @@ module JournalsHelper
     objects.each_key do |polymorphic_identifier|
       if i < 1000
         act = activities.content_for(date, polymorphic_identifier)
-        safe_concat activity_render(act, act[0], i)
+        concat activity_render(act, act[0], i)
       else
-        safe_concat content_tag :div, 'latest 1000 activities from this day were loaded.', {class: 'activity max'}
+        concat content_tag :div, 'latest 1000 activities from this day were loaded.', {class: 'activity max'}
         break
       end
       i += 1

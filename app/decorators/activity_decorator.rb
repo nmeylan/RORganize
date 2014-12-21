@@ -17,10 +17,10 @@ module ActivityDecorator
   end
 
   def creation_info_content
-    h.safe_concat creation_info_date
-    h.safe_concat model.author ? model.author.decorate.user_link(true) : h.t(:label_unknown)
-    h.safe_concat '.'
-    h.safe_concat update_info_date unless model.created_at.eql?(model.updated_at)
+    h.concat creation_info_date
+    h.concat model.author ? model.author.decorate.user_link(true) : h.t(:label_unknown)
+    h.concat '.'
+    h.concat update_info_date unless model.created_at.eql?(model.updated_at)
   end
 
   def update_info_date
@@ -54,8 +54,8 @@ module ActivityDecorator
   def display_project_link(project)
     unless project
       h.content_tag :span, class: 'project', &Proc.new {
-        h.safe_concat 'at '
-        h.safe_concat project_link
+        h.concat 'at '
+        h.concat project_link
       }
     end
   end

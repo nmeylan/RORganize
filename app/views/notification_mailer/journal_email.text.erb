@@ -2,12 +2,12 @@
 <% journal = @notification.trigger.decorate %>
 <% model = @notification.model %>
 <%= content_tag :div, class: 'block' do
-  safe_concat content_tag :div, class: 'header', &Proc.new {
-    safe_concat content_tag :span, journal.user.caption, {class: 'author'}
-    safe_concat " #{t(:label_updated).downcase} #{model.class.to_s.downcase} #{model.caption} on "
-    safe_concat content_tag :span, journal.created_at.strftime(Rorganize::TIME_FORMAT), {class: 'history-date'}
+  concat content_tag :div, class: 'header', &Proc.new {
+    concat content_tag :span, journal.user.caption, {class: 'author'}
+    concat " #{t(:label_updated).downcase} #{model.class.to_s.downcase} #{model.caption} on "
+    concat content_tag :span, journal.created_at.strftime(Rorganize::TIME_FORMAT), {class: 'history-date'}
   }
-  safe_concat clear_both
-  safe_concat content_tag(:ul, (journal.details.collect { |detail| history_detail_render(detail, false, false) }).join.html_safe)
+  concat clear_both
+  concat content_tag(:ul, (journal.details.collect { |detail| history_detail_render(detail, false, false) }).join.html_safe)
 end %>
 

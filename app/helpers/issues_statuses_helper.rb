@@ -9,8 +9,8 @@ module IssuesStatusesHelper
   # @param [Array] collection of issues_statuses.
   def list(collection)
     content_tag :table, {class: 'issues-status list'} do
-      safe_concat list_header
-      safe_concat list_body(collection)
+      concat list_header
+      concat list_body(collection)
     end
   end
 
@@ -25,7 +25,7 @@ module IssuesStatusesHelper
       list_td status.edit_link, {class: 'list-left name'}
       list_td status.default_done_ratio, {class: 'list-center done-ratio'}
       list_td status.is_closed?, {class: 'list-center is-closed'}
-      safe_concat list_sort_actions(collection, status)
+      concat list_sort_actions(collection, status)
       list_td status.delete_link, {class: 'action'}
     end
   end

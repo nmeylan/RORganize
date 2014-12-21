@@ -17,15 +17,15 @@ module Rorganize
           select_values = Hash[Journal::ACTIVITIES_PERIODS.keys.map { |period| [periods[period], period] }]
           project_id = @project_decorator ? @project_decorator.slug : nil
           form_tag url_for({action: 'activity_filter', project_id: project_id, user: user}), {id: 'activities-filter', remote: true} do
-            safe_concat sidebar_activity_type_choice(selected_types, types)
+            concat sidebar_activity_type_choice(selected_types, types)
             sidebar_activity_period_choice(date, period, select_values)
           end
         end
 
         # Build the render for the activity period form's part. (combobox  and date_field)
         def sidebar_activity_period_choice(date, period, select_values)
-          safe_concat date_field_tag 'date', date, {class: 'filter-selection'}
-          safe_concat content_tag :div, {class: 'autocomplete-combobox cbb-tiny nosearch', id: 'period-select'}, &Proc.new {
+          concat date_field_tag 'date', date, {class: 'filter-selection'}
+          concat content_tag :div, {class: 'autocomplete-combobox cbb-tiny nosearch', id: 'period-select'}, &Proc.new {
             select_tag 'period', options_for_select(select_values, period),
                        {include_blank: false, class: 'filter-selection chzn-select-deselect cbb-tiny'}
           }
@@ -36,8 +36,8 @@ module Rorganize
           content_tag :ul, class: '' do
             types.collect do |type|
               content_tag :li, class: 'activities-filter' do
-                safe_concat check_box_tag "[types][#{type}]", 1, selected_types.include?(type), {class: 'filter-selection'}
-                safe_concat label_tag "[types][#{type}]", Rorganize::Utils::class_name_to_human_name(type), {class: ''}
+                concat check_box_tag "[types][#{type}]", 1, selected_types.include?(type), {class: 'filter-selection'}
+                concat label_tag "[types][#{type}]", Rorganize::Utils::class_name_to_human_name(type), {class: ''}
               end
             end.join.html_safe
           end

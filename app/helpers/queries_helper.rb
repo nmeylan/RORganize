@@ -8,8 +8,8 @@ module QueriesHelper
   # @param [Array] collection of queries.
   def query_list(collection)
     content_tag :table, class: 'query list' do
-      safe_concat query_list_header(collection)
-      safe_concat(query_list_body(collection))
+      concat query_list_header(collection)
+      concat(query_list_body(collection))
     end
   end
 
@@ -25,8 +25,8 @@ module QueriesHelper
       list_td query.show_link, class: 'list-left name'
       list_td query.author, class: 'list-left author'
       list_td nil, {class: 'action list-right'}, &Proc.new {
-        safe_concat query.edit_link
-        safe_concat query.delete_link
+        concat query.edit_link
+        concat query.delete_link
       }
     end
   end

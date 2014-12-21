@@ -18,8 +18,8 @@ module NotificationsHelper
   # @param [Array] notifications : array of Notification.
   def notifications_block(project_slug, notifications)
     content_tag :div, class: 'box notification-list' do
-      safe_concat notification_block_header(project_slug)
-      safe_concat notification_block_content(notifications)
+      concat notification_block_header(project_slug)
+      concat notification_block_content(notifications)
     end
   end
 
@@ -33,16 +33,16 @@ module NotificationsHelper
 
   def notification_block_row(notification)
     content_tag :li, class: 'fancy-list-item' do
-      safe_concat notification.link_to_notifiable
-      safe_concat notification_block_row_right_content(notification)
+      concat notification.link_to_notifiable
+      concat notification_block_row_right_content(notification)
     end
   end
 
   def notification_block_row_right_content(notification)
     content_tag :span, {class: 'right-content-list'} do
-      safe_concat notification.notification_info
-      safe_concat notification.from.user_avatar_link
-      safe_concat notification.recipient_type
+      concat notification.notification_info
+      concat notification.from.user_avatar_link
+      concat notification.recipient_type
     end
   end
 
@@ -58,9 +58,9 @@ module NotificationsHelper
     labels_hash = {all: t(:label_all), participants: t(:label_participating), watchers: t(:label_watching)}
     glyphs_hash = {all: 'inbox', participants: 'person', watchers: 'eye'}
     content_tag :div, class: 'left-sidebar' do
-      safe_concat notification_recipient_type_sidebar(filters, glyphs_hash, labels_hash)
-      safe_concat content_tag :hr
-      safe_concat notification_projects_sidebar(projects)
+      concat notification_recipient_type_sidebar(filters, glyphs_hash, labels_hash)
+      concat content_tag :hr
+      concat notification_projects_sidebar(projects)
     end
   end
 
@@ -78,8 +78,8 @@ module NotificationsHelper
       link_to notifications_path(filter: @sessions[:filter_recipient_type],
                                  project: projects[project][:id]),
               {class: "filter-item #{selected}"} do
-        safe_concat sidebar_count_tag(projects[project][:count])
-        safe_concat glyph(project, 'repo')
+        concat sidebar_count_tag(projects[project][:count])
+        concat glyph(project, 'repo')
       end
     end
   end
@@ -97,8 +97,8 @@ module NotificationsHelper
       selected = filter.to_s.eql?(@sessions[:filter_recipient_type]) ? 'selected' : ''
       link_to notifications_path(filter: filter),
               {class: "filter-item #{selected}"} do
-        safe_concat sidebar_count_tag(filters[filter])
-        safe_concat glyph(labels_hash[filter], glyphs_hash[filter])
+        concat sidebar_count_tag(filters[filter])
+        concat glyph(labels_hash[filter], glyphs_hash[filter])
       end
 
     end
