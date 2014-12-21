@@ -63,7 +63,7 @@ module UsersHelper
   # @param [Member] member
   # @param [User] user
   def assigned_to_user_issues(member, user)
-    " (#{link_to member.assigned_issues.to_a.count { |issue| issue.open? }, assigned_to_user_filter_path(member, user) } #{t(:text_assigned_issues)}) "
+    " (#{link_to member.assigned_issues.to_a.count { |issue| issue.open? }, assigned_to_user_filter_path(member, user) } #{t(:text_assigned_issues)}) ".html_safe
   end
 
   # Build a filter link path to opened issues assigned to "user".
