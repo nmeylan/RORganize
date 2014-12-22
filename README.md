@@ -1,14 +1,14 @@
 [![Code Climate](https://codeclimate.com/github/nmeylan/RORganize/badges/gpa.svg)](https://codeclimate.com/github/nmeylan/RORganize)
 #Welcome to RORganize
-### Started on June 20, 2012 - Last update : December 18, 2014
+### Started on June 20, 2012 - Last update : December 22, 2014
 
-Run with Rails 4.1.8
+Run with Rails 4.2.0
 [Demo here](http://demo.rorganize.org/)
 # What is RORganize?
 
 RORganize is an easy to use project management application. Running on the latest Ruby on Rails framework with the latest Ruby version.
 
-RORganize is [open source](https://github.com/nmeylan/RORganize) and released under [MIT license](http://choosealicense.com/licenses/mit/).
+RORganize is [open source](https://github.com/nmeylan/RORganize) and released under [GNU GPL v3.0](http://choosealicense.com/licenses/gpl-3.0/).
 
 # What can I do with this application?
 
