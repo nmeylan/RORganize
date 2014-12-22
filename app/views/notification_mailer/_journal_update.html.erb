@@ -4,18 +4,28 @@
  * Time: 03:28
 %>
 
-<%= content_tag :div, class: 'block' do
-  concat content_tag :div, class: 'header', &Proc.new {
-    concat content_tag :span, link_to(journal.user.caption, url_for(controller: 'rorganize', action: 'view_profile', user: journal.user.slug, only_path: false)), {class: 'author'}
-    concat " #{t(:label_updated).downcase} #{model.class.to_s.downcase}
-                #{link_to(model.caption,
-                          url_for_with_engine_lookup(controller: @notification.model_url[:controller], action: @notification.model_url[:action],
-                                  id: model.id, project_id: @notification.model_url[:project_id], only_path: false))} on "
-    concat content_tag :span, journal.created_at.strftime(Rorganize::TIME_FORMAT), {class: 'history-date'}
-  }
-  concat clear_both
-  concat content_tag(:ul, (journal.details.collect { |detail| history_detail_render(detail) }).join.html_safe)
-end %>
+<%= content_tag :div, class: 'block' do %>
+    <%= content_tag :div, class: 'header' do %>
+        <%= content_tag :span,
+                        link_to(journal.user.caption,
+                                url_for(controller: 'rorganize',
+                                        action: 'view_profile',
+                                        user: journal.user.slug,
+                                        only_path: false)), {class: 'author'} %>
+        <%= " #{t(:label_updated).downcase} #{model.class.to_s.downcase}" %>
+        <%= link_to(model.caption,
+                    url_for_with_engine_lookup(controller: @notification.model_url[:controller],
+                                               action: @notification.model_url[:action],
+                                               id: model.id,
+                                               project_id: @notification.model_url[:project_id],
+                                               only_path: false)) %>
+        <%= " on " %>
+        <%= content_tag :span, journal.created_at.strftime(Rorganize::TIME_FORMAT), {class: 'history-date'} %>
+
+        <%= clear_both %>
+        <%= content_tag(:ul, (journal.details.collect { |detail| history_detail_render(detail) }).join.html_safe) %>
+    <% end %>
+<% end %>
 
 <% if model.respond_to?(:attachments) %>
     <% model.attachments.each do |attachment| %>

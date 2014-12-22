@@ -5,17 +5,25 @@
 %>
 <% comment = @notification.trigger.decorate %>
 <% model = @notification.model %>
-<%= content_tag :div, {id: "comment_#{comment.id}", class: 'block'}, &Proc.new {
-  concat content_tag :div, class: 'header', &Proc.new {
-    concat content_tag :span, link_to(comment.author.caption, url_for(controller: 'rorganize', action: 'view_profile', user: comment.author.slug, only_path: false)) + ' ', class: 'author'
-    concat content_tag :span, t(:label_commented_lower_case), class: 'text'
-    concat " #{model.class.to_s.downcase}
-                #{link_to(model.caption,
-                          url_for_with_engine_lookup(controller: @notification.model_url[:controller], action: @notification.model_url[:action],
-                                  id: model.id, project_id: @notification.model_url[:project_id], only_path: false))} on "
-    concat content_tag :span, comment.creation_date, {class: 'history-date'}
-  }
-  concat content_tag :div, class: 'block-content', &Proc.new {
-    markdown_to_html comment.content, nil, true
-  }
-} %>
+<%= content_tag :div, {id: "comment_#{comment.id}", class: 'block'} do %>
+    <%= content_tag :div, class: 'header' do %>
+        <%= content_tag :span,
+                        link_to(comment.author.caption,
+                                url_for(controller: 'rorganize',
+                                        action: 'view_profile',
+                                        user: comment.author.slug,
+                                        only_path: false)), class: 'author' %>
+        <%= ' ' %>
+        <%= content_tag :span, t(:label_commented_lower_case), class: 'text' %>
+        <%= " #{model.class.to_s.downcase}" %>
+        <%= link_to(model.caption,
+                    url_for_with_engine_lookup(controller: @notification.model_url[:controller],
+                                               action: @notification.model_url[:action],
+                                               id: model.id,
+                                               project_id: @notification.model_url[:project_id],
+                                               only_path: false)) %>
+        <%= " on " %>
+        <%= content_tag :span, comment.creation_date, {class: 'history-date'} %>
+    <% end %>
+    <%= content_tag :div, markdown_to_html(comment.content, nil, true), class: 'block-content' %>
+<% end %>
