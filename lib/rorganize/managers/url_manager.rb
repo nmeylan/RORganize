@@ -57,7 +57,8 @@ module Rorganize
 
       def find_route_to_the_engine(engine_instance)
         engine_class = engine_instance.class
-        Rails.application.routes.routes.find { |r| r.app == engine_class }
+        # Rails.application.routes.routes.find { |r| r.app.eql?(engine_class) }
+        Rails.application.routes.routes.find { |r| r.app.app.eql?(engine_class) } # rails 4.2
       end
     end
   end

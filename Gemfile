@@ -1,8 +1,8 @@
 source 'http://rubygems.org'
 
-gem 'rails', '~> 4.1.6'
-gem 'test-unit'
+gem 'rails', '4.2.0'
 
+gem 'test-unit'
 gem 'devise'
 gem 'mysql2'
 gem 'friendly_id'
@@ -38,7 +38,13 @@ group :development do
   gem 'bullet'
   gem 'active_record_query_trace'
   gem 'spring'
+  gem 'rack-mini-profiler'
+  gem 'memory_profiler'
+  gem 'flamegraph'
+  gem 'stackprof', '~> 0.2.7'
 end
 
 #RORganize plugins
 # gem 'scenarios', :path => 'vendor/engines/scenarios'
+
+gem 'agile_board', path: 'vendor/engines/agile_board'

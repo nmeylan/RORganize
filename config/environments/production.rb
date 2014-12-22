@@ -80,4 +80,6 @@ RORganize::Application.configure do
   #  config.active_support.deprecation = :notice
   #ImageMagick
   Paperclip.options[:command_path] = '/usr/local/bin/'
+
+  config.active_record.raise_in_transactional_callbacks = true
 end
