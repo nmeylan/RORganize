@@ -44,5 +44,7 @@ RORganize::Application.configure do
       puts 'BULLET IS NOT DEFINED!'
     end
   end
+  
+  config.active_record.raise_in_transactional_callbacks = true
 
 end
