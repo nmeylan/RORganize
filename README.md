@@ -49,4 +49,4 @@ RORganize is developed by me, [Nicolas Meylan](https://github.com/nmeylan) since
 If you find bugs or want a feature to be added please write an [issue](https://github.com/nmeylan/RORganize/issues/new). 
 
 #Licence
-RORganize is released under the [MIT License](http://www.opensource.org/licenses/MIT).
+RORganize is released under the [GNU GPL v3.0](http://choosealicense.com/licenses/gpl-3.0/).
