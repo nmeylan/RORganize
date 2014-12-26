@@ -1,8 +1,8 @@
 [![Code Climate](https://codeclimate.com/github/nmeylan/RORganize/badges/gpa.svg)](https://codeclimate.com/github/nmeylan/RORganize)
 #Welcome to RORganize
-### Started on June 20, 2012 - Last update : December 22, 2014
+### Started on June 20, 2012 - Last update : December 26, 2014
 
-Run with Rails 4.2.0
+Run with Rails 4.2.0 and ruby 2.2.0
 [Demo here](http://demo.rorganize.org/)
 # What is RORganize?
 
