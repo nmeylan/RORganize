@@ -33,6 +33,7 @@ group :test do
   # Pretty printed test output
   gem 'turn', '~> 0.8.3', :require => false
   gem 'ffaker'
+  gem 'simplecov', require: false
 end
 group :development do
   gem 'bullet'
@@ -45,6 +46,4 @@ group :development do
 end
 
 #RORganize plugins
-# gem 'scenarios', :path => 'vendor/engines/scenarios'
-
-gem 'agile_board', path: 'vendor/engines/agile_board'
+# gem 'agile_board', path: 'vendor/engines/agile_board'
