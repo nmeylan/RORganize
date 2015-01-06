@@ -1,5 +1,5 @@
 require 'test_helper'
-require 'unit/magic_filter_test_expected_results'
+require_relative 'magic_filter_test_expected_results'
 class MagicFilterTest < ActiveSupport::TestCase
   include IssuesHelper
   include RORganizeTest::MagicFilterTestExpectedResults
