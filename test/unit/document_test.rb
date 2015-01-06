@@ -25,9 +25,8 @@ class DocumentTest < ActiveSupport::TestCase
     assert_equal expectation, actual
   end
   test 'attributes_formalized_names' do
-    expectation = ['Name', 'Description', 'Version', 'Category', 'Project', 'Created at', 'Updated at']
+    expectation = ['Name', 'Description', 'Version', 'Category', 'Project', 'Created at', 'Updated at', 'Comments count']
     actual = Document.attributes_formalized_names
-    p actual
     assert_equal expectation, actual
   end
 

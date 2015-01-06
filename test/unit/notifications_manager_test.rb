@@ -105,14 +105,14 @@ class NotificationsManagerTest < ActiveSupport::TestCase
   test 'Recipients : preferences in app' do
     create_watcher
     notif = @journal.create_notification
-    recipients_hash = @journal.real_recipients(notif, 'in_app')
+    recipients_hash = Rorganize::Managers::NotificationsManager::real_recipients(notif, 'in_app')
     assert_equal [], recipients_hash[:participants].collect { |r| r[:id] }
     assert_equal [], recipients_hash[:watchers].collect { |r| r[:id] }
 
     Preference.create(user_id: 1, key: Preference.keys[:notification_watcher_in_app], boolean_value: 1)
 
     notif = @journal.create_notification
-    recipients_hash = @journal.real_recipients(notif, 'in_app')
+    recipients_hash = Rorganize::Managers::NotificationsManager::real_recipients(notif, 'in_app')
     assert_equal [], recipients_hash[:participants].collect { |r| r[:id] }
     assert_equal [1], recipients_hash[:watchers].collect { |r| r[:id] }
   end
