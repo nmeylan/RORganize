@@ -13,6 +13,7 @@ class Attachment < ActiveRecord::Base
   Paperclip.interpolates :attachable_type do |attachment, _|
     attachment.instance.attachable_type.pluralize
   end
+
   Paperclip.interpolates :attachable_id do |attachment, _|
     attachment.instance.attachable_id
   end
@@ -24,14 +25,16 @@ class Attachment < ActiveRecord::Base
   before_post_process :skip_non_image
 
   validates_attachment :file,
-                       content_type: {content_type: /\A(image|application|text)/, not: %w(application/x-sh application/x-shar), message: 'has a non allowed content type.'},
-                       size: {in: RORganize::Application.config.attachments_size, message: "is too big, only #{RORganize::Application.config.attachments_size.max / 1024} kB max is allowed."},
+                       content_type: {content_type: /\A(image|application|text)/,
+                                      not: %w(application/x-sh application/x-shar),
+                                      message: 'has a non allowed content type.'},
+                       size: {in: RORganize::Application.config.attachments_size,
+                              message: "is too big, only #{RORganize::Application.config.attachments_size.max / 1024} kB max is allowed."},
                        file_name: {not: /.exe/, message: 'has a forbidden filename.'}
 
   def self.permit_attributes
     [:file, :tempfile, :original_filename, :content_type, :headers, :form_data, :name]
   end
-
 
 
   def self.file_size_error_message
