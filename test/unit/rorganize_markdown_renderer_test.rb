@@ -31,6 +31,26 @@ EOF
   end
 
   test 'markdown renderer' do
-    p markdown_to_html(@text)
+    expectation = <<EOF
+<div class='markdown-renderer' id=''><ul>
+<li>k</li>
+<li>l
+
+<ul>
+<li>i
+<ul class="task-list">
+<li><input type="checkbox" class="task-list-item-checkbox" disabled="" checked="">task complete b</li>
+<li><input type="checkbox" class="task-list-item-checkbox" disabled="">task uncomplete a</li>
+</ul>
+some text in <strong>bold</strong>
+<ul class="task-list">
+<li><input type="checkbox" class="task-list-item-checkbox" disabled="">task uncomplete c</li>
+<li><input type="checkbox" class="task-list-item-checkbox" disabled="" checked="">task complete d</li>
+</ul></li>
+</ul></li>
+</ul>
+</div>
+EOF
+    assert_equal expectation[0..-2], markdown_to_html(@text)
   end
 end

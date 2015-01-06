@@ -9,7 +9,6 @@ class IssueTest < ActiveSupport::TestCase
   # Called before every test method runs. Can be used
   # to set up fixture information.
   def setup
-    User.current = User.find_by_id(1)
     @issue = Issue.new(tracker_id: 1, subject: 'Issue creation', description: '', status_id: '1', done: 0, project_id: 1, due_date: '2012-12-31')
     @issue.save
   end
@@ -51,13 +50,13 @@ class IssueTest < ActiveSupport::TestCase
   end
 
   test 'Filtered attributes' do
-    expectation = [%w(Subject subject), ['Created at', 'created_at'], ['Updated at', 'updated_at'], ['Due date', 'due_date'], %w(Done done), %w(Author author), ['Assigned to', 'assigned_to'], %w(Tracker tracker), %w(Status status), %w(Version version), %w(Category category), ['Start date', 'start_date']]
+    expectation = [%w(Subject subject), ['Created at', 'created_at'], ['Updated at', 'updated_at'], ['Due date', 'due_date'], %w(Done done), %w(Author author), ['Assigned to', 'assigned_to'], %w(Tracker tracker), %w(Status status), %w(Version version), %w(Category category), ['Start date', 'start_date'], ["User story", "user_story"]]
     actual = Issue.filtered_attributes
     assert_equal expectation, actual
   end
 
   test 'Attributes_formalized_names' do
-    expectation = ['Subject', 'Description', 'Created at', 'Updated at', 'Due date', 'Done', 'Author', 'Assigned to', 'Project', 'Tracker', 'Status', 'Version', 'Category', 'Estimated time', 'Start date', 'Predecessor', 'Attachments count', 'Comments count', 'Link type']
+    expectation = ['Subject', 'Description', 'Created at', 'Updated at', 'Due date', 'Done', 'Author', 'Assigned to', 'Project', 'Tracker', 'Status', 'Version', 'Category', 'Estimated time', 'Start date', 'Predecessor', 'Attachments count', 'Comments count', 'Link type', "User story"] # TODO fix this test case
     actual = Issue.attributes_formalized_names
     assert_equal expectation, actual
   end

@@ -1,13 +1,11 @@
 ENV['RAILS_ENV'] = 'test'
 require File.expand_path('../../config/environment', __FILE__)
-require File.dirname(__FILE__) + '/../config/environment' unless defined?(RAILS_ROOT)
 
 require 'rails/test_help'
-require 'test/unit/ui/console/testrunner'
-require 'rubygems'
-require 'active_support'
-require 'active_support/test_case'
-require 'test/unit'
+
+if ActiveSupport::TestCase.respond_to?(:fixture_path=)
+  ActiveSupport::TestCase.fixture_path = File.expand_path("../fixtures", __FILE__)
+end
 
 class ActiveSupport::TestCase
   # Setup all fixtures in test/fixtures/*.(yml|csv) for all tests in alphabetical order.
@@ -16,5 +14,8 @@ class ActiveSupport::TestCase
   # -- they do not yet inherit this setting
   fixtures :all
 
+  setup do
+    User.current = users(:users_001)
+  end
   # Add more helper methods to be used by all tests here...
 end
