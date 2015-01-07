@@ -38,6 +38,10 @@ class CodeCoverage
       add_group 'Libraries', &->(source_file) { File.dirname(source_file.filename).end_with?('lib/rorganize') }
     end
 
+    force_coverage_on_all_files
+  end
+
+  def self.force_coverage_on_all_files
     base_result = {}
     GROUP_HASH.each_value do |dir|
       if dir.is_a?(Array)
