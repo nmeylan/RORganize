@@ -27,7 +27,47 @@ class CategoryTest < ActiveSupport::TestCase
     category.name = 'a'
     assert_not category.save, 'Saved with a single char name'
 
+    category.name = 'abcdefghklmnopqrstuvwxyz' # > 20 char, 20 char max is the constraints
+    assert_not category.save, 'Saved with more than 20 char name'
+
     category.name = 'qwertz'
     assert category.save
   end
+
+  test 'caption should be equal to name' do
+    name = 'Hello'
+    category = Category.new(name: name)
+    assert_equal name, category.caption
+    assert_equal name, category.name
+  end
+
+  test 'permit attributes should contains' do
+    assert_equal [:name], Category.permit_attributes
+  end
+
+  test 'it has many issues and nullify when category is deleted' do
+    category = Category.create(name: 'Hello')
+    issue = Issue.create(tracker_id: 1, category_id: category.id, subject: 'Bug', status_id: 1, author_id: User.current.id)
+
+    assert_equal category.id, issue.category_id
+
+    category.destroy
+    issue.reload # By pass cache
+    assert_nil issue.category_id
+  end
+
+  test 'it belongs to one project' do
+    project = Project.new(name: 'RORganize-test')
+    assert project.save
+
+    category = Category.new(name: 'Hello')
+    category.project = project
+    assert category.save
+
+    project.reload
+    category.reload
+    assert_equal project.id, category.project_id
+  end
+
+
 end
