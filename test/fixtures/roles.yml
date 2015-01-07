@@ -11,3 +11,11 @@ roles_003:
   id: 3
   name: Engagement Manager
   position: 3
+roles_004:
+  id: 4
+  name: Non member
+  position: 4
+roles_005:
+  id: 5
+  name: Anonymous
+  position: 5
