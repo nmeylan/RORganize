@@ -15,7 +15,7 @@ module Rorganize
 
 
     # Klazz : type of the filtered content, e.g : Issue
-    #Criterias : HASH criteria, e.g : {"subject"=>{"operator"=>"contains", "value"=>"test"}}
+    #Criteria : HASH criteria, e.g : {"subject"=>{"operator"=>"contains", "value"=>"test"}}
     #Filter type : are content filtered? then value is filter (to filter content) or all (to display all result)
     #Filter lists : Array of filters, e.g ["subject"] (used for the combobox)
     #Commit : is a new filter is submit?
