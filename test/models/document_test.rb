@@ -77,7 +77,7 @@ class DocumentTest < ActiveSupport::TestCase
     assert_equal expected, actual
 
     actual = Document.conditions_string({'name' => {'operator' => 'contains', 'value' => 'hello'}})
-    expected = 'documents.name LIKE "%hello%"  AND'
+    expected = 'documents.name LIKE "%hello%" AND'
     assert_equal expected, actual
 
     actual = Document.conditions_string({'name' => {'operator' => 'contains', 'value' => 'hello'},
