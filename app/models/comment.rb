@@ -14,16 +14,26 @@ class Comment < ActiveRecord::Base
   belongs_to :project
 
   scope :fetch_dependencies_issues, -> { includes(issue: :tracker) }
-  scope :comments, ->(commentable_type, date_range, conditions = '1 = 1') { eager_load(:project).where("commentable_type IN (?)", commentable_type).where(conditions).where(created_at: date_range).order('comments.created_at DESC') }
+
+  scope :comments, ->(commentable_type, date_range, conditions = '1 = 1') {
+    eager_load(:project)
+        .where("commentable_type IN (?)", commentable_type)
+        .where(conditions)
+        .where(created_at: date_range)
+        .order('comments.created_at DESC') }
 
   default_scope { eager_load(author: :avatar) }
   validates :content, :project_id, presence: true
   before_update :update_date
 
+  # Build a scope that eager load all comments for the given object type
+  # for a given time range.
+  # @param [Array] commentable_types : an array of the commented objects types (e.g: Issue, Document...)
+  # @param [Symbol] period : one of the followings values : :ONE_DAY, :THREE_DAYS, :ONE_WEEK, :ONE_MONTH
+  # @param [Date] date : The end date of the range.
+  # @param [String] conditions : extra condition for the scope.
   def self.comments_eager_load(commentable_types, period, date, conditions)
-    periods = ACTIVITIES_PERIODS
-    date = date.to_date + 1
-    date_range = (date - periods[period.to_sym])..date
+    date_range = build_date_range(date, period)
 
     query = self.comments(commentable_types, date_range, conditions)
     query = query.fetch_dependencies_issues if commentable_types.include?('Issue')
@@ -31,17 +41,26 @@ class Comment < ActiveRecord::Base
     query
   end
 
+  # Build a range from given date - period to given date.
+  # @param [Date] date : The end date of the range.
+  # @param [Symbol] period : one of the followings values : :ONE_DAY, :THREE_DAYS, :ONE_WEEK, :ONE_MONTH
+  def self.build_date_range(date, period)
+    periods = ACTIVITIES_PERIODS
+    date = date.to_date + 1
+    (date - periods[period.to_sym])..date
+  end
+
   def update_date
     self.updated_at = Time.now
   end
 
-  # @return [Boolean] true if the comment was edited.
+# @return [Boolean] true if the comment was edited.
   def edited?
     self.created_at < self.updated_at
   end
 
-  # @param [User] user.
-  # @return [Boolean] true if given user is the author, false otherwise.
+# @param [User] user.
+# @return [Boolean] true if given user is the author, false otherwise.
   def author?(user)
     self.author.id.eql? user.id
   end
