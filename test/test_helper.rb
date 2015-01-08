@@ -7,10 +7,11 @@ end
 require File.expand_path('../../config/environment', __FILE__)
 require 'rails/test_help'
 
-
+require 'test_assertions/test_assertions'
 
 
 class ActiveSupport::TestCase
+  include Rorganize::TestAssertions
   # Setup all fixtures in test/fixtures/*.(yml|csv) for all tests in alphabetical order.
   #
   # Note: You'll currently still have to declare fixtures explicitly in integration tests
