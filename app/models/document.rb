@@ -35,12 +35,15 @@ class Document < ActiveRecord::Base
     self.name
   end
 
+  # @return [User] return the author of the document.
   def author
     Journal.find_by_action_type_and_journalizable_id_and_journalizable_type('created', self.id, self.class.to_s).user
   end
 
   def self.permit_attributes
-    [:name, :description, :version_id, :category_id, {new_attachment_attributes: Attachment.permit_attributes}, {edit_attachment_attributes: Attachment.permit_attributes}]
+    [:name, :description, :version_id, :category_id,
+     {new_attachment_attributes: Attachment.permit_attributes},
+     {edit_attachment_attributes: Attachment.permit_attributes}]
   end
 
   def self.permit_bulk_edit_values
@@ -54,6 +57,21 @@ class Document < ActiveRecord::Base
     attrs.map { |attribute| [attribute, attribute.gsub(/\s/, '_').downcase] }
   end
 
+  #@param [Hash] hash : a hash with the following structure
+  # {attribute_name:String => {"operator"=> String, "value"=> String}}
+  # attribute_name is the name of the attribute on which criterion is based
+  # E.g : {"subject"=>{"operator"=>"contains", "value"=>"test"}}
+  # operator values are :
+  # 'equal'
+  # 'different'
+  # 'superior'
+  # 'inferior'
+  # 'contains'
+  # 'not_contains'
+  # 'today'
+  # 'open'
+  # 'close'
+  # @return [String] a condition string that will be used in a where clause.
   def self.conditions_string(hash)
     #attributes from db: get real attribute name to build query
     table = self.table_name

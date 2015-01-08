@@ -22,5 +22,9 @@ class ActiveSupport::TestCase
     User.current = users(:users_001)
   end
   # Add more helper methods to be used by all tests here...
+
+  def generate_string_of_length(length)
+    (0...length).map { (65 + rand(26)).chr }.join
+  end
 end
 
