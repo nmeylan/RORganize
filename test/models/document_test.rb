@@ -87,7 +87,7 @@ class DocumentTest < ActiveSupport::TestCase
     assert_equal expected, actual
 
     actual = Document.conditions_string({'created_at' => {'operator' => 'equal', 'value' => '2015-01-07'}})
-    expected = 'DATE_FORMAT(documents.created_at,\'%Y-%m-%d\') <=> \'2015-01-07\'  AND'
+    expected = 'DATE_FORMAT(documents.created_at,\'%Y-%m-%d\') <=> \'2015-01-07\' AND'
     assert_equal expected, actual
   end
 
