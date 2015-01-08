@@ -38,7 +38,7 @@ class CodeCoverage
       add_group 'Libraries', &->(source_file) { File.dirname(source_file.filename).end_with?('lib/rorganize') }
     end
 
-    force_coverage_on_all_files
+    force_coverage_on_all_files if ENV['FORCE_COVERAGE']
   end
 
   def self.force_coverage_on_all_files
