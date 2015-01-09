@@ -1,36 +1,44 @@
 ---
-issues_statuses_001:
+issues_statuses_001: # New
   id: 1
   is_closed: 0
   default_done_ratio: 0
   enumeration_id: 1
-issues_statuses_002:
+issues_statuses_002: # In progress
   id: 2
   is_closed: 0
   default_done_ratio: 0
   enumeration_id: 2
-issues_statuses_003:
+issues_statuses_003: # Closed
   id: 3
   is_closed: 1
   default_done_ratio: 100
   enumeration_id: 3
-issues_statuses_004:
+issues_statuses_004: # Fixed to test
   id: 4
   is_closed: 0
   default_done_ratio: 100
   enumeration_id: 4
-issues_statuses_005:
+issues_statuses_005: # Tested to be delivered
   id: 5
   is_closed: 0
   default_done_ratio: 100
   enumeration_id: 5
-issues_statuses_006:
+issues_statuses_006: # Not satisfying
   id: 6
   is_closed: 0
   default_done_ratio: 50
   enumeration_id: 6
-issues_statuses_007:
+issues_statuses_007: # Redo
   id: 7
   is_closed: 0
   default_done_ratio: 0
   enumeration_id: 7
+issues_statuses_008: # In progress bis
+  id: 8
+  is_closed: 0
+  enumeration_id: 17
+issues_statuses_009: # Redo bis
+  id: 9
+  is_closed: 1
+  enumeration_id: 18

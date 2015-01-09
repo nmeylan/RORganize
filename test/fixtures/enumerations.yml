@@ -34,6 +34,7 @@ enumerations_007:
   opt: ISTS
   name: Redo
   position: 5
+
 enumerations_008:
   id: 8
   opt: CLIS
@@ -80,3 +81,14 @@ enumerations_016:
   opt: PRNO
   name: notification_participant_in_app
   position: 4
+
+enumerations_017:
+  id: 17
+  opt: ISTS
+  name: In progress bis
+  position: 8
+enumerations_018:
+  id: 18
+  opt: ISTS
+  name: Redo bis
+  position: 9

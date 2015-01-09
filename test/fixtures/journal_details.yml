@@ -3533,7 +3533,7 @@ journal_details_505:
   property: Assigned to
   property_key: assigned_to_id
   old_value: Nicolas Meylan
-  value: Alexis Monnet
+  value: Roger Smith
 journal_details_506:
   id: 549
   journal_id: 667
@@ -4842,14 +4842,14 @@ journal_details_692:
   property: Assigned to
   property_key: assigned_to_id
   old_value: Nicolas Meylan
-  value: Alexis Monnet
+  value: Roger Smith
 journal_details_693:
   id: 762
   journal_id: 1017
   property: Assigned to
   property_key: assigned_to_id
   old_value: Nicolas Meylan
-  value: Alexis Monnet
+  value: Roger Smith
 journal_details_694:
   id: 763
   journal_id: 1018
@@ -4961,7 +4961,7 @@ journal_details_709:
   property: Assigned to
   property_key: assigned_to_id
   old_value: Nicolas Meylan
-  value: Alexis Monnet
+  value: Roger Smith
 journal_details_710:
   id: 779
   journal_id: 1038
@@ -6228,7 +6228,7 @@ journal_details_890:
   property: Assigned to
   property_key: assigned_to_id
   old_value: Nicolas Meylan
-  value: Alexis Monnet
+  value: Roger Smith
 journal_details_891:
   id: 1225
   journal_id: 1719

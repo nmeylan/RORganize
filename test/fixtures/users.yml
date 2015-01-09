@@ -4,7 +4,7 @@ users_001:
   name: Nicolas Meylan
   login: nmeylan
   admin: 1
-  email: nmeylan@gmail.com
+  email: xxx@xxx.com
   encrypted_password: $2a$10$tGve9Yqzujn4F06IGuCcMOZV0DnPQpYjsiQYz72dwcxHHdWxcQ8FO
   reset_password_token:
   reset_password_sent_at:
@@ -37,10 +37,10 @@ users_002:
   slug: james-bond
 users_003:
   id: 5
-  name: Alexis Monnet
+  name: Roger Smith
   login: amonnet
   admin: 0
-  email: nicolas.meylan@etu.univ-lyon1.fr
+  email: yyyy@yyyyy.fr
   encrypted_password: $2a$10$GcKzN5xLVsnOhC.act4yve3p8LHInffy/iCw7jGqzbtD071pQdGdC
   reset_password_token:
   reset_password_sent_at:
@@ -52,7 +52,7 @@ users_003:
   last_sign_in_ip: 2.3.49.223
   created_at: 2012-12-20 14:41:32.000000000 Z
   updated_at: 2013-06-04 15:41:00.000000000 Z
-  slug: alexis-monnet
+  slug: roger-smith
 users_004:
   id: 7
   name: Stan Smith

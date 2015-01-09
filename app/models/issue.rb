@@ -56,6 +56,9 @@ class Issue < ActiveRecord::Base
     filter(filter, project_id).paginated(current_page, per_page, order, [:tracker, :version, :assigned_to, :category, :project, :attachments, :author, status: [:enumeration]])
   end
 
+  # @param [Numeric] project_id
+  # @return [Array] an array with the following structure : [[status_id, status_name, size_of_the_group, project_slug], ..]
+  # (e.g : [[4, 'Fixed to test', 3, 'test-project'], [5, 'Tested to be delivered', 1, 'test-project']])
   def self.group_by_status_method(project_id)
     joins(:project, status: [:enumeration]).
         group('1').
@@ -63,19 +66,28 @@ class Issue < ActiveRecord::Base
         pluck('issues_statuses.id, enumerations.name, count(issues.id), projects.slug')
   end
 
-  def self.group_opened_by_attr_method(attr, conditions, project_id, table_name)
+  # @param [String] attribute_name : the name of the attribute to group by.
+  # @param [String] conditions : an extra condition string.
+  # @param [Numeric] project_id : the project id.
+  # @param [String] table_name : the table name of the attribute.
+  # @return [Array] an array with the following structure : [[id, name, size_of_the_group, project_slug], ..]
+  def self.group_opened_by_attr_method(attribute_name, conditions, project_id, table_name)
     joins(:project, :status).
-        joins("LEFT OUTER JOIN #{table_name} ON #{table_name}.id = issues.#{attr}_id").
+        joins("LEFT OUTER JOIN #{table_name} ON #{table_name}.id = issues.#{attribute_name}_id").
         group('1').
         where('issues_statuses.is_closed = false AND issues.project_id = ? AND ?', project_id, conditions).
         pluck("#{table_name}.id, #{table_name}.name, count(issues.id), projects.slug")
   end
 
-  def self.group_opened_by_project_method(attr, conditions)
+  # @param [String] database_field : e.g 'issues.assigned_to_id', 'issues.author_id'.
+  # @param [String] conditions : a condition string e.g  'issues.assigned_to_id = 1'
+  # @return [Array] an array with the following structure :
+  # [[database_field_value, project_id, project_slug, size_of_the_group, project_slug], ..]
+  def self.group_opened_by_project_method(database_field, conditions)
     joins(:project, status: [:enumeration]).
         group('2').
         where("issues_statuses.is_closed = false AND #{conditions}").
-        pluck("#{attr}, projects.id, projects.slug, count(issues.id), projects.slug")
+        pluck("#{database_field}, projects.id, projects.slug, count(issues.id), projects.slug")
   end
 
   # Methods
@@ -85,16 +97,10 @@ class Issue < ActiveRecord::Base
 
   # @return [Array] array with all attribute that can be filtered.
   def self.filtered_attributes
-    unused_attributes = ['Project', 'Description', 'Estimated time', 'Predecessor', 'Attachments count', 'Comments count', 'Link type']
+    unused_attributes = ['Project', 'Description', 'Estimated time', 'Predecessor',
+                         'Attachments count', 'Comments count', 'Link type']
     attrs = Issue.attributes_formalized_names.delete_if { |attribute| unused_attributes.include?(attribute) }
     attrs.map { |attribute| [attribute, attribute.gsub(/\s/, '_').downcase] }
-  end
-
-  def set_predecessor(predecessor_id)
-    self.predecessor_id = predecessor_id
-    saved = self.save
-    journals = Journal.where(journalizable_type: 'Issue', journalizable_id: self.id).includes([:details, :user])
-    {saved: saved, journals: journals}
   end
 
   # @param [Array] doc_ids : array containing all ids of issues that will be bulk edited.
@@ -112,7 +118,22 @@ class Issue < ActiveRecord::Base
     Project.update_counters(project.id, issues_count: -destroyed_objects.size)
   end
 
-  def self.conditions_string(hash)
+  #@param [Hash] criteria_hash : a hash with the following structure
+  # {attribute_name:String => {"operator"=> String, "value"=> String}}
+  # attribute_name is the name of the attribute on which criterion is based
+  # E.g : {"subject"=>{"operator"=>"contains", "value"=>"test"}}
+  # operator values are :
+  # 'equal'
+  # 'different'
+  # 'superior'
+  # 'inferior'
+  # 'contains'
+  # 'not_contains'
+  # 'today'
+  # 'open'
+  # 'close'
+  # @return [String] a condition string that will be used in a where clause.
+  def self.conditions_string(criteria_hash)
     #attributes from db: get real attribute name to build query
     #noinspection RubyStringKeysInHashInspection,RubyStringKeysInHashInspection
     attributes = {'assigned_to' => 'issues.assigned_to_id',
@@ -128,14 +149,14 @@ class Issue < ActiveRecord::Base
                   'version' => 'issues.version_id',
                   'updated_at' => 'issues.updated_at'
     }
-    hash.each do |_, v|
+    criteria_hash.each do |_, v|
       if v['operator'].eql?('open')
         v['value'] = IssuesStatus.where(is_closed: 0).collect { |status| status.id }
       elsif v['operator'].eql?('close')
         v['value'] = IssuesStatus.where(is_closed: 1).collect { |status| status.id }
       end
     end
-    Rorganize::MagicFilter.generics_filter(hash, attributes)
+    Rorganize::MagicFilter.generics_filter(criteria_hash, attributes)
   end
 
   # @return [Boolean] true if issue has an opened status. false otherwise.
@@ -155,6 +176,18 @@ class Issue < ActiveRecord::Base
     self.has_task_list? ? self.description.scan(/- \[(\w|\s)\]/).count : 0
   end
 
+
+  #Permit attributes
+  def self.permit_attributes
+    [:assigned_to_id, :author_id, :version_id, :done, :category_id, :status_id,
+     :start_date, :subject, :description, :tracker_id, :due_date, :estimated_time,
+     {new_attachment_attributes: Attachment.permit_attributes},
+     {edit_attachment_attributes: Attachment.permit_attributes}]
+  end
+
+  def self.permit_bulk_edit_values
+    [:assigned_to_id, :author_id, :version_id, :done, :category_id, :status_id, :start_date]
+  end
 
   private
   def set_done_ratio
@@ -179,15 +212,6 @@ class Issue < ActiveRecord::Base
       issues.update_all(done: status.default_done_ratio)
       Issue.journal_update_creation(issues, issues.first.project, User.current.id, 'Issue', journals)
     end
-  end
-
-  #Permit attributes
-  def self.permit_attributes
-    [:assigned_to_id, :author_id, :version_id, :done, :category_id, :status_id, :start_date, :subject, :description, :tracker_id, :due_date, :estimated_time, {new_attachment_attributes: Attachment.permit_attributes}, {edit_attachment_attributes: Attachment.permit_attributes}]
-  end
-
-  def self.permit_bulk_edit_values
-    [:assigned_to_id, :author_id, :version_id, :done, :category_id, :status_id, :start_date]
   end
 end
 
