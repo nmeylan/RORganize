@@ -4,7 +4,7 @@ class Enumeration < ActiveRecord::Base
   before_create :inc_position
   after_destroy :dec_position_on_destroy
   validates :name, presence: true, length: 2..255
-
+  validates :opt, presence: true, length: 4..4
   def caption
     self.name
   end
@@ -20,7 +20,6 @@ class Enumeration < ActiveRecord::Base
 
 
   def dec_position_on_destroy
-    position = self.position
-    Enumeration.where("position > #{position} AND opt = 'ISTS'").update_all 'position = position - 1'
+    Enumeration.where("position > #{self.position} AND opt = '#{self.opt}'").update_all 'position = position - 1'
   end
 end
