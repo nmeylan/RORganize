@@ -28,6 +28,16 @@ module Rorganize
           end
         end
 
+        # @param [Numeric] predecessor_id : the predecessor id.
+        # @return [Hash] a hash with the following structure:
+        # {saved: Boolean, journals: Array}
+        def set_predecessor(predecessor_id)
+          self.predecessor_id = predecessor_id
+          saved = self.save
+          journals = Journal.where(journalizable_type: 'Issue', journalizable_id: self.id).includes([:details, :user])
+          {saved: saved, journals: journals}
+        end
+
         def validate_predecessor
           unless self.predecessor_id.nil?
             issue = Issue.find(self.predecessor_id)

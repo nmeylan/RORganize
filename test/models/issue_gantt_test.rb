@@ -56,6 +56,14 @@ class IssueGanttTest < ActiveSupport::TestCase
     assert_equal @issue3, @issue1.parent
   end
 
+  test 'calling set predecessor method should return a hash' do
+    hash = @issue1.set_predecessor(@issue2.id)
+    assert hash[:saved], @issue1.errors.messages
+
+    hash = @issue1.set_predecessor(@issue1.id)
+    assert_not hash[:saved], @issue1.errors.messages
+  end
+
   test 'it should bulk edit attributes after gantt edition' do
     start_date = Date.new(2012, 12, 31)
     due_date = Date.new(2013, 01, 31)
