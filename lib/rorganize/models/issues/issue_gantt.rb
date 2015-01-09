@@ -8,14 +8,15 @@ module Rorganize
       module IssueGantt
 
         module ClassMethods
-          # @param [Hash] hash containing {issue_id: {attribute: new_value}}
-          def gantt_edit(hash)
+          # @param [Hash] issue_id_attributes_changed_hash containing {issue_id: {attribute: new_value}}
+          # attributes are 'start_date' or 'due_date'
+          def gantt_edit(issue_id_attributes_changed_hash)
             errors = []
             Issue.transaction do
-              hash.each do |k, v|
-                issue = Issue.find_by_id(k)
+              issue_id_attributes_changed_hash.each do |issue_id, attribute_name_value_hash|
+                issue = Issue.find_by_id(issue_id)
                 if issue
-                  issue.attributes = v
+                  issue.attributes = attribute_name_value_hash
                   if issue.changed?
                     issue.save
                     errors << issue.errors.messages if issue.errors.messages.any?
@@ -34,7 +35,7 @@ module Rorganize
               errors.add(:predecessor, 'not exist in this project')
             elsif predecessor_is_self?(issue)
               errors.add(:predecessor, "can't be self")
-            elsif predecessor_is_a_child(issue)
+            elsif predecessor_is_a_child?(issue)
               errors.add(:predecessor, 'is already a child')
             end
           end
@@ -42,7 +43,7 @@ module Rorganize
           errors.add(:predecessor, 'not found')
         end
 
-        def predecessor_is_a_child(issue)
+        def predecessor_is_a_child?(issue)
           !issue.nil? && self.children.include?(issue)
         end
 
