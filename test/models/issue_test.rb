@@ -41,14 +41,6 @@ class IssueTest < ActiveSupport::TestCase
     assert_equal(100, @issue.done)
   end
 
-  test 'Set due date before update callback' do
-    version = Version.find_by_id(2)
-    assert_not_equal(@issue.due_date, version.target_date)
-    @issue.version = version
-    @issue.save
-    assert_equal(version.target_date, @issue.due_date)
-  end
-
   test 'Filtered attributes' do
     expectation = [%w(Subject subject), ['Created at', 'created_at'], ['Updated at', 'updated_at'], ['Due date', 'due_date'], %w(Done done), %w(Author author), ['Assigned to', 'assigned_to'], %w(Tracker tracker), %w(Status status), %w(Version version), %w(Category category), ['Start date', 'start_date'], ["User story", "user_story"]]
     actual = Issue.filtered_attributes

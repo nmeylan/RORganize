@@ -9,11 +9,14 @@ module Rorganize
 
 
         module ClassMethods
+          # Fire when issues are bulk edited and the updated attribute is "version".
+          # @param [Array] issue_ids
+          # @param [Numeric] version_id
+          # @param [Array] journals : array of journals.
           def bulk_set_start_and_due_date(issue_ids, version_id, journals)
             version = Version.find_by_id(version_id)
             issues = Issue.where(id: issue_ids)
-            issue_changes = {due_date: [], start_date: []}
-            bulk_change_start_due_date(issue_changes, issues)
+            issue_changes = bulk_change_start_due_date(issues)
             merged_issues = issue_changes[:due_date] | issue_changes[:start_date]
             if merged_issues.any?
               Issue.where(id: issue_changes[:due_date].collect { |issue| issue.id }).update_all(due_date: version.target_date)
@@ -22,12 +25,16 @@ module Rorganize
             end
           end
 
-          def bulk_change_start_due_date(issue_changes, issues)
+
+          # @param [Array] issues : that contains bulk updated issues.
+          def bulk_change_start_due_date(issues)
+            issue_changes = {due_date: [], start_date: []}
             issues.each do |issue|
               issue = issue.set_start_and_due_date(true)
               issue_changes[:due_date] << issue unless issue.changes[:due_date].nil?
               issue_changes[:start_date] << issue unless issue.changes[:start_date].nil?
             end
+            issue_changes
           end
         end
 
@@ -63,13 +70,14 @@ module Rorganize
           self
         end
 
-
         def update_start_date?(version_update)
-          !self.new_record? && self.version && self.version.start_date && version_changed?(version_update) && (self.start_date.nil? || (start_date_lt_version_start_date?))
+          !self.new_record? && self.version && self.version.start_date &&
+              version_changed?(version_update) && (self.start_date.nil? || (start_date_lt_version_start_date?))
         end
 
         def update_due_date?(version_update)
-          !self.new_record? && self.version && !self.version.target_date.nil? && due_date_gt_version_due_date_or_nil? && version_changed?(version_update)
+          !self.new_record? && self.version && !self.version.target_date.nil? &&
+              due_date_gt_version_due_date_or_nil? && version_changed?(version_update)
         end
 
         def due_date_gt_version_due_date_or_nil?
