@@ -1,9 +1,9 @@
 # Author: Nicolas
 # Date: 02/05/2014
 # Encoding: UTF-8
-# File: issue_status_test.rb
+# File: issues_status_test.rb
 require 'test_helper'
-class IssueStatusTest < ActiveSupport::TestCase
+class IssuesStatusTest < ActiveSupport::TestCase
 
   # Called before every test method runs. Can be used
   # to set up fixture information.
