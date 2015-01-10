@@ -20,18 +20,19 @@ class Project < ActiveRecord::Base
   has_many :watchers, dependent: :delete_all
   has_many :notifications, dependent: :delete_all
   has_many :queries, dependent: :delete_all
-  has_one :wiki
+  has_one :wiki, dependent: :destroy
   #Triggers
   before_create :set_created_by
   after_create :create_member, :add_modules
   after_update :save_attachments, :remove_all_non_member
+  after_destroy :delete_all_journal_detail_orphans
   #Validators
   validates_associated :attachments
   validates :name, presence: true, uniqueness: true
   validates :name, length: {
       maximum: 90,
       tokenizer: lambda { |str| str.scan(/\w+/) },
-      too_long: 'must have at most 255 words'
+      too_long: 'must have at most 90 words'
   }
 
   def should_generate_new_friendly_id?
@@ -67,7 +68,9 @@ class Project < ActiveRecord::Base
   end
 
   def self.permit_attributes
-    [:name, :description, :identifier, :trackers, :is_public, new_attachment_attributes: Attachment.permit_attributes, existing_attachment_attributes: Attachment.permit_attributes]
+    [:name, :description, :identifier, :trackers, :is_public,
+     new_attachment_attributes: Attachment.permit_attributes,
+     existing_attachment_attributes: Attachment.permit_attributes]
   end
 
   def set_created_by
@@ -97,12 +100,18 @@ class Project < ActiveRecord::Base
     return Project.where(is_archived: false).pluck('id')
   end
 
-  def activities(journalizable_types, period, from_date)
-    Journal.activities_eager_load(journalizable_types, period, from_date, "journals.project_id = #{self.id}")
+  # @param [Array] journalizable_types : all journalizable types. e.g [Issue, Document, Member].
+  # @param [Symbol] period : one of the followings values : :ONE_DAY, :THREE_DAYS, :ONE_WEEK, :ONE_MONTH
+  # @param [Date] end_date : The end date of the range.
+  def activities(journalizable_types, period, end_date)
+    Journal.activities_eager_load(journalizable_types, period, end_date, "journals.project_id = #{self.id}")
   end
 
-  def comments(journalizable_types, period, from_date)
-    Comment.comments_eager_load(journalizable_types, period, from_date, "comments.project_id = #{self.id}")
+  # @param [Array] commentable_types : all journalizable types. e.g [Issue, Document, Member].
+  # @param [Symbol] period : one of the followings values : :ONE_DAY, :THREE_DAYS, :ONE_WEEK, :ONE_MONTH
+  # @param [Date] end_date : The end date of the range.
+  def comments(commentable_types, period, end_date)
+    Comment.comments_eager_load(commentable_types, period, end_date, "comments.project_id = #{self.id}")
   end
 
   def update_info(params, trackers)
@@ -121,10 +130,6 @@ class Project < ActiveRecord::Base
 
   def last_activity
     self.journals.order("#{:created_at} desc").limit(1).first
-  end
-
-  def done_version
-
   end
 
   def active_versions
@@ -168,5 +173,9 @@ class Project < ActiveRecord::Base
       Member.destroy_all(project_id: self.id, role_id: Role.non_member.id)
       Watcher.delete_all("project_id = #{self.id} AND user_id NOT IN (#{self.members.collect { |member| member.user_id }.join(',')})")
     end
+  end
+
+  def delete_all_journal_detail_orphans
+    JournalDetail.delete_all_orphans(self.id)
   end
 end

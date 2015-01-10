@@ -19,7 +19,6 @@ class JournalTest < ActiveSupport::TestCase
     # Do nothing
   end
 
-  # Fake test
   test "scope activities" do
     journal = Journal.create(journalizable_type: 'Issue', journalizable_id: 1, action_type: 'created',
                    project_id: 666, journalizable_identifier: 'aa', created_at: Time.new(2012, 10, 20))

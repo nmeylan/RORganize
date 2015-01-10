@@ -55,7 +55,7 @@ class Journal < ActiveRecord::Base
   # @param [Symbol] period : one of the followings values : :ONE_DAY, :THREE_DAYS, :ONE_WEEK, :ONE_MONTH
   def self.build_date_range(date, period)
     periods = ACTIVITIES_PERIODS
-    date = date.to_date + 1
+    date = date.to_datetime + 1
     (date - periods[period.to_sym])..date
   end
 
@@ -66,8 +66,9 @@ class Journal < ActiveRecord::Base
   # @param [Array] journalizable_types : all journalizable types. e.g [Issue, Document, Member].
   def self.activities_method(conditions, date_range, days, journalizable_types)
     includes([:details, :project, user: :avatar])
-        .where("journalizable_type IN (?)", journalizable_types)
+        .where("journalizable_type IN (?)", journalizable_types) # .where("journals.created_at >= ? AND journals.created_at < ?", date_range.first, date_range.last)
         .where(created_at: date_range)
+        .where("journals.created_at >= ? AND journals.created_at < ?", date_range.first, date_range.last)
         .where(conditions)
         .order('journals.created_at DESC')
         .limit(days * 1000)
@@ -107,7 +108,7 @@ class Journal < ActiveRecord::Base
   # Make the attribute name more readable (remove id, underscore then capitalize).
   # @param [Symbol] attribute that was updated.
   def self.make_attribute_readable(attribute)
-    attribute.to_s.tr('_', ' ').gsub('id','').strip.capitalize
+    attribute.to_s.tr('_', ' ').gsub('id', '').strip.capitalize
   end
 
   def self.foreign_attribute_value(association, value)
@@ -125,6 +126,5 @@ class Journal < ActiveRecord::Base
     sql = "INSERT INTO `journals` (`user_id`, `journalizable_id`, `journalizable_type`, `journalizable_identifier`, `action_type`, `project_id`, `created_at`, `updated_at`) VALUES #{insert.join(', ')}"
     Journal.connection.execute(sql)
   end
-
 
 end
