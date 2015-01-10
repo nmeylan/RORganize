@@ -23,7 +23,11 @@ class Member < ActiveRecord::Base
   validates_uniqueness_of :user_id, scope: [:project_id, :role_id]
   #Scopes
   scope :fetch_dependencies, -> { includes(:role, :user) }
-   scope :members_by_project, -> (project_id, current_page, per_page, order) {where(project_id: project_id).where('members.role_id <> ?', Role.non_member.id).paginated(current_page, per_page, order, [:role, :user])}
+  scope :members_by_project, -> (project_id, current_page, per_page, order) {
+    where(project_id: project_id)
+        .where('members.role_id <> ?', Role.non_member.id)
+        .paginated(current_page, per_page, order, [:role, :user])
+  }
   #Methods
   def caption
     self.user.name
@@ -44,8 +48,8 @@ class Member < ActiveRecord::Base
   end
 
   #Change a member's role
-  def change_role(value)
-    success = self.update_attribute(:role_id, value)
+  def change_role(role_id)
+    success = self.update_attribute(:role_id, role_id)
     members = Member.where(project_id: self.project.id).eager_load(:role, :user)
     {saved: success, members: members}
   end
@@ -63,10 +67,9 @@ class Member < ActiveRecord::Base
     Watcher.delete_all(project_id: self.project_id, user_id: self.user_id)
   end
 
-  # If member was a non member on the project, then drop this old role and replaced by the new one.
+  # If member was a non member on the project, then drop his old role and replaced by the new one.
   def remove_old_member_role
     Member.delete_all(project_id: self.project_id, user_id: self.user_id)
-
   end
 
   def dec_counter_cache
