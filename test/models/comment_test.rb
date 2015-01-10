@@ -81,7 +81,8 @@ class CommentTest < ActiveSupport::TestCase
   end
 
   test 'it has a polymorphic identifier to retrieve the belonging object' do
-    comment1 = Comment.create({content: 'this a comment', user_id: User.current.id, project_id: 1, commentable_id: 1, commentable_type: 'Issue'})
+    comment1 = Comment.create({content: 'this a comment', user_id: User.current.id, project_id: 1,
+                               commentable_id: 1, commentable_type: 'Issue'})
     assert_equal :Issue_1, comment1.polymorphic_identifier
   end
 
