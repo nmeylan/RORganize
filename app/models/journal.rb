@@ -23,31 +23,11 @@ class Journal < ActiveRecord::Base
 
   scope :journalizable_activities, ->(journalizable_id, journalizable_type) { journalizable_activities_method(journalizable_id, journalizable_type) }
 
-  scope :member_activities, ->(member) { member_activities_method(member) }
-
   scope :activities, ->(journalizable_types, date_range, days, conditions = '1 = 1') {
     activities_method(conditions, date_range, days, journalizable_types)
   }
 
   #Scopes methods
-  # This scope method give all activities.
-  # @param [String] conditions.
-  # @param [Range] date_range.
-  # @param [Numeric] days.
-  # @param [Array] journalizable_types : all journalizable types. e.g [Issue, Document, Member].
-  def self.activities_method(conditions, date_range, days, journalizable_types)
-    includes([:details, :project, user: :avatar]).
-        where("journalizable_type IN (?) AND DATE_FORMAT(journals.created_at, '%Y-%m-%d') BETWEEN ? AND ?",
-              journalizable_types, date_range.first, date_range.last).
-        where(conditions).
-        order('journals.created_at DESC').
-        limit(days * 1000)
-  end
-
-  def self.member_activities_method(member)
-    where(user_id: member.user_id, project_id: member.project_id).
-        order('created_at DESC')
-  end
 
   def self.journalizable_activities_method(journalizable_id, journalizable_type)
     includes([:details, user: :avatar]).where(journalizable_type: journalizable_type, journalizable_id: journalizable_id)
@@ -57,20 +37,44 @@ class Journal < ActiveRecord::Base
     includes(:details, :project, :user, :journalizable)
   end
 
-  # Methods
-
+  # @param [Array] journalizable_types : all journalizable types. e.g [Issue, Document, Member].
+  # @param [Symbol] period : one of the followings values : :ONE_DAY, :THREE_DAYS, :ONE_WEEK, :ONE_MONTH
+  # @param [Date] date : The end date of the range.
+  # @param [String] conditions : extra condition for the scope.
   def self.activities_eager_load(journalizable_types, period, date, conditions)
-    periods = ACTIVITIES_PERIODS
-    date = date.to_date
-    days = periods[period.to_sym]
-    date_range = (date - days)..date
+    date_range = build_date_range(date, period)
+    days = ACTIVITIES_PERIODS[period.to_sym]
     query = self.activities(journalizable_types, date_range, days, conditions)
     query = query.preload(:journalizable)
     query
   end
 
+  # Build a range from given date - period to given date.
+  # @param [Date] date : The end date of the range.
+  # @param [Symbol] period : one of the followings values : :ONE_DAY, :THREE_DAYS, :ONE_WEEK, :ONE_MONTH
+  def self.build_date_range(date, period)
+    periods = ACTIVITIES_PERIODS
+    date = date.to_date + 1
+    (date - periods[period.to_sym])..date
+  end
+
+  # This scope method fetch all activities.
+  # @param [String] conditions.
+  # @param [Range] date_range.
+  # @param [Numeric] days.
+  # @param [Array] journalizable_types : all journalizable types. e.g [Issue, Document, Member].
+  def self.activities_method(conditions, date_range, days, journalizable_types)
+    includes([:details, :project, user: :avatar])
+        .where("journalizable_type IN (?)", journalizable_types)
+        .where(created_at: date_range)
+        .where(conditions)
+        .order('journals.created_at DESC')
+        .limit(days * 1000)
+  end
+
   # @param [ActiveRecord::Base] klazz : the class that is updated.
-  # @param [Hash] updated_attrs : a hash containing all updated attributes with their old and new value (e.g {attr_name: [old_value, new_value]}).
+  # @param [Hash] updated_attrs : a hash containing all updated attributes with their old and new value
+  # (e.g {attr_name: [old_value, new_value]}).
   def detail_insertion(klazz, updated_attrs)
     array = Journal.prepare_detail_insertion(klazz, updated_attrs)
     array.each do |hash|
@@ -79,7 +83,10 @@ class Journal < ActiveRecord::Base
   end
 
   # @param [ActiveRecord::Base] klazz : the class that is updated.
-  # @param [Hash] updated_attrs : a hash containing all updated attributes with their old and new value (e.g {attr_name: [old_value, new_value]}).
+  # @param [Hash] updated_attrs : a hash containing all updated attributes with their old and new value
+  # (e.g {attr_name: [old_value, new_value]}).
+  # @return [Array] an array containing hashes with following structure :
+  # {property: 'Attribute name', property_key: attribute_name, old_value: the_old_value, value: the_new_value}
   def self.prepare_detail_insertion(klazz, updated_attrs)
     return_array = []
     foreign_keys_hash = klazz.foreign_keys
@@ -99,7 +106,7 @@ class Journal < ActiveRecord::Base
   # Make the attribute name more readable (remove id, underscore then capitalize).
   # @param [Symbol] attribute that was updated.
   def self.make_attribute_readable(attribute)
-    attribute.to_s.tr('_', ' ').gsub('id','').capitalize
+    attribute.to_s.tr('_', ' ').gsub('id','').strip.capitalize
   end
 
   def self.foreign_attribute_value(association, value)
