@@ -10,6 +10,7 @@ class Journal < ActiveRecord::Base
   ACTION_UPDATE = 'updated'
   ACTION_DELETE = 'deleted'
   ACTIVITIES_PERIODS = {ONE_DAY: 1, THREE_DAYS: 3, ONE_WEEK: 7, ONE_MONTH: 31}
+
   has_many :details, class_name: 'JournalDetail', dependent: :delete_all
   belongs_to :journalizable, polymorphic: true
   belongs_to :issue, foreign_key: 'journalizable_id'

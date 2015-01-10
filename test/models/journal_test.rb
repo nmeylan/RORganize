@@ -112,4 +112,22 @@ class JournalTest < ActiveSupport::TestCase
                              project_id: 666, journalizable_identifier: 'aa', created_at: Time.new(2012, 10, 21))
     assert_equal :Issue_666, journal.polymorphic_identifier
   end
+
+  test 'it has many details and should destroy them when the journal is destroyed' do
+    journal = Journal.create(journalizable_type: 'Issue', journalizable_id: 666, action_type: 'created',
+                             project_id: 666, journalizable_identifier: 'aa', created_at: Time.new(2012, 10, 21))
+    details = []
+    details << JournalDetail.create(journal_id: journal.id, property: 'Assigned to', property_key: :assigned_to_id,
+                         old_value: nil, value: 'Nicolas Meylan')
+    details << JournalDetail.create(journal_id: journal.id, property: 'Assigned to', property_key: :assigned_to_id,
+                         old_value: 'Nicolas Meylan', value: nil)
+    details << JournalDetail.create(journal_id: journal.id, property: 'Done', property_key: :done, old_value: 0, value: 100)
+    
+    journal.reload
+    assert_equal details, journal.details
+    assert_equal details, JournalDetail.where(journal_id: journal.id)
+
+    journal.destroy
+    assert_equal [], JournalDetail.where(journal_id: journal.id)
+  end
 end
