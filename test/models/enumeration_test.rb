@@ -58,6 +58,14 @@ class EnumerationTest < ActiveSupport::TestCase
     assert enumeration.save
   end
 
+  test 'name should be uniq with the same opt' do
+    enumeration = Enumeration.new(name: 'enum', opt: 'test')
+    assert enumeration.save
+
+    enumeration = Enumeration.new(name: 'enum', opt: 'test')
+    assert_not enumeration.save
+  end
+
   test 'before create trigger increment position on creation' do
     enumeration1 = Enumeration.create(name: 'Enum1', opt: 'test')
     assert_equal 1, enumeration1.position
