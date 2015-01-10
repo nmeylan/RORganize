@@ -229,12 +229,15 @@ bla bla
     issues << issues1 << issues2 << issues3
     assert_equal issues, Issue.paginated_issues_method(1, '', 'id ASC', 100, 666)
     assert_equal issues.reverse, Issue.paginated_issues_method(1, '', 'issues.subject DESC', 100, 666)
+    assert_equal issues.reverse, Issue.prepare_paginated(1, 100, 'issues.subject DESC', '', 666).to_a
 
     issue_conditions_string = Issue.conditions_string({'subject' => {'operator' => 'contains', 'value' => 'bug'}})
     assert_equal issues, Issue.paginated_issues_method(1, issue_conditions_string, 'issues.id ASC', 100, 666)
+    assert_equal issues, Issue.prepare_paginated(1, 100, 'issues.id ASC', issue_conditions_string, 666).to_a
 
     issue_conditions_string = Issue.conditions_string({'subject' => {'operator' => 'contains', 'value' => 'bug1'}})
     assert_equal issues[0, 1], Issue.paginated_issues_method(1, issue_conditions_string, 'issues.id ASC', 100, 666)
+    assert_equal issues[0, 1], Issue.prepare_paginated(1, 100, 'issues.id ASC', issue_conditions_string, 666).to_a
   end
 
   test 'scope group by status' do
@@ -283,4 +286,28 @@ bla bla
     assert_equal expectation, group_result
   end
 
+  #######################
+  ###    VALIDATORS   ###
+  #######################
+
+  test 'it should not save with an empty subject' do
+    issue = Issue.new(tracker_id: 1, status_id: '4', project_id: 1)
+    assert_not issue.save
+    issue.subject = 'Bug'
+    assert issue.save
+  end
+
+  test 'it should not save with an empty tracker' do
+    issue = Issue.new(subject: 'Bug', status_id: '4', project_id: 1)
+    assert_not issue.save
+    issue.tracker_id = 1
+    assert issue.save
+  end
+
+  test 'it should not save with an empty status' do
+    issue = Issue.new(tracker_id: 1, subject: 'Bug',project_id: 1)
+    assert_not issue.save
+    issue.status_id = 4
+    assert issue.save
+  end
 end

@@ -9,6 +9,8 @@ class Issue < ActiveRecord::Base
   include Rorganize::Models::Watchable
   include Rorganize::Models::Notifiable
   include Rorganize::Models::Attachable::AttachmentType
+  #lib/rorganize/models/issues
+  # Contains date validator and Gantt behaviour
   include Rorganize::Models::IssueExtraMethods
   extend Rorganize::Managers::BulkEditManager
   #Class variables

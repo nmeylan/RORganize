@@ -98,9 +98,14 @@ class DocumentTest < ActiveSupport::TestCase
     documents = []
     documents << document1 << document2 << document3
     assert_equal documents, Document.paginated_documents_method(1, '', 'id ASC', 100, 666)
+    assert_equal documents, Document.prepare_paginated(1, 100, 'id ASC', '', 666)
+
     assert_equal documents.reverse, Document.paginated_documents_method(1, '', 'name DESC', 100, 666)
+    assert_equal documents.reverse, Document.prepare_paginated(1, 100, 'name DESC', '', 666)
+
     document_conditions_string = Document.conditions_string({'name' => {'operator' => 'contains', 'value' => 'hello'}})
     assert_equal documents, Document.paginated_documents_method(1, document_conditions_string, 'documents.id ASC', 100, 666)
+    assert_equal documents, Document.prepare_paginated(1, 100, 'documents.id ASC', document_conditions_string, 666)
   end
 
   test 'it should not save a document without a valid name' do
