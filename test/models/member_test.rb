@@ -130,4 +130,16 @@ class MemberTest < ActiveSupport::TestCase
     project.reload
     assert 1, project.members_count
   end
+
+  test 'member should be uniq for the same project and same role' do
+    project = Project.create(name: 'RORganize-test')
+    member = Member.new(user_id: @user.id, project_id: project.id, role_id: @role.id)
+    member1 = Member.new(user_id: @user.id, project_id: project.id, role_id: @role.id)
+
+    assert member.save
+    assert_not member1.save
+
+    member1 = Member.new(user_id: @user.id, project_id: project.id, role_id: 666)
+    assert member1.save
+  end
 end
