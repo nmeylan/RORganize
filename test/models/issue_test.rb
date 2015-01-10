@@ -180,8 +180,8 @@ bla bla
   test 'permit attributes should contains' do
     expectation = [:assigned_to_id, :author_id, :version_id, :done, :category_id, :status_id,
                    :start_date, :subject, :description, :tracker_id, :due_date, :estimated_time,
-                   {new_attachment_attributes: [:file, :tempfile, :original_filename, :content_type, :headers, :form_data, :name]},
-                   {edit_attachment_attributes: [:file, :tempfile, :original_filename, :content_type, :headers, :form_data, :name]}]
+                   {new_attachment_attributes: Attachment.permit_attributes},
+                   {edit_attachment_attributes: Attachment.permit_attributes}]
 
     assert_match_array expectation, Issue.permit_attributes
   end

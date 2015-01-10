@@ -34,8 +34,8 @@ class DocumentTest < ActiveSupport::TestCase
 
   test 'permit attributes should contains' do
     expectation = [:name, :description, :version_id, :category_id,
-                   {new_attachment_attributes:  [:file, :tempfile, :original_filename, :content_type, :headers, :form_data, :name]},
-                   {edit_attachment_attributes:  [:file, :tempfile, :original_filename, :content_type, :headers, :form_data, :name]}]
+                   {new_attachment_attributes:  Attachment.permit_attributes},
+                   {edit_attachment_attributes:  Attachment.permit_attributes}]
     actual = Document.permit_attributes
     assert_match_array expectation, actual
   end
