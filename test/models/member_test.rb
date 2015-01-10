@@ -92,7 +92,7 @@ class MemberTest < ActiveSupport::TestCase
   end
 
   test 'it should remove old role if user was a non member to the project' do
-    project = Project.create(name: 'RORganize-test-bis')
+    project = Project.create(name: 'RORganize-test-bis', is_public: true)
     non_member_role_id = Role.non_member.id
     member = Member.create(user_id: @user.id, project_id: project.id, role_id: non_member_role_id)
 
@@ -140,6 +140,31 @@ class MemberTest < ActiveSupport::TestCase
     assert_not member1.save
 
     member1 = Member.new(user_id: @user.id, project_id: project.id, role_id: 666)
-    assert member1.save
+    assert member1.save, member1.errors.messages
+  end
+
+  test 'it should not be possible to add user when non member role on a private project' do
+    project = Project.create(name: 'RORganize-test', is_public: false)
+    member = Member.new(user_id: @user.id, project_id: project.id, role_id: Role.non_member.id)
+    assert_not member.save
+
+    project1 = Project.create(name: 'RORganize-test1', is_public: true)
+    member = Member.new(user_id: @user.id, project_id: project1.id, role_id: Role.non_member.id)
+    assert member.save
+  end
+
+  test 'member should not be saved if role project or user are missing' do
+    project = Project.create(name: 'RORganize-test', is_public: true)
+    member = Member.new(user_id: @user.id, project_id: project.id)
+    assert_not member.save
+
+    member = Member.new(project_id: project.id, role_id: Role.non_member.id)
+    assert_not member.save
+
+    member = Member.new(user_id: @user.id, role_id: Role.non_member.id)
+    assert_not member.save
+
+    member = Member.new(user_id: @user.id, project_id: project.id, role_id: Role.non_member.id)
+    assert member.save
   end
 end

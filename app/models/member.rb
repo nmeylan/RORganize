@@ -21,6 +21,8 @@ class Member < ActiveRecord::Base
   after_destroy :unassigned_issues, :remove_watchers, :inc_counter_cache
 
   validates_uniqueness_of :user_id, scope: [:project_id, :role_id]
+  validates :role_id, :project_id, :user_id, presence: true
+  validate :project_is_public_when_adding_non_member
   #Scopes
   scope :fetch_dependencies, -> { includes(:role, :user) }
   scope :members_by_project, -> (project_id, current_page, per_page, order) {
@@ -78,5 +80,11 @@ class Member < ActiveRecord::Base
 
   def inc_counter_cache
     Project.update_counters(self.project_id, members_count: 1) if self.role_id.eql?(Role.non_member.id)
+  end
+
+  def project_is_public_when_adding_non_member
+    if self.role.eql?(Role.non_member) && self.project && !self.project.is_public
+      errors.add(:role, 'cannot be Non member when project is private.')
+    end
   end
 end
