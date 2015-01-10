@@ -33,6 +33,20 @@ class IssuesStatus < ActiveRecord::Base
     self.enumeration.position
   end
 
+  # @param [String] name : the status name.
+  # @param [Hash] attributes : attributes are status attributes.
+  def self.create_status(name, attributes)
+    @status = IssuesStatus.new(attributes)
+    @enumeration = Enumeration.new(name: name, opt: 'ISTS')
+    if @enumeration.save
+      @status.enumeration = @enumeration
+      @status.save
+    else
+      @status.errors.messages.merge!(@enumeration.errors.messages)
+    end
+    @status
+  end
+
   #Change position
   def change_position(operator)
     enumerations = Enumeration.where(opt: 'ISTS').order('position ASC')

@@ -35,26 +35,19 @@ class IssuesStatusesController < ApplicationController
         flash[:notice] = t(:successful_update)
         format.html { redirect_to issues_statuses_path }
       else
-        @status.errors.add(:name, "can't be blank")
+        @status.errors.messages.merge!(@enumeration.errors.messages)
         error_generic_update_callback(format, @status, {done_ratio: done_ratio})
       end
     end
   end
 
   def create
-    @status = IssuesStatus.new(issue_statutes_params)
-    @enumeration = Enumeration.new(name: enumeration_params[:name], opt: 'ISTS')
+    @status = IssuesStatus.create_status(enumeration_params[:name], issue_statutes_params)
     respond_to do |format|
-      if @enumeration.save
-        @status.enumeration = @enumeration
-        if @status.save
-          flash[:notice] = t(:successful_creation)
-          format.html { redirect_to issues_statuses_path }
-        else
-          error_generic_create_callback(format, @status, {done_ratio: done_ratio})
-        end
+      if @status.errors.messages.empty?
+        flash[:notice] = t(:successful_creation)
+        format.html { redirect_to issues_statuses_path }
       else
-        @status.errors.add(:name, "can't be blank")
         error_generic_create_callback(format, @status, {done_ratio: done_ratio})
       end
     end
@@ -96,7 +89,7 @@ class IssuesStatusesController < ApplicationController
 
   def done_ratio
     range = 0..100
-    range.step(10).map{|x| x}
+    range.step(10).map { |x| x }
   end
 
 end
