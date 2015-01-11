@@ -3,12 +3,12 @@ enumerations_001:
   id: 1
   opt: ISTS
   name: New
-  position: 2
+  position: 7
 enumerations_002:
   id: 2
   opt: ISTS
   name: In progress
-  position: 7
+  position: 2
 enumerations_003:
   id: 3
   opt: ISTS

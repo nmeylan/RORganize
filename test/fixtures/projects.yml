@@ -22,6 +22,7 @@ projects_001:
   members_count: 1
   issues_count: 80
   attachments_count: 0
+  is_public: 0
 projects_002:
   id: 5
   name: Pursuit evasion game
@@ -46,6 +47,7 @@ projects_002:
   members_count: 2
   issues_count: 13
   attachments_count: 0
+  is_public: 0
 projects_003:
   id: 6
   name: System administrator interface
@@ -62,6 +64,7 @@ projects_003:
   members_count: 1
   issues_count: 0
   attachments_count: 0
+  is_public: 0
 projects_004:
   id: 7
   name: Jeu de la vie
@@ -79,3 +82,4 @@ projects_004:
   members_count: 2
   issues_count: 15
   attachments_count: 0
+  is_public: 0
