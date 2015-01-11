@@ -1,10 +1,10 @@
 ---
 queries_001:
   id: 1
-  author_id: 1
+  author_id: 666
   project_id: 1
-  is_for_all: 1
-  is_public: 1
+  is_for_all: 0
+  is_public: 0
   name: Opened issues
   description: ''
   stringify_params: ! '{"status"=>{"operator"=>"open", "value"=>[1, 2, 4, 5, 6, 7]}}'
@@ -12,53 +12,3 @@ queries_001:
     <=> 5 OR   status_id <=> 6 OR   status_id <=> 7  )  AND
   object_type: Issue
   slug: opened-issues
-queries_002:
-  id: 2
-  author_id: 1
-  project_id: 1
-  is_for_all: 1
-  is_public: 0
-  name: My assigned issues
-  description: ''
-  stringify_params: ! '{"status"=>{"operator"=>"open", "value"=>[1, 2, 4, 5, 6, 7]},
-    "assigned_to"=> {"operator"=>"equal", "value"=>[1]}}'
-  stringify_query: (status_id <=> 1 OR   status_id <=> 2 OR   status_id <=> 4 OR   status_id
-    <=> 5 OR   status_id <=> 6 OR   status_id <=> 7  ) AND (assigned_to_id <=> 1 )  AND
-  object_type: Issue
-  slug: my-assigned-issues
-queries_003:
-  id: 5
-  author_id: 1
-  project_id: 1
-  is_for_all: 1
-  is_public: 1
-  name: Unplanned issues
-  description: Display all unplanned issues
-  stringify_params: ! '{"version"=>{"operator"=>"equal", "value"=>["NULL"]}}'
-  stringify_query: (version_id IS NULL )  AND
-  object_type: Issue
-  slug: unplanned-issues
-queries_004:
-  id: 6
-  author_id: 1
-  project_id: 1
-  is_for_all: 1
-  is_public: 1
-  name: Planned issues
-  description: Display all planned issues
-  stringify_params: ! '{"version"=>{"operator"=>"different", "value"=>["NULL"]}}'
-  stringify_query: (version_id IS NOT NULL )  AND
-  object_type: Issue
-  slug: planned-issues
-queries_005:
-  id: 7
-  author_id: 1
-  project_id: 1
-  is_for_all: 1
-  is_public: 1
-  name: In progress
-  description: In pgs
-  stringify_params: ! '{"status"=>{"operator"=>"equal", "value"=>["2"]}}'
-  stringify_query: (status_id <=> 2 )  AND
-  object_type: Issue
-  slug: in-progress
