@@ -20,10 +20,10 @@ class User < ActiveRecord::Base
   # Setup accessible (or protected) attributes for your model
   #attr_accessible :id, :login, :email, :name, :password, :password_confirmation, :remember_me
   #Relations
-  has_many :members, class_name: 'Member', dependent: :destroy
+  has_many :members, class_name: 'Member', dependent: :delete_all
   has_many :assigned_issues, foreign_key: :assigned_to_id, class_name: 'Issue'
-  has_many :notifications, dependent: :destroy
-  has_many :preferences, dependent: :destroy
+  has_many :notifications, dependent: :delete_all
+  has_many :preferences, dependent: :delete_all
   #Validators
   validates :login, :name, presence: true, length: 4..50, uniqueness: true
   #Triggers
@@ -80,7 +80,7 @@ class User < ActiveRecord::Base
   end
 
   def is_admin?
-    return self.admin
+    self.admin
   end
 
   def self.current
@@ -99,11 +99,6 @@ class User < ActiveRecord::Base
 
   def act_as_admin(session)
     Thread.current[:user_act_as] = session
-  end
-
-  def act_as_admin_session
-    Thread.current[:user_act_as] ||= 'User'
-    Thread.current[:user_act_as]
   end
 
   def time_entries_for_month(year, month)
@@ -125,7 +120,7 @@ class User < ActiveRecord::Base
   end
 
   def load_allowed_statuses(status_rel)
-    status_rel.eager_load(:enumeration).sort { |x, y| x.enumeration.position <=> y.enumeration.position }
+    status_rel.eager_load(:enumeration).order('enumerations.position ASC')
   end
 
 
@@ -144,9 +139,19 @@ class User < ActiveRecord::Base
     end
     conditions += 'AND journals.id = (SELECT max(j.id) FROM journals j WHERE j.project_id = projects.id)'
     if self.members.any?
-      Project.joins("INNER JOIN `members` ON `members`.`project_id` = `projects`.`id` OR (`projects`.`is_public` = true AND projects.id NOT IN (SELECT p2.id FROM projects p2 JOIN members m2 ON p2.id = m2.project_id WHERE m2.user_id = #{self.id})) LEFT OUTER JOIN `watchers` ON `watchers`.`watchable_id` = `projects`.`id` AND `watchers`.`watchable_type` = \'Project\' AND watchers.user_id = members.user_id").eager_load(journals: :user).where(conditions).order('members.project_position ASC').preload(:members, :watchers)
+      Project
+          .joins("INNER JOIN `members` ON `members`.`project_id` = `projects`.`id` OR
+                    (`projects`.`is_public` = true AND projects.id NOT IN
+                    (SELECT p2.id FROM projects p2 JOIN members m2 ON p2.id = m2.project_id WHERE m2.user_id = #{self.id}))
+                    LEFT OUTER JOIN `watchers` ON `watchers`.`watchable_id` = `projects`.`id` AND
+                    `watchers`.`watchable_type` = \'Project\' AND watchers.user_id = members.user_id")
+          .eager_load(journals: :user)
+          .where(conditions)
+          .order('members.project_position ASC')
+          .preload(:members, :watchers)
     else
-      Project.eager_load(journals: :user).where('journals.id = (SELECT max(j.id) FROM journals j WHERE j.project_id = projects.id) AND projects.is_public = true')
+      Project.eager_load(journals: :user)
+          .where('journals.id = (SELECT max(j.id) FROM journals j WHERE j.project_id = projects.id) AND projects.is_public = true')
     end
   end
 
