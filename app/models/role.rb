@@ -12,9 +12,12 @@ class Role < ActiveRecord::Base
   # this relations symbolise which roles (role_id) can be granted for a given role (assignable_by_role_id).
   # E.g : a ProjectManager can assign "TeamMember" and "ProjectManager" roles to members.
   # But an EngagementManager can assign "TeamMember", "ProjectManager" and "EngagementManager" roles to members.
-  has_and_belongs_to_many :assignable_roles, class_name: 'Role', join_table: 'assignable_roles', foreign_key: 'assignable_by_role_id', dependent: :destroy
+  has_and_belongs_to_many :assignable_roles, class_name: 'Role', join_table: 'assignable_roles',
+                          foreign_key: 'assignable_by_role_id', dependent: :destroy
+
   scope :non_member, -> { where(name: Rorganize::NON_MEMBER_ROLE).first }
   scope :all_non_locked, -> { where(is_locked: false) }
+
   validates :name, presence: true, uniqueness: true, length: 2..255
 
   def self.permit_attributes
@@ -30,15 +33,12 @@ class Role < ActiveRecord::Base
       permissions_id = permissions_param.values
       permissions = Permission.where(id: permissions_id)
       self.permissions.clear
-      permissions_id.each do |permission_id|
-        permission = permissions.select { |perm| perm.id == permission_id.to_i }
-        self.permissions << permission
-      end
+      self.permissions = permissions.to_a
     end
     self.save
   end
 
-  def self.update_role_attributes(role_params, params)
+  def self.set_role_attributes(role_params, params)
     role = params[:id] ? self.find_by_id(params[:id]) : Role.new(role_params)
     role.attributes = role_params
     role.set_association_values(params[:issues_statuses], role.issues_statuses, IssuesStatus)
