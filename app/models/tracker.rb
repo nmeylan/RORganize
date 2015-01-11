@@ -9,9 +9,10 @@ class Tracker < ActiveRecord::Base
   has_and_belongs_to_many :projects, class_name: 'Project'
   has_many :issues, class_name: 'Issue', dependent: :nullify
 
-  validates :name, presence: true, uniqueness: true, length: 2..50
   before_create :set_initial_position
   after_destroy :dec_position_on_destroy
+
+  validates :name, presence: true, uniqueness: true, length: 2..50
 
   def caption
     self.name
