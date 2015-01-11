@@ -3,19 +3,24 @@ roles_001:
   id: 1
   name: Project Manager
   position: 2
+  is_locked: false
 roles_002:
   id: 2
   name: Team Member
   position: 1
+  is_locked: false
 roles_003:
   id: 3
   name: Engagement Manager
   position: 3
+  is_locked: false
 roles_004:
   id: 4
   name: Non member
   position: 4
+  is_locked: true
 roles_005:
   id: 5
   name: Anonymous
   position: 5
+  is_locked: true
