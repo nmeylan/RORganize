@@ -34,3 +34,5 @@ Gemfile.lock
 /.idea/*
 /app/assets/stylesheets/rorganize.css
 /app/assets/stylesheets/dhtmlxgantt.css
+
+/coverage
