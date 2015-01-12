@@ -32,9 +32,9 @@ class RoleTest < ActiveSupport::TestCase
     permission = Permission.new(action: 'new', controller: 'controller', name: 'New')
     permission1 = Permission.new(action: 'edit', controller: 'controller', name: 'Edit')
     permission2 = Permission.new(action: 'show', controller: 'controller', name: 'Show')
-    assert permission.save
-    assert permission1.save
-    assert permission2.save
+    assert permission.save, permission.errors.messages
+    assert permission1.save, permission1.errors.messages
+    assert permission2.save, permission2.errors.messages
 
     permissions = [permission, permission1, permission2]
     permissions_params = permissions.inject({}) { |memo, perm| memo[perm.name] = perm.id; memo }
@@ -46,7 +46,7 @@ class RoleTest < ActiveSupport::TestCase
 
   test 'set role attributes' do
     role = Role.set_role_attributes({name: 'Master'}, {issues_statuses: {"New"=>"1", "In progress"=>"2"}, roles: {"Project Manager"=>"1"}})
-    assert role.save
+    assert role.save, role.errors.messages
     role.reload
     assert_equal 'Master', role.name
     assert_equal [1, 2], role.issues_statuses.collect(&:id)
@@ -61,7 +61,7 @@ class RoleTest < ActiveSupport::TestCase
     assert_not role.save
 
     role.name = 'LE'
-    assert role.save
+    assert role.save, role.errors.messages
 
     role.name = generate_string_of_length(256)
     assert_not role.save

@@ -102,7 +102,7 @@ class IssueDateValidatorTest < ActiveSupport::TestCase
 
     issue = Issue.new(tracker_id: 1, subject: 'Bug', status_id: '1', project_id: 1, start_date: '2012-12-30', due_date: '2012-12-31')
     assert_not issue.start_date_gt_due_date?
-    assert issue.save
+    assert issue.save, issue.errors.messages
   end
 
   test 'it should not save when start date is out of version date bound' do

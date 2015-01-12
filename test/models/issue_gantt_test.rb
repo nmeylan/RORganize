@@ -36,7 +36,7 @@ class IssueGanttTest < ActiveSupport::TestCase
 
   test 'it should not save when predecessor is a child' do
     @issue2.parent = @issue1
-    assert @issue2.save
+    assert @issue2.save, @issue2.errors.messages
 
     assert_equal @issue1, @issue2.parent
     assert @issue1.children.include?(@issue2)
@@ -48,11 +48,11 @@ class IssueGanttTest < ActiveSupport::TestCase
 
   test 'it should override predecessor when it is already set' do
     @issue1.parent = @issue2
-    assert @issue1.save
+    assert @issue1.save, @issue1.errors.messages
     assert_equal @issue2, @issue1.parent
 
     @issue1.parent = @issue3
-    assert @issue3.save
+    assert @issue3.save, @issue3.errors.messages
     assert_equal @issue3, @issue1.parent
   end
 

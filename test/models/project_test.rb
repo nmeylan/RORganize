@@ -302,7 +302,7 @@ class ProjectTest < ActiveSupport::TestCase
   test 'it has many issues and should delete them on project deletion' do
     project = Project.create(name: 'Rorganize test fdp', is_public: true)
     issue = Issue.new(tracker_id: 1, subject: 'Bug1', status_id: 1, project_id: project.id)
-    assert issue.save
+    assert issue.save, issue.errors.messages
     project.destroy
     assert_raise(ActiveRecord::RecordNotFound) { issue.reload }
   end
@@ -317,7 +317,7 @@ class ProjectTest < ActiveSupport::TestCase
   test 'it has many documents and should delete them on project deletion' do
     project = Project.create(name: 'Rorganize test fdp', is_public: true)
     document = Document.new(name: 'Document1', project_id: project.id)
-    assert document.save
+    assert document.save, document.errors.messages
     project.destroy
     assert_raise(ActiveRecord::RecordNotFound) { document.reload }
   end
@@ -399,7 +399,7 @@ class ProjectTest < ActiveSupport::TestCase
     issue = Issue.new(tracker_id: 1, subject: 'Bug1', status_id: 1, project_id: project.id)
     issue.comments << comment
 
-    assert issue.save
+    assert issue.save, issue.errors.messages
     assert_equal [comment], Comment.where(project_id: project.id)
     project.destroy
     assert_raise(ActiveRecord::RecordNotFound) { comment.reload }
@@ -436,7 +436,7 @@ class ProjectTest < ActiveSupport::TestCase
                       stringify_query: 'aaa', stringify_params: 'params',
                       object_type: 'Issue', name: 'my query')
 
-    assert query.save
+    assert query.save, query.errors.messages
     project.destroy
     assert_raise(ActiveRecord::RecordNotFound) { query.reload }
   end
@@ -446,7 +446,7 @@ class ProjectTest < ActiveSupport::TestCase
     wiki = Wiki.new(project_id: project.id)
     wiki_page = WikiPage.new(title: 'My title', author_id: User.current.id, content: 'content')
     wiki.pages << wiki_page
-    assert wiki.save
+    assert wiki.save, wiki.errors.messages
     assert wiki_page.id
 
     project.destroy

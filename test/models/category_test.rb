@@ -31,7 +31,7 @@ class CategoryTest < ActiveSupport::TestCase
     assert_not category.save, 'Saved with more than 20 char name'
 
     category.name = 'qwertz'
-    assert category.save
+    assert category.save, category.errors.messages
   end
 
   test 'caption should be equal to name' do
@@ -58,11 +58,11 @@ class CategoryTest < ActiveSupport::TestCase
 
   test 'it belongs to one project' do
     project = Project.new(name: 'RORganize-test')
-    assert project.save
+    assert project.save, project.errors.messages
 
     category = Category.new(name: 'Hello')
     category.project = project
-    assert category.save
+    assert category.save, category.errors.messages
 
     project.reload
     category.reload

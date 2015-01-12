@@ -83,8 +83,8 @@ class MemberTest < ActiveSupport::TestCase
     issue1 = Issue.create(tracker_id: 1, subject: 'Bug1', status_id: 1, project_id: 1)
     watcher = Watcher.new(watchable_id: issue.id, watchable_type: 'Issue', user_id: @user.id, project_id: project.id)
     watcher1 = Watcher.new(watchable_id: issue1.id, watchable_type: 'Issue', user_id: @user.id, project_id: project.id)
-    assert watcher.save
-    assert watcher1.save
+    assert watcher.save, watcher.errors.messages
+    assert watcher1.save, watcher1.errors.messages
 
     member.destroy
     assert_raises(ActiveRecord::RecordNotFound) { watcher.reload }
@@ -136,7 +136,7 @@ class MemberTest < ActiveSupport::TestCase
     member = Member.new(user_id: @user.id, project_id: project.id, role_id: @role.id)
     member1 = Member.new(user_id: @user.id, project_id: project.id, role_id: @role.id)
 
-    assert member.save
+    assert member.save, member.errors.messages
     assert_not member1.save
 
     member1 = Member.new(user_id: @user.id, project_id: project.id, role_id: 666)
@@ -150,7 +150,7 @@ class MemberTest < ActiveSupport::TestCase
 
     project1 = Project.create(name: 'RORganize-test1', is_public: true)
     member = Member.new(user_id: @user.id, project_id: project1.id, role_id: Role.non_member.id)
-    assert member.save
+    assert member.save, member.errors.messages
   end
 
   test 'member should not be saved if role project or user are missing' do
@@ -165,6 +165,6 @@ class MemberTest < ActiveSupport::TestCase
     assert_not member.save
 
     member = Member.new(user_id: @user.id, project_id: project.id, role_id: Role.non_member.id)
-    assert member.save
+    assert member.save, member.errors.messages
   end
 end

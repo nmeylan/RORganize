@@ -53,13 +53,13 @@ class TrackerTest < ActiveSupport::TestCase
     tracker = Tracker.new(name: 'Hello')
     position_expectation = Tracker.all.count + 1
     assert_not tracker.position
-    assert tracker.save
+    assert tracker.save, tracker.errors.messages
     assert_equal position_expectation, tracker.position
   end
 
   test 'set position after destroy' do
     tracker = Tracker.new(name: 'Hello')
-    assert tracker.save
+    assert tracker.save, tracker.errors.messages
     assert tracker.position > @tracker.position
     tracker.change_position('dec')
     tracker.reload
@@ -80,7 +80,7 @@ class TrackerTest < ActiveSupport::TestCase
     assert_not tracker.save
 
     tracker = Tracker.new(name: 'LE')
-    assert tracker.save
+    assert tracker.save, tracker.errors.messages
 
     tracker = Tracker.new(name: 'LE')
     assert_not tracker.save

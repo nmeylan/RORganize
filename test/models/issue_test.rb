@@ -294,20 +294,20 @@ bla bla
     issue = Issue.new(tracker_id: 1, status_id: '4', project_id: 1)
     assert_not issue.save
     issue.subject = 'Bug'
-    assert issue.save
+    assert issue.save, issue.errors.messages
   end
 
   test 'it should not save with an empty tracker' do
     issue = Issue.new(subject: 'Bug', status_id: '4', project_id: 1)
     assert_not issue.save
     issue.tracker_id = 1
-    assert issue.save
+    assert issue.save, issue.errors.messages
   end
 
   test 'it should not save with an empty status' do
     issue = Issue.new(tracker_id: 1, subject: 'Bug',project_id: 1)
     assert_not issue.save
     issue.status_id = 4
-    assert issue.save
+    assert issue.save, issue.errors.messages
   end
 end

@@ -122,7 +122,7 @@ class DocumentTest < ActiveSupport::TestCase
     assert_not doc.save, 'Saved with more than 255 char name'
 
     doc =  Document.new(name: 'qwertz')
-    assert doc.save
+    assert doc.save, doc.errors.messages
   end
 
 end

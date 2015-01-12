@@ -34,7 +34,7 @@ class QueryTest < ActiveSupport::TestCase
 
   test 'has a method to create query' do
     query = Query.create_query(@attributes, @project, @filters)
-    assert query.save
+    assert query.save, query.errors.messages
     expected_condition = '(issues.status_id <=> \'1\' OR issues.status_id <=> \'2\' OR issues.status_id <=> \'4\' ) AND '
     expected_condition += '(issues.assigned_to_id <=> \'7\' ) AND'
     assert_equal expected_condition, query.stringify_query
@@ -45,7 +45,7 @@ class QueryTest < ActiveSupport::TestCase
     query = Query.create_query(@attributes, @project, @filters)
     project2 = Project.create(name: 'Rorganize test bis', is_public: true)
 
-    assert query.save
+    assert query.save, query.errors.messages
     assert_equal [query], Query.available_for(User.current, @project.id, 'Issue').to_a
     assert_equal [], Query.available_for(User.current, project2.id, 'Issue').to_a
     assert_equal [], Query.available_for(@user2, @project.id, 'Issue').to_a
@@ -55,21 +55,21 @@ class QueryTest < ActiveSupport::TestCase
     attributes = {"name" => "Parker Ferry opened for all projects", "description" => "",
                   "is_public" => "0", "is_for_all" => "1", "object_type" => "Issue"}
     query2 = Query.create_query(attributes, project2, @filters)
-    assert query2.save
+    assert query2.save, query2.errors.messages
     assert_equal [query, query2], Query.available_for(User.current, @project.id, 'Issue').to_a
     assert_equal [query2], Query.available_for(User.current, project2.id, 'Issue').to_a
     assert_equal [], Query.available_for(@user2, @project.id, 'Issue').to_a
     assert_equal [], Query.available_for(@user2, project2.id, 'Issue').to_a
 
     query2.is_public = true
-    assert query2.save
+    assert query2.save, query2.errors.messages
     assert_equal [query, query2], Query.available_for(User.current, @project.id, 'Issue').to_a
     assert_equal [query2], Query.available_for(User.current, project2.id, 'Issue').to_a
     assert_equal [query2], Query.available_for(@user2, @project.id, 'Issue').to_a
     assert_equal [query2], Query.available_for(@user2, project2.id, 'Issue').to_a
 
     query2.is_for_all = false
-    assert query2.save
+    assert query2.save, query2.errors.messages
     assert_equal [query], Query.available_for(User.current, @project.id, 'Issue').to_a
     assert_equal [query2], Query.available_for(User.current, project2.id, 'Issue').to_a
     assert_equal [], Query.available_for(@user2, @project.id, 'Issue').to_a
@@ -79,30 +79,30 @@ class QueryTest < ActiveSupport::TestCase
   test 'scope public queries' do
     query = Query.create_query(@attributes, @project, @filters)
 
-    assert query.save
+    assert query.save, query.errors.messages
     assert_equal [], Query.public_queries(@project.id).to_a
 
     query.is_public = true
-    assert query.save
+    assert query.save, query.errors.messages
     assert_equal [query], Query.public_queries(@project.id).to_a
 
     query.is_for_all = true
-    assert query.save
+    assert query.save, query.errors.messages
     assert_equal [], Query.public_queries(@project.id)
 
     attributes = {"name" => "Parker Ferry opened user 2", "description" => "",
                   "is_public" => "0", "is_for_all" => "0", "object_type" => "Issue"}
     query2 = Query.create_query(attributes, @project, @filters)
-    assert query2.save
+    assert query2.save, query2.errors.messages
     assert_equal [], Query.public_queries(@project.id).to_a
 
     query2.is_public = true
-    assert query2.save
+    assert query2.save, query2.errors.messages
     assert_equal [query2], Query.public_queries(@project.id).to_a
 
     query.is_public = true
     query.is_for_all = false
-    assert query.save
+    assert query.save, query.errors.messages
     assert_equal [query, query2], Query.public_queries(@project.id).to_a
   end
 
@@ -110,13 +110,13 @@ class QueryTest < ActiveSupport::TestCase
     project2 = Project.create(name: 'Rorganize test bis', is_public: true)
 
     query = Query.create_query(@attributes, @project, @filters)
-    assert query.save
+    assert query.save, query.errors.messages
     assert_equal [query], Query.created_by(User.current).to_a
 
     attributes = {"name" => "Parker Ferry opened user 2", "description" => "",
                   "is_public" => "0", "is_for_all" => "0", "object_type" => "Issue"}
     query2 = Query.create_query(attributes, project2, @filters)
-    assert query2.save
+    assert query2.save, query2.errors.messages
     assert_equal [query, query2], Query.created_by(User.current).to_a
   end
 
@@ -135,6 +135,6 @@ class QueryTest < ActiveSupport::TestCase
     assert_not query.save
 
     query = Query.create_query(@attributes, @project, @filters)
-    assert query.save
+    assert query.save, query.errors.messages
   end
 end

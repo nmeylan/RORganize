@@ -41,7 +41,7 @@ class EnumerationTest < ActiveSupport::TestCase
     assert_not enumeration.save, 'Saved with more than 20 char name'
 
     enumeration.name = 'qwertz'
-    assert enumeration.save
+    assert enumeration.save, enumeration.errors.messages
   end
 
   test 'it should not save an enumeration without a valid opt' do
@@ -55,12 +55,12 @@ class EnumerationTest < ActiveSupport::TestCase
     assert_not enumeration.save, 'Saved with more than 4 char name'
 
     enumeration.opt = 'test'
-    assert enumeration.save
+    assert enumeration.save, enumeration.errors.messages
   end
 
   test 'name should be uniq with the same opt' do
     enumeration = Enumeration.new(name: 'enum', opt: 'test')
-    assert enumeration.save
+    assert enumeration.save, enumeration.errors.messages
 
     enumeration = Enumeration.new(name: 'enum', opt: 'test')
     assert_not enumeration.save

@@ -35,7 +35,7 @@ class PermissionTest < ActiveSupport::TestCase
     assert_not permission.save
 
     permission = Permission.new(action: 'new', controller: 'controller', name: 'New')
-    assert permission.save
+    assert permission.save, permission.errors.messages
   end
 
   test 'permit attribute should contains' do

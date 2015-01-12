@@ -40,6 +40,6 @@ class TimeEntryTest < ActiveSupport::TestCase
     assert_not time_entry.save
 
     time_entry = TimeEntry.new(issue_id: 1, project_id: 1, spent_time: 4, spent_on: Date.new(2012, 12, 23), user_id: User.current.id)
-    assert time_entry.save
+    assert time_entry.save, time_entry.errors.messages
   end
 end
