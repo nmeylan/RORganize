@@ -109,7 +109,8 @@ class Version < ActiveRecord::Base
     end
   end
 
-  def change_position(project, operator)
+  def change_position(operator)
+    project = self.project
     versions = project.versions.order(:position)
     apply_change_position(versions, self, operator)
   end
