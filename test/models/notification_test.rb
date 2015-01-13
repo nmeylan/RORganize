@@ -71,7 +71,7 @@ class NotificationTest < ActiveSupport::TestCase
         {all: 4, participants: 3, watchers: 1},
         {@project.slug => {count: 1, id: @project.id}, @project1.slug => {count: 3, id: @project1.id}}]
     result_notifications, filters, projects_filter = Notification.filter_notifications('1=1', '1=1', @user)
-    assert_equal expectation[0], result_notifications
+    assert_equal expectation[0], result_notifications.to_a
     assert_equal expectation[1], filters
     assert_equal expectation[2], projects_filter
   end
