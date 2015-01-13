@@ -36,7 +36,6 @@ class Version < ActiveRecord::Base
   # So when issue's version is changing we have to update issue start and due date to respect the previous rule.
   def update_issues_due_date
     issues = Issue.where(version_id: self.id).eager_load(:version)
-    issue_changes = {due_date: [], start_date: []}
     issue_changes = Issue.bulk_change_start_due_date(issues)
     merged_issues = issue_changes[:due_date] | issue_changes[:start_date]
     if merged_issues.any?
