@@ -70,17 +70,19 @@ module Rorganize
 
       module PermissionManagerHelper
         def permission_manager_allowed_to?(role_id, action, controller)
-          Rorganize::Managers::PermissionManager.permissions[role_id].any? { |permission| permission[:action] == action && permission[:controller] == controller }
+          Rorganize::Managers::PermissionManager.permissions[role_id.to_s].any? do |permission|
+            permission[:action] == action.to_s.downcase && permission[:controller] == controller.to_s.downcase
+          end
         end
 
         def non_member_permission_manager_allowed_to?(action, controller)
           non_member_role = Rorganize::Managers::PermissionManager.non_member_role
-          permission_manager_allowed_to?(non_member_role.id.to_s, action, controller)
+          permission_manager_allowed_to?(non_member_role.id, action, controller)
         end
 
         def anonymous_permission_manager_allowed_to?(action, controller)
           anonymous_role = Rorganize::Managers::PermissionManager.anonymous_role
-          permission_manager_allowed_to?(anonymous_role.id.to_s, action, controller)
+          permission_manager_allowed_to?(anonymous_role.id, action, controller)
         end
 
         def reload_permission(role_id)
@@ -155,7 +157,7 @@ module Rorganize
 
         def role_permissions_hash(role)
           role.permissions.inject([]) do |memo_perm, permission|
-            memo_perm << {action: permission.action, controller: permission.controller.downcase}
+            memo_perm << {action: permission.action.downcase, controller: permission.controller.downcase}
             memo_perm
           end
         end

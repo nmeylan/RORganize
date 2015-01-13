@@ -48,26 +48,26 @@ module Rorganize
 
         def out_project_allowed_to?(action, controller, members)
           if members && members.any?
-            members.detect { |member| permission_manager_allowed_to?(member.role_id.to_s, action.to_s, controller.downcase.to_s) }
+            members.detect { |member| permission_manager_allowed_to?(member.role_id, action, controller.downcase) }
           else
-            non_member_permission_manager_allowed_to?(action.to_s, controller.downcase.to_s)
+            non_member_permission_manager_allowed_to?(action, controller.downcase)
           end
         end
 
         def in_project_allowed_to?(action, controller, members, project)
           member = members.to_a.detect { |mb| mb.project_id == project.id }
           if member
-            generic_permission_condition(action, controller, project) && permission_manager_allowed_to?(member.role_id.to_s, action.to_s, controller.downcase.to_s)
+            generic_permission_condition(action, controller, project) && permission_manager_allowed_to?(member.role_id, action, controller)
           elsif project.is_public
-            generic_permission_condition(action, controller, project) && non_member_permission_manager_allowed_to?(action.to_s, controller.downcase.to_s)
+            generic_permission_condition(action, controller, project) && non_member_permission_manager_allowed_to?(action, controller)
           end
         end
 
         def anonymous_allowed_to?(action, controller, project)
           if project && project.is_public
-            generic_permission_condition(action, controller, project) && anonymous_permission_manager_allowed_to?(action.to_s, controller.downcase.to_s)
+            generic_permission_condition(action, controller, project) && anonymous_permission_manager_allowed_to?(action, controller)
           elsif project.nil?
-            anonymous_permission_manager_allowed_to?(action.to_s, controller.downcase.to_s)
+            anonymous_permission_manager_allowed_to?(action, controller)
           end
         end
 
