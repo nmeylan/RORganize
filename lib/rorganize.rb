@@ -19,8 +19,7 @@ module Rorganize
 
 end
 
-unless $0.end_with?('rake')
-
+begin
   I18n.load_path += Dir[Rails.root.join('config', 'locales', '**', '*.{rb,yml}')]
   Rorganize::Managers::MenuManager.map :project_menu do |menu|
     #menu.add(module_name, menu_url, options)
@@ -65,5 +64,6 @@ unless $0.end_with?('rake')
 
   Rorganize::Managers::PluginManager.load
   Rorganize::Managers::ModuleManager.load_modules
+rescue
+  puts "FAIL TO INITIALIZE RORganize application"
 end
-
