@@ -19,10 +19,17 @@ module Rorganize
             issue_changes = bulk_change_start_due_date(issues)
             merged_issues = issue_changes[:due_date] | issue_changes[:start_date]
             if merged_issues.any?
-              Issue.where(id: issue_changes[:due_date].collect { |issue| issue.id }).update_all(due_date: version.target_date)
-              Issue.where(id: issue_changes[:start_date].collect { |issue| issue.id }).update_all(start_date: version.start_date)
+              Issue.where(id: issue_changes[:due_date].collect(&:id)).update_all(due_date: version.target_date) unless version.target_date.nil?
+              Issue.where(id: issue_changes[:start_date].collect(&:id)).update_all(start_date: version.start_date)
+              Issue.where(id: merged_issues.collect(&:id)).update_all(nullify_due_date_sql)
               Issue.journal_update_creation(merged_issues, version.project, User.current.id, 'Issue', journals)
             end
+          end
+
+          def nullify_due_date_sql
+            sql = 'issues.due_date = CASE '
+            sql += 'WHEN (issues.due_date IS NOT NULL AND issues.start_date > issues.due_date) THEN NULL '
+            sql += 'ELSE issues.due_date END'
           end
 
 
@@ -72,7 +79,7 @@ module Rorganize
 
         def update_start_date?(version_update)
           !self.new_record? && self.version && self.version.start_date &&
-              version_changed?(version_update) && (self.start_date.nil? || (start_date_lt_version_start_date?))
+              version_changed?(version_update) && (self.start_date.nil? || (start_date_lt_version_start_date? || start_date_gt_version_due_date?))
         end
 
         def update_due_date?(version_update)

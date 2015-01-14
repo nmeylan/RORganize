@@ -39,9 +39,9 @@ class IssueDateValidatorTest < ActiveSupport::TestCase
     assert @version1.target_date < @issue1.due_date, 'Version target date superior to issue due date'
     assert @version1.target_date < @issue2.due_date, 'Version target date superior to issue due date'
 
-    assign_version(@issue1, @version1, &Proc.new{assert @issue1.update_due_date?(false)})
-    assign_version(@issue2, @version1, &Proc.new{assert @issue2.update_due_date?(false)})
-    assign_version(@issue3, @version1, &Proc.new{assert @issue3.update_due_date?(false)})
+    assign_version(@issue1, @version1, &Proc.new { assert @issue1.update_due_date?(false) })
+    assign_version(@issue2, @version1, &Proc.new { assert @issue2.update_due_date?(false) })
+    assign_version(@issue3, @version1, &Proc.new { assert @issue3.update_due_date?(false) })
 
     assert_equal @version1.target_date, @issue1.due_date
     assert_equal @version1.target_date, @issue2.due_date
@@ -51,8 +51,8 @@ class IssueDateValidatorTest < ActiveSupport::TestCase
 
     assert_equal Date.new(2012, 12, 24), @issue4.due_date
 
-    assign_version(@issue4, version, &Proc.new{assert @issue4.update_due_date?(false)})
-    assign_version(@issue5, version, &Proc.new{assert_not @issue5.update_due_date?(false)})
+    assign_version(@issue4, version, &Proc.new { assert @issue4.update_due_date?(false) })
+    assign_version(@issue5, version, &Proc.new { assert_not @issue5.update_due_date?(false) })
 
     assert_equal version.target_date, @issue4.due_date
     assert_equal Date.new(2012, 12, 23), @issue4.due_date
@@ -64,8 +64,8 @@ class IssueDateValidatorTest < ActiveSupport::TestCase
     assert_equal Date.new(2012, 12, 29), @issue2.due_date
     version = Version.create(name: 'test', start_date: '2012-12-01', project_id: 1)
 
-    assign_version(@issue1, version, &Proc.new{assert_not @issue1.update_due_date?(false)})
-    assign_version(@issue2, version, &Proc.new{assert_not @issue2.update_due_date?(false)})
+    assign_version(@issue1, version, &Proc.new { assert_not @issue1.update_due_date?(false) })
+    assign_version(@issue2, version, &Proc.new { assert_not @issue2.update_due_date?(false) })
 
     assert_equal Date.new(2012, 12, 31), @issue1.due_date
     assert_equal Date.new(2012, 12, 29), @issue2.due_date
@@ -79,9 +79,9 @@ class IssueDateValidatorTest < ActiveSupport::TestCase
     assert @issue1.start_date < @version1.start_date, 'Version target date inferior to issue start date'
     assert @issue3.start_date > @version1.start_date, 'Version target date superior to issue start date'
 
-    assign_version(@issue1, @version1, &Proc.new{assert @issue1.update_start_date?(false)})
-    assign_version(@issue2, @version1, &Proc.new{assert @issue2.update_start_date?(false)})
-    assign_version(@issue3, @version1, &Proc.new{assert_not @issue3.update_start_date?(false)})
+    assign_version(@issue1, @version1, &Proc.new { assert @issue1.update_start_date?(false) })
+    assign_version(@issue2, @version1, &Proc.new { assert @issue2.update_start_date?(false) })
+    assign_version(@issue3, @version1, &Proc.new { assert_not @issue3.update_start_date?(false) })
 
     assert_equal @version1.start_date, @issue1.start_date
     assert_equal @version1.start_date, @issue2.start_date
@@ -108,7 +108,7 @@ class IssueDateValidatorTest < ActiveSupport::TestCase
   test 'it should not save when start date is out of version date bound' do
     issue = Issue.new(tracker_id: 1, subject: 'Bug', status_id: '1', project_id: 1, version_id: @version1.id,
                       start_date: '2012-12-22', due_date: '2012-12-24')
-    assert issue.start_date_gt_version_due_date?
+    assert issue.start_date_gt_version_due_date?, 'issues start date is not greater than version du date'
     assert_not issue.save
 
     issue = Issue.new(tracker_id: 1, subject: 'Bug', status_id: '1', project_id: 1, version_id: @version1.id,
@@ -120,7 +120,7 @@ class IssueDateValidatorTest < ActiveSupport::TestCase
   test 'it should not save when due date is out of version date bound' do
     issue = Issue.new(tracker_id: 1, subject: 'Bug', status_id: '1', project_id: 1, version_id: @version1.id,
                       start_date: '2012-12-01', due_date: '2012-12-24')
-    assert issue.due_date_gt_version_due_date?, 'Due date is less less than version start date'
+    assert issue.due_date_gt_version_due_date?, 'Due date is lesser than version start date'
     assert_not issue.save
 
     issue = Issue.new(tracker_id: 1, subject: 'Bug', status_id: '1', project_id: 1, version_id: @version1.id,
@@ -132,13 +132,10 @@ class IssueDateValidatorTest < ActiveSupport::TestCase
   test 'it should set due date equal to the version target date when due date is greater on bulk edition' do
     issues = []
     issues << @issue1 << @issue2 << @issue3 << @issue4 << @issue5
-    issues.each do |issue|
-      issue.version = @version1
-      issue.save
-    end
 
-    Issue.bulk_set_start_and_due_date(issues.collect(&:id), @version1.id, nil)
+    Issue.bulk_edit(issues.collect(&:id), {version_id: @version1.id}, projects(:projects_001))
     issues[0, 4].each do |issue|
+      issue.reload
       assert_equal @version1.target_date, issue.due_date
     end
   end
@@ -149,15 +146,87 @@ class IssueDateValidatorTest < ActiveSupport::TestCase
     @issue2.save
 
     issues << @issue1 << @issue2 << @issue3 << @issue4 << @issue5
-    issues.each do |issue|
-      issue.version = @version1
-      issue.save
-    end
 
-    Issue.bulk_set_start_and_due_date(issues.collect(&:id), @version1.id, nil)
+    Issue.bulk_edit(issues.collect(&:id), {version_id: @version1.id}, projects(:projects_001))
 
     [@issue1, @issue2, @issue4, @issue5].each do |issue|
+      issue.reload
       assert_equal @version1.start_date, issue.start_date
     end
   end
+
+  test 'it should nullify due date when start date is update after updating version start date when version has a due date' do
+    issue1 = Issue.create(tracker_id: 1, subject: 'Bug', status_id: '1', project_id: 1, start_date: '2012-11-29', due_date: '2012-12-20')
+    version1 = Version.create(name: 'test', start_date: '2012-12-21', target_date: '2012-12-30', project_id: 1)
+
+
+    assert_equal Date.new(2012, 11, 29), issue1.start_date
+    assert_equal Date.new(2012, 12, 20), issue1.due_date
+    Issue.bulk_edit([issue1.id], {version_id: version1.id}, projects(:projects_001))
+    issue1.reload
+    assert_equal Date.new(2012, 12, 21), issue1.start_date
+    assert_equal nil, issue1.due_date
+
+    issue2 = Issue.create(tracker_id: 1, subject: 'Bug', status_id: '1', project_id: 1, start_date: '2012-12-15', due_date: '2012-12-20')
+
+    assert_equal Date.new(2012, 12, 15), issue2.start_date
+    assert_equal Date.new(2012, 12, 20), issue2.due_date
+    Issue.bulk_edit([issue2.id], {version_id: version1.id}, projects(:projects_001))
+    issue2.reload
+    assert_equal Date.new(2012, 12, 21), issue2.start_date
+    assert_equal nil, issue2.due_date
+  end
+
+  test 'it should nullify due date when start date is update after updating version start date when version has no due date' do
+    issue1 = Issue.create(tracker_id: 1, subject: 'Bug', status_id: '1', project_id: 1, start_date: '2012-11-29', due_date: '2012-12-20')
+    version1 = Version.create(name: 'test', start_date: '2012-12-21', project_id: 1)
+
+    assert_equal Date.new(2012, 11, 29), issue1.start_date
+    assert_equal Date.new(2012, 12, 20), issue1.due_date
+    Issue.bulk_edit([issue1.id], {version_id: version1.id}, projects(:projects_001))
+    issue1.reload
+    assert_equal Date.new(2012, 12, 21), issue1.start_date
+    assert_equal nil, issue1.due_date
+
+    issue2 = Issue.create(tracker_id: 1, subject: 'Bug', status_id: '1', project_id: 1, start_date: '2012-12-15', due_date: '2012-12-23')
+
+    assert_equal Date.new(2012, 12, 15), issue2.start_date
+    assert_equal Date.new(2012, 12, 23), issue2.due_date
+    Issue.bulk_edit([issue2.id], {version_id: version1.id}, projects(:projects_001))
+    issue2.reload
+    assert_equal Date.new(2012, 12, 21), issue2.start_date
+    assert_equal Date.new(2012, 12, 23), issue2.due_date
+
+    issue3 = Issue.create(tracker_id: 1, subject: 'Bug', status_id: '1', project_id: 1, start_date: '2012-12-15')
+
+    assert_equal Date.new(2012, 12, 15), issue3.start_date
+    assert_equal nil, issue3.due_date
+    Issue.bulk_edit([issue3.id], {version_id: version1.id}, projects(:projects_001))
+    issue3.reload
+    assert_equal Date.new(2012, 12, 21), issue3.start_date
+    assert_equal nil, issue3.due_date
+  end
+
+  test 'it should nullify due date when due date is update after updating version due date' do
+    issue1 = Issue.create(tracker_id: 1, subject: 'Bug', status_id: '1', project_id: 1, start_date: '2012-11-29', due_date: '2012-12-20')
+    version1 = Version.create(name: 'test', start_date: '2012-12-01', target_date: '2012-12-19', project_id: 1)
+
+    assert_equal Date.new(2012, 11, 29), issue1.start_date
+    assert_equal Date.new(2012, 12, 20), issue1.due_date
+    Issue.bulk_edit([issue1.id], {version_id: version1.id}, projects(:projects_001))
+    issue1.reload
+    assert_equal Date.new(2012, 12, 01), issue1.start_date
+    assert_equal Date.new(2012, 12, 19), issue1.due_date
+
+    issue2 = Issue.create(tracker_id: 1, subject: 'Bug', status_id: '1', project_id: 1, start_date: '2012-12-20', due_date: '2012-12-23')
+
+    assert_equal Date.new(2012, 12, 20), issue2.start_date
+    assert_equal Date.new(2012, 12, 23), issue2.due_date
+    Issue.bulk_edit([issue2.id], {version_id: version1.id}, projects(:projects_001))
+    issue2.reload
+    assert_equal Date.new(2012, 12, 01), issue2.start_date
+    assert_equal Date.new(2012, 12, 19), issue2.due_date
+
+  end
+
 end
