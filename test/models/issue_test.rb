@@ -40,6 +40,15 @@ class IssueTest < ActiveSupport::TestCase
     assert_equal(100, @issue.done)
   end
 
+  test 'it does not set done ratio when status does not change change' do
+    #Status 4 is "Fixed to test", default done value is 100
+    issue = Issue.create(tracker_id: 1, subject: 'Issue creation', description: '', status_id: 4, done: 20, project_id: 1, due_date: '2012-12-31')
+    assert_equal(20, issue.done)
+    issue.attributes = {subject: 'Hello'}
+    issue.save
+    assert_equal(20, issue.done)
+  end
+
   test 'it does not set done ratio when status change and done ratio at the same time' do
     #Status 4 is "Fixed to test", default done value is 100
     @issue.attributes = {status_id: 4, done: 50}
