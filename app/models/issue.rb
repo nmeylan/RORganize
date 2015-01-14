@@ -197,7 +197,7 @@ class Issue < ActiveRecord::Base
       self.done = 0
     elsif !self.status.nil?
       done_ratio = self.status.default_done_ratio
-      if  self.status_id_changed? && done_ratio && !self.done_changed?
+      if self.status_id_changed? && done_ratio && !self.done_changed?
         self.done = done_ratio
       end
     end

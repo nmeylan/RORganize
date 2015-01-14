@@ -314,7 +314,7 @@ bla bla
   end
 
   test 'it should not save with an empty status' do
-    issue = Issue.new(tracker_id: 1, subject: 'Bug',project_id: 1)
+    issue = Issue.new(tracker_id: 1, subject: 'Bug', project_id: 1)
     assert_not issue.save
     issue.status_id = 4
     assert issue.save, issue.errors.messages

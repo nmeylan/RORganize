@@ -103,6 +103,6 @@ class IssueGanttTest < ActiveSupport::TestCase
     assert_nil @issue2.start_date
     assert_nil @issue2.due_date
 
-    assert errors.any?{|error| error[:start_date]}
+    assert errors.any? { |error| error[:start_date] }
   end
 end
