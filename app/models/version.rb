@@ -25,29 +25,24 @@ class Version < ActiveRecord::Base
   end
 
   def closed?
-    !self.target_date.nil? && (self.target_date && self.target_date < Date.today)
+    self.target_date && self.target_date < Date.today
   end
 
   def issues_count
-    self.issues.to_a.count
+    self.issues.count
   end
   # The rule for issue start and due date is :
   # Version.start_date <= Issue.start_date < Issue.due_date <= Version.due_date
   # So when issue's version is changing we have to update issue start and due date to respect the previous rule.
+  # see https://github.com/nmeylan/RORganize/wiki/User-guide---Update-version-dates
   def update_issues_due_date
-    issues = Issue.where(version_id: self.id).eager_load(:version)
-    issue_changes = Issue.bulk_change_start_due_date(issues)
-    merged_issues = issue_changes[:due_date] | issue_changes[:start_date]
-    if merged_issues.any?
-      Issue.where(id: issue_changes[:due_date].collect { |issue| issue.id }).update_all(due_date: self.target_date)
-      Issue.where(id: issue_changes[:start_date].collect { |issue| issue.id }).update_all(start_date: self.start_date)
-      Issue.journal_update_creation(merged_issues, self.project, User.current.id, 'Issue')
-    end
+    issues = Issue.where(version_id: self.id)
+    Issue.bulk_set_start_and_due_date(issues.collect(&:id), self, nil)
   end
 
   #  Custom validator
   def validate_start_date
-    if !((self.target_date && self.start_date) ? self.start_date <= self.target_date : true)
+    if self.target_date && self.start_date &&  self.start_date >= self.target_date
       errors.add(:start_date, 'must be inferior than due date')
     end
   end
