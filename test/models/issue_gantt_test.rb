@@ -74,14 +74,10 @@ class IssueGanttTest < ActiveSupport::TestCase
 
     assert_nil @issue1.start_date
     assert_nil @issue2.start_date
-    assert_equal 30, @issue1.done
-    assert_equal 40, @issue2.done
 
     Issue.gantt_edit(issue_id_attributes_changed_hash)
     @issue1.reload
     @issue2.reload
-    assert_equal 30, @issue1.done
-    assert_equal 40, @issue2.done
 
     assert_equal start_date, @issue1.start_date
     assert_equal start_date, @issue2.start_date
