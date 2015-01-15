@@ -31,6 +31,7 @@ class Version < ActiveRecord::Base
   def issues_count
     self.issues.count
   end
+
   # The rule for issue start and due date is :
   # Version.start_date <= Issue.start_date < Issue.due_date <= Version.due_date
   # So when issue's version is changing we have to update issue start and due date to respect the previous rule.
@@ -42,7 +43,7 @@ class Version < ActiveRecord::Base
 
   #  Custom validator
   def validate_start_date
-    if self.target_date && self.start_date &&  self.start_date >= self.target_date
+    if self.target_date && self.start_date && self.start_date >= self.target_date
       errors.add(:start_date, 'must be inferior than due date')
     end
   end
@@ -57,45 +58,30 @@ class Version < ActiveRecord::Base
     Version.where("position > ? AND project_id = ? ", position, self.project_id).update_all('position = position - 1')
   end
 
+  # This method return an overview of versions for the the given project.
   # @param [Numeric] project_id : the id of the project.
-  # @param [String] condition :the condition.
-  # @return [Array] an array with de the following structure : [[version_id, number of closed issues, number of opened issues, progress percent of issue], [..]...]
+  # @param [String] condition : an extra condition clause.
+  # @return [Array] an array with de the following structure :
+  # [[version_id, number of opened issues, number of closed issues, progress percent of issue], [..]...]
   def self.overviews(project_id, condition = nil)
     condition ||= '1 = 1'
     #This request return : [version_id, number of opened request, number of closed request, total progress percent]
-    Version.joins('RIGHT OUTER JOIN `issues` ON `issues`.`version_id` = `versions`.`id` INNER JOIN `issues_statuses` ON `issues_statuses`.`id` = `issues`.`status_id`').group('versions.id').where(%Q(#{condition} AND issues.project_id = #{project_id})).pluck('versions.id, SUM(case when issues_statuses.is_closed = 0 then 1 else 0 end) Opened, SUM(case when issues_statuses.is_closed = 1 then 1 else 0 end) Closed, (SUM(issues.done) / Count(*)) Percent')
-  end
-
-  def self.define_calendar(versions, date)
-    if date
-      date = date.to_date
-    else
-      date = Date.today
-    end
-    versions_hash = {}
-    versions.each do |version|
-      unless version.target_date.nil?
-        versions_hash[version.target_date.to_formatted_s(:db)] = version
-      end
-    end
-    {versions_hash: versions_hash, date: date}
-  end
-
-  def self.define_gantt_data(project)
-    data = Hash.new { |h, k| h[k] = [] }
-    versions = project.versions
-    versions.each do |version|
-      data[version] = version.issues.eager_load(:parent, :children)
-    end
-    data
+    Version.joins('RIGHT OUTER JOIN `issues` ON `issues`.`version_id` = `versions`.`id`' \
+                  'INNER JOIN `issues_statuses` ON `issues_statuses`.`id` = `issues`.`status_id`')
+        .group('versions.id')
+        .where(%Q(#{condition} AND issues.project_id = #{project_id}))
+        .pluck('versions.id, ' \
+                'SUM(case when issues_statuses.is_closed = 0 then 1 else 0 end) Opened, '\
+                'SUM(case when issues_statuses.is_closed = 1 then 1 else 0 end) Closed, ' \
+                '(SUM(issues.done) / Count(*)) Percent')
   end
 
   def self.gantt_edit(hash)
     Version.transaction do
-      hash.each do |k, v|
-        version = Version.find_by_id(k)
+      hash.each do |version_id, attribute_name_value_hash|
+        version = Version.find_by_id(version_id)
         if version
-          version.attributes = v
+          version.attributes = attribute_name_value_hash
           if version.changed?
             version.save
           end
