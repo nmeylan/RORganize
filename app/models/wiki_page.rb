@@ -12,7 +12,7 @@ class WikiPage < ActiveRecord::Base
   friendly_id :title, use: :slugged
   #Triggers
   before_create :inc_position
-  after_destroy :dec_position, :destroy_journal
+  after_destroy :dec_position
   #Relations
   has_one :wiki_home_page, class_name: 'Wiki', foreign_key: 'home_page_id', dependent: :nullify
   belongs_to :author, class_name: 'User', foreign_key: 'author_id'
@@ -20,7 +20,7 @@ class WikiPage < ActiveRecord::Base
   belongs_to :parent, class_name: 'WikiPage'
   has_many :sub_pages, class_name: 'WikiPage', foreign_key: 'parent_id', dependent: :nullify
 
-  validates :title, presence: true
+  validates :title, :project_id, presence: true
 
   def caption
     self.title
@@ -31,21 +31,25 @@ class WikiPage < ActiveRecord::Base
   end
 
   def inc_position
-    self.position = self.class.where(parent_id: self.parent_id).count('*')
+    self.position = WikiPage.where(parent_id: self.parent_id, wiki_id: self.wiki_id).count
   end
 
   def dec_position
-    pages = self.class.where('parent_id = ? AND id <> ? AND position > ?', self.parent_id, self.id, self.position)
-    pages.each do |wiki_page|
-      p = (wiki_page.read_attribute('position') -1)
-      wiki_page.update_attributes(position: p)
-    end
+    WikiPage.where('parent_id = ? AND position > ? AND wiki_id = ?', self.parent_id, self.position, self.wiki_id).update_all('position = position - 1')
   end
 
   def project_id
     self.wiki.project_id
   end
 
+  # @param [Numeric] project_id
+  # @param [Hash] wiki_page_params
+  # @param [Hash] params
+  # @return [Array] an array with of length 4.
+  # Index 0 : WikiPage : the created wiki page.
+  # Index 1 : Wiki : the wiki at which the page is belonging to.
+  # Index 2 : Boolean : the creation result.
+  # Index 3 : Boolean : the home page set result.
   def self.page_creation(project_id, wiki_page_params, params)
     wiki = Wiki.find_by_project_id(project_id)
     wiki_page = wiki.pages.build(wiki_page_params)
