@@ -8,7 +8,7 @@ class Watcher < ActiveRecord::Base
   belongs_to :watchable, polymorphic: true
   belongs_to :project
 
-  validates :user_id, presence: true
+  validates :user_id, :watchable_id, :watchable_type, presence: true
 
   def self.permit_attributes
     [:watchable_id, :watchable_type]
