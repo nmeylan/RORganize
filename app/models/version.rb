@@ -76,9 +76,11 @@ class Version < ActiveRecord::Base
                 '(SUM(issues.done) / Count(*)) Percent')
   end
 
-  def self.gantt_edit(hash)
+
+  # @param [Hash] version_id_attributes_changed_hash
+  def self.gantt_edit(version_id_attributes_changed_hash)
     Version.transaction do
-      hash.each do |version_id, attribute_name_value_hash|
+      version_id_attributes_changed_hash.each do |version_id, attribute_name_value_hash|
         version = Version.find_by_id(version_id)
         if version
           version.attributes = attribute_name_value_hash
@@ -90,6 +92,7 @@ class Version < ActiveRecord::Base
     end
   end
 
+  # @param [String] operator : 'dec' or 'inc'.
   def change_position(operator)
     project = self.project
     versions = project.versions.order(:position)
