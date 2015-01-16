@@ -23,7 +23,7 @@ class Comment < ActiveRecord::Base
         .order('comments.created_at DESC') }
 
   default_scope { eager_load(author: :avatar) }
-  validates :content, :project_id, presence: true
+  validates :content, :project_id, :commentable_id, :commentable_type, presence: true
   before_update :update_date
 
   # Build a scope that eager load all comments for the given object type

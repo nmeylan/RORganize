@@ -8,7 +8,7 @@ class CommentTest < ActiveSupport::TestCase
   # Called before every test method runs. Can be used
   # to set up fixture information.
   def setup
-    @issue = Issue.new({subject: 'test', description: 'sample issue', tracker_id: Tracker.first.id, author_id: User.current.id, status_id: IssuesStatus.first.id})
+    @issue = Issue.create(subject: 'test', description: 'sample issue', tracker_id: Tracker.first.id, author_id: User.current.id, status_id: IssuesStatus.first.id)
   end
 
   # Called after every test method runs. Can be used to tear
@@ -19,11 +19,13 @@ class CommentTest < ActiveSupport::TestCase
   end
 
   def create_comment
-    comment = Comment.new({content: 'this a comment', user_id: User.current.id, project_id: 1})
-    @issue.comments << comment
+    comment = Comment.new(content: 'this a comment', user_id: User.current.id, project_id: 1, commentable_id: @issue.id, commentable_type: 'Issue')
+
     assert_nil comment.id
-    assert_equal true, @issue.save
+    @issue.comments << comment
+    assert @issue.save
     assert_not_nil comment.id
+    assert_equal [comment], @issue.comments
     @issue.comments.first
   end
 

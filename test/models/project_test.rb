@@ -395,7 +395,7 @@ class ProjectTest < ActiveSupport::TestCase
 
   test 'it has many comments and should delete them on project deletion' do
     project = Project.create(name: 'Rorganize test fdp', is_public: true)
-    comment = Comment.new({content: 'this a comment', user_id: User.current.id, project_id: project.id})
+    comment = Comment.new(content: 'this a comment', user_id: User.current.id, project_id: project.id, commentable_id: 2, commentable_type: 'Issue')
     issue = Issue.new(tracker_id: 1, subject: 'Bug1', status_id: 1, project_id: project.id)
     issue.comments << comment
 
