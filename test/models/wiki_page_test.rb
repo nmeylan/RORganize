@@ -97,7 +97,23 @@ class WikiPageTest < ActiveSupport::TestCase
     assert_equal @project.id, wiki_page.project_id
   end
 
-  test 'it has a method to build wiki pages' do
+  test 'it has a method to build a wiki home page' do
+    wiki_page, wiki, page_success, home_page_success = WikiPage.page_creation(@project.id, {title: "NEw home page", content: "My content"}, {wiki: {home_page: "true"}})
+    assert_equal @wiki, wiki
+    assert page_success
+    assert home_page_success
+    assert_equal WikiPage.find_by_wiki_id_and_title(@wiki.id, "NEw home page"), wiki_page
+    @wiki.reload
+    assert_equal @wiki.home_page, wiki_page
+  end
 
+  test 'it has a method to build a wiki page' do
+    creation_result = WikiPage.page_creation(@project.id, {title: "NEw home page", content: "My content"}, {wiki: {home_page: "true"}})
+    wiki_page, wiki, page_success, home_page_success = WikiPage.page_creation(@project.id, {title: "NEw sub page", content: "My sub page content", parent_id: "new-home-page"}, {})
+    assert_equal @wiki, wiki
+    assert page_success
+    assert home_page_success
+    assert_equal WikiPage.find_by_wiki_id_and_title(@wiki.id, "NEw sub page"), wiki_page
+    assert_equal creation_result.first, wiki_page.parent
   end
 end
