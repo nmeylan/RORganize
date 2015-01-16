@@ -116,4 +116,45 @@ class WikiPageTest < ActiveSupport::TestCase
     assert_equal WikiPage.find_by_wiki_id_and_title(@wiki.id, "NEw sub page"), wiki_page
     assert_equal creation_result.first, wiki_page.parent
   end
+
+  test 'it has a method to build a wiki page that should not be saved when it has no title' do
+    wiki_page, wiki, page_success, home_page_success = WikiPage.page_creation(@project.id, {content: "My sub page content"}, {})
+    assert_equal @wiki, wiki
+    assert_not page_success
+    assert home_page_success
+    assert_not wiki_page.id
+  end
+
+  test 'it has a method to build a wiki page that should not save parent when this one is invalid' do
+    wiki_page, wiki, page_success, home_page_success = WikiPage.page_creation(@project.id, {title: "NEw sub page", content: "My sub page content", parent_id: "new-hhome-page"}, {})
+    assert_equal @wiki, wiki
+    assert page_success
+    assert home_page_success
+    assert_equal WikiPage.find_by_wiki_id_and_title(@wiki.id, "NEw sub page"), wiki_page
+    assert_not wiki_page.parent
+  end
+
+  test 'it has many sub pages and should be nullified when it is deleted' do
+    wiki_page = WikiPage.create(title: 'My title 1', author_id: User.current.id, content: 'content', wiki_id: @wiki.id)
+    wiki_page1 = WikiPage.create(title: 'My title 2', author_id: User.current.id, content: 'content', wiki_id: @wiki.id, parent_id: wiki_page.id)
+
+    assert_equal wiki_page, wiki_page1.parent
+    assert_equal [wiki_page1], wiki_page.sub_pages
+
+    wiki_page.destroy
+    wiki_page1.reload
+    assert_not wiki_page1.parent_id
+  end
+
+  test 'home page belongs to project and wiki home page should be nullified when it is destroyed' do
+    creation_result = WikiPage.page_creation(@project.id, {title: "NEw home page", content: "My content"}, {wiki: {home_page: "true"}})
+    wiki = creation_result[1]
+    wiki_page = creation_result[0]
+
+    assert_equal wiki.home_page, wiki_page
+
+    wiki_page.destroy
+    wiki.reload
+    assert_not wiki.home_page
+  end
 end
