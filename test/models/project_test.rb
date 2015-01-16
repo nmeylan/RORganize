@@ -443,8 +443,8 @@ class ProjectTest < ActiveSupport::TestCase
 
   test 'it has one wiki and should delete it on project deletion' do
     project = Project.create(name: 'Rorganize test fdp', is_public: true)
-    wiki = Wiki.new(project_id: project.id)
-    wiki_page = WikiPage.new(title: 'My title', author_id: User.current.id, content: 'content')
+    wiki = Wiki.create(project_id: project.id)
+    wiki_page = WikiPage.new(title: 'My title', author_id: User.current.id, content: 'content', wiki_id: wiki.id)
     wiki.pages << wiki_page
     assert wiki.save, wiki.errors.messages
     assert wiki_page.id
