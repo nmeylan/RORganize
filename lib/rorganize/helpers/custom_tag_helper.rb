@@ -95,7 +95,6 @@ module Rorganize
       # @return [String] build a color picker text field. Behaviour is bind on page load (JS).
       def color_field_tag(form, field, options = {})
         default_options = {autocomplete: 'off', maxlength: 7, class: 'color-editor-field'}
-        p default_options.merge(options)
         form.text_field field, default_options.merge(options)
       end
 
