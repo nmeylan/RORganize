@@ -19,7 +19,7 @@ class IssueCommentableTest < ActiveSupport::TestCase
     # Do nothing
   end
 
-  test "it has many comments and should be destroy when commentable is destroyed" do
+  test "issue has many comments and should be destroy when commentable is destroyed" do
     issue = Issue.create(tracker_id: 1, subject: 'Issue creation', description: '', status_id: '1', done: 0, project_id: 1, due_date: '2012-12-31')
     comment = Comment.create(content: 'this a comment', user_id: User.current.id, project_id: 1, commentable_id: issue.id, commentable_type: 'Issue')
     comment1 = Comment.create(content: 'this a comment', user_id: User.current.id, project_id: 1, commentable_id: issue.id, commentable_type: 'Issue')
@@ -33,7 +33,7 @@ class IssueCommentableTest < ActiveSupport::TestCase
     assert_raise(ActiveRecord::RecordNotFound) {comment2.reload}
   end
 
-  test "does it has been commented" do
+  test "does issue has been commented" do
     issue = Issue.create(tracker_id: 1, subject: 'Issue creation', description: '', status_id: '1', done: 0, project_id: 1, due_date: '2012-12-31')
     assert_not issue.commented?
 
@@ -44,7 +44,7 @@ class IssueCommentableTest < ActiveSupport::TestCase
     assert issue.commented?
   end
 
-  test "it as a method to bulk delete all comments for a given commentable items" do
+  test "issue has a method to bulk delete all comments for a given commentable items" do
     issue = Issue.create(tracker_id: 1, subject: 'Issue creation', description: '', status_id: '1', done: 0, project_id: 1, due_date: '2012-12-31')
     comment = Comment.create(content: 'this a comment', user_id: User.current.id, project_id: 1, commentable_id: issue.id, commentable_type: 'Issue')
     comment1 = Comment.create(content: 'this a comment', user_id: User.current.id, project_id: 1, commentable_id: issue.id, commentable_type: 'Issue')
