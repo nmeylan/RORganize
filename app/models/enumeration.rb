@@ -25,7 +25,7 @@ class Enumeration < ActiveRecord::Base
   end
 
   def name_uniqueness
-    count = Enumeration.where(name: self.name, opt: self.opt).count
+    count = Enumeration.where(name: self.name, opt: self.opt).where.not(id: self.id).count
     if count > 0
       errors.add(:name, 'must be uniq.')
     end
