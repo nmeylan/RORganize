@@ -119,11 +119,13 @@ module Rorganize
         objects = build_detail_hash(objects, excluded_attributes)
         insert = []
         journals.each do |journal|
-          insertion_hash = Journal.prepare_detail_insertion(self, objects[journal.journalizable_id]).first if objects[journal.journalizable_id]
-          if insertion_hash
-            old = build_old_value_query_part(insertion_hash)
-            new = build_new_value_query_part(insertion_hash)
-            insert << "(#{journal.id}, '#{insertion_hash[:property]}', '#{insertion_hash[:property_key]}', '#{old}', '#{new}')"
+          if objects[journal.journalizable_id]
+            insertion_hashes = Journal.prepare_detail_insertion(self, objects[journal.journalizable_id])
+            insertion_hashes.each do |insertion_hash|
+              old = build_old_value_query_part(insertion_hash)
+              new = build_new_value_query_part(insertion_hash)
+              insert << "(#{journal.id}, '#{insertion_hash[:property]}', '#{insertion_hash[:property_key]}', '#{old}', '#{new}')"
+            end
           end
         end
         perform_insertion(insert)
