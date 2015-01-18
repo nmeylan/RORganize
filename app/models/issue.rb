@@ -193,7 +193,7 @@ class Issue < ActiveRecord::Base
 
   private
   def set_done_ratio
-    if self.new_record? && self.status && self.status.default_done_ratio.nil?
+    if new_record_and_done_ratio_nil?
       self.done = 0
     elsif !self.status.nil?
       done_ratio = self.status.default_done_ratio
@@ -201,6 +201,10 @@ class Issue < ActiveRecord::Base
         self.done = done_ratio
       end
     end
+  end
+
+  def new_record_and_done_ratio_nil?
+    self.new_record? && self.done.nil? && self.status && self.status.default_done_ratio.nil?
   end
 
   def self.bulk_set_done_ratio(issue_ids, status_id, journals)

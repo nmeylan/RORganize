@@ -73,6 +73,18 @@ class IssueTest < ActiveSupport::TestCase
     assert_equal 0, issue1.done
   end
 
+  test 'it does not set done ratio on creation if it has benn defined' do
+    #Status 4 is "Fixed to test", default done value is 100
+    issue1 = Issue.create(tracker_id: 1, subject: 'Bug', status_id: '4', project_id: 1, done: 20)
+    issue1.save
+    assert_equal 20, issue1.done
+
+    #Status 8 default done value is nil
+    issue1 = Issue.create(tracker_id: 1, subject: 'Bug', status_id: '8', project_id: 1, done: 20)
+    issue1.save
+    assert_equal 20, issue1.done
+  end
+
   test 'it set done ratio when status change on bulk edit' do
     issue1 = Issue.create(tracker_id: 1, subject: 'Bug', status_id: '1', project_id: 1, done: 50)
     issue2 = Issue.create(tracker_id: 1, subject: 'Bug', status_id: '1', project_id: 1, done: 0)
