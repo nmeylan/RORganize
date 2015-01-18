@@ -88,7 +88,7 @@ module Rorganize
         end
 
         def due_date_gt_version_due_date_or_nil?
-          (self.due_date.nil? || self.due_date >= version.target_date)
+          (self.due_date.nil? || due_date_gt_version_due_date?)
         end
 
         def version_changed?(version_update)
