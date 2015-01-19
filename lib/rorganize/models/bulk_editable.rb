@@ -21,7 +21,7 @@ module Rorganize
           value_param[key] = nil
         end
         # Get all changed issues.
-        objects = changed_issues(objects_toolbox, value_param)
+        objects = updated_objects(objects_toolbox, value_param)
         value_param[:updated_at] = Time.now
         # Update all changed objects
         self.where(id: objects.collect(&:id)).update_all(value_param)
@@ -32,12 +32,12 @@ module Rorganize
 
       # @param [Array] objects_toolbox all objects selected(in the toolbox) for the bulk edition.
       # @param [Hash] value_param : hash of {attribute: :new_value}.
-      def changed_issues(objects_toolbox, value_param)
+      def updated_objects(objects_toolbox, value_param)
         objects = []
-        objects_toolbox.each do |issue|
-          issue.attributes = value_param
-          if issue.changed?
-            objects << issue
+        objects_toolbox.each do |object|
+          object.attributes = value_param
+          if object.changed?
+            objects << object
           end
         end
         objects

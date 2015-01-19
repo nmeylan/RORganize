@@ -35,6 +35,7 @@ class Member < ActiveRecord::Base
     self.user.name
   end
 
+  # Override default create_journal method from : Rorganize::Models::Journalizable module.
   def create_journal
     unless self.role_id.eql?(Role.non_member.id)
       created_journalizable_attributes = {role_id: [nil, self.role_id]}
