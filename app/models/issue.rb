@@ -12,7 +12,7 @@ class Issue < ActiveRecord::Base
   #lib/rorganize/models/issues
   # Contains date validator and Gantt behaviour
   include Rorganize::Models::IssueExtraMethods
-  extend Rorganize::Managers::BulkEditManager
+  extend Rorganize::Models::BulkEditable
   #Class variables
   exclude_attributes_from_journal(:description, :attachments_count, :link_type, :comments_count)
   attr_accessor :notes

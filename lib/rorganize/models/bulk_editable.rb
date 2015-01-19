@@ -1,10 +1,10 @@
 # Author: Nicolas Meylan
 # Date: 22.09.14
 # Encoding: UTF-8
-# File: bulk_edit_manager.rb
+# File: bulk_editable.rb
 module Rorganize
-  module Managers
-    module BulkEditManager
+  module Models
+    module BulkEditable
       include ActiveRecord::ConnectionAdapters::Quoting
 
       # @param [Array] ids : array of bulk edited object ids.

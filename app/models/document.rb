@@ -9,7 +9,7 @@ class Document < ActiveRecord::Base
   include Rorganize::Models::Commentable
   include Rorganize::Models::Watchable
   include Rorganize::Models::Notifiable
-  extend Rorganize::Managers::BulkEditManager
+  extend Rorganize::Models::BulkEditable
   #Class variables
   exclude_attributes_from_journal(:description, :comments_count)
   #Relations
