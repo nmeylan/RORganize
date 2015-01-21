@@ -74,7 +74,7 @@ module Rorganize
       end
 
       def generic_error_render(action, format, model, locals = {})
-        format.html { render action, locals: locals }
+        format.html { render action, locals: locals, status: :unprocessable_entity }
         format.json { render json: model.errors, status: :unprocessable_entity }
       end
 
