@@ -9,6 +9,13 @@ require 'rails/test_help'
 require 'mocha/mini_test'
 require 'test_assertions/test_assertions'
 
+class ActionController::TestCase
+  include Devise::TestHelpers
+  setup do
+    User.current = users(:users_001)
+    User.any_instance.stubs(:allowed_to?).returns(true)
+  end
+end
 
 class ActiveSupport::TestCase
   include Rorganize::TestAssertions
