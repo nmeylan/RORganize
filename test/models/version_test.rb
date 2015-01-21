@@ -31,22 +31,20 @@ class VersionTest < ActiveSupport::TestCase
   test 'it can be closed' do
     today = Date.new(2012, 12, 22)
     version = Version.create(name: 'Version test', start_date: '2012-12-01', project_id: @project.id)
-    Date.stub :today, today do
-      assert_not version.closed?, 'Version is closed'
+    Date.stubs(:today).returns(today)
+    assert_not version.closed?, 'Version is closed'
 
-      version.target_date = '2012-12-23'
-      version.save
-      assert_not version.closed?, 'Version is closed'
+    version.target_date = '2012-12-23'
+    version.save
+    assert_not version.closed?, 'Version is closed'
 
-      version.target_date = '2012-12-22'
-      version.save
-      assert_not version.closed?, 'Version is closed'
+    version.target_date = '2012-12-22'
+    version.save
+    assert_not version.closed?, 'Version is closed'
 
-      version.target_date = '2012-12-21'
-      version.save
-      assert version.closed?, 'Version is opened'
-
-    end
+    version.target_date = '2012-12-21'
+    version.save
+    assert version.closed?, 'Version is opened'
   end
 
   test 'it has issues count' do

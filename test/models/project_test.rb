@@ -209,13 +209,11 @@ class ProjectTest < ActiveSupport::TestCase
     version2 = Version.new(name: 'version3', start_date: Date.new(2012, 12, 1), is_done: false)
     @project.versions << version << version1 << version2
     @project.save
-    Date.stub :today, Date.new(2012, 11, 29) do
-      assert_equal [version, version1], @project.current_versions.to_a
-    end
+    Date.stubs(:today).returns(Date.new(2012, 11, 29))
+    assert_match_array [version, version1], @project.current_versions.to_a
 
-    Date.stub :today, Date.new(2012, 12, 29) do
-      assert_equal [version, version1, version2], @project.current_versions.to_a
-    end
+    Date.stubs(:today).returns(Date.new(2012, 12, 29))
+    assert_match_array [version, version1, version2], @project.current_versions.to_a
   end
 
   test 'it has old versions' do
@@ -224,13 +222,10 @@ class ProjectTest < ActiveSupport::TestCase
     version2 = Version.new(name: 'version3', start_date: Date.new(2012, 12, 1), is_done: true)
     @project.versions << version << version1 << version2
     @project.save
-    Date.stub :today, Date.new(2012, 11, 29) do
-      assert_equal [version], @project.old_versions.to_a
-    end
-
-    Date.stub :today, Date.new(2012, 12, 29) do
-      assert_equal [version, version2], @project.old_versions.to_a
-    end
+    Date.stubs(:today).returns(Date.new(2012, 11, 29))
+    assert_match_array [version], @project.old_versions.to_a
+    Date.stubs(:today).returns(Date.new(2012, 12, 29))
+    assert_match_array [version, version2], @project.old_versions.to_a
   end
 
   test 'Road map data structure' do
