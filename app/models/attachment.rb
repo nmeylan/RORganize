@@ -22,7 +22,7 @@ class Attachment < ActiveRecord::Base
     attachment.instance.file_file_name
   end
 
-  before_post_process :skip_non_image
+  before_post_process :should_process?
 
   validates_attachment :file,
                        content_type: {content_type: /\A(image|application|text)/,
@@ -55,12 +55,8 @@ class Attachment < ActiveRecord::Base
     self.name
   end
 
-  def skip_non_image
+  def should_process?
     !file_content_type.match(/\Aimage/).nil?
-  end
-
-  def custom_uri
-    "/system/:class/#{self.attachable_type}/:id/:style/:hash.:extension"
   end
 
 end
