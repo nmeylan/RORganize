@@ -54,9 +54,6 @@ class CategoriesController < ApplicationController
   end
 
   def find_category
-    @category = Category.find_by_id(params[:id])
-    unless @category
-      render_404
-    end
+    @category = Category.find(params[:id])
   end
 end

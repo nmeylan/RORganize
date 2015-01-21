@@ -14,6 +14,11 @@ class ApplicationController < ActionController::Base
   around_filter :set_current_user
   before_action :set_sessions
 
+
+  rescue_from ActiveRecord::RecordNotFound do |exception|
+    render_404
+  end
+
   def peek_enabled?
     Rails.env.eql?('development')
   end
