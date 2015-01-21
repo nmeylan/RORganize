@@ -12,6 +12,7 @@ class CategoriesController < ApplicationController
   before_action { |c| c.top_menu_item('projects') }
   include Rorganize::RichController
 
+
   def index
     @categories_decorator = @project.categories.paginated(@sessions[:current_page], @sessions[:per_page], order('categories.name')).decorate(context: {project: @project})
     respond_to do |format|
@@ -54,6 +55,6 @@ class CategoriesController < ApplicationController
   end
 
   def find_category
-    @category = Category.find(params[:id])
+    @category = Category.find_by!(id: params[:id], project_id: @project.id)
   end
 end
