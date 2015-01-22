@@ -4,14 +4,13 @@
 # File: categories_controller.rb
 
 class CategoriesController < ApplicationController
-  before_action :find_project
+  include Rorganize::RichController
+
   before_action :find_category, only: [:edit, :update, :destroy]
   before_action :check_permission
   before_action { |c| c.menu_context :project_menu }
   before_action { |c| c.menu_item('settings') }
   before_action { |c| c.top_menu_item('projects') }
-  include Rorganize::RichController
-
 
   def index
     @categories_decorator = @project.categories.paginated(@sessions[:current_page], @sessions[:per_page], order('categories.name')).decorate(context: {project: @project})
