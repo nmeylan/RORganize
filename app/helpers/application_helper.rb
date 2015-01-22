@@ -17,8 +17,9 @@ module ApplicationHelper
   # Page render for http 500
   def render_500
     respond_to do |format|
-      format.html { render file: "#{Rails.root}/public/500.html.erb", status: :not_found }
-      format.js { respond_to_js action: 'do_nothing', response_header: :failure, response_content: 'An unexpected error occured, please try again!' }
+      format.html { render file: "#{Rails.root}/public/500.html.erb", status: :internal_server_error }
+      format.js { respond_to_js action: 'do_nothing', response_header: :failure,
+                                response_content: 'An unexpected error occured, please try again!', status: :internal_server_error }
     end
   end
 
@@ -26,7 +27,8 @@ module ApplicationHelper
   def render_404
     respond_to do |format|
       format.html { render file: "#{Rails.root}/public/404.html.erb", status: :not_found }
-      format.js { respond_to_js action: 'do_nothing', response_header: :failure, response_content: t(:error_404) }
+      format.js { respond_to_js action: 'do_nothing', response_header: :failure,
+                                response_content: t(:error_404), status: :not_found }
       format.xml { head :not_found }
       format.any { head :not_found }
     end
@@ -36,9 +38,11 @@ module ApplicationHelper
   def render_403
     respond_to do |format|
       format.html { render file: "#{Rails.root}/public/403.html.erb", status: :forbidden }
-      format.js { respond_to_js action: 'do_nothing', response_header: :failure, response_content: t(:error_403) }
+      format.js { respond_to_js action: 'do_nothing', response_header: :failure,
+                                response_content: t(:error_403), status: :forbidden }
       format.xml { head :forbidden }
-      format.all { respond_to_js action: 'do_nothing', response_header: :failure, response_content: t(:error_403) }
+      format.all { respond_to_js action: 'do_nothing', response_header: :failure,
+                                 response_content: t(:error_403), status: :forbidden }
     end
   end
 
