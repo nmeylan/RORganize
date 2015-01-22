@@ -12,6 +12,7 @@ class UserAuthorizationTest < ActiveSupport::TestCase
   ADMINISTRATION_CONTROLLER = 'administration'
   # Called before every test method runs. Can be used
   # to set up fixture information.
+
   def setup
     initialize_project_context
     initialize_permissions
@@ -19,7 +20,7 @@ class UserAuthorizationTest < ActiveSupport::TestCase
     reload_enabled_module(@project_private.id)
     reload_enabled_module(@project_public.id)
     @controllers = [LOWER_CONTROLLER, UPPER_CONTROLLER]
-    Rorganize::Managers::PermissionManager.reload_permissions
+    Rorganize::Managers::PermissionManager.initialize
   end
 
   # Called after every test method runs. Can be used to tear
