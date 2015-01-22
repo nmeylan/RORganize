@@ -208,10 +208,8 @@ class IssueBulkEditableTest < ActiveSupport::TestCase
   end
 
   test 'it create notification when issues are bulk edited' do
-    User.stub_any_instance :generate_default_avatar, nil do
-      @user = User.create(name: 'Steve Doe', login: 'stdoe', admin: 0, email: 'steve.doe@example.com', password: 'qwertz')
-      @user1 = User.create(name: 'John Doe', login: 'jhdoe', admin: 0, email: 'john.doe@example.com', password: 'qwertz')
-    end
+    @user = User.create(name: 'Steve Doe', login: 'stdoe', admin: 0, email: 'steve.doe@example.com', password: 'qwertz')
+    @user1 = User.create(name: 'John Doe', login: 'jhdoe', admin: 0, email: 'john.doe@example.com', password: 'qwertz')
   end
 
   test 'it create a journal when issues are bulk deleted' do
@@ -241,38 +239,38 @@ class IssueBulkEditableTest < ActiveSupport::TestCase
     issue2 = Issue.create(tracker_id: 1, subject: 'Bug', status_id: '3', project_id: 1, done: 20)
 
     notification1 = Notification.create(user_id: 666, notifiable_id: issue1.id,
-                                       notifiable_type: 'Issue', project_id: 1, from_id: 667,
-                                       trigger_type: 'Journal',
-                                       trigger_id: 666,
-                                       recipient_type: 'participants')
+                                        notifiable_type: 'Issue', project_id: 1, from_id: 667,
+                                        trigger_type: 'Journal',
+                                        trigger_id: 666,
+                                        recipient_type: 'participants')
     notification2 = Notification.create(user_id: 665, notifiable_id: issue1.id,
-                                       notifiable_type: 'Issue', project_id: 1, from_id: 667,
-                                       trigger_type: 'Journal',
-                                       trigger_id: 666,
-                                       recipient_type: 'participants')
+                                        notifiable_type: 'Issue', project_id: 1, from_id: 667,
+                                        trigger_type: 'Journal',
+                                        trigger_id: 666,
+                                        recipient_type: 'participants')
 
     notification3 = Notification.create(user_id: 667, notifiable_id: issue1.id,
-                                       notifiable_type: 'Issue', project_id: 1, from_id: 667,
-                                       trigger_type: 'Journal',
-                                       trigger_id: 666,
-                                       recipient_type: 'watchers')
+                                        notifiable_type: 'Issue', project_id: 1, from_id: 667,
+                                        trigger_type: 'Journal',
+                                        trigger_id: 666,
+                                        recipient_type: 'watchers')
 
     notification4 = Notification.create(user_id: 666, notifiable_id: issue2.id,
-                                       notifiable_type: 'Issue', project_id: 1, from_id: 667,
-                                       trigger_type: 'Journal',
-                                       trigger_id: 666,
-                                       recipient_type: 'participants')
+                                        notifiable_type: 'Issue', project_id: 1, from_id: 667,
+                                        trigger_type: 'Journal',
+                                        trigger_id: 666,
+                                        recipient_type: 'participants')
     notification5 = Notification.create(user_id: 665, notifiable_id: issue2.id,
-                                       notifiable_type: 'Issue', project_id: 1, from_id: 667,
-                                       trigger_type: 'Journal',
-                                       trigger_id: 666,
-                                       recipient_type: 'participants')
+                                        notifiable_type: 'Issue', project_id: 1, from_id: 667,
+                                        trigger_type: 'Journal',
+                                        trigger_id: 666,
+                                        recipient_type: 'participants')
 
     notification6 = Notification.create(user_id: 667, notifiable_id: issue2.id,
-                                       notifiable_type: 'Issue', project_id: 1, from_id: 667,
-                                       trigger_type: 'Journal',
-                                       trigger_id: 666,
-                                       recipient_type: 'watchers')
+                                        notifiable_type: 'Issue', project_id: 1, from_id: 667,
+                                        trigger_type: 'Journal',
+                                        trigger_id: 666,
+                                        recipient_type: 'watchers')
 
     assert notification1.reload
     assert notification2.reload
@@ -283,12 +281,12 @@ class IssueBulkEditableTest < ActiveSupport::TestCase
 
     Issue.bulk_delete([issue1.id, issue2.id], @project)
 
-    assert_raise(ActiveRecord::RecordNotFound) {notification1.reload}
-    assert_raise(ActiveRecord::RecordNotFound) {notification2.reload}
-    assert_raise(ActiveRecord::RecordNotFound) {notification3.reload}
-    assert_raise(ActiveRecord::RecordNotFound) {notification4.reload}
-    assert_raise(ActiveRecord::RecordNotFound) {notification5.reload}
-    assert_raise(ActiveRecord::RecordNotFound) {notification6.reload}
+    assert_raise(ActiveRecord::RecordNotFound) { notification1.reload }
+    assert_raise(ActiveRecord::RecordNotFound) { notification2.reload }
+    assert_raise(ActiveRecord::RecordNotFound) { notification3.reload }
+    assert_raise(ActiveRecord::RecordNotFound) { notification4.reload }
+    assert_raise(ActiveRecord::RecordNotFound) { notification5.reload }
+    assert_raise(ActiveRecord::RecordNotFound) { notification6.reload }
   end
 
   test 'it bulk delete all watchers when issues are bulk deleted' do
@@ -302,7 +300,7 @@ class IssueBulkEditableTest < ActiveSupport::TestCase
 
     Issue.bulk_delete([issue1.id, issue2.id], @project)
 
-    assert_raise(ActiveRecord::RecordNotFound) {watcher.reload}
-    assert_raise(ActiveRecord::RecordNotFound) {watcher1.reload}
+    assert_raise(ActiveRecord::RecordNotFound) { watcher.reload }
+    assert_raise(ActiveRecord::RecordNotFound) { watcher1.reload }
   end
 end

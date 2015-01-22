@@ -13,15 +13,13 @@ class UserAuthorizationTest < ActiveSupport::TestCase
   # Called before every test method runs. Can be used
   # to set up fixture information.
   def setup
-    User.stub_any_instance :generate_default_avatar, nil do
-      initialize_project_context
-      initialize_permissions
-      assign_roles_permissions
-      reload_enabled_module(@project_private.id)
-      reload_enabled_module(@project_public.id)
-      @controllers = [LOWER_CONTROLLER, UPPER_CONTROLLER]
-      Rorganize::Managers::PermissionManager.reload_permissions
-    end
+    initialize_project_context
+    initialize_permissions
+    assign_roles_permissions
+    reload_enabled_module(@project_private.id)
+    reload_enabled_module(@project_public.id)
+    @controllers = [LOWER_CONTROLLER, UPPER_CONTROLLER]
+    Rorganize::Managers::PermissionManager.reload_permissions
   end
 
   # Called after every test method runs. Can be used to tear

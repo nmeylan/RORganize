@@ -12,10 +12,9 @@ class IssueWatchableTest < ActiveSupport::TestCase
     @project = projects(:projects_001)
     @issue = Issue.create(tracker_id: 1, subject: 'Issue creation', description: '', status_id: '1',
                           done: 10, project_id: 1, start_date: '2012-12-01', due_date: '2012-12-31')
-    User.stub_any_instance :generate_default_avatar, nil do
-      @user = User.create(name: 'Steve Doe', login: 'stdoe', admin: 0, email: 'steve.doe@example.com', password: 'qwertz')
-      @user1 = User.create(name: 'John Doe', login: 'jhdoe', admin: 0, email: 'john.doe@example.com', password: 'qwertz')
-    end
+    @user = User.create(name: 'Steve Doe', login: 'stdoe', admin: 0, email: 'steve.doe@example.com', password: 'qwertz')
+    @user1 = User.create(name: 'John Doe', login: 'jhdoe', admin: 0, email: 'john.doe@example.com', password: 'qwertz')
+
   end
 
   # Called after every test method runs. Can be used to tear
@@ -91,7 +90,7 @@ class IssueWatchableTest < ActiveSupport::TestCase
     assert watcher.reload
     assert watcher1.reload
 
-    Rorganize::Models::Watchable::bulk_delete_dependent([666,667], 'Issue')
+    Rorganize::Models::Watchable::bulk_delete_dependent([666, 667], 'Issue')
 
     assert_raise(ActiveRecord::RecordNotFound) { watcher.reload }
     assert_raise(ActiveRecord::RecordNotFound) { watcher1.reload }

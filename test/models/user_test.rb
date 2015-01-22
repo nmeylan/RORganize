@@ -10,9 +10,8 @@ class UserTest < ActiveSupport::TestCase
   # to set up fixture information.
   def setup
     @project = Project.create(name: 'Rorganize test')
-    User.stub_any_instance :generate_default_avatar, nil do
-      @user = User.create(name: 'Steve Doe', login: 'stdoe', admin: 0, email: 'steve.doe@example.com', password: 'qwertz')
-    end
+    @user = User.create(name: 'Steve Doe', login: 'stdoe', admin: 0, email: 'steve.doe@example.com', password: 'qwertz')
+
   end
 
   # Called after every test method runs. Can be used to tear
@@ -277,40 +276,34 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test 'it has many notifications and should delete them on project deletion' do
-    User.stub_any_instance :generate_default_avatar, nil do
-      user = User.create(name: 'Steaaa', login: 'stdaaa', admin: 0, password: 'qwertz', email: 'steve.doe.uniq@example.com')
-      notification = Notification.create(user_id: user.id, notifiable_id: 666,
-                                         notifiable_type: 'Issue', project_id: 1, from_id: 666,
-                                         trigger_type: 'Journal',
-                                         trigger_id: 666,
-                                         recipient_type: 'participants')
-      assert_equal 1, user.count_notification
-      user.destroy
+    user = User.create(name: 'Steaaa', login: 'stdaaa', admin: 0, password: 'qwertz', email: 'steve.doe.uniq@example.com')
+    notification = Notification.create(user_id: user.id, notifiable_id: 666,
+                                       notifiable_type: 'Issue', project_id: 1, from_id: 666,
+                                       trigger_type: 'Journal',
+                                       trigger_id: 666,
+                                       recipient_type: 'participants')
+    assert_equal 1, user.count_notification
+    user.destroy
 
-      assert_raise(ActiveRecord::RecordNotFound) { notification.reload }
-    end
+    assert_raise(ActiveRecord::RecordNotFound) { notification.reload }
   end
 
   test 'it has many members and should delete them on project deletion' do
-    User.stub_any_instance :generate_default_avatar, nil do
-      user = User.create(name: 'Steaaa', login: 'stdaaa', admin: 0, password: 'qwertz', email: 'steve.doe.uniq@example.com')
+    user = User.create(name: 'Steaaa', login: 'stdaaa', admin: 0, password: 'qwertz', email: 'steve.doe.uniq@example.com')
 
-      member = Member.create(user_id: user.id, project_id: @project.id, role_id: 666, is_project_starred: true)
-      user.destroy
+    member = Member.create(user_id: user.id, project_id: @project.id, role_id: 666, is_project_starred: true)
+    user.destroy
 
-      assert_raise(ActiveRecord::RecordNotFound) { member.reload }
-    end
+    assert_raise(ActiveRecord::RecordNotFound) { member.reload }
   end
 
   test 'it has many preferences and should delete them on project deletion' do
-    User.stub_any_instance :generate_default_avatar, nil do
-      user = User.create(name: 'Steaaa', login: 'stdaaa', admin: 0, password: 'qwertz', email: 'steve.doe.uniq@example.com')
-      assert user.preferences.count > 0
-      preferences_ids = user.preferences.collect(&:id)
-      assert_equal user.preferences, Preference.where(id: preferences_ids)
-      user.destroy
-      assert_equal [], Preference.where(id: preferences_ids)
-    end
+    user = User.create(name: 'Steaaa', login: 'stdaaa', admin: 0, password: 'qwertz', email: 'steve.doe.uniq@example.com')
+    assert user.preferences.count > 0
+    preferences_ids = user.preferences.collect(&:id)
+    assert_equal user.preferences, Preference.where(id: preferences_ids)
+    user.destroy
+    assert_equal [], Preference.where(id: preferences_ids)
 
 
   end

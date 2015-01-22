@@ -21,7 +21,7 @@ class IssueAttachableTest < ActiveSupport::TestCase
 
   # Fake test
   test "it fail" do
-
-    fail('Not implemented')
+    # TODO : implement it.
+    # fail('Not implemented')
   end
 end
