@@ -9,19 +9,19 @@ class CategoriesControllerTest < ActionController::TestCase
   end
 
   test "should get index" do
-    get :index, project_id: @project.slug
+    get_with_permission :index
     assert_response :success
     assert_not_nil assigns(:categories_decorator)
   end
 
   test "should get new" do
-    get :new, project_id: @project.slug
+    get_with_permission :new
     assert_response :success
   end
 
   test "should create category" do
     assert_difference('Category.count') do
-      post :create, category: {name: 'New category'}, project_id: @project.slug
+      post_with_permission :create, category: {name: 'New category'}
     end
     assert_not_empty flash[:notice]
     assert_redirected_to categories_path(@project.slug)
@@ -29,39 +29,74 @@ class CategoriesControllerTest < ActionController::TestCase
 
   test "should refresh the page when create category failed" do
     assert_no_difference('Category.count') do
-      post :create, category: {name: ''}, project_id: @project.slug
+      post_with_permission :create, category: {name: ''}
     end
     assert_not_nil assigns(:category)
     assert_response :unprocessable_entity
   end
 
   test "should get edit" do
-    get :edit, id: @category, project_id: @project.slug
+    get_with_permission :edit, id: @category
     assert_response :success
   end
 
   test "should redirect to 404 when record is not found on edit" do
-    get :edit, id: 666, project_id: @project.slug
+    get_with_permission :edit, id: 666
     assert_response :missing
   end
 
   test "should update category" do
-    patch :update, id: @category, category: {name: 'Change category name'}, project_id: @project.slug
+    patch_with_permission :update, id: @category, category: {name: 'Change category name'}
     assert_not_empty flash[:notice]
     assert_redirected_to categories_path(@project.slug)
   end
 
   test "should refresh the page when update category failed" do
-    patch :update, id: @category, category: {name: ''}, project_id: @project.slug
+    patch_with_permission :update, id: @category, category: {name: ''}
     assert_not_nil assigns(:category)
     assert_response :unprocessable_entity
   end
 
   test "should destroy category" do
     assert_difference('Category.count', -1) do
-      delete :destroy, id: @category, project_id: @project.slug, format: :js
+      delete_with_permission :destroy, id: @category, format: :js
     end
     assert_response :success
+  end
+
+  # TEST when user is not allowed to
+  test "should get a 403 error when user is allowed perform index" do
+    _get :index
+    assert_response :forbidden
+  end
+
+  test "should get a 403 error when user is allowed perform new" do
+    _get :new
+    assert_response :forbidden
+  end
+
+  test "should get a 403 error when user is allowed perform create category" do
+    assert_no_difference('Category.count') do
+      _post :create, category: {name: 'New category'}
+    end
+    assert_response :forbidden
+  end
+
+  test "should get a 403 error when user is allowed perform edit" do
+    _get :edit, id: @category
+    assert_response :forbidden
+  end
+
+  test "should get a 403 error when user is allowed perform update category" do
+    _patch :update, id: @category, category: {name: 'Change category name'}
+    assert_response :forbidden
+  end
+
+  test "should get a 403 error when user is allowed perform destroy category" do
+    assert_no_difference('Category.count', -1) do
+      _delete :destroy, id: @category, format: :js
+    end
+    assert_response :forbidden
   end
 
 end
