@@ -8,11 +8,15 @@ require File.expand_path('../../config/environment', __FILE__)
 require 'rails/test_help'
 require 'mocha/mini_test'
 require 'test_assertions/test_assertions'
+require 'test_utilities/custom_http_request'
 
 class ActionController::TestCase
   include Devise::TestHelpers
+  include Rorganize::CustomHttpRequest
+
   setup do
     User.stubs(:current).returns(users(:users_001))
+    drop_all_user_permissions
   end
 end
 
