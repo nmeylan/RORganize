@@ -50,7 +50,12 @@ module Rorganize
     # Simulate a GET request with the given parameters. But merge project context params.
     def _get(action, *args)
       args = merge_project_context_params(args)
-      get(action, *args)
+      hash = args.first
+      if hash[:format] && hash[:format].eql?(:js)
+        xhr :get, action, *args
+      else
+        get(action, *args)
+      end
     end
 
     # Simulate a POST request with the given parameters. But merge project context params.
@@ -88,19 +93,24 @@ module Rorganize
       args
     end
 
-    def allow_user_to(action)
+    def allow_user_to(action, controller = nil)
       if @project
         role = User.current.member_for(@project.id).role
       else
         random_member = User.current.members.first
         role = random_member.role
       end
+      action = permission_action(action)
+      controller = controller ? controller : @controller.controller_name
+      role.permissions << Permission.create(action: action, controller: controller, name: 'dont care')
+      role.save
+      Rorganize::Managers::PermissionManager::reload_permissions
+    end
+
+    def permission_action(action)
       action = action.to_s
       permission_action = ACTIONS_ALIASES[action]
       permission_action ||= action
-      role.permissions << Permission.create(action: permission_action, controller: @controller.controller_name, name: 'dont care')
-      role.save
-      Rorganize::Managers::PermissionManager::reload_permissions
     end
 
     def drop_all_user_permissions
