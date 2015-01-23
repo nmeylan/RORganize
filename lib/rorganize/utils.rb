@@ -15,7 +15,7 @@ module Rorganize
     private
     def self.class_name_to(class_name, char)
       i = 0
-      class_name.pluralize.gsub(/([A-Z])/){|occurrence|  i += 1; i == 1 ? occurrence : char+occurrence }.capitalize
+      class_name ? class_name.pluralize.gsub(/([A-Z])/){|occurrence|  i += 1; i == 1 ? occurrence : char+occurrence }.capitalize : 'NIL'
     end
 
   end
