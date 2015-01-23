@@ -6,7 +6,7 @@ versions_001:
   description: ! "h2. Gestion des issues\r\n* CRUD\r\n* Toolbox\r\n* Tri\r\n* Liste\r\n*
     Tooltip\r\n"
   position: 1
-  start_date: 
+  start_date: 2012-09-01
   project_id: 1
   is_done: false
 versions_002:
@@ -17,7 +17,7 @@ versions_002:
     utilisateur\r\n* Role\r\n* Permission\r\n* Changer admin/user\r\n* Changer mot
     de passe\r\n* Preférences\r\n"
   position: 3
-  start_date: 
+  start_date: 2012-10-17
   project_id: 1
   is_done: false
 versions_003:
@@ -27,7 +27,7 @@ versions_003:
   description: ! "h2. Issues\r\n* Filtres\r\n* Upload fichiers\r\n\r\nh2. scenarios\r\n*
     Crud\r\n* Utilisation backbone JS"
   position: 4
-  start_date: 
+  start_date: 2013-01-05
   project_id: 1
   is_done: false
 versions_006:
@@ -36,7 +36,7 @@ versions_006:
   target_date: 
   description: Correction bugs Issues
   position: 2
-  start_date: 
+  start_date: 2013-02-05
   project_id: 1
   is_done: false
 versions_007:
@@ -47,7 +47,7 @@ versions_007:
     des custom queries\r\n\r\nh3. Modification:\r\n* Gestion des menus\r\n* Refonte
     de project settings\r\n* Optimisation project activities\r\n"
   position: 5
-  start_date: 
+  start_date: 2013-02-17
   project_id: 1
   is_done: false
 versions_010:
