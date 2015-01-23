@@ -63,19 +63,14 @@ class VersionsController < ApplicationController
   end
 
 
-
   private
   def version_params
     params.require(:version).permit(Version.permit_attributes)
   end
 
   def find_version
-    @version = Version.find_by_id(params[:id])
-    if @version
-      @version_decorator = @version.decorate(context: {project: @project})
-    else
-      render_404
-    end
+    @version = Version.find_by!(id: params[:id], project_id: @project.id)
+    @version_decorator = @version.decorate(context: {project: @project})
   end
 
 

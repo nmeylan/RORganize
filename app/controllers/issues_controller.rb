@@ -117,19 +117,15 @@ class IssuesController < ApplicationController
   end
 
   def find_project_with_dependencies
-    @project = Project.includes(:attachments, :versions, :categories, :trackers, members: :user).where(slug: params[:project_id])[0]
+    @project = Project.includes(:attachments, :versions, :categories, :trackers, members: :user).find_by!(slug: params[:project_id])
     gon.project_id = @project.slug
-  rescue => e
-    render_404
   end
 
   def find_issue
-    @issue_decorator = Issue.eager_load([:tracker, :version, :assigned_to, :category, :attachments, :parent, :author, status: :enumeration, comments: :author]).find_by_id(params[:id])
-    if @issue_decorator
-      @issue_decorator = @issue_decorator.decorate(context: {project: @project})
-    else
-      render_404
-    end
+    @issue_decorator = Issue.eager_load([:tracker, :version, :assigned_to, :category, :attachments,
+                                         :parent, :author, status: :enumeration, comments: :author])
+                           .find_by!(id: params[:id], project_id: @project.id)
+    @issue_decorator = @issue_decorator.decorate(context: {project: @project})
   end
 
   alias :load_collection :load_issues

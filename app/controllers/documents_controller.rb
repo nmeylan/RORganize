@@ -78,20 +78,13 @@ class DocumentsController < ApplicationController
   end
 
   def find_project
-    @project = Project.includes(:attachments, :versions, :categories, :members).where(slug: params[:project_id])[0]
+    @project = Project.includes(:attachments, :versions, :categories, :members).find_by!(slug: params[:project_id])
     gon.project_id = @project.slug
-  rescue => e
-    render_404
   end
 
   def find_document
-    @document_decorator = Document.eager_load(:category, :version, :attachments).where(id: params[:id])[0]
-    if @document_decorator
-      @document_decorator = @document_decorator.decorate(context: {project: @project})
-    else
-      render_404
-    end
-
+    @document_decorator = Document.eager_load(:category, :version, :attachments).find_by!(id: params[:id], project_id: @project.id)
+    @document_decorator = @document_decorator.decorate(context: {project: @project})
   end
 
   alias :load_collection :load_documents
