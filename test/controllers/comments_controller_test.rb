@@ -1,6 +1,8 @@
 require 'test_helper'
 
+require 'test_utilities/record_not_found_tests'
 class CommentsControllerTest < ActionController::TestCase
+  include Rorganize::RecordNotFoundTests
   # Called before every test method runs. Can be used
   # to set up fixture information.
   def setup
@@ -83,46 +85,17 @@ class CommentsControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  # Record not found
-  test "should get 404 when record is not found on edit" do
-    should_get_404_on(:_get, :edit, id: 666, format: :js)
-  end
-
-  test "should get 404 when record is not found on update" do
-    should_get_404_on(:_patch, :update, id: 666, comment: {content: "Edit owned comment"}, format: :js)
-  end
-
-  test "should get 404 when record is not found on show" do
-    should_get_404_on(:_get, :show, id: 666, format: :js)
-  end
-
-  test "should get 404 when record is not found on destroy" do
-    should_get_404_on(:_delete, :destroy, id: 666, format: :js)
-  end
-
   # Forbidden action
   test "should get 403 on update when user is not author" do
-    _patch :update, id: @comment_not_owned.id, comment: {content: "Edit owned comment"}, format: :js
-    assert_response :forbidden
-    assert @response.header["flash-error-message"]
-    assert @response.header["flash-error-message"].start_with?("You don't have the required permissions ")
+    should_get_403_on(:_patch, :update, id: @comment_not_owned.id, comment: {content: "Edit owned comment"}, format: :js)
   end
 
   test "should get 403 on destroy when user is not author" do
-    assert_no_difference('Comment.count', -1) do
-      _delete :destroy, id: @comment_not_owned.id, comment: {content: "Edit owned comment"}, format: :js
-    end
-    assert_response :forbidden
-    assert @response.header["flash-error-message"]
-    assert @response.header["flash-error-message"].start_with?("You don't have the required permissions ")
+    should_get_403_on(:_delete, :destroy, id: @comment_not_owned.id, comment: {content: "Edit owned comment"}, format: :js)
   end
 
   test "should get 403 on create when user has not the permission" do
-    assert_no_difference('Comment.count') do
-      _post :create, comment: {commentable_id: @issue.id, commentable_type: "Issue", content: "Leave a comment"}, format: :js
-    end
-    assert @response.header["flash-error-message"]
-    assert @response.header["flash-error-message"].start_with?("You don't have the required permissions ")
+    should_get_403_on(:_post, :create, comment: {commentable_id: @issue.id, commentable_type: "Issue", content: "Leave a comment"}, format: :js)
   end
 
 end
