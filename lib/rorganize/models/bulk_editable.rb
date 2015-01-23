@@ -12,7 +12,7 @@ module Rorganize
       # @param [Project] project : project that belongs to objects.
       # @return [Array] in index 0 there are bulk updated objects, in index 1 there are all created journals.
       def bulk_edit(ids, value_param, project)
-        objects_toolbox = self.where(id: ids)
+        objects_toolbox = self.where(id: ids, project_id: project.id)
         # As form send all attributes, we drop all attributes except the filled one.
         value_param.delete_if { |_, v| v.eql?('') }
         key = value_param.keys[0]
