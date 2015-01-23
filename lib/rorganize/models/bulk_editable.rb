@@ -24,7 +24,7 @@ module Rorganize
         objects = updated_objects(objects_toolbox, value_param)
         value_param[:updated_at] = Time.now
         # Update all changed objects
-        self.where(id: objects.collect(&:id)).update_all(value_param)
+        self.where(id: objects.collect(&:id), project_id: project.id).update_all(value_param)
         # Create journals for this changes
         journals = journal_update_creation(objects, project, User.current.id, self.to_s)
         [objects, journals]
