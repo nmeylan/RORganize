@@ -61,27 +61,27 @@ class CategoriesControllerTest < ActionController::TestCase
   end
 
   # Action Forbidden
-  test "should get a 403 error when user is allowed perform index" do
+  test "should get a 403 error when user is not allowed perform index" do
     should_get_403_on(:_get, :index)
   end
 
-  test "should get a 403 error when user is allowed perform new" do
+  test "should get a 403 error when user is not allowed perform new" do
     should_get_403_on(:_get, :new)
   end
 
-  test "should get a 403 error when user is allowed perform create category" do
+  test "should get a 403 error when user is not allowed perform create category" do
     should_get_403_on(:_post, :create, id: @category.id)
   end
 
-  test "should get a 403 error when user is allowed perform edit" do
+  test "should get a 403 error when user is not allowed perform edit" do
     should_get_403_on(:_get, :edit, id: @category.id)
   end
 
-  test "should get a 403 error when user is allowed perform update category" do
+  test "should get a 403 error when user is not allowed perform update category" do
     should_get_403_on(:_patch, :update, id: @category.id)
   end
 
-  test "should get a 403 error when user is allowed perform destroy category" do
+  test "should get a 403 error when user is not allowed perform destroy category" do
     should_get_403_on(:_delete, :destroy, id: @category.id)
   end
 
