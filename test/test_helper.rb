@@ -9,10 +9,12 @@ require 'rails/test_help'
 require 'mocha/mini_test'
 require 'test_assertions/test_assertions'
 require 'test_utilities/custom_http_request'
+require 'test_utilities/generic_controllers_test_cases'
 
 class ActionController::TestCase
   include Devise::TestHelpers
   include Rorganize::CustomHttpRequest
+  include Rorganize::GenericControllersTestCases
 
   setup do
     User.stubs(:current).returns(users(:users_001))
