@@ -40,11 +40,6 @@ class CategoriesControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test "should redirect to 404 when record is not found on edit" do
-    get_with_permission :edit, id: 666
-    assert_response :missing
-  end
-
   test "should update category" do
     patch_with_permission :update, id: @category, category: {name: 'Change category name'}
     assert_not_empty flash[:notice]
@@ -64,7 +59,20 @@ class CategoriesControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  # TEST when user is not allowed to
+  # Record not found
+  test "should redirect to 404 when record is not found on edit" do
+    should_get_404_on :get_with_permission, :edit, id: 666
+  end
+
+  test "should redirect to 404 when record is not found on update" do
+    should_get_404_on :patch_with_permission, :update, id: 666, category: {name: 'Change category name'}
+  end
+
+  test "should redirect to 404 when record is not found on destroy" do
+    should_get_404_on :delete_with_permission, :destroy, id: 666
+  end
+
+  # Action Forbidden
   test "should get a 403 error when user is allowed perform index" do
     _get :index
     assert_response :forbidden
