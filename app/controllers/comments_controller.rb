@@ -4,9 +4,10 @@
 # File: comments_controller.rb
 
 class CommentsController < ApplicationController
-  before_action :find_comment, only: [:update, :destroy, :edit, :show]
-  before_action :check_permission, only: [:update, :destroy, :create]
   include Rorganize::RichController
+
+  before_action :find_comment, except: [:create]
+  before_action :check_permission, only: [:update, :destroy, :create]
 
   def create
     @comment = Comment.new(comment_params).decorate
@@ -16,7 +17,9 @@ class CommentsController < ApplicationController
   end
 
   def show
-    @comments_decorator = Comment.eager_load(:project).where(commentable_type: @comment.commentable_type, commentable_id: @comment.commentable_id).decorate(context: {selected_comment: @comment})
+    @comments_decorator = Comment.eager_load(:project)
+                              .where(commentable_type: @comment.commentable_type, commentable_id: @comment.commentable_id)
+                              .decorate(context: {selected_comment: @comment})
     respond_to do |format|
       format.js { respond_to_js action: 'show', locals: {comments_decorator: @comments_decorator} }
     end
@@ -43,22 +46,12 @@ class CommentsController < ApplicationController
   end
 
   def find_comment
-    @comment = Comment.find_by_id(params[:id])
-    if @comment
-      @project = @comment.project
-    else
-      render_404
-    end
+    @comment = Comment.find(params[:id])
+    @project = @comment.project
   end
 
   def check_permission
-    if user_allowed_to_add_comment?
-      true
-    elsif user_allowed_to_update_this_comment?
-      true
-    elsif user_allowed_to_destroy_this_comment
-      true
-    else
+    unless user_allowed_to_add_comment? || user_allowed_to_update_this_comment? || user_allowed_to_destroy_this_comment
       render_403
     end
   end
@@ -72,8 +65,13 @@ class CommentsController < ApplicationController
   end
 
   def user_allowed_to_add_comment?
-    ctrl_name = Rorganize::Utils::class_name_to_controller_name(params[:comment][:commentable_type])
-    action_name.eql?('create') && User.current.allowed_to?('comment', ctrl_name, @project)
+    if action_name.eql?('create')
+      ctrl_name = Rorganize::Utils::class_name_to_controller_name(params[:comment][:commentable_type])
+      params[:comment][:commentable_type].constantize.find_by!(id: params[:comment][:commentable_id], project_id: @project.id)
+      User.current.allowed_to?('comment', ctrl_name, @project)
+    else
+      false
+    end
   end
 
 end
