@@ -62,7 +62,7 @@ class Comment < ActiveRecord::Base
 # @param [User] user.
 # @return [Boolean] true if given user is the author, false otherwise.
   def author?(user)
-    self.author.id.eql? user.id
+    self.author && self.author.id.eql?(user.id)
   end
 
   def self.permit_attributes
