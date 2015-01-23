@@ -9,13 +9,13 @@ class CategoriesControllerTest < ActionController::TestCase
     @category = Category.create(name: 'My category', project_id: @project.id)
   end
 
-  test "should get index" do
+  test "should access to index of categories" do
     get_with_permission :index
     assert_response :success
     assert_not_nil assigns(:categories_decorator)
   end
 
-  test "should get new" do
+  test "should access to new category" do
     get_with_permission :new
     assert_response :success
   end
@@ -36,7 +36,7 @@ class CategoriesControllerTest < ActionController::TestCase
     assert_response :unprocessable_entity
   end
 
-  test "should get edit" do
+  test "should edit category" do
     get_with_permission :edit, id: @category
     assert_response :success
   end
@@ -61,27 +61,27 @@ class CategoriesControllerTest < ActionController::TestCase
   end
 
   # Action Forbidden
-  test "should get a 403 error when user is not allowed perform index" do
+  test "should get a 403 error when user is not allowed to access index of categories" do
     should_get_403_on(:_get, :index)
   end
 
-  test "should get a 403 error when user is not allowed perform new" do
+  test "should get a 403 error when user is not allowed to new category" do
     should_get_403_on(:_get, :new)
   end
 
-  test "should get a 403 error when user is not allowed perform create category" do
+  test "should get a 403 error when user is not allowed to create category" do
     should_get_403_on(:_post, :create, id: @category.id)
   end
 
-  test "should get a 403 error when user is not allowed perform edit" do
+  test "should get a 403 error when user is not allowed to edit category" do
     should_get_403_on(:_get, :edit, id: @category.id)
   end
 
-  test "should get a 403 error when user is not allowed perform update category" do
+  test "should get a 403 error when user is not allowed to update category" do
     should_get_403_on(:_patch, :update, id: @category.id)
   end
 
-  test "should get a 403 error when user is not allowed perform destroy category" do
+  test "should get a 403 error when user is not allowed to destroy category" do
     should_get_403_on(:_delete, :destroy, id: @category.id)
   end
 

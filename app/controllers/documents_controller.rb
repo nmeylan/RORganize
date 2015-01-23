@@ -4,14 +4,15 @@
 # File: document_controller.rb
 require 'shared/history'
 class DocumentsController < ApplicationController
-  before_action :find_document, only: [:show, :edit, :destroy, :update]
-  before_action :check_permission, locals: [:toolbox]
   include Rorganize::RichController
   include Rorganize::RichController::AttachableCallbacks
   include Rorganize::Filters::NotificationFilter
   include Rorganize::RichController::ToolboxCallback
   include Rorganize::RichController::ProjectContext
   include Rorganize::RichController::CustomQueriesCallback
+
+  before_action :find_document, only: [:show, :edit, :destroy, :update]
+  before_action :check_permission, locals: [:toolbox]
 
   def index
     filter(Document)
