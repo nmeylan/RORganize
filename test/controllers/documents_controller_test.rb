@@ -58,6 +58,12 @@ class DocumentsControllerTest < ActionController::TestCase
     assert_redirected_to document_path(@project.slug, assigns(:document_decorator).id)
   end
 
+  test "should view document" do
+    get_with_permission :show, id: @document
+    assert_response :success
+    assert_not_nil assigns(:document_decorator)
+  end
+
   test "should refresh the page when update category failed" do
     patch_with_permission :update, id: @document, document: {name: ''}
     assert_not_nil assigns(:document_decorator)
@@ -71,19 +77,27 @@ class DocumentsControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test "should get toolbox document" do
+  test "should get toolbox for documents" do
     get_with_permission :toolbox, ids: [@document.id], format: :js
 
     assert_response :success
     assert_template "js_templates/toolbox"
   end
 
-  test "should post toolbox document" do
+  test "should edit documents with toolbox" do
     assert_nil @document.category_id
     get_with_permission :index
     post_with_permission :toolbox, ids: [@document.id], value: {category_id: "1", version_id: ""},format: :js
     @document.reload
     assert_equal 1, @document.category_id
+    assert_response :success
+    assert_template "index"
+  end
+
+  test "should delete documents with toolbox" do
+    get_with_permission :index
+    post_with_permission :toolbox, delete_ids: [@document.id],format: :js
+    assert_raise(ActiveRecord::RecordNotFound) { @document.reload }
     assert_response :success
     assert_template "index"
   end
@@ -103,6 +117,10 @@ class DocumentsControllerTest < ActionController::TestCase
 
   test "should get a 403 error when user is not allowed to edit document" do
     should_get_403_on(:_get, :edit, id: @document.id)
+  end
+
+  test "should get a 403 error when user is not allowed to view document" do
+    should_get_403_on(:_get, :show, id: @document.id)
   end
 
   test "should get a 403 error when user is not allowed to update document" do
