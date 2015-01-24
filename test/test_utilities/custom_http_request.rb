@@ -83,12 +83,9 @@ module Rorganize
     end
 
     def merge_project_context_params(args)
+      args = [{}] unless args.first
       if @project
-        if args.first
-          args.first.merge!({project_id: @project.slug})
-        else
-          args = [{project_id: @project.slug}]
-        end
+        args.first.merge!({project_id: @project.slug})
       end
       args
     end
