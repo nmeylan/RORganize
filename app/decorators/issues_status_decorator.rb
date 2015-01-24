@@ -19,6 +19,6 @@ class IssuesStatusDecorator < ApplicationDecorator
   # see #ApplicationDecorator::edit_link.
   def edit_link
     link = link_to_with_permissions(model.caption, h.edit_issues_status_path(model.id), nil, nil)
-    link ? link : disabled_field(model.name)
+    link ? link : disabled_field(model.caption)
   end
 end
