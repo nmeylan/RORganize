@@ -12,7 +12,7 @@ class DocumentsController < ApplicationController
   include Rorganize::RichController::CustomQueriesCallback
 
   before_action :find_document, only: [:show, :edit, :destroy, :update]
-  before_action :check_permission, locals: [:toolbox]
+  before_action :check_permission
 
   def index
     filter(Document)
