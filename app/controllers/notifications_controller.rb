@@ -21,15 +21,12 @@ class NotificationsController < ApplicationController
   end
 
 
-
   def destroy
-    notification = Notification.includes(:notifiable, :project).find_by_id(params[:id])
-    if notification.user_id.eql?(@user.id)
-      path = notifiable_path(notification)
-      notification.destroy
-      respond_to do |format|
-        format.html { redirect_to path }
-      end
+    notification = Notification.includes(:notifiable, :project).find_by!(id: params[:id], user_id: @user.id)
+    path = notifiable_path(notification)
+    notification.destroy
+    respond_to do |format|
+      format.html { redirect_to path }
     end
   end
 
