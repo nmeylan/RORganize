@@ -1,0 +1,9 @@
+---
+assignale_roles_001:
+  id: 1
+  role_id: 1
+  assignable_by_role_id: 1
+assignale_roles_002:
+  id: 2
+  role_id: 2
+  assignable_by_role_id: 1
