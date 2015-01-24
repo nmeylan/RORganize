@@ -43,7 +43,7 @@ RORganize::Application.routes.draw do
         post 'change_position'
       end
     end
-    resources :issues_statuses do
+    resources :issues_statuses, except: [:show] do
       collection do
         post 'change_position'
       end
