@@ -248,7 +248,7 @@ module Rorganize
         end
 
         def find_participants(objects)
-          if self.eql?(Issue)
+          if self.type.eql?(Issue)
             objects.collect { |obj| obj.assigned_to unless obj.assigned_to.eql?(User.current) }.compact
           else
             []
