@@ -1,6 +1,7 @@
 class IssuesStatusesController < ApplicationController
   include Rorganize::RichController
   before_action :check_permission
+  before_action :find_status, only: [:update, :destroy, :edit, :change_position]
   before_action { |c| c.menu_context :admin_menu }
   before_action { |c| c.menu_item(params[:controller]) }
   before_action { |c| c.top_menu_item('administration') }
@@ -21,14 +22,12 @@ class IssuesStatusesController < ApplicationController
   end
 
   def edit
-    @status = IssuesStatus.includes(:enumeration).find_by_id(params[:id])
     respond_to do |format|
       format.html { render :edit, locals: {done_ratio: done_ratio} }
     end
   end
 
   def update
-    @status = IssuesStatus.find_by_id(params[:id])
     @enumeration = @status.enumeration
     respond_to do |format|
       if @status.update_attributes(issue_statutes_params) && @enumeration.update_attributes(name: enumeration_params[:name])
@@ -53,12 +52,7 @@ class IssuesStatusesController < ApplicationController
     end
   end
 
-  def show
-
-  end
-
   def destroy
-    @status = IssuesStatus.find_by_id(params[:id])
     @status.destroy
     get_statuses
     respond_to do |format|
@@ -68,10 +62,9 @@ class IssuesStatusesController < ApplicationController
   end
 
   def change_position
-    issue_status = IssuesStatus.find_by_id(params[:id].to_i)
-    saved = issue_status.change_position(params[:operator])
+    saved = @status.change_position(params[:operator])
     get_statuses
-    simple_js_callback(saved, :update, issue_status)
+    simple_js_callback(saved, :update, @status)
   end
 
   private
@@ -81,6 +74,10 @@ class IssuesStatusesController < ApplicationController
 
   def enumeration_params
     params.require(:enumeration).permit(Enumeration.permit_attributes)
+  end
+
+  def find_status
+    @status = IssuesStatus.includes(:enumeration).find_by!(id: params[:id])
   end
 
   def get_statuses
