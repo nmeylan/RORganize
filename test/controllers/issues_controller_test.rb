@@ -110,6 +110,26 @@ class IssuesControllerTest < ActionController::TestCase
     assert_template "overview"
   end
 
+  test "should add issue predecessor" do
+    assert_nil @issue.predecessor_id
+    post_with_permission :add_predecessor, id: @issue, issue: {predecessor_id: @issue_not_owned.id}, format: :js
+    @issue.reload
+    assert_equal @issue_not_owned.id, @issue.predecessor_id
+    assert_response :success
+    assert_template "add_predecessor"
+  end
+
+  test "should delete issue predecessor" do
+    post_with_permission :add_predecessor, id: @issue, issue: {predecessor_id: @issue_not_owned.id}, format: :js
+    @issue.reload
+    assert_equal @issue_not_owned.id, @issue.predecessor_id
+    delete_with_permission :del_predecessor, id: @issue, format: :js
+    @issue.reload
+    assert_nil @issue.predecessor_id
+    assert_response :success
+    assert_template "add_predecessor"
+  end
+
   # Action Forbidden
   test "should get a 403 error when user is not allowed to access index of issues" do
     should_get_403_on(:_get, :index)
@@ -161,5 +181,13 @@ class IssuesControllerTest < ActionController::TestCase
 
   test "should get a 403 error when user is not allowed to view issues overview" do
     should_get_403_on(:_get, :overview)
+  end
+
+  test "should get a 403 error when user is not allowed to add predecessor issue" do
+    should_get_403_on(:_post, :add_predecessor, id: @issue, issue: {predecessor_id: @issue_not_owned.id}, format: :js)
+  end
+
+  test "should get a 403 error when user is not allowed to del predecessor overview" do
+    should_get_403_on(:_delete, :del_predecessor, id: @issue, format: :js)
   end
 end
