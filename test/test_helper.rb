@@ -18,6 +18,7 @@ class ActionController::TestCase
   include Devise::TestHelpers
 
   setup do
+    @request.env['HTTP_REFERER'] = 'http://test.com/'
     User.stubs(:current).returns(users(:users_001))
     sign_in User.current
     drop_all_user_permissions
