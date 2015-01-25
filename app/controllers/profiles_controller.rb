@@ -40,7 +40,9 @@ class ProfilesController < ApplicationController
   end
 
   def custom_queries
-    @queries_decorator = Query.created_by(@user).eager_load(:user).paginated(@sessions[:current_page], @sessions[:per_page], order('queries.name')).decorate(context: {queries_url: custom_queries_profile_path, action_name: 'custom_queries'})
+    @queries_decorator = Query.created_by(@user).eager_load(:user)
+                             .paginated(@sessions[:current_page], @sessions[:per_page], order('queries.name'))
+                             .decorate(context: {queries_url: custom_queries_profile_path, action_name: 'custom_queries'})
     respond_to do |format|
       format.html {}
       format.js { respond_to_js }
@@ -75,7 +77,7 @@ class ProfilesController < ApplicationController
       @date = Date.today
     end
     time_entries = @user.time_entries_for_month(@date.year, @date.month)
-    @time_entries = time_entries.inject(Hash.new { |h, k| h[k] = [] }){|memo, time_entry| memo[time_entry.spent_on] << time_entry; memo}
+    @time_entries = time_entries.inject(Hash.new { |h, k| h[k] = [] }) { |memo, time_entry| memo[time_entry.spent_on] << time_entry; memo }
     respond_to do |format|
       format.html
       format.js { respond_to_js }
@@ -84,10 +86,14 @@ class ProfilesController < ApplicationController
 
   #OTHER METHODS
   def act_as
-    session['act_as'].eql?('User') ? session['act_as'] = 'Admin' : session['act_as'] = 'User'
-    @user.act_as_admin(session['act_as'])
-    respond_to do |format|
-      format.html { redirect_to :back }
+    if @user.admin?
+      (session['act_as'].nil? || session['act_as'].eql?('User')) ? session['act_as'] = 'Admin' : session['act_as'] = 'User'
+      @user.act_as_admin(session['act_as'])
+      respond_to do |format|
+        format.html { redirect_to :back }
+      end
+    else
+      render_403
     end
   end
 
@@ -98,7 +104,6 @@ class ProfilesController < ApplicationController
     else
       @preferences = @user.preferences.where(key: @keys.values)
     end
-
   end
 
   def save_preferences
@@ -118,7 +123,6 @@ class ProfilesController < ApplicationController
   private
   def find_user
     @user = User.find(User.current.id)
-    render_404 if @user.nil?
   end
 
   def user_params
