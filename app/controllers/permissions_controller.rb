@@ -9,7 +9,9 @@ class PermissionsController < ApplicationController
   include Rorganize::Managers::PermissionManager::PermissionManagerHelper
   include Rorganize::Managers::PermissionManager::PermissionListCreator
 
-  before_action :check_permission, except: [:update_permissions]
+  before_action { |c| c.add_action_alias= {'update_permissions' => 'list'} }
+  before_action :find_permission, only: [:edit, :update, :destroy]
+  before_action :check_permission
   before_action { |c| c.menu_context :admin_menu }
   before_action { |c| c.menu_item(params[:controller]) }
   before_action { |c| c.top_menu_item('administration') }
@@ -33,61 +35,25 @@ class PermissionsController < ApplicationController
   #POST administration/permission/new
   def create
     @permission_decorator = Permission.new(permission_params).decorate
-    respond_to do |format|
-      if @permission_decorator.save
-        flash[:notice] = t(:successful_creation)
-        format.html { redirect_to action: 'index', controller: 'permissions' }
-        format.json { render json: @permission_decorator,
-                             status: :created, location: @permission_decorator }
-      else
-        Permission.controller_list
-        format.html { render :new }
-        format.json { render json: @permission_decorator.errors,
-                             status: :unprocessable_entity }
-      end
-    end
+    generic_create_callback(@permission_decorator, permissions_path, {controllers: load_controllers.values})
   end
 
   #GET administration/permission/edit/:id
   def edit
-    @permission_decorator = Permission.find_by_id(params[:id])
-    if @permission_decorator
-      @permission_decorator = @permission_decorator.decorate
-      respond_to do |format|
-        format.html { render action: 'edit', locals: {controllers: load_controllers.values} }
-      end
-    else
-      render_404
+    respond_to do |format|
+      format.html { render action: 'edit', locals: {controllers: load_controllers.values} }
     end
   end
 
   #PUT administration/permission/:id
   def update
-    @permission_decorator = Permission.find(params[:id]).decorate
-    respond_to do |format|
-      if @permission_decorator.update_attributes(permission_params)
-        flash[:notice] = t(:successful_update)
-        format.html { redirect_to permissions_path }
-        format.json { render json: @permission_decorator,
-                             status: :created, location: @permission_decorator }
-      else
-
-        format.html { render :edit, locals: {controllers: load_controllers.values} }
-        format.json { render json: @permission_decorator.errors,
-                             status: :unprocessable_entity }
-      end
-    end
+    @permission_decorator.attributes = permission_params
+    generic_update_callback(@permission_decorator, permissions_path, {controllers: load_controllers.values})
   end
 
   #DELETE administration/permission/:id
   def destroy
-    @permission = Permission.find(params[:id])
-    @permission.destroy
-    flash[:notice] = t(:successful_deletion)
-    respond_to do |format|
-      format.html { redirect_to permissions_path }
-      format.js { js_redirect_to (permissions_path) }
-    end
+    generic_destroy_callback(@permission_decorator, permissions_path)
   end
 
   #Other methods
@@ -103,7 +69,6 @@ class PermissionsController < ApplicationController
     saved = @role.update_permissions(params[:permissions])
     if saved
       reload_permission(@role.id)
-      @roles = Role.select('*')
       respond_to do |format|
         flash[:notice] = t(:successful_update)
         format.html { redirect_to permissions_path }
@@ -116,6 +81,10 @@ class PermissionsController < ApplicationController
   private
   def permission_params
     params.require(:permission).permit(Permission.permit_attributes)
+  end
+
+  def find_permission
+    @permission_decorator = Permission.find(params[:id]).decorate
   end
 
 end
