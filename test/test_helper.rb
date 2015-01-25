@@ -15,9 +15,11 @@ class ActionController::TestCase
   include Devise::TestHelpers
   include Rorganize::CustomHttpRequest
   include Rorganize::GenericControllersTestCases
+  include Devise::TestHelpers
 
   setup do
     User.stubs(:current).returns(users(:users_001))
+    sign_in User.current
     drop_all_user_permissions
   end
 end
