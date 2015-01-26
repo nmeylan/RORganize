@@ -35,8 +35,13 @@ class QueryTest < ActiveSupport::TestCase
   test 'has a method to create query' do
     query = Query.create_query(@attributes, @project, @filters)
     assert query.save, query.errors.messages
+    if is_mysql?
     expected_condition = '(issues.status_id <=> \'1\' OR issues.status_id <=> \'2\' OR issues.status_id <=> \'4\' ) AND '
     expected_condition += '(issues.assigned_to_id <=> \'7\' ) AND'
+    elsif is_sqlite?
+      expected_condition = '(issues.status_id IS \'1\' OR issues.status_id IS \'2\' OR issues.status_id IS \'4\' ) AND '
+      expected_condition += '(issues.assigned_to_id IS \'7\' ) AND'
+    end
     assert_equal expected_condition, query.stringify_query
     assert_equal @filters.inspect, query.stringify_params
   end
@@ -136,5 +141,14 @@ class QueryTest < ActiveSupport::TestCase
 
     query = Query.create_query(@attributes, @project, @filters)
     assert query.save, query.errors.messages
+  end
+
+  private
+  def is_mysql?
+    ActiveRecord::Base.connection.adapter_name.downcase.include?('mysql')
+  end
+
+  def is_sqlite?
+    ActiveRecord::Base.connection.adapter_name.downcase.include?('sqlite')
   end
 end
