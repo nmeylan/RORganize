@@ -6,6 +6,9 @@ module Rorganize
   module Models
     module Users
       module Authorization
+        include Rorganize::Managers::PermissionManager::PermissionManagerHelper
+        include Rorganize::Managers::ModuleManager::ModuleManagerHelper
+
         attr_accessor :checked_permissions
         # @param [String] action : the action that user want to perform.
         # @param [String] controller : the controller concern by the action.

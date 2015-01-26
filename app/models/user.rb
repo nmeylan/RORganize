@@ -1,8 +1,6 @@
 class User < ActiveRecord::Base
   include Rorganize::Models::SmartRecords
   include Rorganize::Models::Journalizable
-  include Rorganize::Managers::PermissionManager::PermissionManagerHelper
-  include Rorganize::Managers::ModuleManager::ModuleManagerHelper
   include Rorganize::Models::Attachable::AvatarType
   include Rorganize::Models::UserExtraMethods
   extend FriendlyId
