@@ -754,7 +754,7 @@ permissions_126:
   name: Delete scenarios
   action: delete
   controller: scenarios
-  is_locked: 
+  is_locked:
 permissions_127:
   id: 240
   name: manage modules
@@ -922,10 +922,10 @@ permissions_154:
   name: Add predecessor
   action: add_predecessor
   controller: Issues
-  is_locked: 
+  is_locked:
 permissions_155:
   id: 286
   name: Delete predecessor
   action: del_predecessor
   controller: Issues
-  is_locked: 
+  is_locked:

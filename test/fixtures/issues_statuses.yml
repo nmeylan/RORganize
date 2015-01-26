@@ -1,53 +1,53 @@
 ---
 issues_statuses_001: # New
   id: 1
-  is_closed: 0
+  is_closed: false
   default_done_ratio: 0
   enumeration_id: 1
   color: '#6cc644'
 issues_statuses_002: # In progress
   id: 2
-  is_closed: 0
+  is_closed: false
   default_done_ratio: 0
   enumeration_id: 2
   color: '#fbca04'
 issues_statuses_003: # Closed
   id: 3
-  is_closed: 1
+  is_closed: true
   default_done_ratio: 100
   enumeration_id: 3
   color: '#bd2c00'
 issues_statuses_004: # Fixed to test
   id: 4
-  is_closed: 0
+  is_closed: false
   default_done_ratio: 100
   enumeration_id: 4
   color: '#fbca04'
 issues_statuses_005: # Tested to be delivered
   id: 5
-  is_closed: 0
+  is_closed: false
   default_done_ratio: 100
   enumeration_id: 5
   color: '#bd2c00'
 issues_statuses_006: # Not satisfying
   id: 6
-  is_closed: 0
+  is_closed: false
   default_done_ratio: 50
   enumeration_id: 6
   color: '#6cc644'
 issues_statuses_007: # Redo
   id: 7
-  is_closed: 0
+  is_closed: false
   default_done_ratio: 0
   enumeration_id: 7
   color: '#fbca04'
 issues_statuses_008: # In progress bis
   id: 8
-  is_closed: 0
+  is_closed: false
   enumeration_id: 17
   color: '#fbca04'
 issues_statuses_009: # Redo bis
   id: 9
-  is_closed: 1
+  is_closed: true
   enumeration_id: 18
   color: '#6cc644'
