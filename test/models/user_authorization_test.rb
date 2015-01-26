@@ -19,8 +19,8 @@ class UserAuthorizationTest < ActiveSupport::TestCase
     assign_roles_permissions
     reload_enabled_module(@project_private.id)
     reload_enabled_module(@project_public.id)
-    @controllers = [LOWER_CONTROLLER, UPPER_CONTROLLER]
     Rorganize::Managers::PermissionManager.initialize
+    @controllers = [LOWER_CONTROLLER, UPPER_CONTROLLER]
   end
 
   # Called after every test method runs. Can be used to tear

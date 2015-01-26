@@ -12,14 +12,15 @@ require 'test_utilities/custom_http_request'
 require 'test_utilities/generic_controllers_test_cases'
 
 class ActionController::TestCase
-  include Devise::TestHelpers
   include Rorganize::CustomHttpRequest
   include Rorganize::GenericControllersTestCases
   include Devise::TestHelpers
 
   setup do
     @request.env['HTTP_REFERER'] = 'http://test.com/'
+    User.any_instance.stubs(:module_enabled?).returns(true)
     User.stubs(:current).returns(users(:users_001))
+
     sign_in User.current
     drop_all_user_permissions
   end
