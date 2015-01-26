@@ -66,14 +66,14 @@ class Version < ActiveRecord::Base
   def self.overviews(project_id, condition = nil)
     condition ||= '1 = 1'
     #This request return : [version_id, number of opened request, number of closed request, total progress percent]
-    Version.joins('RIGHT OUTER JOIN `issues` ON `issues`.`version_id` = `versions`.`id`' \
+    Issue.joins('LEFT OUTER JOIN `versions` ON `issues`.`version_id` = `versions`.`id`' \
                   'INNER JOIN `issues_statuses` ON `issues_statuses`.`id` = `issues`.`status_id`')
         .group('versions.id')
         .where(%Q(#{condition} AND issues.project_id = #{project_id}))
-        .pluck('versions.id, ' \
-                'SUM(case when issues_statuses.is_closed = 0 then 1 else 0 end) Opened, '\
-                'SUM(case when issues_statuses.is_closed = 1 then 1 else 0 end) Closed, ' \
-                '(SUM(issues.done) / Count(*)) Percent')
+        .pluck(Version.send(:sanitize_sql_array, ['versions.id, ' \
+                'SUM(case when issues_statuses.is_closed = ? then 1 else 0 end) Opened, '\
+                'SUM(case when issues_statuses.is_closed = ? then 1 else 0 end) Closed, ' \
+                '(SUM(issues.done) / Count(*)) Percent', false, true]))
   end
 
 
