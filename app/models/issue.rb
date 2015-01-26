@@ -153,9 +153,9 @@ class Issue < ActiveRecord::Base
     }
     criteria_hash.each do |_, v|
       if v['operator'].eql?('open')
-        v['value'] = IssuesStatus.where(is_closed: 0).collect { |status| status.id }
+        v['value'] = IssuesStatus.where(is_closed: false).collect { |status| status.id }
       elsif v['operator'].eql?('close')
-        v['value'] = IssuesStatus.where(is_closed: 1).collect { |status| status.id }
+        v['value'] = IssuesStatus.where(is_closed: true).collect { |status| status.id }
       end
     end
     Rorganize::MagicFilter.generics_filter(criteria_hash, attributes)
