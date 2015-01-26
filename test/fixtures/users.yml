@@ -71,3 +71,95 @@ users_004:
   created_at: 2013-07-22 13:23:23.000000000 Z
   updated_at: 2013-07-22 13:34:15.000000000 Z
   slug: stan-smith
+
+# Fixtures for models/user_authorization_test.rb
+users_admin_fixture:
+  id: 8
+  name: Admin Fixture
+  login: admfixture
+  admin: 1
+  email: admfixture@example.com
+  encrypted_password: $2a$10$sN6V68VLqMN/4GqNGJJuh.6ptMtH1u9.1EROhSxGZzWEFtZz.Dei2
+  reset_password_token:
+  reset_password_sent_at:
+  remember_created_at:
+  sign_in_count: 0
+  current_sign_in_at:
+  last_sign_in_at:
+  current_sign_in_ip:
+  last_sign_in_ip:
+  created_at: 2013-07-22 13:23:23.000000000 Z
+  updated_at: 2013-07-22 13:34:15.000000000 Z
+  slug: admin-fixture
+users_master_fixture:
+  id: 9
+  name: Steve Fixture
+  login: stfixture
+  admin: 0
+  email: stfixture@example.com
+  encrypted_password: $2a$10$sN6V68VLqMN/4GqNGJJuh.6ptMtH1u9.1EROhSxGZzWEFtZz.Dei2
+  reset_password_token:
+  reset_password_sent_at:
+  remember_created_at:
+  sign_in_count: 0
+  current_sign_in_at:
+  last_sign_in_at:
+  current_sign_in_ip:
+  last_sign_in_ip:
+  created_at: 2013-07-22 13:23:23.000000000 Z
+  updated_at: 2013-07-22 13:34:15.000000000 Z
+  slug: steve-fixture
+users_semi_master_fixture:
+  id: 10
+  name: Tony Fixture
+  login: tofixture
+  admin: 1
+  email: tofixture@example.com
+  encrypted_password: $2a$10$sN6V68VLqMN/4GqNGJJuh.6ptMtH1u9.1EROhSxGZzWEFtZz.Dei2
+  reset_password_token:
+  reset_password_sent_at:
+  remember_created_at:
+  sign_in_count: 0
+  current_sign_in_at:
+  last_sign_in_at:
+  current_sign_in_ip:
+  last_sign_in_ip:
+  created_at: 2013-07-22 13:23:23.000000000 Z
+  updated_at: 2013-07-22 13:34:15.000000000 Z
+  slug: tony-fixture
+users_trainee_fixture:
+  id: 11
+  name: Roger Fixture
+  login: rogfixture
+  admin: 0
+  email: rogfixture@example.com
+  encrypted_password: $2a$10$sN6V68VLqMN/4GqNGJJuh.6ptMtH1u9.1EROhSxGZzWEFtZz.Dei2
+  reset_password_token:
+  reset_password_sent_at:
+  remember_created_at:
+  sign_in_count: 0
+  current_sign_in_at:
+  last_sign_in_at:
+  current_sign_in_ip:
+  last_sign_in_ip:
+  created_at: 2013-07-22 13:23:23.000000000 Z
+  updated_at: 2013-07-22 13:34:15.000000000 Z
+  slug: roger-fixture
+users_non_member_fixture:
+  id: 12
+  name: Non member Fixture
+  login: nonmemfixture
+  admin: 0
+  email: nonmemfixture@example.com
+  encrypted_password: $2a$10$sN6V68VLqMN/4GqNGJJuh.6ptMtH1u9.1EROhSxGZzWEFtZz.Dei2
+  reset_password_token:
+  reset_password_sent_at:
+  remember_created_at:
+  sign_in_count: 0
+  current_sign_in_at:
+  last_sign_in_at:
+  current_sign_in_ip:
+  last_sign_in_ip:
+  created_at: 2013-07-22 13:23:23.000000000 Z
+  updated_at: 2013-07-22 13:34:15.000000000 Z
+  slug: non-member-fixture

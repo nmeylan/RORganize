@@ -14,13 +14,30 @@ roles_003:
   name: Engagement Manager
   position: 3
   is_locked: false
-roles_004:
+roles_non_member:
   id: 4
   name: Non member
   position: 4
   is_locked: true
-roles_005:
+roles_anonymous:
   id: 5
   name: Anonymous
   position: 5
+  is_locked: true
+
+# Fixtures for models/user_authorization_test.rb
+roles_master:
+  id: 6
+  name: MasterFixture
+  position: 6
+  is_locked: true
+roles_semi_master:
+  id: 7
+  name: SemiMasterFixture
+  position: 7
+  is_locked: true
+roles_trainee:
+  id: 8
+  name: TraineeFixture
+  position: 8
   is_locked: true

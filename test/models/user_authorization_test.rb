@@ -15,8 +15,6 @@ class UserAuthorizationTest < ActiveSupport::TestCase
 
   def setup
     initialize_project_context
-    initialize_permissions
-    assign_roles_permissions
     reload_enabled_module(@project_private.id)
     reload_enabled_module(@project_public.id)
     Rorganize::Managers::PermissionManager.initialize
@@ -276,18 +274,18 @@ class UserAuthorizationTest < ActiveSupport::TestCase
     @project_public.enabled_modules << EnabledModule.new(name: 'Upper', action: 'index', controller: UPPER_CONTROLLER)
     @project_public.save
 
-    @user_admin = User.create(name: 'Admin Doe', login: 'admindoe', admin: 1, email: 'admin.doe@example.com', password: 'qwertz')
-    @user_master = User.create(name: 'Steve Doe', login: 'stdoe', admin: 0, email: 'steve.doe@example.com', password: 'qwertz')
-    @user_semi_master = User.create(name: 'Tony Doe', login: 'tony', admin: 1, email: 'tony.doe@example.com', password: 'qwertz')
-    @user_trainee = User.create(name: 'Roger Doe', login: 'rodoe', admin: 0, email: 'roger.doe@example.com', password: 'qwertz')
-    @user_non_member = User.create(name: 'Non member', login: 'nonmber', admin: 0, email: 'non.member@example.com', password: 'qwertz')
+    @user_admin = users(:users_admin_fixture)
+    @user_master = users(:users_master_fixture)
+    @user_semi_master =  users(:users_semi_master_fixture)
+    @user_trainee =  users(:users_trainee_fixture)
+    @user_non_member =  users(:users_non_member_fixture)
     @user_anonymous = AnonymousUser.instance
 
-    @role_master = Role.create(name: 'Master')
-    @role_semi_master = Role.create(name: 'Semi master')
-    @role_trainee = Role.create(name: 'Trainee')
-    @role_non_member = Role.non_member
-    @role_anonymous = Role.find_by_name('Anonymous')
+    @role_master = roles(:roles_master)
+    @role_semi_master = roles(:roles_semi_master)
+    @role_trainee = roles(:roles_trainee)
+    @role_non_member = roles(:roles_non_member)
+    @role_anonymous = roles(:roles_anonymous)
 
     @member_master_private = Member.create(user_id: @user_master.id, project_id: @project_private.id, role_id: @role_master.id)
     @member_semi_master_private = Member.create(user_id: @user_semi_master.id, project_id: @project_private.id, role_id: @role_semi_master.id)
@@ -296,81 +294,5 @@ class UserAuthorizationTest < ActiveSupport::TestCase
     @member_master_public = Member.create(user_id: @user_master.id, project_id: @project_public.id, role_id: @role_master.id)
     @member_semi_master_public = Member.create(user_id: @user_semi_master.id, project_id: @project_public.id, role_id: @role_semi_master.id)
     @member_trainee_public = Member.create(user_id: @user_trainee.id, project_id: @project_public.id, role_id: @role_trainee.id)
-  end
-
-  def initialize_permissions
-    @permission_lower_new = Permission.create(action: 'new', controller: LOWER_CONTROLLER, name: 'New')
-    @permission_lower_edit = Permission.create(action: 'edit', controller: LOWER_CONTROLLER, name: 'Edit')
-    @permission_lower_delete = Permission.create(action: 'destRoy', controller: LOWER_CONTROLLER, name: 'Destroy')
-    @permission_lower_show = Permission.create(action: 'show', controller: LOWER_CONTROLLER, name: 'Show')
-    @permission_lower_index = Permission.create(action: 'index', controller: LOWER_CONTROLLER, name: 'Index')
-
-    @permission_upper_new = Permission.create(action: 'new', controller: UPPER_CONTROLLER, name: 'New')
-    @permission_upper_edit = Permission.create(action: 'edit', controller: UPPER_CONTROLLER, name: 'Edit')
-    @permission_upper_delete = Permission.create(action: 'Destroy', controller: UPPER_CONTROLLER, name: 'Destroy')
-    @permission_upper_show = Permission.create(action: 'show', controller: UPPER_CONTROLLER, name: 'Show')
-    @permission_upper_index = Permission.create(action: 'index', controller: UPPER_CONTROLLER, name: 'Index')
-
-
-    @permission_admin_show = Permission.create(action: 'show', controller: ADMINISTRATION_CONTROLLER, name: 'Show')
-    @permission_admin_index = Permission.create(action: 'index', controller: ADMINISTRATION_CONTROLLER, name: 'Index')
-  end
-
-  def assign_roles_permissions
-    assign_master_permissions
-    assign_semi_master_permissions
-    assign_trainee_permissions
-    assign_non_member_permissions
-  end
-
-  def assign_master_permissions
-    @role_master.permissions << @permission_lower_new
-    @role_master.permissions << @permission_lower_edit
-    @role_master.permissions << @permission_lower_delete
-    @role_master.permissions << @permission_lower_show
-    @role_master.permissions << @permission_lower_index
-
-    @role_master.permissions << @permission_upper_new
-    @role_master.permissions << @permission_upper_edit
-    @role_master.permissions << @permission_upper_delete
-    @role_master.permissions << @permission_upper_show
-    @role_master.permissions << @permission_upper_index
-
-    @role_master.permissions << @permission_admin_show
-    @role_master.permissions << @permission_admin_index
-    assert @role_master.save
-  end
-
-  def assign_semi_master_permissions
-    @role_semi_master.permissions << @permission_lower_new
-    @role_semi_master.permissions << @permission_lower_show
-    @role_semi_master.permissions << @permission_lower_index
-
-    @role_semi_master.permissions << @permission_upper_new
-    @role_semi_master.permissions << @permission_upper_show
-    @role_semi_master.permissions << @permission_upper_index
-    @role_semi_master.permissions << @permission_admin_index
-    @role_semi_master.save
-  end
-
-  def assign_trainee_permissions
-    @role_trainee.permissions << @permission_lower_show
-    @role_trainee.permissions << @permission_lower_index
-
-    @role_trainee.permissions << @permission_upper_show
-    @role_trainee.permissions << @permission_upper_index
-    @role_trainee.save
-  end
-
-  def assign_non_member_permissions
-    @role_non_member.permissions << @permission_lower_index
-    @role_non_member.permissions << @permission_upper_index
-    @role_non_member.save
-  end
-
-  def assign_anonymous_permissions
-    @role_anonymous.permissions << @permission_lower_index
-    @role_anonymous.permissions << @permission_upper_index
-    @role_anonymous.save
   end
 end

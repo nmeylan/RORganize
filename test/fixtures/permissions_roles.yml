@@ -1,0 +1,99 @@
+---
+# Fixtures for models/user_authorization_test.rb
+# Master role
+lower_controller_new_master:
+  permission_id: 2
+  role_id: 6
+lower_controller_edit_master:
+  permission_id: 3
+  role_id: 6
+lower_controller_destroy_master:
+  permission_id: 4
+  role_id: 6
+lower_controller_show_master:
+  permission_id: 5
+  role_id: 6
+lower_controller_index_master:
+  permission_id: 6
+  role_id: 6
+  
+upper_controller_new_master:
+  permission_id: 7
+  role_id: 6
+upper_controller_edit_master:
+  permission_id: 8
+  role_id: 6
+upper_controller_destroy_master:
+  permission_id: 9
+  role_id: 6
+upper_controller_show_master:
+  permission_id: 10
+  role_id: 6
+upper_controller_index_master:
+  permission_id: 11
+  role_id: 6
+
+administration_controller_show_master:
+  permission_id: 12
+  role_id: 6
+administration_controller_index_master:
+  permission_id: 13
+  role_id: 6
+
+# Semi master role
+lower_controller_new_semi_master:
+  permission_id: 2
+  role_id: 7
+lower_controller_show_semi_master:
+  permission_id: 5
+  role_id: 7
+lower_controller_index_semi_master:
+  permission_id: 6
+  role_id: 7
+
+upper_controller_new_semi_master:
+  permission_id: 7
+  role_id: 7
+upper_controller_show_semi_master:
+  permission_id: 10
+  role_id: 7
+upper_controller_index_semi_master:
+  permission_id: 11
+  role_id: 7
+
+administration_controller_index_semi_master:
+  permission_id: 12
+  role_id: 7
+
+# Trainee role
+lower_controller_show_trainee:
+  permission_id: 5
+  role_id: 8
+lower_controller_index_trainee:
+  permission_id: 6
+  role_id: 8
+
+upper_controller_show_trainee:
+  permission_id: 10
+  role_id: 8
+upper_controller_index_trainee:
+  permission_id: 11
+  role_id: 8
+
+# Non member role
+lower_controller_index_non_member:
+  permission_id: 6
+  role_id: 4
+
+upper_controller_index_non_member:
+  permission_id: 11
+  role_id: 4
+
+# Anonymous role
+lower_controller_index_anonymous:
+  permission_id: 6
+  role_id: 5
+
+upper_controller_index_anonymous:
+  permission_id: 11
+  role_id: 5
