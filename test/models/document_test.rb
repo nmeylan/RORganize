@@ -69,7 +69,12 @@ class DocumentTest < ActiveSupport::TestCase
 
   test 'condition string' do
     actual = Document.conditions_string({'category' => {'operator' => 'equal', 'value' => ['1']}})
-    expected = '(documents.category_id <=> \'1\' ) AND'
+
+    if is_mysql?
+      expected = '(documents.category_id <=> \'1\' ) AND'
+    elsif is_sqlite?
+      expected = '(documents.category_id IS \'1\' ) AND'
+    end
     assert_equal expected, actual
 
     actual = Document.conditions_string({'category' => {'operator' => 'equal', 'value' => ['NULL']}})
@@ -83,11 +88,20 @@ class DocumentTest < ActiveSupport::TestCase
     actual = Document.conditions_string({'name' => {'operator' => 'contains', 'value' => 'hello'},
                                          'category' => {'operator' => 'equal', 'value' => ['1']}
                                         })
-    expected = 'documents.name LIKE "%hello%" AND (documents.category_id <=> \'1\' ) AND'
+
+    if is_mysql?
+      expected = 'documents.name LIKE "%hello%" AND (documents.category_id <=> \'1\' ) AND'
+    elsif is_sqlite?
+      expected = 'documents.name LIKE "%hello%" AND (documents.category_id IS \'1\' ) AND'
+    end
     assert_equal expected, actual
 
     actual = Document.conditions_string({'created_at' => {'operator' => 'equal', 'value' => '2015-01-07'}})
-    expected = 'DATE_FORMAT(documents.created_at,\'%Y-%m-%d\') <=> \'2015-01-07\' AND'
+    if is_mysql?
+      expected = 'DATE_FORMAT(documents.created_at,\'%Y-%m-%d\') <=> \'2015-01-07\' AND'
+    elsif is_sqlite?
+      expected = 'strftime(\'%Y-%m-%d\', documents.created_at) IS \'2015-01-07\' AND'
+    end
     assert_equal expected, actual
   end
 
@@ -123,6 +137,15 @@ class DocumentTest < ActiveSupport::TestCase
 
     doc =  Document.new(name: 'qwertz')
     assert doc.save, doc.errors.messages
+  end
+
+  private
+  def is_mysql?
+    ActiveRecord::Base.connection.adapter_name.downcase.include?('mysql')
+  end
+
+  def is_sqlite?
+    ActiveRecord::Base.connection.adapter_name.downcase.include?('sqlite')
   end
 
 end

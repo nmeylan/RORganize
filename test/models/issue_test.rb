@@ -218,7 +218,11 @@ bla bla
 
   test 'condition string' do
     actual = Issue.conditions_string({'category' => {'operator' => 'equal', 'value' => ['1', '2']}})
-    expected = '(issues.category_id <=> \'1\' OR issues.category_id <=> \'2\' ) AND'
+    if is_mysql?
+      expected = '(issues.category_id <=> \'1\' OR issues.category_id <=> \'2\' ) AND'
+    elsif is_sqlite?
+      expected = '(issues.category_id IS \'1\' OR issues.category_id IS \'2\' ) AND'
+    end
     assert_equal expected, actual
 
     actual = Issue.conditions_string({'subject' => {'operator' => 'contains', 'value' => 'hello'}})
@@ -228,17 +232,31 @@ bla bla
     actual = Issue.conditions_string({'done' => {'operator' => 'equal', 'value' => ['10']},
                                       'version' => {'operator' => 'different', 'value' => ['1', '2']}
                                      })
-    expected = '(issues.done <=> \'10\' ) AND (issues.version_id <> \'1\' AND issues.version_id <> \'2\' OR issues.version_id IS NULL ) AND'
+    if is_mysql?
+      expected = '(issues.done <=> \'10\' ) AND (issues.version_id <> \'1\' AND issues.version_id <> \'2\' OR issues.version_id IS NULL ) AND'
+    elsif is_sqlite?
+      expected = '(issues.done IS \'10\' ) AND (issues.version_id <> \'1\' AND issues.version_id <> \'2\' OR issues.version_id IS NULL ) AND'
+    end
     assert_equal expected, actual
 
     actual = Issue.conditions_string({'status' => {'operator' => 'close', 'value' => ''}})
-    expected = '(issues.status_id <=> 3 OR issues.status_id <=> 9 ) AND'
+    if is_mysql?
+      expected = '(issues.status_id <=> 3 OR issues.status_id <=> 9 ) AND'
+    elsif is_sqlite?
+      expected = '(issues.status_id IS 3 OR issues.status_id IS 9 ) AND'
+    end
     assert_equal expected, actual
 
     actual = Issue.conditions_string({'status' => {'operator' => 'open', 'value' => ''}})
-    expected = '(issues.status_id <=> 1 OR issues.status_id <=> 2 OR issues.status_id <=> 4 '
-    expected += 'OR issues.status_id <=> 5 OR issues.status_id <=> 6 OR issues.status_id <=> 7 '
-    expected += 'OR issues.status_id <=> 8 ) AND'
+    if is_mysql?
+      expected = '(issues.status_id <=> 1 OR issues.status_id <=> 2 OR issues.status_id <=> 4 '
+      expected += 'OR issues.status_id <=> 5 OR issues.status_id <=> 6 OR issues.status_id <=> 7 '
+      expected += 'OR issues.status_id <=> 8 ) AND'
+    elsif is_sqlite?
+      expected = '(issues.status_id IS 1 OR issues.status_id IS 2 OR issues.status_id IS 4 '
+      expected += 'OR issues.status_id IS 5 OR issues.status_id IS 6 OR issues.status_id IS 7 '
+      expected += 'OR issues.status_id IS 8 ) AND'
+    end
     assert_equal expected, actual
   end
 
@@ -330,5 +348,14 @@ bla bla
     assert_not issue.save
     issue.status_id = 4
     assert issue.save, issue.errors.messages
+  end
+
+  private
+  def is_mysql?
+    ActiveRecord::Base.connection.adapter_name.downcase.include?('mysql')
+  end
+
+  def is_sqlite?
+    ActiveRecord::Base.connection.adapter_name.downcase.include?('sqlite')
   end
 end
