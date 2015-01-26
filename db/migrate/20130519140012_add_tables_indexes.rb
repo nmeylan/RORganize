@@ -18,8 +18,6 @@ class AddTablesIndexes < ActiveRecord::Migration
     add_index :issues_statuses, :enumeration_id
     add_index :issues_statuses_roles, :role_id
     add_index :issues_statuses_roles, :issues_status_id
-    add_index :issues_steps, :issue_id
-    add_index :issues_steps, :step_id
     add_index :journals, :user_id
     add_index :journals, :project_id
     add_index :members, :project_id
@@ -33,10 +31,6 @@ class AddTablesIndexes < ActiveRecord::Migration
     add_index :projects_versions, :version_id
     add_index :queries, :author_id
     add_index :queries, :project_id
-    add_index :scenarios, :project_id
-    add_index :scenarios, :version_id
-    add_index :scenarios, :actor_id
-    add_index :steps, :scenario_id
   end
 
   def down
@@ -58,8 +52,6 @@ class AddTablesIndexes < ActiveRecord::Migration
     remove_index :issues_statuses, :enumeration_id
     remove_index :issues_statuses_roles, :role_id
     remove_index :issues_statuses_roles, :issues_status_id
-    remove_index :issues_steps, :issue_id
-    remove_index :issues_steps, :step_id
     remove_index :journals, :user_id
     remove_index :journals, :project_id
     remove_index :members, :project_id
@@ -73,9 +65,5 @@ class AddTablesIndexes < ActiveRecord::Migration
     remove_index :projects_versions, :version_id
     remove_index :queries, :author_id
     remove_index :queries, :project_id
-    remove_index :scenarios, :project_id
-    remove_index :scenarios, :version_id
-    remove_index :scenarios, :actor_id
-    remove_index :steps, :scenario_id
   end
 end

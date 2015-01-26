@@ -15,7 +15,7 @@ class InsertIssuesStatuses < ActiveRecord::Migration
 
     project_manager = Role.find_by_name('Project Manager')
     team_member = Role.find_by_name('Team Member')
-    engagement_manager = Role.find_by_name('Engagement manager')
+    engagement_manager = Role.find_by_name('Engagement Manager')
     issues_statuses = IssuesStatus.where(enumeration_id: Enumeration.where(opt: 'ISTS'))
 
     project_manager.issues_statuses = issues_statuses
