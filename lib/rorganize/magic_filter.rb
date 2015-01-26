@@ -5,15 +5,35 @@
 
 module Rorganize
   module MagicFilter
-    OPERATORS = {'equal' => '<=>',
-                 'different' => '<>',
-                 'superior' => '>=',
-                 'inferior' => '<=',
-                 'contains' => 'LIKE',
-                 'not_contains' => 'NOT LIKE',
-                 'today' => '<=>',
-                 'open' => '<=>',
-                 'close' => '<=>'}
+    def self.is_mysql?
+      ActiveRecord::Base.connection.adapter_name.downcase.include?('mysql')
+    end
+
+    def self.is_sqlite?
+      ActiveRecord::Base.connection.adapter_name.downcase.include?('sqlite')
+    end
+
+    if is_mysql?
+      OPERATORS = {'equal' => '<=>',
+                   'different' => '<>',
+                   'superior' => '>=',
+                   'inferior' => '<=',
+                   'contains' => 'LIKE',
+                   'not_contains' => 'NOT LIKE',
+                   'today' => '<=>',
+                   'open' => '<=>',
+                   'close' => '<=>'}
+    elsif is_sqlite?
+      OPERATORS = {'equal' => 'IS',
+                   'different' => '<>',
+                   'superior' => '>=',
+                   'inferior' => '<=',
+                   'contains' => 'LIKE',
+                   'not_contains' => 'NOT LIKE',
+                   'today' => 'IS',
+                   'open' => 'IS',
+                   'close' => 'IS'}
+    end
 
     NULL_OPERATORS = {'different' => 'IS NOT',
                       'equal' => 'IS'}
@@ -26,7 +46,6 @@ module Rorganize
     OPERATORS_WITHOUT_VALUE = %w(open close today)
 
     DATE_ATTRIBUTES = %w(created_at updated_at due_date start_date)
-
 
 
     module MultiValuesQueryBuilder
@@ -72,7 +91,7 @@ module Rorganize
       # each time that a condition clause is add to the condition string.
       # @param [Numeric] sub_clause_number_values : number of values of the sub condition_clause.
       def build_and_statement(number_criteria, sub_condition_clauses_counter, condition_clauses_counter, sub_clause_number_values)
-        another_conditions?(number_criteria, sub_condition_clauses_counter, condition_clauses_counter, sub_clause_number_values) ? 'AND '  : ''
+        another_conditions?(number_criteria, sub_condition_clauses_counter, condition_clauses_counter, sub_clause_number_values) ? 'AND ' : ''
       end
 
       # Do we have to link this condition part with another?
@@ -120,7 +139,7 @@ module Rorganize
       # @param [String] link : the link between condition clause ('OR' or 'AND').
       # @param [Numeric] sub_clause_number_values : number of values of the sub condition_clause.
       def build_condition_link(sub_condition_clauses_counter, link, sub_clause_number_values)
-         sub_condition_clauses_counter != sub_clause_number_values ? "#{link} " : ''
+        sub_condition_clauses_counter != sub_clause_number_values ? "#{link} " : ''
       end
 
       # Build left bracket of the query part if it the first iteration.
@@ -153,9 +172,18 @@ module Rorganize
       def build_query_for_date_value(attributes, number_criteria, condition_clauses_counter, attribute_name, operator_value_hash)
         condition_clauses_counter += 1
         date_value = operator_value_hash['operator'].eql?('today') ? Date.today.to_s : operator_value_hash['value']
-        query_str = "DATE_FORMAT(#{attributes[attribute_name]},'%Y-%m-%d') #{OPERATORS[operator_value_hash['operator']]} '#{date_value}' "
+        query_str = date_format_adapter(attribute_name, attributes, date_value, operator_value_hash)
+
         query_str += 'AND ' if condition_clauses_counter != number_criteria
         return condition_clauses_counter, query_str
+      end
+
+      def date_format_adapter(attribute_name, attributes, date_value, operator_value_hash)
+        if is_mysql?
+          query_str = "DATE_FORMAT(#{attributes[attribute_name]},'%Y-%m-%d') #{OPERATORS[operator_value_hash['operator']]} '#{date_value}' "
+        else
+          query_str = "strftime('%Y-%m-%d', #{attributes[attribute_name]}) #{OPERATORS[operator_value_hash['operator']]} '#{date_value}' "
+        end
       end
 
       # @param [Hash] attributes : the attribute / database field criteria_hash.
@@ -172,7 +200,7 @@ module Rorganize
         value = operator_value_hash['value'].first
         operator, value = select_right_operator(operator_value_hash, value)
         query_str += build_single_val_attribute_condition(attributes, attribute_name, operator, value)
-        query_str +=  build_single_val_or_statement(attributes, attribute_name, operator_value_hash)
+        query_str += build_single_val_or_statement(attributes, attribute_name, operator_value_hash)
         query_str += build_single_val_and_statement(number_criteria, condition_clauses_counter)
       end
 
@@ -245,13 +273,13 @@ module Rorganize
         criteria_hash.each do |attribute_name, operator_value_hash|
           link = get_condition_link(operator_value_hash)
           condition_clauses_counter, query_str = select_query_builder(attributes,
-                                                                criteria_hash.size,
-                                                                sub_condition_clauses_counter,
-                                                                condition_clauses_counter,
-                                                                attribute_name,
-                                                                link,
-                                                                query_str,
-                                                                operator_value_hash)
+                                                                      criteria_hash.size,
+                                                                      sub_condition_clauses_counter,
+                                                                      condition_clauses_counter,
+                                                                      attribute_name,
+                                                                      link,
+                                                                      query_str,
+                                                                      operator_value_hash)
           sub_condition_clauses_counter = 0
         end
         query_str
@@ -275,26 +303,26 @@ module Rorganize
         if DATE_ATTRIBUTES.include?(attribute_name) #if attribute is a date, apply a specific mysql function to convert a datetime format to date format.
           condition_clauses_counter, q = build_query_for_date_value(attributes,
                                                                     number_criteria,
-                                                              condition_clauses_counter,
-                                                              attribute_name,
-                                                              operator_value_hash)
+                                                                    condition_clauses_counter,
+                                                                    attribute_name,
+                                                                    operator_value_hash)
           query_str += q
         elsif operator_value_hash['value'].class.eql?(Array) #if values are contains in an ary
           condition_clauses_counter, query_str = build_query_for_array_value(attributes,
                                                                              number_criteria,
-                                                                       sub_condition_clauses_counter,
-                                                                       condition_clauses_counter,
-                                                                       attribute_name,
-                                                                       link,
-                                                                       query_str,
-                                                                       operator_value_hash)
+                                                                             sub_condition_clauses_counter,
+                                                                             condition_clauses_counter,
+                                                                             attribute_name,
+                                                                             link,
+                                                                             query_str,
+                                                                             operator_value_hash)
         else #if attribute has an uniq value
           condition_clauses_counter, query_str = build_uniq_value_query(attribute_name,
-                                                                  attributes,
-                                                                  number_criteria,
-                                                                  condition_clauses_counter,
-                                                                  query_str,
-                                                                  operator_value_hash)
+                                                                        attributes,
+                                                                        number_criteria,
+                                                                        condition_clauses_counter,
+                                                                        query_str,
+                                                                        operator_value_hash)
         end
         return condition_clauses_counter, query_str
       end
