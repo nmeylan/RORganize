@@ -127,22 +127,22 @@ class User < ActiveRecord::Base
   def owned_projects(filter)
     case filter
       when 'opened'
-        conditions = "projects.is_archived = 0 AND (members.user_id = #{self.id}) "
+        conditions = ["projects.is_archived = ? AND (members.user_id = #{self.id}) ", false]
       when 'archived'
-        conditions = "projects.is_archived = 1 AND (members.user_id = #{self.id}) "
+        conditions = ["projects.is_archived = ? AND (members.user_id = #{self.id}) ", true]
       when 'starred'
-        conditions = "members.is_project_starred = 1 AND (members.user_id = #{self.id}) "
+        conditions = ["members.is_project_starred = ? AND (members.user_id = #{self.id}) ", true]
       else
-        conditions = self.act_as_admin? ? '1 = 1 ' : "(members.user_id = #{self.id}) "
+        conditions = self.act_as_admin? ? ['1 = 1 '] : ["(members.user_id = #{self.id}) "]
     end
-    conditions += 'AND journals.id = (SELECT max(j.id) FROM journals j WHERE j.project_id = projects.id)'
+    conditions[0] += 'AND journals.id = (SELECT max(j.id) FROM journals j WHERE j.project_id = projects.id)'
     if self.members.any?
       Project
-          .joins("INNER JOIN `members` ON `members`.`project_id` = `projects`.`id` OR
-                    (`projects`.`is_public` = 1 AND projects.id NOT IN
+          .joins(User.send(:sanitize_sql_array, ["INNER JOIN `members` ON `members`.`project_id` = `projects`.`id` OR
+                    (`projects`.`is_public` = ? AND projects.id NOT IN
                     (SELECT p2.id FROM projects p2 JOIN members m2 ON p2.id = m2.project_id WHERE m2.user_id = #{self.id}))
                     LEFT OUTER JOIN `watchers` ON `watchers`.`watchable_id` = `projects`.`id` AND
-                    `watchers`.`watchable_type` = \'Project\' AND watchers.user_id = members.user_id")
+                    `watchers`.`watchable_type` = \'Project\' AND watchers.user_id = members.user_id", true]))
           .eager_load(journals: :user)
           .where(conditions)
           .order('members.project_position ASC')
