@@ -137,11 +137,11 @@ class Project < ActiveRecord::Base
   end
 
   def current_versions
-    self.versions.where('versions.start_date <= ? AND versions.is_done = false', Date.today).includes(:issues)
+    self.versions.where('versions.start_date <= ? AND versions.is_done = ?', Date.today, false).includes(:issues)
   end
 
   def old_versions
-    self.versions.where('versions.start_date <= ? AND versions.is_done = true', Date.today)
+    self.versions.where('versions.start_date <= ? AND versions.is_done = ?', Date.today, true)
   end
 
   def roadmap

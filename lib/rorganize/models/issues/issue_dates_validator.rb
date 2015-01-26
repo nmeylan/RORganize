@@ -27,7 +27,7 @@ module Rorganize
           end
 
           def nullify_due_date_sql
-            sql = 'issues.due_date = CASE '
+            sql = 'due_date = CASE '
             sql += 'WHEN (issues.due_date IS NOT NULL AND issues.start_date > issues.due_date) THEN NULL '
             sql += 'ELSE issues.due_date END'
           end

@@ -20,7 +20,7 @@ class Query < ActiveRecord::Base
           project_id, user.id, true, true, user.id, true, type)
   }
 
-  scope :created_by, ->(user) { where(['author_id = ? AND is_public = false', user.id]) }
+  scope :created_by, ->(user) { where(['author_id = ? AND is_public = ?', user.id, false]) }
 
   scope :public_queries, ->(project_id) {
     where('project_id = ? AND is_public = ? AND is_for_all = ?', project_id, true, false)

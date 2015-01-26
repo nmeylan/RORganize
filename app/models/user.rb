@@ -127,11 +127,11 @@ class User < ActiveRecord::Base
   def owned_projects(filter)
     case filter
       when 'opened'
-        conditions = "projects.is_archived = false AND (members.user_id = #{self.id}) "
+        conditions = "projects.is_archived = 0 AND (members.user_id = #{self.id}) "
       when 'archived'
-        conditions = "projects.is_archived = true AND (members.user_id = #{self.id}) "
+        conditions = "projects.is_archived = 1 AND (members.user_id = #{self.id}) "
       when 'starred'
-        conditions = "members.is_project_starred = true AND (members.user_id = #{self.id}) "
+        conditions = "members.is_project_starred = 1 AND (members.user_id = #{self.id}) "
       else
         conditions = self.act_as_admin? ? '1 = 1 ' : "(members.user_id = #{self.id}) "
     end
@@ -139,7 +139,7 @@ class User < ActiveRecord::Base
     if self.members.any?
       Project
           .joins("INNER JOIN `members` ON `members`.`project_id` = `projects`.`id` OR
-                    (`projects`.`is_public` = true AND projects.id NOT IN
+                    (`projects`.`is_public` = 1 AND projects.id NOT IN
                     (SELECT p2.id FROM projects p2 JOIN members m2 ON p2.id = m2.project_id WHERE m2.user_id = #{self.id}))
                     LEFT OUTER JOIN `watchers` ON `watchers`.`watchable_id` = `projects`.`id` AND
                     `watchers`.`watchable_type` = \'Project\' AND watchers.user_id = members.user_id")
@@ -149,7 +149,7 @@ class User < ActiveRecord::Base
           .preload(:members, :watchers)
     else
       Project.eager_load(journals: :user)
-          .where('journals.id = (SELECT max(j.id) FROM journals j WHERE j.project_id = projects.id) AND projects.is_public = true')
+          .where('journals.id = (SELECT max(j.id) FROM journals j WHERE j.project_id = projects.id) AND projects.is_public = ?', true)
     end
   end
 

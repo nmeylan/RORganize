@@ -77,7 +77,7 @@ class Issue < ActiveRecord::Base
     joins(:project, :status).
         joins("LEFT OUTER JOIN #{table_name} ON #{table_name}.id = issues.#{attribute_name}_id").
         group('1').
-        where('issues_statuses.is_closed = false AND issues.project_id = ? AND ?', project_id, conditions).
+        where('issues_statuses.is_closed = ? AND issues.project_id = ? AND ?', false, project_id, conditions).
         pluck("#{table_name}.id, #{table_name}.name, count(issues.id), projects.slug")
   end
 
@@ -88,7 +88,7 @@ class Issue < ActiveRecord::Base
   def self.group_opened_by_project_method(database_field, conditions)
     joins(:project, status: [:enumeration]).
         group('2').
-        where("issues_statuses.is_closed = false AND #{conditions}").
+        where("issues_statuses.is_closed = ? AND #{conditions}", false).
         pluck("#{database_field}, projects.id, projects.slug, count(issues.id), projects.slug")
   end
 
