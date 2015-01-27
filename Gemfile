@@ -37,6 +37,7 @@ group :test do
   gem 'mocha'
   gem 'sqlite3'
   gem 'memory_test_fix'
+  gem 'minitest-reporters'
 end
 
 group :development do
