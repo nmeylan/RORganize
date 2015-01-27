@@ -1,5 +1,10 @@
 require 'shared/activities'
 class ProjectsController < ApplicationController
+  helper VersionsHelper
+  helper TrackersHelper
+  include Rorganize::RichController::ActivityCallback
+  include Rorganize::RichController::GenericCallbacks
+
   before_action { |c| c.add_action_alias = {'show' => 'overview'} }
   before_action :find_project, only: [:archive, :destroy, :overview, :show, :activity, :activity_filter, :members, :issues_completion]
   before_action :find_trackers, only: [:new, :create]
@@ -7,10 +12,6 @@ class ProjectsController < ApplicationController
   before_action { |c| c.menu_context :project_menu }
   before_action { |c| c.menu_item(params[:controller], params[:action].eql?('show') ? 'overview' : params[:action]) }
   before_action { |c| c.top_menu_item('projects') }
-  helper VersionsHelper
-  helper TrackersHelper
-  include Rorganize::Managers::ActivityManager
-  include Rorganize::RichController::GenericCallbacks
   #GET /project/:project_id
   #Project overview
   def overview
@@ -44,7 +45,7 @@ class ProjectsController < ApplicationController
   def create
     @project_decorator = Project.new(project_params).decorate
     @project_decorator.trackers = Tracker.where(id: params[:trackers].values)
-    generic_create_callback(@project_decorator, -> {overview_projects_path(@project_decorator.slug)})
+    generic_create_callback(@project_decorator, -> { overview_projects_path(@project_decorator.slug) })
   end
 
   def destroy
@@ -104,24 +105,18 @@ class ProjectsController < ApplicationController
       end
     end
   end
+
   def project_params
     params.require(:project).permit(Project.permit_attributes)
   end
 
   def find_project
     id = params[:id] ? params[:id] : params[:project_id]
-    @project_decorator = Project.includes(:attachments, members: [:role, user: :avatar]).where(slug: id)[0]
-    if @project_decorator
-      @project_decorator = @project_decorator.decorate
-      @project = @project_decorator.model
-    else
-      render_404
-    end
+    @project_decorator = Project.includes(:attachments, members: [:role, user: :avatar]).find_by!(slug: id).decorate
+    @project = @project_decorator.model
   end
 
   def find_trackers
     @trackers_decorator = Tracker.all.decorate(context: {checked_ids: Tracker.where(name: ['Bug', 'Task']).collect(&:id)})
   end
-
-
 end

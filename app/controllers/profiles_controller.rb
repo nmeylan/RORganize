@@ -14,7 +14,7 @@ class ProfilesController < ApplicationController
   helper IssuesHelper
   helper QueriesHelper
   helper UsersHelper
-  include Rorganize::Managers::ActivityManager
+  include Rorganize::RichController::ActivityCallback
   include Rorganize::RichController::ProjectsPreferenceCallback
 
   def show

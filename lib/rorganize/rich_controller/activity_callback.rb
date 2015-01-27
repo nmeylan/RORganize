@@ -1,10 +1,10 @@
 # Author: Nicolas Meylan
 # Date: 24.07.14
 # Encoding: UTF-8
-# File: activity_manager.rb
+# File: activity_callback.rb
 module Rorganize
-  module Managers
-    module ActivityManager
+  module RichController
+    module ActivityCallback
       #GET/project/:project_id/activity
       def init_activities_sessions
         @sessions[:activities] ||= {}

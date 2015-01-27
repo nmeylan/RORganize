@@ -5,7 +5,7 @@ class RorganizeController < ApplicationController
   helper ProjectsHelper
   helper IssuesHelper
   helper UsersHelper
-  include Rorganize::Managers::ActivityManager
+  include Rorganize::RichController::ActivityCallback
   include Rorganize::RichController::TaskListCallback
 
   before_action { |c| c.top_menu_item('home') }
