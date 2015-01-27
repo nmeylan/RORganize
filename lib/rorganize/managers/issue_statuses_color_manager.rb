@@ -11,7 +11,7 @@ module Rorganize
           load_colors
         end
         def load_colors
-          @colors = IssuesStatus.statuses_colors unless $0.end_with?('rake')
+          @colors = IssuesStatus.statuses_colors unless $0.include?('rake')
         end
 
         def colors
