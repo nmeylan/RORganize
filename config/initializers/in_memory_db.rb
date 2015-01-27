@@ -1,4 +1,3 @@
-
 def in_memory_database?
   Rails.env == "test" and
       ActiveRecord::Base.connection.adapter_name.downcase.include?('sqlite') and
@@ -6,6 +5,8 @@ def in_memory_database?
 end
 
 if in_memory_database?
+  require 'active_record/migration'
+  ActiveRecord::Migration.verbose = false
   puts "creating sqlite in memory database"
   load "#{Rails.root}/db/schema.rb"
 end
