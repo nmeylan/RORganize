@@ -14,7 +14,7 @@
 </head>
 
 <body>
-<%= render 'peek/bar' %>
+<%= render 'peek/bar' if defined?(Peek) %>
 
 <div id="top-menu"><%= render partial: 'layouts/top_menu' %></div>
 

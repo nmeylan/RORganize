@@ -3,6 +3,8 @@
 # Encoding: UTF-8
 # File: peek.rb
 
-Peek.into Peek::Views::Mysql2
-Peek.into Peek::Views::Rblineprof
-Peek.into Peek::Views::PerformanceBar
+if defined?(Peek)
+  Peek.into Peek::Views::Mysql2
+  Peek.into Peek::Views::Rblineprof
+  Peek.into Peek::Views::PerformanceBar
+end

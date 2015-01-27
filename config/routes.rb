@@ -165,7 +165,7 @@ RORganize::Application.routes.draw do
 
   #MOUNT PLUGINS
   # mount AgileBoard::Engine => '/', as: 'agile_boards_route'
-  mount Peek::Railtie => '/peek'
+  mount Peek::Railtie => '/peek' if defined?(Peek)
 
   root to: 'rorganize#index'
 
