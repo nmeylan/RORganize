@@ -75,7 +75,6 @@ RORganize::Application.routes.draw do
     end
     resource :roadmap, only: [:show] do
       collection do
-        get 'calendar'
         get 'gantt'
         post 'manage_gantt'
         get 'manage_gantt'
