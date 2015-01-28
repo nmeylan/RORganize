@@ -34,7 +34,8 @@ module Rorganize
         if @sessions[@project.slug][:gantt][:versions]
           Version.includes(issues: [:parent, :children, :tracker, :assigned_to, :status]).where(id: @sessions[@project.slug][:gantt][:versions])
         else
-          @project_decorator.versions.includes(issues: [:parent, :children, :tracker, :assigned_to, :status]).where('versions.is_done = ?', false)
+          @project_decorator.versions.includes(issues: [:parent, :children, :tracker, :assigned_to, :status])
+              .where('versions.is_done = ? AND versions.project_id = ?', false, @project.id)
         end
       end
 
@@ -55,6 +56,7 @@ module Rorganize
       end
 
       def manage_gantt
+        gantt_initialize_sessions
         if request.post?
           respond_to_save
         else
