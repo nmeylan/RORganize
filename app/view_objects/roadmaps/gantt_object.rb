@@ -11,7 +11,7 @@ class GanttObject
 
   DATE_FORMAT = '%d-%m-%Y'
   DATE_FORMAT_STR = '%-d %b.'
-  attr_reader :json_data
+  attr_reader :json_data, :versions
 
   def initialize(versions, project, edition = false)
     @versions = versions
