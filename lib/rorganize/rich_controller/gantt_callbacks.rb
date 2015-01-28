@@ -34,7 +34,7 @@ module Rorganize
         if @sessions[@project.slug][:gantt][:versions]
           Version.includes(issues: [:parent, :children, :tracker, :assigned_to, :status]).where(id: @sessions[@project.slug][:gantt][:versions])
         else
-          @project_decorator.versions.includes(issues: [:parent, :children, :tracker, :assigned_to, :status]).where('versions.is_done = false')
+          @project_decorator.versions.includes(issues: [:parent, :children, :tracker, :assigned_to, :status]).where('versions.is_done = ?', false)
         end
       end
 
