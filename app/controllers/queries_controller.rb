@@ -45,7 +45,9 @@ class QueriesController < ApplicationController
               js_redirect_to(apply_custom_query_documents_path(@query.project.slug, @query.slug))
           end
         else
-          respond_to_js action: 'new_project_query', locals: {new: false, success: success}, response_header: :failure, response_content: @query.errors.full_messages
+          respond_to_js action: 'new_project_query', locals: {new: false, success: success},
+                        response_header: :failure, response_content: @query.errors.full_messages,
+                        status: :unprocessable_entity
         end
       end
     end
@@ -66,7 +68,7 @@ class QueriesController < ApplicationController
   end
 
   def edit_query_filter
-    @query = Query.find_by_slug(params[:query_id])
+    @query = Query.find_by!(slug: params[:query_id])
     filter = @query.object_type.constantize.conditions_string(params[:filter])
     @query.stringify_query = filter
     @query.stringify_params = params[:filter].inspect
@@ -74,27 +76,19 @@ class QueriesController < ApplicationController
     respond_to do |format|
       format.js do
         if success
-          respond_to_js action: 'do_nothing', locals: {new: false, success: success}, response_header: :success, response_content: t(:successful_update)
+          respond_to_js action: 'do_nothing', locals: {new: false, success: success},
+                        response_header: :success, response_content: t(:successful_update)
         else
-          respond_to_js action: 'do_nothing', locals: {new: false, success: success}, response_header: :failure, response_content: @query.errors.full_messages
+          respond_to_js action: 'do_nothing', locals: {new: false, success: success},
+                        response_header: :failure, response_content: @query.errors.full_messages
         end
       end
     end
   end
 
   def update
-    respond_to do |format|
-      if @query.update_attributes(query_params)
-        format.html do
-          flash[:notice] = t(:successful_update)
-          redirect_to query_path(@query.id)
-        end
-      else
-        format.html do
-          render action: 'edit', controller: 'queries', id: @query.id
-        end
-      end
-    end
+    @query.attributes = (query_params)
+    generic_update_callback(@query, query_path(@query.id))
   end
 
   def destroy
@@ -108,12 +102,11 @@ class QueriesController < ApplicationController
 
   private
   def find_project
-    @project = Project.find_by_slug(params[:project_id])
-    render_404 if @project.nil?
+    @project = Project.find_by!(slug: params[:project_id])
   end
 
   def check_query_permission
-    @query = params[:id] ? Query.find_by_id(params[:id]) : Query.find_by_slug(params[:query_id])
+    @query = params[:id] ? Query.find(params[:id]) : Query.find_by!(slug: params[:query_id])
     if (@query.is_public && !User.current.allowed_to?('public_queries', 'Queries', Project.find_by_slug(params[:project_id]))) ||
         (!@query.is_public && !@query.author_id.eql?(User.current.id))
       render_403
