@@ -33,7 +33,7 @@ module Rorganize
             concat version_dates_header(version)
             concat clear_both
             concat progress_bar_tag(percent)
-            concat version_overview_request_stats(closed_issues_count, opened_issues_count, version)
+            concat version_overview_request_stats(closed_issues_count, opened_issues_count)
             concat version_overview_over_run_tag(version)
             concat clear_both
           end
@@ -58,9 +58,9 @@ module Rorganize
           end
         end
 
-        def version_overview_request_stats(closed_issues_count, opened_issues_count, version)
+        def version_overview_request_stats(closed_issues_count, opened_issues_count)
           content_tag :span, class: 'requests-stats' do
-            concat content_tag :b, "#{version.issues_count.to_s} "
+            concat content_tag :b, "#{closed_issues_count + opened_issues_count} "
             concat t(:label_request_plural) + ', '
             concat content_tag :b, "#{closed_issues_count.to_s} "
             concat t(:label_closed) + ', '
