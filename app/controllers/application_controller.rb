@@ -16,7 +16,7 @@ class ApplicationController < ActionController::Base
 
 
   rescue_from ActiveRecord::RecordNotFound do |exception|
-    render_404
+    set_current_user { render_404 }
   end
 
   def peek_enabled?
@@ -110,7 +110,7 @@ class ApplicationController < ActionController::Base
 
   def class_name_to_controller_name(class_name)
     i = 0
-    class_name.pluralize.gsub(/([A-Z])/){|occurrence|  i += 1; i == 1 ? occurrence : '_'+occurrence }
+    class_name.pluralize.gsub(/([A-Z])/) { |occurrence| i += 1; i == 1 ? occurrence : '_'+occurrence }
   end
 
   def configure_permitted_parameters
