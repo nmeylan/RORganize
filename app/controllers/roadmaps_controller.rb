@@ -8,6 +8,7 @@ require 'roadmap/roadmap_report'
 class RoadmapsController < ApplicationController
   helper VersionsHelper
   include Rorganize::RichController::GanttCallbacks
+
   before_action { |c| c.add_action_alias = {'version' => 'show'} }
   before_action :check_permission, only: [:gantt, :manage_gantt, :show, :version]
   before_action { |c| c.menu_context :project_menu }
@@ -17,7 +18,7 @@ class RoadmapsController < ApplicationController
   #GET/project/:project_id/roadmaps
   def show
     roadmap = RoadmapReport.new(@project_decorator)
-    @version_decorator = roadmap.version_decorator
+    @versions_decorator = roadmap.versions_decorator
     old_versions = roadmap.old_versions
     respond_to do |format|
       format.html { render :index, locals: {old_versions: old_versions} }
@@ -25,23 +26,12 @@ class RoadmapsController < ApplicationController
   end
 
   def version
-    @version_decorator = Version.eager_load(issues: [:status, :tracker]).find_by_id(params[:id])
-    if @version_decorator
-      @version_decorator = @version_decorator.decorate
-    else
-      render_404
-    end
+    @version_decorator = Version.eager_load(issues: [:status, :tracker]).find_by!(id: params[:id], project_id: @project.id).decorate
   end
 
   private
   def find_project
-    @project_decorator = Project.eager_load(:versions, :attachments).where(slug: params[:project_id])[0]
-    if @project_decorator
-      @project_decorator = @project_decorator.decorate
-      @project = @project_decorator.model
-    else
-      render_404
-    end
+    @project = Project.eager_load(:versions, :attachments).find_by!(slug: params[:project_id])
+    @project_decorator = @project.decorate
   end
-
 end

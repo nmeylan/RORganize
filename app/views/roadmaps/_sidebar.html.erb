@@ -7,7 +7,7 @@
 <%= content_for :sidebar do %>
     <h2><%= t(:link_versions) %></h2>
     <ul>
-      <%= version_decorator.collect { |version| content_tag :li, link_to(version.caption, "#v-#{version.id ? version.id : 'unplanned'}") }.join.html_safe %>
+      <%= versions_decorator.collect { |version| content_tag :li, link_to(version.caption, "#v-#{version.id ? version.id : 'unplanned'}") }.join.html_safe %>
     </ul>
     <h2><%= t(:label_report_plural) %></h2>
     <ul>
