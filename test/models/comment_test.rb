@@ -207,6 +207,4 @@ class CommentTest < ActiveSupport::TestCase
     issue.reload
     assert_equal issue.comments_count, 0
   end
-
-
 end

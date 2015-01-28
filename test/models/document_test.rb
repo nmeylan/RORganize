@@ -34,8 +34,8 @@ class DocumentTest < ActiveSupport::TestCase
 
   test 'permit attributes should contains' do
     expectation = [:name, :description, :version_id, :category_id,
-                   {new_attachment_attributes:  Attachment.permit_attributes},
-                   {edit_attachment_attributes:  Attachment.permit_attributes}]
+                   {new_attachment_attributes: Attachment.permit_attributes},
+                   {edit_attachment_attributes: Attachment.permit_attributes}]
     actual = Document.permit_attributes
     assert_match_array expectation, actual
   end
@@ -67,7 +67,7 @@ class DocumentTest < ActiveSupport::TestCase
     assert_equal users(:users_002), document.author
   end
 
-  test 'condition string' do
+  test 'it build a condition clause to select documents with category 1' do
     actual = Document.conditions_string({'category' => {'operator' => 'equal', 'value' => ['1']}})
 
     if is_mysql?
@@ -75,33 +75,44 @@ class DocumentTest < ActiveSupport::TestCase
     elsif is_sqlite?
       expected = '(documents.category_id IS \'1\' ) AND'
     end
-    assert_equal expected, actual
 
+    assert_equal expected, actual
+  end
+
+  test 'it build a condition clause to select documents with no category' do
     actual = Document.conditions_string({'category' => {'operator' => 'equal', 'value' => ['NULL']}})
     expected = '(documents.category_id IS NULL ) AND'
     assert_equal expected, actual
+  end
 
+  test 'it build a condition clause to select documents with name hello' do
     actual = Document.conditions_string({'name' => {'operator' => 'contains', 'value' => 'hello'}})
     expected = 'documents.name LIKE "%hello%" AND'
     assert_equal expected, actual
+  end
 
+  test 'it build a condition clause to select documents with name hello and category 1' do
     actual = Document.conditions_string({'name' => {'operator' => 'contains', 'value' => 'hello'},
-                                         'category' => {'operator' => 'equal', 'value' => ['1']}
-                                        })
+                                         'category' => {'operator' => 'equal', 'value' => ['1']}})
 
     if is_mysql?
       expected = 'documents.name LIKE "%hello%" AND (documents.category_id <=> \'1\' ) AND'
     elsif is_sqlite?
       expected = 'documents.name LIKE "%hello%" AND (documents.category_id IS \'1\' ) AND'
     end
-    assert_equal expected, actual
 
+    assert_equal expected, actual
+  end
+
+  test 'it build a condition clause to select documents created on 2015 01 07' do
     actual = Document.conditions_string({'created_at' => {'operator' => 'equal', 'value' => '2015-01-07'}})
+
     if is_mysql?
       expected = 'DATE_FORMAT(documents.created_at,\'%Y-%m-%d\') <=> \'2015-01-07\' AND'
     elsif is_sqlite?
       expected = 'strftime(\'%Y-%m-%d\', documents.created_at) IS \'2015-01-07\' AND'
     end
+
     assert_equal expected, actual
   end
 
@@ -135,17 +146,8 @@ class DocumentTest < ActiveSupport::TestCase
     doc = Document.new(name: generate_string_of_length(256))
     assert_not doc.save, 'Saved with more than 255 char name'
 
-    doc =  Document.new(name: 'qwertz')
+    doc = Document.new(name: 'qwertz')
     assert doc.save, doc.errors.messages
-  end
-
-  private
-  def is_mysql?
-    ActiveRecord::Base.connection.adapter_name.downcase.include?('mysql')
-  end
-
-  def is_sqlite?
-    ActiveRecord::Base.connection.adapter_name.downcase.include?('sqlite')
   end
 
 end

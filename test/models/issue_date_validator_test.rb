@@ -155,7 +155,7 @@ class IssueDateValidatorTest < ActiveSupport::TestCase
     end
   end
 
-  test 'it should nullify due date when start date is update after updating version start date when version has a due date' do
+  test 'it should nullify due date when start date is updated after updating version start date when version has a due date' do
     issue1 = Issue.create(tracker_id: 1, subject: 'Bug', status_id: '1', project_id: 1, start_date: '2012-11-29', due_date: '2012-12-20')
     version1 = Version.create(name: 'test', start_date: '2012-12-21', target_date: '2012-12-30', project_id: 1)
 
@@ -177,7 +177,7 @@ class IssueDateValidatorTest < ActiveSupport::TestCase
     assert_equal nil, issue2.due_date
   end
 
-  test 'it should nullify due date when start date is update after updating version start date when version has no due date' do
+  test 'it should nullify due date when start date is updated after updating version start date when version has no due date' do
     issue1 = Issue.create(tracker_id: 1, subject: 'Bug', status_id: '1', project_id: 1, start_date: '2012-11-29', due_date: '2012-12-20')
     version1 = Version.create(name: 'test', start_date: '2012-12-21', project_id: 1)
 
@@ -207,7 +207,7 @@ class IssueDateValidatorTest < ActiveSupport::TestCase
     assert_equal nil, issue3.due_date
   end
 
-  test 'it should nullify due date when due date is update after updating version due date' do
+  test 'it should nullify due date when due date is updated after updating version due date' do
     issue1 = Issue.create(tracker_id: 1, subject: 'Bug', status_id: '1', project_id: 1, start_date: '2012-11-29', due_date: '2012-12-20')
     version1 = Version.create(name: 'test', start_date: '2012-12-01', target_date: '2012-12-19', project_id: 1)
 
@@ -226,7 +226,5 @@ class IssueDateValidatorTest < ActiveSupport::TestCase
     issue2.reload
     assert_equal Date.new(2012, 12, 01), issue2.start_date
     assert_equal Date.new(2012, 12, 19), issue2.due_date
-
   end
-
 end
