@@ -4,6 +4,7 @@ if ENV['COVERAGE']
   require 'code_coverage'
   CodeCoverage.start
 end
+
 require File.expand_path('../../config/environment', __FILE__)
 require 'rails/test_help'
 require 'minitest/reporters'
@@ -13,7 +14,9 @@ require 'test_assertions/test_assertions'
 require 'test_utilities/custom_http_request'
 require 'test_utilities/generic_controllers_test_cases'
 
+# Initialize reporter.
 Minitest::Reporters.use! [Minitest::Reporters::AwesomeReporter.new({color: true, slow_count: 5})]
+
 class ActionController::TestCase
   include Rorganize::CustomHttpRequest
   include Rorganize::GenericControllersTestCases
@@ -31,20 +34,24 @@ end
 
 class ActiveSupport::TestCase
   include Rorganize::TestAssertions
-  # Setup all fixtures in test/fixtures/*.(yml|csv) for all tests in alphabetical order.
-  #
-  # Note: You'll currently still have to declare fixtures explicitly in integration tests
-  # -- they do not yet inherit this setting
   fixtures :all
 
   setup do
     User.current = users(:users_001)
     User.any_instance.stubs(:generate_default_avatar).returns(nil)
   end
-  # Add more helper methods to be used by all tests here...
 
+  # Test cases methods
   def generate_string_of_length(length)
     (0...length).map { (65 + rand(26)).chr }.join
+  end
+
+  def is_mysql?
+    ActiveRecord::Base.connection.adapter_name.downcase.include?('mysql')
+  end
+
+  def is_sqlite?
+    ActiveRecord::Base.connection.adapter_name.downcase.include?('sqlite')
   end
 
 end
