@@ -18,6 +18,7 @@ class CategoriesControllerTest < ActionController::TestCase
   test "should access to new category" do
     get_with_permission :new
     assert_response :success
+    assert_not_nil assigns(:category)
   end
 
   test "should create category" do
@@ -39,6 +40,7 @@ class CategoriesControllerTest < ActionController::TestCase
   test "should edit category" do
     get_with_permission :edit, id: @category
     assert_response :success
+    assert_not_nil assigns(:category)
   end
 
   test "should update category" do
