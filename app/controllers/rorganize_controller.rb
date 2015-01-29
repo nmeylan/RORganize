@@ -9,8 +9,6 @@ class RorganizeController < ApplicationController
   include Rorganize::RichController::TaskListCallback
 
   before_action { |c| c.top_menu_item('home') }
-  helper_method :sort_column, :sort_direction
-
 
   def index
     respond_to do |format|
@@ -23,17 +21,11 @@ class RorganizeController < ApplicationController
   end
 
   def view_profile
-    @user_decorator = User.eager_load([members: [:role, :project, assigned_issues: :status]]).find_by_slug(params[:user])
-    if @user_decorator
-      @user_decorator = @user_decorator.decorate
-      init_activities_sessions
-      activities_data = selected_filters
-
-      load_activities(@user_decorator)
-      activity_callback(activities_data, :view_profile)
-    else
-      render_404
-    end
+    @user_decorator = User.eager_load([members: [:role, :project, assigned_issues: :status]]).find_by_slug!(params[:user]).decorate
+    init_activities_sessions
+    activities_data = selected_filters
+    load_activities(@user_decorator)
+    activity_callback(activities_data, :view_profile)
   end
 
   def activity
@@ -45,24 +37,4 @@ class RorganizeController < ApplicationController
       format.json { render json: markdown_to_html(params[:content]) }
     end
   end
-
-  def about
-    respond_to do |format|
-      format.html
-    end
-  end
-
-  def error_404
-    render_404
-  end
-
-  private
-  def sort_column
-    params[:sort] ? params[:sort] : 'issues.id'
-  end
-
-  def sort_direction
-    params[:direction] ? params[:direction] : 'DESC'
-  end
-
 end
