@@ -26,23 +26,8 @@ module Rorganize
 
       # @param [ActiveRecord::Base] rendered_element : The object that contains the content to be render. It use to define a context and let user click on task lists.
       def markdown_task_list_enabled?(rendered_element)
-        allow = false
-        if rendered_element.class.eql?(Issue)
-          allow = can_user_check_issue_task?(rendered_element)
-        elsif rendered_element.class.eql?(Comment)
-          allow = can_user_check_comment_task?(rendered_element)
-        elsif rendered_element.class.eql?(Document)
-          allow = User.current.allowed_to?('edit', 'documents', @project)
-        end
-        allow
-      end
-
-      def can_user_check_comment_task?(rendered_element)
-        User.current.id.eql?(rendered_element.user_id) || User.current.allowed_to?('edit_comment_not_owner', 'comments', @project)
-      end
-
-      def can_user_check_issue_task?(rendered_element)
-        User.current.id.eql?(rendered_element.author_id) && User.current.allowed_to?('edit', 'issues', @project)|| User.current.allowed_to?('edit_not_owner', 'issues', @project)
+        (rendered_element.respond_to?(:author) && rendered_element.author.eql?(User.current)) ||
+            User.current.allowed_to?('edit', Rorganize::Utils::class_name_to_controller_name(rendered_element.class.to_s), @project)
       end
     end
   end
