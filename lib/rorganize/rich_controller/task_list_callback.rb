@@ -1,6 +1,7 @@
 module Rorganize
   module RichController
     module TaskListCallback
+
       def task_list_action_markdown
         element_types = {'Comment' => Comment, 'Issue' => Issue, 'Document' => Document}
         params.require(:is_check)
@@ -8,10 +9,8 @@ module Rorganize
         params.require(:element_id)
         params.require(:check_index)
         element_type = element_types[params[:element_type]]
-        element = element_type.find_by_id(params[:element_id]) if element_type
-        unless element.nil?
-          header, message = update_task_list(element)
-        end
+        element = element_type.find_by_id!(params[:element_id])
+        header, message = update_task_list(element)
         respond_to do |format|
           format.js { respond_to_js action: 'do_nothing', response_header: header, response_content: message }
         end
@@ -19,7 +18,7 @@ module Rorganize
 
       def update_task_list(element)
         project = Project.find_by_id(element.project_id)
-        content, header, message = select_content_to_update(element, project)
+        content = select_content_to_update(element, project)
         unless content.nil?
           header, message = perform_update(content, element)
         end
@@ -43,40 +42,28 @@ module Rorganize
       end
 
       def save_modification(content, element)
-        if params[:element_type].eql?('Comment')
+        if element.respond_to?(:content)
           element.update_column(:content, content)
-        elsif params[:element_type].eql?('Issue') || params[:element_type].eql?('Document')
+        elsif element.respond_to?(:description)
           element.update_column(:description, content)
         end
       end
 
       def select_content_to_update(element, project)
-        if user_allowed_to_update_in_comment_list?(element, project)
-          content = element.content
-        elsif user_allowed_to_update_list?(element, project)
-          content = element.description
+        if user_allowed_to_update_list?(element, project)
+          if element.respond_to?(:content)
+            element.content
+          elsif element.respond_to?(:description)
+            element.description
+          end
         else #User try to cheat.
-          content = nil
-          message = "Don't try to brain the master. You now you haven't the permission to perform this action!"
-          header = :failure
+          raise ActionController::RoutingError.new('Forbidden')
         end
-        return content, header, message
       end
 
       def user_allowed_to_update_list?(element, project)
-        user_allowed_to_update_in_issue_list?(element, project) || user_allowed_to_update_in_document_list?(project)
-      end
-
-      def user_allowed_to_update_in_document_list?(project)
-        (params[:element_type].eql?('Document') && (User.current.allowed_to?('edit', 'documents', project)))
-      end
-
-      def user_allowed_to_update_in_issue_list?(element, project)
-        (params[:element_type].eql?('Issue') && (element.author.eql?(User.current) || User.current.allowed_to?('edit_not_owner', 'issues', project)))
-      end
-
-      def user_allowed_to_update_in_comment_list?(element, project)
-        params[:element_type].eql?('Comment') && (User.current.allowed_to?('edit_comment_not_owner', 'comments', project) || element.user_id.eql?(User.current.id))
+        (element.respond_to?(:author) && element.author.eql?(User.current)) ||
+            User.current.allowed_to?('edit', Rorganize::Utils::class_name_to_controller_name(element.class.to_s), project)
       end
     end
   end
