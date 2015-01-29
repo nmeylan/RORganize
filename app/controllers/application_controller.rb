@@ -19,6 +19,12 @@ class ApplicationController < ActionController::Base
     set_current_user { render_404 }
   end
 
+  rescue_from ActionController::RoutingError do |exception|
+   if exception.message.eql?('Forbidden')
+     set_current_user { render_403 }
+   end
+  end
+
   def peek_enabled?
     Rails.env.eql?('development')
   end
