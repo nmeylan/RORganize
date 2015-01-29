@@ -95,12 +95,13 @@ class ProjectsControllerTest < ActionController::TestCase
   test "should get all member into a json" do
     get :members, project_id: @project.slug, format: :json
     assert_response :success
-
+    assert_equal @project.members.size, JSON.parse(@response.body).size
   end
 
   test "should get all issues into a json" do
     get :issues_completion, project_id: @project.slug, format: :json
     assert_response :success
+    assert_equal @project.issues.count, JSON.parse(@response.body).size
   end
 
   # Forbidden
