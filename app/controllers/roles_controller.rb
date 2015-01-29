@@ -6,6 +6,7 @@
 class RolesController < ApplicationController
   include Rorganize::RichController
   before_action :check_permission
+  before_action  :find_role, only: [:edit, :destroy, :update]
   before_action { |c| c.menu_context :admin_menu }
   before_action { |c| c.menu_item(params[:controller]) }
   before_action { |c| c.top_menu_item('administration') }
@@ -37,7 +38,6 @@ class RolesController < ApplicationController
 
   #GET /administration/roles/edit/:id
   def edit
-    @role = Role.includes(:issues_statuses, :assignable_roles).find_by_id(params[:id])
     load_form_content
     respond_to do |format|
       format.html
@@ -47,20 +47,12 @@ class RolesController < ApplicationController
   #PUT /administration/roles/edit/:id
   def update
     @role = Role.set_role_attributes(role_params, params)
-    respond_to do |format|
-      if @role.save
-        flash[:notice] = t(:successful_update)
-        format.html { redirect_to roles_path }
-      else
-        load_form_content
-        format.html { render :edit }
-      end
-    end
+    load_form_content
+    generic_update_callback(@role, roles_path)
   end
 
   #DELETE /administration/roles/:id
   def destroy
-    @role = Role.find_by_id(params[:id])
     simple_js_callback(@role.destroy, :delete, @role, {id: params[:id]})
   end
 
@@ -69,7 +61,9 @@ class RolesController < ApplicationController
     params.require(:role).permit(Role.permit_attributes)
   end
 
-
+  def find_role
+    @role = Role.includes(:issues_statuses, :assignable_roles).find(params[:id])
+  end
 
   def load_form_content
     @roles = Role.all_non_locked
