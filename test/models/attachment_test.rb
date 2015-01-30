@@ -3,20 +3,21 @@
 # Encoding: UTF-8
 # File: attachment_test.rb
 require 'test_helper'
-
 class AttachmentTest < ActiveSupport::TestCase
 
   # Called before every test method runs. Can be used
   # to set up fixture information.
   def setup
-    # Do nothing
+    @project = projects(:projects_001)
+    @attachment = Attachment.create(name: 'File test',
+                                    attachable_id: @project.id, attachable_type: 'Project')
   end
 
   # Called after every test method runs. Can be used to tear
   # down fixture information.
 
   def teardown
-    # Do nothing
+    @attachment.destroy
   end
 
   test "permit attributes should contains" do
@@ -44,5 +45,45 @@ class AttachmentTest < ActiveSupport::TestCase
 
     attachment.file_content_type = 'image/svg+xml'
     assert attachment.should_process?
+  end
+
+  test 'any image file is attached and thumbnailed' do
+    assert_nil @attachment.file.path(:original)
+    assert_nil @attachment.file.path(:thumb)
+
+    @attachment.file = File.new("#{Rails.root}/test/fixtures/files/rorganize_logo.png")
+    assert @attachment.save, @attachment.errors.messages
+
+    assert_processed :original
+    assert_processed :thumb
+  end
+
+  test 'any non-image file is attached but not thumbnailed' do
+    assert_nil @attachment.file.path(:original)
+
+    @attachment.file = File.new("#{Rails.root}/test/fixtures/issues.yml")
+    assert @attachment.save, @attachment.errors.messages
+
+    assert_processed :original
+    assert_not_processed :thumb
+  end
+
+  test "should not save attachment when file is bigger than 1mo" do
+    assert_nil @attachment.file.path(:original)
+
+    @attachment.file = File.new("#{Rails.root}/test/fixtures/files/fat_koala.jpg")
+    assert_not @attachment.save, 'attachment has been saved'
+  end
+
+  private
+
+  def assert_processed(style)
+    path = @attachment.file.path(style)
+    assert File.exist?(path), "#{style} not processed"
+  end
+
+  def assert_not_processed(style)
+    path = @attachment.file.path(style)
+    assert_not File.exist?(path), "#{style} unduly processed"
   end
 end

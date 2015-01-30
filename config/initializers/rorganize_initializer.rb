@@ -12,14 +12,7 @@ RORganize::Application.config.rorganize_anonymous_access = true
 RORganize::Application.config.enable_emails_notifications = true
 
 #T Attachment size : range.<gigabytes|megabytes|kilobytes>
-RORganize::Application.config.attachments_size = 0..50.megabytes
-
-
-module Paperclip
-  class MediaTypeSpoofDetector
-    prepend Rorganize::Patches::PaperclipPatch::MediaTypeSpoofDetector
-  end
-end
+RORganize::Application.config.attachments_size = 0..1.megabytes
 
 module WillPaginate
   module ActiveRecord
