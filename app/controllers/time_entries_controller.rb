@@ -16,7 +16,7 @@ class TimeEntriesController < ApplicationController
 
   def new
     @time_entry = TimeEntry.new
-    @time_entry.spent_on = params[:spent_on] ? params[:spent_on] : Time.now.to_date
+    @time_entry.spent_on = params[:spent_on] ? params[:spent_on] : Date.today
     respond_to do |format|
       format.js do
         respond_to_js locals: {issue_id: params[:issue_id]}
@@ -25,7 +25,7 @@ class TimeEntriesController < ApplicationController
   end
 
   def create
-    issue = Issue.find_by_id(params[:issue_id])
+    issue = Issue.find_by!(id: params[:issue_id])
     @time_entry = issue.time_entries.build(time_entry_params)
     @time_entry.project = issue.project
     @time_entry.user = User.current
