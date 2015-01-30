@@ -65,7 +65,7 @@ class IssuesControllerTest < ActionController::TestCase
     assert_not_nil assigns(:issue_decorator)
   end
 
-  test "should refresh the page when update category failed" do
+  test "should refresh the page when update issue failed" do
     patch_with_permission :update, id: @issue, issue: {subject: '', status_id: 1, tracker_id: 1}
     assert_not_nil assigns(:issue_decorator)
     assert_response :unprocessable_entity
