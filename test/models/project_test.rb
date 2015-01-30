@@ -175,7 +175,6 @@ class ProjectTest < ActiveSupport::TestCase
     last_activity = @project.last_activity
     assert_equal 'Member', last_activity.journalizable_type
     assert_equal Journal::ACTION_CREATE, last_activity.action_type
-    sleep(1.0)
     issue = Issue.create(tracker_id: 1, subject: 'Bug1', status_id: 1, project_id: @project.id)
     @project.reload
     last_activity = @project.last_activity
