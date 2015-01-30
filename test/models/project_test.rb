@@ -74,8 +74,7 @@ class ProjectTest < ActiveSupport::TestCase
 
   test 'permit attributes should contains' do
     expectation = [:name, :description, :identifier, :trackers, :is_public,
-                   new_attachment_attributes: Attachment.permit_attributes,
-                   existing_attachment_attributes: Attachment.permit_attributes]
+                   new_attachment_attributes: Attachment.permit_attributes]
 
     assert_match_array expectation, Project.permit_attributes
   end

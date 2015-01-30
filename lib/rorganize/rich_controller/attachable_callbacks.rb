@@ -21,7 +21,7 @@ module Rorganize
 
 
       def any_attachement_uploaded?(params)
-        params[:existing_attachment_attributes] || params[:new_attachment_attributes]
+        params[:new_attachment_attributes]
       end
 
       def model_saved?(model)

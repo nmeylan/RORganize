@@ -13,17 +13,6 @@ module Rorganize
         end
       end
 
-      def existing_attachment_attributes=(attachment_attributes)
-        attachments.reject(&:new_record?).each do |attachment|
-          attributes = attachment_attributes[attachment.id.to_s]
-          if attributes
-            attachment.attributes = attributes
-          else
-            attachment.delete
-          end
-        end
-      end
-
       def save(*)
         save_result = super
         add_attachments_error_messages unless self.errors.messages[:attachments].nil?

@@ -69,8 +69,7 @@ class Project < ActiveRecord::Base
 
   def self.permit_attributes
     [:name, :description, :identifier, :trackers, :is_public,
-     new_attachment_attributes: Attachment.permit_attributes,
-     existing_attachment_attributes: Attachment.permit_attributes]
+     new_attachment_attributes: Attachment.permit_attributes]
   end
 
   def set_created_by
