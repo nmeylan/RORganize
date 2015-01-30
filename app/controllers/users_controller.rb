@@ -7,6 +7,8 @@
 require 'shared/history'
 class UsersController < ApplicationController
   include Rorganize::RichController
+
+  before_action :find_user, only: [:show, :edit, :update, :destroy]
   before_action :check_permission
   before_action { |c| c.menu_context :admin_menu }
   before_action { |c| c.menu_item(params[:controller]) }
@@ -32,18 +34,11 @@ class UsersController < ApplicationController
   #Post /administration/users/new
   def create
     @user = User.new(user_params)
-    respond_to do |format|
-      if @user.save
-        success_generic_create_callback(format, user_path(@user.slug))
-      else
-        error_generic_create_callback(format, @user)
-      end
-    end
+    generic_create_callback(@user, -> { user_path(@user.slug) })
   end
 
   #Get /administration/users/edit/:id
   def edit
-    @user = User.find_by_slug(params[:id])
     respond_to do |format|
       format.html
     end
@@ -51,16 +46,13 @@ class UsersController < ApplicationController
 
   #Put /administration/users/edit/:id
   def update
-    @user = User.find_by_slug(params[:id])
     @user.attributes = user_params
-    respond_to do |format|
-      select_update_callback(format)
-    end
+    generic_update_callback(@user, -> {@user.reload; user_path(@user.slug)})
   end
 
   #Get /administration/users/:id
   def show
-    @user_decorator = User.find_by_slug(params[:id]).decorate
+    @user_decorator = @user.decorate
     @history = History.new(Journal.where(journalizable_type: 'User', journalizable_id: @user_decorator.id).eager_load([:details]))
     respond_to do |format|
       format.html
@@ -69,19 +61,13 @@ class UsersController < ApplicationController
 
   #DELETE /administration/users/:id
   def destroy
-    @user = User.find_by_slug(params[:id])
     generic_destroy_callback(@user, users_path)
   end
 
   private
-  def select_update_callback(format)
-    if !@user.changed?
-      success_generic_update_callback(format, user_path(@user.slug), false)
-    elsif @user.save
-      success_generic_update_callback(format, user_path(@user.slug))
-    else
-      error_generic_update_callback(format, @user)
-    end
+
+  def find_user
+    @user = User.find_by_slug!(params[:id])
   end
 
   def user_params
