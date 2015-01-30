@@ -44,7 +44,7 @@ module PermissionsHelper
       concat permission_table_header_render(group_name)
       concat permissions_table_row_spacer(true)
       concat permissions_table_row_spacer
-      permissions_table_rows_render(permissions_array, selected_permissions, group_name)
+      permissions_table_rows_render(permissions_array, selected_permissions, group_name) unless permissions_array.nil?
     end
   end
 
