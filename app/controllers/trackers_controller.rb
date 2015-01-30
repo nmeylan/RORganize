@@ -5,6 +5,7 @@
 
 class TrackersController < ApplicationController
   include Rorganize::RichController
+
   before_action :find_tracker, only: [:show, :edit, :update, :destroy, :change_position]
   before_action :check_permission
   before_action { |c| c.menu_context :admin_menu }
@@ -13,7 +14,7 @@ class TrackersController < ApplicationController
 
   #Get /administration/trackers
   def index
-    @trackers_decorator = Tracker.paginated(@sessions[:current_page],@sessions[:per_page], order('trackers.name')).decorate
+    @trackers_decorator = Tracker.paginated(@sessions[:current_page], @sessions[:per_page], order('trackers.name')).decorate
     respond_to do |format|
       format.html
       format.js { respond_to_js }
@@ -64,12 +65,8 @@ class TrackersController < ApplicationController
   end
 
   def find_tracker
-    @tracker = Tracker.find_by_id(params[:id])
-    if @tracker
-      @tracker_decorator = @tracker.decorate(context: {project: @project})
-    else
-      render_404
-    end
+    @tracker = Tracker.find(params[:id])
+    @tracker_decorator = @tracker.decorate(context: {project: @project})
   end
 end
 
