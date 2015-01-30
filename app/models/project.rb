@@ -128,6 +128,17 @@ class Project < ActiveRecord::Base
     self.save
   end
 
+  def enable_modules(modules_name)
+    self.enabled_modules.clear
+    modules_name.each do |mod|
+      ary = mod.split('-')
+      m = EnabledModule.new(controller: ary[0], action: ary[1], name: ary[2])
+      self.enabled_modules << m
+    end
+    self.save
+    reload_enabled_module(self.id)
+  end
+
   def last_activity
     self.journals.order("#{:created_at} desc").limit(1).first
   end

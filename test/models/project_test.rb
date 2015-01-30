@@ -10,7 +10,6 @@ class ProjectTest < ActiveSupport::TestCase
   def setup
     User.current = User.find_by_id(1)
     @project = Project.create(name: 'Rorganize test', is_public: true)
-
   end
 
   # Called after every test method runs. Can be used to tear
@@ -293,6 +292,17 @@ class ProjectTest < ActiveSupport::TestCase
     assert_raise(ActiveRecord::RecordNotFound) { watcher2.reload }
     assert watcher3.reload
   end
+
+  test 'it has a method to activate modules' do
+    assert_equal Rorganize::Managers::ModuleManager.enabled_by_default_modules,
+                 @project.enabled_modules.to_a.collect { |mod| {controller: mod.controller, action: mod.action, name: mod.name} }
+
+    @project.enable_modules(['roadmaps-show-roadmaps'])
+    @project.reload
+    assert_equal [{controller: "roadmaps", action: "show", name: "roadmaps"}],
+                 @project.enabled_modules.to_a.collect { |mod| {controller: mod.controller, action: mod.action, name: mod.name} }
+  end
+  # Cascade delete test.
 
   test 'it has many issues and should delete them on project deletion' do
     project = Project.create(name: 'Rorganize test fdp', is_public: true)
