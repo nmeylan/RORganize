@@ -1,0 +1,14 @@
+language: ruby
+cache: bundler
+rvm:
+  - 2.2.0
+
+env:
+  - DB=mysql
+  - DB=sqlite
+#  - DB=postgresql
+before_install: cp config/travis_database.yml config/database.yml
+script:
+  - export RAILS_ENV=test
+  - bundle exec rake db:create db:migrate
+  - bundle exec rake db:test:prepare
