@@ -147,7 +147,7 @@ class IssueTest < ActiveSupport::TestCase
     expectation = ['Subject', 'Description', 'Created at', 'Updated at', 'Due date',
                    'Done', 'Author', 'Assigned to', 'Project', 'Tracker', 'Status',
                    'Version', 'Category', 'Estimated time', 'Start date', 'Predecessor',
-                   'Attachments count', 'Comments count', 'Link type', "User story"]
+                   'Attachments count', 'Comments count', 'Link type']
     actual = Issue.attributes_formalized_names
     assert actual & expectation == expectation
   end
