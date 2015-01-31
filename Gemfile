@@ -51,11 +51,11 @@ group :development do
   gem 'flamegraph'
   gem 'stackprof', '~> 0.2.7'
   #local server
-  gem 'mongrel', '>= 1.2.0.pre2'
 end
 
 group :development, :test do
   gem 'spring'
+  gem 'mongrel', '>= 1.2.0.pre2'
 end
 
 group :development, :production do
