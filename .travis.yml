@@ -21,7 +21,7 @@ script:
   - bundle install
   - bundle exec rake db:create db:migrate
   - bundle exec rake db:test:prepare
-  - time bundle exec rake test COVERAGE=true
+  - time bundle exec rake test:all COVERAGE=true
 
 addons:
   code_climate:
