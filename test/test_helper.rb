@@ -8,6 +8,7 @@ end
 require File.expand_path('../../config/environment', __FILE__)
 require 'rails/test_help'
 require 'minitest/reporters'
+require "codeclimate-test-reporter"
 require 'awsome_reporter'
 require 'mocha/mini_test'
 require 'test_assertions/test_assertions'
@@ -16,6 +17,7 @@ require 'test_utilities/generic_controllers_test_cases'
 
 # Initialize reporter.
 Minitest::Reporters.use! [Minitest::Reporters::AwesomeReporter.new({color: true, slow_count: 5})]
+CodeClimate::TestReporter.start
 
 class ActionController::TestCase
   include Rorganize::CustomHttpRequest
