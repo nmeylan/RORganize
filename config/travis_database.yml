@@ -1,6 +1,6 @@
 sqlite: &sqlite
   adapter: sqlite3
-  database: ":memory:"
+  database: rorganize_travis_<%= Rails.env %>
 
 mysql: &mysql
   adapter: mysql2
