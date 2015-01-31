@@ -12,7 +12,7 @@ class WatchersController < ApplicationController
   def toggle
     if @watcher
       @model = @watcher.watchable
-      if @model.parent_watch_by?(User.current) && @watcher.is_unwatch
+      if @watcher.is_unwatch
         result = @watcher.update_attribute(:is_unwatch, false)
         js_callback(result, [t(:successful_watched), "#{t(:failure_creation)} : #{@watcher.errors.full_messages.join(', ')}"], 'create')
       elsif @model.parent_watch_by?(User.current) && !@watcher.is_unwatch
@@ -25,10 +25,16 @@ class WatchersController < ApplicationController
     else
       @watcher = Watcher.new(watchable_id: params[:watchable_id], watchable_type: params[:watchable_type],
                              author: User.current, project: @project)
-      @watcher.is_unwatch = @watcher.watchable.parent_watch_by?(User.current)
-      result = @watcher.save
-      @model = @watcher.watchable
-      js_callback(result, [t(:successful_watched), "#{t(:failure_creation)} : #{@watcher.errors.full_messages.join(', ')}"], 'create')
+      if @watcher.watchable.parent_watch_by?(User.current)
+        @watcher.is_unwatch = true
+        result = @watcher.save
+        @model = @watcher.watchable
+        js_callback(result, [t(:successful_unwatched), "#{t(:failure_deletion)} : #{@watcher.errors.full_messages.join(', ')}"], 'destroy')
+      else
+        result = @watcher.save
+        @model = @watcher.watchable
+        js_callback(result, [t(:successful_watched), "#{t(:failure_creation)} : #{@watcher.errors.full_messages.join(', ')}"], 'create')
+      end
     end
   end
 
@@ -42,10 +48,5 @@ class WatchersController < ApplicationController
     controller = Rorganize::Utils::class_name_to_controller_name(@watcher ? @watcher.watchable_type : params[:watchable_type])
     project = params[:watchable_type].eql?('Project') ? nil : @project
     raise ActionController::RoutingError.new('Forbidden') unless User.current.allowed_to?('watch', controller, project)
-  end
-
-  def new_watcher
-    @watcher = Watcher.new(watchable_id: params[:watchable_id], watchable_type: params[:watchable_type],
-                           author: User.current, project: @project)
   end
 end
