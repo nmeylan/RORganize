@@ -39,6 +39,7 @@ group :test do
   gem 'memory_test_fix'
   gem 'sqlite3'
   gem 'coveralls', require: false
+  gem "codeclimate-test-reporter", require: false
   gem 'minitest-reporters'
 end
 

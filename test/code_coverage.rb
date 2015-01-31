@@ -4,6 +4,7 @@
 # File: code_coverage.rb
 
 require 'coveralls'
+require 'codeclimate-test-reporter'
 
 class CodeCoverage
   GROUP_HASH = {
@@ -21,7 +22,8 @@ class CodeCoverage
   def self.start
     SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter[
         SimpleCov::Formatter::HTMLFormatter,
-        Coveralls::SimpleCov::Formatter
+        Coveralls::SimpleCov::Formatter,
+        CodeClimate::TestReporter::Formatter
     ]
     SimpleCov.start 'rails' do
       add_filter '/spec/'
