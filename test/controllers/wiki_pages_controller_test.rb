@@ -88,10 +88,12 @@ class WikiPagesControllerTest < ActionController::TestCase
     other_wiki.save
     other_wiki_page = WikiPage.create(title: 'Page1', author_id: User.current.id, content: 'content', wiki_id: other_wiki.id)
 
-    assert_no_difference('WikiPage.count') do
+    assert_difference('WikiPage.count') do
       post_with_permission :create, wiki_page: {title: 'Test page', parent_id: other_wiki_page.slug}
     end
-    assert_response :missing
+    wiki_page = assigns(:wiki_page_decorator)
+    assert_nil wiki_page.parent
+    assert_redirected_to wiki_page_path(@project.slug, wiki_page.slug)
   end
 
   test "should edit wiki page" do
