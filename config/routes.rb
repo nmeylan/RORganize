@@ -84,7 +84,7 @@ RORganize::Application.routes.draw do
         get 'version', path: 'version/:id'
       end
     end
-    resources :wiki do
+    resources :wiki, except: [:new, :show] do
       collection do
         get 'pages'
         get 'organize_pages'

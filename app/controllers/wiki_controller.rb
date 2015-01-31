@@ -4,30 +4,19 @@
 # File: wikis_controller.rb
 
 class WikiController < ApplicationController
-  before_action :find_wiki, except: [:new, :create, :set_organization]
-  before_action :check_permission, except: [:organize_pages]
-  before_action :check_organize_pages_permission, only: [:organize_pages]
-
   include WikiHelper
   include Rorganize::RichController
   include Rorganize::RichController::ProjectContext
   helper WikiPagesHelper
 
+  before_action :find_wiki, except: [:create, :set_organization]
+  before_action :check_permission, except: [:organize_pages]
+  before_action :check_organize_pages_permission, only: [:organize_pages]
+
   def index
     respond_to do |format|
       format.html
     end
-  end
-
-  def new
-    @wiki = Wiki.new
-    respond_to do |format|
-      format.html
-    end
-  end
-
-  def show
-    index
   end
 
   def destroy
@@ -73,7 +62,7 @@ class WikiController < ApplicationController
   end
 
   def find_wiki
-    wiki = Wiki.where(project_id: @project.id).eager_load([[pages: [:author, :sub_pages, :parent]], [home_page: :author]])[0]
+    wiki = Wiki.eager_load([[pages: [:author, :sub_pages, :parent]], [home_page: :author]]).find_by_project_id(@project.id)
     @wiki_decorator = wiki ? wiki.decorate(context: {project: @project}) : Wiki.new.decorate(context: {project: @project})
   end
 
