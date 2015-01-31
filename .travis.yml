@@ -22,7 +22,3 @@ script:
   - bundle exec rake db:create db:migrate
   - bundle exec rake db:test:prepare
   - time bundle exec rake test
-
-addons:
-  code_climate:
-    repo_token: 4c1f9795200b13185ca2c635c767423cb3af024fdf83c4404beed70b3c698e75

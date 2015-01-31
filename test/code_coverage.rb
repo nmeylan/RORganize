@@ -3,6 +3,8 @@
 # Encoding: UTF-8
 # File: code_coverage.rb
 
+require 'coveralls'
+
 class CodeCoverage
   GROUP_HASH = {
       "Controller" => %w(app/controllers lib/rorganize/rich_controller),
@@ -17,6 +19,10 @@ class CodeCoverage
   EXCLUDED_FILES = %w()
 
   def self.start
+    SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter[
+        SimpleCov::Formatter::HTMLFormatter,
+        Coveralls::SimpleCov::Formatter
+    ]
     SimpleCov.start 'rails' do
       add_filter '/spec/'
       add_filter '/db/'
