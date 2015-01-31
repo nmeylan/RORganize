@@ -10,7 +10,7 @@ env:
 #  - DB=postgresql
 before_install: cp config/travis_database.yml config/database.yml
 script:
-  - sqlite3 -version
+  - sqlite3 --version
   - export RAILS_ENV=test
   - bundle exec rake db:create db:migrate
   - bundle exec rake db:test:prepare
