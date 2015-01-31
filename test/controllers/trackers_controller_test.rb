@@ -83,7 +83,7 @@ class TrackersControllerTest < ActionController::TestCase
     assert_not_nil @response.header["flash-error-message"]
   end
 
-  test "should get a 404 error when user change position of an undefined category" do
+  test "should get a 404 error when user change position of an undefined tracker" do
     should_get_404_on(:post_with_permission, :change_position, id: 666695, operator: 'dec', format: :js)
   end
   # Action Forbidden
