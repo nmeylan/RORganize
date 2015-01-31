@@ -175,12 +175,6 @@ class ProjectTest < ActiveSupport::TestCase
     last_activity = @project.last_activity
     assert_equal 'Member', last_activity.journalizable_type
     assert_equal Journal::ACTION_CREATE, last_activity.action_type
-    issue = Issue.create(tracker_id: 1, subject: 'Bug1', status_id: 1, project_id: @project.id)
-    @project.reload
-    last_activity = @project.last_activity
-    assert_equal 'Issue', last_activity.journalizable_type
-    assert_equal issue.id, last_activity.journalizable_id
-    assert_equal Journal::ACTION_CREATE, last_activity.action_type
   end
 
   test 'it has active versions' do
