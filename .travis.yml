@@ -10,7 +10,7 @@ env:
 #  - DB=postgresql
 before_install: cp config/travis_database.yml config/database.yml
 install:
-  - if [[ $DB = mysql ]]; then bash .travis.install-mysql.sh; fi;
+#  - if [[ $DB = mysql ]]; then bash .travis.install-mysql.sh; fi;
 
 script:
   - sqlite3 --version
