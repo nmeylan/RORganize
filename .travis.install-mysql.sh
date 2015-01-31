@@ -1,3 +1,4 @@
+sudo /etc/init.d/mysql.server stop
 sudo apt-get remove mysql-common mysql-server-5.5 mysql-server-core-5.5 mysql-client-5.5 mysql-client-core-5.5
 sudo apt-get autoremove
 sudo apt-get install libaio1
