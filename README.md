@@ -1,5 +1,8 @@
 [![Code Climate](https://codeclimate.com/github/nmeylan/RORganize/badges/gpa.svg)](https://codeclimate.com/github/nmeylan/RORganize)
-#Welcome to RORganize
+[![Build Status](https://travis-ci.org/nmeylan/RORganize.svg?branch=master)](https://travis-ci.org/nmeylan/RORganize)
+[![Test Coverage](https://codeclimate.com/github/nmeylan/RORganize/badges/coverage.svg)](https://codeclimate.com/github/nmeylan/RORganize)
+
+# Welcome to RORganize
 ### Started on June 20, 2012 - Last update : December 26, 2014
 
 Run with Rails 4.2.0 and ruby 2.2.0
