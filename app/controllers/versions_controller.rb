@@ -5,7 +5,7 @@
 
 class VersionsController < ApplicationController
   include Rorganize::RichController
-  before_action :find_version, only: [:show, :edit, :update, :destroy, :change_position]
+  before_action :find_version, only: [:edit, :update, :destroy, :change_position]
   before_action :check_permission
   before_action { |c| c.menu_context :project_menu }
   before_action { |c| c.menu_item('settings') }
@@ -50,10 +50,6 @@ class VersionsController < ApplicationController
                                 response_content: success ? t(:successful_deletion) : t(:failure_deletion),
                                 locals: {id: params[:id]} }
     end
-  end
-
-  def show
-
   end
 
   def change_position
