@@ -13,4 +13,4 @@ script:
   - export RAILS_ENV=test
   - bundle exec rake db:create db:migrate
   - bundle exec rake db:test:prepare
-  - time rake test
+  - time bundle exec rake test
