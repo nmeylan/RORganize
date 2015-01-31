@@ -60,16 +60,20 @@ module Rorganize
       # Render a link to watch all activities from watchable.
       # @param [ActiveRecord::base] watchable : a model that include Watchable module.
       # @param [Project] project : the project which belongs to watchable.
-      def watch_link(watchable, project)
-        link_to glyph(t(:link_watch), 'eye'), watchers_path(project.slug, watchable.class.to_s, watchable.id), {id: "watch-link-#{watchable.id}", class: 'tooltipped tooltipped-s button', remote: true, method: :post, label: t(:text_watch)}
-      end
+      # @param [boolean] label : tooltip label.
+      def toggle_watcher_link(watchable, project, is_watch = false)
+        if is_watch
+          label = t(:text_watch)
+          id = "unwatch"
+          caption = t(:link_unwatch)
+        else
+          label = t(:text_unwatch)
+          id = "watch"
+          caption = t(:link_watch)
+        end
 
-      # Render a link to unwatch all activities from watchable.
-      # @param [ActiveRecord::base] watchable : a model that include Watchable module.
-      # @param [Watcher] watcher : the watcher model (activeRecord).
-      # @param [Project] project : the project which belongs to watchable.
-      def unwatch_link(watchable, watcher, project)
-        link_to glyph(t(:link_unwatch), 'eye'), watcher_path(project.slug, watchable.class.to_s, watchable.id, watcher.id), {id: "unwatch-link-#{watchable.id}", class: 'tooltipped tooltipped-s button', remote: true, method: :delete, label: t(:text_unwatch)}
+        link_to glyph(caption, 'eye'), toggle_watchers_path(project.slug, watchable.class.to_s, watchable.id),
+                {id: "#{id}-link-#{watchable.id}", class: 'tooltipped tooltipped-s button', remote: true, method: :post, label: label}
       end
 
       # @param [User] user : current user.

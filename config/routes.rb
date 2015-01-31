@@ -22,7 +22,10 @@ RORganize::Application.routes.draw do
 
   end
   scope 'projects/:project_id/:watchable_type/:watchable_id' do
-    resources :watchers, only: [:create, :destroy] do
+    resources :watchers, only: [:index] do
+      collection do
+        post 'toggle'
+      end
     end
   end
   scope 'administration/' do

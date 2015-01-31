@@ -4,35 +4,31 @@
 # File: watchers_controller.rb
 
 class WatchersController < ApplicationController
-  before_action :find_watcher, only: [:create, :destroy]
-  before_action :check_permission, only: [:destroy, :create]
   include Rorganize::RichController::GenericCallbacks
 
-  def create
-    if @watcher
-      success = @watcher.destroy
-    else
-      new_watcher
-      success = @watcher.save
-    end
-    js_callback(success, [t(:successful_watched), "#{t(:failure_deletion)} : #{@watcher.errors.full_messages.join(', ')}"])
-  end
+  before_action :find_watcher, only: [:toggle]
+  before_action :check_permission, only: [:toggle]
 
-  def destroy
-    if @watcher && @watcher.user_id.eql?(User.current.id)
+  def toggle
+    if @watcher
       @model = @watcher.watchable
-      js_callback(@watcher.destroy, [t(:successful_unwatched), "#{t(:failure_deletion)} : #{@watcher.errors.full_messages.join(', ')}"])
-    else
-      new_watcher
-      @watcher.is_unwatch = true
-      respond_to do |format|
-        if @watcher.save
-          @model = @watcher.watchable
-          format.js { respond_to_js response_header: :success, response_content: t(:successful_watched) }
-        else
-          format.js { respond_to_js action: 'do_nothing', response_header: :failure, response_content: "#{t(:successful_creation)} : #{@watcher.errors.full_messages.join(', ')}" }
-        end
+      if @model.parent_watch_by?(User.current) && @watcher.is_unwatch
+        result = @watcher.update_attribute(:is_unwatch, false)
+        js_callback(result, [t(:successful_watched), "#{t(:failure_creation)} : #{@watcher.errors.full_messages.join(', ')}"], 'create')
+      elsif @model.parent_watch_by?(User.current) && !@watcher.is_unwatch
+        result = @watcher.update_attribute(:is_unwatch, true)
+        js_callback(result, [t(:successful_unwatched), "#{t(:failure_deletion)} : #{@watcher.errors.full_messages.join(', ')}"], 'destroy')
+      else
+        result = @watcher.destroy
+        js_callback(result, [t(:successful_unwatched), "#{t(:failure_deletion)} : #{@watcher.errors.full_messages.join(', ')}"], 'destroy')
       end
+    else
+      @watcher = Watcher.new(watchable_id: params[:watchable_id], watchable_type: params[:watchable_type],
+                             author: User.current, project: @project)
+      @watcher.is_unwatch = @watcher.watchable.parent_watch_by?(User.current)
+      result = @watcher.save
+      @model = @watcher.watchable
+      js_callback(result, [t(:successful_watched), "#{t(:failure_creation)} : #{@watcher.errors.full_messages.join(', ')}"], 'create')
     end
   end
 
@@ -45,18 +41,11 @@ class WatchersController < ApplicationController
   def check_permission
     controller = Rorganize::Utils::class_name_to_controller_name(@watcher ? @watcher.watchable_type : params[:watchable_type])
     project = params[:watchable_type].eql?('Project') ? nil : @project
-    if User.current.allowed_to?('watch', controller, project)
-      true
-    else
-      render_403
-    end
+    raise ActionController::RoutingError.new('Forbidden') unless User.current.allowed_to?('watch', controller, project)
   end
 
   def new_watcher
-    @watcher = Watcher.new
-    @watcher.watchable_id = params[:watchable_id]
-    @watcher.watchable_type = params[:watchable_type]
-    @watcher.author = User.current
-    @watcher.project = @project
+    @watcher = Watcher.new(watchable_id: params[:watchable_id], watchable_type: params[:watchable_type],
+                           author: User.current, project: @project)
   end
 end
