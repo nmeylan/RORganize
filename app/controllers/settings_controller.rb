@@ -9,6 +9,8 @@ class SettingsController < ApplicationController
   include Rorganize::Managers::ModuleManager::ModuleManagerHelper
   include Rorganize::RichController
 
+  before_action { |c| c.add_action_alias= {'update' => 'update_project_informations'} }
+
   before_action :set_pagination, only: [:public_queries]
   before_action :check_queries_permission, only: [:public_queries]
   before_action :check_permission, except: [:public_queries, :delete_attachment]
