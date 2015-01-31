@@ -4,15 +4,16 @@
 # File: wiki_pages_controller.rb
 
 class WikiPagesController < ApplicationController
-  before_action :find_page, except: [:new, :new_home_page, :new_sub_page, :create]
+  helper WikiHelper
+  include Rorganize::RichController::GenericCallbacks
+
+  before_action :find_page, only: [:show, :edit, :update, :destroy]
   before_action :check_permission, except: [:new_home_page, :new_sub_page]
   before_action :check_new_permission, only: [:new_home_page, :new_sub_page]
   before_action :check_not_owner_permission, only: [:edit, :update, :destroy]
   before_action { |c| c.menu_context :project_menu }
   before_action { |c| c.menu_item('wiki') }
   before_action { |c| c.top_menu_item('projects') }
-  helper WikiHelper
-  include Rorganize::RichController::GenericCallbacks
 
   def new
     new_form
@@ -35,9 +36,9 @@ class WikiPagesController < ApplicationController
         success_generic_create_callback(format, wiki_page_path(@project.slug, @wiki_page_decorator.slug))
       else
         if params[:wiki] && params[:wiki][:home_page]
-          format.html { render :new_home_page }
+          format.html { render :new_home_page, status: :unprocessable_entity }
         else
-          format.html { render :new }
+          format.html { render :new, status: :unprocessable_entity }
         end
       end
     end
@@ -89,7 +90,7 @@ class WikiPagesController < ApplicationController
   end
 
   def find_page
-    @wiki_page_decorator = WikiPage.eager_load(:sub_pages, :author).where(slug: params[:id])[0].decorate(context: {project: @project})
+    @wiki_page_decorator = WikiPage.eager_load(:sub_pages, :author).find_by_slug!(params[:id]).decorate(context: {project: @project})
   end
 
   def check_owner

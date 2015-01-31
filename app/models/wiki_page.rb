@@ -55,7 +55,7 @@ class WikiPage < ActiveRecord::Base
     wiki_page = wiki.pages.build(wiki_page_params)
     wiki_page.author = User.current
     if wiki_page_params[:parent_id]
-      wiki_page.parent = WikiPage.find_by_slug(wiki_page_params[:parent_id])
+      wiki_page.parent = WikiPage.find_by_slug_and_wiki_id!(wiki_page_params[:parent_id], wiki.id)
     end
     perform_creation(params, wiki, wiki_page)
   end
