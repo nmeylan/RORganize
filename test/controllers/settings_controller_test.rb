@@ -23,6 +23,7 @@ class SettingsControllerTest < ActionController::TestCase
   end
 
   test "should update project information" do
+    allow_user_to('update_project_informations')
     assert_equal 2, @project.trackers.count
     put_with_permission :update, project: {name: 'New project name', is_public: 1, description: "A simple description"}, trackers: {}, id: "update_project_informations"
 
@@ -35,6 +36,7 @@ class SettingsControllerTest < ActionController::TestCase
   end
 
   test "should refresh the page when update project failed" do
+    allow_user_to('update_project_informations')
     put_with_permission :update, project: {name: '', is_public: 1, description: "A simple description"},
                         trackers: {}, id: "update_project_informations"
     @project.reload
@@ -81,6 +83,11 @@ class SettingsControllerTest < ActionController::TestCase
   # Forbidden actions
   test "should get a 403 error when user is not allowed to access to index of settings" do
     should_get_403_on(:_get, :index)
+  end
+
+  test "should get a 403 error when user is not allowed to update project" do
+    should_get_403_on(:_put, :update, project: {name: 'New project name', is_public: 1,
+                                                description: "A simple description"}, trackers: {}, id: "update_project_informations")
   end
 
   test "should get a 403 error when user is not allowed to access to modules" do
