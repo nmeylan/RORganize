@@ -111,7 +111,7 @@ RORganize::Application.routes.draw do
     end
   end
   scope 'projects/:project_id/settings/' do
-    resources :versions do
+    resources :versions, except: [:show] do
       collection do
         post 'change_position'
       end
