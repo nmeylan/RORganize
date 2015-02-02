@@ -65,4 +65,4 @@ group :development, :production do
 end
 
 #RORganize plugins
-# gem 'agile_board', path: 'vendor/engines/agile_board'
+eval_gemfile 'PluginsGemfile'
