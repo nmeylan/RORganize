@@ -51,7 +51,7 @@ class ProjectsControllerTest < ActionController::TestCase
   end
 
   test "should filter activities" do
-    get_with_permission :activity_filter, types: {"Issue" => "1"}, date: "2015-01-22", period: "THREE_DAYS"
+    post_with_permission :activity_filter, types: {"Issue" => "1"}, date: "2015-01-22", period: "THREE_DAYS"
     assert_response :success
     assert_not_nil assigns(:activities)
   end

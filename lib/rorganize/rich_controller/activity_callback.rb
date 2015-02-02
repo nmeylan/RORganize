@@ -33,6 +33,7 @@ module Rorganize
 
       def activity_filter
         if request.post? #filter submission
+          @sessions[:activities] ||= {}
           types = params[:types] ? params[:types].keys : ['NIL']
           @sessions[:activities][:types] = types
           period = params[:period] ? params[:period] : 'ONE_DAY'
