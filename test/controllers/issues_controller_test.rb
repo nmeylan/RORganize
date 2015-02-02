@@ -88,7 +88,7 @@ class IssuesControllerTest < ActionController::TestCase
   test "should edit issues with toolbox" do
     assert_nil @issue.category_id
     get_with_permission :index
-    post_with_permission :toolbox, ids: [@issue.id], value: {category_id: "1", version_id: ""},format: :js
+    post_with_permission :toolbox, ids: [@issue.id], value: {category_id: "1", version_id: ""}, format: :js
     @issue.reload
     assert_equal 1, @issue.category_id
     assert_response :success
@@ -97,7 +97,7 @@ class IssuesControllerTest < ActionController::TestCase
 
   test "should delete issues with toolbox" do
     get_with_permission :index
-    post_with_permission :toolbox, delete_ids: [@issue.id],format: :js
+    post_with_permission :toolbox, delete_ids: [@issue.id], format: :js
     assert_raise(ActiveRecord::RecordNotFound) { @issue.reload }
     assert_response :success
     assert_template "index"
@@ -128,6 +128,17 @@ class IssuesControllerTest < ActionController::TestCase
     assert_nil @issue.predecessor_id
     assert_response :success
     assert_template "add_predecessor"
+  end
+
+  test "should apply custom query" do
+    query = create_custom_query
+    get_with_permission :apply_custom_query, query_id: query.slug
+
+    assert_not_empty session[:issues][@project.slug][:sql_filter]
+    assert_not_empty session[:issues][@project.slug][:json_filter]
+
+    expectation = JSON.parse("{\"assigned_to\"=>{\"operator\"=>\"equal\", \"value\"=>[\"7\"]}}".gsub('=>', ':'))
+    assert_equal expectation, session[:issues][@project.slug][:json_filter]
   end
 
   # Action Forbidden
@@ -189,5 +200,20 @@ class IssuesControllerTest < ActionController::TestCase
 
   test "should get a 403 error when user is not allowed to del predecessor overview" do
     should_get_403_on(:_delete, :del_predecessor, id: @issue, format: :js)
+  end
+
+  test "should get a 403  error when user is not allowed to apply custom queries" do
+    query = create_custom_query
+    should_get_403_on(:_get, :apply_custom_query, query_id: query.slug)
+  end
+
+  private
+  def create_custom_query
+    attributes = {name: "Parker Ferry issues", description: "", is_public: "0",
+                  is_for_all: "0", object_type: "Issue"}
+    filters = {"assigned_to" => {"operator" => "equal", "value" => ["7"]}}
+    query = Query.create_query(attributes, @project, filters)
+    query.save
+    query
   end
 end

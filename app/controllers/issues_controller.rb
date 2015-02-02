@@ -15,7 +15,7 @@ class IssuesController < ApplicationController
   include Rorganize::RichController::AttachableCallbacks
   include Rorganize::RichController::CustomQueriesCallback
 
-  before_action { |c| c.add_action_alias= {'overview' => 'index', 'apply_custom_query' => 'index'} }
+  before_action { |c| c.add_action_alias= {'overview' => 'index'} }
   before_action :find_project_with_dependencies, only: [:index, :new, :create, :update, :edit, :toolbox, :apply_custom_query]
   before_action :check_permission
   before_action :find_issue, only: [:edit, :update, :destroy, :show]

@@ -11,6 +11,7 @@ module Rorganize
       def apply_custom_query
         @query = Query.find_by_slug(params[:query_id])
         if @query
+          @sessions[@project.slug] ||= {}
           @sessions[@project.slug][:sql_filter] = @query.stringify_query
           @sessions[@project.slug][:json_filter] = JSON.parse(@query.stringify_params.gsub('=>', ':'))
         end
