@@ -141,6 +141,16 @@ class IssuesControllerTest < ActionController::TestCase
     assert_equal expectation, session[:issues][@project.slug][:json_filter]
   end
 
+  test "should apply new filter" do
+    get_with_permission :index, filters_list: ["status"], filter: {assigned_to: {"operator"=>"equal", "value"=>["7"]}}, type: 'filter'
+
+    assert_not_empty session[:issues][@project.slug][:sql_filter]
+    assert_not_empty session[:issues][@project.slug][:json_filter]
+
+    expectation = JSON.parse("{\"assigned_to\"=>{\"operator\"=>\"equal\", \"value\"=>[\"7\"]}}".gsub('=>', ':'))
+    assert_equal expectation, session[:issues][@project.slug][:json_filter]
+  end
+
   # Action Forbidden
   test "should get a 403 error when user is not allowed to access index of issues" do
     should_get_403_on(:_get, :index)

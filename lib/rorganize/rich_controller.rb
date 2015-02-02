@@ -13,46 +13,6 @@ module Rorganize
       base.before_action :set_pagination, only: [:index]
     end
 
-
-    # Klazz : type of the filtered content, e.g : Issue
-    #Criteria : HASH criteria, e.g : {"subject"=>{"operator"=>"contains", "value"=>"test"}}
-    #Filter type : are content filtered? then value is filter (to filter content) or all (to display all result)
-    #Filter lists : Array of filters, e.g ["subject"] (used for the combobox)
-    #Commit : is a new filter is submit?
-    # session_json : serialized dom filter in json
-    # session_sql : sql filter
-    #Return : An array (size 2), first index -> sql filter, second index -> HASH criteria
-    def apply_filter(klazz, params, sessions)
-      criteria = params[:filter]
-      filter_type = params[:type]
-      filters_list = params[:filters_list]
-      commit = params[:commit]
-      if criteria
-        filter_params = criteria.clone
-        filter_params.delete_if { |_, filter| filter['operator'].eql?('all') }
-      else
-        filter_params = nil
-      end
-      filter = nil
-      if filter_type.eql?('filter') && criteria && filters_list && filters_list.any?
-        filter = klazz.conditions_string(criteria)
-      elsif commit
-        #filter SQL content
-        sessions[:sql_filter] = nil
-        #filter DOM content
-        sessions[:json_filter] = nil
-      end
-      #When page is reloading, user don't loose his filters
-      if filter_type && filter_type.eql?('filter')
-        sessions[:json_filter] = filter_params
-      end
-      if filter
-        sessions[:sql_filter] = filter
-      elsif !sessions[:sql_filter]
-        sessions[:sql_filter] = ''
-      end
-    end
-
     def load_paginated_collection(klazz, default_order)
       klazz.prepare_paginated(@sessions[:current_page], @sessions[:per_page], order(default_order), gon_filter_initialize, @project.id).decorate(context: {project: @project, query: @query})
     end
