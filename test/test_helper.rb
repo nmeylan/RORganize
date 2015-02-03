@@ -53,5 +53,31 @@ class ActiveSupport::TestCase
   def is_sqlite?
     ActiveRecord::Base.connection.adapter_name.downcase.include?('sqlite')
   end
+end
 
+module Rorganize
+  module HTMLTesting
+    def node(html)
+      Nokogiri::HTML::Document.parse(html).root
+    end
+  end
+end
+
+module Rorganize
+  module Decorator
+    class TestCase < Draper::TestCase
+      include Rorganize::HTMLTesting
+      include Rails::Dom::Testing::Assertions
+      include ActionDispatch::Assertions
+
+      def initialize(test_case)
+        super(test_case)
+        @node = nil #should be defined just before calling assert_select
+      end
+
+      def document_root_element
+        @node #should be defined just before calling assert_select
+      end
+    end
+  end
 end
