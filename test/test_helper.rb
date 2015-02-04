@@ -76,6 +76,7 @@ module Rorganize
       def initialize(test_case)
         super(test_case)
         @node = nil #should be defined just before calling assert_select
+        @routes = Rails.application.routes
         @controller_class = self.class.determine_default_controller_class(self.class.name)
         @controller = @controller_class.new
         @controller.request = ActionController::TestRequest.new
@@ -109,7 +110,10 @@ module Rorganize
           names = test_name.split "::"
           while names.size > 0 do
             name = names.last
-            name.sub!(/DecoratorTest$/, "Controller")
+            name.sub!(/DecoratorTest$/, "")
+            name = name.pluralize
+            name = "#{name}Controller"
+            names[names.size - 1] = name
             begin
               constant = names.join("::").safe_constantize
               break(constant) if yield(constant)
