@@ -14,6 +14,7 @@ require 'test_assertions/test_assertions'
 require 'test_utilities/custom_http_request'
 require 'test_utilities/generic_controllers_test_cases'
 require 'test_utilities/user_grant_permissions'
+require 'test_utilities/decorator_test_case'
 
 # Initialize reporter.
 Minitest::Reporters.use! [Minitest::Reporters::AwesomeReporter.new({color: true, slow_count: 5})]
@@ -54,75 +55,5 @@ class ActiveSupport::TestCase
 
   def is_sqlite?
     ActiveRecord::Base.connection.adapter_name.downcase.include?('sqlite')
-  end
-end
-
-module Rorganize
-  module HTMLTesting
-    def node(html)
-      Nokogiri::HTML::Document.parse(html).root
-    end
-  end
-end
-
-module Rorganize
-  module Decorator
-    class TestCase < Draper::TestCase
-      include Rorganize::HTMLTesting
-      include Rails::Dom::Testing::Assertions
-      include ActionDispatch::Assertions
-      include Rorganize::UserGrantPermissions
-
-      def initialize(test_case)
-        super(test_case)
-        @node = nil #should be defined just before calling assert_select
-        @routes = Rails.application.routes
-        @controller_class = self.class.determine_default_controller_class(self.class.name)
-        @controller = @controller_class.new
-        @controller.request = ActionController::TestRequest.new
-        @controller_name = @controller.controller_name
-        @controller.instance_variable_set(:@sessions, {@controller_name.to_sym => {}})
-      end
-
-      setup do
-        Draper::ViewContext.current = @controller.view_context
-        User.stubs(:current).returns(users(:users_001))
-        sign_in User.current
-        drop_all_user_permissions
-      end
-
-      def node(html)
-        @node = super(html)
-      end
-
-      def document_root_element
-        @node #should be defined just before calling assert_select
-      end
-
-      class << self
-        def determine_default_controller_class(name)
-          determine_constant_from_test_name(name) do |constant|
-            Class === constant && constant < ActionController::Metal
-          end
-        end
-
-        def determine_constant_from_test_name(test_name)
-          names = test_name.split "::"
-          while names.size > 0 do
-            name = names.last
-            name.sub!(/DecoratorTest$/, "")
-            name = name.pluralize
-            name = "#{name}Controller"
-            names[names.size - 1] = name
-            begin
-              constant = names.join("::").safe_constantize
-              break(constant) if yield(constant)
-            ensure
-              names.pop
-            end
-          end
-        end
-      end
-    end
   end
 end
