@@ -1,4 +1,4 @@
 require 'test_helper'
 
-class PermissionDecoratorTest < Draper::TestCase
+class PermissionDecoratorTest < Rorganize::Decorator::TestCase
 end

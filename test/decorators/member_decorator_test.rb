@@ -1,4 +1,4 @@
 require 'test_helper'
 
-class MemberDecoratorTest < Draper::TestCase
+class MemberDecoratorTest < Rorganize::Decorator::TestCase
 end

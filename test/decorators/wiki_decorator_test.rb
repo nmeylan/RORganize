@@ -1,4 +1,4 @@
 require 'test_helper'
 
-class WikiDecoratorTest < Draper::TestCase
+class WikiDecoratorTest < Rorganize::Decorator::TestCase
 end
