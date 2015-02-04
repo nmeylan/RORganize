@@ -13,6 +13,7 @@ require 'mocha/mini_test'
 require 'test_assertions/test_assertions'
 require 'test_utilities/custom_http_request'
 require 'test_utilities/generic_controllers_test_cases'
+require 'test_utilities/user_grant_permissions'
 
 # Initialize reporter.
 Minitest::Reporters.use! [Minitest::Reporters::AwesomeReporter.new({color: true, slow_count: 5})]
@@ -21,6 +22,7 @@ class ActionController::TestCase
   include Rorganize::CustomHttpRequest
   include Rorganize::GenericControllersTestCases
   include Devise::TestHelpers
+  include Rorganize::UserGrantPermissions
 
   setup do
     @request.env['HTTP_REFERER'] = 'http://test.com/'
@@ -69,6 +71,7 @@ module Rorganize
       include Rorganize::HTMLTesting
       include Rails::Dom::Testing::Assertions
       include ActionDispatch::Assertions
+      include Rorganize::UserGrantPermissions
 
       def initialize(test_case)
         super(test_case)
@@ -82,6 +85,9 @@ module Rorganize
 
       setup do
         Draper::ViewContext.current = @controller.view_context
+        User.stubs(:current).returns(users(:users_001))
+        sign_in User.current
+        drop_all_user_permissions
       end
 
       def node(html)
