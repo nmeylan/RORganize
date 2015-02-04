@@ -73,10 +73,45 @@ module Rorganize
       def initialize(test_case)
         super(test_case)
         @node = nil #should be defined just before calling assert_select
+        @controller_class = self.class.determine_default_controller_class(self.class.name)
+        @controller = @controller_class.new
+        @controller.request = ActionController::TestRequest.new
+        @controller_name = @controller.controller_name
+        @controller.instance_variable_set(:@sessions, {@controller_name.to_sym => {}})
+      end
+
+      setup do
+        Draper::ViewContext.current = @controller.view_context
+      end
+
+      def node(html)
+        @node = super(html)
       end
 
       def document_root_element
         @node #should be defined just before calling assert_select
+      end
+
+      class << self
+        def determine_default_controller_class(name)
+          determine_constant_from_test_name(name) do |constant|
+            Class === constant && constant < ActionController::Metal
+          end
+        end
+
+        def determine_constant_from_test_name(test_name)
+          names = test_name.split "::"
+          while names.size > 0 do
+            name = names.last
+            name.sub!(/DecoratorTest$/, "Controller")
+            begin
+              constant = names.join("::").safe_constantize
+              break(constant) if yield(constant)
+            ensure
+              names.pop
+            end
+          end
+        end
       end
     end
   end
