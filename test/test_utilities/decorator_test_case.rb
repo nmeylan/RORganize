@@ -33,6 +33,7 @@ module Rorganize
       setup do
         Draper::ViewContext.current = @controller.view_context
         User.stubs(:current).returns(users(:users_001))
+        User.any_instance.stubs(:module_enabled?).returns(true)
         sign_in User.current
         drop_all_user_permissions
         @output_buffer = ActiveSupport::SafeBuffer.new ''
