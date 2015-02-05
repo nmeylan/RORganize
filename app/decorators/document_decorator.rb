@@ -2,8 +2,8 @@ class DocumentDecorator < ApplicationDecorator
   delegate_all
 
   # see #ApplicationDecorator::display_history
-  def display_history(journals)
-    super(journals)
+  def display_history(history)
+    super(history)
   end
 
   # see #ApplicationDecorator::new_link
@@ -26,16 +26,8 @@ class DocumentDecorator < ApplicationDecorator
     super(h.delete_attachment_documents_path(context[:project].slug, attachment.id), context[:project]) if attachment.id
   end
 
-  # see #ApplicationDecorator::download_attachment_link
-  def download_attachment_link(attachment)
-    super(attachment, h.download_attachment_documents_path(context[:project].slug))
-  end
-
-
-
   def display_object_type(project)
     h.concat h.content_tag :b, "#{h.t(:label_document).downcase} "
     h.fast_document_link(self, project).html_safe
   end
-
 end
