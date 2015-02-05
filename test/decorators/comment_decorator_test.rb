@@ -32,7 +32,6 @@ class CommentDecoratorTest < Rorganize::Decorator::TestCase
   end
 
   test "it has a method to display author name with avatar" do
-    User.any_instance.stubs(:avatar).returns(Avatar.new(name: 'avatar', attachable_id:  User.current.id, attachable_type: 'User'))
     node(@comment_decorator.display_author(true))
     assert_select 'a', 1
     assert_select 'a[href=?]', "/#{User.current.slug}"
