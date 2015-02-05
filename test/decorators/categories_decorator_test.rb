@@ -25,14 +25,14 @@ class CategoriesDecoratorTest < Rorganize::Decorator::TestCase
     assert_select 'table', 1
   end
 
-  test "it has a link to new action when user is allowed to perform action" do
+  test "it has a link to new action when user is allowed to" do
     allow_user_to('new')
     node(@categories_decorator.new_link)
     assert_select 'a', 1
     assert_select 'a[href=?]', "#{categories_path(@project.slug)}/new"
   end
 
-  test "it should not have a link to new action when user is not allowed to perform action" do
+  test "it should not have a link to new action when user is not allowed to" do
     node(@categories_decorator.new_link)
     assert_nil @node
   end
