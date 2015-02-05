@@ -16,7 +16,9 @@ module Rorganize
       include ActionDispatch::Assertions
       include ActionView::Context
       include ActionView::Helpers
-
+      include ActionDispatch::Routing::PolymorphicRoutes
+      include ActionView::RecordIdentifier
+      include ActionView::RoutingUrlFor
       attr_accessor :output_buffer, :controller
 
       def initialize(test_case)
