@@ -1,7 +1,7 @@
 ---
 documents_001:
   id: 1
-  name: Diagramme de classes
+  name: Class diagram
   description: ''
   version_id: 10
   category_id: 11
@@ -10,8 +10,8 @@ documents_001:
   updated_at: 2013-04-06 15:25:18.000000000 Z
 documents_002:
   id: 2
-  name: Sujet
-  description: J'ai mis les 5 pages du sujet.
+  name: Subject
+  description:
   version_id: 
   category_id: 11
   project_id: 7
@@ -19,9 +19,8 @@ documents_002:
   updated_at: 2013-04-10 12:14:19.000000000 Z
 documents_003:
   id: 3
-  name: Méthode pour la vie des cellules
-  description: Un petit tableau vaut mieux qu'un grand discours. Je me suis peut-être
-    trop pris la tête, mais je touche le bon bout !
+  name: Algorithm
+  description:
   version_id: 10
   category_id: 10
   project_id: 7
@@ -30,16 +29,16 @@ documents_003:
 documents_004:
   id: 5
   name: Java-json.jar
-  description: Le .jar pour régler le problème de dépendance
-  version_id: 
+  description:
+  version_id:
   category_id: 
   project_id: 7
   created_at: 2013-04-13 06:08:05.000000000 Z
   updated_at: 2013-04-13 06:08:05.000000000 Z
 documents_005:
   id: 7
-  name: Figures
-  description: C'est à mettre dans le dossier racine pour insérer les deux figures
+  name: Shapes
+  description:
   version_id: 11
   category_id: 
   project_id: 7
@@ -47,8 +46,8 @@ documents_005:
   updated_at: 2013-04-24 19:54:05.000000000 Z
 documents_006:
   id: 8
-  name: Rapport
-  description: Le rapport à rendre.
+  name: Report
+  description: the report
   version_id: 
   category_id: 
   project_id: 7
