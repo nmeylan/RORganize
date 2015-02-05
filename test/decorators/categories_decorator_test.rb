@@ -10,13 +10,13 @@ class CategoriesDecoratorTest < Rorganize::Decorator::TestCase
     @categories_decorator = @project.categories.decorate(context: {project: @project})
   end
 
-  test "it display no data when collection is empty" do
+  test "it displays no data when collection is empty" do
     node(@categories_decorator.display_collection)
     assert_select '#categories-content', 1
     assert_select 'h3', I18n.t(:text_no_categories)
   end
 
-  test "it display a table when collection contains entries" do
+  test "it displays a table when collection contains entries" do
     @project.categories << Category.new(name: 'Category Test')
     @project.save
     @categories_decorator = @project.categories.decorate(context: {project: @project})

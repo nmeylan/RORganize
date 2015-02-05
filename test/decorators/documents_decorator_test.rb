@@ -13,7 +13,7 @@ class DocumentsDecoratorTest < Rorganize::Decorator::TestCase
     @controller.instance_variable_set(:@project, @project)
   end
 
-  test "it display no data when collection is empty" do
+  test "it displays no data when collection is empty" do
     @project.documents.clear
     @project.save
     node(@documents_decorator.display_collection)
@@ -21,7 +21,7 @@ class DocumentsDecoratorTest < Rorganize::Decorator::TestCase
     assert_select 'h3', I18n.t(:text_no_documents)
   end
 
-  test "it display a table when collection contains entries" do
+  test "it displays a table when collection contains entries" do
     @project.documents << Document.new(name: 'Test document', project_id: @project.id)
     @project.save
     @documents_decorator = @project.documents.decorate(context: {project: @project})

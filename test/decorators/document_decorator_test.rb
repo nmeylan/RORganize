@@ -10,7 +10,7 @@ class DocumentDecoratorTest < Rorganize::Decorator::TestCase
     @document_decorator = @document.decorate(context: {project: @project})
   end
 
-  test "it display a link to edit when user is allowed to" do
+  test "it displays a link to edit when user is allowed to" do
     allow_user_to('edit')
     node(@document_decorator.edit_link)
     assert_select 'a', 1
@@ -21,7 +21,7 @@ class DocumentDecoratorTest < Rorganize::Decorator::TestCase
     assert_nil @document_decorator.edit_link
   end
 
-  test "it display a link to delete when user is allowed to" do
+  test "it displays a link to delete when user is allowed to" do
     allow_user_to('destroy')
     node(@document_decorator.delete_link)
     assert_select 'a', 1
@@ -32,7 +32,7 @@ class DocumentDecoratorTest < Rorganize::Decorator::TestCase
     assert_nil @document_decorator.delete_link
   end
 
-  test "it display a link to delete document attachment when user is allowed to" do
+  test "it displays a link to delete document attachment when user is allowed to" do
     allow_user_to('delete_attachment')
     attachment = Attachment.new(attachable_type: 'Document', attachable_id: 666, id: 666)
     node(@document_decorator.delete_attachment_link(attachment))
@@ -45,7 +45,7 @@ class DocumentDecoratorTest < Rorganize::Decorator::TestCase
     assert_nil @document_decorator.delete_attachment_link(attachment)
   end
 
-  test "it display a link to create a new document when user is allowed to" do
+  test "it displays a link to create a new document when user is allowed to" do
     allow_user_to('new')
     node(@document_decorator.new_link)
     assert_select 'a', 1
@@ -56,7 +56,7 @@ class DocumentDecoratorTest < Rorganize::Decorator::TestCase
     assert_nil @document_decorator.new_link
   end
 
-  test "it display a link to the document for activity context" do
+  test "it displays a link to the document for activity context" do
     node(concat @document_decorator.display_object_type(@project))
     assert_select 'a', 1
     assert_select 'a[href=?]', document_path(@project.slug, @document.id)
@@ -64,7 +64,7 @@ class DocumentDecoratorTest < Rorganize::Decorator::TestCase
     assert_select 'b', "#{I18n.t(:label_document)}".downcase
   end
 
-  test "it display a link to watch a document when user is allowed" do
+  test "it displays a link to watch a document when user is allowed" do
     allow_user_to('watch')
     node(@document_decorator.watch(@project))
     assert_select 'a', 1
@@ -72,7 +72,7 @@ class DocumentDecoratorTest < Rorganize::Decorator::TestCase
     assert_select 'a', text: I18n.t(:link_watch)
   end
 
-  test "it display a link to unwatch a document when user is allowed" do
+  test "it displays a link to unwatch a document when user is allowed" do
     allow_user_to('watch')
     node(@document_decorator.unwatch(@project))
     assert_select 'a', 1
@@ -80,7 +80,7 @@ class DocumentDecoratorTest < Rorganize::Decorator::TestCase
     assert_select 'a', text: I18n.t(:link_unwatch)
   end
 
-  test "it display the history of the documents when it contains journals or comments" do
+  test "it displays the history of the documents when it contains journals or comments" do
     # Add one journal
     @document.category = Category.create(name: 'Specs')
     @document.save
