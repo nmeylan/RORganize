@@ -34,6 +34,7 @@ module Rorganize
         Draper::ViewContext.current = @controller.view_context
         User.stubs(:current).returns(users(:users_001))
         User.any_instance.stubs(:module_enabled?).returns(true)
+        User.any_instance.stubs(:avatar).returns(Avatar.new(name: 'avatar', attachable_id:  User.current.id, attachable_type: 'User'))
         sign_in User.current
         drop_all_user_permissions
         @output_buffer = ActiveSupport::SafeBuffer.new ''
