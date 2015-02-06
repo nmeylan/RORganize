@@ -24,7 +24,7 @@ module PermissionsHelper
   end
 
   def permission_administration_tab_render(permissions_hash, selected_permissions)
-    content_tag :div, {id: 'adminstration-tab', style: 'display:none'} do
+    content_tag :div, {id: 'administration-tab', style: 'display:none'} do
       permissions_table(permissions_hash[:administration], selected_permissions, :administration)
     end
   end
