@@ -14,7 +14,6 @@ class IssuesDecoratorTest < Rorganize::Decorator::TestCase
 
   test "it displays no data when collection is empty" do
     @project.issues.clear
-    @project.save
     node(@issues_decorator.display_collection)
     assert_select '#issues-content', 1
     assert_select 'h3', I18n.t(:text_no_issues)

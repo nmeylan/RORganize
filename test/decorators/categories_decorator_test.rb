@@ -11,6 +11,7 @@ class CategoriesDecoratorTest < Rorganize::Decorator::TestCase
   end
 
   test "it displays no data when collection is empty" do
+    @categories_decorator.clear
     node(@categories_decorator.display_collection)
     assert_select '#categories-content', 1
     assert_select 'h3', I18n.t(:text_no_categories)
