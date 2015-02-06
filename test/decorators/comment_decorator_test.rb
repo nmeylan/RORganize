@@ -49,7 +49,7 @@ class CommentDecoratorTest < Rorganize::Decorator::TestCase
     assert_select 'a[href=?]', overview_projects_path(@project.slug)
   end
 
-  test "it has a link to edit when user is allowed to" do
+  test "it displays a link to edit when user is allowed to" do
     @comment.author = nil
     @comment.save
     allow_user_to('edit_comment_not_owner')
@@ -58,7 +58,7 @@ class CommentDecoratorTest < Rorganize::Decorator::TestCase
     assert_select 'a[href=?]', edit_comment_path(@comment.id)
   end
 
-  test "it has a link to edit when user is author of the comment" do
+  test "it displays a link to edit when user is author of the comment" do
     node(@comment_decorator.edit_link)
     assert_select 'a', 1
     assert_select 'a[href=?]', edit_comment_path(@comment.id)
@@ -70,7 +70,7 @@ class CommentDecoratorTest < Rorganize::Decorator::TestCase
     assert_nil @comment_decorator.edit_link
   end
 
-  test "it has a link to delete when user is allowed to" do
+  test "it displays a link to delete when user is allowed to" do
     @comment.author = nil
     @comment.save
     allow_user_to('destroy_comment_not_owner')
@@ -79,7 +79,7 @@ class CommentDecoratorTest < Rorganize::Decorator::TestCase
     assert_select 'a[href=?]', comment_path(@comment.id)
   end
 
-  test "it has a link to delete when user is author of the comment" do
+  test "it displays a link to delete when user is author of the comment" do
     node(@comment_decorator.delete_link)
     assert_select 'a', 1
     assert_select 'a[href=?]', comment_path(@comment.id)
@@ -91,7 +91,7 @@ class CommentDecoratorTest < Rorganize::Decorator::TestCase
     assert_nil @comment_decorator.delete_link
   end
 
-  test "it has a link to view the comment thread" do
+  test "it displays a link to view the comment thread" do
     node(@comment_decorator.remote_show_link)
     assert_select 'a', 1
     assert_select 'a[href=?]', comment_path(@comment.id)

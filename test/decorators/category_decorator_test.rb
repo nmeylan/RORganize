@@ -6,14 +6,14 @@ class CategoryDecoratorTest < Rorganize::Decorator::TestCase
     @category_decorator = Category.create(name: 'Test category', project_id: @project.id).decorate
   end
 
-  test "it has a link to edit when user is allowed to" do
+  test "it displays a link to edit when user is allowed to" do
     allow_user_to('edit')
     node(@category_decorator.edit_link)
     assert_select 'a', 1
     assert_select 'a[href=?]', edit_category_path(@project.slug, @category_decorator.id)
   end
 
-  test "it has a link to delete when user is allowed to" do
+  test "it displays a link to delete when user is allowed to" do
     allow_user_to('destroy')
     node(@category_decorator.delete_link)
     assert_select 'a', 1

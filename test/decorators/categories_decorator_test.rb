@@ -26,7 +26,7 @@ class CategoriesDecoratorTest < Rorganize::Decorator::TestCase
     assert_select 'table', 1
   end
 
-  test "it has a link to new action when user is allowed to" do
+  test "it displays a link to new action when user is allowed to" do
     allow_user_to('new')
     node(@categories_decorator.new_link)
     assert_select 'a', 1
