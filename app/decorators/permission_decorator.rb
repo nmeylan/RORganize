@@ -3,7 +3,11 @@ class PermissionDecorator < ApplicationDecorator
 
   # see #ApplicationDecorator::edit_link.
   def edit_link
-    h.link_to(model.caption, h.edit_permission_path(permission.id))
+    if User.current.allowed_to?('edit', 'permissions')
+      h.link_to(model.caption, h.edit_permission_path(permission.id))
+    else
+      model.caption
+    end
   end
 
   # see #ApplicationDecorator::delete_link.
