@@ -14,8 +14,7 @@ class JournalDecorator < ApplicationDecorator
     end
   end
 
-
-  # Render the type of the commented object.
+  # Render the type of the journalizable object.
   def display_object_type
     if self.journalizable && self.journalizable.respond_to?(:display_object_type)
       self.journalizable.display_object_type(self.project)
