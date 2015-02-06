@@ -10,8 +10,13 @@ module Rorganize
         def initialize
           load_colors
         end
+
         def load_colors
-          @colors = IssuesStatus.statuses_colors unless $0.include?('rake')
+          if $0.include?('rake')
+            @colors = {}
+          else
+            @colors = IssuesStatus.statuses_colors
+          end
         end
 
         def colors
