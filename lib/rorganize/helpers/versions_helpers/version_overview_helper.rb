@@ -54,7 +54,10 @@ module Rorganize
         def version_overview_over_run_tag(version)
           over_run = (version.target_date.nil? || version.is_done) ? 0 : (Date.today - version.target_date).to_i
           if over_run > 0
-            content_tag :span, %Q(#{t(:text_past_due)} #{t(:label_by)} #{over_run} #{t(:label_plural_day)}), {class: 'over-run text-alert octicon octicon-alert'}
+            content_tag :span, {class: 'over-run text-alert'} do
+              concat content_tag :span, nil, {class: 'octicon octicon-alert'}
+              concat %Q(#{t(:text_past_due)} #{t(:label_by)} #{over_run} #{t(:label_plural_day)})
+            end
           end
         end
 

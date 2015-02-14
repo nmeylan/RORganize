@@ -90,6 +90,20 @@ class ProjectDecoratorTest < Rorganize::Decorator::TestCase
     assert_select '.percent', text: '40%'
   end
 
+  test "it displays a warning when a version is over ran" do
+    Date.stubs(:today).returns(Date.new(2013, 01, 02))
+    @project.versions.clear
+    @project.save
+    version = Version.create!(name: 'New version', description: '', start_date: Date.new(2012, 12, 01),
+                              target_date: Date.new(2012, 12, 31), project_id: @project.id, is_done: false)
+    node(@project_decorator.display_version_overview)
+    assert_select 'h1', 1
+    assert_select 'h1', 'New version'
+    assert_select '.version-dates-header', 1
+    assert_select '.version-dates-header', text: "2012-12-01-2012-12-31"
+    assert_select '.over-run', text: %Q(#{t(:text_past_due)} #{t(:label_by)} 2 #{t(:label_plural_day)})
+  end
+
   test "it displays a roadmap of the project with the current versions" do
     Date.stubs(:today).returns(Date.new(2012, 12, 04))
     @project.versions.clear
