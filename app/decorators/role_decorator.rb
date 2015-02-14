@@ -4,7 +4,7 @@ class RoleDecorator < ApplicationDecorator
   # see #ApplicationDecorator::edit_link.
   def edit_link
     options = model.is_locked ? {class: 'default-role'} : {}
-    link = link_to_with_permissions(model.caption, h.edit_role_path(model.id), nil, options)
+    link = link_to_with_permissions(model.caption, h.edit_role_path(model.id), nil, nil, options) unless model.is_locked
     link ? link : disabled_field(model.caption)
   end
 
