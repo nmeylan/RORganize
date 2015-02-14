@@ -20,7 +20,8 @@ module Rorganize
           activities_types = @sessions[:activities][:types]
           activities_period = @sessions[:activities][:period]
           from_date = @sessions[:activities][:from_date]
-          @activities = Activities.new(model.activities(activities_types, activities_period, from_date), model.comments(activities_types, activities_period, from_date))
+          @activities = Activities.new(model.activities(activities_types, activities_period, from_date),
+                                       model.comments_for(activities_types, activities_period, from_date))
         end
       end
 
