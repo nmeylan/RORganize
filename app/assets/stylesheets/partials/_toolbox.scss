@@ -22,10 +22,14 @@ ul.toolbox, ul.toolbox ul {
   border: 1px solid #CACACA;
   li {
     width: 150px;
+    word-break: inherit;
+    word-wrap: normal;
     padding-left: 3px;
     list-style: none none outside;
     overflow: hidden;
     cursor: default;
+    text-align: left;
+    padding-right: 10px;
     a {
       color: $link-color;
     }
@@ -61,12 +65,14 @@ ul.toolbox, ul.toolbox ul {
 }
 
 .submenu {
+  width: 100%;
   padding-left: 6px;
   margin-left: 13px;
   max-height: 500px;
   overflow-y: auto;
+  padding-right: 10px;
 }
 
 .submenu .no-icon {
-  margin-left: 20px;
+  padding-left: 20px;
 }
