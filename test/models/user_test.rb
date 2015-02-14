@@ -94,24 +94,24 @@ class UserTest < ActiveSupport::TestCase
     range_end_date = Date.new(2001, 2, 3)
     period = :THREE_DAYS
     assert_match_array issues_comments,
-                       @user.comments(['Issue'], period, range_end_date).to_a
+                       @user.comments_for(['Issue'], period, range_end_date).to_a
 
     assert_match_array documents_comments[0, 1],
-                       @user.comments(['Document'], period, range_end_date).to_a
+                       @user.comments_for(['Document'], period, range_end_date).to_a
 
     assert_match_array issues_comments + documents_comments[0, 1],
-                       @user.comments(['Issue', 'Document'], period, range_end_date).to_a
+                       @user.comments_for(['Issue', 'Document'], period, range_end_date).to_a
 
     range_end_date = Date.new(2001, 2, 4)
     period = :ONE_WEEK
     assert_match_array issues_comments,
-                       @user.comments(['Issue'], period, range_end_date).to_a
+                       @user.comments_for(['Issue'], period, range_end_date).to_a
 
     assert_match_array documents_comments,
-                       @user.comments(['Document'], period, range_end_date).to_a
+                       @user.comments_for(['Document'], period, range_end_date).to_a
 
     assert_match_array issues_comments + documents_comments,
-                       @user.comments(['Issue', 'Document'], period, range_end_date).to_a
+                       @user.comments_for(['Issue', 'Document'], period, range_end_date).to_a
   end
 
   test 'he is a member in many project' do

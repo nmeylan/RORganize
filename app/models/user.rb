@@ -45,8 +45,8 @@ class User < ActiveRecord::Base
     Journal.activities_eager_load(journalizable_types, period, from_date, "journals.user_id = #{self.id}")
   end
 
-  def comments(journalizable_types, period, from_date)
-    Comment.comments_eager_load(journalizable_types, period, from_date, "comments.user_id = #{self.id}")
+  def comments_for(commentable_types, period, from_date)
+    Comment.comments_eager_load(commentable_types, period, from_date, "comments.user_id = #{self.id}")
   end
 
   def member_for(project_id)

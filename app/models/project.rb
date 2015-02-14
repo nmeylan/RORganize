@@ -106,10 +106,10 @@ class Project < ActiveRecord::Base
     Journal.activities_eager_load(journalizable_types, period, end_date, "journals.project_id = #{self.id}")
   end
 
-  # @param [Array] commentable_types : all journalizable types. e.g [Issue, Document, Member].
+  # @param [Array] commentable_types : all commentable types. e.g [Issue, Document, Member].
   # @param [Symbol] period : one of the followings values : :ONE_DAY, :THREE_DAYS, :ONE_WEEK, :ONE_MONTH
   # @param [Date] end_date : The end date of the range.
-  def comments(commentable_types, period, end_date)
+  def comments_for(commentable_types, period, end_date)
     Comment.comments_eager_load(commentable_types, period, end_date, "comments.project_id = #{self.id}")
   end
 
@@ -138,8 +138,12 @@ class Project < ActiveRecord::Base
     reload_enabled_module(self.id)
   end
 
-  def last_activity
-    self.journals.order("#{:created_at} desc").limit(1).first
+  def latest_activity
+    self.journals.order("journals.created_at desc").limit(1).first
+  end
+
+  def latest_comment
+    self.comments.order("comments.created_at desc").limit(1).first
   end
 
   def active_versions

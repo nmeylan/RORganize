@@ -130,24 +130,24 @@ class ProjectTest < ActiveSupport::TestCase
     range_end_date = Date.new(2001, 2, 3)
     period = :THREE_DAYS
     assert_match_array issues_comments,
-                       @project.comments(['Issue'], period, range_end_date).to_a
+                       @project.comments_for(['Issue'], period, range_end_date).to_a
 
     assert_match_array documents_comments[0, 1],
-                       @project.comments(['Document'], period, range_end_date).to_a
+                       @project.comments_for(['Document'], period, range_end_date).to_a
 
     assert_match_array issues_comments + documents_comments[0, 1],
-                       @project.comments(['Issue', 'Document'], period, range_end_date).to_a
+                       @project.comments_for(['Issue', 'Document'], period, range_end_date).to_a
 
     range_end_date = Date.new(2001, 2, 4)
     period = :ONE_WEEK
     assert_match_array issues_comments,
-                       @project.comments(['Issue'], period, range_end_date).to_a
+                       @project.comments_for(['Issue'], period, range_end_date).to_a
 
     assert_match_array documents_comments,
-                       @project.comments(['Document'], period, range_end_date).to_a
+                       @project.comments_for(['Document'], period, range_end_date).to_a
 
     assert_match_array issues_comments + documents_comments,
-                       @project.comments(['Issue', 'Document'], period, range_end_date).to_a
+                       @project.comments_for(['Issue', 'Document'], period, range_end_date).to_a
   end
 
   test 'it has a way to update projects information' do
@@ -171,10 +171,15 @@ class ProjectTest < ActiveSupport::TestCase
     assert 0, @project.trackers.count
   end
 
-  test 'it load last activity' do
-    last_activity = @project.last_activity
+  test 'it load latest activity' do
+    last_activity = @project.latest_activity
     assert_equal 'Member', last_activity.journalizable_type
     assert_equal Journal::ACTION_CREATE, last_activity.action_type
+  end
+
+  test 'it load latest comment' do
+    last_comment = @project.latest_comment
+    assert_nil last_comment
   end
 
   test 'it has active versions' do
