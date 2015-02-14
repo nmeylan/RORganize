@@ -52,10 +52,29 @@ module ProjectsHelper
   # @param [Project] project.
   def project_stats(project)
     content_tag :ul, class: 'right-content-list project-stats' do
-      concat content_tag :li, (content_tag :span, nil, {class: 'octicon octicon-broadcast'}), {class: 'tooltipped tooltipped-s', label: t(:text_public_project)} if project.is_public
-      concat content_tag :li, (content_tag :span, project.members_count, class: 'octicon octicon-organization')
-      concat content_tag :li, (content_tag :span, project.issues_count, class: 'octicon octicon-issue-opened')
+      concat content_tag :li, (content_tag :span, nil, {class: 'octicon octicon-broadcast'}),
+                         {class: 'tooltipped tooltipped-s', label: t(:text_public_project)} if project.is_public
+      concat member_count_stat(project)
+      concat issues_opened_stat(project)
       concat content_tag :li, (content_tag :span, nil, class: 'octicon octicon-lock') if project.is_archived
+    end
+  end
+
+  def issues_opened_stat(project)
+    content_tag :li do
+      content_tag :span, class: 'project-stat' do
+        concat content_tag :span, nil, class: 'octicon octicon-issue-opened'
+        concat project.issues_count
+      end
+    end
+  end
+
+  def member_count_stat(project)
+    content_tag :li do
+      content_tag :span, class: 'project-stat' do
+        concat content_tag :span, nil, class: 'octicon octicon-organization'
+        concat project.members_count
+      end
     end
   end
 
