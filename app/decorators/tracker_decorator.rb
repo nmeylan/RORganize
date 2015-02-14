@@ -12,8 +12,6 @@ class TrackerDecorator < ApplicationDecorator
     super(h.t(:link_delete), h.tracker_path(tracker.id), nil)
   end
 
-
-
   # see #ApplicationDecorator::dec_position_link.
   def dec_position_link(collection_size)
     super(collection_size, h.change_position_trackers_path)
