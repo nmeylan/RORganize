@@ -44,7 +44,7 @@ module ProjectsHelper
 
   def project_last_activity_info(project)
     content_tag :p, class: 'bottom-list-content project-last-activity' do
-      project.last_activity_info
+      project.latest_activity_info
     end
   end
 

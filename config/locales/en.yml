@@ -293,6 +293,7 @@ en:
   text_no_wiki: This project doesn't have wiki yet.
   text_welcome: Welcome
   text_last_activity: Last activity
+  text_latest_activity: Latest activity
   text_time_entry_not_owner_deletion: Well, you tried to delete a coworker time entry.
   text_project: Project
   text_negative_position: Invalid position, please try again later.
