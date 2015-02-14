@@ -12,7 +12,7 @@ class RolesDecoratorTest < Rorganize::Decorator::TestCase
     @roles_decorator = Role.where('1=2').decorate
     node(@roles_decorator.display_collection)
     assert_select '#roles-content', 1
-    assert_select 'h3', I18n.t(:text_no_roles)
+    assert_select 'h3', I18n.t(:text_no_data)
   end
 
   test "it displays a table when collection contains entries" do
