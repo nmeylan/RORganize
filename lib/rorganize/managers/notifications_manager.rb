@@ -14,8 +14,8 @@ module Rorganize
         if self.is_a?(Comment) || (self.is_a?(Journal) && !self.action_type.eql?(Journal::ACTION_DELETE))
           notification = NotifiableEvent.new(self)
           if notification.recipients.any? || notification.recipients_hash.any?
-            Rorganize::Managers::NotificationsManager.send_emails(notification) if RORganize::Application.config.enable_emails_notifications
             Rorganize::Managers::NotificationsManager.in_app_notification(notification)
+            Rorganize::Managers::NotificationsManager.send_emails(notification) if RORganize::Application.config.enable_emails_notifications
           end
           notification
         end
@@ -25,8 +25,8 @@ module Rorganize
         def create_bulk_notification(models, journals, project, from_id)
           notification = NotifiableBulkEditEvent.new(models, journals, project, from_id)
           if notification.recipients_hash.any?
-            send_emails_bulk_edit(notification) if RORganize::Application.config.enable_emails_notifications
             in_app_bulk_edit_notifications(notification)
+            send_emails_bulk_edit(notification) if RORganize::Application.config.enable_emails_notifications
           end
           notification
         end
@@ -37,6 +37,7 @@ module Rorganize
           if notification.notification_type.eql?(NotifiableEvent::GENERIC_NOTIFICATION)
             notification.recipients = real_recipients(notification, 'email').values.flatten.compact
             if notification.recipients.any?
+              notification.recipients_hash = nil
               NotificationMailer.delay.notification_email(notification)
             end
           elsif notification.notification_type.eql?(NotifiableEvent::MEMBER_NOTIFICATION)
@@ -50,6 +51,7 @@ module Rorganize
         def send_emails_bulk_edit(notification_bulk_edit)
           notification_bulk_edit.recipients = real_recipients(notification_bulk_edit, 'email').values.flatten.compact
           if notification_bulk_edit.recipients.any?
+            notification_bulk_edit.recipients_hash = nil
             NotificationMailer.delay.notification_bulk_edit_email(notification_bulk_edit)
           end
         end
@@ -235,7 +237,8 @@ module Rorganize
           @journal = journals[0]
           @project = project
           @recipients = []
-          @recipients_hash = {participants: find_participants(objects), watchers: find_watchers(objects, project.id)}
+          @recipients_hash = {participants: find_participants(objects),
+                              watchers: find_watchers(objects, project.id)}
         end
 
         def find_watchers(objects, project_id)
