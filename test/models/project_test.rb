@@ -180,6 +180,16 @@ class ProjectTest < ActiveSupport::TestCase
   test 'it load latest comment' do
     last_comment = @project.latest_comment
     assert_nil last_comment
+    comment = Comment.create!(content: 'this a comment', user_id: User.current.id, project_id: @project.id,
+                              commentable_id: 666, commentable_type: 'Issue', created_at: Time.new(2012, 12, 01, 13, 50, 50))
+
+    last_comment = @project.latest_comment
+    assert_equal comment, last_comment
+
+    comment1 = Comment.create!(content: 'this a second comment', user_id: User.current.id, project_id: @project.id,
+                              commentable_id: 666, commentable_type: 'Issue', created_at: Time.new(2012, 12, 01, 13, 50, 53))
+    last_comment = @project.latest_comment
+    assert_equal comment1, last_comment
   end
 
   test 'it has active versions' do
