@@ -6,6 +6,16 @@ class UserDecorator < ApplicationDecorator
     link ? link : disabled_field(model.caption)
   end
 
+  # see #ApplicationDecorator::edit_link.
+  def edit_link
+    super(h.t(:link_edit), h.edit_user_path(model.slug))
+  end
+
+  # see #ApplicationDecorator::delete_link.
+  def delete_link
+    super(h.t(:link_delete), h.user_path(model.slug))
+  end
+
   # @return [String] formatted current sign in date.
   def sign_in
     model.last_sign_in_at ? model.last_sign_in_at.to_formatted_s(:long_ordinal) : '-'
@@ -23,17 +33,7 @@ class UserDecorator < ApplicationDecorator
 
   # @return [String] is user admin.
   def display_is_admin
-    model.admin.to_s
-  end
-
-  # see #ApplicationDecorator::edit_link.
-  def edit_link
-    super(h.t(:link_edit), h.edit_user_path(model.slug))
-  end
-
-  # see #ApplicationDecorator::delete_link.
-  def delete_link
-    super(h.t(:link_delete), h.user_path(model.slug))
+    content_tag(:span, nil, class: 'medium-octicon octicon-crown')if model.admin
   end
 
   # Render a link to the user profile.
@@ -46,25 +46,18 @@ class UserDecorator < ApplicationDecorator
   end
 
   def user_avatar_link(text = '', format = :thumb)
-    h.link_to self.display_avatar('user-avatar-link', format), h.view_profile_path(self.slug),
+    h.link_to self.display_avatar('user-avatar-link', format),
+              h.view_profile_path(self.slug),
               {class: 'tooltipped tooltipped-s', label: "#{text} #{self.caption}"}
   end
 
   # Render user avatar.
   def display_avatar(css_class = '', format = :thumb)
-    h.image_tag user.avatar.avatar.url(format), {class: "user-profile avatar #{css_class}"} if avatar && user.avatar
+    h.image_tag model.avatar.avatar.url(format), {class: "user-profile avatar #{css_class}"} if model.avatar
   end
 
   # Display user projects.
   def display_projects
     h.projects(self)
   end
-
-  # Display user roles on all its projects.
-  def role_render
-    h.content_tag :span, class: 'role' do
-
-    end
-  end
-
 end
