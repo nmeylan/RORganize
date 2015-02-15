@@ -194,4 +194,38 @@ class IssueDecoratorTest < Rorganize::Decorator::TestCase
       assert_select 'span', text: '1 of 1'
     end
   end
+
+  test 'it displays a link to new comment' do
+    allow_user_to('comment')
+    node(@issue_decorator.new_comment_link)
+    assert_select 'a', 1
+    assert_select 'a[href=?]', '#add-comment'
+  end
+
+  test "it should not display a link to add a new comment when user is not allowed to" do
+    assert_nil @issue_decorator.new_comment_link
+  end
+
+  test "it should display a comment form block" do
+    allow_user_to('comment')
+    node(@issue_decorator.add_comment_block)
+    assert_select 'form'
+  end
+
+  test "it should display a smooth gray comment icon when issue has no comments" do
+    node(@issue_decorator.comment_presence_indicator)
+    assert_select '.octicon-comment', 1
+    assert_select '.smooth-gray', 1
+    assert_select 'span', text: ''
+  end
+
+  test "it should display a comment icon when issue has comments" do
+    Comment.create!(content: 'this a comment', user_id: User.current.id, project_id: @project.id,
+                    commentable_id: @issue.id, commentable_type: 'Issue')
+    @issue.reload
+    node(@issue_decorator.comment_presence_indicator)
+    assert_select '.octicon-comment', 1
+    assert_select '.smooth-gray', 0
+    assert_select 'span', text: '1'
+  end
 end
