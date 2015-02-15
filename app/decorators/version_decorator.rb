@@ -1,20 +1,6 @@
 class VersionDecorator < ApplicationDecorator
   delegate_all
 
-  # see #ApplicationDecorator::display_history.
-  def display_description
-    if description?
-      h.content_tag :div, class: 'box' do
-        super
-      end
-    end
-  end
-
-  # @return [String] version id.
-  def display_id
-    model.id ? model.id : 'unplanned'
-  end
-
   # see #ApplicationDecorator::dec_position_link.
   def dec_position_link(collection_size)
     super(collection_size, h.change_position_versions_path(model.project.slug))
@@ -30,6 +16,26 @@ class VersionDecorator < ApplicationDecorator
     super(h.t(:link_delete), h.version_path(model.project.slug, model.id))
   end
 
+  # see #ApplicationDecorator::edit_link.
+  def edit_link
+    link = link_to_with_permissions(model.caption, h.edit_version_path(model.project.slug, model.id), model.project, nil)
+    link ? link : disabled_field(model.caption)
+  end
+
+  # see #ApplicationDecorator::display_history.
+  def display_description
+    if description?
+      h.content_tag :div, class: 'box' do
+        super
+      end
+    end
+  end
+
+  # @return [String] version id.
+  def display_id
+    model.id ? model.id : 'unplanned'
+  end
+
   # @return [String] start date.
   def display_start_date
     model.start_date ? model.start_date : '-'
@@ -41,13 +47,7 @@ class VersionDecorator < ApplicationDecorator
   end
 
   # @return [String] is done.
-  def is_done
-    model.is_done
-  end
-
-  # see #ApplicationDecorator::edit_link.
-  def edit_link
-    link = link_to_with_permissions(model.caption, h.edit_version_path(model.project.slug, model.id), model.project, nil)
-    link ? link : disabled_field(model.caption)
+  def display_is_done
+    content_tag :strong, model.is_done ? h.t(:text_done) : h.t(:text_opened)
   end
 end

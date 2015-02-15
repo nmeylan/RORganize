@@ -25,7 +25,7 @@ module VersionsHelper
       list_td version.edit_link, {class: 'list-left name'}
       list_td version.start_date, {class: 'list-center start-date'}
       list_td version.display_target_date, {class: 'list-center version'}
-      list_td version.is_done, {class: 'list-center is-done'}
+      list_td version.display_is_done, {class: 'list-center is-done'}
       concat list_sort_actions(collection, version)
       list_td version.delete_link, {class: 'action'}
     end

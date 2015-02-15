@@ -338,6 +338,8 @@ en:
   text_issue_list_type_gantt: Display issues' gantt informations
   text_confirm_update_filter: Are you sure you want to replace this filter's content.
   text_of: of
+  text_done: Done
+  text_opened: Opened
 
   password: "Password"
   field_steps: "Steps"
