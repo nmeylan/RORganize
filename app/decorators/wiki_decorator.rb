@@ -12,7 +12,7 @@ class WikiDecorator < ApplicationDecorator
   # see #ApplicationDecorator::new_link.
   def new_link
     if model.new_record?
-      h.content_tag :h2, h.t(:text_no_wiki)
+      h.concat h.content_tag :h2, h.t(:text_no_wiki)
       link_to_with_permissions(h.t(:button_create), h.wiki_index_path(context[:project].slug), context[:project], nil, {method: :post, class: 'button new'})
     end
   end
@@ -33,11 +33,19 @@ class WikiDecorator < ApplicationDecorator
   def home_page
     unless model.new_record?
       if model.home_page.nil?
-        h.link_to h.t(:label_new_home_page), h.new_home_page_wiki_pages_path(context[:project]), {class: 'button'}
+        display_nil_home_page
       else
         model.home_page = model.home_page.decorate
         model.home_page.display_page
       end
+    end
+  end
+
+  def display_nil_home_page
+    if User.current.allowed_to?('new', 'Wiki_pages', context[:project])
+      h.link_to h.t(:label_new_home_page), h.new_home_page_wiki_pages_path(context[:project]), {class: 'button'}
+    else
+      h.no_data h.t(:text_empty_page)
     end
   end
 
@@ -46,7 +54,7 @@ class WikiDecorator < ApplicationDecorator
     if model.pages && model.pages.to_a.any?
       h.display_pages(model.pages)
     else
-      h.no_data  h.t(:text_no_wiki_page), 'file-text', true
+      h.no_data h.t(:text_no_wiki_page), 'file-text', true
     end
   end
 end
