@@ -10,37 +10,51 @@ RORganize is [open source](https://github.com/nmeylan/RORganize) and released un
 
 A [demo](http://demo.rorganize.org/) instance is available.
 
+## Why RORganize is flexible :
+
+RORganize is flexible because it has been design around the concept of modules. Each main feature (issues, documents, wiki, Gantt chart..) is a module.
+Developers can also develop new feature inside a [Rails engine](http://guides.rubyonrails.org/engines.html) without altering the core application, see [wiki page : plugins](https://github.com/nmeylan/RORganize/wiki/Plugins).
+
+Users with granted permission can enable or disable those feature for their projects in a click.
+
+In addition, users with granted permission can define roles and set permissions, for each actions available in the application, in a click.
+
 ## RORganize main feature
 
-*   Bugs and issues tracking.
-*   Easy to use filters system.
+*   Multi projects support.
+*   Flexible Bugs, issues and tasks tracking.
+*   Flexible and sharable filters.
 *   Enriched text editor (same as [github flavored markdown](https://help.github.com/articles/github-flavored-markdown)).
-*   Filters can be shared.
 *   Flexible permissions and roles management.
 *   Wiki for each project.
-*   Modules management : you can define which feature you want to use for each projects.
+*   Modules management : enable/disable feature for your project in a click.
 *   Clear projects/users activities feed.
 *   Documents upload.
-*   Gantt creation.
-*   Email notifications.
-*   In app notifications.
+*   Gantt chart editor.
+*   Road map
+*   Email/In app notifications.
 *   Flexible core application. It's really easy to make and mount a plugin to the core app.
 *   And more in progress...
 
 **Available plugins** :
 * [Agile board](https://github.com/nmeylan/RORganize-Plugin-Agile-Board) 
 
+## Road map
+- Release 1.0 : March 2015
+- SCM integration (plugin)
+- Overall improvement
+
 ## Documentation
 
-For the moments there are not lots of documentations to run RORganize, but you can find the basis [here](https://github.com/nmeylan/RORganize/wiki).
+Documentation is in progress, but you can find the basis [here](https://github.com/nmeylan/RORganize/wiki).
 
 ## About the development
 
-RORganize is developed by me, [Nicolas Meylan](https://github.com/nmeylan) since 2012. 
+RORganize is mainly developed by [Nicolas Meylan](https://github.com/nmeylan) since 2012. Any help would be appreciated.
 
-## Support
+## Contributing
 
-If you find bugs or want a feature to be added please write an [issue](https://github.com/nmeylan/RORganize/issues/new). 
+The RORganize team welcomes contributions. For more information, read the [CONTRIBUTING](https://github.com/nmeylan/RORganize/blob/master/CONTRIBUTING.md) file and see the documentation about contributing.
 
 ## Licence
 RORganize is released under the [GNU GPL v3.0](http://choosealicense.com/licenses/gpl-3.0/).
