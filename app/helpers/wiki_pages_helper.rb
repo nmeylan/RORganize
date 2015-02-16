@@ -9,7 +9,7 @@ module WikiPagesHelper
   def display_page(page)
     concat content_tag :h1, page.caption
     concat content_tag :em, page.creation_info
-    content_tag :p, page.content
+    content_tag :p, page.display_content
   end
 
 
