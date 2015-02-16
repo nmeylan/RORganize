@@ -27,8 +27,7 @@ RORganize has a high level of code coverage, if you want to be sure your develop
 * Fork the repo.
 * Create the ```database.yml``` file into the ```config/``` folder, with your database properties.
 * Set up your ```development.rb``` file into the ```config/environments/``` folder, with the following content :
-
-
+```Ruby
     RORganize::Application.configure do
       # Settings specified here will take precedence over those in config/application.rb
 
@@ -89,6 +88,7 @@ RORganize has a high level of code coverage, if you want to be sure your develop
       config.active_record.raise_in_transactional_callbacks = true
 
     end
+```
 * Run the database migration commands : ```rake db:create``` followed by ```rake db:migrate```
 * Create an admin account : ```rake db:insertion:admin_account``` then copy/paste the credential from the console output.
 * Generate default identicon : ```rake user:generate:identicon```.
