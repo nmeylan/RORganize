@@ -4,7 +4,7 @@
 # File: comment_test.rb
 require 'test_helper'
 
-class NotificationsManagerTest < ActiveSupport::TestCase
+class NotificationsManagerRecipientsTest < ActiveSupport::TestCase
   # Called before every test method runs. Can be used
   # to set up fixture information.
   def setup

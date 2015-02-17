@@ -1,10 +1,10 @@
 # Author: Nicolas Meylan
 # Date: 24.01.15 15:53
 # Encoding: UTF-8
-# File: notifications_manager_complete_test.rb
+# File: notifications_manager_in_app_notification_creation_test.rb
 require 'test_helper'
 
-class NotificationsManagerCompleteTest < ActiveSupport::TestCase
+class NotificationsManagerInAppNotificationCreationTest < ActiveSupport::TestCase
 
   # Called before every test method runs. Can be used
   # to set up fixture information.
