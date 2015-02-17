@@ -64,7 +64,7 @@ module Rorganize
 
         def load_modules
           Rorganize::Managers::ModuleManager.map :project do |mod|
-            Rorganize::Managers::MenuManager.items(:project_menu).menu_items.each do |item|
+            Rorganize::Managers::MenuManager.menu(:project_menu).menu_items.each do |item|
               mod.add(item.name, item.controller, item.action)
             end
           end

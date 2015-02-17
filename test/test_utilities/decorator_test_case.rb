@@ -55,6 +55,10 @@ module Rorganize
         @controller.instance_variable_set(:@sessions, {@controller_name.to_sym => {}})
       end
 
+      def _routes
+        @controller._routes if @controller.respond_to?(:_routes)
+      end
+
       class << self
         attr_accessor :controller_class
         def set_controller_class(controller_class)

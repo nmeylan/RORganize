@@ -8,13 +8,15 @@ module Rorganize
     module MenuManager
       module MenuHelper
         include Rorganize::Managers::UrlManager
-        def display_menu?(project = nil)
+
+        def display_main_menu?(project = nil)
           if @menu_context
             if @menu_context.include?(:project_menu)
               display_project_menu?(project)
             elsif @menu_context.include?(:admin_menu)
               true
             end
+            # No new context should be necessary for the moment. If we need to add more context, we should use factory pattern.
           end
         end
 
@@ -25,11 +27,13 @@ module Rorganize
         # Select which main menu to render.
         # @param [Project] project.
         def render_menu(project = nil)
+          # @menu_context is initialize on top of all controller (see before_filter)
           if @menu_context.include?(:project_menu)
-            render_main_menu(Rorganize::Managers::MenuManager.items(:project_menu), project)
+            render_main_menu(Rorganize::Managers::MenuManager.menu(:project_menu), project)
           elsif @menu_context.include?(:admin_menu)
-            render_main_menu(Rorganize::Managers::MenuManager.items(:admin_menu), nil)
+            render_main_menu(Rorganize::Managers::MenuManager.menu(:admin_menu), nil)
           end
+          # No new context should be necessary for the moment. If we need to add more context, we should use factory pattern.
         end
 
         # Render main menu.
@@ -63,19 +67,19 @@ module Rorganize
 
         # Render the top menu bar.
         def render_top_menu
-          menu = Rorganize::Managers::MenuManager.items(:top_menu)
+          menu = Rorganize::Managers::MenuManager.menu(:top_menu)
           content_for :top_menu_items do
             concat content_tag(:li, link_to(t(:home), :root, {class: @current_top_menu_item.eql?('menu-home') ? 'selected square' : 'square'}))
-            render_top_menu_items(menu) unless in_devise_context?
+            concat render_top_menu_items(menu) unless in_devise_context?
           end
         end
 
         # Render top menu items.
         # @param [Menu] menu.
         def render_top_menu_items(menu)
-          concat(menu.menu_items.collect do |item|
+          menu.menu_items.collect do |item|
             render_top_menu_item(item) if allowed_to_view_top_menu_item?(item)
-          end.join.html_safe)
+          end.join.html_safe
         end
 
         # @param [MenuItem] item
@@ -99,24 +103,45 @@ module Rorganize
 
       #Rorganize::Managers::MenuManager class
       class << self
+
+        # This method allow the creation of a new menu. It is also used to append item to an existing menu.
+        #
+        # @param [Symbol] menu_name : the name of your menu.
+        # Called for the first time it will create a new Menu.
+        # E.g :
+        # Rorganize::Managers::MenuManager.map :test do |menu|
+        #   menu.add(:my_menu_0, 'My menu 0', {controller: 'tests', action: 'my_action_0'}, {id: 'menu-test-my_action_0'})
+        #   menu.add(:my_menu_1, 'My menu 1', {controller: 'tests', action: 'my_action_1'}, {id: 'menu-test-my_action_1'})
+        #   menu.add(:my_menu_2, 'My menu 2', {controller: 'tests', action: 'my_action_2'}, {id: 'menu-test-my_action_2', glyph: 'test', after: :my_menu_0})
+        # end
+        #
+        # This will append :my_menu_3, in the :test menu.
+        # Rorganize::Managers::MenuManager.map :test do |menu|
+        #   menu.add(:my_menu_3, 'My menu 3', {controller: 'tests', action: 'my_action_3'}, {id: 'menu-test-my_action_3', glyph: 'test', before: :my_menu_1})
+        # end
         def map(menu_name)
-          @items ||= {}
+          @menu_hash ||= {}
           if block_given?
-            if !self.items(menu_name)
+            if !self.menu(menu_name)
               menu = Menu.new(menu_name)
-              @items[menu_name] = menu
-              yield menu
+              @menu_hash[menu_name] = menu
+              yield(menu)
             else
-              yield self.items(menu_name)
+              yield(self.menu(menu_name))
             end
           end
-          @items[menu_name]
+          @menu_hash[menu_name]
         end
 
-        def items(menu_name)
-          @items[menu_name.to_sym]
+        def menu(menu_name)
+          @menu_hash[menu_name.to_sym]
+        end
+
+        def clear!
+          @menu_hash = {}
         end
       end
+
       #Menu class
       class Menu
         attr_reader :menu, :menu_items
@@ -130,11 +155,26 @@ module Rorganize
         # id: for html element
         # before : to place an item before another one
         # after : to place an item after another one
+        # E.g :
+        #
+        # Rorganize::Managers::MenuManager.map :test do |menu|
+        #   menu.add(:my_menu_0, 'My menu 0', {controller: 'tests', action: 'my_action_0'}, {id: 'menu-test-my_action_0'})
+        #   menu.add(:my_menu_1, 'My menu 1', {controller: 'tests', action: 'my_action_1'}, {id: 'menu-test-my_action_1'})
+        #   menu.add(:my_menu_2, 'My menu 2', {controller: 'tests', action: 'my_action_2'}, {id: 'menu-test-my_action_2', glyph: 'test', after: :my_menu_0})
+        # end
+        #
+        #
+        # Rorganize::Managers::MenuManager.map :test do |menu|
+        #   menu.add(:my_menu_0, 'My menu 0', {controller: 'tests', action: 'my_action_0'}, {id: 'menu-test-my_action_0'})
+        #   menu.add(:my_menu_1, 'My menu 1', {controller: 'tests', action: 'my_action_1'}, {id: 'menu-test-my_action_1'})
+        #   menu.add(:my_menu_2, 'My menu 2', {controller: 'tests', action: 'my_action_2'}, {id: 'menu-test-my_action_2', glyph: 'test', before: :my_menu_0})
+        #   menu.add(:my_menu_3, 'My menu 3', {controller: 'tests', action: 'my_action_3'}, {id: 'menu-test-my_action_3', glyph: 'test', before: :my_menu_1})
+        # end
         def add(name, label, url={}, options={})
           menu_item = MenuItem.new(name, label, url, options)
           if options[:before]
             position = position_of(options[:before])
-            @menu_items.insert(position - 1, menu_item)
+            @menu_items.insert(position, menu_item)
           elsif options[:after]
             position = position_of(options[:after])
             @menu_items.insert(position + 1, menu_item)
@@ -143,6 +183,7 @@ module Rorganize
           end
         end
 
+        private
         def position_of(menu_item_name)
           i = 0
           @menu_items.each do |menu_item|
@@ -151,13 +192,25 @@ module Rorganize
             end
             i += 1
           end
-          raise "item not found, please check your initializer file. Don't use it inside core_application initializer"
+          raise ArgumentError, "item :#{menu_item_name} not found, please check your initializer file. You tried to set the position of an item after or before the :#{menu_item_name} item that does not exists at the moment."
         end
       end
+
       #Menu item class
       class MenuItem
         attr_reader :name, :label, :url, :params, :controller, :action
 
+        # @param [Symbol] name : the name of the menu item, it is also its identifier.
+        # @param [String] label : the label for the menu, displayed to the user.
+        # @param [Hash] url : the url to the main action of the menu
+        # E.g : {action: 'index', controller: 'issues'}
+        # @param [Hash] options : extra options. Available options are :
+        # :glyph : this is the glyph that will be displayed.
+        # :before : to defined the position of the menu item before an other existing menu item,
+        #   value is the name(see name parameter) of the other menu item.
+        # :after : to defined the position of the menu item after an other existing menu item,
+        #   value is the name(see name parameter) of the other menu item.
+        # E.g : before: :issues
         def initialize(name, label, url={}, options={})
           @name = name
           @label = label
