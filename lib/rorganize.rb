@@ -63,7 +63,7 @@ begin
 
 
   Rorganize::Managers::PluginManager.load
-  Rorganize::Managers::ModuleManager.load_modules
+  Rorganize::Managers::ModuleManager.load_project_panel_modules
 rescue
   puts "FAIL TO INITIALIZE RORganize application"
 end

@@ -3,8 +3,8 @@
 # Encoding: UTF-8
 # File: module_configuration.rb
 
-#TODO refactor string by symboles
-#These module are always enabled.
+#TODO refactor string with symbols
+#These modules are always enabled.
 always_enabled_module = [{controller: 'settings', action: 'index'},
                          {controller: 'members', action: 'index'},
                          {controller: 'time_entries', action: 'index'},
@@ -28,11 +28,12 @@ Rorganize::Managers::ModuleManager.initialize_modules(always_enabled_module)
 #This is the case when the "index" action (from controller) is used as root action for the controller.
 #E.g : issues_controller
 
-#Specifica case: Actions from a same controller are associated to different MENU and MODULE.
+#Specific case: Actions from a same controller are associated to different MENU and MODULE.
 #This is the case when an action (other than "index") is used as root action for controller.
 #E.g : show action from roadmaps_controller.
 #So we have to associated other actions (all excepted show (from previous example)) to a module.
 
+# 'module_name' => {controller_name => [action, action]}
 association_actions_module = {
     'roadmaps' => {'roadmaps' => %w(manage_gantt gantt)}
 }

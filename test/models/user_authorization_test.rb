@@ -6,7 +6,6 @@ require 'test_helper'
 require 'rorganize/anonymous_user'
 
 class UserAuthorizationTest < ActiveSupport::TestCase
-  include Rorganize::Managers::ModuleManager::ModuleManagerHelper
   LOWER_CONTROLLER = 'lower'
   UPPER_CONTROLLER = 'Upper'
   ADMINISTRATION_CONTROLLER = 'administration'
@@ -15,8 +14,8 @@ class UserAuthorizationTest < ActiveSupport::TestCase
 
   def setup
     initialize_project_context
-    reload_enabled_module(@project_private.id)
-    reload_enabled_module(@project_public.id)
+    Rorganize::Managers::ModuleManager::reload_enabled_modules(@project_private.id)
+    Rorganize::Managers::ModuleManager::reload_enabled_modules(@project_public.id)
     Rorganize::Managers::PermissionManager.initialize
     @controllers = [LOWER_CONTROLLER, UPPER_CONTROLLER]
   end

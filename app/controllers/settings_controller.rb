@@ -67,7 +67,7 @@ class SettingsController < ApplicationController
       @project.enable_modules(params['modules']['name'])
     end
     always_enabled = Rorganize::Managers::ModuleManager.always_enabled_module
-    @modules = Rorganize::Managers::ModuleManager.modules(:project).module_items.delete_if do |mod|
+    @modules = Rorganize::Managers::ModuleManager.panel(:project).modules.delete_if do |mod|
       always_enabled.any? { |modules| modules[:controller].eql?(mod.controller) && modules[:action].eql?(mod.action) }
     end
     enabled_modules = @project.enabled_modules.collect { |mod| mod.name }

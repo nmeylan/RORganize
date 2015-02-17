@@ -2,7 +2,6 @@ class Project < ActiveRecord::Base
   include Rorganize::Models::SmartRecords
   include Rorganize::Models::Attachable::AttachmentType
   include Rorganize::Models::Watchable
-  include Rorganize::Managers::ModuleManager::ModuleManagerHelper
   #SLug
   extend FriendlyId
   friendly_id :name, use: :slugged
@@ -86,7 +85,7 @@ class Project < ActiveRecord::Base
       self.enabled_modules << EnabledModule.new(m)
     end
     self.save
-    reload_enabled_module(self.id)
+    Rorganize::Managers::ModuleManager::reload_enabled_modules(self.id)
   end
 
   def starred?
@@ -131,11 +130,14 @@ class Project < ActiveRecord::Base
     self.enabled_modules.clear
     modules_name.each do |mod|
       ary = mod.split('-')
-      m = EnabledModule.new(controller: ary[0], action: ary[1], name: ary[2])
+      controller = ary[0].downcase
+      action = ary[1] ? ary[1].downcase : ''
+      name = ary[2] ? ary[2].downcase : ''
+      m = EnabledModule.new(controller: controller, action: action, name: name)
       self.enabled_modules << m
     end
     self.save
-    reload_enabled_module(self.id)
+    Rorganize::Managers::ModuleManager::reload_enabled_modules(self.id)
   end
 
   def latest_activity
