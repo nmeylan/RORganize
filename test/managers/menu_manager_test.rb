@@ -8,7 +8,7 @@ class MenuManagerTest < ActiveSupport::TestCase
   # Called before every test method runs. Can be used
   # to set up fixture information.
   def setup
-    Rorganize::Managers::MenuManager.clear!
+    Rorganize::Managers::MenuManager.clear_menu!(:test)
   end
 
   # Called after every test method runs. Can be used to tear

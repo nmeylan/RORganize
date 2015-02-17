@@ -137,8 +137,14 @@ module Rorganize
           @menu_hash[menu_name.to_sym]
         end
 
+        # Be careful when using this method.
         def clear!
           @menu_hash = {}
+        end
+
+        # Remove all menu items for the given menu name.
+        def clear_menu!(menu_name)
+          @menu_hash.delete(menu_name)
         end
       end
 

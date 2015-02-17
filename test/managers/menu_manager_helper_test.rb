@@ -6,25 +6,27 @@ require 'test_helper'
 class MenuManagerHelperTest < Rorganize::Decorator::TestCase
   include Rorganize::Managers::MenuManager::MenuHelper
   include ApplicationHelper
-  # Called before every test method runs. Can be used
-  # to set up fixture information.
-  Rorganize::Managers::MenuManager.clear!
-  Rorganize::Managers::MenuManager.map :project_menu do |menu|
-    menu.add(:my_menu_0, 'My menu 0', {controller: 'issues', action: 'index'}, {id: 'menu-test-my_action_0'})
-    menu.add(:my_menu_1, 'My menu 1', {controller: 'projects', action: 'overview'}, {id: 'menu-test-my_action_1'})
-  end
 
-  Rorganize::Managers::MenuManager.map :admin_menu do |menu|
-    menu.add(:my_menu_0, 'My menu 0', {controller: 'roles', action: 'index'}, {id: 'menu-test-my_action_0'})
-    menu.add(:my_menu_1, 'My menu 1', {controller: 'trackers', action: 'index'}, {id: 'menu-test-my_action_1'})
-  end
-
-  Rorganize::Managers::MenuManager.map :top_menu do |menu|
-    menu.add(:my_menu_0, 'My menu 0', {controller: 'projects', action: 'index'}, {id: 'menu-test-my_action_0'})
-    menu.add(:my_menu_1, 'My menu 1', {controller: 'administration', action: 'index'}, {id: 'menu-test-my_action_1'})
-  end
   def setup
     @project = projects(:projects_001)
+
+    Rorganize::Managers::MenuManager.clear_menu!(:project_menu_test)
+    Rorganize::Managers::MenuManager.map :project_menu_test do |menu|
+      menu.add(:my_menu_0, 'My menu 0', {controller: 'issues', action: 'index'}, {id: 'menu-test-my_action_0'})
+      menu.add(:my_menu_1, 'My menu 1', {controller: 'projects', action: 'overview'}, {id: 'menu-test-my_action_1'})
+    end
+
+    Rorganize::Managers::MenuManager.clear_menu!(:admin_menu_test)
+    Rorganize::Managers::MenuManager.map :admin_menu_test do |menu|
+      menu.add(:my_menu_0, 'My menu 0', {controller: 'roles', action: 'index'}, {id: 'menu-test-my_action_0'})
+      menu.add(:my_menu_1, 'My menu 1', {controller: 'trackers', action: 'index'}, {id: 'menu-test-my_action_1'})
+    end
+
+    Rorganize::Managers::MenuManager.clear_menu!(:top_menu_test)
+    Rorganize::Managers::MenuManager.map :top_menu_test do |menu|
+      menu.add(:my_menu_0, 'My menu 0', {controller: 'projects', action: 'index'}, {id: 'menu-test-my_action_0'})
+      menu.add(:my_menu_1, 'My menu 1', {controller: 'administration', action: 'index'}, {id: 'menu-test-my_action_1'})
+    end
   end
 
   # Called after every test method runs. Can be used to tear
@@ -50,6 +52,8 @@ class MenuManagerHelperTest < Rorganize::Decorator::TestCase
   end
 
   test "it should render all project menu" do
+    menu = Rorganize::Managers::MenuManager.menu(:project_menu_test)
+    Rorganize::Managers::MenuManager.stubs(:menu).returns(menu)
     @view_flow = ActionView::OutputFlow.new
     self.stubs(:allowed_to_view_menu_item?).returns(true)
 
@@ -63,6 +67,8 @@ class MenuManagerHelperTest < Rorganize::Decorator::TestCase
   end
 
   test "it should render project menu when user is allowed to access" do
+    menu = Rorganize::Managers::MenuManager.menu(:project_menu_test)
+    Rorganize::Managers::MenuManager.stubs(:menu).returns(menu)
     @view_flow = ActionView::OutputFlow.new
     allow_user_to('index', 'issues')
 
@@ -75,6 +81,8 @@ class MenuManagerHelperTest < Rorganize::Decorator::TestCase
   end
 
   test "it should render all admin menu" do
+    menu = Rorganize::Managers::MenuManager.menu(:admin_menu_test)
+    Rorganize::Managers::MenuManager.stubs(:menu).returns(menu)
     @view_flow = ActionView::OutputFlow.new
     self.stubs(:allowed_to_view_menu_item?).returns(true)
 
@@ -88,6 +96,8 @@ class MenuManagerHelperTest < Rorganize::Decorator::TestCase
   end
 
   test "it should render admin menu when user is allowed to access" do
+    menu = Rorganize::Managers::MenuManager.menu(:admin_menu_test)
+    Rorganize::Managers::MenuManager.stubs(:menu).returns(menu)
     @view_flow = ActionView::OutputFlow.new
     allow_user_to('index', 'roles')
 
@@ -100,6 +110,8 @@ class MenuManagerHelperTest < Rorganize::Decorator::TestCase
   end
 
   test "it should render all top menu" do
+    menu = Rorganize::Managers::MenuManager.menu(:top_menu_test)
+    Rorganize::Managers::MenuManager.stubs(:menu).returns(menu)
     @view_flow = ActionView::OutputFlow.new
     self.stubs(:allowed_to_view_top_menu_item?).returns(true)
 
@@ -113,6 +125,8 @@ class MenuManagerHelperTest < Rorganize::Decorator::TestCase
   end
 
   test "it should render top menu when user is allowed to access" do
+    menu = Rorganize::Managers::MenuManager.menu(:top_menu_test)
+    Rorganize::Managers::MenuManager.stubs(:menu).returns(menu)
     @view_flow = ActionView::OutputFlow.new
     allow_user_to('index', 'projects')
 
