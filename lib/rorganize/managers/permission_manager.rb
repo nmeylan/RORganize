@@ -90,7 +90,11 @@ module Rorganize
         end
 
         def allowed_to_actions_list(role_id, controller = nil)
-          controller ? Rorganize::Managers::PermissionManager.permissions[role_id].select { |permission| permission[:controller] == controller } : Rorganize::Managers::PermissionManager.permissions[role_id]
+          if controller
+            Rorganize::Managers::PermissionManager.permissions[role_id].select { |permission| permission[:controller] == controller }
+          else
+            Rorganize::Managers::PermissionManager.permissions[role_id]
+          end
         end
 
         # Todo : change that code.
@@ -111,15 +115,22 @@ module Rorganize
       end
 
       module PermissionListCreator
+
         def load_controllers
           controllers = Rails.application.routes.routes.collect { |route| route.defaults[:controller] }
           controllers += Rails::Engine.subclasses.collect do |engine|
             engine.routes.routes.collect { |route| route.defaults[:controller] }
           end.flatten
-          controllers = controllers.uniq!.select { |controller_name| controller_name && !controller_name.match(/.*\/.*/) }
+          controllers.uniq!.select { |controller_name| controller_name && !controller_name.match(/.*\/.*/) }
+        end
+
+        # @return [Hash] : a hash with the following structure :
+        # {ControllerGroup => [controller_name, controller_name], ...}
+        def build_controller_group_hash
+          controllers = load_controllers
           result_group = nil
           controllers_groups = Rorganize::Managers::PermissionManager.controllers_groups
-          misc_group = controllers_groups.detect { |group| group.identifier.eql?(:misc) }
+          misc_group = Rorganize::Managers::PermissionManager.select_controller_group(:misc)
           controllers_hash = controllers_groups.inject({}) { |memo, group| memo[group] = []; memo }
 
           controllers.collect do |controller|
@@ -151,6 +162,8 @@ module Rorganize
           @permissions = load_permissions
         end
 
+        # @return [Hash] a hash with the following structure
+        # {'role_id' => [{action: action_name, controller: controller_name}]
         def load_permissions
           roles = Role.all
           roles.inject(Hash.new { |h, k| h[k] = [] }) do |memo, role|
@@ -164,6 +177,10 @@ module Rorganize
             memo_perm << {action: permission.action.downcase, controller: permission.controller.downcase}
             memo_perm
           end
+        end
+
+        def select_controller_group(group_identifier)
+          @controllers_groups.detect { |group| group.identifier.eql?(group_identifier) }
         end
 
         def load_permissions_spec_role(role_id)

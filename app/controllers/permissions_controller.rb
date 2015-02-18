@@ -28,27 +28,27 @@ class PermissionsController < ApplicationController
   def new
     @permission_decorator = Permission.new.decorate
     respond_to do |format|
-      format.html { render :new, locals: {controllers: load_controllers.values} }
+      format.html { render :new, locals: {controllers: load_controllers} }
     end
   end
 
   #POST administration/permission/new
   def create
     @permission_decorator = Permission.new(permission_params).decorate
-    generic_create_callback(@permission_decorator, permissions_path, {controllers: load_controllers.values})
+    generic_create_callback(@permission_decorator, permissions_path, {controllers: load_controllers})
   end
 
   #GET administration/permission/edit/:id
   def edit
     respond_to do |format|
-      format.html { render action: 'edit', locals: {controllers: load_controllers.values} }
+      format.html { render action: 'edit', locals: {controllers: load_controllers} }
     end
   end
 
   #PUT administration/permission/:id
   def update
     @permission_decorator.attributes = permission_params
-    generic_update_callback(@permission_decorator, permissions_path, {controllers: load_controllers.values})
+    generic_update_callback(@permission_decorator, permissions_path, {controllers: load_controllers})
   end
 
   #DELETE administration/permission/:id
@@ -58,7 +58,7 @@ class PermissionsController < ApplicationController
 
   #Other methods
   def list
-    @permissions_decorator = Permission.select('*').decorate(context: {role_name: params[:role_name], controller_list: load_controllers})
+    @permissions_decorator = Permission.select('*').decorate(context: {role_name: params[:role_name], controller_list: build_controller_group_hash})
     respond_to do |format|
       format.html { render :list }
     end
