@@ -89,14 +89,6 @@ module Rorganize
           Rorganize::Managers::PermissionManager.load_permissions_spec_role(role_id)
         end
 
-        def allowed_to_actions_list(role_id, controller = nil)
-          if controller
-            Rorganize::Managers::PermissionManager.permissions[role_id].select { |permission| permission[:controller] == controller }
-          else
-            Rorganize::Managers::PermissionManager.permissions[role_id]
-          end
-        end
-
         # Todo : change that code.
         def project_archive_permissions(action, controller)
           permissions = Hash.new { |h, k| h[k] = [] }

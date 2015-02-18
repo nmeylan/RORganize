@@ -310,6 +310,5 @@ class UserAuthorizationTest < ActiveSupport::TestCase
     ]
 
     Rorganize::Managers::PermissionManager.initialize(groups)
-
   end
 end
