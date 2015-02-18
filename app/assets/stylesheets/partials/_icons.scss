@@ -1022,6 +1022,21 @@ a {
   content: '\F0DD'
 }
 
+.octicon-medium-crown{
+  font: normal normal 24px octicons;
+  line-height: 1;
+  margin-right: 6px;
+  margin-top: -6px;
+  display: inline-block;
+  color: $default-smooth-color;
+  text-decoration: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.octicon-medium-crown:before {
+  content: '\F0DD'
+}
+
 .octicon-attachment:before {
   content: '\F0E1'
 }

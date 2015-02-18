@@ -15,7 +15,7 @@ groups = [
     Rorganize::Managers::PermissionManager::ControllerGroup.new(:project, I18n.t(:label_project), 'repo',
                         %w(categories comments documents issues members projects queries roadmaps settings time_entries versions wiki wiki_pages)),
 
-    Rorganize::Managers::PermissionManager::ControllerGroup.new(:administration, I18n.t(:label_administration), 'crown',
+    Rorganize::Managers::PermissionManager::ControllerGroup.new(:administration, I18n.t(:label_administration), 'medium-crown',
                         %w(administration issues_statuses permissions roles trackers users)),
 
     Rorganize::Managers::PermissionManager::ControllerGroup.new(:misc, I18n.t(:label_misc))
