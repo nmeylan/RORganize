@@ -63,5 +63,5 @@ begin
 
   Rorganize::Managers::PluginManager.load
 rescue Exception => e
-  puts "FAIL TO INITIALIZE RORganize application"
+  puts "FAIL TO INITIALIZE RORganize application : \n-> #{e.message}"
 end
