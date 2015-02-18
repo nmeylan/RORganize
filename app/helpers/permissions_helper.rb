@@ -5,34 +5,28 @@
 
 module PermissionsHelper
 
+  def permissions_tab(permissions_groups)
+    tabs = permissions_groups.collect do |group|
+      {name: "#{group.identifier}-tab", element: glyph(group.caption, group.glyph)}
+    end
+    horizontal_tabs('permissions-tab', tabs)
+  end
   # Build a render of all permissions.
   # @param [Hash] permissions_hash : hash with following structure {group: [controller_name, ..]}.
   # @param [Array] selected_permissions : array of selected permissions' id.
   def list(permissions_hash, selected_permissions)
     form_tag({action: 'update_permissions', controller: 'permissions'}) do
-      concat permission_project_tab_render(permissions_hash, selected_permissions)
-      concat permission_administration_tab_render(permissions_hash, selected_permissions)
-      concat permission_misc_tab_render(permissions_hash, selected_permissions)
+      concat render_all_permissions_tables(permissions_hash, selected_permissions)
       concat submit_tag 'save'
     end
   end
 
-  def permission_misc_tab_render(permissions_hash, selected_permissions)
-    content_tag :div, {id: 'misc-tab', style: 'display:none'} do
-      permissions_table(permissions_hash[:misc], selected_permissions, :misc)
-    end
-  end
-
-  def permission_administration_tab_render(permissions_hash, selected_permissions)
-    content_tag :div, {id: 'administration-tab', style: 'display:none'} do
-      permissions_table(permissions_hash[:administration], selected_permissions, :administration)
-    end
-  end
-
-  def permission_project_tab_render(permissions_hash, selected_permissions)
-    content_tag :div, {id: 'project-tab'} do
-      permissions_table(permissions_hash[:project], selected_permissions, :project)
-    end
+  def render_all_permissions_tables(permissions_hash, selected_permissions)
+    permissions_hash.collect do |group, controllers|
+      content_tag :div, {id: "#{group.identifier}-tab", style: 'display:none'} do
+        permissions_table(controllers, selected_permissions, group.identifier)
+      end
+    end.join.html_safe
   end
 
   # Build a render of all permissions table.

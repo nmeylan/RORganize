@@ -17,6 +17,8 @@ class PermissionsDecorator < ApplicationCollectionDecorator
         permission_hash[group][controller] = self.select { |permission| permission.controller.eql?(controller) }
       end
     end
-    h.list(permission_hash, selected_permissions)
+    p permission_hash.keys
+    h.concat h.permissions_tab(permission_hash.keys)
+    h.concat h.list(permission_hash, selected_permissions)
   end
 end

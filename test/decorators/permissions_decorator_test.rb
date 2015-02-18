@@ -8,7 +8,9 @@ class PermissionsDecoratorTest < Rorganize::Decorator::TestCase
     helpers.stubs(:session).returns({permissions: {current_page: 1}})
 
     permissions = Permission.all
-    @permissions_decorator = permissions.decorate(context: {role_name: @role.caption, controller_list: {misc: permissions.collect(&:controller)}})
+    group = Rorganize::Managers::PermissionManager::ControllerGroup.new(:misc, I18n.t(:label_misc), '', permissions.collect(&:controller))
+    @permissions_decorator = permissions.decorate(context: {role_name: @role.caption,
+                                                            controller_list: {group => permissions.collect(&:controller)}})
   end
 
   test "it displays a table when collection contains entries" do
@@ -16,8 +18,6 @@ class PermissionsDecoratorTest < Rorganize::Decorator::TestCase
     @node = node @permissions_decorator.display_collection
     assert_select 'form', 1
     assert_select '#misc-tab', 1
-    assert_select '#project-tab', 1
-    assert_select '#administration-tab', 1
   end
 
   test "it displays a link to new action when user is allowed to" do

@@ -93,6 +93,7 @@ module Rorganize
           controller ? Rorganize::Managers::PermissionManager.permissions[role_id].select { |permission| permission[:controller] == controller } : Rorganize::Managers::PermissionManager.permissions[role_id]
         end
 
+        # Todo : change that code.
         def project_archive_permissions(action, controller)
           permissions = Hash.new { |h, k| h[k] = [] }
           permissions['action'] = %w(new edit create update destroy delete change)
@@ -117,15 +118,17 @@ module Rorganize
           end.flatten
           controllers = controllers.uniq!.select { |controller_name| controller_name && !controller_name.match(/.*\/.*/) }
           result_group = nil
-          controllers_hash = {project: [], administration: [], misc: []}
+          controllers_groups = Rorganize::Managers::PermissionManager.controllers_groups
+          misc_group = controllers_groups.detect { |group| group.identifier.eql?(:misc) }
+          controllers_hash = controllers_groups.inject({}) { |memo, group| memo[group] = []; memo }
           controllers.collect do |controller|
-            Rorganize::Managers::PermissionManager.controllers_groups.each do |group, ctrls|
-              if ctrls.include?(controller)
+            Rorganize::Managers::PermissionManager.controllers_groups.each do |group|
+              if group.controllers.include?(controller)
                 result_group = group
                 break
               end
             end
-            controllers_hash[result_group.nil? ? :misc : result_group] << controller.capitalize
+            controllers_hash[result_group.nil? ? misc_group : result_group] << controller.capitalize
             result_group = nil
           end
           controllers_hash
@@ -140,7 +143,7 @@ module Rorganize
           @anonymous_role = Role.find_by_name('Anonymous')
           @non_member_role = Role.find_by_name('Non member')
           @aliases = {'update' => 'edit', 'create' => 'new', 'toolbox' => 'edit'}
-          @controllers_groups = {project: [], administration: [], misc: []}
+          @controllers_groups = []
         end
 
         def reload_permissions
@@ -168,10 +171,30 @@ module Rorganize
           @permissions[role_id.to_s] = role_permissions_hash(role)
         end
 
+        # @param [Array[ControllerGroup]] controllers_groups
         def set_controllers_groups(controllers_groups)
           @controllers_groups = controllers_groups
         end
 
+        # @param [Array[ControllerGroup]] controllers_groups
+        def add_controllers_groups(controllers_groups)
+          @controllers_groups += controllers_groups
+        end
+      end
+
+      class ControllerGroup
+        # @param [Symbol] identifier : the identifier of the controller group.
+        # @param [String] caption : the name of the controller group, it will be display to the user.
+        # @param [String] glyph : the glyph to represent the controller group
+        # @param [Array] controllers : the list of all controllers included in the group.
+        attr_reader :identifier, :caption, :glyph, :controllers
+
+        def initialize(identifier, caption, glyph = '', controllers = [])
+          @identifier = identifier
+          @caption = caption
+          @glyph = glyph
+          @controllers = controllers
+        end
       end
     end
   end
