@@ -7,9 +7,9 @@ module PermissionsHelper
 
   def permissions_tab(permissions_groups)
     tabs = permissions_groups.collect do |group|
-      {name: "#{group.identifier}-tab", element: glyph(group.caption, group.glyph)}
+      {name: "#{group.identifier}-tab", element: glyph(group.caption, group.glyph)} if group.controllers.any?
     end
-    horizontal_tabs('permissions-tab', tabs)
+    horizontal_tabs('permissions-tab', tabs.compact)
   end
   # Build a render of all permissions.
   # @param [Hash] permissions_hash : hash with following structure {group: [controller_name, ..]}.
