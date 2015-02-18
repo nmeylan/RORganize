@@ -18,10 +18,4 @@ class PermissionsManagerTest < ActiveSupport::TestCase
   def teardown
     # Do nothing
   end
-
-  # Fake test
-  test "it fail" do
-
-    fail('Not implemented')
-  end
 end
