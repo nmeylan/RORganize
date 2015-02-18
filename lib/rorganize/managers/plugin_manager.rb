@@ -76,6 +76,10 @@ module Rorganize
         def add_modules_associations(association_actions_module)
           Rorganize::Managers::ModuleManager.set_associations_actions_module(association_actions_module)
         end
+
+        def add_controllers_groups(controllers_groups)
+          Rorganize::Managers::PermissionManager::add_controllers_groups(controllers_groups)
+        end
       end
     end
   end
