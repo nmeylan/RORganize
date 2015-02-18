@@ -16,7 +16,8 @@ class UserAuthorizationTest < ActiveSupport::TestCase
     initialize_project_context
     Rorganize::Managers::ModuleManager::reload_enabled_modules(@project_private.id)
     Rorganize::Managers::ModuleManager::reload_enabled_modules(@project_public.id)
-    Rorganize::Managers::PermissionManager.initialize
+
+    reload_permissions
     @controllers = [LOWER_CONTROLLER, UPPER_CONTROLLER]
   end
 
@@ -275,9 +276,9 @@ class UserAuthorizationTest < ActiveSupport::TestCase
 
     @user_admin = users(:users_admin_fixture)
     @user_master = users(:users_master_fixture)
-    @user_semi_master =  users(:users_semi_master_fixture)
-    @user_trainee =  users(:users_trainee_fixture)
-    @user_non_member =  users(:users_non_member_fixture)
+    @user_semi_master = users(:users_semi_master_fixture)
+    @user_trainee = users(:users_trainee_fixture)
+    @user_non_member = users(:users_non_member_fixture)
     @user_anonymous = AnonymousUser.instance
 
     @role_master = roles(:roles_master)
@@ -293,5 +294,22 @@ class UserAuthorizationTest < ActiveSupport::TestCase
     @member_master_public = Member.create(user_id: @user_master.id, project_id: @project_public.id, role_id: @role_master.id)
     @member_semi_master_public = Member.create(user_id: @user_semi_master.id, project_id: @project_public.id, role_id: @role_semi_master.id)
     @member_trainee_public = Member.create(user_id: @user_trainee.id, project_id: @project_public.id, role_id: @role_trainee.id)
+  end
+
+  def reload_permissions
+    groups = [
+        Rorganize::Managers::PermissionManager::ControllerGroup.new(
+            :project, I18n.t(:label_project), 'repo',
+            %w(categories comments documents issues members projects queries roadmaps settings time_entries versions wiki wiki_pages)),
+
+        Rorganize::Managers::PermissionManager::ControllerGroup.new(
+            :administration, I18n.t(:label_administration), 'medium-crown',
+            %w(administration issues_statuses permissions roles trackers users)),
+
+        Rorganize::Managers::PermissionManager::ControllerGroup.new(:misc, I18n.t(:label_misc))
+    ]
+
+    Rorganize::Managers::PermissionManager.initialize(groups)
+
   end
 end
