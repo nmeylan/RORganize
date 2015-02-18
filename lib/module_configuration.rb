@@ -44,3 +44,5 @@ modules = [{controller: 'projects', action: 'activity', name: 'activity'},
            {controller: 'roadmaps', action: 'show', name: 'roadmaps'},
            {controller: 'issues', action: 'index', name: 'requests'}]
 Rorganize::Managers::ModuleManager.set_enabled_by_default_module(modules)
+
+Rorganize::Managers::ModuleManager.load_project_panel_modules

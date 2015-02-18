@@ -56,14 +56,12 @@ begin
   end
 
 
-  Rorganize::Managers::PermissionManager.initialize
   Rorganize::Managers::IssueStatusesColorManager.initialize
   require 'module_configuration'
   require 'permissions_configuration'
 
 
   Rorganize::Managers::PluginManager.load
-  Rorganize::Managers::ModuleManager.load_project_panel_modules
 rescue Exception => e
   puts "FAIL TO INITIALIZE RORganize application"
 end

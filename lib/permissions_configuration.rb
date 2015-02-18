@@ -3,6 +3,17 @@
 # Encoding: UTF-8
 # File: permissions_configuration.rb
 
+
+module Rorganize
+  #Define permissions categories here (only use to group permissions on the list render)
+  PERMISSIONS_LIST_COL_CATEGORIES = {read: %w(view access consult use watch show),
+                                     create: %w(create add new insert),
+                                     update: %w(edit update change organize manage archive log configure restore rank attach detach),
+                                     delete: %w(delete destroy remove erase)}
+end
+
+
+
 #Here you have to define your controllers groups.
 #There are 3 groups :
 # project
@@ -21,13 +32,4 @@ groups = [
     Rorganize::Managers::PermissionManager::ControllerGroup.new(:misc, I18n.t(:label_misc))
 ]
 
-Rorganize::Managers::PermissionManager.set_controllers_groups(groups)
-
-
-module Rorganize
-  #Define permissions categories here (only use to group permissions on the list render)
-  PERMISSIONS_LIST_COL_CATEGORIES = {read: %w(view access consult use watch show),
-                                     create: %w(create add new insert),
-                                     update: %w(edit update change organize manage archive log configure restore rank attach detach),
-                                     delete: %w(delete destroy remove erase)}
-end
+Rorganize::Managers::PermissionManager.initialize(groups)

@@ -121,6 +121,7 @@ module Rorganize
           controllers_groups = Rorganize::Managers::PermissionManager.controllers_groups
           misc_group = controllers_groups.detect { |group| group.identifier.eql?(:misc) }
           controllers_hash = controllers_groups.inject({}) { |memo, group| memo[group] = []; memo }
+
           controllers.collect do |controller|
             Rorganize::Managers::PermissionManager.controllers_groups.each do |group|
               if group.controllers.include?(controller)
@@ -138,12 +139,12 @@ module Rorganize
       class << self
         attr_reader :permissions, :anonymous_role, :non_member_role, :aliases, :controllers_groups
 
-        def initialize
+        def initialize(groups = [])
           @permissions = load_permissions
           @anonymous_role = Role.find_by_name('Anonymous')
           @non_member_role = Role.find_by_name('Non member')
           @aliases = {'update' => 'edit', 'create' => 'new', 'toolbox' => 'edit'}
-          @controllers_groups = []
+          @controllers_groups = groups
         end
 
         def reload_permissions
