@@ -9,27 +9,43 @@ module Rorganize
 
       module PermissionHandler
         include Rorganize::Managers::UrlManager
-        #Params hash content:
-        #method : possible values :post, :get , :put, :delete
-        #target : possible values "nil" or "self", if self url will be '#' else will be path
-        #html = {}
-        def link_to_with_permissions(label, path, project, owner_id, params = {})
+
+        # @param [String] name : the link name.
+        # @param [String] path : the path for the link (href)
+        # @param [Project] project : can be nil when not in project context.
+        # @param [Numeric] owner_id : can be nil if the permission does not require to check if user is the owner of the object.
+        # @param [Hash] params : options.
+        # Available params are:
+        # method : possible values :post, :get , :put, :delete
+        # target : possible values "nil" or "self", if self url will be '#' else will be path
+        # html = {}
+        def link_to_with_permissions(name, path, project, owner_id, params = {})
           permission_checker(path, project, owner_id, params) do
             if params[:target] && params[:target].eql?('self')
               params.delete_if { |k, _| k.eql?(:method) && params[:remote].nil? || params[:target] }
-              link_to(label, '#', params)
+              link_to(name, '#', params)
             else
-              link_to(label, path, params)
+              link_to(name, path, params)
             end
           end
         end
 
-        def button_to_with_permissions(label, path, project, owner_id, params = {})
+        # @param [String] name : the link name.
+        # @param [String] path : the path for the link (href)
+        # @param [Project] project : can be nil when not in project context.
+        # @param [Numeric] owner_id : can be nil if the permission does not require to check if user is the owner of the object.
+        # @param [Hash] params : options.
+        # Available params are:
+        # method : possible values :post, :get , :put, :delete
+        # target : possible values "nil" or "self", if self url will be '#' else will be path
+        # html = {}
+        def button_to_with_permissions(name, path, project, owner_id, params = {})
           permission_checker(path, project, owner_id, params) do
-            button_to label, path, params
+            button_to(name, path, params)
           end
         end
 
+        private
         def permission_checker(path, project, owner_id, params = {})
           hash_path = recognize_path(path, method: params[:method])
           unless params[:confirm].nil?
