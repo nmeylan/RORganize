@@ -46,6 +46,7 @@ module Rorganize
         url
       end
 
+      private
       def handle_path_recognition(engine_instance, options, path_for_engine)
         begin
           engine_instance.routes.recognize_path(path_for_engine, options)
