@@ -24,7 +24,7 @@ class DocumentToolbox < Toolbox
   end
 
   def build_menu_version
-    generic_toolbox_menu_builder(h.t(:field_version), :versions, :version_id, @project.versions.collect { |version| version }, Proc.new(&:version), true)
+    generic_toolbox_menu_builder(h.t(:field_version), :versions, :version_id, @project.active_versions.collect { |version| version }, Proc.new(&:version), true)
   end
 
   def build_menu_category

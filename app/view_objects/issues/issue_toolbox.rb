@@ -49,7 +49,7 @@ class IssueToolbox < Toolbox
 
   def build_menu_version
     if allowed_to_change('version')
-      generic_toolbox_menu_builder(h.t(:field_version), :versions, :version_id, @project.versions.collect { |version| version }, Proc.new(&:version), true)
+      generic_toolbox_menu_builder(h.t(:field_version), :versions, :version_id, @project.active_versions.collect { |version| version }, Proc.new(&:version), true)
     end
   end
 
