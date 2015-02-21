@@ -15,6 +15,7 @@ require 'test_utilities/custom_http_request'
 require 'test_utilities/generic_controllers_test_cases'
 require 'test_utilities/user_grant_permissions'
 require 'test_utilities/decorator_test_case'
+require 'test_utilities/helpers_test_case'
 
 # Initialize reporter.
 Minitest::Reporters.use! [Minitest::Reporters::AwesomeReporter.new({color: true, slow_count: 5})]
