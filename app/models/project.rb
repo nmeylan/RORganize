@@ -149,15 +149,15 @@ class Project < ActiveRecord::Base
   end
 
   def active_versions
-    self.versions.where(is_done: false)
+    self.versions.where(is_done: false).order('versions.position DESC')
   end
 
   def current_versions
-    self.versions.where('versions.start_date <= ? AND versions.is_done = ?', Date.today, false).includes(:issues)
+    self.versions.where('versions.start_date <= ? AND versions.is_done = ?', Date.today, false).includes(:issues).order('versions.position DESC')
   end
 
   def old_versions
-    self.versions.where('versions.start_date <= ? AND versions.is_done = ?', Date.today, true)
+    self.versions.where('versions.start_date <= ? AND versions.is_done = ?', Date.today, true).order('versions.position DESC')
   end
 
   def roadmap

@@ -206,7 +206,7 @@ class ProjectTest < ActiveSupport::TestCase
     active_version1 = Version.new(name: 'version3', start_date: Date.new(2012, 11, 22), is_done: false)
     @project.versions << active_version1
     @project.save
-    assert_equal [active_version, active_version1], @project.active_versions.to_a
+    assert_equal [active_version, active_version1].reverse, @project.active_versions.to_a
   end
 
   test 'it has current versions' do
