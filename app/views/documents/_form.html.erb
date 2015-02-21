@@ -21,7 +21,7 @@
   <div class="splitcontentleft">
     <div class="autocomplete-combobox cbb-medium search">
       <label for="document_version"><%= t(:field_version) %></label>
-      <%= select_tag_versions('document_version_id', 'document[version_id]', document_decorator.version_id) %>
+      <%= select_tag_versions(project.versions, 'document_version_id', 'document[version_id]', document_decorator.version_id) %>
     </div>
     <div class="autocomplete-combobox cbb-medium search">
       <label for="document_category"><%= t(:field_category) %></label>

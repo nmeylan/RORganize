@@ -25,7 +25,7 @@
   <div class="splitcontentleft">
     <div class="autocomplete-combobox">
       <label for="issue_version"><%= t(:field_version) %></label>
-      <%= select_tag_versions('issue_version_id', 'issue[version_id]', issue_decorator.version_id) %>
+      <%= select_tag_versions(project.versions, 'issue_version_id', 'issue[version_id]', issue_decorator.version_id) %>
       <%= info_tag('', {id: 'version-info'}) %>
     </div>
 

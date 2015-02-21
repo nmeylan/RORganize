@@ -46,20 +46,6 @@ module ApplicationHelper
     end
   end
 
-  # @param [Date] date : whose test for format validation
-  # @param [Object] format : of the date.
-  def date_valid?(date, format='%Y-%m-%d')
-    if date.eql?('') || date.nil?
-      return true
-    end
-    begin
-      Date.strptime(date, format)
-      return true
-    rescue
-      return false
-    end
-  end
-
   # Build error message render, when a form is submitted with validation errors.
   # @param [Array] object : all errors contains on an ActiveRecord object.
   def error_messages(object)
@@ -72,8 +58,7 @@ module ApplicationHelper
   # @param [String] id : id of the select_tag.
   # @param [String] name : name of the select_tag.
   # @param [String] select_key : selected item key.
-  def select_tag_versions(id, name, select_key, options = {})
-    versions = @project.versions
+  def select_tag_versions(versions, id, name, select_key, options = {})
     hash = {Open: [], Close: []}
     versions.each do |v|
       key = v.closed? ? :Close : :Open
