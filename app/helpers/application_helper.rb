@@ -59,9 +59,9 @@ module ApplicationHelper
   # @param [String] name : name of the select_tag.
   # @param [String] select_key : selected item key.
   def select_tag_versions(versions, id, name, select_key, options = {})
-    hash = {Open: [], Close: []}
-    versions.each do |v|
-      key = v.closed? ? :Close : :Open
+    hash = {Opened: [], Done: []}
+    versions.sort_by(&:position).reverse.each do |v|
+      key = v.is_done ? :Done : :Opened
       version_info = build_version_info(v)
       hash[key] << [v.caption, v.id, {'data-target_date' => v.target_date, 'data-start_date' => v.start_date, 'data-version_info' => version_info}]
     end
@@ -70,19 +70,7 @@ module ApplicationHelper
   end
 
   def build_version_info(v)
-    "#{t(:info_version_start_date)} <b>#{v.start_date.strftime('%d %b. %Y')}</b> #{t(:text_to)} <b>#{v.target_date ? v.target_date.strftime('%d %b. %Y') : ' undetermined'}</b>"
-  end
-
-
-  # Build a breadcrumb on top of the page.
-  # @param [String] title : title to display.
-  # @param [String] breadcrumb : breadcrump to display.
-  def contextual_with_breadcrumb(title, breadcrumb)
-    content_for :contextual do
-      concat content_tag :h1, title
-      concat breadcrumb
-      concat contextual_right_content(Proc.new) if block_given?
-    end
+    "#{t(:info_version_start_date)} <b>#{v.start_date.strftime('%d %b. %Y')}</b> #{t(:text_to)} <b>#{v.target_date ? v.target_date.strftime('%d %b. %Y') : t(:text_undetermined)}</b>"
   end
 
   # Build a contextual div on top of the page. give a block to display some custom content.
@@ -116,15 +104,18 @@ module ApplicationHelper
     end
   end
 
-  #id is the id of the tab
-  #array must contains hash with following keys
+  # @param [id] id of the tab.
+  # @param [Array[Hash]] tabs must be (name: the name of the tab, element: tab content(text/glyph)).
+  # hash with following keys
   # :name, the name of the tabs
   # :element, the tab content
-  # @param [id] id of the tab.
-  # @param [Hash] hash must be (name: the name of the tab, element: tab content(text/glyph)).
-  def horizontal_tabs(id, hash)
+  def horizontal_tabs(id, tabs)
     content_tag :div, {class: 'tabnav', id: id} do
-      content_tag :ul, hash.collect { |el| content_tag :li, link_to(el[:element], '#', {class: "tabnav-tab #{hash.first.eql?(el) ? 'selected' : ''}", 'data-tab_id' => el[:name]}) }.join.html_safe, {class: 'tabnav-tabs'}
+      content_tag :ul, {class: 'tabnav-tabs'} do
+        tabs.collect do |el|
+          content_tag :li, link_to(el[:element], '#', {class: "tabnav-tab #{tabs.first.eql?(el) ? 'selected' : ''}", 'data-tab_id' => el[:name]})
+        end.join.html_safe
+      end
     end
   end
 
@@ -144,9 +135,9 @@ module ApplicationHelper
 
   def style_background_color(color)
     color_tmp = color.tr('#', '')
-    r = color_tmp[0,2].to_i(16)
-    g = color_tmp[2,2].to_i(16)
-    b = color_tmp[4,2].to_i(16)
+    r = color_tmp[0, 2].to_i(16)
+    g = color_tmp[2, 2].to_i(16)
+    b = color_tmp[4, 2].to_i(16)
     "background-color:#{color}; color:#{Math.sqrt((r*r*0.241) + (g*g*0.691) + (b*b*0.068))> 180 ? '#484848' : 'white'}"
   end
 end
