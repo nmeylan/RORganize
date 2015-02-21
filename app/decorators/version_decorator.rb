@@ -3,12 +3,12 @@ class VersionDecorator < ApplicationDecorator
 
   # see #ApplicationDecorator::dec_position_link.
   def dec_position_link(collection_size)
-    super(collection_size, h.change_position_versions_path(model.project.slug))
+    super(collection_size, h.change_position_versions_path(model.project.slug), {class: 'tooltipped tooltipped-s', label: h.t(:text_dec_version_position)})
   end
 
   # see #ApplicationDecorator::inc_position_link.
   def inc_position_link
-    super(h.change_position_versions_path(model.project.slug))
+    super(h.change_position_versions_path(model.project.slug), {class: 'tooltipped tooltipped-s', label: h.t(:text_inc_version_position)})
   end
 
   # see #ApplicationDecorator::delete_link.

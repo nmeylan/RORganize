@@ -546,7 +546,7 @@ function bind_version_change_positions() {
         var self_element = jQuery(this);
         var vid = self_element.parents("tr").attr("id");
         var ope = self_element.attr("class").split(" ");
-        ope = ope[3];
+        ope = ope[ope.length - 1];
         if (ope === "inc" || ope === "dec") {
             jQuery.ajax({
                 url: self_element.attr("href"),

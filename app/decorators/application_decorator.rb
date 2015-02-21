@@ -77,9 +77,13 @@ class ApplicationDecorator < Draper::Decorator
 
   # Render a link to increment the model position.
   # @param [String] path to the controller.
-  def inc_position_link(path)
+  # @param [Hash] options : html options.
+  def inc_position_link(path, options = {})
+    options[:class] ||= ''
     if model.position > 1
-      h.link_to(h.glyph('', 'arrow-up'), path, {class: 'icon icon-up-arrow change-position dec'})
+      options[:class] += ' icon icon-up-arrow change-position dec'
+      options[:class].strip!
+      h.link_to(h.glyph('', 'arrow-up'), path, options)
     else
       h.link_to(h.glyph('', 'arrow-up'), '#', {class: 'icon icon-disabled-up-arrow'})
     end
@@ -88,9 +92,12 @@ class ApplicationDecorator < Draper::Decorator
   # Render a link to decrement the model position.
   # @param [Numeric] size of the collection.
   # @param [String] path to the controller.
-  def dec_position_link(collection_size, path)
+  def dec_position_link(collection_size, path, options = {})
+    options[:class] ||= ''
     if model.position < collection_size
-      h.link_to h.glyph('', 'arrow-down'), path, {class: 'icon icon-down-arrow change-position inc'}
+      options[:class] += ' icon icon-down-arrow change-position inc'
+      options[:class].strip!
+      h.link_to h.glyph('', 'arrow-down'), path, options
     else
       h.link_to h.glyph('', 'arrow-down'), '#', {class: 'icon icon-disabled-down-arrow'}
     end
