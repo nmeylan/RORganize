@@ -288,6 +288,10 @@ img.small-avatar {
   width: 100px;
 }
 
+.icon-disabled-up-arrow .octicon, .icon-disabled-down-arrow .octicon{
+  color: #e4e4e4 !important;
+}
+
 /*
 *  FLASH MESSAGE
 */
