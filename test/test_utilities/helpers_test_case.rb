@@ -12,6 +12,11 @@ module Rorganize
       def node(html)
         @node = super(html)
       end
+
+
+      def document_root_element
+        @node #should be defined just before calling assert_select
+      end
     end
   end
 end
