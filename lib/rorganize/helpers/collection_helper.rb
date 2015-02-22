@@ -29,11 +29,10 @@ module Rorganize
       end
 
       # Build a sort link for table.
-      # @param [String] column.
+      # @param [String] column : the name of the column in sql. E.g: 'documents.name'.
       # @param [String] title : if provide replace the default column name.
       # @param [String] default_action : when link is clicked it will send an ajax query to the given default_action. (defaults 'index').
-      def sortable(column, title = nil, default_action = nil)
-        default_action ||= 'index'
+      def sortable(column, title = nil, default_action = 'index')
         title ||= column.titleize
         icon = if column == sort_column then
                  sort_direction == 'asc' ? 'triangle-up' : 'triangle-down'
