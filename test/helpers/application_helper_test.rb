@@ -5,18 +5,6 @@
 require 'test_helper'
 
 class ApplicationHelperTest < Rorganize::Helpers::TestCase
-  # Called before every test method runs. Can be used
-  # to set up fixture information.
-  def setup
-
-  end
-
-  # Called after every test method runs. Can be used to tear
-  # down fixture information.
-
-  def teardown
-    # Do nothing
-  end
 
   test "it detects if sidebar has content" do
     assert_not sidebar_content?
