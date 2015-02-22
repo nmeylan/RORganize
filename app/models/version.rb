@@ -69,7 +69,7 @@ class Version < ActiveRecord::Base
     Issue.joins('LEFT OUTER JOIN `versions` ON `issues`.`version_id` = `versions`.`id`' \
                   'INNER JOIN `issues_statuses` ON `issues_statuses`.`id` = `issues`.`status_id`')
         .group('versions.id')
-        .where(%Q(#{condition} AND issues.project_id = #{project_id}))
+        .where(%Q(#{condition} AND issues.project_id = ?), project_id)
         .pluck(Version.send(:sanitize_sql_array, ['versions.id, ' \
                 'SUM(case when issues_statuses.is_closed = ? then 1 else 0 end) Opened, '\
                 'SUM(case when issues_statuses.is_closed = ? then 1 else 0 end) Closed, ' \
