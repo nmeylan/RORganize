@@ -55,16 +55,17 @@ module Rorganize
       # Build a 16x16 glyph render, if condition is true else return raw content.
       # @param [String] body : content.
       # @param [Boolean] bool : the condition.
-      # @param [String] names : glyph names.
-      def conditional_glyph(body, bool, *names)
+      # @param [String] name : glyph name.
+      def conditional_glyph(body, bool, name)
         if bool
-          glyph(body, *names)
+          glyph(body, *name)
         else
           body
         end
       end
 
       # Build a dynamic progress bar for a given percentage.
+      # Display the percentage.
       # @param [Numeric] percent : percentage of progression.
       # @param [String] css_class : extra css_class.
       def progress_bar_tag(percent, css_class = nil)
@@ -76,6 +77,9 @@ module Rorganize
         end
       end
 
+      # Build a dynamic mini progress bar for a given percentage.
+      # @param [Numeric] percent : percentage of progression.
+      # @param [String] css_class : extra css_class.
       def mini_progress_bar_tag(percent, css_class = nil)
         css_class ||= ''
         css_class += ' progress-bar mini-progress-bar'
@@ -120,6 +124,12 @@ module Rorganize
         end
       end
 
+      # @param [String] css_class : a css class.
+      # @param [String] id : a client id.
+      # @param [Array[{}]] links : a list of hashes with following structure :
+      # {caption: String, path: String, options: Hash}
+      # options are default link_to html_options.
+      # E.g : {caption: 'Issue link', path: 'issues_path', {class: 'my class', id: {my id}}}
       def subnav_tag(css_class, id, *links)
         content_tag :div, {class: "subnav #{css_class}", id: id} do
           special_links_builder(links, 'subnav-item')
@@ -143,12 +153,21 @@ module Rorganize
         end
       end
 
+      # @param [Array[{}]] links : a list of hashes with following structure :
+      # {caption: String, path: String, options: Hash}
+      # options are default link_to html_options.
+      # E.g : {caption: 'Issue link', path: 'issues_path', {class: 'my class', id: {my id}}}
       def group_button_tag(*links)
         content_tag :div, {class: "button-group"} do
           special_links_builder(links, 'minibutton')
         end
       end
 
+      # @param [Array[{}]] links : a list of hashes with following structure :
+      # {caption: String, path: String, options: Hash}
+      # options are default link_to html_options.
+      # E.g : {caption: 'Issue link', path: 'issues_path', {class: 'my class', id: {my id}}}
+      # @param [String] css_class : a css class.
       def special_links_builder(links, css_class)
         links.compact.collect do |link|
           options = {class: css_class, remote: true}.merge(link[:options] || {})
