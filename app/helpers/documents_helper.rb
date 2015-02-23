@@ -40,8 +40,8 @@ module DocumentsHelper
 
 
   # Build a toolbox render for document toolbox
-  # @param [DocumentToolbox] documents_toolbox
-  def document_toolbox(documents_toolbox)
-    toolbox_tag(DocumentToolbox.new(documents_toolbox, @project, User.current))
+  # @param [Array] collection : a collection of selected Documents that will be bulk edited.
+  def document_toolbox(collection)
+    toolbox_tag(DocumentToolbox.new(collection, @project, User.current))
   end
 end

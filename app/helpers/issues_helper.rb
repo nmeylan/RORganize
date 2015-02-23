@@ -98,10 +98,10 @@ module IssuesHelper
      options: {class: "#{'selected' if is_list_displayed_with_type?(type.to_sym)} subnav-item tooltipped tooltipped-s", label: text}}
   end
 
-# Build a toolbox render for issue toolbox.
-# @param [IssueToolbox] issues_toolbox
-  def issue_toolbox(issues_toolbox)
-    toolbox_tag(IssueToolbox.new(issues_toolbox, @project, User.current))
+  # Build a toolbox render for issue toolbox.
+  # @param [Array] collection : a collection of selected Issues that will be bulk edited.
+  def issue_toolbox(collection)
+    toolbox_tag(IssueToolbox.new(collection, @project, User.current))
   end
 
 end
