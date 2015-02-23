@@ -10,9 +10,13 @@ RORganize is [open source](https://github.com/nmeylan/RORganize) and released un
 
 A [demo](http://demo.rorganize.org/) instance is available.
 
-## Why RORganize is flexible :
+## Getting started
 
-RORganize is flexible because it has been design around the concept of modules. Each main feature (issues, documents, wiki, Gantt chart..) is a module.
+Find a step by step guide to set up and run RORganize [here](https://github.com/nmeylan/RORganize/wiki/Getting-started)
+
+## What makes RORganize a flexible tool
+
+RORganize is flexible because it has been designed around the concept of modules. Each main feature (issues, documents, wiki, Gantt chart..) is a module.
 Developers can also develop new feature inside a [Rails engine](http://guides.rubyonrails.org/engines.html) without altering the core application, see [wiki page : plugins](https://github.com/nmeylan/RORganize/wiki/Plugins).
 
 Users with granted permission can enable or disable those feature for their projects in a click.
@@ -46,7 +50,7 @@ In addition, users with granted permission can define roles and set permissions,
 
 ## Documentation
 
-Documentation is in progress, but you can find the basis [here](https://github.com/nmeylan/RORganize/wiki).
+Documentation is still in writing process, but you can find the basis [here](https://github.com/nmeylan/RORganize/wiki).
 
 ## About the development
 
