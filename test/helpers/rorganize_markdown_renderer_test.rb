@@ -7,8 +7,9 @@ require 'test_helper'
 class RorganizeMarkdownRendererTest < ActiveSupport::TestCase
   include ApplicationHelper
 
-  def setup
-    @text = <<EOF
+
+  test 'it builds a classic task list' do
+    text = <<EOF
 - k
 - l
  - i
@@ -21,16 +22,6 @@ some text in **bold**
 - [ ] task uncomplete c
 - [x] task complete d
 EOF
-  end
-
-  # Called after every test method runs. Can be used to tear
-  # down fixture information.
-
-  def teardown
-
-  end
-
-  test 'markdown renderer' do
     expectation = <<EOF
 <div class='markdown-renderer' id=''><ul>
 <li>k</li>
@@ -51,6 +42,6 @@ some text in <strong>bold</strong>
 </ul>
 </div>
 EOF
-    assert_equal expectation[0..-2], markdown_to_html(@text)
+    assert_equal expectation[0..-2], markdown_to_html(text)
   end
 end
