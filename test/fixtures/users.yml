@@ -3,7 +3,7 @@ users_001:
   id: 1
   name: Nicolas Meylan
   login: nmeylan
-  admin: 1
+  admin: true
   email: xxx@xxx.com
   encrypted_password: $2a$10$tGve9Yqzujn4F06IGuCcMOZV0DnPQpYjsiQYz72dwcxHHdWxcQ8FO
   reset_password_token:
@@ -21,7 +21,7 @@ users_002:
   id: 4
   name: James Bond
   login: sean
-  admin: 0
+  admin: false
   email: jb@atz.com
   encrypted_password: $2a$10$sH/XDDbp0n8X8Avxud/YfOjXfdyvF9f5W7Qe0zbBmwfMBLdsfFXk6
   reset_password_token:
@@ -39,7 +39,7 @@ users_003:
   id: 5
   name: Roger Smith
   login: amonnet
-  admin: 0
+  admin: false
   email: yyyy@yyyyy.fr
   encrypted_password: $2a$10$GcKzN5xLVsnOhC.act4yve3p8LHInffy/iCw7jGqzbtD071pQdGdC
   reset_password_token:
@@ -57,7 +57,7 @@ users_004:
   id: 7
   name: Stan Smith
   login: ssmith
-  admin: 0
+  admin: false
   email: rorganize2@yoaaaapmail.com
   encrypted_password: $2a$10$sN6V68VLqMN/4GqNGJJuh.6ptMtH1u9.1EROhSxGZzWEFtZz.Dei2
   reset_password_token:
@@ -77,7 +77,7 @@ users_admin_fixture:
   id: 8
   name: Admin Fixture
   login: admfixture
-  admin: 1
+  admin: true
   email: admfixture@example.com
   encrypted_password: $2a$10$sN6V68VLqMN/4GqNGJJuh.6ptMtH1u9.1EROhSxGZzWEFtZz.Dei2
   reset_password_token:
@@ -95,7 +95,7 @@ users_master_fixture:
   id: 9
   name: Steve Fixture
   login: stfixture
-  admin: 0
+  admin: false
   email: stfixture@example.com
   encrypted_password: $2a$10$sN6V68VLqMN/4GqNGJJuh.6ptMtH1u9.1EROhSxGZzWEFtZz.Dei2
   reset_password_token:
@@ -113,7 +113,7 @@ users_semi_master_fixture:
   id: 10
   name: Tony Fixture
   login: tofixture
-  admin: 1
+  admin: true
   email: tofixture@example.com
   encrypted_password: $2a$10$sN6V68VLqMN/4GqNGJJuh.6ptMtH1u9.1EROhSxGZzWEFtZz.Dei2
   reset_password_token:
@@ -131,7 +131,7 @@ users_trainee_fixture:
   id: 11
   name: Roger Fixture
   login: rogfixture
-  admin: 0
+  admin: false
   email: rogfixture@example.com
   encrypted_password: $2a$10$sN6V68VLqMN/4GqNGJJuh.6ptMtH1u9.1EROhSxGZzWEFtZz.Dei2
   reset_password_token:
@@ -149,7 +149,7 @@ users_non_member_fixture:
   id: 12
   name: Non member Fixture
   login: nonmemfixture
-  admin: 0
+  admin: false
   email: nonmemfixture@example.com
   encrypted_password: $2a$10$sN6V68VLqMN/4GqNGJJuh.6ptMtH1u9.1EROhSxGZzWEFtZz.Dei2
   reset_password_token:

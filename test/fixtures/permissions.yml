@@ -4,7 +4,7 @@ permissions_001:
   name: Create issues
   action: new
   controller: Issues
-  is_locked: 1
+  is_locked: true
 
 # Fixtures for models/user_authorization_test.rb
 permissions_lower_controller_new:
@@ -12,72 +12,72 @@ permissions_lower_controller_new:
   name: New
   action: new
   controller: lower
-  is_locked: 1
+  is_locked: true
 permissions_lower_controller_edit:
   id: 3
   name: Edit
   action: edit
   controller: lower
-  is_locked: 1
+  is_locked: true
 permissions_lower_controller_destroy:
   id: 4
   name: Destroy
   action: destRoy
   controller: lower
-  is_locked: 1
+  is_locked: true
 permissions_lower_controller_show:
   id: 5
   name: Show
   action: show
   controller: lower
-  is_locked: 1
+  is_locked: true
 permissions_lower_controller_index:
   id: 6
   name: Index
   action: index
   controller: lower
-  is_locked: 1
+  is_locked: true
   
 permissions_upper_controller_new:
   id: 7
   name: New
   action: new
   controller: Upper
-  is_locked: 1
+  is_locked: true
 permissions_upper_controller_edit:
   id: 8
   name: Edit
   action: edit
   controller: Upper
-  is_locked: 1
+  is_locked: true
 permissions_upper_controller_destroy:
   id: 9
   name: Destroy
   action: destRoy
   controller: Upper
-  is_locked: 1
+  is_locked: true
 permissions_upper_controller_show:
   id: 10
   name: Show
   action: show
   controller: Upper
-  is_locked: 1
+  is_locked: true
 permissions_upper_controller_index:
   id: 11
   name: Index
   action: index
   controller: Upper
-  is_locked: 1
+  is_locked: true
 
 permissions_administration_controller_index:
   id: 12
   name: Index
   action: index
   controller: administration
-  is_locked: 1
+  is_locked: true
 permissions_administration_controller_show:
   id: 13
   name: Show
   action: show
   controller: administration
-  is_locked: 1
+  is_locked: true
