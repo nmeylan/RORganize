@@ -8,6 +8,10 @@
 module Rorganize
   module Helpers
     module DropdownTagHelper
+      
+      # @param [Html] menu_content : an html_safe string.
+      # @param [Symbol] type : the type of the menu block (:span, :div, :whatever)
+      # @param [Block] block : a block with the menu content instead of providing menu_content.
       def dropdown_tag(menu_content = nil, type = :span, &block)
         "<#{type} class='dropdown'>
           #{dropdown_link}
