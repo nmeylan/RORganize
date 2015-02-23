@@ -7,6 +7,7 @@ rvm:
 env:
   - DB=mysql
   - DB=sqlite
+  - DB=postgresql
 #  - DB=postgresql
 before_install:
   - cp config/travis_database.yml config/database.yml
