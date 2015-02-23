@@ -224,17 +224,17 @@ class UserTest < ActiveSupport::TestCase
 
     archived_project.is_public = true
     assert archived_project.save, archived_project.errors.messages
-    assert_equal [@project, archived_project], @user.owned_projects('all').to_a
+    assert_match_array [@project, archived_project], @user.owned_projects('all').to_a
 
     member1 = Member.create(user_id: @user.id, project_id: archived_project.id, role_id: role.id, project_position: 1)
     member.project_position = 1
     member1.project_position = 0
     assert member.save, member.errors.messages
     assert member1.save, member1.errors.messages
-    assert_equal [archived_project, @project], @user.owned_projects('all').to_a
+    assert_match_array [archived_project, @project], @user.owned_projects('all').to_a
 
-    assert_equal [@project], @user.owned_projects('opened').to_a
-    assert_equal [archived_project], @user.owned_projects('archived').to_a
+    assert_match_array [@project], @user.owned_projects('opened').to_a
+    assert_match_array [archived_project], @user.owned_projects('archived').to_a
 
     member2 = Member.create(user_id: @user.id, project_id: starred_project.id, role_id: role.id, is_project_starred: true)
     member3 = Member.create(user_id: @user.id, project_id: archived_starred_project.id, role_id: role.id, is_project_starred: true)
@@ -242,7 +242,7 @@ class UserTest < ActiveSupport::TestCase
     member3.project_position = 2
     assert member2.save, member2.errors.messages
     assert member3.save, member3.errors.messages
-    assert_equal [archived_starred_project, starred_project], @user.owned_projects('starred').to_a
+    assert_match_array [archived_starred_project, starred_project], @user.owned_projects('starred').to_a
   end
 
   test 'it has receive notifications' do

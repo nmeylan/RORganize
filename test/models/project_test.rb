@@ -60,7 +60,7 @@ class ProjectTest < ActiveSupport::TestCase
   test 'it enable default modules on project creation' do
     expectation = Rorganize::Managers::ModuleManager::enabled_by_default_modules
     expectation = expectation.collect { |mod| mod[:name] }
-    assert_equal expectation, @project.enabled_modules.collect(&:name)
+    assert_match_array expectation, @project.enabled_modules.collect(&:name)
   end
 
   test 'it can be starred by a user' do
@@ -301,7 +301,7 @@ class ProjectTest < ActiveSupport::TestCase
   end
 
   test 'it has a method to activate modules' do
-    assert_equal Rorganize::Managers::ModuleManager.enabled_by_default_modules,
+    assert_match_array Rorganize::Managers::ModuleManager.enabled_by_default_modules,
                  @project.enabled_modules.to_a.collect { |mod| {controller: mod.controller, action: mod.action, name: mod.name} }
 
     @project.enable_modules(['roadmaps-show-roadmaps'])
