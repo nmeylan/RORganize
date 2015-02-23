@@ -214,8 +214,8 @@ class VersionTest < ActiveSupport::TestCase
 
   test 'versions overview for a project' do
     project = Project.create(name: 'Rorganize test version')
-    version = Version.create(name: 'New version', description: '', start_date: '2012-12-01', project_id: project.id, is_done: false)
-    version1 = Version.create(name: 'New version 1', description: '', start_date: '2013-01-01', project_id: project.id, is_done: true)
+    version = Version.create(name: 'New version', description: '', start_date: '2012-12-01', project_id: project.id, is_done: false, position: 0)
+    version1 = Version.create(name: 'New version 1', description: '', start_date: '2013-01-01', project_id: project.id, is_done: true, position: 1)
 
     assert Issue.create(tracker_id: 1, subject: 'Bug1', status_id: 1, project_id: project.id, version_id: version.id, done: 0).done, 0
     assert Issue.create(tracker_id: 1, subject: 'Bug1', status_id: 6, project_id: project.id, version_id: version.id, done: 20).done, 20
@@ -245,7 +245,7 @@ class VersionTest < ActiveSupport::TestCase
     assert_equal version1_expectation[2], version_overviews[1][2] #version closed issues
     assert_equal version1_expectation[3].truncate, version_overviews[1][3].truncate #version's issues progress percent
 
-    version_overviews = Version.overviews(project.id, %Q(`versions`.`id` IN (#{project.current_versions.collect(&:id).join(',')})))
+    version_overviews = Version.overviews(project.id, %Q(versions.id IN (#{project.current_versions.collect(&:id).join(',')})))
 
     assert_equal 1, version_overviews.size
     assert_equal version_expectation[0], version_overviews[0][0] #version id
@@ -253,7 +253,7 @@ class VersionTest < ActiveSupport::TestCase
     assert_equal version_expectation[2], version_overviews[0][2] #version closed issues
     assert_equal version_expectation[3].truncate, version_overviews[0][3].truncate #version's issues progress percent
 
-    version_overviews = Version.overviews(666, %Q(`versions`.`id` IN (#{project.current_versions.collect(&:id).join(',')})))
+    version_overviews = Version.overviews(666, %Q(versions.id IN (#{project.current_versions.collect(&:id).join(',')})))
 
     assert_equal 0, version_overviews.size
   end

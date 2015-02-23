@@ -1,7 +1,7 @@
 class WikiPagesDecorator < ApplicationCollectionDecorator
 
   # Define presentation-specific methods here. Helpers are accessed through
-  # `helpers` (aka `h`). You can override attributes, for example:
+  # helpers (aka h). You can override attributes, for example:
   #
   #   def created_at
   #     helpers.content_tag :span, class: 'time' do

@@ -14,7 +14,7 @@ class Project < ActiveRecord::Base
   has_and_belongs_to_many :trackers, class_name: 'Tracker'
   has_many :versions, class_name: 'Version', dependent: :delete_all
   has_many :categories, class_name: 'Category', dependent: :delete_all
-  has_many :journals, dependent: :delete_all
+  has_many :journals
   has_many :comments, dependent: :delete_all
   has_many :watchers, dependent: :delete_all
   has_many :notifications, dependent: :delete_all
@@ -24,7 +24,7 @@ class Project < ActiveRecord::Base
   before_create :set_created_by
   after_create :create_member, :add_modules
   after_update :save_attachments, :remove_all_non_member
-  after_destroy :delete_all_journal_detail_orphans
+  after_destroy :delete_all_journals
   #Validators
   validates_associated :attachments
   validates :name, presence: true, uniqueness: true
@@ -191,7 +191,8 @@ class Project < ActiveRecord::Base
     end
   end
 
-  def delete_all_journal_detail_orphans
+  def delete_all_journals
     JournalDetail.delete_all_orphans(self.id)
+    Journal.delete_all(project_id: self.id)
   end
 end

@@ -13,6 +13,10 @@ module Rorganize
       ActiveRecord::Base.connection.adapter_name.downcase.include?('sqlite')
     end
 
+    def self.is_pg?
+      ActiveRecord::Base.connection.adapter_name.downcase.include?('postgresql')
+    end
+
     if is_mysql?
       OPERATORS = {'equal' => '<=>',
                    'different' => '<>',
@@ -33,6 +37,16 @@ module Rorganize
                    'today' => 'IS',
                    'open' => 'IS',
                    'close' => 'IS'}
+    elsif is_pg?
+      OPERATORS = {'equal' => '=',
+                   'different' => '<>',
+                   'superior' => '>=',
+                   'inferior' => '<=',
+                   'contains' => 'ILIKE',
+                   'not_contains' => 'NOT ILIKE',
+                   'today' => '=',
+                   'open' => '=',
+                   'close' => '='}
     end
 
     NULL_OPERATORS = {'different' => 'IS NOT',
@@ -181,8 +195,10 @@ module Rorganize
       def date_format_adapter(attribute_name, attributes, date_value, operator_value_hash)
         if is_mysql?
           query_str = "DATE_FORMAT(#{attributes[attribute_name]},'%Y-%m-%d') #{OPERATORS[operator_value_hash['operator']]} '#{date_value}' "
-        else
+        elsif is_sqlite?
           query_str = "strftime('%Y-%m-%d', #{attributes[attribute_name]}) #{OPERATORS[operator_value_hash['operator']]} '#{date_value}' "
+        elsif is_pg?
+          query_str = "#{attributes[attribute_name]}::date #{OPERATORS[operator_value_hash['operator']]} '#{date_value}' "
         end
       end
 
@@ -342,7 +358,7 @@ module Rorganize
       # E.g : {"operator"=>"contains", "value"=>"test"}
       def build_uniq_value_query(attribute_name, attributes, number_criteria, condition_clauses_counter, query_str, operator_value_hash)
         condition_clauses_counter += 1
-        query_str += "#{attributes[attribute_name]} #{OPERATORS[operator_value_hash['operator']]} \"%#{operator_value_hash['value']}%\" "
+        query_str += "#{attributes[attribute_name]} #{OPERATORS[operator_value_hash['operator']]} '%#{operator_value_hash['value']}%' "
         query_str += 'AND ' if condition_clauses_counter != number_criteria
         return condition_clauses_counter, query_str
       end

@@ -223,6 +223,8 @@ bla bla
       expected = '(issues.category_id <=> \'1\' OR issues.category_id <=> \'2\' ) AND'
     elsif is_sqlite?
       expected = '(issues.category_id IS \'1\' OR issues.category_id IS \'2\' ) AND'
+    elsif is_pg?
+      expected = '(issues.category_id = \'1\' OR issues.category_id = \'2\' ) AND'
     end
 
     assert_equal expected, actual
@@ -230,7 +232,11 @@ bla bla
 
   test 'it build a condition clause to select issues with subject hello' do
     actual = Issue.conditions_string({'subject' => {'operator' => 'contains', 'value' => 'hello'}})
-    expected = 'issues.subject LIKE "%hello%" AND'
+    if is_pg?
+      expected = 'issues.subject ILIKE \'%hello%\' AND'
+    else
+      expected = 'issues.subject LIKE \'%hello%\' AND'
+    end
     assert_equal expected, actual
   end
 
@@ -242,6 +248,8 @@ bla bla
       expected = '(issues.done <=> \'10\' ) AND (issues.version_id <> \'1\' AND issues.version_id <> \'2\' OR issues.version_id IS NULL ) AND'
     elsif is_sqlite?
       expected = '(issues.done IS \'10\' ) AND (issues.version_id <> \'1\' AND issues.version_id <> \'2\' OR issues.version_id IS NULL ) AND'
+    elsif is_pg?
+      expected = '(issues.done = \'10\' ) AND (issues.version_id <> \'1\' AND issues.version_id <> \'2\' OR issues.version_id IS NULL ) AND'
     end
 
     assert_equal expected, actual
@@ -254,6 +262,8 @@ bla bla
       expected = '(issues.status_id <=> 3 OR issues.status_id <=> 9 ) AND'
     elsif is_sqlite?
       expected = '(issues.status_id IS 3 OR issues.status_id IS 9 ) AND'
+    elsif is_pg?
+      expected = '(issues.status_id = 3 OR issues.status_id = 9 ) AND'
     end
 
     assert_equal expected, actual
@@ -269,6 +279,10 @@ bla bla
       expected = '(issues.status_id IS 1 OR issues.status_id IS 2 OR issues.status_id IS 4 '
       expected += 'OR issues.status_id IS 5 OR issues.status_id IS 6 OR issues.status_id IS 7 '
       expected += 'OR issues.status_id IS 8 ) AND'
+    elsif is_pg?
+      expected = '(issues.status_id = 1 OR issues.status_id = 2 OR issues.status_id = 4 '
+      expected += 'OR issues.status_id = 5 OR issues.status_id = 6 OR issues.status_id = 7 '
+      expected += 'OR issues.status_id = 8 ) AND'
     end
     assert_equal expected, actual
   end
@@ -318,7 +332,7 @@ bla bla
     expectation = [[user1.id, 'Nicolas Meylan', 2, 'test-project'],
                    [user2.id, 'James Bond', 1, 'test-project'],
                    [user3.id, 'Roger Smith', 1, 'test-project']]
-    assert_equal expectation, group_result
+    assert_match_array expectation, group_result
   end
 
   test 'scope opened issues by project' do
@@ -335,7 +349,7 @@ bla bla
     expectation = [[user1.id, project.id, "test-project", 2, "test-project"],
                    [user1.id, project1.id, "test-project1", 2, "test-project1"]]
 
-    assert_equal expectation, group_result
+    assert_match_array expectation, group_result
   end
 
   #######################

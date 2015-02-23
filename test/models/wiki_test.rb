@@ -97,7 +97,7 @@ class WikiTest < ActiveSupport::TestCase
     wiki.home_page = home_page
     assert wiki.save, wiki.errors.messages
     pages.each(&:reload)
-    assert_equal pages, wiki.pages.to_a
+    assert_match_array pages, wiki.pages.to_a
     assert_equal home_page, wiki.home_page
 
     wiki.destroy

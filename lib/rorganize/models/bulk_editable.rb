@@ -142,7 +142,7 @@ module Rorganize
       # @param [Array] insert an array of all values.
       def perform_insertion(insert)
         if insert.any?
-          sql = "INSERT INTO `journal_details` (`journal_id`, `property`, `property_key`, `old_value`, `value`) VALUES #{insert.join(', ')}"
+          sql = "INSERT INTO journal_details (journal_id, property, property_key, old_value, value) VALUES #{insert.join(', ')}"
           JournalDetail.connection.execute(sql)
         end
       end

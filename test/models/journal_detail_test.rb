@@ -20,15 +20,16 @@ class JournalDetailTest < ActiveSupport::TestCase
   end
 
   test 'it delete_all_orphans' do
-    orphan = JournalDetail.create(journal_id: 666, property: 'Assigned to', property_key: :assigned_to_id,
+    journal_to_delete = Journal.create(journalizable_type: 'Issue', journalizable_id: 666, action_type: 'created',
+                            project_id: 666, journalizable_identifier: 'bbbbbbbb', created_at: Time.new(2012, 10, 20))
+    orphan = JournalDetail.create(journal_id: journal_to_delete.id, property: 'Assigned to', property_key: :assigned_to_id,
                          old_value: nil, value: 'Nicolas Meylan')
-    orphan1 = JournalDetail.create(journal_id: 667, property: 'Assigned to', property_key: :assigned_to_id,
+    orphan1 = JournalDetail.create(journal_id: journal_to_delete.id, property: 'Assigned to', property_key: :assigned_to_id,
                          old_value: nil, value: 'Nicolas Meylan')
-    orphan2 = JournalDetail.create(journal_id: 666, property: 'Assigned to', property_key: :assigned_to_id,
+    orphan2 = JournalDetail.create(journal_id: journal_to_delete.id, property: 'Assigned to', property_key: :assigned_to_id,
                          old_value: nil, value: 'Nicolas Meylan')
-
     journal = Journal.create(journalizable_type: 'Issue', journalizable_id: 666, action_type: 'created',
-                             project_id: 666, journalizable_identifier: 'aa', created_at: Time.new(2012, 10, 21))
+                             project_id: 667, journalizable_identifier: 'aa', created_at: Time.new(2012, 10, 21))
     non_orphan = JournalDetail.create(journal_id: journal.id, property: 'Assigned to', property_key: :assigned_to_id,
                                       old_value: nil, value: 'Nicolas Meylan')
     assert orphan.id

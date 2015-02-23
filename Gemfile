@@ -38,6 +38,7 @@ group :test do
   # In memory sqlite db for faster test
   gem 'memory_test_fix'
   gem 'sqlite3'
+  gem 'pg'
   gem 'coveralls', require: false
   gem "codeclimate-test-reporter", require: false
   gem 'minitest-reporters'

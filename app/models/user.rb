@@ -138,11 +138,11 @@ class User < ActiveRecord::Base
     conditions[0] += 'AND journals.id = (SELECT max(j.id) FROM journals j WHERE j.project_id = projects.id)'
     if self.members.any?
       Project
-          .joins(User.send(:sanitize_sql_array, ["INNER JOIN `members` ON `members`.`project_id` = `projects`.`id` OR
-                    (`projects`.`is_public` = ? AND projects.id NOT IN
+          .joins(User.send(:sanitize_sql_array, ["INNER JOIN members ON members.project_id = projects.id OR
+                    (projects.is_public = ? AND projects.id NOT IN
                     (SELECT p2.id FROM projects p2 JOIN members m2 ON p2.id = m2.project_id WHERE m2.user_id = #{self.id}))
-                    LEFT OUTER JOIN `watchers` ON `watchers`.`watchable_id` = `projects`.`id` AND
-                    `watchers`.`watchable_type` = \'Project\' AND watchers.user_id = members.user_id", true]))
+                    LEFT OUTER JOIN watchers ON watchers.watchable_id = projects.id AND
+                    watchers.watchable_type = \'Project\' AND watchers.user_id = members.user_id", true]))
           .eager_load(journals: :user)
           .where(conditions)
           .order('members.project_position ASC')

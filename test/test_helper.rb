@@ -57,4 +57,8 @@ class ActiveSupport::TestCase
   def is_sqlite?
     ActiveRecord::Base.connection.adapter_name.downcase.include?('sqlite')
   end
+
+  def is_pg?
+    ActiveRecord::Base.connection.adapter_name.downcase.include?('postgresql')
+  end
 end

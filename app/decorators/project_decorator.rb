@@ -30,7 +30,7 @@ class ProjectDecorator < ApplicationDecorator
   # Render an overview report of running versions of the project.
   def display_version_overview
     versions = model.current_versions.decorate
-    condition = %Q(`versions`.`id` IN (#{versions.collect(&:id).join(',')})) if versions.to_a.any?
+    condition = %Q(versions.id IN (#{versions.collect(&:id).join(',')})) if versions.to_a.any?
     versions_overviews = Version.overviews(self.id, condition)
     structure = build_overview_report_stats(versions_overviews)
     render_versions_overview(structure, versions, h.t(:text_no_versions)) do

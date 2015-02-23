@@ -40,6 +40,9 @@ class QueryTest < ActiveSupport::TestCase
     elsif is_sqlite?
       expected_condition = '(issues.status_id IS \'1\' OR issues.status_id IS \'2\' OR issues.status_id IS \'4\' ) AND '
       expected_condition += '(issues.assigned_to_id IS \'7\' ) AND'
+    elsif is_pg?
+      expected_condition = '(issues.status_id = \'1\' OR issues.status_id = \'2\' OR issues.status_id = \'4\' ) AND '
+      expected_condition += '(issues.assigned_to_id = \'7\' ) AND'
     end
     assert_equal expected_condition, @query.stringify_query
     assert_equal @filters.inspect, @query.stringify_params
@@ -102,7 +105,7 @@ class QueryTest < ActiveSupport::TestCase
     @query.is_public = true
     @query.is_for_all = false
     assert @query.save, @query.errors.messages
-    assert_equal [@query, query2], Query.public_queries(@project.id).to_a
+    assert_match_array [@query, query2], Query.public_queries(@project.id).to_a
   end
 
   test 'scope created by and private' do
@@ -114,7 +117,7 @@ class QueryTest < ActiveSupport::TestCase
                   "is_public" => "0", "is_for_all" => "0", "object_type" => "Issue"}
     query2 = Query.create_query(attributes, project2, @filters)
     assert query2.save, query2.errors.messages
-    assert_equal [@query, query2], Query.created_by(User.current).to_a
+    assert_match_array [@query, query2], Query.created_by(User.current).to_a
   end
 
   test 'it should not be saved if attributes are missings' do

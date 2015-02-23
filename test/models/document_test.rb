@@ -74,6 +74,8 @@ class DocumentTest < ActiveSupport::TestCase
       expected = '(documents.category_id <=> \'1\' ) AND'
     elsif is_sqlite?
       expected = '(documents.category_id IS \'1\' ) AND'
+    elsif is_pg?
+      expected = '(documents.category_id = \'1\' ) AND'
     end
 
     assert_equal expected, actual
@@ -87,7 +89,11 @@ class DocumentTest < ActiveSupport::TestCase
 
   test 'it build a condition clause to select documents with name hello' do
     actual = Document.conditions_string({'name' => {'operator' => 'contains', 'value' => 'hello'}})
-    expected = 'documents.name LIKE "%hello%" AND'
+    if is_pg?
+      expected = 'documents.name ILIKE \'%hello%\' AND'
+    else
+      expected = 'documents.name LIKE \'%hello%\' AND'
+    end
     assert_equal expected, actual
   end
 
@@ -96,9 +102,11 @@ class DocumentTest < ActiveSupport::TestCase
                                          'category' => {'operator' => 'equal', 'value' => ['1']}})
 
     if is_mysql?
-      expected = 'documents.name LIKE "%hello%" AND (documents.category_id <=> \'1\' ) AND'
+      expected = 'documents.name LIKE \'%hello%\' AND (documents.category_id <=> \'1\' ) AND'
     elsif is_sqlite?
-      expected = 'documents.name LIKE "%hello%" AND (documents.category_id IS \'1\' ) AND'
+      expected = 'documents.name LIKE \'%hello%\' AND (documents.category_id IS \'1\' ) AND'
+    elsif is_pg?
+      expected = 'documents.name ILIKE \'%hello%\' AND (documents.category_id = \'1\' ) AND'
     end
 
     assert_equal expected, actual
@@ -111,6 +119,8 @@ class DocumentTest < ActiveSupport::TestCase
       expected = 'DATE_FORMAT(documents.created_at,\'%Y-%m-%d\') <=> \'2015-01-07\' AND'
     elsif is_sqlite?
       expected = 'strftime(\'%Y-%m-%d\', documents.created_at) IS \'2015-01-07\' AND'
+    elsif is_pg?
+      expected = 'documents.created_at::date = \'2015-01-07\' AND'
     end
 
     assert_equal expected, actual

@@ -43,11 +43,11 @@ class Issue < ActiveRecord::Base
   }
   scope :opened_issues, -> { joins(:status).where('issues_statuses.is_closed = false') }
   #Group
-  scope :group_opened_by_attr, -> (project_id, table_name, attr, conditions = '1 = 1') {
+  scope :group_opened_by_attr, -> (project_id, table_name, attr, conditions = ['? = ?', true, true]) {
     group_opened_by_attr_method(attr, conditions, project_id, table_name)
   }
   scope :group_by_status, -> (project_id) { group_by_status_method(project_id) }
-  scope :group_opened_by_project, -> (attr, conditions = '1 = 1') { group_opened_by_project_method(attr, conditions) }
+  scope :group_opened_by_project, -> (attr, conditions = ['? = ?', true, true]) { group_opened_by_project_method(attr, conditions) }
 
   # Scopes methods
   def self.fetch_dependencies_method
@@ -63,7 +63,7 @@ class Issue < ActiveRecord::Base
   # (e.g : [[4, 'Fixed to test', 3, 'test-project'], [5, 'Tested to be delivered', 1, 'test-project']])
   def self.group_by_status_method(project_id)
     joins(:project, status: [:enumeration]).
-        group('1').
+        group('1, 2, 4').
         where('issues.project_id = ?', project_id).
         pluck('issues_statuses.id, enumerations.name, count(issues.id), projects.slug')
   end
@@ -76,8 +76,9 @@ class Issue < ActiveRecord::Base
   def self.group_opened_by_attr_method(attribute_name, conditions, project_id, table_name)
     joins(:project, :status).
         joins("LEFT OUTER JOIN #{table_name} ON #{table_name}.id = issues.#{attribute_name}_id").
-        group('1').
-        where('issues_statuses.is_closed = ? AND issues.project_id = ? AND ?', false, project_id, conditions).
+        group('1, 2, 4').
+        where('issues_statuses.is_closed = ? AND issues.project_id = ?', false, project_id).
+        where(conditions).
         pluck("#{table_name}.id, #{table_name}.name, count(issues.id), projects.slug")
   end
 
@@ -87,7 +88,7 @@ class Issue < ActiveRecord::Base
   # [[database_field_value, project_id, project_slug, size_of_the_group, project_slug], ..]
   def self.group_opened_by_project_method(database_field, conditions)
     joins(:project, status: [:enumeration]).
-        group('2').
+        group('2, 1, 3, 5').
         where("issues_statuses.is_closed = ? AND #{conditions}", false).
         pluck("#{database_field}, projects.id, projects.slug, count(issues.id), projects.slug")
   end
