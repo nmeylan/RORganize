@@ -25,6 +25,7 @@ In addition, users with granted permission can define roles and set permissions,
 
 ## RORganize main feature
 
+*   Multi databases support (MySQL, PostgresSql, Sqlite)
 *   Multi projects support.
 *   Flexible Bugs, issues and tasks tracking.
 *   Flexible and sharable filters.
