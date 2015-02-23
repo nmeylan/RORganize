@@ -47,7 +47,7 @@ module Rorganize
         end
       end
 
-      # @param [ToolboxMenuItem] menu_item the menu taht contains the sub menu to build.
+      # @param [ToolboxMenuItem] menu_item the menu that contains the sub menu to build.
       def toolbox_sub_menu(menu_item)
         content_tag :ul, class: "submenu #{menu_item.attribute_name}" do
           if menu_contains_sub_item?(menu_item)
