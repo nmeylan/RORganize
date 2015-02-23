@@ -37,19 +37,19 @@ class IssueToolbox < Toolbox
 
   def build_menu_category
     if allowed_to_change('category')
-      generic_toolbox_menu_builder(h.t(:field_category), :categories, :category_id, @project.categories.collect { |category| category }, Proc.new(&:category), true)
+      generic_toolbox_menu_builder(h.t(:field_category), :categories, :category_id, @project.categories, Proc.new(&:category), true)
     end
   end
 
   def build_menu_status
     if allowed_to_change('status')
-      generic_toolbox_menu_builder(h.t(:field_status), :status, :status_id, @user.allowed_statuses(@project).collect { |status| status }, Proc.new(&:status))
+      generic_toolbox_menu_builder(h.t(:field_status), :status, :status_id, @user.allowed_statuses(@project), Proc.new(&:status))
     end
   end
 
   def build_menu_version
     if allowed_to_change('version')
-      generic_toolbox_menu_builder(h.t(:field_version), :versions, :version_id, @project.active_versions.collect { |version| version }, Proc.new(&:version), true)
+      generic_toolbox_menu_builder(h.t(:field_version), :versions, :version_id, @project.active_versions, Proc.new(&:version), true)
     end
   end
 
