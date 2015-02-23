@@ -10,7 +10,7 @@ class Toolbox
   # @param [Hash] context : excepted key-value  are {path: 'the "action" attribute of the form'}
   def initialize(collection, user, context = {})
     @collection = collection
-    @collection_ids = collection.collect { |element| element.id }
+    @collection_ids = collection.collect(&:id)
     @path = context[:path]
     @user = user
     @menu = Hash.new { |h, k| h[k] = ToolboxMenuItem.new(k) }
