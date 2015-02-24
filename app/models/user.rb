@@ -10,7 +10,7 @@ class User < ActiveRecord::Base
                                   :sign_in_count, :current_sign_in_at,
                                   :last_sign_in_at, :current_sign_in_ip, :last_sign_in_ip)
   #Slug
-  friendly_id :name, use: :slugged
+  friendly_id :login, use: :slugged
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable,
   # :lockable, :timeoutable and :omniauthable
@@ -23,7 +23,8 @@ class User < ActiveRecord::Base
   has_many :notifications, dependent: :delete_all
   has_many :preferences, dependent: :delete_all
   #Validators
-  validates :login, :name, presence: true, length: 4..50, uniqueness: true
+  validates :login, presence: true, length: 4..50, uniqueness: true, format: /\A[a-zA-Z0-9_]*\z/
+  validates :name, presence: true, length: 4..50
   #Triggers
   after_create :generate_default_avatar, :set_preferences
   #Scope
@@ -38,7 +39,7 @@ class User < ActiveRecord::Base
   end
 
   def should_generate_new_friendly_id?
-    name_changed?
+    login_changed?
   end
 
   def activities(journalizable_types, period, from_date)

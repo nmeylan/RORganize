@@ -30,13 +30,38 @@ class UserTest < ActiveSupport::TestCase
     assert_equal [:name, :login, :email, :password, :admin, :retype_password], User.permit_attributes
   end
 
-  test 'it should generate new slug when name change' do
-    assert_equal 'steve-doe', @user.slug
+  test 'it should generate new slug when login change' do
+    assert_equal 'stdoe', @user.slug
 
-    @user.name = 'Steve Doee'
+    @user.login = 'stdoee'
     @user.save
     @user.reload
-    assert_equal 'steve-doee', @user.slug
+    assert_equal 'stdoee', @user.slug
+  end
+
+  test 'login should be uniq' do
+    user = User.new(name: 'Steve Doe', login: 'stdoe', admin: 0, email: 'steve.doee@example.com', password: 'qwertz')
+    assert_not user.save
+
+    user.login = 'stdoee'
+    assert user.save, user.errors.messages
+  end
+
+  test 'login should accept only alpha numeric value' do
+    user = User.new(name: 'Steve Doe', login: 'stdoe with space', admin: 0, email: 'steve.doee@example.com', password: 'qwertz')
+    assert_not user.save
+
+    user.login = 'stdoee#specialchar'
+    assert_not user.save
+
+    user.login = 'stdoee+#specialchar'
+    assert_not user.save
+
+    user.login = 'stdoee_underscored'
+    assert user.save, user.errors.messages
+
+    user.login = 'stdoee666_1664'
+    assert user.save, user.errors.messages
   end
 
   test "it load issues activities" do
