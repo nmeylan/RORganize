@@ -8,9 +8,8 @@ class RorganizeMarkdownRenderer < Redcarpet::Render::HTML
   include ActionDispatch::Routing
   include Rails.application.routes.url_helpers
   STRIKETHROUGH_REGEX = /~~[^~~][^~~]*~~/
-  EMPTY_TASK_REGEX = /-\s\[\s\]\s.*/
-  COMPLETE_TASK_REGEX = /-\s\[x\]\s.*/
-  TASK_REGEX = /\s*-\s\[(\s|x)\]\s*/
+  COMPLETE_ELEMENT_REGEX = /\[x\]\s/
+  EMPTY_ELEMENT_REGEX = /\[\s\]\s/
   TASKS_LIST_REGEX = /(^(\s*-\s\[(\s|x)\]\s*.*\n?)+$)/
   USER_LINK_REGEX= /@[^\s]+/
   LF ='\n'
@@ -40,7 +39,15 @@ class RorganizeMarkdownRenderer < Redcarpet::Render::HTML
 
   def postprocess(document)
     id = "#{@context[:element_type]}-#{@context[:element_id]}" if @context[:element_id] && @context[:element_type]
+    document = add_class_to_task_list(document)
     "<div class='markdown-renderer' id='#{id}'>#{document}</div>"
+  end
+
+  def add_class_to_task_list(document)
+    document.gsub(/(<ul>)\n(<li><input type="checkbox" class="task-list-item-checkbox")/) do |match|
+      ul = "<ul class=\"task-list\">"
+      ul + $2
+    end
   end
 
   def issue_link_renderer(document)
@@ -52,13 +59,12 @@ class RorganizeMarkdownRenderer < Redcarpet::Render::HTML
 
   def task_list_renderer(document)
     document.gsub(TASKS_LIST_REGEX) do |task_list|
-      list = '<ul class="task-list">'
-      list += task_list.gsub(COMPLETE_TASK_REGEX) do |complete_task|
-        '<li><input type="checkbox" class="task-list-item-checkbox" '+@task_list_edit +' checked="">'+complete_task.gsub(TASK_REGEX, '')+'</li>'
-      end.gsub(EMPTY_TASK_REGEX) do |empty_task|
-        '<li><input type="checkbox" class="task-list-item-checkbox" '+@task_list_edit+'>'+empty_task.gsub(TASK_REGEX, '')+'</li>'
+      list = ""
+      list += task_list.gsub(COMPLETE_ELEMENT_REGEX) do
+        "<input type=\"checkbox\" class=\"task-list-item-checkbox\" #{@task_list_edit} checked=\"\">"
+      end.gsub(EMPTY_ELEMENT_REGEX) do
+        "<input type=\"checkbox\" class=\"task-list-item-checkbox\" #{@task_list_edit}>"
       end
-      list += '</ul>'
       list
     end
   end
