@@ -13,6 +13,7 @@ before_install:
   - cp config/travis_database.yml config/database.yml
   - export TZ=Europe/Paris
   - date
+  - mkdir -p public/system/identicons
 install:
   - if [[ $DB = sqlite ]]; then bash .travis.install-sqlite.sh; fi;
 
