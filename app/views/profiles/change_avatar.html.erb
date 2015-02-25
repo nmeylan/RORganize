@@ -23,6 +23,7 @@
         <%= @user_decorator.display_avatar('', :very_small) %>
         <%= @user_decorator.delete_avatar_link %>
       </div>
+      <br>
       <div>
         <%= render partial: 'shared/avatar', locals: {object: @user_decorator, type: 'user', avatar: @user_decorator.avatar, form: f} %>
       </div>
