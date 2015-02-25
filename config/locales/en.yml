@@ -344,6 +344,9 @@ en:
   text_dec_version_position: This version will appear above the next version.
   text_undetermined: undetermined
   text_your_profile: Your profile
+  text_your_projects: Your projects
+  text_your_queries: Your queries
+  text_your_spent_time: Your spent time
 
   password: "Password"
   field_steps: "Steps"

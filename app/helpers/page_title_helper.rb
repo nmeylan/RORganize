@@ -32,7 +32,11 @@ module Rorganize
         if @project && !@project.new_record?
           title += " · #{@project.slug.capitalize}"
         elsif controller_name.eql?('profiles')
-          title += User.current.login + " (#{User.current.caption})"
+          if action_name.eql?('view_profile')
+            title += User.current.login + " (#{User.current.caption})"
+          else
+            title += "#{t(:text_your_profile)} #{title_tag_profile_action(title)}"
+          end
         else
           title += ' · RORganize'.freeze
         end
@@ -44,6 +48,26 @@ module Rorganize
           title += title_tag_action(title)
         end
         title
+      end
+
+      def title_tag_profile_action(title)
+        title += '· '
+        case action_name
+          when 'change_password'
+            title += t(:link_change_password)
+          when 'change_email'
+            title += t(:link_change_email)
+          when 'notification_preferences'
+            title += t(:link_notification_preferences)
+          when 'projects'
+            title += t(:text_your_projects)
+          when 'custom_queries'
+            title += t(:text_your_queries)
+          when 'spent_time'
+            title += t(:text_your_spent_time)
+          else
+            ''
+        end
       end
 
       def title_tag_action(title)
@@ -94,7 +118,7 @@ module Rorganize
       end
 
       def title_capitalize_text(array)
-        array.collect{ |chunk| chunk.capitalize }.join(' ')
+        array.collect { |chunk| chunk.capitalize }.join(' ')
       end
 
       def title_tag_exception_pages(title)
