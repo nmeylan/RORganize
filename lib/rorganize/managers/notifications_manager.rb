@@ -66,13 +66,13 @@ module Rorganize
             created_at = Time.now.utc.to_formatted_s(:db)
             real_recipients(notification, 'in_app').each do |key, users|
               users.each do |user|
-                insert << "(#{notification.model.id}, '#{notification.model.class}','#{notification.trigger.class}', #{notification.trigger.id}, #{user[:id]}, '#{notification.trigger.user_id}', '#{key}', #{notification.project.id}, '#{created_at}')"
+                insert << "(#{notification.model.id}, '#{notification.model.class}','#{notification.trigger.class}', #{notification.trigger.id}, #{user[:id]}, '#{notification.trigger.user_id}', '#{key}', #{notification.project.id}, '#{created_at}', '#{created_at}')"
                 user_ids << user[:id]
               end
             end
             if insert.any?
               Notification.delete_all(user_id: user_ids, notifiable_id: notification.model.id, notifiable_type: notification.model.class)
-              sql = "INSERT INTO notifications (notifiable_id, notifiable_type, trigger_type, trigger_id, user_id, from_id, recipient_type, project_id, created_at) VALUES #{insert.join(', ')}"
+              sql = "INSERT INTO notifications (notifiable_id, notifiable_type, trigger_type, trigger_id, user_id, from_id, recipient_type, project_id, created_at, updated_at) VALUES #{insert.join(', ')}"
               Notification.connection.execute(sql)
             end
           end
@@ -90,14 +90,14 @@ module Rorganize
             users.each do |user|
               notification_bulk_edit.objects.each do |model|
                 ids << model[:id]
-                insert << "(#{model[:id]}, '#{notification_bulk_edit.type}','Journal', #{notification_bulk_edit.journals_hash[model[:id]]}, #{user[:id]}, '#{notification_bulk_edit.from_id}', '#{key}', #{notification_bulk_edit.project.id}, '#{created_at}')"
+                insert << "(#{model[:id]}, '#{notification_bulk_edit.type}','Journal', #{notification_bulk_edit.journals_hash[model[:id]]}, #{user[:id]}, '#{notification_bulk_edit.from_id}', '#{key}', #{notification_bulk_edit.project.id}, '#{created_at}', '#{created_at}')"
                 user_ids << user[:id]
               end
             end
           end
           if insert.any?
             Notification.delete_all(user_id: user_ids, notifiable_id: ids, notifiable_type: notification_bulk_edit.type)
-            sql = "INSERT INTO notifications (notifiable_id, notifiable_type, trigger_type, trigger_id, user_id, from_id, recipient_type, project_id, created_at) VALUES #{insert.join(', ')}"
+            sql = "INSERT INTO notifications (notifiable_id, notifiable_type, trigger_type, trigger_id, user_id, from_id, recipient_type, project_id, created_at, updated_at) VALUES #{insert.join(', ')}"
             Notification.connection.execute(sql)
           end
         end
