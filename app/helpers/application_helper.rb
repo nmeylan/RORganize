@@ -1,5 +1,6 @@
 require 'rorganize/redcarpet/rorganize_markdown_renderer'
 module ApplicationHelper
+  include PageTitleHelper
   include Rorganize::Managers::PermissionManager::PermissionHandler
   include Rorganize::Helpers::ToolboxHelper
   include Rorganize::Helpers::HistoryHelper
@@ -7,7 +8,6 @@ module ApplicationHelper
   include Rorganize::Helpers::LinksHelper
   include Rorganize::Helpers::CollectionHelper
   include Rorganize::Helpers::MarkdownRenderHelper
-  include Rorganize::Helpers::PageTitleHelper
   include Rorganize::Helpers::CustomTagHelper
   # Check if there is any content for :sidebar
   def sidebar_content?
