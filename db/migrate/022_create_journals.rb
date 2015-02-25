@@ -8,7 +8,7 @@ class CreateJournals < ActiveRecord::Migration
     create_table :journals do |t|
       t.string :journalized_type, limit: 30
       t.text :notes, limit: 65555
-      t.timestamps :created_on
+      t.timestamps null: false
       t.integer :journalized_id
       t.integer :user_id
     end

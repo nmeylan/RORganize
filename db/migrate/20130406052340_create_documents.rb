@@ -6,8 +6,7 @@ class CreateDocuments < ActiveRecord::Migration
       t.integer :version_id
       t.integer :category_id
       t.integer :project_id
-      t.timestamps :created_on
-      t.timestamps :updated_on
+      t.timestamps null: false
     end
   end
 

@@ -9,8 +9,7 @@ class CreateNotifications < ActiveRecord::Migration
       t.integer :trigger_id
       t.string :trigger_type
       t.string :recipient_type
-      t.timestamps :created_at
-      t.timestamps :updated_at
+      t.timestamps null: false
     end
   end
 

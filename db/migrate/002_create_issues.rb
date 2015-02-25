@@ -3,8 +3,7 @@ class CreateIssues < ActiveRecord::Migration
     create_table :issues do |t|
       t.string :subject, limit: 255
       t.text :description, limit: 65535
-      t.timestamps :created_on
-      t.timestamps :updated_on
+      t.timestamps null: false
       t.date :due_date
       t.integer :done
       t.integer :author_id
