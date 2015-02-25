@@ -55,6 +55,8 @@ module PageTitleHelper
         title += t(:link_change_password)
       when 'change_email'
         title += t(:link_change_email)
+      when 'change_avatar'
+        title += t(:link_change_avatar)
       when 'notification_preferences'
         title += t(:link_notification_preferences)
       when 'projects'
