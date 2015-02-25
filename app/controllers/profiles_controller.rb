@@ -190,7 +190,9 @@ class ProfilesController < ApplicationController
   end
 
   def change_avatar!
-    unless user_params[:avatar].nil?
+    if user_params[:avatar].nil?
+      @user_decorator = @user.decorate
+    else
       @user.avatar = Avatar.new(attachable_type: 'User', attachable_id: @user.id)
       @user.avatar.avatar = user_params[:avatar]
       if @user.save_avatar
