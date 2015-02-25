@@ -18,6 +18,14 @@
   text-overflow: ellipsis;
 }
 
+#sidebar h2 a{
+  color: $default-h2-color !important;
+  font-size: 22px;
+}
+
+#sidebar h2 a:hover{
+  text-decoration: underline;
+}
 
 /**
   TABS

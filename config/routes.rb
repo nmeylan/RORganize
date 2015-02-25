@@ -143,6 +143,8 @@ RORganize::Application.routes.draw do
       get 'act_as'
       post 'change_password'
       get 'change_password'
+      post 'change_email'
+      get 'change_email'
       get 'custom_queries'
       get 'projects'
       post 'activity_filter', path: 'activity_filter'

@@ -33,8 +33,20 @@ class ProfilesController < ApplicationController
     if request.post?
       change_password!
     else
+      @user_decorator = @user.decorate
       respond_to do |format|
         format.html {}
+      end
+    end
+  end
+
+  def change_email
+    if request.post?
+      change_email!
+    else
+      @user_decorator = @user.decorate
+      respond_to do |format|
+        format.html
       end
     end
   end
@@ -133,12 +145,26 @@ class ProfilesController < ApplicationController
   def change_password!
     if password_match_retype?
       respond_to do |format|
-        flash[:notice] = t(:successful_creation)
+        flash[:notice] = t(:successful_update)
         format.html { redirect_to profile_path }
       end
     else
       @user.errors.add(:passwords, ': do not match')
       respond_to do |format|
+        format.html
+      end
+    end
+  end
+
+  def change_email!
+    @user.email = user_params[:email]
+    respond_to do |format|
+      if !@user.email_changed?
+        format.html { redirect_to profile_path }
+      elsif @user.save
+        flash[:notice] = t(:successful_update)
+        format.html { redirect_to profile_path }
+      else
         format.html
       end
     end

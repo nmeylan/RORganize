@@ -1,0 +1,22 @@
+<%#=
+ * User: nmeylan
+ * Date: 25.02.15
+ * Time: 15:07
+%>
+
+<%= contextual nil do %>
+    <%= content_tag :h1, class: :avatar do %>
+        <%= t(:link_change_email) %>
+    <% end %>
+<% end %>
+
+<%= render partial: 'profiles/sidebar', locals: {user: @user} %>
+
+<%= form_for(@user, url: {controller: 'profiles', action: 'change_email', id: @user.id}, html: {method: :post, class: 'form'}) do |f| %>
+    <%= raw error_messages(@user.errors.full_messages) %>
+    <p>
+      <label for="user_email"><%= t(:email) %><span class="required">*</span></label>
+      <%= f.text_field(:email, {size: 50}) %>
+    </p>
+    <%= submit_tag t(:button_save) %>
+<% end %>

@@ -47,6 +47,34 @@ class ProfilesControllerTest < ActionController::TestCase
     assert_template 'change_password'
   end
 
+  test "should get form to change email" do
+    get :change_email
+    assert_response :success
+    assert_template 'change_email'
+  end
+
+  test "should post change email and be redirected with a flash message when it changed" do
+    post :change_email, user: {email: 'test_email@rorganize.org'}
+    assert_redirected_to profile_path
+    assert_not_empty flash[:notice]
+  end
+
+  test "should post change email and be redirected without a flash message when it has not changed" do
+    post :change_email, user: {email: User.current.email}
+    assert_redirected_to profile_path
+    assert_nil flash[:notice]
+  end
+
+  test "should refresh the page when email is not valid" do
+    post :change_email, user: {email: ''}
+    assert_response :success
+    assert_template 'change_email'
+
+    post :change_email, user: {email: 'jb@atz.com'} #see fixture:email has been already taken
+    assert_response :success
+    assert_template 'change_email'
+  end
+
   test "should get all custom queries" do
     get :custom_queries
     assert_response :success

@@ -343,6 +343,7 @@ en:
   text_inc_version_position: This version will appear below the previous version.
   text_dec_version_position: This version will appear above the next version.
   text_undetermined: undetermined
+  text_your_profile: Your profile
 
   password: "Password"
   field_steps: "Steps"
