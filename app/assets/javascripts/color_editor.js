@@ -45,8 +45,8 @@ function set_editor_colors(editor_field, color_bg) {
 function dropdown_color_editor(color_bg, editor_field) {
     var dropdown = $("<div class='dropdown-menu-content colors dropdown-menu '></div>");
     var rows = [];
-    rows.push(['e11d21', 'eb6420', 'fbca04', '009800', '006b75', '207de5', '0052cc', '5319e7']);
-    rows.push(['f7c6c7', 'fad8c7', 'fef2c0', 'bfe5bf', 'bfdadc', 'c7def8', 'bfd4f2', 'd4c5f9']);
+    rows.push(['b54223', 'eb6420', 'ffd83c', '549e54', '006b75', '4183c4', '0052cc', '5319e7']);
+    rows.push(['f7c6c7', 'fad8c7', 'ffe88a', 'bfe5bf', 'bfdadc', 'c7def8', 'bfd4f2', 'd4c5f9']);
     for(var i= 0; i < rows.length; i++){
         dropdown_color_editor_row(rows[i], dropdown,color_bg, editor_field);
     }
