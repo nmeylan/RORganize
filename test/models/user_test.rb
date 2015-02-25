@@ -26,10 +26,6 @@ class UserTest < ActiveSupport::TestCase
     assert_equal user.name, user.caption
   end
 
-  test 'permit attributes should contains' do
-    assert_equal [:name, :login, :email, :password, :admin, :retype_password], User.permit_attributes
-  end
-
   test 'it should generate new slug when login change' do
     assert_equal 'stdoe', @user.slug
 
@@ -329,7 +325,34 @@ class UserTest < ActiveSupport::TestCase
     assert_equal user.preferences, Preference.where(id: preferences_ids)
     user.destroy
     assert_equal [], Preference.where(id: preferences_ids)
+  end
 
+  test 'it generate a default avatar' do
+    user = User.create!(name: 'Steaaa', login: 'stdaaa', admin: 0, password: 'qwertz', email: 'steve.doe.uniq@example.com')
 
+    assert_nil user.avatar
+    user.generate_default_avatar!
+    assert_not_nil user.avatar
+    assert_equal 'stdaaa_default_avatar.png', user.avatar.avatar_file_name
+  end
+
+  test 'it delete avatar when user has changed his default avatar and regenerate his default avatar' do
+    user = User.create!(name: 'Steaaa', login: 'stdaaa', admin: 0, password: 'qwertz', email: 'steve.doe.uniq@example.com')
+
+    assert 0, Avatar.where(attachable_id: user.id, attachable_type: 'User').count
+    assert_nil user.avatar
+    user.generate_default_avatar!
+    assert 1, Avatar.where(attachable_id: user.id, attachable_type: 'User').count
+    assert_not_nil user.avatar
+    assert_equal 'stdaaa_default_avatar.png', user.avatar.avatar_file_name
+
+    user.avatar.avatar_file_name = 'new_avatar.png' # change default avatar
+    user.avatar.save
+    user.avatar.reload
+
+    assert_equal 'new_avatar.png', user.avatar.avatar_file_name
+    user.delete_avatar
+    assert 1, Avatar.where(attachable_id: user.id, attachable_type: 'User').count
+    assert_equal 'stdaaa_default_avatar.png', user.avatar.avatar_file_name
   end
 end

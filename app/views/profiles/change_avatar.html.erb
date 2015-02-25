@@ -1,0 +1,31 @@
+<%#=
+ * User: nmeylan
+ * Date: 25.02.15
+ * Time: 15:07
+%>
+
+<%= contextual nil do %>
+    <%= content_tag :h1 do %>
+        <%= t(:link_change_avatar) %>
+    <% end %>
+<% end %>
+
+<%= render partial: 'profiles/sidebar', locals: {user: @user} %>
+
+<%= form_for(@user, url: {controller: 'profiles', action: 'change_avatar', id: @user.id}, html: {method: :post, class: 'form'}) do |f| %>
+    <%= f.hidden_field :updated_at %>
+    <%= raw error_messages(@user.errors.full_messages) %>
+    <div id="attachments">
+      <div id="user-profile-change-avatar">
+        <%= @user_decorator.display_avatar('', :medium) %>
+        <%= @user_decorator.display_avatar('', :small) %>
+        <%= @user_decorator.display_avatar('', :thumb) %>
+        <%= @user_decorator.display_avatar('', :very_small) %>
+        <%= @user_decorator.delete_avatar_link %>
+      </div>
+      <div>
+        <%= render partial: 'shared/avatar', locals: {object: @user_decorator, type: 'user', avatar: @user_decorator.avatar, form: f} %>
+      </div>
+    </div>
+    <%= submit_tag t(:button_save) %>
+<% end %>

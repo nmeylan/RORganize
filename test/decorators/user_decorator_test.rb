@@ -103,4 +103,16 @@ class UserDecoratorTest < Rorganize::Decorator::TestCase
     assert_select 'img', 1
     assert_select '.user-profile.avatar', 1
   end
+
+  test "it displays a link to delete non default avatar" do
+    @user.stubs(:has_default_avatar?).returns(false)
+    node(@user_decorator.delete_avatar_link)
+    assert_select 'a', 1
+    assert_select 'a[href=?]', delete_avatar_profile_path
+  end
+
+  test "it do not displays a link to delete avatar when user has the default one" do
+    @user.stubs(:has_default_avatar?).returns(true)
+    assert_nil @user_decorator.delete_avatar_link
+  end
 end

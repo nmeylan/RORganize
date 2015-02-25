@@ -75,6 +75,23 @@ class ProfilesControllerTest < ActionController::TestCase
     assert_template 'change_email'
   end
 
+  test "should get form to change avatar" do
+    get :change_avatar
+    assert_response :success
+    assert_template 'change_avatar'
+  end
+
+  test "should post change avatar and be redirected to same page" do
+    post :change_avatar, user: {avatar: fixture_file_upload("files/avatar.png",'image/png')}
+    assert_redirected_to change_avatar_profile_path
+  end
+
+  test "should delete avatar" do
+    User.any_instance.stubs(:delete_avatar).returns(nil)
+    delete :delete_avatar, format: :js
+    assert_response :success
+  end
+
   test "should get all custom queries" do
     get :custom_queries
     assert_response :success

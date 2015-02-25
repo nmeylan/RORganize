@@ -16,6 +16,16 @@ class UserDecorator < ApplicationDecorator
     super(h.t(:link_delete), h.user_path(model.slug))
   end
 
+  def delete_avatar_link
+    unless model.has_default_avatar?
+      h.link_to h.glyph(h.t(:link_delete), 'trashcan'),
+              h.delete_avatar_profile_path,
+              {remote: true, 'data-confirm' => h.t(:text_delete_item),
+               method: :delete, class: 'tooltipped tooltipped-s',
+              label: h.t(:text_will_regenerate_default_avatar)}
+    end
+  end
+
   # @return [String] formatted current sign in date.
   def sign_in
     model.last_sign_in_at ? model.last_sign_in_at.to_formatted_s(:long_ordinal) : '-'
@@ -33,7 +43,7 @@ class UserDecorator < ApplicationDecorator
 
   # @return [String] is user admin.
   def display_is_admin
-    content_tag(:span, nil, class: 'medium-octicon octicon-crown')if model.admin
+    content_tag(:span, nil, class: 'medium-octicon octicon-crown') if model.admin
   end
 
   # Render a link to the user profile.

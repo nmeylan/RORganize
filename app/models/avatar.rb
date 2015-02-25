@@ -23,6 +23,10 @@ class Avatar < ActiveRecord::Base
                        size: {in: 0..2.megabytes, message: 'size errors'},
                        file_name: {not: /.exe/, message: 'Errors'}
 
+  def self.permit_attributes
+    [:file, :tempfile, :original_filename, :content_type, :headers, :form_data, :name]
+  end
+
   def avatar_file_size
     self.file_file_size
   end

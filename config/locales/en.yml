@@ -140,6 +140,7 @@ en:
   link_remove: Remove
   link_change_password: Change password
   link_change_email: Change email
+  link_change_avatar: Change avatar
   link_my_options: My options
   link_new_permission: New permission
   link_edit_permission: Edit permission
@@ -347,6 +348,7 @@ en:
   text_your_projects: Your projects
   text_your_queries: Your queries
   text_your_spent_time: Your spent time
+  text_will_regenerate_default_avatar: This will regenerate a default avatar.
 
   password: "Password"
   field_steps: "Steps"

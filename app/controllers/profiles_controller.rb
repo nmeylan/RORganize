@@ -51,6 +51,25 @@ class ProfilesController < ApplicationController
     end
   end
 
+  def change_avatar
+    if request.post?
+      change_avatar!
+    else
+      @user_decorator = @user.decorate
+      respond_to do |format|
+        format.html
+      end
+    end
+  end
+
+  def delete_avatar
+    @user.delete_avatar
+    flash[:notice] = t(:successful_update)
+    respond_to do |format|
+      format.js { js_redirect_to change_avatar_profile_path }
+    end
+  end
+
   def custom_queries
     @queries_decorator = Query.created_by(@user).eager_load(:user)
                              .paginated(@sessions[:current_page], @sessions[:per_page], order('queries.name'))
@@ -167,6 +186,21 @@ class ProfilesController < ApplicationController
       else
         format.html
       end
+    end
+  end
+
+  def change_avatar!
+    unless user_params[:avatar].nil?
+      @user.avatar = Avatar.new(attachable_type: 'User', attachable_id: @user.id)
+      @user.avatar.avatar = user_params[:avatar]
+      if @user.avatar.save
+        flash[:notice] = t(:successful_update)
+      else
+        @user.generate_default_avatar
+      end
+    end
+    respond_to do |format|
+      format.html { redirect_to change_avatar_profile_path }
     end
   end
 

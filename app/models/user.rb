@@ -75,7 +75,7 @@ class User < ActiveRecord::Base
   end
 
   def self.permit_attributes
-    [:name, :login, :email, :password, :admin, :retype_password]
+    [:name, :login, :email, :password, :admin, :retype_password,:avatar, :updated_at]
   end
 
   def is_admin?
@@ -156,7 +156,11 @@ class User < ActiveRecord::Base
 
 
   def generate_default_avatar
-    path = "#{Rails.root}/public/system/identicons/#{self.slug}_avatar.png"
+    generate_default_avatar!
+  end
+
+  def generate_default_avatar!
+    path = "#{Rails.root}/public/system/identicons/#{self.slug}_default_avatar.png"
     Identicon.file_for self.slug, path
     file = File.open(path)
     self.avatar = Avatar.new({attachable_type: self.class.to_s})
@@ -165,6 +169,18 @@ class User < ActiveRecord::Base
     avatar.save(validation: false)
     file.close
   end
+
+  def delete_avatar
+    unless has_default_avatar?
+      self.avatar.destroy
+      generate_default_avatar!
+    end
+  end
+
+  def has_default_avatar?
+    self.avatar && self.avatar.avatar_file_name.end_with?('_default_avatar.png')
+  end
+
 
   def count_notification
     Notification.where(user_id: self.id).pluck('count(notifications.id)')[0]
