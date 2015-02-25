@@ -20,7 +20,8 @@ class Avatar < ActiveRecord::Base
 
   validates_attachment :avatar,
                        content_type: {content_type: /\Aimage/, message: 'Errors'},
-                       size: {in: 0..2.megabytes, message: 'size errors'},
+                       size: {in: RORganize::Application.config.attachments_size,
+                              message: "is too big, only #{RORganize::Application.config.attachments_size.max / 1024} kB max is allowed."},
                        file_name: {not: /.exe/, message: 'Errors'}
 
   def self.permit_attributes

@@ -193,15 +193,17 @@ class ProfilesController < ApplicationController
     unless user_params[:avatar].nil?
       @user.avatar = Avatar.new(attachable_type: 'User', attachable_id: @user.id)
       @user.avatar.avatar = user_params[:avatar]
-      if @user.avatar.save
+      if @user.save_avatar
         flash[:notice] = t(:successful_update)
+        respond_to do |format|
+          format.html { redirect_to change_avatar_profile_path }
+        end
       else
         @user.generate_default_avatar
+        @user_decorator = @user.decorate
       end
     end
-    respond_to do |format|
-      format.html { redirect_to change_avatar_profile_path }
-    end
+
   end
 
   def password_match_retype?
