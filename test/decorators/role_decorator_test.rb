@@ -25,14 +25,6 @@ class RoleDecoratorTest < Rorganize::Decorator::TestCase
     assert_select 'span', text: 'Test role'
   end
 
-  test "it should not have a link to edit action when user is allowed but role is locked" do
-    allow_user_to('edit')
-    @role_decorator.is_locked = true
-    node(@role_decorator.edit_link)
-    assert_select 'span', 1
-    assert_select 'span', text: 'Test role'
-  end
-
   test "it should not have a link to delete action when user is not allowed to" do
     node(@role_decorator.delete_link)
     assert_nil @node
