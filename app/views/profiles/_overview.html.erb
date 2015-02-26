@@ -5,7 +5,7 @@
 %>
 <%= contextual nil do %>
     <%= content_tag :h1, class: :avatar do %>
-        <%= user_decorator.display_avatar %>
+        <%= user_decorator.display_avatar('', :medium) %>
         <%= "#{user_decorator.login} (#{user_decorator.name})" %>
     <% end %>
 <% end %>

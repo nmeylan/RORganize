@@ -5,10 +5,15 @@
 # File: show.html.erb
 %>
 
-<%= contextual "#{t(:label_user)} : #{@user_decorator.name}" do %>
-    <%= @user_decorator.edit_link %>
-    <%= @user_decorator.delete_link %>
-
+<%= contextual nil do %>
+    <h1 class="avatar">
+      <%= @user_decorator.display_avatar('', :medium) %>
+      <%= link_to @user_decorator.name, view_profile_path(@user_decorator.slug), style: 'color: inherit;font-size: inherit;vertical-align: middle;' %>
+    </h1>
+    <div class="splitcontentright">
+      <%= @user_decorator.edit_link %>
+      <%= @user_decorator.delete_link %>
+    </div>
 <% end %>
 
 <table class="detail" style="width:100%">
