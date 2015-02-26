@@ -22,6 +22,9 @@ class User < ActiveRecord::Base
   has_many :assigned_issues, foreign_key: :assigned_to_id, class_name: 'Issue'
   has_many :notifications, dependent: :delete_all
   has_many :preferences, dependent: :delete_all
+  has_many :issues, foreign_key: :author_id, dependent: :nullify
+  has_many :comments, foreign_key: :user_id, dependent: :nullify
+  has_many :journals, foreign_key: :user_id, dependent: :nullify
   #Validators
   validates :login, presence: true, length: 4..50, uniqueness: true, format: /\A[a-zA-Z0-9_]*\z/
   validates :name, presence: true, length: 4..50

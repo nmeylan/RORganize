@@ -18,7 +18,7 @@ class UserTest < ActiveSupport::TestCase
   # down fixture information.
 
   def teardown
-    @user.destroy
+
   end
 
   test 'caption should be equal to name' do
@@ -296,63 +296,92 @@ class UserTest < ActiveSupport::TestCase
     assert user.save, user.errors.messages
   end
 
-  test 'it has many notifications and should delete them on project deletion' do
-    user = User.create(name: 'Steaaa', login: 'stdaaa', admin: 0, password: 'qwertz', email: 'steve.doe.uniq@example.com')
-    notification = Notification.create(user_id: user.id, notifiable_id: 666,
+  test 'it has many notifications and should delete them on user deletion' do
+    notification = Notification.create(user_id: @user.id, notifiable_id: 666,
                                        notifiable_type: 'Issue', project_id: 1, from_id: 666,
                                        trigger_type: 'Journal',
                                        trigger_id: 666,
                                        recipient_type: 'participants')
-    assert_equal 1, user.count_notification
-    user.destroy
+    assert_equal 1, @user.count_notification
+    @user.destroy
 
     assert_raise(ActiveRecord::RecordNotFound) { notification.reload }
   end
 
-  test 'it has many members and should delete them on project deletion' do
-    user = User.create(name: 'Steaaa', login: 'stdaaa', admin: 0, password: 'qwertz', email: 'steve.doe.uniq@example.com')
-
-    member = Member.create(user_id: user.id, project_id: @project.id, role_id: 666, is_project_starred: true)
-    user.destroy
+  test 'it has many members and should delete them on user deletion' do
+    member = Member.create(user_id: @user.id, project_id: @project.id, role_id: 666, is_project_starred: true)
+    @user.destroy
 
     assert_raise(ActiveRecord::RecordNotFound) { member.reload }
   end
 
-  test 'it has many preferences and should delete them on project deletion' do
-    user = User.create(name: 'Steaaa', login: 'stdaaa', admin: 0, password: 'qwertz', email: 'steve.doe.uniq@example.com')
-    assert user.preferences.count > 0
-    preferences_ids = user.preferences.collect(&:id)
-    assert_equal user.preferences, Preference.where(id: preferences_ids)
-    user.destroy
+  test 'it has many preferences and should delete them on user deletion' do
+    assert @user.preferences.count > 0
+    preferences_ids = @user.preferences.collect(&:id)
+    assert_equal @user.preferences, Preference.where(id: preferences_ids)
+    @user.destroy
     assert_equal [], Preference.where(id: preferences_ids)
   end
 
-  test 'it generate a default avatar' do
-    user = User.create!(name: 'Steaaa', login: 'stdaaa', admin: 0, password: 'qwertz', email: 'steve.doe.uniq@example.com')
+  test 'it has many issues and should nullify author id on user deletion' do
+    issue = Issue.create!(tracker_id: 1, subject: 'Issue creation', status_id: '1', done: 0, project_id: 1, author_id: @user.id)
 
-    assert_nil user.avatar
-    user.generate_default_avatar!
-    assert_not_nil user.avatar
-    assert_equal 'stdaaa_default_avatar.png', user.avatar.avatar_file_name
+    assert_equal 1, Issue.where(author_id: @user.id).count
+    assert_equal @user.id, issue.author_id
+
+    @user.destroy
+    issue.reload
+
+    assert_nil issue.author_id
+  end
+
+  test 'it has many comments and should nullify user id on user deletion' do
+    comment = Comment.create!(content: 'this a comment', user_id: @user.id, project_id: 1, commentable_id: 2, commentable_type: 'Issue')
+
+    assert_equal 1, Comment.where(user_id: @user.id).count
+    assert_equal @user.id, comment.user_id
+
+    @user.destroy
+    comment.reload
+
+    assert_nil comment.user_id
+  end
+
+  test 'it has many journals and should nullify user id on user deletion' do
+    journal = Journal.create!(journalizable_type: 'Issue', journalizable_id: 666, action_type: 'created',
+                              project_id: 1, journalizable_identifier: 'aa', user_id: @user.id)
+
+    assert_equal 1, Journal.where(user_id: @user.id).count
+    assert_equal @user.id, journal.user_id
+
+    @user.destroy
+    journal.reload
+
+    assert_nil journal.user_id
+  end
+
+  test 'it generate a default avatar' do
+    assert_nil @user.avatar
+    @user.generate_default_avatar!
+    assert_not_nil @user.avatar
+    assert_equal 'stdoe_default_avatar.png', @user.avatar.avatar_file_name
   end
 
   test 'it delete avatar when user has changed his default avatar and regenerate his default avatar' do
-    user = User.create!(name: 'Steaaa', login: 'stdaaa', admin: 0, password: 'qwertz', email: 'steve.doe.uniq@example.com')
+    assert 0, Avatar.where(attachable_id: @user.id, attachable_type: '@user').count
+    assert_nil @user.avatar
+    @user.generate_default_avatar!
+    assert 1, Avatar.where(attachable_id: @user.id, attachable_type: '@user').count
+    assert_not_nil @user.avatar
+    assert_equal 'stdoe_default_avatar.png', @user.avatar.avatar_file_name
 
-    assert 0, Avatar.where(attachable_id: user.id, attachable_type: 'User').count
-    assert_nil user.avatar
-    user.generate_default_avatar!
-    assert 1, Avatar.where(attachable_id: user.id, attachable_type: 'User').count
-    assert_not_nil user.avatar
-    assert_equal 'stdaaa_default_avatar.png', user.avatar.avatar_file_name
+    @user.avatar.avatar_file_name = 'new_avatar.png' # change default avatar
+    @user.avatar.save
+    @user.avatar.reload
 
-    user.avatar.avatar_file_name = 'new_avatar.png' # change default avatar
-    user.avatar.save
-    user.avatar.reload
-
-    assert_equal 'new_avatar.png', user.avatar.avatar_file_name
-    user.delete_avatar
-    assert 1, Avatar.where(attachable_id: user.id, attachable_type: 'User').count
-    assert_equal 'stdaaa_default_avatar.png', user.avatar.avatar_file_name
+    assert_equal 'new_avatar.png', @user.avatar.avatar_file_name
+    @user.delete_avatar
+    assert 1, Avatar.where(attachable_id: @user.id, attachable_type: '@user').count
+    assert_equal 'stdoe_default_avatar.png', @user.avatar.avatar_file_name
   end
 end
