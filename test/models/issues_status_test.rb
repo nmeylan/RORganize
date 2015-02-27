@@ -112,4 +112,10 @@ class IssuesStatusTest < ActiveSupport::TestCase
     assert_not issue.status_id
   end
 
+  test 'it get the status at the first position' do
+    status = IssuesStatus.first_status
+    first_status = issues_statuses(:issues_statuses_004)
+
+    assert_equal first_status, status
+  end
 end

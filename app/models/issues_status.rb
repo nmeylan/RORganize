@@ -14,6 +14,7 @@ class IssuesStatus < ActiveRecord::Base
   # Scopes
   scope :fetch_dependencies, -> { eager_load(:enumeration) }
   scope :find_by_name, ->(name) { joins(:enumeration).where('enumerations.opt = ? AND enumerations.name = ?','ISTS',name).first}
+  scope :first_status, -> { joins(:enumeration).where('enumerations.opt = ? AND enumerations.position = ?','ISTS', 1).limit(1).first}
   # Triggers
   after_save :reload_colors
 
