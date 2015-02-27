@@ -28,6 +28,6 @@ class DocumentToolbox < Toolbox
   end
 
   def build_menu_category
-    generic_toolbox_menu_builder(h.t(:field_category), :categories, :category_id, @project.categories, Proc.new(&:category), true)
+    generic_toolbox_menu_builder(h.t(:field_category), :categories, :category_id, @project.categories.sort_by{|category| category.caption.downcase}, Proc.new(&:category), true)
   end
 end

@@ -37,7 +37,7 @@ class IssueToolbox < Toolbox
 
   def build_menu_category
     if allowed_to_change('category')
-      generic_toolbox_menu_builder(h.t(:field_category), :categories, :category_id, @project.categories, Proc.new(&:category), true)
+      generic_toolbox_menu_builder(h.t(:field_category), :categories, :category_id, @project.categories.sort_by{|category| category.caption.downcase}, Proc.new(&:category), true)
     end
   end
 
@@ -55,7 +55,7 @@ class IssueToolbox < Toolbox
 
   def build_menu_assigned_to
     if allowed_to_change('assigned')
-      generic_toolbox_menu_builder(h.t(:field_assigned_to), :assigned_to, :assigned_to_id, @project.real_members.collect { |member| member.user }, Proc.new(&:assigned_to), true)
+      generic_toolbox_menu_builder(h.t(:field_assigned_to), :assigned_to, :assigned_to_id, @project.real_members(&:user).sort_by(&:caption), Proc.new(&:assigned_to), true)
     end
   end
 
