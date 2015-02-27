@@ -349,6 +349,7 @@ en:
   text_your_queries: Your queries
   text_your_spent_time: Your spent time
   text_will_regenerate_default_avatar: This will regenerate a default avatar.
+  text_not_owner_deletion: You don't have the permission to delete items that you don't own.
 
   password: "Password"
   field_steps: "Steps"

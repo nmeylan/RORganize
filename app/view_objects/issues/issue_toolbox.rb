@@ -11,7 +11,7 @@ class IssueToolbox < Toolbox
   def initialize(collection, project, user)
     super(collection, user, {path: h.toolbox_issues_path(project.slug)})
     @project = project
-    build_menu
+    build_menu if @collection_ids.any?
   end
 
   def build_menu
@@ -37,7 +37,7 @@ class IssueToolbox < Toolbox
 
   def build_menu_category
     if allowed_to_change('category')
-      generic_toolbox_menu_builder(h.t(:field_category), :categories, :category_id, @project.categories.sort_by{|category| category.caption.downcase}, Proc.new(&:category), true)
+      generic_toolbox_menu_builder(h.t(:field_category), :categories, :category_id, @project.categories.sort_by { |category| category.caption.downcase }, Proc.new(&:category), true)
     end
   end
 

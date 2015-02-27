@@ -2,12 +2,13 @@ module Rorganize
   module RichController
     module ToolboxCallback
 
-      def toolbox_callback(collection, klazz, project)
+      def toolbox_callback(collection, klazz, project, collection_deletion = nil)
         #Displaying toolbox with GET request
         if !request.post?
           #loading toolbox
+          collection_deletion ||= collection
           respond_to do |format|
-            format.js { respond_to_js locals: {collection: collection} }
+            format.js { respond_to_js locals: {collection: collection, collection_deletion: collection_deletion} }
           end
         elsif params[:delete_ids]
           #Multi delete

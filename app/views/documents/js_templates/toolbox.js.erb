@@ -4,7 +4,7 @@
  * Time: 08:39
  %>
 $("#documents-toolbox").html("<%= escape_javascript(document_toolbox(collection))%>");
-$('#delete-overlay').replaceWith("<%= escape_javascript(render partial: 'shared/delete_overlay', locals: {collection: collection})%>");
+$('#delete-overlay').replaceWith("<%= escape_javascript(render partial: 'shared/delete_overlay', locals: {collection_deletion: collection_deletion})%>");
 createOverlay("#delete-overlay", 150);
 
 bind_menu_actions("#documents-toolbox");

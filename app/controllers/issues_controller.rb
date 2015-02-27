@@ -77,8 +77,12 @@ class IssuesController < ApplicationController
 
   #GET /project/:project_identifier/issues/toolbox
   def toolbox
+    deletable_issues_ids = deletable_issues_ids(@project) if params[:ids]
+    collection_deletion = Issue.where(id: deletable_issues_ids).eager_load(:version, :assigned_to, :category, status: [:enumeration])
+    params[:ids] = editable_issues_ids(@project) if params[:ids]
     collection = Issue.where(id: params[:ids]).eager_load(:version, :assigned_to, :category, status: [:enumeration])
-    toolbox_callback(collection, Issue, @project)
+
+    toolbox_callback(collection, Issue, @project, collection_deletion)
   end
 
   def overview
@@ -115,7 +119,7 @@ class IssuesController < ApplicationController
   end
 
   def value_params
-    params.require(:value).permit(Issue.permit_bulk_edit_values)
+    params.require(:value).permit(Issue.attributes_requiring_authorization(User.current, @project))
   end
 
   def find_project_with_dependencies
@@ -128,6 +132,26 @@ class IssuesController < ApplicationController
                                          :parent, :author, status: :enumeration, comments: :author])
                            .find_by!(id: params[:id], project_id: @project.id)
     @issue_decorator = @issue_decorator.decorate(context: {project: @project})
+  end
+
+  def editable_issues_ids(project)
+    if User.current.allowed_to?('edit', 'issues', project)
+      if User.current.allowed_to?('edit_not_owner', 'issues', project)
+        params[:ids]
+      else
+        Issue.where(id: params[:ids], author_id: User.current.id).pluck('issues.id')
+      end
+    end
+  end
+
+  def deletable_issues_ids(project)
+    if User.current.allowed_to?('destroy', 'issues', project)
+      if User.current.allowed_to?('destroy_not_owner', 'issues', project)
+        params[:ids]
+      else
+        Issue.where(id: params[:ids], author_id: User.current.id).pluck('issues.id')
+      end
+    end
   end
 
   alias :load_collection :load_issues

@@ -227,11 +227,6 @@ bla bla
     assert_match_array [:assigned_to_id, :category_id, :version_id, :start_date, :due_date, :done, :status_id], Issue.attributes_requiring_authorization(User.current, @project)
   end
 
-  test 'permit bulk edit attributes should contains' do
-    expectation = [:assigned_to_id, :author_id, :version_id, :done, :category_id, :status_id, :start_date]
-    assert_match_array expectation, Issue.permit_bulk_edit_values
-  end
-
   test 'caption should be equal to subject' do
     assert_equal @issue.subject, @issue.caption
   end

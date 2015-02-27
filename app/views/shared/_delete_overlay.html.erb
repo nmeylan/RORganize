@@ -6,9 +6,9 @@
 %>
 <div class="overlayOuter" id="delete-overlay">
   <div class="overlayInner">
-    <% if collection %>
+    <% if collection_deletion && collection_deletion.any? %>
         <%= form_tag({}, remote: true, methode: :delete) do -%>
-            <% collection.each do |item| %>
+            <% collection_deletion.each do |item| %>
                 <%= "##{item.id} -" %><%= link_to item.caption, {action: 'show', id: item.id} %>
                 <%= hidden_field_tag 'delete_ids[]', item.id %>
                 <br/>
@@ -18,6 +18,8 @@
               <input type="button" class="close" value="<%= t(:button_close) %>">
             </div>
         <% end %>
+    <% else %>
+        <%= t(:text_not_owner_deletion) %>
     <% end %>
   </div>
 </div>
