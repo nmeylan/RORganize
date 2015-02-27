@@ -201,7 +201,7 @@ bla bla
   end
 
   test 'permit attributes should contains' do
-    expectation = [:author_id, :subject, :description, :tracker_id,
+    expectation = [:author_id, :subject, :description, :tracker_id, :estimated_time,
                    {new_attachment_attributes: Attachment.permit_attributes},
                    {edit_attachment_attributes: Attachment.permit_attributes}]
 
