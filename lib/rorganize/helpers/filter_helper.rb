@@ -65,7 +65,7 @@ module Rorganize
       # E.g : ['Author', 'Status', 'Created at']
       def filter_attribute_choice_tag(filtered_attributes)
         content_tag :div, class: 'autocomplete-combobox nosearch no-padding-left no-height' do
-          select_tag 'filters_list', options_for_select(filtered_attributes), class: 'chzn-select cbb-verylarge', id: 'filters-list', multiple: true
+          select_tag 'filters_list', options_for_select(filtered_attributes.sort{|x, y| x <=> y}), class: 'chzn-select cbb-verylarge', id: 'filters-list', multiple: true
         end
       end
 
