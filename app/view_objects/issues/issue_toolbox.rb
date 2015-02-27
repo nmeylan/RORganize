@@ -55,7 +55,7 @@ class IssueToolbox < Toolbox
 
   def build_menu_assigned_to
     if allowed_to_change('assigned')
-      generic_toolbox_menu_builder(h.t(:field_assigned_to), :assigned_to, :assigned_to_id, @project.real_members(&:user).sort_by(&:caption), Proc.new(&:assigned_to), true)
+      generic_toolbox_menu_builder(h.t(:field_assigned_to), :assigned_to, :assigned_to_id, @project.real_members.collect { |member| member.user }.sort_by(&:caption), Proc.new(&:assigned_to), true)
     end
   end
 
