@@ -30,13 +30,107 @@ class IssuesControllerTest < ActionController::TestCase
     assert_not_nil assigns(:issue_decorator)
   end
 
-  test "should create issue" do
+  test "should create issue when user allowed to set status" do
+    allow_user_to('change_status', 'issues')
     assert_difference('Issue.count') do
       post_with_permission :create, issue: {subject: 'New issue', status_id: 1, tracker_id: 1}
     end
     assert_not_empty flash[:notice]
     assert_not_nil assigns(:issue_decorator)
     assert_redirected_to issue_path(@project.slug, assigns(:issue_decorator).id)
+  end
+
+  test "should set status to first one when user is not allowed to set status on issue creation" do
+    assert_difference('Issue.count') do
+      post_with_permission :create, issue: {subject: 'New issue', tracker_id: 1}
+    end
+    assert_not_empty flash[:notice]
+    assert_not_nil assigns(:issue_decorator)
+    assert_redirected_to issue_path(@project.slug, assigns(:issue_decorator).id)
+  end
+
+  test "should let assigned attribute to nil when user is not allowed to change it on issue creation" do
+    post_with_permission :create, issue: {subject: 'New issue', tracker_id: 1, status_id: 1, assigned_to: 2}
+
+    issue = assigns(:issue_decorator)
+    assert_not_nil issue
+    assert_nil issue.assigned_to
+    assert_redirected_to issue_path(@project.slug, issue.id)
+  end
+
+  test "should set assigned attribute when user is allowed to change it on issue creation" do
+    allow_user_to('change_assigned', 'issues')
+    post_with_permission :create, issue: {subject: 'New issue', tracker_id: 1, status_id: 1, assigned_to: 2}
+
+    issue = assigns(:issue_decorator)
+    assert_not_nil issue
+    assert_nil issue.assigned_to
+    assert_redirected_to issue_path(@project.slug, issue.id)
+  end
+
+  test "should let done attribute to nil when user is not allowed to change it on issue creation" do
+    allow_user_to('change_status', 'issues')
+    post_with_permission :create, issue: {subject: 'New issue', tracker_id: 1, status_id: 1, done: 20}
+
+    issue = assigns(:issue_decorator)
+    assert_not_nil issue
+    assert_equal 0, issue.done
+    assert_redirected_to issue_path(@project.slug, issue.id)
+  end
+
+  test "should set done attribute when user is allowed to change it on issue creation" do
+    allow_user_to('change_status', 'issues')
+    allow_user_to('change_progress', 'issues')
+    post_with_permission :create, issue: {subject: 'New issue', tracker_id: 1, status_id: 1, done: 20}
+
+    issue = assigns(:issue_decorator)
+    assert_not_nil issue
+    assert_equal 20, issue.done
+    assert_redirected_to issue_path(@project.slug, issue.id)
+  end
+
+  test "should let category attribute to nil when user is not allowed to change it on issue creation" do
+    post_with_permission :create, issue: {subject: 'New issue', tracker_id: 1, status_id: 1, category_id: 20}
+
+    issue = assigns(:issue_decorator)
+    assert_not_nil issue
+    assert_equal nil, issue.category_id
+    assert_redirected_to issue_path(@project.slug, issue.id)
+  end
+
+  test "should set category attribute when user is allowed to change it on issue creation" do
+    allow_user_to('change_category', 'issues')
+    post_with_permission :create, issue: {subject: 'New issue', tracker_id: 1, status_id: 1, category_id: 20}
+
+    issue = assigns(:issue_decorator)
+    assert_not_nil issue
+    assert_equal 20, issue.category_id
+    assert_redirected_to issue_path(@project.slug, issue.id)
+  end
+
+  test "should let version attribute to nil when user is not allowed to change it on issue creation" do
+    post_with_permission :create, issue: {subject: 'New issue', tracker_id: 1, status_id: 1, version_id: 20,
+                                          start_date: Date.new(2012, 01, 20), due_date: Date.new(2012, 12, 20)}
+
+    issue = assigns(:issue_decorator)
+    assert_not_nil issue
+    assert_equal nil, issue.version_id
+    assert_equal nil, issue.start_date
+    assert_equal nil, issue.due_date
+    assert_redirected_to issue_path(@project.slug, issue.id)
+  end
+
+  test "should set version attribute when user is allowed to change it on issue creation" do
+    allow_user_to('change_version', 'issues')
+    post_with_permission :create, issue: {subject: 'New issue', tracker_id: 1, status_id: 1, version_id: 20,
+                                          start_date: Date.new(2012, 01, 20), due_date: Date.new(2012, 12, 20)}
+
+    issue = assigns(:issue_decorator)
+    assert_not_nil issue
+    assert_equal 20, issue.version_id
+    assert_equal Date.new(2012, 01, 20), issue.start_date
+    assert_equal Date.new(2012, 12, 20), issue.due_date
+    assert_redirected_to issue_path(@project.slug, issue.id)
   end
 
   test "should refresh the page when create issue failed" do
@@ -142,7 +236,7 @@ class IssuesControllerTest < ActionController::TestCase
   end
 
   test "should apply new filter" do
-    get_with_permission :index, filters_list: ["status"], filter: {assigned_to: {"operator"=>"equal", "value"=>["7"]}}, type: 'filter'
+    get_with_permission :index, filters_list: ["status"], filter: {assigned_to: {"operator" => "equal", "value" => ["7"]}}, type: 'filter'
 
     assert_not_empty session[:issues][@project.slug][:sql_filter]
     assert_not_empty session[:issues][@project.slug][:json_filter]

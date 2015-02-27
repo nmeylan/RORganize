@@ -4,11 +4,13 @@
 # File: issue_test.rb
 # require 'test/unit'
 require 'test_helper'
+require 'rorganize/anonymous_user'
 class IssueTest < ActiveSupport::TestCase
 
   # Called before every test method runs. Can be used
   # to set up fixture information.
   def setup
+    @project = projects(:projects_001)
     @issue = Issue.create(tracker_id: 1, subject: 'Issue creation', description: '', status_id: '1', done: 0, project_id: 1, due_date: '2012-12-31')
   end
 
@@ -199,12 +201,30 @@ bla bla
   end
 
   test 'permit attributes should contains' do
-    expectation = [:assigned_to_id, :author_id, :version_id, :done, :category_id, :status_id,
-                   :start_date, :subject, :description, :tracker_id, :due_date, :estimated_time,
+    expectation = [:author_id, :subject, :description, :tracker_id,
                    {new_attachment_attributes: Attachment.permit_attributes},
                    {edit_attachment_attributes: Attachment.permit_attributes}]
 
     assert_match_array expectation, Issue.permit_attributes
+  end
+
+  test 'attributes requiring authorization' do
+    User.any_instance.stubs(:module_enabled?).returns(true)
+    assert_empty Issue.attributes_requiring_authorization(User.current, @project)
+    allow_user_to('change_assigned', 'issues')
+    assert_match_array [:assigned_to_id], Issue.attributes_requiring_authorization(User.current, @project)
+
+    allow_user_to('change_category', 'issues')
+    assert_match_array [:assigned_to_id, :category_id], Issue.attributes_requiring_authorization(User.current, @project)
+
+    allow_user_to('change_version', 'issues')
+    assert_match_array [:assigned_to_id, :category_id, :version_id, :start_date, :due_date], Issue.attributes_requiring_authorization(User.current, @project)
+
+    allow_user_to('change_progress', 'issues')
+    assert_match_array [:assigned_to_id, :category_id, :version_id, :start_date, :due_date, :done], Issue.attributes_requiring_authorization(User.current, @project)
+
+    allow_user_to('change_status', 'issues')
+    assert_match_array [:assigned_to_id, :category_id, :version_id, :start_date, :due_date, :done, :status_id], Issue.attributes_requiring_authorization(User.current, @project)
   end
 
   test 'permit bulk edit attributes should contains' do

@@ -52,6 +52,7 @@ class IssuesController < ApplicationController
   def create
     @issue_decorator = @project.issues.build(issue_params).decorate(context: {project: @project})
     @issue_decorator.author = User.current
+    @issue_decorator.status_id ||= IssuesStatus.first_status.id
     generic_create_callback(@issue_decorator, -> { issue_path(@project.slug, @issue_decorator.id) }, {form_content: FormContent.new(@project).content})
   end
 
@@ -110,7 +111,7 @@ class IssuesController < ApplicationController
   end
 
   def issue_params
-    params.require(:issue).permit(Issue.permit_attributes)
+    params.require(:issue).permit(Issue.permit_attributes + Issue.attributes_requiring_authorization(User.current, @project))
   end
 
   def value_params

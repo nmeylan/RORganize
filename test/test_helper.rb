@@ -38,11 +38,13 @@ end
 
 class ActiveSupport::TestCase
   include Rorganize::TestAssertions
+  include Rorganize::UserGrantPermissions
   fixtures :all
 
   setup do
     User.current = users(:users_001)
     User.any_instance.stubs(:generate_default_avatar).returns(nil)
+    drop_all_user_permissions
   end
 
   # Test cases methods

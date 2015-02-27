@@ -182,10 +182,20 @@ class Issue < ActiveRecord::Base
 
   #Permit attributes
   def self.permit_attributes
-    [:assigned_to_id, :author_id, :version_id, :done, :category_id, :status_id,
-     :start_date, :subject, :description, :tracker_id, :due_date, :estimated_time,
+    [:author_id, :subject, :description, :tracker_id, :estimated_time,
      {new_attachment_attributes: Attachment.permit_attributes},
      {edit_attachment_attributes: Attachment.permit_attributes}]
+  end
+
+  def self.attributes_requiring_authorization(user, project)
+    attributes = []
+
+    attributes << :assigned_to_id if user.allowed_to?('change_assigned', 'issues', project)
+    attributes << :status_id if user.allowed_to?('change_status', 'issues', project)
+    attributes += [:version_id, :due_date, :start_date] if user.allowed_to?('change_version', 'issues', project)
+    attributes << :category_id if user.allowed_to?('change_category', 'issues', project)
+    attributes << :done if user.allowed_to?('change_progress', 'issues', project)
+    attributes
   end
 
   def self.permit_bulk_edit_values
