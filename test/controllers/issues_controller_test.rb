@@ -172,7 +172,7 @@ class IssuesControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test "should get toolbox for issues" do
+  test "should get toolbox for issues when user is allowed to" do
     get_with_permission :toolbox, ids: [@issue.id], format: :js
 
     assert_response :success
@@ -180,6 +180,7 @@ class IssuesControllerTest < ActionController::TestCase
   end
 
   test "should edit issues with toolbox" do
+    allow_user_to('change_category', 'issues')
     assert_nil @issue.category_id
     get_with_permission :index
     post_with_permission :toolbox, ids: [@issue.id], value: {category_id: "1", version_id: ""}, format: :js
