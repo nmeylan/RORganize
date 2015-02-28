@@ -27,8 +27,9 @@ module DocumentsHelper
   end
 
   def list_row(document)
-    content_tag :tr, class: 'odd-even document-tr has-context-menu' do
-      list_td check_box_tag("document-#{document.id.to_s}", document.id), {class: 'cell-checkbox'}
+    disabled_class = !document.user_allowed_to_edit? ? 'disabled-toolbox' : ''
+    content_tag :tr, class: "odd-even document-tr has-context-menu #{disabled_class}" do
+      list_td check_box_tag("document-#{document.id.to_s}", document.id, false, disabled: !document.user_allowed_to_edit?), {class: 'cell-checkbox'}
       list_td document.id, class: 'list-center id'
       list_td link_to(document.resized_caption(100), document_path(@project.slug, document.id)), {class: 'name', id: document.id}
       list_td document.display_category, class: 'list-center category'

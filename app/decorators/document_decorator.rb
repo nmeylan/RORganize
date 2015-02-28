@@ -30,4 +30,8 @@ class DocumentDecorator < ApplicationDecorator
     h.concat h.content_tag :b, "#{h.t(:label_document).downcase} "
     h.fast_document_link(self, project).html_safe
   end
+
+  def user_allowed_to_edit?
+   User.current.allowed_to?('edit', 'documents', project)
+  end
 end

@@ -98,4 +98,19 @@ class DocumentDecoratorTest < Rorganize::Decorator::TestCase
     assert_select 'h2', 0
     assert_select '#history-blocks', 0
   end
+
+  test "user should be allowed to edit documents" do
+    allow_user_to('edit')
+    document = Document.create(name: 'Test document', project_id: @project.id)
+    document_decorator = document.decorate(context: {project: @project})
+
+    assert document_decorator.user_allowed_to_edit?
+  end
+
+  test "user should not be allowed to edit documents" do
+    document = Document.create(name: 'Test document', project_id: @project.id)
+    document_decorator = document.decorate(context: {project: @project})
+
+    assert_not document_decorator.user_allowed_to_edit?
+  end
 end
