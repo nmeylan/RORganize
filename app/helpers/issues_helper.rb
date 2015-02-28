@@ -9,8 +9,9 @@ module IssuesHelper
   end
 
   def list_row(issue)
-    content_tag :tr, class: "has-context-menu odd-even issue-tr" do
-      list_td(check_box_tag("issue-#{issue.id.to_s}", issue.id), class: 'cell-checkbox')
+    disabled_class = !issue.user_allowed_to_edit? ? 'disabled-toolbox' : ''
+    content_tag :tr, class: "has-context-menu odd-even issue-tr #{disabled_class}" do
+      list_td(check_box_tag("issue-#{issue.id.to_s}", issue.id, false, disabled: !issue.user_allowed_to_edit?), class: 'cell-checkbox')
       list_td issue.id, class: 'list-center id'
       list_td issue.tracker_str, class: 'list-center tracker'
       list_td issue.show_link, {class: 'name', id: issue.id}

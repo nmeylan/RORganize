@@ -228,4 +228,35 @@ class IssueDecoratorTest < Rorganize::Decorator::TestCase
     assert_select '.smooth-gray', 0
     assert_select 'span', text: '1'
   end
+
+  test "user should be allowed to edit his own issue" do
+    allow_user_to('edit')
+    issue = Issue.create!(tracker_id: 1, subject: 'Issue creation', status_id: '1', done: 0, project_id: @project.id, author_id: User.current.id)
+    issue_decorator = issue.decorate(context: {project: @project})
+
+    assert issue_decorator.user_allowed_to_edit?
+  end
+
+  test "user should not be allowed to edit his own issue" do
+    issue = Issue.create!(tracker_id: 1, subject: 'Issue creation', status_id: '1', done: 0, project_id: @project.id, author_id: User.current.id)
+    issue_decorator = issue.decorate(context: {project: @project})
+
+    assert_not issue_decorator.user_allowed_to_edit?
+  end
+
+  test "user should be allowed to edit other users issues" do
+    allow_user_to('edit_not_owner')
+    issue = Issue.create!(tracker_id: 1, subject: 'Issue creation', status_id: '1', done: 0, project_id: @project.id, author_id: 666)
+    issue_decorator = issue.decorate(context: {project: @project})
+
+    assert issue_decorator.user_allowed_to_edit?
+  end
+
+  test "user should not be allowed to edit other users issues" do
+    allow_user_to('edit')
+    issue = Issue.create!(tracker_id: 1, subject: 'Issue creation', status_id: '1', done: 0, project_id: @project.id, author_id: 666)
+    issue_decorator = issue.decorate(context: {project: @project})
+
+    assert_not issue_decorator.user_allowed_to_edit?
+  end
 end

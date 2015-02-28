@@ -86,7 +86,7 @@
         bind_task_list_click();
         bind_date_field();
         //MarkItUp
-        if (!(options.dataType === 'json' || options.dataType === 'JSON')) {
+        if (!(options.dataType === 'json' || options.dataType === 'JSON')) {
             markdown_textarea();
             focus_first_input_text();
         }
@@ -180,7 +180,10 @@ jQuery.expr[':'].contains = function (a, i, m) {
 
 function initialize_chosen() {
     $(".chzn-select").chosen({disable_search_threshold: 5});
-    $(".chzn-select-deselect").chosen({allow_single_deselect: true, disable_search_threshold: 5});
+    $(".chzn-select-deselect").chosen({
+        allow_single_deselect: true,
+        disable_search_threshold: 5
+    });
 }
 function display_flash() {
     var el;
@@ -203,7 +206,7 @@ function error_explanation(message) {
         el.append(message).css("display", "block");
     }
 }
-function focus_first_input_text(){
+function focus_first_input_text() {
     $('.form input:visible[type=text]:not(.chzn-search-input)').first().focus();
 }
 function markdown_textarea() {
@@ -338,14 +341,16 @@ function checkAllBox(selector, context) {
 function checkAll(selector, context) {
     jQuery(selector).click(function (e) {
         e.preventDefault();
-        var cases = jQuery(context).find(':checkbox');
+        var cases = jQuery(context).find(':checkbox:not(:disabled)');
+        console.log(cases);
+
         var checked = jQuery(this).attr("cb_checked") === 'b';
         cases.attr('checked', checked);
         jQuery(this).attr("cb_checked", checked ? "a" : "b");
         if (checked) {
-            jQuery('.issue-tr').addClass("toolbox-selection");
+            jQuery('.issue-tr:not(.disabled-toolbox)').addClass("toolbox-selection");
         } else {
-            jQuery('.issue-tr').removeClass("toolbox-selection");
+            jQuery('.issue-tr:not(.disabled-toolbox)').removeClass("toolbox-selection");
         }
     });
 }
@@ -366,6 +371,8 @@ function checkboxToolbox(selector) {
 function listTrClick(rows_selector) {
     var rows = jQuery(rows_selector);
     rows.click(function (e) {
+        if ($(this).hasClass('disabled-toolbox'))
+            return false;
         var el = jQuery(this);
         var target = e.target || e.srcElement;
         if (!e.shiftKey && !$(target).is('input') && !e.ctrlKey && !e.metaKey) {
@@ -379,7 +386,7 @@ function listTrClick(rows_selector) {
             if (last_selected_row.length > 0) {
                 var between_rows = last_selected_row[0].rowIndex > el[0].rowIndex ? last_selected_row.prevUntil(el[0]) : last_selected_row.nextUntil(el[0]);
                 rows.removeClass("toolbox-last");
-                between_rows.find("input[type=checkbox]").attr('checked', true);
+                between_rows.find("input[type=checkbox]:not(:disabled)").attr('checked', true);
                 between_rows.addClass("toolbox-selection").addClass("toolbox-last");
             }
             el.find("input[type=checkbox]").attr('checked', true);
@@ -401,9 +408,12 @@ function init_toolbox(selector, id, options) {
     self_element.mousedown(function (e) {
             if (e.which === 3) {
                 var self_element = jQuery(this);
-                self_element.find(':checkbox').attr('checked', true);
+                var checkbox = self_element.find(':checkbox');
+                if (!checkbox[0].disabled) {
+                    checkbox.attr('checked', true);
+                    self_element.addClass("toolbox-selection");
+                }
                 menu_item_updater(options);
-                self_element.addClass("toolbox-selection");
             }
         }
     );
@@ -632,7 +642,10 @@ function bind_set_organization_button(main_selector, list_selector) {
             tmp_parent_id = !is_undifined ? jQuery(value).parent("ul").parent("li").prev().attr("id").split("-")[1] : null;
             tmp_item_id = jQuery(value).attr("id").split("-")[1];
             parent_ids.push(tmp_parent_id);
-            serialized_hash[tmp_item_id] = {parent_id: tmp_parent_id, position: tmp_position};
+            serialized_hash[tmp_item_id] = {
+                parent_id: tmp_parent_id,
+                position: tmp_position
+            };
 
         });
         var url = jQuery(this).data('link');
@@ -663,7 +676,7 @@ function fill_log_issue_time_overlay(url, context, date) {
         url: url,
         type: 'GET',
         dataType: 'script',
-        data: {spent_on: date }
+        data: {spent_on: date}
     });
 }
 
@@ -766,7 +779,7 @@ function bind_tab_nav(tab_id) {
     var links = tabs.find('a');
     var content_tabs = [];
     var selected_type_id = $('#' + tab_id).find('ul > li a.selected').data('tab_id');
-    $('#'+selected_type_id).css('display', 'block');
+    $('#' + selected_type_id).css('display', 'block');
     links.each(function () {
         content_tabs.push($('#' + $(this).data('tab_id')));
     });
@@ -791,7 +804,7 @@ function bind_date_field() {
     var test_input = $('<input type="date" name="bday">');
     var input_date = $('[type="date"]');
     if (test_input.prop('type') != 'date') { //if browser doesn't support input type="date", load files for jQuery UI Date Picker
-        if(input_date.hasClass('hasDatepicker')){
+        if (input_date.hasClass('hasDatepicker')) {
             input_date.datepicker("destroy");
         }
         input_date.datepicker({dateFormat: 'dd/mm/yy'});

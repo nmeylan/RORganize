@@ -94,4 +94,9 @@ class IssueDecorator < ApplicationDecorator
       end
     end
   end
+
+  def user_allowed_to_edit?
+    (model.author_id.eql?(User.current.id) && User.current.allowed_to?('edit', 'issues', project)) ||
+        User.current.allowed_to?('edit_not_owner', 'issues', project)
+  end
 end
