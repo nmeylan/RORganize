@@ -6,9 +6,9 @@ class ProjectsDecorator < ApplicationCollectionDecorator
   end
 
   # see #ApplicationCollectionDecorator::display_collection
-  def display_collection
+  def display_collection(no_data_message = nil)
     h.content_tag :div, id: 'projects' do
-      super true, h.t(:no_data_projects) do
+      super true, no_data_message ? no_data_message : h.t(:no_data_projects) do
         h.project_list(self, context[:allow_to_star])
       end
     end
