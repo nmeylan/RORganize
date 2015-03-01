@@ -83,4 +83,12 @@ class WikiPageDecoratorTest < Rorganize::Decorator::TestCase
     node(@wiki_page_decorator.display_page)
     assert_select '.no-data', text: I18n.t(:text_empty_page)
   end
+
+  test "it displays a link to the page for activity context" do
+    node(concat @wiki_page_decorator.display_object_type(@project))
+    assert_select 'a', 1
+    assert_select 'a[href=?]', wiki_page_path(@project.slug, @wiki_page.slug)
+    assert_select 'b', 1
+    assert_select 'b', "#{I18n.t(:label_wiki_page )}".downcase
+  end
 end

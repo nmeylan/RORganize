@@ -52,4 +52,9 @@ class WikiPageDecorator < ApplicationDecorator
   def display_page
     h.display_page(self)
   end
+
+  def display_object_type(project)
+    h.concat h.content_tag :b, "#{h.t(:label_wiki_page).downcase} "
+    h.fast_wiki_page(self, project).html_safe
+  end
 end

@@ -114,6 +114,7 @@ en:
   label_previous: Previous
   label_color: Color
   label_progress: Progress
+  label_wiki_page : Wiki page
 # LINK
   link_new_project: New project
   link_new_issue: New issue

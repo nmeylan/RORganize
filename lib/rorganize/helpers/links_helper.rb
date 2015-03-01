@@ -57,6 +57,10 @@ module Rorganize
         "<a href='/projects/#{project.slug}/documents/#{document.id}'>#{resize_text(document.caption, 35)}</a>".html_safe
       end
 
+      def fast_wiki_page(wiki_page, project)
+        "<a href='/projects/#{project.slug}/wiki_pages/#{wiki_page.slug}'>#{resize_text(wiki_page.caption, 35)}</a>".html_safe
+      end
+
       # Render a link to watch all activities from watchable.
       # @param [ActiveRecord::base] watchable : a model that include Watchable module.
       # @param [Project] project : the project which belongs to watchable.
