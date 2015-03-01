@@ -176,6 +176,7 @@ module Rorganize
         #   menu.add(:my_menu_2, 'My menu 2', {controller: 'tests', action: 'my_action_2'}, {id: 'menu-test-my_action_2', glyph: 'test', before: :my_menu_0})
         #   menu.add(:my_menu_3, 'My menu 3', {controller: 'tests', action: 'my_action_3'}, {id: 'menu-test-my_action_3', glyph: 'test', before: :my_menu_1})
         # end
+        # @return [MenuItem] the menu item that just has been created.
         def add(name, label, url={}, options={})
           menu_item = MenuItem.new(name, label, url, options)
           if options[:before]
@@ -187,6 +188,7 @@ module Rorganize
           else
             @menu_items.push(menu_item)
           end
+          menu_item
         end
 
         private
