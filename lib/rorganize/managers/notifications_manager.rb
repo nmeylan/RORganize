@@ -173,8 +173,8 @@ module Rorganize
         def find_recipients
           participants = find_participants
           watchers = find_watchers
-          @recipients_hash[:participants] = participants.compact
-          @recipients_hash[:watchers] = watchers.compact
+          @recipients_hash[:participants] = participants.compact.uniq
+          @recipients_hash[:watchers] = watchers.compact.uniq
         end
 
         # @return [Array] an array of users who are participating to the "model" object.
