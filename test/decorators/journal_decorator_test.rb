@@ -29,6 +29,14 @@ class JournalDecoratorTest < Rorganize::Decorator::TestCase
     assert_select 'b', text: "object #{@issue.caption}"
   end
 
+  test "it display journalizable readable complex object type" do
+    @journal_update_decorator.journalizable_type = 'PascalCase'
+    @journal_update_decorator.stubs(:journalizable).returns(nil)
+    node(@journal_update_decorator.display_object_type)
+    assert_select 'b', 1
+    assert_select 'b', text: "pascal case #{@issue.caption}"
+  end
+
   test "it displays a link to the project" do
     node(@journal_update_decorator.project_link)
     assert_select 'a', 1

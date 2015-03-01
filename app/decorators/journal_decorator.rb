@@ -19,7 +19,7 @@ class JournalDecorator < ApplicationDecorator
     if self.journalizable && self.journalizable.respond_to?(:display_object_type)
       self.journalizable.display_object_type(self.project)
     else
-      h.content_tag :b, "#{model.journalizable_type.downcase} #{model.journalizable_identifier}"
+      h.content_tag :b, "#{model.journalizable_type.underscore.humanize.downcase} #{model.journalizable_identifier}"
     end
   end
 
