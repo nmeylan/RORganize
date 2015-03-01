@@ -367,6 +367,27 @@ bla bla
     assert_match_array expectation, group_result
   end
 
+  test 'it add author as current user if author is nil' do
+    issue = Issue.create!(tracker_id: 1, subject: 'Bug1', status_id: '4', project_id: 666)
+    assert_equal User.current.id, issue.author_id
+  end
+
+  test 'it do not override author if author is not nil' do
+    issue = Issue.create!(tracker_id: 1, subject: 'Bug1', status_id: '4', project_id: 666, author_id: 666)
+    assert_not_equal 666, User.current.id
+    assert_equal 666, issue.author_id
+  end
+
+  test 'it auto create a watcher for author of the issue when author is current user' do
+    issue = Issue.create!(tracker_id: 1, subject: 'Bug1', status_id: '4', project_id: 666)
+    assert_not_nil Watcher.find_by_project_id_and_watchable_id_and_watchable_type_and_user_id(666, issue.id, 'Issue', User.current.id)
+  end
+
+  test 'it auto create a watcher for author of the issue' do
+    issue = Issue.create!(tracker_id: 1, subject: 'Bug1', status_id: '4', project_id: 666, author_id: 666)
+    assert_not_nil Watcher.find_by_project_id_and_watchable_id_and_watchable_type_and_user_id(666, issue.id, 'Issue', 666)
+  end
+
   #######################
   ###    VALIDATORS   ###
   #######################

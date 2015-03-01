@@ -30,6 +30,8 @@ class Issue < ActiveRecord::Base
   #triggers
   before_validation :set_start_and_due_date
   before_save :set_done_ratio
+  before_create :add_author
+  after_create :auto_watch_issue
   after_update :save_attachments
   #Validators
   validates :subject, :tracker_id, :status_id, presence: true
@@ -229,6 +231,15 @@ class Issue < ActiveRecord::Base
       issues.update_all(done: status.default_done_ratio)
       Issue.journal_update_creation(issues, issues.first.project, User.current.id, 'Issue', journals)
     end
+  end
+
+  def add_author
+    self.author_id ||= User.current.id
+  end
+
+  def auto_watch_issue
+    Watcher.create(project_id: self.project_id, watchable_type: 'Issue',
+                   watchable_id: self.id, user_id: self.author_id) unless self.author_id.nil?
   end
 end
 
