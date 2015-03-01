@@ -10,8 +10,10 @@ class IssueWatchableTest < ActiveSupport::TestCase
   # to set up fixture information.
   def setup
     @project = projects(:projects_001)
-    @issue = Issue.create(tracker_id: 1, subject: 'Issue creation', description: '', status_id: '1',
+    @issue = Issue.new(tracker_id: 1, subject: 'Issue creation', description: '', status_id: '1',
                           done: 10, project_id: 1, start_date: '2012-12-01', due_date: '2012-12-31')
+    @issue.stubs(:auto_watch_issue).returns(nil)
+    @issue.save
     @user = User.create(name: 'Steve Doe', login: 'stdoe', admin: 0, email: 'steve.doe@example.com', password: 'qwertz')
     @user1 = User.create(name: 'John Doe', login: 'jhdoe', admin: 0, email: 'john.doe@example.com', password: 'qwertz')
 

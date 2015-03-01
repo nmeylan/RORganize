@@ -24,6 +24,7 @@ class IssueAttachableTest < ActiveSupport::TestCase
   test "should get an error message when attachment saving has failed" do
     assert_nil @attachment.file.path(:original)
 
+    RORganize::Application.config.attachments_size = 0..1.megabytes
     @attachment.file = File.new("#{Rails.root}/test/fixtures/files/fat_koala.jpg")
     @issue.attachments.build(@attachment.attributes)
     assert_not @issue.save

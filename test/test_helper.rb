@@ -19,6 +19,8 @@ require 'test_utilities/helpers_test_case'
 
 # Initialize reporter.
 Minitest::Reporters.use! [Minitest::Reporters::AwesomeReporter.new({color: true, slow_count: 5})]
+# Initialize rorganize var :
+RORganize::Application.config.attachments_size = 0..1.megabytes
 
 class ActionController::TestCase
   include Rorganize::CustomHttpRequest
