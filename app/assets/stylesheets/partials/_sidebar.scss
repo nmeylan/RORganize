@@ -41,8 +41,8 @@
     border-left: 1px solid $default-border-color;
     li {
       background-color: $default-background-color;
-      padding: 15px 10px 15px 10px;
       a {
+        padding: 20px 10px 15px 20px;
         color: $link-tabs-color;
       }
     }

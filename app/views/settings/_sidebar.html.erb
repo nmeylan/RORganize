@@ -38,8 +38,6 @@
                         modules_settings_path(project.slug) %>
           </li>
       <% end %>
-      <li class="settings-repository"><%= link_to glyph(t(:link_repository), 'repo-push'), '#' %></li>
-
       <% if User.current.allowed_to?('archive', 'Projects', project) %>
           <li class="project-delete warning">
             <%= link_to !project.is_archived ? glyph(t(:text_close_this_project), 'lock') : glyph(t(:text_open_this_project), 'unlock'), archive_projects_path(project.slug),
