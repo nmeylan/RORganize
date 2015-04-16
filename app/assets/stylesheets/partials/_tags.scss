@@ -9,6 +9,7 @@ body {
   margin: 0;
   background-color: $default-background-color;
   font-size: 14px;
+  overflow-x: hidden;
 }
 
 *:focus {
