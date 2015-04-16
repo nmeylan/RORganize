@@ -18,12 +18,12 @@
   text-overflow: ellipsis;
 }
 
-#sidebar h2 a{
+#sidebar h2 a {
   color: $default-h2-color !important;
   font-size: 22px;
 }
 
-#sidebar h2 a:hover{
+#sidebar h2 a:hover {
   text-decoration: underline;
 }
 
@@ -63,7 +63,7 @@
       a {
         color: $link-hover-color !important;
       }
-      a:hover{
+      a:hover {
         background-color: inherit;
 
       }
@@ -76,7 +76,7 @@
       font-size: 14px;
       color: $default-smooth-color;
     }
-    a.selected, a.selected:hover{
+    a.selected, a.selected:hover {
       color: #fff;
       background: #4183c4 !important;
       .octicon {
@@ -101,16 +101,18 @@
 }
 
 #sidebar .tabs .alert:hover {
-  color: #fff;
-  text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.3);
-  background-color: #b33630;
-  background-image: -moz-linear-gradient(#dc5f59, #b33630);
-  background-image: -webkit-linear-gradient(#dc5f59, #b33630);
-  background-image: linear-gradient(#dc5f59, #b33630);
-  background-repeat: repeat-x;
-  border-left: 3px solid #cd504a;
-  .octicon{
-    color: white;
+  border-left: 0;
+  a:hover {
+    color: #fff;
+    text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.3);
+    background-color: #b33630;
+    background-image: -moz-linear-gradient(#dc5f59, #b33630);
+    background-image: -webkit-linear-gradient(#dc5f59, #b33630);
+    background-image: linear-gradient(#dc5f59, #b33630);
+    background-repeat: repeat-x;
+    .octicon {
+      color: white;
+    }
   }
 }
 
@@ -118,18 +120,26 @@
   color: white !important;
 }
 
-#sidebar .tabs .warning a {
-  color: #fcc645 !important;
-}
-
-#sidebar .tabs .warning:hover {
-  background-color: #fcc645 !important;
-  border-left: 3px solid #fcc645;
+#sidebar .tabs .warning {
+  &:hover{
+    border-left: 0;
+  }
+  a {
+    color: #fcc645 !important;
+    &:hover {
+      background-color: #fcc645 !important;
+      background-image: -moz-linear-gradient(#ffca46, #fcc645);
+      background-image: -webkit-linear-gradient(#ffca46, #fcc645);
+      background-image: linear-gradient(#ffca46, #fcc645);
+      background-repeat: repeat-x;
+      border-left: 3px solid #fcc645;
+    }
+  }
 }
 
 #sidebar .tabs .warning:hover a {
   color: white !important;
-  .octicon{
+  .octicon {
     color: white;
   }
 }
