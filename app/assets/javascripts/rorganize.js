@@ -371,30 +371,32 @@ function checkboxToolbox(selector) {
 function listTrClick(rows_selector) {
     var rows = jQuery(rows_selector);
     rows.click(function (e) {
-        if ($(this).hasClass('disabled-toolbox'))
-            return false;
-        var el = jQuery(this);
-        var target = e.target || e.srcElement;
-        if (!e.shiftKey && !$(target).is('input') && !e.ctrlKey && !e.metaKey) {
-            rows.find("input[type=checkbox]").attr('checked', false);
-            rows.removeClass("toolbox-selection").removeClass("toolbox-last");
-            el.find("input[type=checkbox]").attr('checked', true);
-            el.addClass("toolbox-selection").addClass("toolbox-last");
-        } else if (e.shiftKey) {
-            e.preventDefault();
-            var last_selected_row = $('.toolbox-last');
-            if (last_selected_row.length > 0) {
-                var between_rows = last_selected_row[0].rowIndex > el[0].rowIndex ? last_selected_row.prevUntil(el[0]) : last_selected_row.nextUntil(el[0]);
+        if ($(e.target)[0].tagName !== "A") {
+            if ($(this).hasClass('disabled-toolbox'))
+                return false;
+            var el = jQuery(this);
+            var target = e.target || e.srcElement;
+            if (!e.shiftKey && !$(target).is('input') && !e.ctrlKey && !e.metaKey) {
+                rows.find("input[type=checkbox]").attr('checked', false);
+                rows.removeClass("toolbox-selection").removeClass("toolbox-last");
+                el.find("input[type=checkbox]").attr('checked', true);
+                el.addClass("toolbox-selection").addClass("toolbox-last");
+            } else if (e.shiftKey) {
+                e.preventDefault();
+                var last_selected_row = $('.toolbox-last');
+                if (last_selected_row.length > 0) {
+                    var between_rows = last_selected_row[0].rowIndex > el[0].rowIndex ? last_selected_row.prevUntil(el[0]) : last_selected_row.nextUntil(el[0]);
+                    rows.removeClass("toolbox-last");
+                    between_rows.find("input[type=checkbox]:not(:disabled)").attr('checked', true);
+                    between_rows.addClass("toolbox-selection").addClass("toolbox-last");
+                }
+                el.find("input[type=checkbox]").attr('checked', true);
+                el.addClass("toolbox-selection").addClass("toolbox-last");
+            } else if (e.ctrlKey || e.metaKey) {
                 rows.removeClass("toolbox-last");
-                between_rows.find("input[type=checkbox]:not(:disabled)").attr('checked', true);
-                between_rows.addClass("toolbox-selection").addClass("toolbox-last");
+                el.find("input[type=checkbox]").attr('checked', true);
+                el.addClass("toolbox-selection").addClass("toolbox-last");
             }
-            el.find("input[type=checkbox]").attr('checked', true);
-            el.addClass("toolbox-selection").addClass("toolbox-last");
-        } else if (e.ctrlKey || e.metaKey) {
-            rows.removeClass("toolbox-last");
-            el.find("input[type=checkbox]").attr('checked', true);
-            el.addClass("toolbox-selection").addClass("toolbox-last");
         }
     });
 }
