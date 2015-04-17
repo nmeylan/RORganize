@@ -3,8 +3,8 @@ class AddScopedIdPerProject < ActiveRecord::Migration
     add_column :projects, :issues_sequence, :integer, null: false, default: 0
     add_column :projects, :documents_sequence, :integer, null: false, default: 0
 
-    add_column :issues, :sequence_id, :integer, null: false
-    add_column :documents, :sequence_id, :integer, null: false
+    add_column :issues, :sequence_id, :integer, null: false, default: 0
+    add_column :documents, :sequence_id, :integer, null: false, default: 0
 
     all_projects = Project.all
 
