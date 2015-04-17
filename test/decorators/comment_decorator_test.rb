@@ -55,13 +55,13 @@ class CommentDecoratorTest < Rorganize::Decorator::TestCase
     allow_user_to('edit_comment_not_owner')
     node(@comment_decorator.edit_link)
     assert_select 'a', 1
-    assert_select 'a[href=?]', edit_comment_path(@comment.id)
+    assert_select 'a[href=?]', edit_comment_path(@comment)
   end
 
   test "it displays a link to edit when user is author of the comment" do
     node(@comment_decorator.edit_link)
     assert_select 'a', 1
-    assert_select 'a[href=?]', edit_comment_path(@comment.id)
+    assert_select 'a[href=?]', edit_comment_path(@comment)
   end
 
   test "it should not display a link to edit when user is not allowed to" do
@@ -76,13 +76,13 @@ class CommentDecoratorTest < Rorganize::Decorator::TestCase
     allow_user_to('destroy_comment_not_owner')
     node(@comment_decorator.delete_link)
     assert_select 'a', 1
-    assert_select 'a[href=?]', comment_path(@comment.id)
+    assert_select 'a[href=?]', comment_path(@comment)
   end
 
   test "it displays a link to delete when user is author of the comment" do
     node(@comment_decorator.delete_link)
     assert_select 'a', 1
-    assert_select 'a[href=?]', comment_path(@comment.id)
+    assert_select 'a[href=?]', comment_path(@comment)
   end
 
   test "it should not display a link to delete when user is not allowed to" do
@@ -94,29 +94,29 @@ class CommentDecoratorTest < Rorganize::Decorator::TestCase
   test "it displays a link to view the comment thread" do
     node(@comment_decorator.remote_show_link)
     assert_select 'a', 1
-    assert_select 'a[href=?]', comment_path(@comment.id)
+    assert_select 'a[href=?]', comment_path(@comment)
     assert_select 'a[data-remote="true"]', 1
   end
 
   test "it has a method to display a link to the commentable object" do
     node(concat @comment_decorator.display_object_type)
     assert_select 'b', 1
-    assert_select 'b', "#{I18n.t(:label_issue)} ##{@issue.id}".downcase
+    assert_select 'b', "#{I18n.t(:label_issue)} ##{@issue.sequence_id}".downcase
     assert_select 'a', 1
-    assert_select 'a[href=?]', issue_path(@project.slug, @issue.id)
+    assert_select 'a[href=?]', issue_path(@project.slug, @issue)
   end
 
   test "it has a method to display that something has been commented" do
     node(concat @comment_decorator.render_header)
     assert_select 'a', 2
-    assert_select 'a[href=?]', issue_path(@project.slug, @issue.id)
-    assert_select 'a[href=?]', comment_path(@comment.id)
+    assert_select 'a[href=?]', issue_path(@project.slug, @issue)
+    assert_select 'a[href=?]', comment_path(@comment)
   end
 
   test "it has a method to display that someone leave a comment" do
     node(@comment_decorator.render_details)
     assert_select 'a', 2
     assert_select 'a[href=?]', "/#{User.current.slug}"
-    assert_select 'a[href=?]', comment_path(@comment.id)
+    assert_select 'a[href=?]', comment_path(@comment)
   end
 end

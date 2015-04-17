@@ -37,7 +37,7 @@ class IssuesControllerTest < ActionController::TestCase
     end
     assert_not_empty flash[:notice]
     assert_not_nil assigns(:issue_decorator)
-    assert_redirected_to issue_path(@project.slug, assigns(:issue_decorator).id)
+    assert_redirected_to issue_path(@project.slug, assigns(:issue_decorator))
   end
 
   test "should set status to first one when user is not allowed to set status on issue creation" do
@@ -46,7 +46,7 @@ class IssuesControllerTest < ActionController::TestCase
     end
     assert_not_empty flash[:notice]
     assert_not_nil assigns(:issue_decorator)
-    assert_redirected_to issue_path(@project.slug, assigns(:issue_decorator).id)
+    assert_redirected_to issue_path(@project.slug, assigns(:issue_decorator))
   end
 
   test "should let assigned attribute to nil when user is not allowed to change it on issue creation" do
@@ -55,7 +55,7 @@ class IssuesControllerTest < ActionController::TestCase
     issue = assigns(:issue_decorator)
     assert_not_nil issue
     assert_nil issue.assigned_to
-    assert_redirected_to issue_path(@project.slug, issue.id)
+    assert_redirected_to issue_path(@project.slug, issue)
   end
 
   test "should set assigned attribute when user is allowed to change it on issue creation" do
@@ -65,7 +65,7 @@ class IssuesControllerTest < ActionController::TestCase
     issue = assigns(:issue_decorator)
     assert_not_nil issue
     assert_nil issue.assigned_to
-    assert_redirected_to issue_path(@project.slug, issue.id)
+    assert_redirected_to issue_path(@project.slug, issue)
   end
 
   test "should let done attribute to nil when user is not allowed to change it on issue creation" do
@@ -75,7 +75,7 @@ class IssuesControllerTest < ActionController::TestCase
     issue = assigns(:issue_decorator)
     assert_not_nil issue
     assert_equal 0, issue.done
-    assert_redirected_to issue_path(@project.slug, issue.id)
+    assert_redirected_to issue_path(@project.slug, issue)
   end
 
   test "should set done attribute when user is allowed to change it on issue creation" do
@@ -86,7 +86,7 @@ class IssuesControllerTest < ActionController::TestCase
     issue = assigns(:issue_decorator)
     assert_not_nil issue
     assert_equal 20, issue.done
-    assert_redirected_to issue_path(@project.slug, issue.id)
+    assert_redirected_to issue_path(@project.slug, issue)
   end
 
   test "should let category attribute to nil when user is not allowed to change it on issue creation" do
@@ -95,7 +95,7 @@ class IssuesControllerTest < ActionController::TestCase
     issue = assigns(:issue_decorator)
     assert_not_nil issue
     assert_equal nil, issue.category_id
-    assert_redirected_to issue_path(@project.slug, issue.id)
+    assert_redirected_to issue_path(@project.slug, issue)
   end
 
   test "should set category attribute when user is allowed to change it on issue creation" do
@@ -105,7 +105,7 @@ class IssuesControllerTest < ActionController::TestCase
     issue = assigns(:issue_decorator)
     assert_not_nil issue
     assert_equal 20, issue.category_id
-    assert_redirected_to issue_path(@project.slug, issue.id)
+    assert_redirected_to issue_path(@project.slug, issue)
   end
 
   test "should let version attribute to nil when user is not allowed to change it on issue creation" do
@@ -117,7 +117,7 @@ class IssuesControllerTest < ActionController::TestCase
     assert_equal nil, issue.version_id
     assert_equal nil, issue.start_date
     assert_equal nil, issue.due_date
-    assert_redirected_to issue_path(@project.slug, issue.id)
+    assert_redirected_to issue_path(@project.slug, issue)
   end
 
   test "should set version attribute when user is allowed to change it on issue creation" do
@@ -130,7 +130,7 @@ class IssuesControllerTest < ActionController::TestCase
     assert_equal 20, issue.version_id
     assert_equal Date.new(2012, 01, 20), issue.start_date
     assert_equal Date.new(2012, 12, 20), issue.due_date
-    assert_redirected_to issue_path(@project.slug, issue.id)
+    assert_redirected_to issue_path(@project.slug, issue)
   end
 
   test "should refresh the page when create issue failed" do
@@ -142,38 +142,38 @@ class IssuesControllerTest < ActionController::TestCase
   end
 
   test "should edit issue" do
-    get_with_permission :edit, id: @issue
+    get_with_permission :edit, id: @issue.sequence_id
     assert_response :success
     assert_not_nil assigns(:issue_decorator)
   end
 
   test "should update issue" do
-    patch_with_permission :update, id: @issue, issue: {subject: 'Change issue name'}
+    patch_with_permission :update, id: @issue.sequence_id, issue: {subject: 'Change issue name'}
     assert_not_empty flash[:notice]
-    assert_redirected_to issue_path(@project.slug, assigns(:issue_decorator).id)
+    assert_redirected_to issue_path(@project.slug, assigns(:issue_decorator))
   end
 
   test "should view issue" do
-    get_with_permission :show, id: @issue
+    get_with_permission :show, id: @issue.sequence_id
     assert_response :success
     assert_not_nil assigns(:issue_decorator)
   end
 
   test "should refresh the page when update issue failed" do
-    patch_with_permission :update, id: @issue, issue: {subject: '', status_id: 1, tracker_id: 1}
+    patch_with_permission :update, id: @issue.sequence_id, issue: {subject: '', status_id: 1, tracker_id: 1}
     assert_not_nil assigns(:issue_decorator)
     assert_response :unprocessable_entity
   end
 
   test "should destroy issue" do
     assert_difference('Issue.count', -1) do
-      delete_with_permission :destroy, id: @issue, format: :js
+      delete_with_permission :destroy, id: @issue.sequence_id, format: :js
     end
     assert_response :success
   end
 
   test "should get toolbox for issues when user is allowed to" do
-    get_with_permission :toolbox, ids: [@issue.id], format: :js
+    get_with_permission :toolbox, ids: [@issue], format: :js
 
     assert_response :success
     assert_template "js_templates/toolbox"
@@ -183,7 +183,7 @@ class IssuesControllerTest < ActionController::TestCase
     allow_user_to('change_category', 'issues')
     assert_nil @issue.category_id
     get_with_permission :index
-    post_with_permission :toolbox, ids: [@issue.id], value: {category_id: "1", version_id: ""}, format: :js
+    post_with_permission :toolbox, ids: [@issue.sequence_id], value: {category_id: "1", version_id: ""}, format: :js
     @issue.reload
     assert_equal 1, @issue.category_id
     assert_response :success
@@ -192,7 +192,7 @@ class IssuesControllerTest < ActionController::TestCase
 
   test "should delete issues with toolbox" do
     get_with_permission :index
-    post_with_permission :toolbox, delete_ids: [@issue.id], format: :js
+    post_with_permission :toolbox, delete_ids: [@issue.sequence_id], format: :js
     assert_raise(ActiveRecord::RecordNotFound) { @issue.reload }
     assert_response :success
     assert_template "index"
@@ -207,7 +207,7 @@ class IssuesControllerTest < ActionController::TestCase
 
   test "should add issue predecessor" do
     assert_nil @issue.predecessor_id
-    post_with_permission :add_predecessor, id: @issue, issue: {predecessor_id: @issue_not_owned.id}, format: :js
+    post_with_permission :add_predecessor, id: @issue.sequence_id, issue: {predecessor_id: @issue_not_owned.sequence_id}, format: :js
     @issue.reload
     assert_equal @issue_not_owned.id, @issue.predecessor_id
     assert_response :success
@@ -215,10 +215,10 @@ class IssuesControllerTest < ActionController::TestCase
   end
 
   test "should delete issue predecessor" do
-    post_with_permission :add_predecessor, id: @issue, issue: {predecessor_id: @issue_not_owned.id}, format: :js
+    post_with_permission :add_predecessor, id: @issue.sequence_id, issue: {predecessor_id: @issue_not_owned.sequence_id}, format: :js
     @issue.reload
     assert_equal @issue_not_owned.id, @issue.predecessor_id
-    delete_with_permission :del_predecessor, id: @issue, format: :js
+    delete_with_permission :del_predecessor, id: @issue.sequence_id, format: :js
     @issue.reload
     assert_nil @issue.predecessor_id
     assert_response :success
@@ -256,43 +256,43 @@ class IssuesControllerTest < ActionController::TestCase
   end
 
   test "should get a 403 error when user is not allowed to create issue" do
-    should_get_403_on(:_post, :create, id: @issue.id)
+    should_get_403_on(:_post, :create, id: @issue)
   end
 
   test "should get a 403 error when user is not allowed to edit issue" do
-    should_get_403_on(:_get, :edit, id: @issue.id)
+    should_get_403_on(:_get, :edit, id: @issue)
   end
 
   test "should get a 403 error when user is not allowed to edit not owned issue" do
-    should_get_403_on(:get_with_permission, :edit, id: @issue_not_owned.id)
+    should_get_403_on(:get_with_permission, :edit, id: @issue_not_owned)
   end
 
   test "should get a 403 error when user is not allowed to view issue" do
-    should_get_403_on(:_get, :show, id: @issue.id)
+    should_get_403_on(:_get, :show, id: @issue)
   end
 
   test "should get a 403 error when user is not allowed to update issue" do
-    should_get_403_on(:_patch, :update, id: @issue.id)
+    should_get_403_on(:_patch, :update, id: @issue)
   end
 
   test "should get a 403 error when user is not allowed to update not owned issue" do
-    should_get_403_on(:patch_with_permission, :update, id: @issue_not_owned.id)
+    should_get_403_on(:patch_with_permission, :update, id: @issue_not_owned)
   end
 
   test "should get a 403 error when user is not allowed to destroy issue" do
-    should_get_403_on(:_delete, :destroy, id: @issue.id, format: :js)
+    should_get_403_on(:_delete, :destroy, id: @issue, format: :js)
   end
 
   test "should get a 403 error when user is not allowed to destroy not owned issue" do
-    should_get_403_on(:delete_with_permission, :destroy, id: @issue_not_owned.id)
+    should_get_403_on(:delete_with_permission, :destroy, id: @issue_not_owned)
   end
 
   test "should get a 403 error when user is not allowed to get toolbox issue" do
-    should_get_403_on(:_get, :toolbox, ids: [@issue.id], format: :js)
+    should_get_403_on(:_get, :toolbox, ids: [@issue], format: :js)
   end
 
   test "should get a 403 error when user is not allowed to post toolbox issue" do
-    should_get_403_on(:_post, :toolbox, ids: [@issue.id], format: :js)
+    should_get_403_on(:_post, :toolbox, ids: [@issue], format: :js)
   end
 
   test "should get a 403 error when user is not allowed to view issues overview" do

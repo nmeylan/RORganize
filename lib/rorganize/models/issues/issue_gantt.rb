@@ -14,9 +14,10 @@ module Rorganize
             errors = []
             Issue.transaction do
               issue_id_attributes_changed_hash.each do |issue_id, attribute_name_value_hash|
-                issue = Issue.find_by_id(issue_id)
+                issue = Issue.find_by_sequence_id(issue_id)
                 if issue
                   issue.attributes = attribute_name_value_hash
+                  issue.predecessor = Issue.find_by_sequence_id_and_project_id(attribute_name_value_hash[:predecessor_id], issue.project_id) if attribute_name_value_hash[:predecessor_id]
                   if issue.changed?
                     issue.save
                     errors << issue.errors.messages if issue.errors.messages.any?
@@ -32,7 +33,7 @@ module Rorganize
         # @return [Hash] a hash with the following structure:
         # {saved: Boolean, journals: Array}
         def set_predecessor(predecessor_id)
-          self.predecessor_id = predecessor_id
+          self.predecessor = Issue.find_by_sequence_id_and_project_id(predecessor_id, self.project_id)
           saved = self.save
           journals = Journal.where(journalizable_type: 'Issue', journalizable_id: self.id).includes([:details, :user])
           {saved: saved, journals: journals}
@@ -40,7 +41,7 @@ module Rorganize
 
         def validate_predecessor
           unless self.predecessor_id.nil?
-            issue = Issue.find(self.predecessor_id)
+            issue = Issue.find_by_id(self.predecessor_id)
             if predecessor_not_exists?(issue)
               errors.add(:predecessor, 'not exist in this project')
             elsif predecessor_is_self?(issue)

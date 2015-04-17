@@ -18,7 +18,7 @@
     <% if old_versions.to_a.any? %>
         <h2><%= t(:link_old_versions) %></h2>
         <ul>
-          <%= old_versions.collect { |version| content_tag :li, link_to(version.caption, version_roadmap_path(project_decorator.slug, version.id)) }.join.html_safe %>
+          <%= old_versions.collect { |version| content_tag :li, link_to(version.caption, version_roadmap_path(project_decorator.slug, version)) }.join.html_safe %>
         </ul>
     <% end %>
 <% end %>

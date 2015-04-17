@@ -47,7 +47,7 @@ class CategoryTest < ActiveSupport::TestCase
 
   test 'it has many issues and nullify when category is deleted' do
     category = Category.create(name: 'Hello')
-    issue = Issue.create(tracker_id: 1, category_id: category.id, subject: 'Bug', status_id: 1, author_id: User.current.id)
+    issue = Issue.create(tracker_id: 1, category_id: category.id, subject: 'Bug', status_id: 1, author_id: User.current.id, project_id: 1)
 
     assert_equal category.id, issue.category_id
 

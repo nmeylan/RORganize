@@ -12,7 +12,7 @@ module Rorganize
       end
 
       def set_predecessor(predecessor_id)
-        @issue_decorator = Issue.find_by(id: params[:id], project_id: @project.id).decorate(context: {project: @project})
+        @issue_decorator = Issue.find_by(sequence_id: params[:id], project_id: @project.id).decorate(context: {project: @project})
         result = @issue_decorator.set_predecessor(predecessor_id)
         respond_to do |format|
           format.js do

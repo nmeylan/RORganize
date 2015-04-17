@@ -81,7 +81,7 @@ class MemberTest < ActiveSupport::TestCase
     member = Member.create(user_id: @user.id, project_id: project.id, role_id: @role.id)
     issue = Issue.create(tracker_id: 1, subject: 'Bug1', status_id: 1, project_id: 1)
     issue1 = Issue.create(tracker_id: 1, subject: 'Bug1', status_id: 1, project_id: 1)
-    watcher = Watcher.new(watchable_id: issue.id, watchable_type: 'Issue', user_id: @user.id, project_id: project.id)
+    watcher = Watcher.new(watchable_id: issue.sequence_id, watchable_type: 'Issue', user_id: @user.id, project_id: project.id)
     watcher1 = Watcher.new(watchable_id: issue1.id, watchable_type: 'Issue', user_id: @user.id, project_id: project.id)
     assert watcher.save, watcher.errors.messages
     assert watcher1.save, watcher1.errors.messages

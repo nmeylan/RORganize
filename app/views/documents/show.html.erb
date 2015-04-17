@@ -5,7 +5,7 @@
 # File: show.html.erb
 %>
 
-<%= contextual "#{t(:label_document)} ##{@document_decorator.id}" do -%>
+<%= contextual "#{t(:label_document)} ##{@document_decorator.sequence_id}" do -%>
     <%= @document_decorator.new_link %>
     <%= @document_decorator.new_comment_link %>
     <%= @document_decorator.edit_link %>

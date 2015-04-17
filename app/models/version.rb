@@ -38,7 +38,7 @@ class Version < ActiveRecord::Base
   # see https://github.com/nmeylan/RORganize/wiki/User-guide---Update-version-dates
   def update_issues_due_date
     issues = Issue.where(version_id: self.id)
-    Issue.bulk_set_start_and_due_date(issues.collect(&:id), self, nil)
+    Issue.bulk_set_start_and_due_date(issues.collect(&:sequence_id), self, nil)
   end
 
   #  Custom validator

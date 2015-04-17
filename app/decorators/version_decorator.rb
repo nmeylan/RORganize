@@ -13,12 +13,12 @@ class VersionDecorator < ApplicationDecorator
 
   # see #ApplicationDecorator::delete_link.
   def delete_link
-    super(h.t(:link_delete), h.version_path(model.project.slug, model.id))
+    super(h.t(:link_delete), h.version_path(model.project.slug, model))
   end
 
   # see #ApplicationDecorator::edit_link.
   def edit_link
-    link = link_to_with_permissions(model.caption, h.edit_version_path(model.project.slug, model.id), model.project, nil)
+    link = link_to_with_permissions(model.caption, h.edit_version_path(model.project.slug, model), model.project, nil)
     link ? link : disabled_field(model.caption)
   end
 

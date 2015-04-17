@@ -194,7 +194,7 @@ class NotificationsManagerInAppNotificationCreationTest < ActiveSupport::TestCas
   # Notifiable bulk edited
   test "should create notification on notifiable bulk edited for users whose watch the project" do
     create_watcher_for(@user, 'Project', @project.id)
-    Issue.bulk_edit([@notifiable.id], {status_id: 4}, @project)
+    Issue.bulk_edit([@notifiable.sequence_id], {status_id: 4}, @project)
 
     notification = find_journal_type_notification(@notifiable, @user)
     assert_not_nil notification
@@ -205,7 +205,7 @@ class NotificationsManagerInAppNotificationCreationTest < ActiveSupport::TestCas
 
   test "should create notification on notifiable bulk edited for users whose watch notifiable" do
     create_watcher_for(@user, 'Issue', @notifiable.id)
-    Issue.bulk_edit([@notifiable.id], {status_id: 4}, @project)
+    Issue.bulk_edit([@notifiable.sequence_id], {status_id: 4}, @project)
 
     notification = find_journal_type_notification(@notifiable, @user)
     assert_not_nil notification
@@ -215,7 +215,7 @@ class NotificationsManagerInAppNotificationCreationTest < ActiveSupport::TestCas
   end
 
   test "should create notification on notifiable bulk edited for users who is assigned to it" do
-    Issue.bulk_edit([@notifiable.id], {assigned_to_id: @user.id}, @project)
+    Issue.bulk_edit([@notifiable.sequence_id], {assigned_to_id: @user.id}, @project)
 
     notification = find_journal_type_notification(@notifiable, @user)
     assert_not_nil notification

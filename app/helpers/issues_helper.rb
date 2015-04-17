@@ -11,10 +11,10 @@ module IssuesHelper
   def list_row(issue)
     disabled_class = !issue.user_allowed_to_edit? ? 'disabled-toolbox' : ''
     content_tag :tr, class: "has-context-menu odd-even issue-tr #{disabled_class}" do
-      list_td(check_box_tag("issue-#{issue.id.to_s}", issue.id, false, disabled: !issue.user_allowed_to_edit?), class: 'cell-checkbox')
-      list_td issue.id, class: 'list-center id'
+      list_td(check_box_tag("issue-#{issue.sequence_id.to_s}", issue.sequence_id, false, disabled: !issue.user_allowed_to_edit?), class: 'cell-checkbox')
+      list_td issue.sequence_id, class: 'list-center id'
       list_td issue.tracker_str, class: 'list-center tracker'
-      list_td issue.show_link, {class: 'name', id: issue.id}
+      list_td issue.show_link, {class: 'name', id: issue.sequence_id}
       list_td issue.display_assigned_to, class: 'list-center assigned-to'
       list_td issue.display_status, class: 'list-center status'
       list_td issue.display_version, class: 'list-center version'
@@ -45,7 +45,7 @@ module IssuesHelper
     content_tag :thead do
       content_tag :tr, class: 'header' do
         list_th link_to(glyph('', 'check'), '#', {class: 'icon-checked', id: 'check-all', 'cb_checked' => 'b'})
-        list_th sortable('issues.id', '#')
+        list_th sortable('issues.sequence_id', '#')
         list_th sortable('trackers.name', 'Tracker')
         list_th sortable('issues.subject', 'Subject'), {class: 'list-left no-padding-left'}
         list_th sortable('users.name', 'Assigned to')

@@ -13,21 +13,21 @@ class QueryDecoratorTest < Rorganize::Decorator::TestCase
     allow_user_to('edit', 'queries')
     node(@query_decorator.edit_link)
     assert_select 'a', 1
-    assert_select 'a[href=?]', edit_query_path(@query_decorator.id)
+    assert_select 'a[href=?]', edit_query_path(@query_decorator)
   end
 
   test "it displays a link to view query when user is allowed to" do
     allow_user_to('show', 'queries')
     node(@query_decorator.show_link)
     assert_select 'a', 1
-    assert_select 'a[href=?]', query_path(@query_decorator.id)
+    assert_select 'a[href=?]', query_path(@query_decorator)
   end
 
   test "it displays a link to delete when user is allowed to" do
     allow_user_to('destroy')
     node(@query_decorator.delete_link)
     assert_select 'a', 1
-    assert_select 'a[href=?]', query_path(@query_decorator.id)
+    assert_select 'a[href=?]', query_path(@query_decorator)
   end
 
   test "it displays the user name" do

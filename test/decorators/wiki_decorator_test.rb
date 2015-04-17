@@ -13,7 +13,7 @@ class WikiDecoratorTest < Rorganize::Decorator::TestCase
     allow_user_to('destroy')
     node(@wiki_decorator.delete_link)
     assert_select 'a', 1
-    assert_select 'a[href=?]', wiki_path(@project.slug, @wiki.id)
+    assert_select 'a[href=?]', wiki_path(@project.slug, @wiki)
   end
 
   test "it should not display a link to delete when user is not allowed to" do

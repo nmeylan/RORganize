@@ -53,7 +53,7 @@ class IssuesController < ApplicationController
     @issue_decorator = @project.issues.build(issue_params).decorate(context: {project: @project})
     @issue_decorator.author = User.current
     @issue_decorator.status_id ||= IssuesStatus.first_status.id
-    generic_create_callback(@issue_decorator, -> { issue_path(@project.slug, @issue_decorator.id) }, {form_content: FormContent.new(@project).content})
+    generic_create_callback(@issue_decorator, -> { issue_path(@project.slug, @issue_decorator) }, {form_content: FormContent.new(@project).content})
   end
 
   #GET /project/:project_identifier/issues/:id/edit
@@ -66,7 +66,7 @@ class IssuesController < ApplicationController
   #PUT /project/:project_identifier/issues/:id
   def update
     @issue_decorator.attributes = issue_params
-    update_attachable_callback(@issue_decorator, issue_path(@project.slug, @issue_decorator.id), issue_params, {form_content: FormContent.new(@project).content})
+    update_attachable_callback(@issue_decorator, issue_path(@project.slug, @issue_decorator), issue_params, {form_content: FormContent.new(@project).content})
   end
 
   #DELETE /project/:project_identifier/issues/:id
@@ -78,9 +78,9 @@ class IssuesController < ApplicationController
   #GET /project/:project_identifier/issues/toolbox
   def toolbox
     deletable_issues_ids = deletable_issues_ids(@project) if params[:ids]
-    collection_deletion = Issue.where(id: deletable_issues_ids).eager_load(:version, :assigned_to, :category, status: [:enumeration])
+    collection_deletion = Issue.where(sequence_id: deletable_issues_ids).eager_load(:version, :assigned_to, :category, status: [:enumeration])
     params[:ids] = editable_issues_ids(@project) if params[:ids]
-    collection = Issue.where(id: params[:ids]).eager_load(:version, :assigned_to, :category, status: [:enumeration])
+    collection = Issue.where(sequence_id: params[:ids]).eager_load(:version, :assigned_to, :category, status: [:enumeration])
 
     toolbox_callback(collection, Issue, @project, collection_deletion)
   end
@@ -106,7 +106,7 @@ class IssuesController < ApplicationController
   end
 
   def load_issues
-    @issues_decorator = load_paginated_collection(Issue, 'issues.id')
+    @issues_decorator = load_paginated_collection(Issue, 'issues.sequence_id')
   end
 
   def session_list_type
@@ -130,7 +130,7 @@ class IssuesController < ApplicationController
   def find_issue
     @issue_decorator = @project.issues.eager_load([:tracker, :version, :assigned_to, :category, :attachments,
                                                    :parent, :author, status: :enumeration, comments: :author])
-                           .find(params[:id])
+                           .find_by_sequence_id!(params[:id])
     @issue_decorator = @issue_decorator.decorate(context: {project: @project})
   end
 
@@ -139,7 +139,7 @@ class IssuesController < ApplicationController
       if User.current.allowed_to?('edit_not_owner', 'issues', project)
         params[:ids]
       else
-        Issue.where(id: params[:ids], author_id: User.current.id).pluck('issues.id')
+        project.issues.where(sequence_id: params[:ids], author_id: User.current.id).pluck('issues.sequence_id')
       end
     end
   end
@@ -149,7 +149,7 @@ class IssuesController < ApplicationController
       if User.current.allowed_to?('destroy_not_owner', 'issues', project)
         params[:ids]
       else
-        Issue.where(id: params[:ids], author_id: User.current.id).pluck('issues.id')
+        project.issues.where(sequence_id: params[:ids], author_id: User.current.id).pluck('issues.sequence_id')
       end
     end
   end

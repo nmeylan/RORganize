@@ -29,7 +29,7 @@ class ApplicationController < ActionController::Base
     Rails.env.eql?('development')
   end
 
-  #Define which menu it concern (:project_menu, :admin_menu)
+  #Define which menu it concerns (:project_menu, :admin_menu)
   def menu_context(context)
     @menu_context ||= []
     @menu_context << context

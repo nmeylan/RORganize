@@ -17,7 +17,7 @@
     <ul>
       <% versions_details[:issues].each do |issue| %>
           <li class="<%= 'close' if issue.status.is_closed? %>"><%= issue.tracker.name %>
-            #<%= issue.id %> : <%= issue.subject %></li>
+            #<%= issue.sequence_id %> : <%= issue.subject %></li>
       <% end %>
     </ul>
   </div>

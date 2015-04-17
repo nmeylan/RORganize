@@ -10,7 +10,7 @@ class MemberDecoratorTest < Rorganize::Decorator::TestCase
     allow_user_to('change_role')
     node(@member_decorator.role_selection(Role.all))
     assert_select 'select', 1
-    assert_select 'select[data-link=?]', change_role_members_path(@project.slug, @member_decorator.id)
+    assert_select 'select[data-link=?]', change_role_members_path(@project.slug, @member_decorator)
     assert_select 'option[selected]', text: @member_decorator.role.caption
   end
 
@@ -22,7 +22,7 @@ class MemberDecoratorTest < Rorganize::Decorator::TestCase
     allow_user_to('destroy')
     node(@member_decorator.delete_link)
     assert_select 'a', 1
-    assert_select 'a[href=?]', member_path(@project.slug, @member_decorator.id)
+    assert_select 'a[href=?]', member_path(@project.slug, @member_decorator)
   end
 
   test "it should not display a link to delete when user is not allowed to" do

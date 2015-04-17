@@ -9,14 +9,14 @@ class IssuesStatusDecoratorTest < Rorganize::Decorator::TestCase
     allow_user_to('edit')
     node(@status_decorator.edit_link)
     assert_select 'a', 1
-    assert_select 'a[href=?]', edit_issues_status_path(@status_decorator.id)
+    assert_select 'a[href=?]', edit_issues_status_path(@status_decorator)
   end
 
   test "it displays a link to delete when user is allowed to" do
     allow_user_to('destroy')
     node(@status_decorator.delete_link)
     assert_select 'a', 1
-    assert_select 'a[href=?]', issues_status_path(@status_decorator.id)
+    assert_select 'a[href=?]', issues_status_path(@status_decorator)
   end
 
   test "it should not have a link to edit action when user is not allowed to" do

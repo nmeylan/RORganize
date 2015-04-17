@@ -31,7 +31,7 @@ class CommentsControllerTest < ActionController::TestCase
   test "should not create comment when content is missing" do
     allow_user_to('comment', 'issues')
     assert_no_difference('Comment.count') do
-      _post :create, comment: {commentable_id: @issue.id, commentable_type: "Issue", content: ""}, format: :js
+      _post :create, comment: {commentable_id: @issue, commentable_type: "Issue", content: ""}, format: :js
     end
     assert_response :success
     assert_not_empty @response.header["flash-error-message"]
@@ -95,7 +95,7 @@ class CommentsControllerTest < ActionController::TestCase
   end
 
   test "should get 403 on create when user has not the permission" do
-    should_get_403_on(:_post, :create, comment: {commentable_id: @issue.id, commentable_type: "Issue", content: "Leave a comment"}, format: :js)
+    should_get_403_on(:_post, :create, comment: {commentable_id: @issue, commentable_type: "Issue", content: "Leave a comment"}, format: :js)
   end
 
 end

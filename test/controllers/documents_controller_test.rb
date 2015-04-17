@@ -35,7 +35,7 @@ class DocumentsControllerTest < ActionController::TestCase
     end
     assert_not_empty flash[:notice]
     assert_not_nil assigns(:document_decorator)
-    assert_redirected_to document_path(@project.slug, assigns(:document_decorator).id)
+    assert_redirected_to document_path(@project.slug, assigns(:document_decorator))
   end
 
   test "should refresh the page when create document failed" do
@@ -47,19 +47,19 @@ class DocumentsControllerTest < ActionController::TestCase
   end
 
   test "should edit document" do
-    get_with_permission :edit, id: @document
+    get_with_permission :edit, id: @document.sequence_id
     assert_response :success
     assert_not_nil assigns(:document_decorator)
   end
 
   test "should update document" do
-    patch_with_permission :update, id: @document, document: {name: 'Change document name'}
+    patch_with_permission :update, id: @document.sequence_id, document: {name: 'Change document name'}
     assert_not_empty flash[:notice]
-    assert_redirected_to document_path(@project.slug, assigns(:document_decorator).id)
+    assert_redirected_to document_path(@project.slug, assigns(:document_decorator))
   end
 
   test "should view document" do
-    get_with_permission :show, id: @document
+    get_with_permission :show, id: @document.sequence_id
     assert_response :success
     assert_not_nil assigns(:document_decorator)
   end
@@ -72,13 +72,13 @@ class DocumentsControllerTest < ActionController::TestCase
 
   test "should destroy document" do
     assert_difference('Document.count', -1) do
-      delete_with_permission :destroy, id: @document, format: :js
+      delete_with_permission :destroy, id: @document.sequence_id, format: :js
     end
     assert_response :success
   end
 
   test "should get toolbox for documents" do
-    get_with_permission :toolbox, ids: [@document.id], format: :js
+    get_with_permission :toolbox, ids: [@document.sequence_id], format: :js
 
     assert_response :success
     assert_template "js_templates/toolbox"
@@ -87,7 +87,7 @@ class DocumentsControllerTest < ActionController::TestCase
   test "should edit documents with toolbox" do
     assert_nil @document.category_id
     get_with_permission :index
-    post_with_permission :toolbox, ids: [@document.id], value: {category_id: "1", version_id: ""},format: :js
+    post_with_permission :toolbox, ids: [@document.sequence_id], value: {category_id: "1", version_id: ""},format: :js
     @document.reload
     assert_equal 1, @document.category_id
     assert_response :success
@@ -96,7 +96,7 @@ class DocumentsControllerTest < ActionController::TestCase
 
   test "should delete documents with toolbox" do
     get_with_permission :index
-    post_with_permission :toolbox, delete_ids: [@document.id],format: :js
+    post_with_permission :toolbox, delete_ids: [@document.sequence_id],format: :js
     assert_raise(ActiveRecord::RecordNotFound) { @document.reload }
     assert_response :success
     assert_template "index"
@@ -112,30 +112,30 @@ class DocumentsControllerTest < ActionController::TestCase
   end
 
   test "should get a 403 error when user is not allowed to create document" do
-    should_get_403_on(:_post, :create, id: @document.id)
+    should_get_403_on(:_post, :create, id: @document.sequence_id)
   end
 
   test "should get a 403 error when user is not allowed to edit document" do
-    should_get_403_on(:_get, :edit, id: @document.id)
+    should_get_403_on(:_get, :edit, id: @document.sequence_id)
   end
 
   test "should get a 403 error when user is not allowed to view document" do
-    should_get_403_on(:_get, :show, id: @document.id)
+    should_get_403_on(:_get, :show, id: @document.sequence_id)
   end
 
   test "should get a 403 error when user is not allowed to update document" do
-    should_get_403_on(:_patch, :update, id: @document.id)
+    should_get_403_on(:_patch, :update, id: @document.sequence_id)
   end
 
   test "should get a 403 error when user is not allowed to destroy document" do
-    should_get_403_on(:_delete, :destroy, id: @document.id, format: :js)
+    should_get_403_on(:_delete, :destroy, id: @document.sequence_id, format: :js)
   end
 
   test "should get a 403 error when user is not allowed to get toolbox document" do
-    should_get_403_on(:_get, :toolbox, ids: [@document.id], format: :js)
+    should_get_403_on(:_get, :toolbox, ids: [@document.sequence_id], format: :js)
   end
 
   test "should get a 403 error when user is not allowed to post toolbox document" do
-    should_get_403_on(:_post, :toolbox, ids: [@document.id], format: :js)
+    should_get_403_on(:_post, :toolbox, ids: [@document.sequence_id], format: :js)
   end
 end

@@ -133,7 +133,7 @@ class IssueDateValidatorTest < ActiveSupport::TestCase
     issues = []
     issues << @issue1 << @issue2 << @issue3 << @issue4 << @issue5
 
-    Issue.bulk_edit(issues.collect(&:id), {version_id: @version1.id}, projects(:projects_001))
+    Issue.bulk_edit(issues.collect(&:sequence_id), {version_id: @version1.id}, projects(:projects_001))
     issues[0, 4].each do |issue|
       issue.reload
       assert_equal @version1.target_date, issue.due_date
@@ -147,7 +147,7 @@ class IssueDateValidatorTest < ActiveSupport::TestCase
 
     issues << @issue1 << @issue2 << @issue3 << @issue4 << @issue5
 
-    Issue.bulk_edit(issues.collect(&:id), {version_id: @version1.id}, projects(:projects_001))
+    Issue.bulk_edit(issues.collect(&:sequence_id), {version_id: @version1.id}, projects(:projects_001))
 
     [@issue1, @issue2, @issue4, @issue5].each do |issue|
       issue.reload
@@ -162,7 +162,7 @@ class IssueDateValidatorTest < ActiveSupport::TestCase
 
     assert_equal Date.new(2012, 11, 29), issue1.start_date
     assert_equal Date.new(2012, 12, 20), issue1.due_date
-    Issue.bulk_edit([issue1.id], {version_id: version1.id}, projects(:projects_001))
+    Issue.bulk_edit([issue1.sequence_id], {version_id: version1.id}, projects(:projects_001))
     issue1.reload
     assert_equal Date.new(2012, 12, 21), issue1.start_date
     assert_equal nil, issue1.due_date
@@ -171,7 +171,7 @@ class IssueDateValidatorTest < ActiveSupport::TestCase
 
     assert_equal Date.new(2012, 12, 15), issue2.start_date
     assert_equal Date.new(2012, 12, 20), issue2.due_date
-    Issue.bulk_edit([issue2.id], {version_id: version1.id}, projects(:projects_001))
+    Issue.bulk_edit([issue2.sequence_id], {version_id: version1.id}, projects(:projects_001))
     issue2.reload
     assert_equal Date.new(2012, 12, 21), issue2.start_date
     assert_equal nil, issue2.due_date
@@ -183,7 +183,7 @@ class IssueDateValidatorTest < ActiveSupport::TestCase
 
     assert_equal Date.new(2012, 11, 29), issue1.start_date
     assert_equal Date.new(2012, 12, 20), issue1.due_date
-    Issue.bulk_edit([issue1.id], {version_id: version1.id}, projects(:projects_001))
+    Issue.bulk_edit([issue1.sequence_id], {version_id: version1.id}, projects(:projects_001))
     issue1.reload
     assert_equal Date.new(2012, 12, 21), issue1.start_date
     assert_equal nil, issue1.due_date
@@ -192,7 +192,7 @@ class IssueDateValidatorTest < ActiveSupport::TestCase
 
     assert_equal Date.new(2012, 12, 15), issue2.start_date
     assert_equal Date.new(2012, 12, 23), issue2.due_date
-    Issue.bulk_edit([issue2.id], {version_id: version1.id}, projects(:projects_001))
+    Issue.bulk_edit([issue2.sequence_id], {version_id: version1.id}, projects(:projects_001))
     issue2.reload
     assert_equal Date.new(2012, 12, 21), issue2.start_date
     assert_equal Date.new(2012, 12, 23), issue2.due_date
@@ -201,7 +201,7 @@ class IssueDateValidatorTest < ActiveSupport::TestCase
 
     assert_equal Date.new(2012, 12, 15), issue3.start_date
     assert_equal nil, issue3.due_date
-    Issue.bulk_edit([issue3.id], {version_id: version1.id}, projects(:projects_001))
+    Issue.bulk_edit([issue3.sequence_id], {version_id: version1.id}, projects(:projects_001))
     issue3.reload
     assert_equal Date.new(2012, 12, 21), issue3.start_date
     assert_equal nil, issue3.due_date
@@ -213,7 +213,7 @@ class IssueDateValidatorTest < ActiveSupport::TestCase
 
     assert_equal Date.new(2012, 11, 29), issue1.start_date
     assert_equal Date.new(2012, 12, 20), issue1.due_date
-    Issue.bulk_edit([issue1.id], {version_id: version1.id}, projects(:projects_001))
+    Issue.bulk_edit([issue1.sequence_id], {version_id: version1.id}, projects(:projects_001))
     issue1.reload
     assert_equal Date.new(2012, 12, 01), issue1.start_date
     assert_equal Date.new(2012, 12, 19), issue1.due_date
@@ -222,7 +222,7 @@ class IssueDateValidatorTest < ActiveSupport::TestCase
 
     assert_equal Date.new(2012, 12, 20), issue2.start_date
     assert_equal Date.new(2012, 12, 23), issue2.due_date
-    Issue.bulk_edit([issue2.id], {version_id: version1.id}, projects(:projects_001))
+    Issue.bulk_edit([issue2.sequence_id], {version_id: version1.id}, projects(:projects_001))
     issue2.reload
     assert_equal Date.new(2012, 12, 01), issue2.start_date
     assert_equal Date.new(2012, 12, 19), issue2.due_date

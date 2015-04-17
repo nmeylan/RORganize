@@ -5,7 +5,7 @@ class MagicFilterTest < ActiveSupport::TestCase
   include RORganizeTest::MagicFilterTestExpectedResults
 
   def issue_find(hash)
-    Issue.where(Issue.conditions_string(hash)+' 1 = 1').eager_load([:tracker, :version, :assigned_to, :category, :attachments, status: [:enumeration]]).order('issues.id ASC').collect { |issue| issue.id }
+    Issue.where(Issue.conditions_string(hash)+' 1 = 1').eager_load([:tracker, :version, :assigned_to, :category, :attachments, status: [:enumeration]]).order('issues.id ASC').collect(&:id)
   end
 
   #Generic assertion method for all cases

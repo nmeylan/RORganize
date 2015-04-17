@@ -190,7 +190,7 @@ class IssueJournalizableTest < ActiveSupport::TestCase
     issue1 = Issue.create(tracker_id: 1, subject: 'Bug', status_id: '8', project_id: 1, done: 50)
     issue2 = Issue.create(tracker_id: 1, subject: 'Bug', status_id: '8', project_id: 1, done: 50)
     document = Document.create(name: 'Document creation', project_id: @project.id)
-    Issue.bulk_edit([issue1.id, issue2.id], {status_id: 4}, @project)
+    Issue.bulk_edit([issue1.sequence_id, issue2.sequence_id], {status_id: 4}, @project)
 
     journal_creation_issue1 = Journal.find_by_journalizable_id_and_journalizable_type_and_action_type(issue1.id, 'Issue', Journal::ACTION_CREATE)
     journal_issue1 = Journal.find_by_journalizable_id_and_journalizable_type_and_action_type(issue1.id, 'Issue', Journal::ACTION_UPDATE)

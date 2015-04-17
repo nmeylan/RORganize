@@ -9,14 +9,14 @@ class TrackerDecoratorTest < Rorganize::Decorator::TestCase
     allow_user_to('edit')
     node(@tracker_decorator.edit_link)
     assert_select 'a', 1
-    assert_select 'a[href=?]', edit_tracker_path(@tracker_decorator.id)
+    assert_select 'a[href=?]', edit_tracker_path(@tracker_decorator)
   end
 
   test "it displays a link to delete when user is allowed to" do
     allow_user_to('destroy')
     node(@tracker_decorator.delete_link)
     assert_select 'a', 1
-    assert_select 'a[href=?]', tracker_path(@tracker_decorator.id)
+    assert_select 'a[href=?]', tracker_path(@tracker_decorator)
   end
 
   test "it should not have a link to edit action when user is not allowed to" do

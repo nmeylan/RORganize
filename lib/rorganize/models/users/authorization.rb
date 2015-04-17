@@ -11,7 +11,7 @@ module Rorganize
 
         attr_accessor :checked_permissions
         # @param [String] action : the action that user want to perform.
-        # @param [String] controller : the controller concern by the action.
+        # @param [String] controller : the controller concerns by the action.
         # @param [Project] project the context of the action.
         def allowed_to?(action, controller, project = nil)
           hash_key = "#{(project ? project.id : 'nil')}_#{controller}_#{action}".freeze

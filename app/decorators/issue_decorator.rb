@@ -8,28 +8,28 @@ class IssueDecorator < ApplicationDecorator
 
   # see #ApplicationDecorator::edit_link.
   def edit_link
-    super(h.t(:link_edit), h.edit_issue_path(context[:project].slug, model.id), context[:project], model.author_id)
+    super(h.t(:link_edit), h.edit_issue_path(context[:project].slug, model), context[:project], model.author_id)
   end
 
   def show_link
-    super(h.issue_path(context[:project].slug, model.id), context[:project])
+    super(h.issue_path(context[:project].slug, model), context[:project])
   end
 
   # @return [String] link to log time action.
   def log_time_link
     if User.current.allowed_to?('new', 'time_entries', context[:project])
-      h.link_to h.glyph(h.t(:link_log_time), 'clock'), h.fill_overlay_time_entries_path(model.id), {id: 'log-time', class: 'button'}
+      h.link_to h.glyph(h.t(:link_log_time), 'clock'), h.fill_overlay_time_entries_path(model), {id: 'log-time', class: 'button'}
     end
   end
 
   # see #ApplicationDecorator::delete_link
   def delete_link
-    super(h.t(:link_delete), h.issue_path(context[:project].slug, model.id), context[:project], model.author_id)
+    super(h.t(:link_delete), h.issue_path(context[:project].slug, model), context[:project], model.author_id)
   end
 
   # see #ApplicationDecorator::delete_attachment_link
   def delete_attachment_link(attachment)
-    super(h.delete_attachment_issues_path(context[:project].slug, attachment.id), context[:project])
+    super(h.delete_attachment_issues_path(context[:project].slug, attachment), context[:project])
   end
 
   # @return [String] tracker name.
@@ -38,11 +38,11 @@ class IssueDecorator < ApplicationDecorator
   end
 
   def activity_issue_caption
-    h.concat h.content_tag :b, "#{model.tracker.caption.downcase} ##{self.issue.id} "
+    h.concat h.content_tag :b, "#{model.tracker.caption.downcase} ##{self.issue.sequence_id} "
   end
 
   def display_object_type(project)
-    h.concat h.content_tag :b, "#{h.t(:label_issue).downcase} ##{self.id} "
+    h.concat h.content_tag :b, "#{h.t(:label_issue).downcase} ##{self.sequence_id} "
     h.fast_issue_link(model, project).html_safe
   end
 

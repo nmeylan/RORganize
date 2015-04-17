@@ -16,9 +16,9 @@ class JournalDecoratorTest < Rorganize::Decorator::TestCase
   test "it displays journalizable object type with its own method" do
     node(concat @journal_update_decorator.display_object_type)
     assert_select 'a', 1
-    assert_select 'a[href=?]', issue_path(@project.slug, @issue.id)
+    assert_select 'a[href=?]', issue_path(@project.slug, @issue)
     assert_select 'b', 1
-    assert_select 'b', "#{I18n.t(:label_issue)} ##{@issue.id}".downcase
+    assert_select 'b', "#{I18n.t(:label_issue)} ##{@issue.sequence_id}".downcase
   end
 
   test "it display journalizable readable object type" do

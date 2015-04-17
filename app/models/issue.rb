@@ -9,6 +9,7 @@ class Issue < ActiveRecord::Base
   include Rorganize::Models::Watchable
   include Rorganize::Models::Notifiable
   include Rorganize::Models::Attachable::AttachmentType
+  include Sequenceable
   #lib/rorganize/models/issues
   # Contains date validator and Gantt behaviour
   include Rorganize::Models::IssueExtraMethods
@@ -67,7 +68,7 @@ class Issue < ActiveRecord::Base
     joins(:project, status: [:enumeration]).
         group('1, 2, 4').
         where('issues.project_id = ?', project_id).
-        pluck('issues_statuses.id, enumerations.name, count(issues.id), projects.slug')
+        pluck('issues_statuses.id, enumerations.name, count(issues.sequence_id), projects.slug')
   end
 
   # @param [String] attribute_name : the name of the attribute to group by.
@@ -81,7 +82,7 @@ class Issue < ActiveRecord::Base
         group('1, 2, 4').
         where('issues_statuses.is_closed = ? AND issues.project_id = ?', false, project_id).
         where(conditions).
-        pluck("#{table_name}.id, #{table_name}.name, count(issues.id), projects.slug")
+        pluck("#{table_name}.id, #{table_name}.name, count(issues.sequence_id), projects.slug")
   end
 
   # @param [String] database_field : e.g 'issues.assigned_to_id', 'issues.author_id'.
@@ -92,7 +93,7 @@ class Issue < ActiveRecord::Base
     joins(:project, status: [:enumeration]).
         group('2, 1, 3, 5').
         where("issues_statuses.is_closed = ? AND #{conditions}", false).
-        pluck("#{database_field}, projects.id, projects.slug, count(issues.id), projects.slug")
+        pluck("#{database_field}, projects.id, projects.slug, count(issues.sequence_id), projects.slug")
   end
 
   # Methods
@@ -103,7 +104,7 @@ class Issue < ActiveRecord::Base
   # @return [Array] array with all attribute that can be filtered.
   def self.filtered_attributes
     unused_attributes = ['Project', 'Description', 'Estimated time', 'Predecessor',
-                         'Attachments count', 'Comments count', 'Link type']
+                         'Attachments count', 'Comments count', 'Link type', 'Sequence']
     attrs = Issue.attributes_formalized_names.delete_if { |attribute| unused_attributes.include?(attribute) }
     attrs.map { |attribute| [attribute, attribute.gsub(/\s/, '_').downcase] }
   end
@@ -113,8 +114,8 @@ class Issue < ActiveRecord::Base
   def self.bulk_edit(issue_ids, value_param, project)
     issues, journals = super(issue_ids, value_param, project)
     # If version changed trigger the due and start date rules.
-    Issue.bulk_set_done_ratio(issue_ids, value_param[:status_id], journals) if value_param[:status_id]
-    bulk_set_start_and_due_date(issues.collect { |issue| issue.id }, value_param[:version_id], journals) if value_param[:version_id]
+    Issue.bulk_set_done_ratio(issue_ids, project, value_param[:status_id], journals) if value_param[:status_id]
+    bulk_set_start_and_due_date(issues.collect { |issue| issue.sequence_id }, value_param[:version_id], journals) if value_param[:version_id]
   end
 
   # @param [Array] issue_ids : array containing all ids of issues that will be bulk deleted.
@@ -181,6 +182,13 @@ class Issue < ActiveRecord::Base
     self.has_task_list? ? self.description.scan(/- \[(\w|\s)\]/).count : 0
   end
 
+  def predecessor
+    Issue.find_by_id_and_project_id(self.predecessor_id, self.project_id)
+  end
+
+  def predecessor=(predecessor)
+    self.predecessor_id = predecessor ? predecessor.id : nil
+  end
 
   #Permit attributes
   def self.permit_attributes
@@ -220,11 +228,11 @@ class Issue < ActiveRecord::Base
     self.new_record? && self.done.nil? && self.status && self.status.default_done_ratio.nil?
   end
 
-  def self.bulk_set_done_ratio(issue_ids, status_id, journals)
+  def self.bulk_set_done_ratio(issue_ids, project, status_id, journals)
     status = IssuesStatus.find_by_id(status_id)
     done_ratio = status.default_done_ratio
     if done_ratio
-      issues = Issue.where(id: issue_ids)
+      issues = Issue.where(sequence_id: issue_ids, project_id: project.id)
       issues.each do |issue|
         issue.done = status.default_done_ratio
       end

@@ -145,7 +145,7 @@ class RoadmapsControllerTest < ActionController::TestCase
             {
                 data: {
                     0 => {
-                        id: @issue.id.to_s,
+                        id: @issue.sequence_id.to_s,
                         start_date: "19-09-2012 00:00",
                         parent: @version.name,
                         context: {
@@ -165,7 +165,7 @@ class RoadmapsControllerTest < ActionController::TestCase
             {
                 data: {
                     0 => {
-                        id: @issue1.id.to_s,
+                        id: @issue1.sequence_id.to_s,
                         start_date: "19-09-2012 00:00",
                         parent: @version.name,
                         context: {
@@ -173,7 +173,7 @@ class RoadmapsControllerTest < ActionController::TestCase
                         }
                     },
                     1 => {
-                        id: @issue.id.to_s,
+                        id: @issue.sequence_id.to_s,
                         start_date: "15-09-2012 00:00",
                         parent: @version.name,
                         context: {
@@ -183,8 +183,8 @@ class RoadmapsControllerTest < ActionController::TestCase
                 },
                 links: {
                     0 => {
-                        source: @issue.id.to_s,
-                        target: @issue1.id.to_s,
+                        source: @issue.sequence_id.to_s,
+                        target: @issue1.sequence_id.to_s,
                         type: "1"
                     }
                 }
@@ -200,7 +200,7 @@ class RoadmapsControllerTest < ActionController::TestCase
             {
                 data: {
                     0 => {
-                        id: @issue.id.to_s,
+                        id: @issue.sequence_id.to_s,
                         start_date: "15-09-2012 00:00",
                         parent: @version.name,
                         context: {
@@ -210,8 +210,8 @@ class RoadmapsControllerTest < ActionController::TestCase
                 },
                 links: {
                     0 => {
-                        source: @issue.id.to_s,
-                        target: @issue1.id.to_s,
+                        source: @issue.sequence_id.to_s,
+                        target: @issue1.sequence_id.to_s,
                         type: "1"
                     }
                 }

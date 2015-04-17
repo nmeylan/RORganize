@@ -8,7 +8,7 @@ class CommentTest < ActiveSupport::TestCase
   # Called before every test method runs. Can be used
   # to set up fixture information.
   def setup
-    @issue = Issue.create(subject: 'test', description: 'sample issue', tracker_id: Tracker.first.id, author_id: User.current.id, status_id: IssuesStatus.first.id)
+    @issue = Issue.create(subject: 'test', description: 'sample issue', tracker_id: Tracker.first.id, author_id: User.current.id, status_id: IssuesStatus.first.id, project: projects(:projects_666))
   end
 
   # Called after every test method runs. Can be used to tear
@@ -19,7 +19,7 @@ class CommentTest < ActiveSupport::TestCase
   end
 
   def create_comment
-    comment = Comment.new(content: 'this a comment', user_id: User.current.id, project_id: 1, commentable_id: @issue.id, commentable_type: 'Issue')
+    comment = Comment.new(content: 'this a comment', user_id: User.current.id, project_id: 1, commentable_id: @issue.sequence_id, commentable_type: 'Issue')
 
     assert_nil comment.id
     @issue.comments << comment
@@ -195,7 +195,7 @@ class CommentTest < ActiveSupport::TestCase
   end
 
   test 'it increment or decrement issue comment counter cache' do
-    issue = Issue.create(tracker_id: 1, subject: 'Bug', status_id: 1, author_id: User.current.id)
+    issue = Issue.create(tracker_id: 1, subject: 'Bug', status_id: 1, author_id: User.current.id, project: projects(:projects_666))
 
     assert_equal issue.comments_count, 0
     comment = Comment.create({content: 'this a comment', user_id: User.current.id, project_id: 1,

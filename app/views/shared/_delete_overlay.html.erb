@@ -9,8 +9,8 @@
     <% if collection_deletion && collection_deletion.any? %>
         <%= form_tag({}, remote: true, methode: :delete) do -%>
             <% collection_deletion.each do |item| %>
-                <%= "##{item.id} -" %><%= link_to item.caption, {action: 'show', id: item.id} %>
-                <%= hidden_field_tag 'delete_ids[]', item.id %>
+                <%= "##{item.sequence_id} -" %><%= link_to item.caption, {action: 'show', id: item.sequence_id} %>
+                <%= hidden_field_tag 'delete_ids[]', item.sequence_id %>
                 <br/>
             <% end %>
             <div class="overlayButtons">

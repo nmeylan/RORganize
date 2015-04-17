@@ -12,8 +12,8 @@ class NotificationDecoratorTest < Rorganize::Decorator::TestCase
   test "it display a link to the updated issue notification" do
     node(@issue_update_notification_decorator.link_to_notifiable)
     assert_select 'a', 1
-    assert_select 'a', text: "##{@issue.id} : #{@issue.caption}"
-    assert_select 'a[href=?]', notification_path(@issue_update_notification_decorator.id)
+    assert_select 'a', text: "##{@issue.sequence_id} : #{@issue.caption}"
+    assert_select 'a[href=?]', notification_path(@issue_update_notification_decorator)
   end
 
   test "it display a link to the updated document notification" do
@@ -21,7 +21,7 @@ class NotificationDecoratorTest < Rorganize::Decorator::TestCase
     node(@document_update_notification_decorator.link_to_notifiable)
     assert_select 'a', 1
     assert_select 'a', text: @document.caption
-    assert_select 'a[href=?]', notification_path(@document_update_notification_decorator.id)
+    assert_select 'a[href=?]', notification_path(@document_update_notification_decorator)
   end
 
   test "it display an overview about the notification when it is an update" do
@@ -50,7 +50,7 @@ class NotificationDecoratorTest < Rorganize::Decorator::TestCase
 
   private
   def create_document_notification
-    @document = Document.create(name: 'concerning hobbits')
+    @document = Document.create(name: 'concerning hobbits',project_id: 1)
     @document_journal = Journal.find_by_journalizable_id_and_journalizable_type_and_action_type(@document.id, 'Document', 'created')
     @document_update_notification_decorator = Notification.create!(user_id: @user.id, notifiable_id: @document.id,
                                                                 notifiable_type: 'Document', project_id: 1, from_id: @user1.id,

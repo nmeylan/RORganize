@@ -4,7 +4,7 @@
 # File: issue_commentable_test.rb
 require 'test_helper'
 
-class IssueCommentableTest < ActiveSupport::TestCase
+class DocumentCommentableTest < ActiveSupport::TestCase
 
   # Called before every test method runs. Can be used
   # to set up fixture information.
@@ -20,7 +20,7 @@ class IssueCommentableTest < ActiveSupport::TestCase
   end
 
   test "document has many comments and should be destroy when commentable is destroyed" do
-    document = Document.create(name: 'Issue creation', description: '')
+    document = Document.create(name: 'Issue creation', description: '', project_id: 1)
     comment = Comment.new(content: 'this a comment', user_id: User.current.id, project_id: 1, commentable_id: document.id, commentable_type: 'Document')
     comment1 = Comment.new(content: 'this a comment', user_id: User.current.id, project_id: 1, commentable_id: document.id, commentable_type: 'Document')
     comment2 = Comment.new(content: 'this a comment', user_id: User.current.id, project_id: 1, commentable_id: document.id, commentable_type: 'Document')
@@ -36,7 +36,7 @@ class IssueCommentableTest < ActiveSupport::TestCase
   end
 
   test "does document has been commented" do
-    document = Document.create(name: 'Issue creation', description: '')
+    document = Document.create(name: 'Issue creation', description: '', project_id: 1)
     assert_not document.commented?
 
     comment = Comment.new(content: 'this a comment', user_id: User.current.id, project_id: 1, commentable_id: document.id, commentable_type: 'Document')
@@ -47,7 +47,7 @@ class IssueCommentableTest < ActiveSupport::TestCase
   end
 
   test "document has a method to bulk delete all comments for a given commentable items" do
-    document = Document.create(name: 'Issue creation', description: '')
+    document = Document.create(name: 'Issue creation', description: '', project_id: 1)
     comment = Comment.new(content: 'this a comment', user_id: User.current.id, project_id: 1, commentable_id: document.id, commentable_type: 'Document')
     comment1 = Comment.new(content: 'this a comment', user_id: User.current.id, project_id: 1, commentable_id: document.id, commentable_type: 'Document')
     comment2 = Comment.new(content: 'this a comment', user_id: User.current.id, project_id: 1, commentable_id: 666, commentable_type: 'Document')

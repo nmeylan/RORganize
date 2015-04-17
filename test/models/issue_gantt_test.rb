@@ -11,7 +11,7 @@ class IssueGanttTest < ActiveSupport::TestCase
   def setup
     @issue1 = Issue.create(tracker_id: 1, subject: 'Bug', status_id: '1', project_id: 1, done: 30)
     @issue2 = Issue.create(tracker_id: 1, subject: 'Bug', status_id: '1', project_id: 1, done: 40)
-    @issue3 = Issue.create(tracker_id: 1, subject: 'Bug', status_id: '1', project_id: 2, done: 60)
+    @issue3 = Issue.create(tracker_id: 1, subject: 'Bug', status_id: '1', project_id: 666, done: 60)
   end
 
   # Called after every test method runs. Can be used to tear
@@ -57,10 +57,10 @@ class IssueGanttTest < ActiveSupport::TestCase
   end
 
   test 'calling set predecessor method should return a hash' do
-    hash = @issue1.set_predecessor(@issue2.id)
+    hash = @issue1.set_predecessor(@issue2.sequence_id)
     assert hash[:saved], @issue1.errors.messages
 
-    hash = @issue1.set_predecessor(@issue1.id)
+    hash = @issue1.set_predecessor(@issue1.sequence_id)
     assert_not hash[:saved], @issue1.errors.messages
   end
 
@@ -68,8 +68,8 @@ class IssueGanttTest < ActiveSupport::TestCase
     start_date = Date.new(2012, 12, 31)
     due_date = Date.new(2013, 01, 31)
     issue_id_attributes_changed_hash = {
-        @issue1.id => {start_date: start_date},
-        @issue2.id => {start_date: start_date, due_date: due_date}
+        @issue1.sequence_id => {start_date: start_date},
+        @issue2.sequence_id => {start_date: start_date, due_date: due_date}
     }
 
     assert_nil @issue1.start_date
@@ -88,8 +88,8 @@ class IssueGanttTest < ActiveSupport::TestCase
     start_date = Date.new(2012, 12, 31)
     due_date = Date.new(2012, 12, 01)
     issue_id_attributes_changed_hash = {
-        @issue1.id => {start_date: start_date},
-        @issue2.id => {start_date: start_date, due_date: due_date}
+        @issue1.sequence_id => {start_date: start_date},
+        @issue2.sequence_id => {start_date: start_date, due_date: due_date}
     }
 
     errors = Issue.gantt_edit(issue_id_attributes_changed_hash)

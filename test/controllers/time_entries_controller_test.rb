@@ -20,14 +20,14 @@ class TimeEntriesControllerTest < ActionController::TestCase
   end
 
   test "should access to new overlay without date parameters" do
-    get_with_permission :fill_overlay, issue_id: @issue.id, format: :js
+    get_with_permission :fill_overlay, issue_id: @issue, format: :js
     assert_not_nil assigns(:time_entry)
     assert_equal Date.new(2012, 12, 20), assigns(:time_entry).spent_on
     assert_template 'time_entries/_log_issue_spent_time_form_content'
   end
 
   test "should access to new overlay with date parameters" do
-    get_with_permission :fill_overlay, issue_id: @issue.id, spent_on: '2012-12-01', format: :js
+    get_with_permission :fill_overlay, issue_id: @issue, spent_on: '2012-12-01', format: :js
     assert_not_nil assigns(:time_entry)
     assert_equal Date.new(2012, 12, 01), assigns(:time_entry).spent_on
     assert_template 'time_entries/_log_issue_spent_time_form_content'
@@ -35,14 +35,14 @@ class TimeEntriesControllerTest < ActionController::TestCase
 
   test "should create time entry for issue" do
     assert_difference('TimeEntry.count') do
-      post_with_permission :create, time_entry: {spent_on: "2015-01-30", spent_time: "3", comment: ""}, issue_id: @issue.id, format: :js
+      post_with_permission :create, time_entry: {spent_on: "2015-01-30", spent_time: "3", comment: ""}, issue_id: @issue, format: :js
     end
     assert_not_nil @response['flash-message']
   end
 
   test "should not create time entry for issue when missing spent time" do
     assert_no_difference('TimeEntry.count') do
-      post_with_permission :create, time_entry: {spent_on: "2015-01-30", spent_time: "", comment: ""}, issue_id: @issue.id, format: :js
+      post_with_permission :create, time_entry: {spent_on: "2015-01-30", spent_time: "", comment: ""}, issue_id: @issue, format: :js
     end
     assert_not_nil @response['flash-error-message']
   end
@@ -72,16 +72,16 @@ class TimeEntriesControllerTest < ActionController::TestCase
 
   test "should update time entry" do
     assert_equal 4, @time_entry.spent_time
-    put_with_permission :update, time_entry: {spent_on: @time_entry.spent_on, spent_time: "3", comment: ""}, issue_id: @issue.id, id: @time_entry.id, format: :js
+    put_with_permission :update, time_entry: {spent_on: @time_entry.spent_on, spent_time: "3", comment: ""}, issue_id: @issue, id: @time_entry.id, format: :js
     @time_entry.reload
     assert_equal 3, @time_entry.spent_time
     assert_not_nil @response['flash-message']
   end
 
   test "should not update time entry when params are missing" do
-    put_with_permission :update, time_entry: {spent_on: @time_entry.spent_on, spent_time: "", comment: ""}, issue_id: @issue.id, id: @time_entry.id, format: :js
+    put_with_permission :update, time_entry: {spent_on: @time_entry.spent_on, spent_time: "", comment: ""}, issue_id: @issue, id: @time_entry.id, format: :js
     assert_not_nil @response['flash-error-message']
-    put_with_permission :update, time_entry: {spent_on: "", spent_time: "3", comment: ""}, issue_id: @issue.id, id: @time_entry.id, format: :js
+    put_with_permission :update, time_entry: {spent_on: "", spent_time: "3", comment: ""}, issue_id: @issue, id: @time_entry.id, format: :js
     assert_not_nil @response['flash-error-message']
   end
 

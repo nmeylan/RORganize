@@ -16,7 +16,7 @@ module DocumentsHelper
     content_tag :thead do
       content_tag :tr, class: 'header' do
         list_th link_to(glyph('', 'check'), '#', {class: 'icon-checked', id: 'check-all', 'cb_checked' => 'b'})
-        list_th sortable('documents.id', '#')
+        list_th sortable('documents.sequence_id', '#')
         list_th sortable('documents.name', 'Name'), {class: 'list-left no-padding-left'}
         list_th sortable('categories.name', 'Category')
         list_th sortable('versions.name', 'Target phase')
@@ -29,9 +29,9 @@ module DocumentsHelper
   def list_row(document)
     disabled_class = !document.user_allowed_to_edit? ? 'disabled-toolbox' : ''
     content_tag :tr, class: "odd-even document-tr has-context-menu #{disabled_class}" do
-      list_td check_box_tag("document-#{document.id.to_s}", document.id, false, disabled: !document.user_allowed_to_edit?), {class: 'cell-checkbox'}
-      list_td document.id, class: 'list-center id'
-      list_td link_to(document.resized_caption(100), document_path(@project.slug, document.id)), {class: 'name', id: document.id}
+      list_td check_box_tag("document-#{document.sequence_id.to_s}", document.sequence_id, false, disabled: !document.user_allowed_to_edit?), {class: 'cell-checkbox'}
+      list_td document.sequence_id, class: 'list-center id'
+      list_td link_to(document.resized_caption(100), document_path(@project.slug, document)), {class: 'name', id: document.sequence_id}
       list_td document.display_category, class: 'list-center category'
       list_td document.display_version, class: 'list-center version'
       list_td document.comment_presence_indicator, class: 'icon-information'

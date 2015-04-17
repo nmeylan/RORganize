@@ -5,7 +5,7 @@
 # File: show.html.erb
 %>
 
-<%= contextual (@issue_decorator.tracker_str)+' : #'+@issue_decorator.id.to_s do %>
+<%= contextual (@issue_decorator.tracker_str)+' : #'+@issue_decorator.sequence_id.to_s do %>
     <%= @issue_decorator.new_link %>
     <%= @issue_decorator.edit_link %>
     <%= @issue_decorator.new_comment_link %>
@@ -71,4 +71,4 @@
 <%= @issue_decorator.display_history(history) %>
 
 <%= @issue_decorator.add_comment_block %>
-<%= render partial: 'time_entries/log_issue_spent_time', locals: {issue_id: @issue_decorator.id, tracker_name: @issue_decorator.tracker, time_entry: @time_entry} %>
+<%= render partial: 'time_entries/log_issue_spent_time', locals: {issue_id: @issue_decorator.sequence_id, tracker_name: @issue_decorator.tracker, time_entry: @time_entry} %>

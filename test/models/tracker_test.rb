@@ -93,7 +93,7 @@ class TrackerTest < ActiveSupport::TestCase
     tracker = Tracker.create(name: 'Hello')
     issue = Issue.create(tracker_id: tracker.id, subject: 'Bug1', status_id: 1, project_id: 1)
 
-    assert issue.id
+    assert issue.sequence_id
     assert issue.tracker_id
 
     tracker.destroy

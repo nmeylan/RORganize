@@ -31,7 +31,7 @@ class DocumentsController < ApplicationController
 
   def create
     @document_decorator = @project.documents.build(document_params).decorate(context: {project: @project})
-    generic_create_callback(@document_decorator, -> { document_path(@project.slug, @document_decorator.id) })
+    generic_create_callback(@document_decorator, -> { document_path(@project.slug, @document_decorator) })
   end
 
   def edit
@@ -42,11 +42,11 @@ class DocumentsController < ApplicationController
 
   def update
     @document_decorator.attributes = document_params
-    update_attachable_callback(@document_decorator, document_path(@project.slug, @document_decorator.id), document_params)
+    update_attachable_callback(@document_decorator, document_path(@project.slug, @document_decorator), document_params)
   end
 
   def show
-    generic_show_callback({history: History.new(Journal.journalizable_activities(@document_decorator.id, 'Document'), @document_decorator.comments)})
+    generic_show_callback({history: History.new(Journal.journalizable_activities(@document_decorator, 'Document'), @document_decorator.comments)})
   end
 
   def destroy
@@ -55,14 +55,14 @@ class DocumentsController < ApplicationController
 
   #GET /project/:project_identifier/documents/toolbox
   def toolbox
-    collection = Document.where(id: params[:ids]).eager_load(:version, :category)
+    collection = Document.where(sequence_id: params[:ids]).eager_load(:version, :category)
     toolbox_callback(collection, Document, @project)
   end
 
   private
 
   def load_documents
-    @documents_decorator = load_paginated_collection(Document, 'documents.id')
+    @documents_decorator = load_paginated_collection(Document, 'documents.sequence_id')
   end
 
   #Find custom queries
@@ -84,7 +84,7 @@ class DocumentsController < ApplicationController
   end
 
   def find_document
-    @document_decorator = @project.documents.eager_load(:category, :version, :attachments).find(params[:id])
+    @document_decorator = @project.documents.eager_load(:category, :version, :attachments).find_by_sequence_id!(params[:id])
     @document_decorator = @document_decorator.decorate(context: {project: @project})
   end
 

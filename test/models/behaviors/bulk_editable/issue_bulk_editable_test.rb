@@ -28,7 +28,7 @@ class IssueBulkEditableTest < ActiveSupport::TestCase
   test 'it create a journal with details on bulk edition' do
     issue1 = Issue.create(tracker_id: 1, subject: 'Bug', status_id: '1', project_id: 1, done: 50)
     issue2 = Issue.create(tracker_id: 1, subject: 'Bug', status_id: '3', project_id: 1, done: 20)
-    issue_ids = [issue1.id, issue2.id]
+    issue_ids = [issue1.sequence_id, issue2.sequence_id]
     Issue.bulk_edit(issue_ids, {'done' => 100}, @project)
     journal_issue1 = Journal.find_by_journalizable_id_and_journalizable_type_and_action_type(issue1.id, 'Issue', Journal::ACTION_UPDATE)
     journal_issue2 = Journal.find_by_journalizable_id_and_journalizable_type_and_action_type(issue2.id, 'Issue', Journal::ACTION_UPDATE)
@@ -55,7 +55,7 @@ class IssueBulkEditableTest < ActiveSupport::TestCase
     issue1 = Issue.create(tracker_id: 1, subject: 'Bug', status_id: '1', project_id: 1, done: 50)
     issue2 = Issue.create(tracker_id: 1, subject: 'Bug', status_id: '3', project_id: 1, done: 20)
     issue3 = Issue.create(tracker_id: 2, subject: 'Bug', status_id: '3', project_id: 1, done: 20)
-    issue_ids = [issue1.id, issue2.id, issue3.id]
+    issue_ids = [issue1.sequence_id, issue2.sequence_id, issue3.sequence_id]
 
     Issue.bulk_edit(issue_ids, {'tracker_id' => 2}, @project)
     journal_issue1 = Journal.find_by_journalizable_id_and_journalizable_type_and_action_type(issue1.id, 'Issue', Journal::ACTION_UPDATE)
@@ -84,7 +84,7 @@ class IssueBulkEditableTest < ActiveSupport::TestCase
   test 'it create a journal when issues status are bulk edited with 2 details status and done ratio details' do
     issue1 = Issue.create(tracker_id: 1, subject: 'Bug', status_id: '8', project_id: 1, done: 50)
     issue2 = Issue.create(tracker_id: 1, subject: 'Bug', status_id: '8', project_id: 1, done: 20)
-    issue_ids = [issue1.id, issue2.id]
+    issue_ids = [issue1.sequence_id, issue2.sequence_id]
     Issue.bulk_edit(issue_ids, {status_id: 4}, @project)
 
     journal_issue1 = Journal.find_by_journalizable_id_and_journalizable_type_and_action_type(issue1.id, 'Issue', Journal::ACTION_UPDATE)
@@ -119,7 +119,7 @@ class IssueBulkEditableTest < ActiveSupport::TestCase
 
   test 'it create a journal when issues version are bulk edited with 1 detail version' do
     version = Version.create(name: 'Release 1.0', start_date: '2012-12-01', project_id: @project.id)
-    Issue.bulk_edit([@issue.id], {version_id: version.id}, @project)
+    Issue.bulk_edit([@issue.sequence_id], {version_id: version.id}, @project)
     journal = Journal.find_by_journalizable_id_and_journalizable_type_and_action_type(@issue.id, 'Issue', Journal::ACTION_UPDATE)
     assert journal
     details = journal.details
@@ -133,7 +133,7 @@ class IssueBulkEditableTest < ActiveSupport::TestCase
 
   test 'it create a journal when issues version are edited with 2 detail for version and start date' do
     version = Version.create(name: 'Release 1.0', start_date: '2012-12-02', project_id: @project.id)
-    Issue.bulk_edit([@issue.id], {version_id: version.id}, @project)
+    Issue.bulk_edit([@issue.sequence_id], {version_id: version.id}, @project)
 
     journal = Journal.find_by_journalizable_id_and_journalizable_type_and_action_type(@issue.id, 'Issue', Journal::ACTION_UPDATE)
     assert journal
@@ -153,7 +153,7 @@ class IssueBulkEditableTest < ActiveSupport::TestCase
 
   test 'it create a journal when issues version are edited with 3 detail for version and start date and due date' do
     version = Version.create(name: 'Release 1.0', start_date: '2012-12-02', target_date: '2012-12-29', project_id: @project.id)
-    Issue.bulk_edit([@issue.id], {version_id: version.id}, @project)
+    Issue.bulk_edit([@issue.sequence_id], {version_id: version.id}, @project)
     journal = Journal.find_by_journalizable_id_and_journalizable_type_and_action_type(@issue.id, 'Issue', Journal::ACTION_UPDATE)
     assert journal
     details = journal.details
@@ -178,7 +178,7 @@ class IssueBulkEditableTest < ActiveSupport::TestCase
   test 'it delete all journals and details when issues are bulk deleted' do
     issue1 = Issue.create(tracker_id: 1, subject: 'Bug', status_id: '8', project_id: 1, done: 50)
     issue2 = Issue.create(tracker_id: 1, subject: 'Bug', status_id: '8', project_id: 1, done: 50)
-    Issue.bulk_edit([issue1.id, issue2.id], {status_id: 4}, @project)
+    Issue.bulk_edit([issue1.sequence_id, issue2.sequence_id], {status_id: 4}, @project)
 
     journal_creation_issue1 = Journal.find_by_journalizable_id_and_journalizable_type_and_action_type(issue1.id, 'Issue', Journal::ACTION_CREATE)
     journal_issue1 = Journal.find_by_journalizable_id_and_journalizable_type_and_action_type(issue1.id, 'Issue', Journal::ACTION_UPDATE)
@@ -194,7 +194,7 @@ class IssueBulkEditableTest < ActiveSupport::TestCase
     assert journal_issue2
     assert_equal 2, details_issue2.count
 
-    Issue.bulk_delete([issue1.id, issue2.id], @project)
+    Issue.bulk_delete([issue1.sequence_id, issue2.sequence_id], @project)
 
     assert_raise(ActiveRecord::RecordNotFound) { journal_creation_issue1.reload }
     assert_raise(ActiveRecord::RecordNotFound) { journal_issue1.reload }
@@ -216,7 +216,7 @@ class IssueBulkEditableTest < ActiveSupport::TestCase
     issue1 = Issue.create(tracker_id: 1, subject: 'This is my issue 1 subject', status_id: '8', project_id: 1, done: 50)
     issue2 = Issue.create(tracker_id: 1, subject: 'This is my issue 2 subject', status_id: '8', project_id: 1, done: 50)
 
-    Issue.bulk_delete([issue1.id, issue2.id], @project)
+    Issue.bulk_delete([issue1.sequence_id, issue2.sequence_id], @project)
 
     journals_count = Journal.where(journalizable_type: 'Issue', journalizable_id: issue1.id).count
     journal = Journal.find_by_journalizable_id_and_journalizable_type_and_action_type(issue1.id, 'Issue', Journal::ACTION_DELETE)
@@ -279,7 +279,7 @@ class IssueBulkEditableTest < ActiveSupport::TestCase
     assert notification5.reload
     assert notification6.reload
 
-    Issue.bulk_delete([issue1.id, issue2.id], @project)
+    Issue.bulk_delete([issue1.sequence_id, issue2.sequence_id], @project)
 
     assert_raise(ActiveRecord::RecordNotFound) { notification1.reload }
     assert_raise(ActiveRecord::RecordNotFound) { notification2.reload }
@@ -298,7 +298,7 @@ class IssueBulkEditableTest < ActiveSupport::TestCase
     assert watcher.reload
     assert watcher1.reload
 
-    Issue.bulk_delete([issue1.id, issue2.id], @project)
+    Issue.bulk_delete([issue1.sequence_id, issue2.sequence_id], @project)
 
     assert_raise(ActiveRecord::RecordNotFound) { watcher.reload }
     assert_raise(ActiveRecord::RecordNotFound) { watcher1.reload }

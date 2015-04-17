@@ -23,13 +23,13 @@ class DocumentTest < ActiveSupport::TestCase
   test 'Filtered attributes' do
     expectation = [%w(Name name), %w(Version version), %w(Category category), ['Created at', 'created_at'], ['Updated at', 'updated_at']]
     actual = Document.filtered_attributes
-    assert_match_array expectation, actual
+    assert actual & expectation == expectation
   end
 
   test 'attributes_formalized_names' do
     expectation = ['Name', 'Description', 'Version', 'Category', 'Project', 'Created at', 'Updated at', 'Comments count']
     actual = Document.attributes_formalized_names
-    assert_match_array expectation, actual
+    assert actual & expectation == expectation
   end
 
   test 'permit attributes should contains' do
@@ -54,7 +54,7 @@ class DocumentTest < ActiveSupport::TestCase
   end
 
   test 'it has an author' do
-    document = Document.create(name: 'Helllo')
+    document = Document.create(name: 'Helllo', project_id: 1)
 
     assert_equal User.current, document.author
 
@@ -63,7 +63,7 @@ class DocumentTest < ActiveSupport::TestCase
     assert_equal User.current, document.author
 
     User.current = users(:users_002)
-    document = Document.create(name: 'Helllo')
+    document = Document.create(name: 'Helllo', project_id: 1)
     assert_equal users(:users_002), document.author
   end
 
@@ -156,7 +156,7 @@ class DocumentTest < ActiveSupport::TestCase
     doc = Document.new(name: generate_string_of_length(256))
     assert_not doc.save, 'Saved with more than 255 char name'
 
-    doc = Document.new(name: 'qwertz')
+    doc = Document.new(name: 'qwertz', project_id: 1)
     assert doc.save, doc.errors.messages
   end
 

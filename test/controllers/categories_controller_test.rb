@@ -6,7 +6,7 @@ class CategoriesControllerTest < ActionController::TestCase
   # to set up fixture information.
   def setup
     @project = projects(:projects_001)
-    @category = Category.create(name: 'My category', project_id: @project.id)
+    @category = Category.create(name: 'My category', project: @project)
   end
 
   test "should access to index of categories" do

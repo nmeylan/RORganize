@@ -31,7 +31,7 @@ class IssuesDecoratorTest < Rorganize::Decorator::TestCase
 
   test "it displays pagination when there are more than 25 entries" do
     assert @project.issues.size > 25
-    issues = Issue.prepare_paginated(1, 25, 'issues.id ASC', '', @project.id)
+    issues = Issue.prepare_paginated(1, 25, 'issues.sequence_id ASC', '', @project.id)
     @issues_decorator = issues.decorate(context: {project: @project})
     @issues_decorator.stubs(:pagination_path).returns('number_of_entries_path')
     helpers.stubs(:paginate).returns('<div class=\'pagination\'>pagination</div>'.html_safe)

@@ -5,7 +5,7 @@ class WikiDecorator < ApplicationDecorator
   # see #ApplicationDecorator::delete_link.
   def delete_link
     unless model.new_record?
-      super(h.t(:link_delete), h.wiki_path(model.project.slug, model.id), model.project)
+      super(h.t(:link_delete), h.wiki_path(model.project.slug, model), model.project)
     end
   end
 

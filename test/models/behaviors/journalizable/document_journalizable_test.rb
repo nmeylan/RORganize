@@ -96,7 +96,7 @@ class DocumentJournalizableTest < ActiveSupport::TestCase
     document1 = Document.create(name: 'Document creation', project_id: @project.id)
     document2 = Document.create(name: 'Document creation', project_id: @project.id)
     issue = Issue.create(tracker_id: 1, subject: 'Bug', status_id: '8', project_id: 1, done: 50)
-    Document.bulk_edit([document1.id, document2.id], {version_id: 4}, @project)
+    Document.bulk_edit([document1.sequence_id, document2.sequence_id], {version_id: 4}, @project)
 
     journal_creation_document1 = Journal.find_by_journalizable_id_and_journalizable_type_and_action_type(document1.id, 'Document', Journal::ACTION_CREATE)
     journal_document1 = Journal.find_by_journalizable_id_and_journalizable_type_and_action_type(document1.id, 'Document', Journal::ACTION_UPDATE)

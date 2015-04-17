@@ -13,12 +13,12 @@ class IssuesStatusDecorator < ApplicationDecorator
 
   # see #ApplicationDecorator::delete_link.
   def delete_link
-    super(h.t(:link_delete), h.issues_status_path(model.id))
+    super(h.t(:link_delete), h.issues_status_path(model))
   end
 
   # see #ApplicationDecorator::edit_link.
   def edit_link
-    link = link_to_with_permissions(model.caption, h.edit_issues_status_path(model.id), nil, nil)
+    link = link_to_with_permissions(model.caption, h.edit_issues_status_path(model), nil, nil)
     link ? link : disabled_field(model.caption)
   end
 end

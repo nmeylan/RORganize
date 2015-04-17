@@ -10,6 +10,7 @@ class Document < ActiveRecord::Base
   include Rorganize::Models::Watchable
   include Rorganize::Models::Notifiable
   extend Rorganize::Models::BulkEditable
+  include Sequenceable
   #Class variables
   exclude_attributes_from_journal(:description, :comments_count)
   #Relations
@@ -52,7 +53,7 @@ class Document < ActiveRecord::Base
 
   # @return [Array] with all attribute that can be filtered.
   def self.filtered_attributes
-    unused_attributes = %w(Project Description Comments\ count)
+    unused_attributes = %w(Project Description Comments\ count Sequence)
     attrs = Document.attributes_formalized_names.delete_if { |attribute| unused_attributes.include?(attribute) }
     attrs.map { |attribute| [attribute, attribute.gsub(/\s/, '_').downcase] }
   end

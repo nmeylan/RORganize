@@ -9,7 +9,7 @@
 
 <% if issue_decorator.parent.nil? %>
     <% if User.current.allowed_to?('add_predecessor', 'Issues', project) %>
-        <%= form_for(issue_decorator, url: add_predecessor_issues_path(project.slug, issue_decorator.id), method: 'post', html: {remote: true, class: 'form'}) do |f| %>
+        <%= form_for(issue_decorator, url: add_predecessor_issues_path(project.slug, issue_decorator), method: 'post', html: {remote: true, class: 'form'}) do |f| %>
             <p>
               <label><%= t(:label_predecessor) %> : #</label>
               <%= f.text_field :predecessor_id, size: 10 %>
@@ -22,12 +22,12 @@
 <% else %>
     <% if User.current.allowed_to?('del_predecessor', 'Issues', project) %>
         <p>
-          #<%= issue_decorator.predecessor_id %> :
-          <%= link_to issue_decorator.parent.subject, {action: 'show', controller: 'issues', id: issue_decorator.predecessor_id} %>
-          <%= link_to glyph(t(:link_delete), 'trashcan'), del_predecessor_issues_path(project.slug, issue_decorator.id), {remote: true, confirm: t(:text_delete_item), method: :delete} %>
+          #<%= issue_decorator.predecessor.sequence_id %> :
+          <%= link_to issue_decorator.parent.subject, {action: 'show', controller: 'issues', id: issue_decorator.predecessor} %>
+          <%= link_to glyph(t(:link_delete), 'trashcan'), del_predecessor_issues_path(project.slug, issue_decorator), {remote: true, confirm: t(:text_delete_item), method: :delete} %>
         </p>
     <% else %>
         <p>#<%= issue_decorator.predecessor_id %>
-          : <%= link_to issue_decorator.parent.caption, issue_path(project.slug, issue_decorator.parent.id) %></p>
+          : <%= link_to issue_decorator.parent.caption, issue_path(project.slug, issue_decorator.parent) %></p>
     <% end %>
 <% end %>

@@ -18,6 +18,7 @@ issues_001:
   start_date: 
   predecessor_id: 
   attachments_count: 0
+  sequence_id: 1
 issues_002:
   id: 10
   subject: Toolbar
@@ -38,6 +39,7 @@ issues_002:
   start_date:
   predecessor_id:
   attachments_count: 0
+  sequence_id: 2
 issues_003:
   id: 11
   subject: Lists pagination
@@ -57,6 +59,7 @@ issues_003:
   start_date:
   predecessor_id:
   attachments_count: 0
+  sequence_id: 3
 issues_004:
   id: 12
   subject: Sortable
@@ -76,6 +79,7 @@ issues_004:
   start_date:
   predecessor_id:
   attachments_count: 0
+  sequence_id: 4
 issues_005:
   id: 16
   subject: Issue delete
@@ -95,6 +99,7 @@ issues_005:
   start_date:
   predecessor_id:
   attachments_count: 0
+  sequence_id: 5
 issues_006:
   id: 36
   subject: Issue checklist
@@ -115,6 +120,7 @@ issues_006:
   start_date:
   predecessor_id:
   attachments_count: 0
+  sequence_id: 6
 issues_007:
   id: 37
   subject: Tooltip issue List
@@ -134,6 +140,7 @@ issues_007:
   start_date:
   predecessor_id:
   attachments_count: 0
+  sequence_id: 7
 issues_008:
   id: 38
   subject: Upload file
@@ -153,6 +160,7 @@ issues_008:
   start_date:
   predecessor_id:
   attachments_count: 0
+  sequence_id: 8
 issues_009:
   id: 39
   subject: Toolbox list
@@ -172,6 +180,7 @@ issues_009:
   start_date:
   predecessor_id:
   attachments_count: 0
+  sequence_id: 9
 issues_010:
   id: 41
   subject: Projects setting
@@ -191,6 +200,7 @@ issues_010:
   start_date:
   predecessor_id:
   attachments_count: 0
+  sequence_id: 10
 issues_011:
   id: 42
   subject: Issues sidebar
@@ -210,6 +220,7 @@ issues_011:
   start_date:
   predecessor_id:
   attachments_count: 0
+  sequence_id: 11
 issues_012:
   id: 43
   subject: Project's Activity
@@ -229,6 +240,7 @@ issues_012:
   start_date:
   predecessor_id:
   attachments_count: 0
+  sequence_id: 12
 issues_013:
   id: 44
   subject: Project Roadmap
@@ -249,6 +261,7 @@ issues_013:
   start_date:
   predecessor_id:
   attachments_count: 0
+  sequence_id: 13
 issues_014:
   id: 45
   subject: Admin menu
@@ -268,6 +281,7 @@ issues_014:
   start_date:
   predecessor_id:
   attachments_count: 0
+  sequence_id: 14
 issues_015:
   id: 46
   subject: Create users
@@ -287,6 +301,7 @@ issues_015:
   start_date:
   predecessor_id:
   attachments_count: 0
+  sequence_id: 15
 issues_016:
   id: 47
   subject: Permissions and roles settings
@@ -306,6 +321,7 @@ issues_016:
   start_date:
   predecessor_id:
   attachments_count: 0
+  sequence_id: 16
 issues_017:
   id: 48
   subject: Wiki pages
@@ -325,6 +341,7 @@ issues_017:
   start_date:
   predecessor_id:
   attachments_count: 0
+  sequence_id: 17
 issues_018:
   id: 49
   subject: Testing tool
@@ -344,6 +361,7 @@ issues_018:
   start_date:
   predecessor_id:
   attachments_count: 0
+  sequence_id: 18
 issues_019:
   id: 50
   subject: Repository integration
@@ -363,6 +381,7 @@ issues_019:
   start_date:
   predecessor_id:
   attachments_count: 0
+  sequence_id: 19
 issues_020:
   id: 51
   subject: Notifications alerts system
@@ -382,6 +401,7 @@ issues_020:
   start_date:
   predecessor_id:
   attachments_count: 0
+  sequence_id: 20
 issues_021:
   id: 53
   subject: Lists filter
@@ -401,6 +421,7 @@ issues_021:
   start_date:
   predecessor_id:
   attachments_count: 0
+  sequence_id: 21
 issues_022:
   id: 54
   subject: Quick project finder
@@ -420,6 +441,7 @@ issues_022:
   start_date:
   predecessor_id:
   attachments_count: 0
+  sequence_id: 22
 issues_023:
   id: 55
   subject: Users/Admin swap
@@ -440,6 +462,7 @@ issues_023:
   start_date:
   predecessor_id:
   attachments_count: 0
+  sequence_id: 23
 issues_024:
   id: 56
   subject: Check users permissions for action
@@ -459,6 +482,7 @@ issues_024:
   start_date:
   predecessor_id:
   attachments_count: 0
+  sequence_id: 24
 issues_025:
   id: 62
   subject: ! 'Issues : Permettre de mettre une target phase vide'
@@ -480,6 +504,7 @@ issues_025:
   start_date:
   predecessor_id:
   attachments_count: 0
+  sequence_id: 25
 issues_026:
   id: 76
   subject: Scenario
@@ -504,6 +529,7 @@ issues_026:
   start_date:
   predecessor_id:
   attachments_count: 0
+  sequence_id: 26
 issues_027:
   id: 77
   subject: ! 'Issues : Selection automatique de certains champs (versions)'
@@ -526,6 +552,7 @@ issues_027:
   start_date:
   predecessor_id:
   attachments_count: 0
+  sequence_id: 27
 issues_028:
   id: 86
   subject: Change design
@@ -545,6 +572,7 @@ issues_028:
   start_date:
   predecessor_id:
   attachments_count: 0
+  sequence_id: 28
 issues_029:
   id: 88
   subject: Erreur edition description et titre des issues
@@ -564,6 +592,7 @@ issues_029:
   start_date:
   predecessor_id:
   attachments_count: 0
+  sequence_id: 29
 issues_030:
   id: 92
   subject: ! 'Settings projet: Choix trackers'
@@ -583,6 +612,7 @@ issues_030:
   start_date:
   predecessor_id:
   attachments_count: 0
+  sequence_id: 30
 issues_031:
   id: 96
   subject: Edition versions
@@ -603,6 +633,7 @@ issues_031:
   start_date:
   predecessor_id:
   attachments_count: 0
+  sequence_id: 31
 issues_032:
   id: 97
   subject: ! 'Toolbox: corriger certains comportement'
@@ -625,6 +656,7 @@ issues_032:
   start_date:
   predecessor_id:
   attachments_count: 0
+  sequence_id: 32
 issues_033:
   id: 98
   subject: Vérification contrainte suppression
@@ -645,6 +677,7 @@ issues_033:
   start_date:
   predecessor_id:
   attachments_count: 0
+  sequence_id: 33
 issues_034:
   id: 102
   subject: Problème checklist
@@ -666,6 +699,7 @@ issues_034:
   start_date:
   predecessor_id:
   attachments_count: 0
+  sequence_id: 34
 issues_035:
   id: 105
   subject: Ordonner les issues par ordre de réalisation
@@ -686,6 +720,7 @@ issues_035:
   start_date:
   predecessor_id:
   attachments_count: 0
+  sequence_id: 35
 issues_036:
   id: 106
   subject: ! 'List: Enregistrer les filtres'
@@ -707,6 +742,7 @@ issues_036:
   start_date:
   predecessor_id:
   attachments_count: 0
+  sequence_id: 36
 issues_037:
   id: 120
   subject: Joindre des fichiers autre que image
@@ -726,6 +762,7 @@ issues_037:
   start_date:
   predecessor_id:
   attachments_count: 0
+  sequence_id: 37
 issues_038:
   id: 121
   subject: Project file
@@ -746,6 +783,7 @@ issues_038:
   start_date:
   predecessor_id:
   attachments_count: 0
+  sequence_id: 38
 issues_039:
   id: 122
   subject: Détails sur la technologie du projet
@@ -765,6 +803,7 @@ issues_039:
   start_date:
   predecessor_id:
   attachments_count: 0
+  sequence_id: 39
 issues_040:
   id: 129
   subject: ! 'Creation terrain: grilles'
@@ -785,6 +824,7 @@ issues_040:
   start_date:
   predecessor_id:
   attachments_count: 0
+  sequence_id: 1
 issues_041:
   id: 130
   subject: ! 'Creation terrain: torus'
@@ -804,6 +844,7 @@ issues_041:
   start_date:
   predecessor_id:
   attachments_count: 0
+  sequence_id: 2
 issues_042:
   id: 131
   subject: ! 'Creation terrain: hypercube'
@@ -825,6 +866,7 @@ issues_042:
   start_date:
   predecessor_id:
   attachments_count: 0
+  sequence_id: 3
 issues_043:
   id: 132
   subject: AI flics
@@ -845,6 +887,7 @@ issues_043:
   start_date:
   predecessor_id:
   attachments_count: 0
+  sequence_id: 4
 issues_044:
   id: 133
   subject: AI voleurs
@@ -865,6 +908,7 @@ issues_044:
   start_date:
   predecessor_id:
   attachments_count: 0
+  sequence_id: 5
 issues_045:
   id: 134
   subject: Demande du nombre de policier à utiliser
@@ -884,6 +928,7 @@ issues_045:
   start_date:
   predecessor_id:
   attachments_count: 0
+  sequence_id: 6
 issues_046:
   id: 135
   subject: Demande selection terrain + taille
@@ -903,6 +948,7 @@ issues_046:
   start_date:
   predecessor_id:
   attachments_count: 0
+  sequence_id: 7
 issues_047:
   id: 136
   subject: Afficher le nombre de coup joué
@@ -922,6 +968,7 @@ issues_047:
   start_date:
   predecessor_id:
   attachments_count: 0
+  sequence_id: 8
 issues_048:
   id: 137
   subject: Gestion de la taille de la fenetre
@@ -942,6 +989,7 @@ issues_048:
   start_date:
   predecessor_id:
   attachments_count: 0
+  sequence_id: 9
 issues_049:
   id: 138
   subject: Gestion de la fin du jeu
@@ -961,6 +1009,7 @@ issues_049:
   start_date:
   predecessor_id:
   attachments_count: 0
+  sequence_id: 10
 issues_050:
   id: 139
   subject: Benchmark
@@ -980,6 +1029,7 @@ issues_050:
   start_date:
   predecessor_id:
   attachments_count: 0
+  sequence_id: 11
 issues_051:
   id: 140
   subject: Communication avec une autre application
@@ -1000,6 +1050,7 @@ issues_051:
   start_date:
   predecessor_id:
   attachments_count: 0
+  sequence_id: 12
 issues_052:
   id: 141
   subject: Editer commentaire
@@ -1019,6 +1070,7 @@ issues_052:
   start_date:
   predecessor_id:
   attachments_count: 0
+  sequence_id: 40
 issues_053:
   id: 142
   subject: Affichage pions
@@ -1038,6 +1090,7 @@ issues_053:
   start_date:
   predecessor_id:
   attachments_count: 0
+  sequence_id: 13
 issues_054:
   id: 218
   subject: Préférence utilisateur
@@ -1058,6 +1111,7 @@ issues_054:
   start_date:
   predecessor_id:
   attachments_count: 0
+  sequence_id: 41
 issues_055:
   id: 220
   subject: Projet public
@@ -1077,6 +1131,7 @@ issues_055:
   start_date:
   predecessor_id:
   attachments_count: 0
+  sequence_id: 42
 issues_056:
   id: 221
   subject: Changer mot de passe
@@ -1096,6 +1151,7 @@ issues_056:
   start_date:
   predecessor_id:
   attachments_count: 0
+  sequence_id: 43
 issues_057:
   id: 224
   subject: Asset compilé issues/show
@@ -1115,6 +1171,7 @@ issues_057:
   start_date:
   predecessor_id:
   attachments_count: 0
+  sequence_id: 44
 issues_058:
   id: 225
   subject: ! 'Message de confirmation : ajax'
@@ -1135,6 +1192,7 @@ issues_058:
   start_date:
   predecessor_id:
   attachments_count: 0
+  sequence_id: 45
 issues_059:
   id: 226
   subject: ! 'Issues statuses : Admin menu'
@@ -1154,6 +1212,7 @@ issues_059:
   start_date:
   predecessor_id: 272
   attachments_count: 0
+  sequence_id: 46
 issues_060:
   id: 227
   subject: ! 'Target phase: position'
@@ -1174,6 +1233,7 @@ issues_060:
   start_date:
   predecessor_id:
   attachments_count: 0
+  sequence_id: 47
 issues_061:
   id: 231
   subject: ! 'Roadmap : divided by 0'
@@ -1193,6 +1253,7 @@ issues_061:
   start_date:
   predecessor_id:
   attachments_count: 0
+  sequence_id: 48
 issues_062:
   id: 232
   subject: ! 'Affichage css : select box'
@@ -1212,6 +1273,7 @@ issues_062:
   start_date:
   predecessor_id:
   attachments_count: 0
+  sequence_id: 49
 issues_063:
   id: 233
   subject: ! 'Permission: edit/delete issues'
@@ -1232,6 +1294,7 @@ issues_063:
   start_date:
   predecessor_id:
   attachments_count: 0
+  sequence_id: 50
 issues_064:
   id: 234
   subject: Menu manager
@@ -1253,6 +1316,7 @@ issues_064:
   start_date:
   predecessor_id:
   attachments_count: 0
+  sequence_id: 51
 issues_065:
   id: 235
   subject: Project activities
@@ -1273,6 +1337,7 @@ issues_065:
   start_date:
   predecessor_id:
   attachments_count: 0
+  sequence_id: 52
 issues_066:
   id: 236
   subject: Queries slug
@@ -1292,6 +1357,7 @@ issues_066:
   start_date:
   predecessor_id:
   attachments_count: 0
+  sequence_id: 53
 issues_067:
   id: 237
   subject: ! 'Scenario step: creation issue'
@@ -1311,6 +1377,7 @@ issues_067:
   start_date:
   predecessor_id:
   attachments_count: 0
+  sequence_id: 54
 issues_068:
   id: 238
   subject: ! 'Utilisateur: définir mes compétences'
@@ -1330,6 +1397,7 @@ issues_068:
   start_date:
   predecessor_id:
   attachments_count: 0
+  sequence_id: 55
 issues_069:
   id: 239
   subject: Connaitre compétences utilisateurs
@@ -1349,6 +1417,7 @@ issues_069:
   start_date:
   predecessor_id:
   attachments_count: 0
+  sequence_id: 56
 issues_070:
   id: 242
   subject: Issue edit via toolbox
@@ -1369,6 +1438,7 @@ issues_070:
   start_date:
   predecessor_id:
   attachments_count: 0
+  sequence_id: 57
 issues_071:
   id: 243
   subject: Projet favori
@@ -1388,6 +1458,7 @@ issues_071:
   start_date:
   predecessor_id:
   attachments_count: 0
+  sequence_id: 58
 issues_072:
   id: 244
   subject: Interface choix projets
@@ -1407,6 +1478,7 @@ issues_072:
   start_date:
   predecessor_id:
   attachments_count: 0
+  sequence_id: 59
 issues_073:
   id: 245
   subject: ! 'Project : add functionnality'
@@ -1427,6 +1499,7 @@ issues_073:
   start_date:
   predecessor_id:
   attachments_count: 0
+  sequence_id: 60
 issues_074:
   id: 246
   subject: ! 'Permissions: Locked status'
@@ -1449,6 +1522,7 @@ issues_074:
   start_date:
   predecessor_id:
   attachments_count: 0
+  sequence_id: 61
 issues_075:
   id: 251
   subject: Établir diagramme des classes
@@ -1468,6 +1542,7 @@ issues_075:
   start_date: 2013-03-26
   predecessor_id:
   attachments_count: 0
+  sequence_id: 1
 issues_076:
   id: 252
   subject: Fenêtre principale
@@ -1487,6 +1562,7 @@ issues_076:
   start_date: 2013-03-26
   predecessor_id:
   attachments_count: 0
+  sequence_id: 2
 issues_077:
   id: 253
   subject: Grille de jeu
@@ -1506,6 +1582,7 @@ issues_077:
   start_date: 2013-03-26
   predecessor_id:
   attachments_count: 0
+  sequence_id: 3
 issues_078:
   id: 254
   subject: Cellule
@@ -1525,6 +1602,7 @@ issues_078:
   start_date: 2013-03-26
   predecessor_id:
   attachments_count: 0
+  sequence_id: 4
 issues_079:
   id: 258
   subject: Mutation des cellules
@@ -1545,6 +1623,7 @@ issues_079:
   start_date: 2013-04-05
   predecessor_id: 254
   attachments_count: 0
+  sequence_id: 5
 issues_080:
   id: 259
   subject: Auto mutation des cellules
@@ -1564,6 +1643,7 @@ issues_080:
   start_date: 2013-04-05
   predecessor_id: 258
   attachments_count: 0
+  sequence_id: 6
 issues_081:
   id: 260
   subject: Enregistrer l'état du jeu
@@ -1584,6 +1664,7 @@ issues_081:
   start_date: 2013-04-24
   predecessor_id:
   attachments_count: 0
+  sequence_id: 7
 issues_082:
   id: 262
   subject: ! 'Formes remarquables '
@@ -1604,6 +1685,7 @@ issues_082:
   start_date: 2013-04-01
   predecessor_id:
   attachments_count: 0
+  sequence_id: 8
 issues_083:
   id: 264
   subject: Vitesse auto mutation
@@ -1625,6 +1707,7 @@ issues_083:
   start_date: 2013-04-06
   predecessor_id:
   attachments_count: 0
+  sequence_id: 9
 issues_084:
   id: 265
   subject: Choix nombre de cellules
@@ -1646,6 +1729,7 @@ issues_084:
   start_date: 2013-04-06
   predecessor_id:
   attachments_count: 0
+  sequence_id: 10
 issues_085:
   id: 266
   subject: Choix taille de la carte
@@ -1665,6 +1749,7 @@ issues_085:
   start_date: 2013-04-06
   predecessor_id:
   attachments_count: 0
+  sequence_id: 11
 issues_086:
   id: 267
   subject: Menu settings
@@ -1686,6 +1771,7 @@ issues_086:
   start_date:
   predecessor_id:
   attachments_count: 0
+  sequence_id: 12
 issues_087:
   id: 269
   subject: Aperçu lors de la sélection d'un fichier
@@ -1705,6 +1791,7 @@ issues_087:
   start_date:
   predecessor_id:
   attachments_count: 0
+  sequence_id: 13
 issues_088:
   id: 271
   subject: Menu contextuel
@@ -1724,6 +1811,7 @@ issues_088:
   start_date: 2013-04-24
   predecessor_id:
   attachments_count: 0
+  sequence_id: 14
 issues_089:
   id: 275
   subject: ! 'Dossier : compte rendu'
@@ -1744,3 +1832,4 @@ issues_089:
   start_date:
   predecessor_id:
   attachments_count: 0
+  sequence_id: 15

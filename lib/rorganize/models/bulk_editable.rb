@@ -12,7 +12,7 @@ module Rorganize
       # @param [Project] project : project that belongs to objects.
       # @return [Array] in index 0 there are bulk updated objects, in index 1 there are all created journals.
       def bulk_edit(ids, value_param, project)
-        objects_toolbox = self.where(id: ids, project_id: project.id)
+        objects_toolbox = self.where(sequence_id: ids, project_id: project.id)
         # As form send all attributes, we drop all attributes except the filled one.
         value_param.delete_if { |_, v| v.eql?('') }
         key = value_param.keys[0]
@@ -24,7 +24,7 @@ module Rorganize
         objects = updated_objects(objects_toolbox, value_param)
         value_param[:updated_at] = Time.now
         # Update all changed objects
-        self.where(id: objects.collect(&:id), project_id: project.id).update_all(value_param)
+        self.where(sequence_id: objects.collect(&:sequence_id), project_id: project.id).update_all(value_param)
         # Create journals for this changes
         journals = journal_update_creation(objects, project, User.current.id, self.to_s)
         [objects, journals]
@@ -48,13 +48,13 @@ module Rorganize
       # @param [Project] project
       # @return [Array] array of deleted objects.
       def bulk_delete(object_ids, project)
-        objects_toolbox = self.where(id: object_ids)
+        objects_toolbox = self.where(sequence_id: object_ids, project_id: project.id)
         objects = []
         objects_toolbox.each do |object|
           objects << object
         end
-        self.delete_all(id: object_ids)
-        fire_dependent_destroy_triggers(object_ids)
+        self.delete_all(sequence_id: object_ids)
+        fire_dependent_destroy_triggers(objects_toolbox.collect(&:id))
         journal_delete_creation(objects, project.id, User.current.id, self.to_s)
         objects
       end

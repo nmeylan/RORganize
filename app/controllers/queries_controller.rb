@@ -88,7 +88,7 @@ class QueriesController < ApplicationController
 
   def update
     @query.attributes = (query_params)
-    generic_update_callback(@query, query_path(@query.id))
+    generic_update_callback(@query, query_path(@query))
   end
 
   def destroy

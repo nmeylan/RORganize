@@ -93,14 +93,15 @@ class IssueTest < ActiveSupport::TestCase
     issue3 = Issue.create(tracker_id: 1, subject: 'Bug', status_id: '1', project_id: 1, done: 10)
 
     issue_ids = []
-    issue_ids << issue1.id << issue2.id << issue3.id
+    issue_ids << issue1.sequence_id << issue2.sequence_id << issue3.sequence_id
 
     assert_equal 50, issue1.done
     assert_equal 0, issue2.done
     assert_equal 10, issue3.done
 
     #Status 8 default done value is nil
-    Issue.bulk_set_done_ratio(issue_ids, 8, nil)
+    project = projects(:projects_001)
+    Issue.bulk_set_done_ratio(issue_ids, project, 8, nil)
 
     issue1.reload
     assert_equal 50, issue1.done
@@ -112,7 +113,7 @@ class IssueTest < ActiveSupport::TestCase
     assert_equal 10, issue3.done
 
     #Status 3 default done value is 100
-    Issue.bulk_set_done_ratio(issue_ids, 3, nil)
+    Issue.bulk_set_done_ratio(issue_ids, project, 3, nil)
 
     issue1.reload
     assert_equal 100, issue1.done
@@ -124,7 +125,7 @@ class IssueTest < ActiveSupport::TestCase
     assert_equal 100, issue3.done
 
     #Status 6 default done value is 50
-    Issue.bulk_set_done_ratio(issue_ids, 6, nil)
+    Issue.bulk_set_done_ratio(issue_ids, project, 6, nil)
 
     issue1.reload
     assert_equal 50, issue1.done
@@ -313,12 +314,12 @@ bla bla
     assert_equal issues.reverse, Issue.prepare_paginated(1, 100, 'issues.subject DESC', '', 666).to_a
 
     issue_conditions_string = Issue.conditions_string({'subject' => {'operator' => 'contains', 'value' => 'bug'}})
-    assert_equal issues, Issue.paginated_issues_method(1, issue_conditions_string, 'issues.id ASC', 100, 666)
-    assert_equal issues, Issue.prepare_paginated(1, 100, 'issues.id ASC', issue_conditions_string, 666).to_a
+    assert_equal issues, Issue.paginated_issues_method(1, issue_conditions_string, 'issues.sequence_id ASC', 100, 666)
+    assert_equal issues, Issue.prepare_paginated(1, 100, 'issues.sequence_id ASC', issue_conditions_string, 666).to_a
 
     issue_conditions_string = Issue.conditions_string({'subject' => {'operator' => 'contains', 'value' => 'bug1'}})
-    assert_equal issues[0, 1], Issue.paginated_issues_method(1, issue_conditions_string, 'issues.id ASC', 100, 666)
-    assert_equal issues[0, 1], Issue.prepare_paginated(1, 100, 'issues.id ASC', issue_conditions_string, 666).to_a
+    assert_equal issues[0, 1], Issue.paginated_issues_method(1, issue_conditions_string, 'issues.sequence_id ASC', 100, 666)
+    assert_equal issues[0, 1], Issue.prepare_paginated(1, 100, 'issues.sequence_id ASC', issue_conditions_string, 666).to_a
   end
 
   test 'scope group by status' do

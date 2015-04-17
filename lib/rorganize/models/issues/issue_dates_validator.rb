@@ -15,7 +15,7 @@ module Rorganize
           # @param [Array] journals : array of journals.
           def bulk_set_start_and_due_date(issue_ids, version_id, journals)
             version = Version.find_by_id(version_id)
-            issues = Issue.where(id: issue_ids)
+            issues = Issue.where(sequence_id: issue_ids)
             issue_changes = bulk_change_start_due_date(issues)
             merged_issues = issue_changes[:due_date] | issue_changes[:start_date]
             if merged_issues.any?

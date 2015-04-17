@@ -50,6 +50,6 @@ class NotificationsController < ApplicationController
   end
 
   def notification_path_params(notification)
-    {project_id: notification.project.slug, id: notification.notifiable.id, anchor: "#{notification.trigger_type.downcase}-#{notification.trigger_id}"}
+    {project_id: notification.project.slug, id: notification.notifiable.sequence_id, anchor: "#{notification.trigger_type.downcase}-#{notification.trigger_id}"}
   end
 end

@@ -91,7 +91,7 @@ class GanttObject
     due_date = issue_due_date(issue, version)
     caption = issue_caption(issue)
     {
-        id: issue.id,
+        id: issue.sequence_id,
         start_date: start_date.strftime(DATE_FORMAT),
         text: caption,
         parent: "version_#{issue.version_id}",
@@ -100,7 +100,7 @@ class GanttObject
         duration: (due_date - start_date).to_i,
         context: {
             type: 'issue',
-            link: link_to(caption, issue_path(@project, issue.id)),
+            link: link_to(caption, issue_path(@project, issue)),
             due_date: due_date,
             start_date: start_date,
             assigne: issue.assigned_to ? issue.assigned_to.caption : nil,
@@ -128,10 +128,11 @@ class GanttObject
   end
 
   def build_link(issue)
+    predecessor_sequence_id = issue.predecessor ? issue.predecessor.sequence_id : nil
     {
-        id: "#{issue.predecessor_id}_#{issue.id}",
-        source: issue.predecessor_id,
-        target: issue.id,
+        id: "#{predecessor_sequence_id}_#{issue.sequence_id}",
+        source: predecessor_sequence_id,
+        target: issue.sequence_id,
         type: issue.link_type
     }
   end

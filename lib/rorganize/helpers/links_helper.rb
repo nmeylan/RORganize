@@ -38,7 +38,7 @@ module Rorganize
       # @param [Issue] issue.
       # @param [Project] project.
       def fast_issue_link(issue, project)
-        "<a href='/projects/#{project.slug}/issues/#{issue.id}'>#{resize_text(issue.caption, 35)}</a>".html_safe
+        "<a href='/projects/#{project.slug}/issues/#{issue.sequence_id}'>#{resize_text(issue.caption, 35)}</a>".html_safe
       end
 
 
@@ -54,7 +54,7 @@ module Rorganize
       # @param [Document] document.
       # @param [Project] project.
       def fast_document_link(document, project)
-        "<a href='/projects/#{project.slug}/documents/#{document.id}'>#{resize_text(document.caption, 35)}</a>".html_safe
+        "<a href='/projects/#{project.slug}/documents/#{document.sequence_id}'>#{resize_text(document.caption, 35)}</a>".html_safe
       end
 
       def fast_wiki_page(wiki_page, project)
