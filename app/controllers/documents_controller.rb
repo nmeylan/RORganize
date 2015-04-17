@@ -84,7 +84,7 @@ class DocumentsController < ApplicationController
   end
 
   def find_document
-    @document_decorator = Document.eager_load(:category, :version, :attachments).find_by!(id: params[:id], project_id: @project.id)
+    @document_decorator = @project.documents.eager_load(:category, :version, :attachments).find(params[:id])
     @document_decorator = @document_decorator.decorate(context: {project: @project})
   end
 

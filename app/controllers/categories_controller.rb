@@ -53,6 +53,6 @@ class CategoriesController < ApplicationController
   end
 
   def find_category
-    @category = Category.find_by!(id: params[:id], project_id: @project.id)
+    @category = @project.categories.find(params[:id])
   end
 end

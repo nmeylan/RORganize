@@ -26,7 +26,7 @@ class RoadmapsController < ApplicationController
   end
 
   def version
-    @version_decorator = Version.eager_load(issues: [:status, :tracker]).find_by!(id: params[:id], project_id: @project.id).decorate
+    @version_decorator = @project.versions.eager_load(issues: [:status, :tracker]).find(params[:id]).decorate
   end
 
   private

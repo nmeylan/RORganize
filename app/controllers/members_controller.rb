@@ -57,7 +57,7 @@ class MembersController < ApplicationController
   private
 
   def find_member
-    @member = Member.includes(:role).find_by!(id: params[:member_id], project_id: @project.id)
+    @member = @project.members.includes(:role).find(params[:member_id])
   end
 
   def check_change_member_role

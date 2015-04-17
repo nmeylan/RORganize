@@ -65,7 +65,7 @@ class VersionsController < ApplicationController
   end
 
   def find_version
-    @version = Version.find_by!(id: params[:id], project_id: @project.id)
+    @version = @project.versions.find(params[:id])
     @version_decorator = @version.decorate(context: {project: @project})
   end
 
