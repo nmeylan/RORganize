@@ -47,7 +47,7 @@ module NotificationsHelper
   end
 
   def notification_block_header(project_slug)
-    box_header_tag link_to(medium_glyph(project_slug, 'repo'), project_path(project_slug)), 'header header-left' do
+    box_header_tag link_to(medium_glyph(project_slug, 'repo'), project_path(project_slug), class: "notification-project"), 'header header-left' do
       link_to t(:link_mark_all_as_read), destroy_all_for_project_notifications_path(project_slug),
               {method: :delete, 'data-confirm' => t(:confirm_mark_all_as_read), class: 'button'}
     end

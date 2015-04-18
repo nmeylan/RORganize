@@ -4,6 +4,7 @@
 # File: notification.rb
 
 class Notification < ActiveRecord::Base
+  include SoftDeletable
   RECIPIENT_TYPE_WATCHER = 'watchers'
   RECIPIENT_TYPE_PARTICIPANT = 'participants'
   belongs_to :user
@@ -37,7 +38,7 @@ class Notification < ActiveRecord::Base
                         .where(user_id: user.id)
                         .where(condition)
                         .order('notifications.created_at DESC')
-
+    notifications = notifications.unscoped if condition.eql?("1 = 1")
     count_participating, count_watching = count_notification_by_recipient_type(user)
     projects = count_notifications_by_projects(notifications)
     filters = {all: count_participating + count_watching, participants: count_participating, watchers: count_watching}

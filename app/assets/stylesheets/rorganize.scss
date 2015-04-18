@@ -1138,7 +1138,35 @@ a.indicator {
 #notifications-content {
   float: left;
   width: 80%;
+  .notification-project{
+    color: $default-color;
+    &:hover{
+      text-decoration: underline;
+    }
+  }
   .no-data {
     margin-left: 10px;
+  }
+  .notification-link {
+    font-weight: 500;
+    color: $default-color;
+    &:hover{
+      text-decoration: underline;
+    }
+    .octicon {
+      font-weight: 400;
+    }
+    &.viewed {
+      color: #777;
+      &:hover{
+        color: inherit;
+        .octicon {
+          color: inherit;
+        }
+      }
+      .octicon {
+        color: #999;
+      }
+    }
   }
 }

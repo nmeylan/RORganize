@@ -76,6 +76,13 @@ class NotificationTest < ActiveSupport::TestCase
     assert_equal expectation[2], projects_filter
   end
 
+  test 'it should load deleted notifications' do
+    notifications = create_notifications
+    notifications.each { |notif| notif.soft_delete }
+    assert_empty(Notification.all)
+    assert_match_array(notifications, Notification.deleted.to_a)
+  end
+
   private
   def create_notifications
     issues = []
