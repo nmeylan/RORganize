@@ -4,12 +4,12 @@
 # File: document_controller.rb
 require 'shared/history'
 class DocumentsController < ApplicationController
-  include Rorganize::RichController
-  include Rorganize::RichController::AttachableCallbacks
+  include RichController
+  include AttachableCallbacks
   include Rorganize::Filters::NotificationFilter
-  include Rorganize::RichController::ToolboxCallback
-  include Rorganize::RichController::ProjectContext
-  include Rorganize::RichController::CustomQueriesCallback
+  include ToolboxCallback
+  include ProjectContext
+  include CustomQueriesCallback
 
   before_action :find_document, only: [:show, :edit, :destroy, :update]
   before_action :check_permission

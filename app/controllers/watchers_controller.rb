@@ -4,7 +4,7 @@
 # File: watchers_controller.rb
 
 class WatchersController < ApplicationController
-  include Rorganize::RichController::GenericCallbacks
+  include GenericCallbacks
 
   before_action :find_watcher, only: [:toggle]
   before_action :check_permission, only: [:toggle]

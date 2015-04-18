@@ -4,7 +4,7 @@
 # File: permissions_controller.rb
 
 class PermissionsController < ApplicationController
-  include Rorganize::RichController
+  include RichController
   include PermissionsHelper
   include Rorganize::Managers::PermissionManager::PermissionManagerHelper
   include Rorganize::Managers::PermissionManager::PermissionListCreator

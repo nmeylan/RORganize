@@ -4,7 +4,7 @@
 # File: roles_controller.rb
 
 class RolesController < ApplicationController
-  include Rorganize::RichController
+  include RichController
   before_action :check_permission
   before_action  :find_role, only: [:edit, :destroy, :update]
   before_action { |c| c.menu_context :admin_menu }

@@ -1,5 +1,5 @@
 class IssuesStatusesController < ApplicationController
-  include Rorganize::RichController
+  include RichController
   before_action :check_permission
   before_action :find_status, only: [:update, :destroy, :edit, :change_position]
   before_action { |c| c.menu_context :admin_menu }

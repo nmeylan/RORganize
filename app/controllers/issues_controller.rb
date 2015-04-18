@@ -7,13 +7,13 @@ require 'issues/overview_report'
 require 'issues/form_content'
 require 'issues/issue_overview_hash'
 class IssuesController < ApplicationController
-  include Rorganize::RichController
-  include Rorganize::RichController::ToolboxCallback
+  include RichController
+  include ToolboxCallback
   include Rorganize::Filters::NotificationFilter
-  include Rorganize::RichController::ProjectContext
-  include Rorganize::RichController::GanttCallbacks
-  include Rorganize::RichController::AttachableCallbacks
-  include Rorganize::RichController::CustomQueriesCallback
+  include ProjectContext
+  include GanttCallbacks
+  include AttachableCallbacks
+  include CustomQueriesCallback
 
   before_action { |c| c.add_action_alias= {'overview' => 'index'} }
   before_action :find_project_with_dependencies, only: [:index, :new, :create, :update, :edit, :toolbox, :apply_custom_query]

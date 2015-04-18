@@ -2,8 +2,8 @@ require 'shared/activities'
 class ProjectsController < ApplicationController
   helper VersionsHelper
   helper TrackersHelper
-  include Rorganize::RichController::ActivityCallback
-  include Rorganize::RichController::GenericCallbacks
+  include ActivityCallback
+  include GenericCallbacks
 
   before_action { |c| c.add_action_alias = {'show' => 'overview'} }
   before_action :find_project, only: [:archive, :destroy, :overview, :show, :activity, :activity_filter, :members, :issues_completion]

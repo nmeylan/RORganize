@@ -4,7 +4,7 @@
 # File: versions_controller.rb
 
 class VersionsController < ApplicationController
-  include Rorganize::RichController
+  include RichController
   before_action :find_version, only: [:edit, :update, :destroy, :change_position]
   before_action :check_permission
   before_action { |c| c.menu_context :project_menu }

@@ -4,7 +4,7 @@
 # File: members_controller.rb
 
 class MembersController < ApplicationController
-  include Rorganize::RichController
+  include RichController
   before_action :check_permission
   before_action :find_member, only: [:change_role]
   before_action :check_change_member_role, only: [:change_role, :create]

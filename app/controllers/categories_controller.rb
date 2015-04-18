@@ -4,7 +4,7 @@
 # File: categories_controller.rb
 
 class CategoriesController < ApplicationController
-  include Rorganize::RichController
+  include RichController
 
   before_action :find_category, only: [:edit, :update, :destroy]
   before_action :check_permission

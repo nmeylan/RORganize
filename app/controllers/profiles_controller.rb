@@ -5,7 +5,7 @@
 
 require 'shared/activities'
 class ProfilesController < ApplicationController
-  include Rorganize::RichController
+  include RichController
   before_action :authenticate_user!
   before_action :find_user
   before_action :set_pagination, only: [:custom_queries]
@@ -14,8 +14,8 @@ class ProfilesController < ApplicationController
   helper IssuesHelper
   helper QueriesHelper
   helper UsersHelper
-  include Rorganize::RichController::ActivityCallback
-  include Rorganize::RichController::ProjectsPreferenceCallback
+  include ActivityCallback
+  include ProjectsPreferenceCallback
 
   def show
     @user_decorator = User.eager_load([members: [:role, :project, assigned_issues: :status]]).find_by_slug(User.current.slug).decorate

@@ -7,7 +7,7 @@ require 'roadmaps/gantt_object'
 require 'roadmap/roadmap_report'
 class RoadmapsController < ApplicationController
   helper VersionsHelper
-  include Rorganize::RichController::GanttCallbacks
+  include GanttCallbacks
 
   before_action { |c| c.add_action_alias = {'version' => 'show'} }
   before_action :check_permission, only: [:gantt, :manage_gantt, :show, :version]

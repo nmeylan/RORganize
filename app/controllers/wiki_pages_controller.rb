@@ -5,7 +5,7 @@
 
 class WikiPagesController < ApplicationController
   helper WikiHelper
-  include Rorganize::RichController::GenericCallbacks
+  include GenericCallbacks
 
   before_action :find_page, only: [:show, :edit, :update, :destroy]
   before_action :check_permission, except: [:new_home_page, :new_sub_page]

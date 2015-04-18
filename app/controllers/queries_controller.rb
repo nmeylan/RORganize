@@ -4,7 +4,7 @@
 # File: queries_controller.rb
 
 class QueriesController < ApplicationController
-  include Rorganize::RichController
+  include RichController
   before_action { |c| c.add_action_alias = {'new_project_query' => 'new'} }
   before_action :set_pagination, only: [:index]
   before_action :find_project, only: [:create]

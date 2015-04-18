@@ -3,7 +3,7 @@
 # Encoding: UTF-8
 # File: ${FILE_NAME}
 class TimeEntriesController < ApplicationController
-  include Rorganize::RichController::GenericCallbacks
+  include GenericCallbacks
 
   def fill_overlay
     issue_id = params[:issue_id]

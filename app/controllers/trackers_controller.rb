@@ -4,7 +4,7 @@
 # File: trackers_controller.rb
 
 class TrackersController < ApplicationController
-  include Rorganize::RichController
+  include RichController
 
   before_action :find_tracker, only: [:show, :edit, :update, :destroy, :change_position]
   before_action :check_permission

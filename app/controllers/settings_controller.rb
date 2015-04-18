@@ -7,7 +7,7 @@ class SettingsController < ApplicationController
   helper QueriesHelper
   helper TrackersHelper
   include Rorganize::Managers::ModuleManager::ModuleManagerHelper
-  include Rorganize::RichController
+  include RichController
 
   before_action { |c| c.add_action_alias= {'update' => 'update_project_informations'} }
 

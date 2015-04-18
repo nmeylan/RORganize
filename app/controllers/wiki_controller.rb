@@ -5,8 +5,8 @@
 
 class WikiController < ApplicationController
   include WikiHelper
-  include Rorganize::RichController
-  include Rorganize::RichController::ProjectContext
+  include RichController
+  include ProjectContext
   helper WikiPagesHelper
 
   before_action :find_wiki, except: [:create, :set_organization]
