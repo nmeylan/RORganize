@@ -4,7 +4,7 @@
 # File: attachment_remove.rb
 
 class Attachment < ActiveRecord::Base
-  include Rorganize::Models::SmartRecords
+  include SmartRecords
 
   has_attached_file :file, {url: '/system/:class/:attachable_type/:attachable_id/:id/:style/:file_name',
                             hash_secret: RORganize::Application.config.secret_attachment_key,

@@ -1,7 +1,7 @@
 class Version < ActiveRecord::Base
-  include Rorganize::Models::SmartRecords
-  include Rorganize::Models::Journalizable
-  extend Rorganize::Models::BulkEditable
+  include SmartRecords
+  include Journalizable
+  extend BulkEditable
   #Class variables
   exclude_attributes_from_journal(:description, :position)
   #Relations

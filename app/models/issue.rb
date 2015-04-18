@@ -3,17 +3,16 @@
 # Encoding: UTF-8
 # File: issue.rb
 class Issue < ActiveRecord::Base
-  include Rorganize::Models::SmartRecords
-  include Rorganize::Models::Journalizable
-  include Rorganize::Models::Commentable
-  include Rorganize::Models::Watchable
-  include Rorganize::Models::Notifiable
-  include Rorganize::Models::Attachable::AttachmentType
+  include SmartRecords
+  include Journalizable
+  include Commentable
+  include Watchable
+  include Notifiable
+  include Attachable::AttachmentType
   include Sequenceable
-  #lib/rorganize/models/issues
-  # Contains date validator and Gantt behaviour
-  include Rorganize::Models::IssueExtraMethods
-  extend Rorganize::Models::BulkEditable
+  include IssueGantt
+  include IssueDatesValidator
+  extend BulkEditable
   #Class variables
   exclude_attributes_from_journal(:description, :attachments_count, :link_type, :comments_count)
   attr_accessor :notes

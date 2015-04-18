@@ -4,9 +4,9 @@
 # File: member.rb
 
 class Member < ActiveRecord::Base
-  include Rorganize::Models::SmartRecords
-  include Rorganize::Models::Journalizable
-  include Rorganize::Models::Watchable
+  include SmartRecords
+  include Journalizable
+  include Watchable
   #Constants
   exclude_attributes_from_journal(:is_project_starred, :project_position)
   #Relations
@@ -35,7 +35,7 @@ class Member < ActiveRecord::Base
     self.user.name
   end
 
-  # Override default create_journal method from : Rorganize::Models::Journalizable module.
+  # Override default create_journal method from : Journalizable module.
   def create_journal
     unless self.role_id.eql?(Role.non_member.id)
       created_journalizable_attributes = {role_id: [nil, self.role_id]}

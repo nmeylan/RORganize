@@ -1,8 +1,8 @@
 class User < ActiveRecord::Base
-  include Rorganize::Models::SmartRecords
-  include Rorganize::Models::Journalizable
-  include Rorganize::Models::Attachable::AvatarType
-  include Rorganize::Models::UserExtraMethods
+  include SmartRecords
+  include Journalizable
+  include Attachable::AvatarType
+  include Authorization
   extend FriendlyId
 
   exclude_attributes_from_journal(:encrypted_password, :reset_password_token,

@@ -4,7 +4,7 @@
 # File: IssueStatus.rb
 
 class IssuesStatus < ActiveRecord::Base
-  include Rorganize::Models::SmartRecords
+  include SmartRecords
   DEFAULT_OPENED_STATUS_COLOR = '#6cc644'
   DEFAULT_CLOSED_STATUS_COLOR = '#bd2c00'
   # Relations

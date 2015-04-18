@@ -36,7 +36,7 @@ class IssueNotifiableTest < ActiveSupport::TestCase
                                            recipient_type: 'participants')
     end
 
-    Rorganize::Models::Notifiable::bulk_delete_dependent(issues.collect(&:id), 'Issue')
+    Notifiable::bulk_delete_dependent(issues.collect(&:id), 'Issue')
     assert_raise(ActiveRecord::RecordNotFound) {notifications[0].reload}
     assert_raise(ActiveRecord::RecordNotFound) {notifications[1].reload}
     assert_raise(ActiveRecord::RecordNotFound) {notifications[2].reload}

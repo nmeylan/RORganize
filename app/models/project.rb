@@ -1,7 +1,7 @@
 class Project < ActiveRecord::Base
-  include Rorganize::Models::SmartRecords
-  include Rorganize::Models::Attachable::AttachmentType
-  include Rorganize::Models::Watchable
+  include SmartRecords
+  include Attachable::AttachmentType
+  include Watchable
   #SLug
   extend FriendlyId
   friendly_id :name, use: :slugged
@@ -63,7 +63,7 @@ class Project < ActiveRecord::Base
   end
 
   def self.journalizable_item_class_name(sub_relation)
-    sub_relation.class_name if sub_relation.klass.included_modules.include?(Rorganize::Models::Journalizable)
+    sub_relation.class_name if sub_relation.klass.included_modules.include?(Journalizable)
   end
 
   def self.permit_attributes

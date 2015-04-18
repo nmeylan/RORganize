@@ -4,7 +4,7 @@
 # File: journalizable.rb
 
 class Journal < ActiveRecord::Base
-  include Rorganize::Models::SmartRecords
+  include SmartRecords
   include Rorganize::Managers::NotificationsManager
   ACTION_CREATE = 'created'
   ACTION_UPDATE = 'updated'

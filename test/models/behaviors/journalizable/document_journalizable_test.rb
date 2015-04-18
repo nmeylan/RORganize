@@ -120,7 +120,7 @@ class DocumentJournalizableTest < ActiveSupport::TestCase
     assert journal_document
     assert_equal 2, details_document.count
 
-    Rorganize::Models::Journalizable::bulk_delete_dependent([document1.id, document2.id], 'Document')
+    Journalizable::bulk_delete_dependent([document1.id, document2.id], 'Document')
 
     assert_raise(ActiveRecord::RecordNotFound) { journal_creation_document1.reload }
     assert_raise(ActiveRecord::RecordNotFound) { journal_document1.reload }

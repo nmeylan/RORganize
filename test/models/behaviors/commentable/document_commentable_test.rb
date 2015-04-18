@@ -55,7 +55,7 @@ class DocumentCommentableTest < ActiveSupport::TestCase
     assert comment1.save
     assert comment2.save
 
-    Rorganize::Models::Commentable::bulk_delete_dependent([document.id], 'Document')
+    Commentable::bulk_delete_dependent([document.id], 'Document')
     assert document.reload
     assert_raise(ActiveRecord::RecordNotFound) {comment.reload}
     assert_raise(ActiveRecord::RecordNotFound) {comment1.reload}

@@ -92,7 +92,7 @@ class IssueWatchableTest < ActiveSupport::TestCase
     assert watcher.reload
     assert watcher1.reload
 
-    Rorganize::Models::Watchable::bulk_delete_dependent([666, 667], 'Issue')
+    Watchable::bulk_delete_dependent([666, 667], 'Issue')
 
     assert_raise(ActiveRecord::RecordNotFound) { watcher.reload }
     assert_raise(ActiveRecord::RecordNotFound) { watcher1.reload }

@@ -3,8 +3,8 @@
 # Encoding: UTF-8
 # File: wiki_page.rb
 class WikiPage < ActiveRecord::Base
-  include Rorganize::Models::SmartRecords
-  include Rorganize::Models::Journalizable
+  include SmartRecords
+  include Journalizable
   #Class variables
   exclude_attributes_from_journal(:slug)
   #Slug

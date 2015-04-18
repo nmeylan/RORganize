@@ -3,13 +3,13 @@
 # Encoding: UTF-8
 # File: document.rb
 class Document < ActiveRecord::Base
-  include Rorganize::Models::Journalizable
-  include Rorganize::Models::SmartRecords
-  include Rorganize::Models::Attachable::AttachmentType
-  include Rorganize::Models::Commentable
-  include Rorganize::Models::Watchable
-  include Rorganize::Models::Notifiable
-  extend Rorganize::Models::BulkEditable
+  include Journalizable
+  include SmartRecords
+  include Attachable::AttachmentType
+  include Commentable
+  include Watchable
+  include Notifiable
+  extend BulkEditable
   include Sequenceable
   #Class variables
   exclude_attributes_from_journal(:description, :comments_count)

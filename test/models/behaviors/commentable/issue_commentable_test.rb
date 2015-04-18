@@ -53,7 +53,7 @@ class IssueCommentableTest < ActiveSupport::TestCase
     assert comment1.save
     assert comment2.save
 
-    Rorganize::Models::Commentable::bulk_delete_dependent([issue.id], 'Issue')
+    Commentable::bulk_delete_dependent([issue.id], 'Issue')
     assert issue.reload
     assert_raise(ActiveRecord::RecordNotFound) {comment.reload}
     assert_raise(ActiveRecord::RecordNotFound) {comment1.reload}
