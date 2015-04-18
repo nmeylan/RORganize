@@ -38,7 +38,7 @@ class Notification < ActiveRecord::Base
                         .where(user_id: user.id)
                         .where(condition)
                         .order('notifications.created_at DESC')
-    notifications = notifications.unscoped if condition.eql?("1 = 1")
+    notifications = notifications.unscoped.order('notifications.deleted_at ASC, notifications.created_at DESC') if condition.eql?("1 = 1")
     count_participating, count_watching = count_notification_by_recipient_type(user)
     projects = count_notifications_by_projects(notifications)
     filters = {all: count_participating + count_watching, participants: count_participating, watchers: count_watching}
