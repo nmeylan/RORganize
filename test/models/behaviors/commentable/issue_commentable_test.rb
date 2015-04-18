@@ -25,7 +25,7 @@ class IssueCommentableTest < ActiveSupport::TestCase
     comment1 = Comment.create(content: 'this a comment', user_id: User.current.id, project_id: 1, commentable_id: issue.id, commentable_type: 'Issue')
     comment2 = Comment.create(content: 'this a comment', user_id: User.current.id, project_id: 1, commentable_id: issue.id, commentable_type: 'Issue')
 
-    assert_equal [comment, comment1, comment2], issue.comments
+    assert_equal [comment, comment1, comment2], issue.comments.to_a
 
     issue.destroy
     assert_raise(ActiveRecord::RecordNotFound) {comment.reload}
