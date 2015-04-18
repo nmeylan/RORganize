@@ -109,7 +109,7 @@ module Rorganize
           get_changed_links(gantt, issue_changes)
         end
         Version.gantt_edit(version_changes)
-        Issue.gantt_edit(issue_changes)
+        Issue.gantt_edit(issue_changes, @project)
       end
 
       def get_changed_links(gantt, issue_changes)

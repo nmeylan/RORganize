@@ -10,16 +10,17 @@ module Rorganize
         module ClassMethods
           # @param [Hash] issue_id_attributes_changed_hash containing {issue_id: {attribute: new_value}}
           # attributes are 'start_date' or 'due_date'
-          def gantt_edit(issue_id_attributes_changed_hash)
+          def gantt_edit(issue_id_attributes_changed_hash, project)
             errors = []
             Issue.transaction do
               issue_id_attributes_changed_hash.each do |issue_id, attribute_name_value_hash|
-                issue = Issue.find_by_sequence_id(issue_id)
+                issue = project.issues.find_by_sequence_id(issue_id)
                 if issue
                   issue.attributes = attribute_name_value_hash
                   issue.predecessor = Issue.find_by_sequence_id_and_project_id(attribute_name_value_hash[:predecessor_id], issue.project_id) if attribute_name_value_hash[:predecessor_id]
                   if issue.changed?
                     issue.save
+                    issue.errors.messages
                     errors << issue.errors.messages if issue.errors.messages.any?
                   end
                 end

@@ -75,7 +75,7 @@ class IssueGanttTest < ActiveSupport::TestCase
     assert_nil @issue1.start_date
     assert_nil @issue2.start_date
 
-    Issue.gantt_edit(issue_id_attributes_changed_hash)
+    Issue.gantt_edit(issue_id_attributes_changed_hash, projects(:projects_001))
     @issue1.reload
     @issue2.reload
 
@@ -92,7 +92,7 @@ class IssueGanttTest < ActiveSupport::TestCase
         @issue2.sequence_id => {start_date: start_date, due_date: due_date}
     }
 
-    errors = Issue.gantt_edit(issue_id_attributes_changed_hash)
+    errors = Issue.gantt_edit(issue_id_attributes_changed_hash, projects(:projects_001))
     @issue1.reload
     @issue2.reload
     assert_equal start_date, @issue1.start_date
