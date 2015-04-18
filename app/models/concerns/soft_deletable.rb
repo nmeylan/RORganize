@@ -11,4 +11,12 @@ module SoftDeletable
   def soft_delete
     run_callbacks(:soft_delete) { touch(:deleted_at) }
   end
+
+  module ClassMethods
+    def soft_delete_all
+      update_all(deleted_at: Time.current)
+    end
+  end
+
+  extend ClassMethods
 end

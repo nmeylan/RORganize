@@ -34,7 +34,7 @@ class NotificationsController < ApplicationController
     filter = @sessions[:filter_recipient_type].eql?('all') ? '1 = 1' : {recipient_type: @sessions[:filter_recipient_type]}
 
     notifications = Notification.includes(:notifiable, :project).where(project_id: Project.find_by_slug(params[:project_slug]), user_id: @user.id).where(filter)
-    notifications.delete_all
+    notifications.soft_delete_all
     respond_to do |format|
       format.html { redirect_to action: 'index', filter: @sessions[:filter_recipient_type] }
     end
