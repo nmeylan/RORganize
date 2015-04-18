@@ -1,0 +1,306 @@
+PATH
+  remote: vendor/engines/agile_board
+  specs:
+    agile_board (1.0.0)
+
+GEM
+  remote: http://rubygems.org/
+  specs:
+    actionmailer (4.2.1)
+      actionpack (= 4.2.1)
+      actionview (= 4.2.1)
+      activejob (= 4.2.1)
+      mail (~> 2.5, >= 2.5.4)
+      rails-dom-testing (~> 1.0, >= 1.0.5)
+    actionpack (4.2.1)
+      actionview (= 4.2.1)
+      activesupport (= 4.2.1)
+      rack (~> 1.6)
+      rack-test (~> 0.6.2)
+      rails-dom-testing (~> 1.0, >= 1.0.5)
+      rails-html-sanitizer (~> 1.0, >= 1.0.1)
+    actionview (4.2.1)
+      activesupport (= 4.2.1)
+      builder (~> 3.1)
+      erubis (~> 2.7.0)
+      rails-dom-testing (~> 1.0, >= 1.0.5)
+      rails-html-sanitizer (~> 1.0, >= 1.0.1)
+    active_record_query_trace (1.4)
+    activejob (4.2.1)
+      activesupport (= 4.2.1)
+      globalid (>= 0.3.0)
+    activemodel (4.2.1)
+      activesupport (= 4.2.1)
+      builder (~> 3.1)
+    activerecord (4.2.1)
+      activemodel (= 4.2.1)
+      activesupport (= 4.2.1)
+      arel (~> 6.0)
+    activesupport (4.2.1)
+      i18n (~> 0.7)
+      json (~> 1.7, >= 1.7.7)
+      minitest (~> 5.1)
+      thread_safe (~> 0.3, >= 0.3.4)
+      tzinfo (~> 1.1)
+    ansi (1.5.0)
+    arel (6.0.0)
+    atomic (1.1.99)
+    bcrypt (3.1.10)
+    builder (3.2.2)
+    bullet (4.14.4)
+      activesupport (>= 3.0.0)
+      uniform_notifier (>= 1.6.0)
+    chunky_png (1.3.4)
+    climate_control (0.0.3)
+      activesupport (>= 3.0)
+    cocaine (0.5.7)
+      climate_control (>= 0.0.3, < 1.0)
+    codeclimate-test-reporter (0.4.7)
+      simplecov (>= 0.7.1, < 1.0.0)
+    coffee-rails (4.1.0)
+      coffee-script (>= 2.2.0)
+      railties (>= 4.0.0, < 5.0)
+    coffee-script (2.4.1)
+      coffee-script-source
+      execjs
+    coffee-script-source (1.9.1.1)
+    coveralls (0.8.0)
+      multi_json (~> 1.10)
+      rest-client (>= 1.6.8, < 2)
+      simplecov (~> 0.9.1)
+      term-ansicolor (~> 1.3)
+      thor (~> 0.19.1)
+    daemons (1.0.10)
+    debugger-ruby_core_source (1.3.8)
+    delayed_job (4.0.6)
+      activesupport (>= 3.0, < 5.0)
+    delayed_job_active_record (4.0.3)
+      activerecord (>= 3.0, < 5.0)
+      delayed_job (>= 3.0, < 4.1)
+    devise (3.4.1)
+      bcrypt (~> 3.0)
+      orm_adapter (~> 0.1)
+      railties (>= 3.2.6, < 5)
+      responders
+      thread_safe (~> 0.1)
+      warden (~> 1.2.3)
+    docile (1.1.5)
+    domain_name (0.5.24)
+      unf (>= 0.0.5, < 1.0.0)
+    draper (2.1.0)
+      actionpack (>= 3.0)
+      activemodel (>= 3.0)
+      activesupport (>= 3.0)
+      request_store (~> 1.0)
+    erubis (2.7.0)
+    execjs (2.5.2)
+    fast_stack (0.1.0)
+      rake
+      rake-compiler
+    ffaker (2.0.0)
+    flamegraph (0.1.0)
+      fast_stack
+    friendly_id (5.1.0)
+      activerecord (>= 4.0.0)
+    gem_plugin (0.2.3)
+    globalid (0.3.5)
+      activesupport (>= 4.1.0)
+    gon (5.2.3)
+      actionpack (>= 2.3.0)
+      json
+      multi_json
+      request_store (>= 1.0.5)
+    hike (1.2.3)
+    http-cookie (1.0.2)
+      domain_name (~> 0.5)
+    i18n (0.7.0)
+    identicon (0.0.3)
+      chunky_png
+    jquery-rails (4.0.3)
+      rails-dom-testing (~> 1.0)
+      railties (>= 4.2.0)
+      thor (>= 0.14, < 2.0)
+    json (1.8.2)
+    loofah (2.0.1)
+      nokogiri (>= 1.5.9)
+    mail (2.6.3)
+      mime-types (>= 1.16, < 3)
+    memory_profiler (0.9.0)
+    memory_test_fix (1.2.2)
+      activerecord (>= 3.2.0, < 4.99.0)
+      railties (>= 3.2.0, < 4.99.0)
+    metaclass (0.0.4)
+    mime-types (2.4.3)
+    mimemagic (0.3.0)
+    mini_portile (0.6.2)
+    minitest (5.6.0)
+    minitest-reporters (1.0.11)
+      ansi
+      builder
+      minitest (>= 5.0)
+      ruby-progressbar
+    mocha (1.1.0)
+      metaclass (~> 0.0.1)
+    mongrel (1.2.0.pre2)
+      daemons (~> 1.0.10)
+      gem_plugin (~> 0.2.3)
+    multi_json (1.11.0)
+    mysql2 (0.3.18)
+    netrc (0.10.3)
+    nokogiri (1.6.6.2)
+      mini_portile (~> 0.6.0)
+    orm_adapter (0.5.0)
+    paperclip (4.2.1)
+      activemodel (>= 3.0.0)
+      activesupport (>= 3.0.0)
+      cocaine (~> 0.5.3)
+      mime-types
+    peek (0.1.9)
+      atomic (>= 1.0.0)
+      railties (>= 3.0.0)
+    peek-mysql2 (1.1.0)
+      atomic (>= 1.0.0)
+      mysql2
+      peek
+    peek-performance_bar (1.1.6)
+      peek (>= 0.1.0)
+    peek-rblineprof (0.1.2)
+      peek
+      rblineprof
+    pg (0.18.1)
+    rack (1.6.0)
+    rack-mini-profiler (0.9.3)
+      rack (>= 1.1.3)
+    rack-test (0.6.3)
+      rack (>= 1.0)
+    rails (4.2.1)
+      actionmailer (= 4.2.1)
+      actionpack (= 4.2.1)
+      actionview (= 4.2.1)
+      activejob (= 4.2.1)
+      activemodel (= 4.2.1)
+      activerecord (= 4.2.1)
+      activesupport (= 4.2.1)
+      bundler (>= 1.3.0, < 2.0)
+      railties (= 4.2.1)
+      sprockets-rails
+    rails-deprecated_sanitizer (1.0.3)
+      activesupport (>= 4.2.0.alpha)
+    rails-dom-testing (1.0.6)
+      activesupport (>= 4.2.0.beta, < 5.0)
+      nokogiri (~> 1.6.0)
+      rails-deprecated_sanitizer (>= 1.0.1)
+    rails-html-sanitizer (1.0.2)
+      loofah (~> 2.0)
+    railties (4.2.1)
+      actionpack (= 4.2.1)
+      activesupport (= 4.2.1)
+      rake (>= 0.8.7)
+      thor (>= 0.18.1, < 2.0)
+    rake (10.4.2)
+    rake-compiler (0.9.5)
+      rake
+    rblineprof (0.3.6)
+      debugger-ruby_core_source (~> 1.3)
+    redcarpet (3.2.3)
+    request_store (1.1.0)
+    responders (2.1.0)
+      railties (>= 4.2.0, < 5)
+    rest-client (1.8.0)
+      http-cookie (>= 1.0.2, < 2.0)
+      mime-types (>= 1.16, < 3.0)
+      netrc (~> 0.7)
+    ruby-prof (0.15.6)
+    ruby-progressbar (1.7.5)
+    sass (3.2.19)
+    sass-rails (4.0.5)
+      railties (>= 4.0.0, < 5.0)
+      sass (~> 3.2.2)
+      sprockets (~> 2.8, < 3.0)
+      sprockets-rails (~> 2.0)
+    simplecov (0.9.2)
+      docile (~> 1.1.0)
+      multi_json (~> 1.0)
+      simplecov-html (~> 0.9.0)
+    simplecov-html (0.9.0)
+    spring (1.3.4)
+    sprockets (2.12.3)
+      hike (~> 1.2)
+      multi_json (~> 1.0)
+      rack (~> 1.0)
+      tilt (~> 1.1, != 1.3.0)
+    sprockets-rails (2.2.4)
+      actionpack (>= 3.0)
+      activesupport (>= 3.0)
+      sprockets (>= 2.8, < 4.0)
+    sqlite3 (1.3.10)
+    stackprof (0.2.7)
+    term-ansicolor (1.3.0)
+      tins (~> 1.0)
+    thor (0.19.1)
+    thread_safe (0.3.5)
+    tilt (1.4.1)
+    tins (1.3.5)
+    turn (0.8.3)
+      ansi
+    tzinfo (1.2.2)
+      thread_safe (~> 0.1)
+    uglifier (2.7.1)
+      execjs (>= 0.3.0)
+      json (>= 1.8.0)
+    unf (0.1.4)
+      unf_ext
+    unf_ext (0.0.7.1)
+    uniform_notifier (1.8.0)
+    warden (1.2.3)
+      rack (>= 1.0)
+    will_paginate (3.0.7)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  active_record_query_trace
+  agile_board!
+  bullet
+  cocaine
+  codeclimate-test-reporter
+  coffee-rails
+  coveralls
+  daemons
+  delayed_job_active_record
+  devise
+  draper
+  ffaker
+  flamegraph
+  friendly_id
+  gon
+  identicon
+  jquery-rails
+  memory_profiler
+  memory_test_fix
+  mime-types
+  mimemagic
+  minitest-reporters
+  mocha
+  mongrel (>= 1.2.0.pre2)
+  mysql2
+  paperclip
+  peek
+  peek-mysql2
+  peek-performance_bar
+  peek-rblineprof
+  pg
+  rack-mini-profiler
+  rails (= 4.2.1)
+  redcarpet
+  ruby-prof
+  sass-rails (~> 4.0.1)
+  simplecov
+  spring
+  sqlite3
+  stackprof (~> 0.2.7)
+  turn (~> 0.8.3)
+  tzinfo-data
+  uglifier
+  will_paginate
