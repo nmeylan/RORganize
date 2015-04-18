@@ -498,6 +498,7 @@ function radio_button_behaviour(selector) {
     var id = "#td-" + jQuery(selector).attr('class');
     if (jQuery.inArray(jQuery(selector).val(), ary) === -1) {
         jQuery(id).show();
+        jQuery(id).find(".chzn-select").chosen();
     } else {
         jQuery(id).hide();
         jQuery(id + " input").val();

@@ -19,7 +19,7 @@ function add_filters(json_content) {
                 //binding radio button action
                 binding_radio_button("#filter-content " + selector + " input[type=radio]");
                 radio_button_behaviour("#filter-content " + selector + " input[type=radio]");
-                if (tmp === 'Status'){
+                if (tmp === 'Status') {
                     jQuery("#filter-content " + selector + " input[type=radio]#status-open").attr('checked', 'checked');
                 }
 
@@ -27,7 +27,6 @@ function add_filters(json_content) {
                 jQuery(selector).remove();
             }
         });
-        $(".chzn-select").chosen();
         bind_date_field();
         $(".chzn-select-deselect").chosen({allow_single_deselect: true});
     });
@@ -48,11 +47,10 @@ function load_filter(json_content, present_filters) {
             jQuery("#filters-list").find("option[value='" + key + "']").attr("selected", "selected");
             jQuery("#filter-content").append(domobject[0][tmp]);
             jQuery(radio).attr('checked', 'checked');
-            jQuery();
             //binding radio button action
             binding_radio_button("#filter-content " + selector + " input[type=radio]");
             radio_button_behaviour("#filter-content " + selector + " input[type=radio]");
-            if (value.operator !== 'open'){
+            if (value.operator !== 'open') {
                 jQuery("#td-" + key).show();
             }
             jQuery("#td-" + key).find("input").val(value.value);
@@ -62,7 +60,10 @@ function load_filter(json_content, present_filters) {
                 });
             }
         });
-        jQuery(".content").hide();
+        $(document).ready(function () {
+                jQuery(".content").hide();
+            }
+        );
     } else {
         jQuery("#filters-list").chosen();
         jQuery("#filters_list_chzn").hide();
