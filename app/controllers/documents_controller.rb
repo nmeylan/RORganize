@@ -55,7 +55,7 @@ class DocumentsController < ApplicationController
 
   #GET /project/:project_identifier/documents/toolbox
   def toolbox
-    collection = Document.where(sequence_id: params[:ids]).eager_load(:version, :category)
+    collection = @project.documents.where(sequence_id: params[:ids]).eager_load(:version, :category)
     toolbox_callback(collection, Document, @project)
   end
 

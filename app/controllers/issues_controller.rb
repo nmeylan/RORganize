@@ -78,9 +78,9 @@ class IssuesController < ApplicationController
   #GET /project/:project_identifier/issues/toolbox
   def toolbox
     deletable_issues_ids = deletable_issues_ids(@project) if params[:ids]
-    collection_deletion = Issue.where(sequence_id: deletable_issues_ids).eager_load(:version, :assigned_to, :category, status: [:enumeration])
+    collection_deletion = @project.issues.where(sequence_id: deletable_issues_ids).eager_load(:version, :assigned_to, :category, status: [:enumeration])
     params[:ids] = editable_issues_ids(@project) if params[:ids]
-    collection = Issue.where(sequence_id: params[:ids]).eager_load(:version, :assigned_to, :category, status: [:enumeration])
+    collection = @project.issues.where(sequence_id: params[:ids]).eager_load(:version, :assigned_to, :category, status: [:enumeration])
 
     toolbox_callback(collection, Issue, @project, collection_deletion)
   end

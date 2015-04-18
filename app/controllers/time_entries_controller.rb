@@ -25,7 +25,7 @@ class TimeEntriesController < ApplicationController
   end
 
   def create
-    issue = Issue.find_by!(sequence_id: params[:issue_id])
+    issue = @project.issues.find_by!(sequence_id: params[:issue_id])
     @time_entry = issue.time_entries.build(time_entry_params)
     @time_entry.project = issue.project
     @time_entry.user = User.current
