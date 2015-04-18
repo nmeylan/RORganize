@@ -20,7 +20,7 @@ install:
 script:
   - sqlite3 --version
   - export RAILS_ENV=test
-  - bundle install
+  - bundle update
   - bundle exec rake db:create db:migrate
   - bundle exec rake db:test:prepare
   - time bundle exec rake test:all COVERAGE=true

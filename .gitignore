@@ -29,7 +29,6 @@ config/database.yml
 config/initializers/secret_token.rb
 *.orig
 /vendor/engines/*
-Gemfile.lock
 
 /.idea/*
 /app/assets/stylesheets/rorganize.css
