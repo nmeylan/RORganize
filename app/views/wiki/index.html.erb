@@ -8,6 +8,6 @@
 <%= contextual t(:label_wiki) do %>
     <%= @wiki_decorator.delete_link %>
 <% end %>
-<%= render partial: 'wiki/sidebar', locals: {project: @project} %>
+<%= render partial: 'wiki/sidebar', locals: {project: @project, wiki: @wiki_decorator} %>
 <%= @wiki_decorator.new_link %>
 <%= @wiki_decorator.home_page %>

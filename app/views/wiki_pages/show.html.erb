@@ -11,7 +11,7 @@ File: show
     <%= @wiki_page_decorator.edit_link %>
     <%= @wiki_page_decorator.delete_link %>
 <% end %>
-<%= render partial: 'wiki/sidebar', locals: {project: @project} %>
+<%= render partial: 'wiki/sidebar', locals: {project: @project, wiki: @wiki_decorator} %>
 
 <%= @wiki_page_decorator.display_page %>
 

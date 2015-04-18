@@ -10,5 +10,10 @@
       <li><%= link_to t(:home), wiki_index_path(project.slug) %></li>
       <li><%= link_to t(:link_pages), pages_wiki_index_path(project.slug) %></li>
     </ul>
+    <% if wiki && wiki.pages.any? %>
+        <div class="box box-small">
+          <%= wiki.display_pages %>
+        </div>
+    <% end %>
 <% end %>
 

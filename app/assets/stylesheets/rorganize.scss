@@ -15,7 +15,6 @@
 @import 'partials/combobox';
 //Fancy editor toolbar
 @import 'partials/toolbar';
-
 // Overlay.
 @import 'partials/overlay';
 // Growl osx like.
@@ -115,7 +114,7 @@
   overflow-wrap: break-word;
 }
 
-#content h1, #contextual  h1 {
+#content h1, #contextual h1 {
   font-size: 20px;
   padding: 2px 10px 1px 0px;
   margin: 0 0 10px 0;
@@ -129,13 +128,13 @@
   border-bottom: 1px solid $default-border-color;
 }
 
-#content h2, #contextual  h2 {
+#content h2, #contextual h2 {
   font-size: 16px;
   padding: 2px 10px 1px 0px;
   margin: 0 0 10px 5px;
 }
 
-#content h3, #contextual  h3 {
+#content h3, #contextual h3 {
   font-size: 14px;
   padding: 2px 10px 1px 0px;
   margin: 0 0 10px 0;
@@ -182,13 +181,16 @@
 .clear-both {
   clear: both;
 }
-.ui-sortable li{
-  cursor : move;
+
+.ui-sortable li {
+  cursor: move;
 }
-.ui-state-highlight{
+
+.ui-state-highlight {
   border: dashed 2px $default-border-color;
   list-style-type: none;
 }
+
 #content .no-data {
   position: relative;
   padding: 30px;
@@ -198,25 +200,27 @@
   //border-radius: 3px;
   box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.05);
   margin-top: 20px;
-  h3{
+  h3 {
     margin: 0.75em 0;
     font-size: 18px;
     font-weight: bold;
     display: inline-block;
   }
-  .octicon{
+  .octicon {
     font-size: 40px;
     margin-right: 10px;
   }
 }
-#content .no-data.large{
-  .octicon{
+
+#content .no-data.large {
+  .octicon {
     font-size: 60px;
   }
-  h3{
+  h3 {
     display: block;
   }
 }
+
 .help {
   border: 1px solid #97c1da;
   border-radius: 4px;
@@ -247,7 +251,8 @@
 img.user-profile {
   vertical-align: middle;
 }
-.user-avatar-link{
+
+.user-avatar-link {
   height: 24px;
   margin-right: 5px;
 }
@@ -262,9 +267,10 @@ img.small-avatar {
   margin-right: 3px;
 }
 
-#user-profile-change-avatar img{
+#user-profile-change-avatar img {
   vertical-align: bottom;
 }
+
 .members-block {
   margin-bottom: 10px;
   margin-top: 10px;
@@ -288,11 +294,18 @@ img.small-avatar {
   }
 }
 
-.width-100{
+.light-gray {
+  color: $default-smooth-color;
+  .octicon {
+    color: $default-smooth-color;
+  }
+}
+
+.width-100 {
   width: 100px;
 }
 
-.icon-disabled-up-arrow .octicon, .icon-disabled-down-arrow .octicon{
+.icon-disabled-up-arrow .octicon, .icon-disabled-down-arrow .octicon {
   color: #e4e4e4 !important;
 }
 
@@ -318,7 +331,7 @@ img.small-avatar {
   background: #a00;
   border-radius: 4px;
   -webkit-font-smoothing: antialiased;
-//  border: solid 1px #cd504a;
+  //  border: solid 1px #cd504a;
   margin-bottom: 2px;
   color: white;
   .octicon {
@@ -435,6 +448,11 @@ img.small-avatar {
   border: 1px solid #e4e4e4;
 }
 
+.box-small {
+  padding: 0;
+  line-height: 1em;
+}
+
 .right {
   float: right;
   margin-right: 5px;
@@ -449,11 +467,11 @@ img.small-avatar {
   margin: -6px -6px 10px;
   border-bottom: 1px solid #DADEE5;
   position: relative;
-//  overflow-x: auto;
+  //  overflow-x: auto;
   .actions {
     margin-top: 4px;
   }
-  .counter{
+  .counter {
     background-color: white;
   }
 }
@@ -483,9 +501,9 @@ img.small-avatar {
   outline: none;
 }
 
-.attachment-row{
+.attachment-row {
   line-height: 25px;
-  .attachment-delete-link{
+  .attachment-delete-link {
     vertical-align: bottom;
   }
 }
@@ -515,8 +533,8 @@ img.small-avatar {
   user-select: none;
 }
 
-#content .creation-info{
-  p{
+#content .creation-info {
+  p {
     margin-left: 5px;
   }
 }
@@ -639,7 +657,8 @@ img.small-avatar {
   }
 
 }
-.mini-progress-bar{
+
+.mini-progress-bar {
   height: 8px;
 }
 
@@ -653,7 +672,7 @@ ul.project-list {
       margin-top: -30px;
       float: right;
     }
-    .project-stat{
+    .project-stat {
       font-size: 14px;
       color: $default-smooth-color;
     }
@@ -663,14 +682,16 @@ ul.project-list {
 #project-description {
   min-height: 300px;
 }
+
 #project-running-versions .version-overview {
   padding-bottom: 15px;
   margin-top: 10px;
-  .percent{
+  .percent {
     top: 0px;
   }
 }
-#project-running-versions .version-overview:not(:last-child){
+
+#project-running-versions .version-overview:not(:last-child) {
   border-bottom: solid 1px $default-border-color;
 }
 
@@ -681,7 +702,7 @@ ul.project-list {
   .version-dates-header {
     float: right;
     color: $default-smooth-color;
-    .version-dates-separator{
+    .version-dates-separator {
       font-weight: bold;
       margin-right: 5px;
       margin-left: 5px;
@@ -824,7 +845,8 @@ ul.project-list {
   float: right;
   height: 15px;
 }
-#issue-filter{
+
+#issue-filter {
   min-height: 26px;
 }
 
@@ -901,6 +923,10 @@ div.issues-overview-group:nth-child(even) {
 #wiki-pages.organize ul.trash {
   margin: 0px;
   padding: 0px;
+}
+
+.wiki-page-creation-info {
+  border-bottom: solid 1px $default-border-color;
 }
 
 /*
@@ -1008,7 +1034,7 @@ table.permissions-list {
 /*
   Statuses
 */
-.issue-status, .info-square{
+.issue-status, .info-square {
   display: inline-block;
   font-weight: bold;
   line-height: 1;
@@ -1017,11 +1043,12 @@ table.permissions-list {
   padding: 6px 10px;
   font-size: 12px;
   box-shadow: none;
-  .octicon{
+  .octicon {
     color: inherit !important;
   }
 }
-.issue-status.issue-status-small{
+
+.issue-status.issue-status-small {
   padding: 3px 5px;
   font-size: 11px;
 }
@@ -1029,24 +1056,26 @@ table.permissions-list {
 /*
   TRACKERS
 */
-.tracker.list{
-  .delete-action{
+.tracker.list {
+  .delete-action {
     width: 5%;
   }
 }
+
 /*
   CATEGORY
 */
-.info-square{
+.info-square {
   color: #333333;
   background-color: #ededed;
-  .octicon{
+  .octicon {
     color: #333333;
     margin-right: 4px;
     vertical-align: middle;
   }
 }
-.info-square.info-square-small{
+
+.info-square.info-square-small {
   padding: 3px 5px;
   font-size: 11px;
 }
@@ -1105,10 +1134,11 @@ a.indicator {
 .notification-recipient-type {
   margin-left: 5px;
 }
-#notifications-content{
+
+#notifications-content {
   float: left;
   width: 80%;
-  .no-data{
+  .no-data {
     margin-left: 10px;
   }
 }

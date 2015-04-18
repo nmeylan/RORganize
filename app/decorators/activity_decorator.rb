@@ -7,7 +7,7 @@ module ActivityDecorator
 
   # Render document creation info.
   def creation_info
-    h.content_tag :div, class: 'creation-info' do
+    h.content_tag :div, class: 'creation-info wiki-page-creation-info light-gray' do
       h.content_tag :p do
         h.content_tag :em do
           creation_info_content
@@ -18,7 +18,7 @@ module ActivityDecorator
 
   def creation_info_content
     h.concat creation_info_date
-    h.concat model.author ? model.author.decorate.user_link(true) : h.t(:label_unknown)
+    h.concat model.author ? model.author.decorate.user_link(false) : h.t(:label_unknown)
     h.concat '.'
     h.concat update_info_date unless model.created_at.eql?(model.updated_at)
   end

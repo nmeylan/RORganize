@@ -8,6 +8,7 @@ class WikiPagesController < ApplicationController
   include GenericCallbacks
 
   before_action :find_page, only: [:show, :edit, :update, :destroy]
+  before_action :find_wiki
   before_action :check_permission, except: [:new_home_page, :new_sub_page]
   before_action :check_new_permission, only: [:new_home_page, :new_sub_page]
   before_action :check_not_owner_permission, only: [:edit, :update, :destroy]
@@ -99,5 +100,10 @@ class WikiPagesController < ApplicationController
 
   def wiki_page_params
     params.require(:wiki_page).permit(WikiPage.permit_attributes)
+  end
+
+  def find_wiki
+    wiki = Wiki.eager_load([[pages: [:author, :sub_pages, :parent]], [home_page: :author]]).find_by_project_id(@project.id)
+    @wiki_decorator = wiki ? wiki.decorate(context: {project: @project}) : Wiki.new.decorate(context: {project: @project})
   end
 end
