@@ -32,26 +32,28 @@ class NotificationTest < ActiveSupport::TestCase
                                        trigger_id: journal.id,
                                        recipient_type: 'participants')
 
-    assert 1, Notification.where(user_id: @user.id,
+    assert_equal 1, Notification.unscoped.where(user_id: @user.id,
                                  notifiable_id: issue.id,
                                  notifiable_type: 'Issue').count
+    assert notification.reload
 
-
+    notification.soft_delete
     notification = Notification.create(user_id: @user.id, notifiable_id: issue.id,
                                        notifiable_type: 'Issue', project_id: 1, from_id: @user1.id,
                                        trigger_type: 'Journal',
                                        trigger_id: journal.id,
                                        recipient_type: 'participants')
-    assert 1, Notification.where(user_id: @user.id,
+    assert_equal 1, Notification.unscoped.where(user_id: @user.id,
                                  notifiable_id: issue.id,
                                  notifiable_type: 'Issue').count
+    assert notification.reload
   end
 
   test 'it count notification per project' do
     notifications = create_notifications
     expectation = {
-        @project.slug => {count: 1, id: @project.id},
-        @project1.slug => {count: 3, id: @project1.id}
+        @project1.slug => {count: 3, id: @project1.id},
+        @project.slug => {count: 1, id: @project.id}
     }
 
     assert_equal expectation, Notification.count_notifications_by_projects(notifications)
@@ -79,7 +81,7 @@ class NotificationTest < ActiveSupport::TestCase
   test 'it should load deleted notifications' do
     notifications = create_notifications
     notifications.each { |notif| notif.soft_delete }
-    assert_empty(Notification.all)
+    assert_empty(Notification.where(user_id: @user.id))
     assert_match_array(notifications, Notification.deleted.to_a)
   end
 
@@ -101,6 +103,12 @@ class NotificationTest < ActiveSupport::TestCase
 
     issue = Issue.create(tracker_id: 1, subject: 'Bug1', status_id: 1, project_id: @project.id)
     journal = Journal.find_by_journalizable_id_and_journalizable_type_and_action_type(issue.id, 'Issue', 'created')
+
+    Notification.create(user_id: @user1.id, notifiable_id: issue.id,
+                        notifiable_type: 'Issue', project_id: issue.project_id, from_id: @user1.id,
+                        trigger_type: 'Journal',
+                        trigger_id: journal.id,
+                        recipient_type: 'watchers')
     notifications << Notification.create(user_id: @user.id, notifiable_id: issue.id,
                                          notifiable_type: 'Issue', project_id: issue.project_id, from_id: @user1.id,
                                          trigger_type: 'Journal',

@@ -16,9 +16,7 @@ class Notification < ActiveRecord::Base
 
   # Delete all notification from the same notifiable and for the same user.
   def make_uniq
-    Notification.where.not(id: self.id).delete_all(user_id: self.user_id,
-                                                   notifiable_id: self.notifiable_id,
-                                                   notifiable_type: self.notifiable_type)
+    Notification.unscoped.where.not(id: self.id).where(user_id: self.user_id, notifiable_id: self.notifiable_id, notifiable_type: self.notifiable_type).delete_all
   end
 
   # This method loads Notifications, prepare filters (per project and per recipient type) for a given user.
@@ -34,11 +32,12 @@ class Notification < ActiveRecord::Base
   # 'Third' index : 'Hash' with following structure
   # { project_slug => { count: number_notification, id: project_id } }
   def self.filter_notifications(condition, project_condition, user)
-    notifications = Notification.includes(:project, :notifiable, :from)
-                        .where(user_id: user.id)
-                        .where(condition)
-                        .order('notifications.created_at DESC')
-    notifications = notifications.unscoped.order('notifications.deleted_at ASC, notifications.created_at DESC') if condition.eql?("1 = 1")
+    if condition.eql?("1 = 1")
+      notifications = Notification.unscoped.order('notifications.deleted_at ASC') if condition.eql?("1 = 1")
+    else
+      notifications = Notification.all
+    end
+    notifications = notifications.includes(:project, :notifiable, :from).where(user_id: user.id).where(condition).order('notifications.created_at DESC')
     count_participating, count_watching = count_notification_by_recipient_type(user)
     projects = count_notifications_by_projects(notifications)
     filters = {all: count_participating + count_watching, participants: count_participating, watchers: count_watching}

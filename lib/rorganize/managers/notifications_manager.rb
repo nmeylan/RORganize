@@ -71,7 +71,7 @@ module Rorganize
               end
             end
             if insert.any?
-              Notification.delete_all(user_id: user_ids, notifiable_id: notification.model.id, notifiable_type: notification.model.class)
+              Notification.unscoped.delete_all(user_id: user_ids, notifiable_id: notification.model.id, notifiable_type: notification.model.class)
               sql = "INSERT INTO notifications (notifiable_id, notifiable_type, trigger_type, trigger_id, user_id, from_id, recipient_type, project_id, created_at, updated_at) VALUES #{insert.join(', ')}"
               Notification.connection.execute(sql)
             end
@@ -96,7 +96,7 @@ module Rorganize
             end
           end
           if insert.any?
-            Notification.delete_all(user_id: user_ids, notifiable_id: ids, notifiable_type: notification_bulk_edit.type)
+            Notification.unscoped.delete_all(user_id: user_ids, notifiable_id: ids, notifiable_type: notification_bulk_edit.type)
             sql = "INSERT INTO notifications (notifiable_id, notifiable_type, trigger_type, trigger_id, user_id, from_id, recipient_type, project_id, created_at, updated_at) VALUES #{insert.join(', ')}"
             Notification.connection.execute(sql)
           end
