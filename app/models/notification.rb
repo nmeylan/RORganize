@@ -33,7 +33,7 @@ class Notification < ActiveRecord::Base
   # { project_slug => { count: number_notification, id: project_id } }
   def self.filter_notifications(condition, project_condition, user)
     if condition.eql?("1 = 1")
-      notifications = Notification.unscoped.order('notifications.deleted_at ASC') if condition.eql?("1 = 1")
+      notifications = Notification.unscoped if condition.eql?("1 = 1")
     else
       notifications = Notification.all
     end
