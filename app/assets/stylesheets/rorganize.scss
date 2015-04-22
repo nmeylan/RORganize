@@ -244,6 +244,12 @@
   }
 }
 
+a.dark-link{
+  color: $default-color;
+  &:hover{
+    text-decoration: underline;
+  }
+}
 .avatar a {
   vertical-align: top;
 }

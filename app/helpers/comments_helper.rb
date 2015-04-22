@@ -51,7 +51,7 @@ module CommentsHelper
   def comment_block_header_author_info(avatar, comment)
     concat_span_tag comment.display_author(avatar) + ' ', class: 'author'
     concat_span_tag "#{t(:text_added_comment)} ", class: 'text'
-    concat "#{distance_of_time_in_words(comment.created_at, Time.now)} #{t(:label_ago)}. "
+    concat link_to "#{distance_of_time_in_words(comment.created_at, Time.now)} #{t(:label_ago)}. ", "#comment-#{comment.id}", class: "dark-link"
   end
 
   def comment_block_header_actions(comment)
