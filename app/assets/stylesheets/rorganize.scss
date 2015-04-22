@@ -245,6 +245,7 @@
 }
 
 a.dark-link{
+  font-weight: 400;
   color: $default-color;
   &:hover{
     text-decoration: underline;
