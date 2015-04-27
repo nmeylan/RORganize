@@ -11,7 +11,7 @@ module Notifiable
 
   class << self
     def bulk_delete_dependent(notifiable_ids, class_name)
-      Notification.delete_all(notifiable_id: notifiable_ids, notifiable_type: class_name)
+      Notification.unscoped.delete_all(notifiable_id: notifiable_ids, notifiable_type: class_name)
     end
   end
 end
