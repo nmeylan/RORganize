@@ -6,7 +6,14 @@
 module Notifiable
   extend ActiveSupport::Concern
   included do |base|
-    has_many :notifications, -> { where(notifiable_type: base) }, as: :notifiable, dependent: :delete_all
+    has_many :notifications, -> { where(notifiable_type: base) }, as: :notifiable
+    after_destroy :delete_all_notifications
+  end
+
+  def delete_all_notifications
+    Notification.unscoped do
+      Notification.delete_all(notifiable_type: self.class, notifiable_id: self.id)
+    end
   end
 
   class << self
