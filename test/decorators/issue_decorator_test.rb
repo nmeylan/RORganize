@@ -161,9 +161,9 @@ class IssueDecoratorTest < Rorganize::Decorator::TestCase
   end
 
   test "it display estimated time when it exists" do
-    assert_equal '-', @issue_decorator.estimated_time
+    assert_equal '-', @issue_decorator.display_estimated_time
     @issue.estimated_time = 12
-    assert_equal 12.0, @issue_decorator.estimated_time
+    assert_equal 12.0, @issue_decorator.display_estimated_time
   end
 
   test "it displays status in a color container" do
