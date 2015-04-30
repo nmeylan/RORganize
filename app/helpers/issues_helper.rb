@@ -29,7 +29,7 @@ module IssuesHelper
   def issue_gantt_list_type_rows(issue)
     list_td issue.display_start_date, class: 'list-center'
     list_td issue.display_due_date, class: 'list-center'
-    list_td issue.estimated_time, class: 'list-center'
+    list_td issue.display_estimated_time, class: 'list-center'
   end
 
   def issue_overview_list_type_rows(issue)

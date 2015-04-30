@@ -68,7 +68,7 @@ class IssueDecorator < ApplicationDecorator
   end
 
   # @return [String] estimated time.
-  def estimated_time
+  def display_estimated_time
     model.estimated_time ? model.estimated_time : '-'
   end
 
