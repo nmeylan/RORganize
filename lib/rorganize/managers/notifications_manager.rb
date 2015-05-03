@@ -90,8 +90,10 @@ module Rorganize
             users.each do |user|
               notification_bulk_edit.objects.each do |model|
                 ids << model[:id]
-                insert << "(#{model[:id]}, '#{notification_bulk_edit.type}','Journal', #{notification_bulk_edit.journals_hash[model[:id]]}, #{user[:id]}, '#{notification_bulk_edit.from_id}', '#{key}', #{notification_bulk_edit.project.id}, '#{created_at}', '#{created_at}')"
-                user_ids << user[:id]
+                if notification_bulk_edit.journals_hash[model[:id]]
+                  insert << "(#{model[:id]}, '#{notification_bulk_edit.type}','Journal', #{notification_bulk_edit.journals_hash[model[:id]]}, #{user[:id]}, '#{notification_bulk_edit.from_id}', '#{key}', #{notification_bulk_edit.project.id}, '#{created_at}', '#{created_at}')"
+                  user_ids << user[:id]
+                end
               end
             end
           end
