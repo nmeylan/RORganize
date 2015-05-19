@@ -135,6 +135,7 @@ module Rorganize
       end
 
       test 'it builds a select field to choose which attributes should be filtered' do
+        @class_name = 'Issue'
         node(filter_attribute_choice_tag(['Author', 'Status', 'Created at']))
 
         assert_select 'div.autocomplete-combobox', 1
@@ -193,12 +194,12 @@ module Rorganize
         filtered_attributes = ['Author', 'Status', 'Created at']
         submission_path = 'path_to_submission_handler'
 
-        node(filter_tag('issues', filtered_attributes, submission_path, true))
+        node(filter_tag('issue', filtered_attributes, submission_path, true))
 
-        assert_select 'fieldset#issues-filter', 1
+        assert_select 'fieldset#issue-filter', 1
         assert_select 'legend' do
           assert_select 'a.toggle', 1
-          assert_select 'a#issues', 1
+          assert_select 'a#issue', 1
         end
 
         assert_select 'div.content', 1

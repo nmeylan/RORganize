@@ -20,18 +20,6 @@ class DocumentTest < ActiveSupport::TestCase
 
   end
 
-  test 'Filtered attributes' do
-    expectation = [%w(Name name), %w(Version version), %w(Category category), ['Created at', 'created_at'], ['Updated at', 'updated_at']]
-    actual = Document.filtered_attributes
-    assert actual & expectation == expectation
-  end
-
-  test 'attributes_formalized_names' do
-    expectation = ['Name', 'Description', 'Version', 'Category', 'Project', 'Created at', 'Updated at', 'Comments count']
-    actual = Document.attributes_formalized_names
-    assert actual & expectation == expectation
-  end
-
   test 'permit attributes should contains' do
     expectation = [:name, :description, :version_id, :category_id,
                    {new_attachment_attributes: Attachment.permit_attributes},
