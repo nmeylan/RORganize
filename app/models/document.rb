@@ -53,9 +53,7 @@ class Document < ActiveRecord::Base
 
   # @return [Array] with all attribute that can be filtered.
   def self.filtered_attributes
-    unused_attributes = %w(Project Description Comments\ count Sequence)
-    attrs = Document.attributes_formalized_names.delete_if { |attribute| unused_attributes.include?(attribute) }
-    attrs.map { |attribute| [attribute, attribute.gsub(/\s/, '_').downcase] }
+    %w(version_id category_id name created_at updated_at)
   end
 
   #@param [Hash] hash : a hash with the following structure

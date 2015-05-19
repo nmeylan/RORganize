@@ -66,4 +66,4 @@ group :development, :production do
 end
 
 #RORganize plugins
-eval_gemfile 'PluginsGemfile'
+eval_gemfile "PluginsGemfile"

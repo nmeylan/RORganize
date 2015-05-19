@@ -60,9 +60,6 @@ module SmartRecords
 
 
   module ClassMethods
-    def attributes_formalized_names
-      self.attribute_names.map { |attribute| attribute.gsub('_id', '').gsub('id', '').tr('_', ' ').capitalize unless attribute.eql?('id') }.compact
-    end
 
     # @return [Hash] hash with the following structure : {foreign_key: association class}
     def foreign_keys

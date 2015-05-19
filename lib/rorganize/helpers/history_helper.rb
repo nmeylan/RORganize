@@ -16,10 +16,10 @@ module Rorganize
 
       def history_blocks_render(history)
         content_tag :div, id: 'history-blocks', &Proc.new {
-          history.content.collect do |activity|
-            select_history_renderer(activity)
-          end.join.html_safe
-        }
+                          history.content.collect do |activity|
+                            select_history_renderer(activity)
+                          end.join.html_safe
+                        }
       end
 
       def select_history_renderer(activity)
@@ -81,7 +81,7 @@ module Rorganize
       # build a render for affected attribute (old_value: nil)
       # @param [JournalDetail] detail to render.
       def render_affected_attribute(detail)
-        concat content_tag :b, "#{detail.property} "
+        concat content_tag :b, "#{property_name(detail)} "
         concat "#{t(:text_set_at)} "
         concat history_detail_value_render(detail, detail.value)
       end
@@ -89,7 +89,7 @@ module Rorganize
       # build a render for changed attribute (old_value = value: not nil)
       # @param [JournalDetail] detail to render.
       def render_changed_attribute(detail)
-        concat content_tag :b, "#{detail.property} #{t(:text_changed)} "
+        concat content_tag :b, "#{property_name(detail)} #{t(:text_changed)} "
         concat "#{t(:text_from)} "
         concat history_detail_value_render(detail, detail.old_value)
         concat " #{t(:text_to)} "
@@ -99,7 +99,7 @@ module Rorganize
       # build a render for delete attribute (old_value: not nil, value: nil)
       # @param [JournalDetail] detail to render.
       def render_deleted_attribute(detail)
-        concat content_tag :b, "#{detail.property} "
+        concat content_tag :b, "#{property_name(detail)} "
         concat history_detail_value_render(detail, detail.old_value)
         concat " #{t(:text_deleted)}"
       end
@@ -138,6 +138,11 @@ module Rorganize
         else
           content_tag :b, "#{truncated_value} "
         end
+      end
+
+
+      def property_name(detail)
+        detail.journal.journalizable_type.constantize.human_attribute_name(detail.property.downcase)
       end
     end
   end

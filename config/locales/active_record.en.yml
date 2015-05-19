@@ -1,0 +1,142 @@
+en:
+  activerecord:
+    models:
+      user: User
+      issue: Issue
+      document: Document
+      category: Category
+      comment: Comment
+      issues_status: Issue status
+      member: Member
+      notification: Notification
+      permission: Permission
+      project: Project
+      query: Query
+      role: Role
+      time_entry: Time entry
+      tracker: Tracker
+      version: Version
+      watcher: Watcher
+      wiki: Wiki
+      wiki_page: Wiki page
+    attributes:
+      category:
+        name: Name
+        project_id: Project
+        created_at: Created at
+        updated_at: Updated at
+      comment:
+        content: Content
+        user: User
+        created_at: Created at
+        updated_at: Updated at
+      document:
+        name: Name
+        description: Description
+        version_id: Version
+        project_id: Project
+        created_at: Created at
+        updated_at: Updated at
+      issue:
+        subject: Subject
+        description: Description
+        version_id: Version
+        project_id: Project
+        status_id: Status
+        due_date: Due date
+        done: Done
+        author_id: Author
+        assigned_to_id: Assigned to
+        tracker_id: Tracker
+        category_id: Category
+        start_date: Start date
+        estimated_time: Estimated time
+        predecessor_id: Predecessor
+        user_story_id: User story
+        created_at: Created at
+        updated_at: Updated at
+      issues_status:
+        is_closed: Is closed
+        default_done_ratio: Default done ratio
+        color: Color
+        created_at: Created at
+        updated_at: Updated at
+      member:
+        project_id: Project
+        role_id: Role
+        user_id: User
+        created_at: Created at
+        updated_at: Updated at
+      permission:
+        name: Name
+        action: Action
+        controller: Controller
+        is_locked: Is locked
+        created_at: Created at
+        updated_at: Updated at
+      projects:
+        name: Name
+        description: Description
+        created_by: Created by
+        is_archived: Is archived
+        is_public: Is public
+        created_at: Created at
+        updated_at: Updated at
+      query:
+        name: Name
+        description: Description
+        author_id: Author
+        project_id: Project
+        is_for_all: Is for all
+        is_public: Is public
+        created_at: Created at
+        updated_at: Updated at
+      role:
+        name: Name
+        position: Position
+        is_locked: Is locked
+        created_at: Created at
+        updated_at: Updated at
+      time_entry:
+        user_id: User
+        issue_id: Issue
+        project_id: Project
+        spent_on: Spent on
+        spent_time: Spent time
+        comment: Comment
+        created_at: Created at
+        updated_at: Updated at
+      tracker:
+        name: Name
+        created_at: Created at
+        updated_at: Updated at
+      user:
+        name: Name
+        login: Login
+        admin: Admin
+        email: Email
+        sign_in_count: Sign in count
+        current_sign_in_at: Current sign in at
+        last_sign_in_at: Last sign in at
+        current_sign_in_ip: Current sign in ip
+        last_sign_in_ip: Last sign in ip
+        created_at: Created at
+        updated_at: Updated at
+      version:
+        name: Name
+        description: Description
+        target_date: Target date
+        start_date: Start date
+        project_id: Project
+        is_done: Is done
+        created_at: Created at
+        updated_at: Updated at
+      wiki_page:
+        parent_id: Parent
+        author_id: Author
+        wiki_id: Wiki
+        position: Position
+        title: Title
+        content: Content
+        created_at: Created at
+        updated_at: Updated at

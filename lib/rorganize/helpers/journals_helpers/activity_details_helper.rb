@@ -51,7 +51,7 @@ module Rorganize
 
         # Build a render for journal detail.
         # @param [JournalDetail] detail.
-        def activity_history_detail_render(detail, journal_decorator)
+        def activity_history_detail_render(detail)
           if render_deleted_attribute?(detail)
             tree_render_deleted_attribute(detail)
           elsif render_changed_attribute?(detail)
@@ -64,7 +64,7 @@ module Rorganize
         def tree_render_deleted_attribute(detail)
           content_tag :li do
             concat "#{t(:text_deleted)} "
-            concat content_tag :b, "#{detail.property} "
+            concat content_tag :b, "#{property_name(detail)} "
             concat history_detail_value_render(detail, detail.old_value)
           end
         end
@@ -72,7 +72,7 @@ module Rorganize
         def tree_render_changed_attribute(detail)
           content_tag :li do
             concat t(:text_changed)
-            concat content_tag :b, " #{detail.property} "
+            concat content_tag :b, " #{property_name(detail)} "
             concat "#{t(:text_from)} "
             concat history_detail_value_render(detail, detail.old_value)
             concat " #{t(:text_to)} "
@@ -82,7 +82,7 @@ module Rorganize
 
         def tree_render_affected_attribute(detail)
           content_tag :li do
-            concat content_tag :b, "#{detail.property} "
+            concat content_tag :b, "#{property_name(detail)} "
             concat "#{t(:text_set_at)} "
             concat history_detail_value_render(detail, detail.value)
           end

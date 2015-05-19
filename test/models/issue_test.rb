@@ -137,24 +137,6 @@ class IssueTest < ActiveSupport::TestCase
     assert_equal 50, issue3.done
   end
 
-  test 'Filtered attributes' do
-    expectation = [['Subject', 'subject'], ['Created at', 'created_at'], ['Updated at', 'updated_at'],
-                   ['Due date', 'due_date'], ['Done', 'done'], ['Author', 'author'], ['Assigned to', 'assigned_to'],
-                   ['Tracker', 'tracker'], ['Status', 'status'], ['Version', 'version'], ['Category', 'category'],
-                   ['Start date', 'start_date']]
-    actual = Issue.filtered_attributes
-    assert actual & expectation == expectation
-  end
-
-  test 'Attributes_formalized_names' do
-    expectation = ['Subject', 'Description', 'Created at', 'Updated at', 'Due date',
-                   'Done', 'Author', 'Assigned to', 'Project', 'Tracker', 'Status',
-                   'Version', 'Category', 'Estimated time', 'Start date', 'Predecessor',
-                   'Attachments count', 'Comments count', 'Link type']
-    actual = Issue.attributes_formalized_names
-    assert actual & expectation == expectation
-  end
-
   test 'it may contains a task list into the description' do
     @issue.description = '- [ ] A
 - [ ] B

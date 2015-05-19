@@ -35,3 +35,5 @@ config/initializers/secret_token.rb
 /app/assets/stylesheets/dhtmlxgantt.css
 
 /coverage
+PluginsGemfile
+db/schema.rb

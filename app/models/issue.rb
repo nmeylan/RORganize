@@ -102,10 +102,8 @@ class Issue < ActiveRecord::Base
 
   # @return [Array] array with all attribute that can be filtered.
   def self.filtered_attributes
-    unused_attributes = ['Project', 'Description', 'Estimated time', 'Predecessor',
-                         'Attachments count', 'Comments count', 'Link type', 'Sequence']
-    attrs = Issue.attributes_formalized_names.delete_if { |attribute| unused_attributes.include?(attribute) }
-    attrs.map { |attribute| [attribute, attribute.gsub(/\s/, '_').downcase] }
+    ['subject', 'due_date', 'done', 'author_id', 'assigned_to', 'tracker_id', 'status_id',
+     'version_id', 'category_id', 'created_at', 'updated_at']
   end
 
   # @param [Array] doc_ids : array containing all ids of issues that will be bulk edited.

@@ -6,14 +6,15 @@ module Rorganize
   module Helpers
     module FilterHelper
       # Build a filter form for given criteria.
-      # @param [String] label : what is filtered (e.g : issues, documents).
+      # @param [String] class_name : what is filtered (e.g : Issue, Document).
       # @param [Array] filtered_attributes : an array of filtered attribute @see Document.filtered_attributes.
       # @param [String] submission_path : the path to controller when the filter form is submit.
       # @param [Boolean] can_save : false when save button is hidden, true otherwise.
       # @param [hash] save_button_options
-      def filter_tag(label, filtered_attributes, submission_path, can_save = false, save_button_options = {})
-        content_tag :fieldset, id: "#{label}-filter" do
-          concat content_tag :legend, link_to(glyph(t(:link_filter), 'chevron-right'), '#', {class: 'icon-collapsed toggle', id: "#{label}"})
+      def filter_tag(class_name, filtered_attributes, submission_path, can_save = false, save_button_options = {})
+        @class_name = class_name
+        content_tag :fieldset, id: "#{class_name}-filter" do
+          concat content_tag :legend, link_to(glyph(t(:link_filter), 'chevron-right'), '#', {class: 'icon-collapsed toggle', id: "#{class_name}"})
           concat filter_tag_content(can_save, filtered_attributes, save_button_options, submission_path)
         end
       end
@@ -35,7 +36,7 @@ module Rorganize
           concat content_tag :table, nil, id: 'filter-content'
           concat submit_tag t(:button_apply), {style: 'margin-left:0px'}
           concat content_tag :span, save_filter_button_tag(can_save, save_button_options),
-                                  {id: 'save-query-button'}
+                             {id: 'save-query-button'}
         end
       end
 
@@ -65,7 +66,9 @@ module Rorganize
       # E.g : ['Author', 'Status', 'Created at']
       def filter_attribute_choice_tag(filtered_attributes)
         content_tag :div, class: 'autocomplete-combobox nosearch no-padding-left no-height' do
-          select_tag 'filters_list', options_for_select(filtered_attributes.sort{|x, y| x <=> y}), class: 'chzn-select cbb-verylarge', id: 'filters-list', multiple: true
+          klazz = @class_name.capitalize.constantize
+          select_tag 'filters_list', options_for_select(filtered_attributes.sort { |x, y| x <=> y }.map { |attr| [klazz.human_attribute_name(attr), attr] }),
+                     class: 'chzn-select cbb-verylarge', id: 'filters-list', multiple: true
         end
       end
 

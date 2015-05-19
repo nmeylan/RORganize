@@ -49,13 +49,13 @@ class JournalDecorator < ApplicationDecorator
     if model.journalizable_type.eql?('Issue')
       h.t(:text_created_this_issue)
     else
-      h.t(:text_created_this) + ' ' + model.journalizable_type.downcase
+      h.t(:text_created_this) + ' ' + model.journalizable_type.constantize.model_name.human.downcase
     end
   end
 
   def render_update_details(no_icon)
     h.concat_span_tag nil, class: 'octicon octicon-pencil activity-icon' unless no_icon
-    h.content_tag(:ul, (model.details.collect { |detail| h.activity_history_detail_render(detail, self) }).join.html_safe)
+    h.content_tag(:ul, (model.details.collect { |detail| h.activity_history_detail_render(detail) }).join.html_safe)
   end
 
   def render_create_detail?
