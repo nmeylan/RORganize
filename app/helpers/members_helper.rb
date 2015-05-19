@@ -29,8 +29,8 @@ module MembersHelper
 
   def list_header
     content_tag :tr, class: 'header' do
-      list_th sortable('users.name', 'Name'), {class: 'list-left'}
-      list_th sortable('roles.name', 'Role')
+      list_th sortable('users.name', Member.human_attribute_name(:name)), {class: 'list-left'}
+      list_th sortable('roles.name', Member.human_attribute_name(:role))
       list_th nil
     end
   end

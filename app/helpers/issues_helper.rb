@@ -46,11 +46,11 @@ module IssuesHelper
       content_tag :tr, class: 'header' do
         list_th link_to(glyph('', 'check'), '#', {class: 'icon-checked', id: 'check-all', 'cb_checked' => 'b'})
         list_th sortable('issues.sequence_id', '#')
-        list_th sortable('trackers.name', 'Tracker')
-        list_th sortable('issues.subject', 'Subject'), {class: 'list-left no-padding-left'}
-        list_th sortable('users.name', 'Assigned to')
-        list_th sortable('issues_statuses.enumeration_id', 'Status')
-        list_th sortable('versions.name', 'Target phase')
+        list_th sortable('trackers.name', Issue.human_attribute_name(:tracker_id))
+        list_th sortable('issues.subject', Issue.human_attribute_name(:subject)), {class: 'list-left no-padding-left'}
+        list_th sortable('users.name', Issue.human_attribute_name(:assigned_to_id))
+        list_th sortable('issues_statuses.enumeration_id', Issue.human_attribute_name(:status_id))
+        list_th sortable('versions.name', Issue.human_attribute_name(:version_id))
         issue_gantt_list_type_headers
         issue_overview_list_type_headers
         issue_list_indicators_header
@@ -60,16 +60,16 @@ module IssuesHelper
 
   def issue_gantt_list_type_headers
     if is_list_displayed_with_type?(:gantt)
-      list_th sortable('issues.start_date', 'Start date')
-      list_th sortable('issues.due_date', 'Due date')
-      list_th sortable('issues.estimated_time', 'Estimated time')
+      list_th sortable('issues.start_date', Issue.human_attribute_name(:start_date))
+      list_th sortable('issues.due_date', Issue.human_attribute_name(:due_date))
+      list_th sortable('issues.estimated_time', Issue.human_attribute_name(:estimated_time))
     end
   end
 
   def issue_overview_list_type_headers
     if is_list_displayed_with_type?(:overview)
-      list_th sortable('categories.name', 'Category')
-      list_th sortable('issues.updated_at', 'Last update')
+      list_th sortable('categories.name', Issue.human_attribute_name(:category))
+      list_th sortable('issues.updated_at', Issue.human_attribute_name(:updated_at))
     end
   end
 

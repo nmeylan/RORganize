@@ -65,6 +65,7 @@ en:
         project_id: Project
         role_id: Role
         user_id: User
+        name: Name
         created_at: Created at
         updated_at: Updated at
       permission:

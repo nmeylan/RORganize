@@ -8,19 +8,19 @@ module UsersHelper
   # @param [Array] collection of users.
   def list(collection)
     content_tag :table, {class: 'user list'}, &Proc.new {
-      concat list_header
-      concat list_body(collection)
-    }
+                        concat list_header
+                        concat list_body(collection)
+                      }
   end
 
   def list_header
     content_tag :tr, class: 'header' do
       list_th sortable('users.id', '#')
-      list_th sortable('users.login', 'Login')
-      list_th sortable('users.name', 'Name')
-      list_th sortable('users.email', 'Email')
-      list_th sortable('users.admin', 'Administrator')
-      list_th sortable('users.last_sign_in_at', 'Last sign in')
+      list_th sortable('users.login', User.human_attribute_name(:login))
+      list_th sortable('users.name', User.human_attribute_name(:name))
+      list_th sortable('users.email', User.human_attribute_name(:email))
+      list_th sortable('users.admin', User.human_attribute_name(:admin))
+      list_th sortable('users.last_sign_in_at', User.human_attribute_name(:last_sign_in_at))
     end
   end
 

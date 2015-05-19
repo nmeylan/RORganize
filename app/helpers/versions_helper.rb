@@ -34,10 +34,10 @@ module VersionsHelper
   def list_header
     content_tag :thead do
       content_tag :tr, class: 'header' do
-        list_th 'Name', {class: 'list-left'}
-        list_th 'Start date'
-        list_th 'Target date'
-        list_th 'Is done'
+        list_th Version.human_attribute_name(:name), {class: 'list-left'}
+        list_th Version.human_attribute_name(:start_date)
+        list_th Version.human_attribute_name(:target_date)
+        list_th Version.human_attribute_name(:is_done)
         list_th nil
         list_th nil
       end

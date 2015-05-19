@@ -32,9 +32,9 @@ module IssuesStatusesHelper
 
   def list_header
     content_tag :tr, class: 'header' do
-      list_th 'Name', class: 'list-left'
-      list_th 'Default done ratio'
-      list_th 'Is closed?'
+      list_th IssuesStatus.human_attribute_name(:name), class: 'list-left'
+      list_th IssuesStatus.human_attribute_name(:default_done_ratio)
+      list_th IssuesStatus.human_attribute_name(:is_closed)
       list_th nil
       list_th nil
     end

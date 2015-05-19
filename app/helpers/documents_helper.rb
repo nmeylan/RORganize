@@ -17,9 +17,9 @@ module DocumentsHelper
       content_tag :tr, class: 'header' do
         list_th link_to(glyph('', 'check'), '#', {class: 'icon-checked', id: 'check-all', 'cb_checked' => 'b'})
         list_th sortable('documents.sequence_id', '#')
-        list_th sortable('documents.name', 'Name'), {class: 'list-left no-padding-left'}
-        list_th sortable('categories.name', 'Category')
-        list_th sortable('versions.name', 'Target phase')
+        list_th sortable('documents.name', Document.human_attribute_name(:name)), {class: 'list-left no-padding-left'}
+        list_th sortable('categories.name', Document.human_attribute_name(:category_id))
+        list_th sortable('versions.name', Document.human_attribute_name(:version_id))
         list_th nil, {class: 'optional-cell'}
         list_th nil, {class: 'optional-cell'}
       end

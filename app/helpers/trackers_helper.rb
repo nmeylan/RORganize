@@ -28,7 +28,7 @@ module TrackersHelper
 
   def list_header
     content_tag :tr, class: 'header' do
-      list_th 'Name', class: 'list-left'
+      list_th Tracker.human_attribute_name(:name), class: 'list-left'
       list_th nil
       list_th nil
     end
