@@ -2,7 +2,8 @@ require 'issues/issue_filter'
 require 'issues/issue_toolbox'
 module IssuesHelper
   include CommentsHelper
-  include Rorganize::Helpers::IssuesHelper
+  include IssuesHelpers::IssuesOverviewHelper
+  include IssuesHelpers::IssuesFilterHelper
 
   def list(collection)
     generic_list(collection, {class: 'issue list', 'data-link' => toolbox_issues_path(@project.slug)})

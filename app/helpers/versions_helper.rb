@@ -4,7 +4,8 @@
 # File: versions_helper.rb
 
 module VersionsHelper
-  include Rorganize::Helpers::VersionsHelper
+  include VersionsHelpers::VersionDetailsHelper
+  include VersionsHelpers::VersionOverviewHelper
   # Build a list of versions.
   # @param [Array] collection of versions.
   def list(collection)

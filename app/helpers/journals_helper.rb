@@ -4,7 +4,9 @@
 # File: journals_helper.rb
 
 module JournalsHelper
-  include Rorganize::Helpers::JournalsHelper
+  include JournalsHelpers::ActivityHelper
+  include JournalsHelpers::ActivityDetailsHelper
+  include JournalsHelpers::ActivitySidebarHelper
   # Build a render for activities.
   # @param [Activities] activities object.
   # @param [Date] to : date range right border.(from..to)

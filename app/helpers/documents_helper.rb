@@ -6,7 +6,7 @@ require 'documents/document_filter'
 require 'documents/document_toolbox'
 module DocumentsHelper
   include CommentsHelper
-  include Rorganize::Helpers::DocumentsHelper
+  include DocumentsHelpers::DocumentsFilterHelper
 
   def list(collection)
     generic_list(collection, {class: 'document list', 'data-link' => toolbox_documents_path(@project.slug)})
