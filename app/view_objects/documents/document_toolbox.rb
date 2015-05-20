@@ -24,10 +24,10 @@ class DocumentToolbox < Toolbox
   end
 
   def build_menu_version
-    generic_toolbox_menu_builder(h.t(:field_version), :versions, :version_id, @project.active_versions, Proc.new(&:version), true)
+    generic_toolbox_menu_builder(Document.human_attribute_name(:version), :versions, :version_id, @project.active_versions, Proc.new(&:version), true)
   end
 
   def build_menu_category
-    generic_toolbox_menu_builder(h.t(:field_category), :categories, :category_id, @project.categories.sort_by{|category| category.caption.downcase}, Proc.new(&:category), true)
+    generic_toolbox_menu_builder(Document.human_attribute_name(:category), :categories, :category_id, @project.categories.sort_by{|category| category.caption.downcase}, Proc.new(&:category), true)
   end
 end

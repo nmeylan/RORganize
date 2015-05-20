@@ -27,7 +27,7 @@ class IssueToolbox < Toolbox
 
   def build_menu_done
     if @user.allowed_to?('change_progress', 'Issues', @project)
-      @menu[:done].caption = h.t(:field_done)
+      @menu[:done].caption = Issue.human_attribute_name(:done)
       @menu[:done].glyph_name = Rorganize::ACTION_ICON[:done]
       @menu[:done].all = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
       @menu[:done].currents = @collection.collect { |issue| issue.done }.uniq
@@ -37,25 +37,25 @@ class IssueToolbox < Toolbox
 
   def build_menu_category
     if allowed_to_change('category')
-      generic_toolbox_menu_builder(h.t(:field_category), :categories, :category_id, @project.categories.sort_by { |category| category.caption.downcase }, Proc.new(&:category), true)
+      generic_toolbox_menu_builder(Issue.human_attribute_name(:category), :categories, :category_id, @project.categories.sort_by { |category| category.caption.downcase }, Proc.new(&:category), true)
     end
   end
 
   def build_menu_status
     if allowed_to_change('status')
-      generic_toolbox_menu_builder(h.t(:field_status), :status, :status_id, @user.allowed_statuses(@project), Proc.new(&:status))
+      generic_toolbox_menu_builder(Issue.human_attribute_name(:status), :status, :status_id, @user.allowed_statuses(@project), Proc.new(&:status))
     end
   end
 
   def build_menu_version
     if allowed_to_change('version')
-      generic_toolbox_menu_builder(h.t(:field_version), :versions, :version_id, @project.active_versions, Proc.new(&:version), true)
+      generic_toolbox_menu_builder(Issue.human_attribute_name(:version), :versions, :version_id, @project.active_versions, Proc.new(&:version), true)
     end
   end
 
   def build_menu_assigned_to
     if allowed_to_change('assigned')
-      generic_toolbox_menu_builder(h.t(:field_assigned_to), :assigned_to, :assigned_to_id, @project.real_members.collect { |member| member.user }.sort_by(&:caption), Proc.new(&:assigned_to), true)
+      generic_toolbox_menu_builder(Issue.human_attribute_name(:assigned_to), :assigned_to, :assigned_to_id, @project.real_members.collect { |member| member.user }.sort_by(&:caption), Proc.new(&:assigned_to), true)
     end
   end
 
