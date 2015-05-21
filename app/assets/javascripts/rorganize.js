@@ -342,7 +342,6 @@ function checkAll(selector, context) {
     jQuery(selector).click(function (e) {
         e.preventDefault();
         var cases = jQuery(context).find(':checkbox:not(:disabled)');
-        console.log(cases);
 
         var checked = jQuery(this).attr("cb_checked") === 'b';
         cases.attr('checked', checked);
@@ -384,11 +383,14 @@ function listTrClick(rows_selector) {
             } else if (e.shiftKey) {
                 e.preventDefault();
                 var last_selected_row = $('.toolbox-last');
-                if (last_selected_row.length > 0) {
+                if (last_selected_row.length > 0 && last_selected_row[0] != el[0]) {
                     var between_rows = last_selected_row[0].rowIndex > el[0].rowIndex ? last_selected_row.prevUntil(el[0]) : last_selected_row.nextUntil(el[0]);
                     rows.removeClass("toolbox-last");
                     between_rows.find("input[type=checkbox]:not(:disabled)").attr('checked', true);
-                    between_rows.addClass("toolbox-selection").addClass("toolbox-last");
+                    between_rows.addClass("toolbox-selection");
+                    el.find("input[type=checkbox]:not(:disabled)").attr('checked', true);
+                    el.addClass("toolbox-selection");
+                    el.addClass("toolbox-last");
                 }
                 el.find("input[type=checkbox]").attr('checked', true);
                 el.addClass("toolbox-selection").addClass("toolbox-last");
