@@ -102,8 +102,8 @@ class Issue < ActiveRecord::Base
 
   # @return [Array] array with all attribute that can be filtered.
   def self.filtered_attributes
-    ['subject', 'due_date', 'done', 'author_id', 'assigned_to', 'tracker_id', 'status_id',
-     'version_id', 'category_id', 'created_at', 'updated_at']
+    ['subject', 'due_date', 'done', 'author', 'assigned_to', 'tracker', 'status',
+     'version', 'category', 'created_at', 'updated_at']
   end
 
   # @param [Array] doc_ids : array containing all ids of issues that will be bulk edited.

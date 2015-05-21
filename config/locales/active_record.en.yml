@@ -34,6 +34,9 @@ en:
         name: Name
         description: Description
         version_id: Version
+        version: Version
+        category_id: Category
+        category: Category
         project_id: Project
         created_at: Created at
         updated_at: Updated at
@@ -43,12 +46,17 @@ en:
         version_id: Version
         project_id: Project
         status_id: Status
+        status: Status
         due_date: Due date
         done: Done
         author_id: Author
+        author: Author
+        assigned_to: Assigned to
         assigned_to_id: Assigned to
         tracker_id: Tracker
+        tracker: Tracker
         category_id: Category
+        category: Category
         start_date: Start date
         estimated_time: Estimated time
         predecessor_id: Predecessor

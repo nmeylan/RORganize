@@ -53,7 +53,7 @@ class Document < ActiveRecord::Base
 
   # @return [Array] with all attribute that can be filtered.
   def self.filtered_attributes
-    %w(version_id category_id name created_at updated_at)
+    %w(version category name created_at updated_at)
   end
 
   #@param [Hash] hash : a hash with the following structure
