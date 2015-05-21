@@ -1,6 +1,5 @@
 module HasTaskList
   def self.included(base)
-    p "aaaa"
     base.extend(ClassMethods)
   end
 
