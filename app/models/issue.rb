@@ -13,6 +13,7 @@ class Issue < ActiveRecord::Base
   include IssueGantt
   include IssueDatesValidator
   extend BulkEditable
+  include HasTaskList
   #Class variables
   exclude_attributes_from_journal(:description, :attachments_count, :link_type, :comments_count)
   attr_accessor :notes

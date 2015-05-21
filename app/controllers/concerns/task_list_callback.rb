@@ -1,13 +1,16 @@
 module TaskListCallback
 
   def task_list_action_markdown
-    element_types = {'Comment' => Comment, 'Issue' => Issue, 'Document' => Document}
     params.require(:is_check)
     params.require(:element_type)
     params.require(:element_id)
     params.require(:check_index)
-    element_type = element_types[params[:element_type]]
-    element = element_type.find_by_id!(params[:element_id])
+    element_type = params[:element_type].constantize
+    if element_type.try(:has_task_list?)
+      element = element_type.find_by_id!(params[:element_id])
+    else
+      raise ActiveRecord::RecordNotFound
+    end
     header, message = update_task_list(element)
     respond_to do |format|
       format.js { respond_to_js action: 'do_nothing', response_header: header, response_content: message }

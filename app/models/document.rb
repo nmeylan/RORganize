@@ -11,6 +11,7 @@ class Document < ActiveRecord::Base
   include Notifiable
   extend BulkEditable
   include Sequenceable
+  include HasTaskList
   #Class variables
   exclude_attributes_from_journal(:description, :comments_count)
   #Relations
