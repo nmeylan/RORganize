@@ -36,7 +36,7 @@ class MembersControllerTest < ActionController::TestCase
   test "should create member" do
     allow_user_to('add_member')
     assert_difference('Member.count') do
-      post_with_permission :create, user: @user1.id, role: @role.id, format: :js
+      post_with_permission :create, member: {user_id: @user1.id, role_id: @role.id}, format: :js
     end
     assert_not_empty @response.header["flash-message"]
     assert_template 'new'

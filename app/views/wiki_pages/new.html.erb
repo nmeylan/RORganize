@@ -8,7 +8,5 @@
 <%= contextual t(:label_new_wiki_page) %>
 
 <%= render partial: 'wiki/sidebar', locals: {project: @project, wiki: @wiki_decorator} %>
-<%= form_for @wiki_page_decorator, {html: {class: 'form'}} do |f| %>
-    <%= render partial: 'wiki_pages/form', locals: {f: f, wiki_page_decorator: @wiki_page_decorator} %>
-    <%= submit_tag t(:button_create) %>
-<% end %>
+
+<%= render partial: 'wiki_pages/form', locals: {wiki_page_decorator: @wiki_page_decorator, url: nil} %>

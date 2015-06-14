@@ -25,7 +25,7 @@ class SettingsControllerTest < ActionController::TestCase
   test "should update project information" do
     allow_user_to('update_project_informations')
     assert_equal 2, @project.trackers.count
-    put_with_permission :update, project: {name: 'New project name', is_public: 1, description: "A simple description"}, tracker_ids: {}, id: "update_project_informations"
+    put_with_permission :update, project: {name: 'New project name', is_public: 1, description: "A simple description", tracker_ids: []}, id: "update_project_informations"
 
     @project.reload
     assert_equal 0, @project.trackers.count
@@ -37,8 +37,7 @@ class SettingsControllerTest < ActionController::TestCase
 
   test "should refresh the page when update project failed" do
     allow_user_to('update_project_informations')
-    put_with_permission :update, project: {name: '', is_public: 1, description: "A simple description"},
-                        tracker_ids: {}, id: "update_project_informations"
+    put_with_permission :update, project: {name: '', is_public: 1, description: "A simple description", tracker_ids: []}, id: "update_project_informations"
     @project.reload
 
     assert_not_nil assigns(:project_decorator)

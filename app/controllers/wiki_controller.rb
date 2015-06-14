@@ -20,7 +20,7 @@ class WikiController < ApplicationController
   end
 
   def destroy
-    generic_destroy_callback(@wiki_decorator, project_project_wiki_index_path)
+    generic_destroy_callback(@wiki_decorator, project_wiki_index_path)
   end
 
   def create
@@ -29,7 +29,7 @@ class WikiController < ApplicationController
     respond_to do |format|
       if @wiki.save
         flash[:notice] = t(:successful_creation)
-        format.html { redirect_to project_project_wiki_index_path(@project.slug) }
+        format.html { redirect_to project_wiki_index_path(@project.slug) }
       end
     end
   end

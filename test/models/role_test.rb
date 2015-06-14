@@ -24,10 +24,6 @@ class RoleTest < ActiveSupport::TestCase
     assert_equal role.name, role.caption
   end
 
-  test 'permit attributes should contains' do
-    assert_equal [:name], Role.permit_attributes
-  end
-
   test 'update permissions' do
     permission = Permission.new(action: 'new', controller: 'controller', name: 'New')
     permission1 = Permission.new(action: 'edit', controller: 'controller', name: 'Edit')

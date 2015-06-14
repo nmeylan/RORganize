@@ -112,7 +112,7 @@ class QueriesControllerTest < ActionController::TestCase
     patch_with_permission :update, id: @query.id, query: {name: "Parker Ferry issues edited", description: "Edit description", is_public: "0",
                                                           is_for_all: "0", object_type: "Issue"}
     assert_not_empty flash[:notice]
-    assert_redirected_to query_path(@query)
+    assert_redirected_to query_path(@query.id)
   end
 
   test "should refresh the page when update query failed" do

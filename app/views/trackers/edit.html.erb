@@ -6,7 +6,4 @@
 %>
 <%= contextual t(:link_edit_tracker) %>
 
-<%= form_for @tracker, url: tracker_path, method: :put, html: {class: 'form'} do |f| %>
-    <%= render partial: 'trackers/form', locals: {f: f, tracker: @tracker} %>
-    <%= submit_tag t(:button_save) %>
-<% end %>
+<%= render partial: 'trackers/form', locals: {tracker: @tracker} %>
