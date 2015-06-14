@@ -21,7 +21,7 @@ class Role < ActiveRecord::Base
   validates :name, presence: true, uniqueness: true, length: 2..255
 
   def self.permit_attributes
-    [:name]
+    [:name, issues_status_ids: [], assignable_role_ids: []]
   end
 
   def caption
@@ -36,21 +36,5 @@ class Role < ActiveRecord::Base
       self.permissions = permissions.to_a
     end
     self.save
-  end
-
-  def self.set_role_attributes(role_params, params)
-    role = params[:id] ? self.find_by_id(params[:id]) : Role.new(role_params)
-    role.attributes = role_params
-    role.set_association_values(params[:issues_statuses], role.issues_statuses, IssuesStatus)
-    role.set_association_values(params[:roles], role.assignable_roles, Role)
-    role
-  end
-
-  def set_association_values(value_ids, association, association_class)
-    association.clear
-    if value_ids && value_ids.any?
-      collection = association_class.where(id: value_ids.values)
-      collection.each { |element| association << element }
-    end
   end
 end

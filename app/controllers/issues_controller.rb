@@ -53,7 +53,7 @@ class IssuesController < ApplicationController
     @issue_decorator = @project.issues.build(issue_params).decorate(context: {project: @project})
     @issue_decorator.author = User.current
     @issue_decorator.status_id ||= IssuesStatus.first_status.id
-    generic_create_callback(@issue_decorator, -> { issue_path(@project.slug, @issue_decorator) }, {form_content: FormContent.new(@project).content})
+    generic_create_callback(@issue_decorator, -> { project_issue_path(@project.slug, @issue_decorator) }, {form_content: FormContent.new(@project).content})
   end
 
   #GET /project/:project_identifier/issues/:id/edit
@@ -66,12 +66,12 @@ class IssuesController < ApplicationController
   #PUT /project/:project_identifier/issues/:id
   def update
     @issue_decorator.attributes = issue_params
-    update_attachable_callback(@issue_decorator, issue_path(@project.slug, @issue_decorator), issue_params, {form_content: FormContent.new(@project).content})
+    update_attachable_callback(@issue_decorator, project_issue_path(@project.slug, @issue_decorator), issue_params, {form_content: FormContent.new(@project).content})
   end
 
   #DELETE /project/:project_identifier/issues/:id
   def destroy
-    generic_destroy_callback(@issue_decorator, issues_path)
+    generic_destroy_callback(@issue_decorator, project_issues_path)
   end
 
 

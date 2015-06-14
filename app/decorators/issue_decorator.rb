@@ -3,16 +3,16 @@ class IssueDecorator < ApplicationDecorator
   delegate_all
   # see #ApplicationDecorator::new_link.
   def new_link
-    super(h.t(:link_new_issue), h.new_issue_path(context[:project].slug), context[:project])
+    super(h.t(:link_new_issue), h.new_project_issue_path(context[:project].slug), context[:project])
   end
 
   # see #ApplicationDecorator::edit_link.
   def edit_link
-    super(h.t(:link_edit), h.edit_issue_path(context[:project].slug, model), context[:project], model.author_id)
+    super(h.t(:link_edit), h.edit_project_issue_path(context[:project].slug, model), context[:project], model.author_id)
   end
 
   def show_link
-    super(h.issue_path(context[:project].slug, model), context[:project])
+    super(h.project_issue_path(context[:project].slug, model), context[:project])
   end
 
   # @return [String] link to log time action.
@@ -24,12 +24,12 @@ class IssueDecorator < ApplicationDecorator
 
   # see #ApplicationDecorator::delete_link
   def delete_link
-    super(h.t(:link_delete), h.issue_path(context[:project].slug, model), context[:project], model.author_id)
+    super(h.t(:link_delete), h.project_issue_path(context[:project].slug, model), context[:project], model.author_id)
   end
 
   # see #ApplicationDecorator::delete_attachment_link
   def delete_attachment_link(attachment)
-    super(h.delete_attachment_issues_path(context[:project].slug, attachment), context[:project])
+    super(h.delete_attachment_project_issues_path(context[:project].slug, attachment), context[:project])
   end
 
   # @return [String] tracker name.

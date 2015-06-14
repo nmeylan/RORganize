@@ -13,7 +13,7 @@ class WikiDecoratorTest < Rorganize::Decorator::TestCase
     allow_user_to('destroy')
     node(@wiki_decorator.delete_link)
     assert_select 'a', 1
-    assert_select 'a[href=?]', wiki_path(@project.slug, @wiki)
+    assert_select 'a[href=?]', project_wiki_path(@project.slug, @wiki)
   end
 
   test "it should not display a link to delete when user is not allowed to" do
@@ -31,7 +31,7 @@ class WikiDecoratorTest < Rorganize::Decorator::TestCase
     @wiki.stubs(:new_record?).returns(true)
     node(concat @wiki_decorator.new_link)
     assert_select 'a', 1
-    assert_select 'a[href=?]', wiki_index_path(@project.slug)
+    assert_select 'a[href=?]', project_wiki_index_path(@project.slug)
     assert_select 'h2', text: I18n.t(:text_no_wiki)
   end
 
@@ -47,7 +47,7 @@ class WikiDecoratorTest < Rorganize::Decorator::TestCase
     allow_user_to('set_organization')
     node(@wiki_decorator.organize_pages_link)
     assert_select 'a', 1
-    assert_select 'a[href=?]', organize_pages_wiki_index_path(@project.slug)
+    assert_select 'a[href=?]', organize_pages_project_wiki_index_path(@project.slug)
   end
 
   test "it should not display a link to organize pages when user is not allowed to" do
@@ -58,7 +58,7 @@ class WikiDecoratorTest < Rorganize::Decorator::TestCase
     allow_user_to('new', 'wiki_pages')
     node(@wiki_decorator.new_page_link)
     assert_select 'a', 1
-    assert_select 'a[href=?]', new_wiki_page_path(@project.slug)
+    assert_select 'a[href=?]', new_project_wiki_page_path(@project.slug)
   end
 
   test "it should not display a link to create a new page when user is not allowed to" do
@@ -76,7 +76,7 @@ class WikiDecoratorTest < Rorganize::Decorator::TestCase
     allow_user_to('new', 'wiki_pages')
     node(concat @wiki_decorator.home_page)
     assert_select 'a', 1
-    assert_select 'a[href=?]', new_home_page_wiki_pages_path(@project.slug)
+    assert_select 'a[href=?]', new_home_page_project_wiki_pages_path(@project.slug)
   end
 
   test "it displays a empty data message if it does not exists when user is allowed to" do

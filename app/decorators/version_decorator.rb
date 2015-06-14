@@ -3,22 +3,22 @@ class VersionDecorator < ApplicationDecorator
 
   # see #ApplicationDecorator::dec_position_link.
   def dec_position_link(collection_size)
-    super(collection_size, h.change_position_versions_path(model.project.slug), {class: 'tooltipped tooltipped-s', label: h.t(:text_dec_version_position)})
+    super(collection_size, h.change_position_project_versions_path(model.project.slug), {class: 'tooltipped tooltipped-s', label: h.t(:text_dec_version_position)})
   end
 
   # see #ApplicationDecorator::inc_position_link.
   def inc_position_link
-    super(h.change_position_versions_path(model.project.slug), {class: 'tooltipped tooltipped-s', label: h.t(:text_inc_version_position)})
+    super(h.change_position_project_versions_path(model.project.slug), {class: 'tooltipped tooltipped-s', label: h.t(:text_inc_version_position)})
   end
 
   # see #ApplicationDecorator::delete_link.
   def delete_link
-    super(h.t(:link_delete), h.version_path(model.project.slug, model))
+    super(h.t(:link_delete), h.project_version_path(model.project.slug, model))
   end
 
   # see #ApplicationDecorator::edit_link.
   def edit_link
-    link = link_to_with_permissions(model.caption, h.edit_version_path(model.project.slug, model), model.project, nil)
+    link = link_to_with_permissions(model.caption, h.edit_project_version_path(model.project.slug, model), model.project, nil)
     link ? link : disabled_field(model.caption)
   end
 

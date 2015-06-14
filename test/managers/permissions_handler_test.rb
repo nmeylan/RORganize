@@ -20,7 +20,7 @@ class PermissionsHandlerTest < Rorganize::Decorator::TestCase
   end
 
   test "it do not build a link to the action when user is not allowed to perform it in a project context" do
-    assert_nil link_to_with_permissions('New issue', new_issue_path(@project), @project, nil)
+    assert_nil link_to_with_permissions('New issue', new_project_issue_path(@project), @project, nil)
   end
 
   test "it do not build a link to the action when user is not allowed to perform it out of project context" do
@@ -29,12 +29,12 @@ class PermissionsHandlerTest < Rorganize::Decorator::TestCase
 
   test "it build a link to the action when user is allowed to perform it in a project context" do
     allow_user_to('new', 'issues')
-    link_output = link_to_with_permissions('New issue', new_issue_path(@project), @project, nil)
+    link_output = link_to_with_permissions('New issue', new_project_issue_path(@project), @project, nil)
     assert_not_nil link_output
 
     node(link_output)
     assert_select 'a', 1
-    assert_select 'a[href=?]', new_issue_path(@project)
+    assert_select 'a[href=?]', new_project_issue_path(@project)
     assert_select 'a', text: 'New issue'
 
   end
@@ -53,7 +53,7 @@ class PermissionsHandlerTest < Rorganize::Decorator::TestCase
 
   test "it build a link to remote action" do
     allow_user_to('destroy', 'issues')
-    link_output = link_to_with_permissions('Delete issue', issue_path(@project, 666), @project, nil,
+    link_output = link_to_with_permissions('Delete issue', project_issue_path(@project, 666), @project, nil,
                                            {remote: true, method: :delete, confirm: 'Are you sure you want to...'})
     assert_not_nil link_output
 

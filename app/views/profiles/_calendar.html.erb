@@ -28,7 +28,7 @@
               <% time_entries[date].each do |time_entry| %>
                   <li>
                     <span class="calendar-item-left">
-                      <%= link_to "##{time_entry.issue_id}", issue_path(time_entry.project.slug, time_entry.issue) %>
+                      <%= link_to "##{time_entry.issue_id}", project_issue_path(time_entry.project.slug, time_entry.issue) %>
                     </span>
                     <span class="calendar-item-middle">
                       <%= link_to glyph(time_entry.spent_time.to_s, 'calendar'), fill_overlay_with_date_time_entries_path(time_entry.issue, date), {class: 'log-time'} %>

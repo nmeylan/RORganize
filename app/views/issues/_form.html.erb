@@ -4,96 +4,49 @@
 # Encoding: UTF-8
 # File: _form.html.erb
 %>
-<%= raw error_messages(issue_decorator.errors.full_messages) %>
-<div class="box">
-  <div class="autocomplete-combobox cbb-medium nosearch">
-    <label for="issue_tracker"><%= t(:field_tracker) %><span class="required">
-      *</span></label>
-    <%= f.select :tracker_id, form_content['trackers'], {include_blank: false}, {class: 'chzn-select cbb-medium'} %>
-  </div>
-  <p>
-    <label for="issue_subject"><%= t(:field_subject) %><span class="required">
-      *</span></label>
-    <%= f.text_field :subject, size: 80 %>
-  </p>
 
-  <p>
-    <%= f.label :description, t(:field_description) %>
-    <%= f.text_area :description, rows: 12, class: 'fancyEditor' %>
-  </p>
+<%= rorganize_form_for [@project, issue_decorator.model], wrapper: :horizontal_form, html: {class: 'form-horizontal', multipart: true} do |f| %>
+    <%= raw error_messages(issue_decorator.errors.full_messages) %>
+    <div class="row">
+      <%= f.input :tracker_id, collection: form_content['trackers'], include_blank: false, input_html: {class: 'chzn-select cbb-medium'} %>
+      <%= f.input :subject, require: false %>
+      <%= f.input :description, as: :text, input_html: {rows: 12, class: 'fancyEditor'} %>
+    </div>
+    <div class="col-lg-offset-1 col-sm-offset-2">
+      <div class="col-sm-6 no-padding">
+        <% if User.current.allowed_to?('change_status', 'issues', project) %>
+            <%= f.input :status_id, collection: form_content['allowed_statuses'], include_blank: false, input_html: {class: 'chzn-select cbb-medium'} %>
+        <% end %>
 
-  <div class="splitcontentleft">
-    <% if User.current.allowed_to?('change_version', 'issues', project) %>
-        <div class="autocomplete-combobox">
-          <label for="issue_version"><%= t(:field_version) %></label>
-          <%= select_tag_versions(project.versions, 'issue_version_id', 'issue[version_id]', issue_decorator.version_id) %>
-          <%= info_tag('', {id: 'version-info'}) %>
-        </div>
-    <% end %>
+        <% if User.current.allowed_to?('change_version', 'issues', project) %>
+            <%= f.input :version_id, collection: project.active_versions, input_html: {class: 'chzn-select cbb-medium'}, control_class: "col-sm-3" %>
+        <% end %>
 
-    <% if User.current.allowed_to?('change_status', 'issues', project) %>
-        <div class="autocomplete-combobox cbb-medium nosearch">
-          <label for="issue_status"><%= t(:field_status) %>
-            <span class="required">*</span></label>
-          <%= f.select :status_id, form_content['allowed_statuses'], {include_blank: false}, {class: 'chzn-select cbb-medium'} %>
-        </div>
-    <% end %>
+        <% if User.current.allowed_to?('change_assigned', 'issues', project) %>
+            <%= f.input :assigned_to_id, collection: form_content['members'], include_blank: false, input_html: {class: 'chzn-select cbb-medium'} %>
+        <% end %>
 
-    <% if User.current.allowed_to?('change_assigned', 'issues', project) %>
-        <div class="autocomplete-combobox cbb-medium">
-          <label for="issue_assigned_to"><%= t(:field_assigned_to) %></label>
-          <%= f.select :assigned_to_id, form_content['members'], {include_blank: true}, {class: 'chzn-select-deselect cbb-medium'} %>
-        </div>
-    <% end %>
-
-    <% if User.current.allowed_to?('change_category', 'issues', project) %>
-        <div class="autocomplete-combobox cbb-medium">
-          <label for="issue_category"><%= t(:field_category) %></label>
-          <%= f.select :category_id, form_content['categories'], {include_blank: true}, {class: 'chzn-select-deselect cbb-medium'} %>
-        </div>
-    <% end %>
-  </div>
-  <div class="splitcontentright">
-    <% if User.current.allowed_to?('change_version', 'issues', project) %>
-        <p>
-          <label for="issue_start_date"><%= t(:field_start_date) %></label>
-          <%= f.date_field :start_date, size: 6, id: 'calendar-start' %>
-        </p>
-
-        <p>
-          <label for="issue_due_date"><%= t(:field_due_date) %></label>
-          <%= f.date_field :due_date, size: 6, id: 'calendar' %>
-        </p>
-    <% end %>
-
-    <% if User.current.allowed_to?('change_progress', 'issues', project) %>
-        <div class="autocomplete-combobox cbb-small nosearch">
-          <label for="issue_done"><%= t(:field_done) %></label>
-          <%= f.select :done, form_content['done_ratio'].collect { |done| [done] }, {include_blank: false}, {class: 'chzn-select cbb-small'} %>
-        </div>
-
-        <p>
-          <label for="issue_estimated_time"><%= t(:field_estimated_time) %></label>
-          <%= f.text_field :estimated_time, size: 6 %>
-        </p>
-
-    <% end %>
-  </div>
-  <%= clear_both %>
-  <% if User.current.allowed_to?('delete_attachment', 'Issues', project) %>
-      <div id="attachments">
-        <div class="splitcontentleft">
-          <p>
-            <label><%= t(:field_attachments) %></label>
-
-            <%= add_attachments_link 'Add a file', issue_decorator, 'issue' %>
-          </p>
-          <%= render partial: 'shared/attachments', collection: issue_decorator.attachments, locals: {object: issue_decorator, type: 'issue'} %>
-        </div>
-        <div class="splitcontentright attachment-box"><%= render partial: 'shared/show_attachments', locals: {attachments: issue_decorator.attachments, object: issue_decorator, no_header: true} %></div>
-        <%= clear_both %>
+        <% if User.current.allowed_to?('change_category', 'issues', project) %>
+            <%= f.input :category_id, collection: form_content['categories'], include_blank: false, input_html: {class: 'chzn-select cbb-medium'} %>
+        <% end %>
       </div>
+      <div class="col-sm-6 no-padding">
+        <% if User.current.allowed_to?('change_version', 'issues', project) %>
+            <%= f.input :start_date, as: :date, html5: true, input_html: {id: 'calendar-start'} %>
+            <%= f.input :due_date, as: :date, html5: true, input_html: {id: 'calendar'} %>
+        <% end %>
 
-  <% end %>
-</div>
+        <% if User.current.allowed_to?('change_progress', 'issues', project) %>
+            <%= f.input :done, collection: form_content['done_ratio'].map { |done| [done] }, include_blank: false, input_html: {class: 'chzn-select cbb-small'} %>
+            <%= f.input :estimated_time %>
+        <% end %>
+      </div>
+    </div>
 
+    <% if User.current.allowed_to?('delete_attachment', 'Issues', project) %>
+
+        <%= render "shared/attachment_form_block", model_decorator: issue_decorator %>
+    <% end %>
+
+    <%= f.button :submit %>
+<% end %>

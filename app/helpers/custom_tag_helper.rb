@@ -97,7 +97,10 @@ module CustomTagHelper
   # @return [String] build a color picker text field. Behaviour is bind on page load (JS).
   def color_field_tag(form, field, options = {})
     default_options = {autocomplete: 'off', maxlength: 7, class: 'color-editor-field'}
-    form.text_field field, default_options.merge(options)
+    css_class = options.delete(:class)
+    default_options = default_options.merge(options)
+    default_options[:class] += " #{css_class}"
+    form.text_field field, default_options
   end
 
   def concat_span_tag(content, options = {})
@@ -127,7 +130,7 @@ module CustomTagHelper
   # @param [Array[{}]] links : a list of hashes with following structure :
   # {caption: String, path: String, options: Hash}
   # options are default link_to html_options.
-  # E.g : {caption: 'Issue link', path: 'issues_path', {class: 'my class', id: {my id}}}
+  # E.g : {caption: 'Issue link', path: 'project_issues_path', {class: 'my class', id: {my id}}}
   def subnav_tag(css_class, id, *links)
     content_tag :div, {class: "subnav #{css_class}", id: id} do
       special_links_builder(links, 'subnav-item')
@@ -154,7 +157,7 @@ module CustomTagHelper
   # @param [Array[{}]] links : a list of hashes with following structure :
   # {caption: String, path: String, options: Hash}
   # options are default link_to html_options.
-  # E.g : {caption: 'Issue link', path: 'issues_path', {class: 'my class', id: {my id}}}
+  # E.g : {caption: 'Issue link', path: 'project_issues_path', {class: 'my class', id: {my id}}}
   def group_button_tag(*links)
     content_tag :div, {class: "button-group"} do
       special_links_builder(links, 'minibutton')
@@ -164,7 +167,7 @@ module CustomTagHelper
   # @param [Array[{}]] links : a list of hashes with following structure :
   # {caption: String, path: String, options: Hash}
   # options are default link_to html_options.
-  # E.g : {caption: 'Issue link', path: 'issues_path', {class: 'my class', id: {my id}}}
+  # E.g : {caption: 'Issue link', path: 'project_issues_path', {class: 'my class', id: {my id}}}
   # @param [String] css_class : a css class.
   def special_links_builder(links, css_class)
     links.compact.collect do |link|

@@ -12,7 +12,7 @@ class IssueDecoratorTest < Rorganize::Decorator::TestCase
     allow_user_to('edit')
     node(@issue_decorator.edit_link)
     assert_select 'a', 1
-    assert_select 'a[href=?]', edit_issue_path(@project.slug, @issue)
+    assert_select 'a[href=?]', edit_project_issue_path(@project.slug, @issue)
   end
 
   test "it should not display a link to edit when user is not allowed to" do
@@ -23,7 +23,7 @@ class IssueDecoratorTest < Rorganize::Decorator::TestCase
     allow_user_to('show')
     node(@issue_decorator.show_link)
     assert_select 'a', 1
-    assert_select 'a[href=?]', issue_path(@project.slug, @issue)
+    assert_select 'a[href=?]', project_issue_path(@project.slug, @issue)
   end
 
   test "it should not display a link to view when user is not allowed to" do
@@ -34,7 +34,7 @@ class IssueDecoratorTest < Rorganize::Decorator::TestCase
     allow_user_to('destroy')
     node(@issue_decorator.delete_link)
     assert_select 'a', 1
-    assert_select 'a[href=?]', issue_path(@project.slug, @issue)
+    assert_select 'a[href=?]', project_issue_path(@project.slug, @issue)
   end
 
   test "it should not display a link to delete when user is not allowed to" do
@@ -46,7 +46,7 @@ class IssueDecoratorTest < Rorganize::Decorator::TestCase
     attachment = Attachment.new(attachable_type: 'Issue', attachable_id: 666, id: 666)
     node(@issue_decorator.delete_attachment_link(attachment))
     assert_select 'a', 1
-    assert_select 'a[href=?]', delete_attachment_issues_path(@project.slug, attachment)
+    assert_select 'a[href=?]', delete_attachment_project_issues_path(@project.slug, attachment)
   end
 
   test "it should not display a link to delete issue attachment when user is not allowed to" do
@@ -58,7 +58,7 @@ class IssueDecoratorTest < Rorganize::Decorator::TestCase
     allow_user_to('new')
     node(@issue_decorator.new_link)
     assert_select 'a', 1
-    assert_select 'a[href=?]', new_issue_path(@project.slug)
+    assert_select 'a[href=?]', new_project_issue_path(@project.slug)
   end
 
   test "it should not display a link to create a new issue when user is not allowed to" do
@@ -68,7 +68,7 @@ class IssueDecoratorTest < Rorganize::Decorator::TestCase
   test "it displays a link to the issue for activity context" do
     node(concat @issue_decorator.display_object_type(@project))
     assert_select 'a', 1
-    assert_select 'a[href=?]', issue_path(@project.slug, @issue)
+    assert_select 'a[href=?]', project_issue_path(@project.slug, @issue)
     assert_select 'b', 1
     assert_select 'b', "#{I18n.t(:label_issue)} ##{@issue.sequence_id}".downcase
   end

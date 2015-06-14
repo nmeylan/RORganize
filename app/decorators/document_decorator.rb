@@ -8,22 +8,22 @@ class DocumentDecorator < ApplicationDecorator
 
   # see #ApplicationDecorator::new_link
   def new_link
-    super(h.t(:link_new_document), h.new_document_path(context[:project].slug), context[:project])
+    super(h.t(:link_new_document), h.new_project_document_path(context[:project].slug), context[:project])
   end
 
   # see #ApplicationDecorator::edit_link
   def edit_link
-    super(h.t(:link_edit), h.edit_document_path(context[:project].slug, model), context[:project])
+    super(h.t(:link_edit), h.edit_project_document_path(context[:project].slug, model), context[:project])
   end
 
   # see #ApplicationDecorator::delete_link
   def delete_link
-    super(h.t(:link_delete), h.document_path(context[:project].slug, model), context[:project])
+    super(h.t(:link_delete), h.project_document_path(context[:project].slug, model), context[:project])
   end
 
   # see #ApplicationDecorator::delete_attachment_link
   def delete_attachment_link(attachment)
-    super(h.delete_attachment_documents_path(context[:project].slug, attachment), context[:project]) if attachment.id
+    super(h.delete_attachment_project_documents_path(context[:project].slug, attachment), context[:project]) if attachment.id
   end
 
   def display_object_type(project)

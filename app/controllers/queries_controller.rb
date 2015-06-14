@@ -40,9 +40,9 @@ class QueriesController < ApplicationController
         if success
           case @query.object_type
             when 'Issue' then
-              js_redirect_to(apply_custom_query_issues_path(@query.project.slug, @query.slug))
+              js_redirect_to(apply_custom_query_project_issues_path(@query.project.slug, @query.slug))
             when 'Document' then
-              js_redirect_to(apply_custom_query_documents_path(@query.project.slug, @query.slug))
+              js_redirect_to(apply_custom_query_project_documents_path(@query.project.slug, @query.slug))
           end
         else
           respond_to_js action: 'new_project_query', locals: {new: false, success: success},
@@ -88,7 +88,7 @@ class QueriesController < ApplicationController
 
   def update
     @query.attributes = (query_params)
-    generic_update_callback(@query, query_path(@query))
+    generic_update_callback(@query, query_path(@query.id))
   end
 
   def destroy

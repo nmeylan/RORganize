@@ -137,7 +137,7 @@ module IssuesHelpers
     # @param [Array] filter_list : list of filtered field(attribute).
     # @param [Hash] filter : hash with following structure {attribute: {operator: 'operator', value: ['values']}}.
     def filter_link(label, project_slug, filter_list, filter)
-      link_to label, issues_path(project_slug, {type: :filter, filters_list: filter_list, filter: filter})
+      link_to label, project_issues_path(project_slug, {type: :filter, filters_list: filter_list, filter: filter})
     end
   end
 end

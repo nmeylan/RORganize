@@ -44,15 +44,6 @@ class RoleTest < ActiveSupport::TestCase
     assert_match_array permissions, @role.permissions
   end
 
-  test 'set role attributes' do
-    role = Role.set_role_attributes({name: 'Master'}, {issues_statuses: {"New"=>"1", "In progress"=>"2"}, roles: {"Project Manager"=>"1"}})
-    assert role.save, role.errors.messages
-    role.reload
-    assert_equal 'Master', role.name
-    assert_equal [1, 2], role.issues_statuses.collect(&:id)
-    assert_equal [1], role.assignable_roles.collect(&:id)
-  end
-
   test 'it should not be saved if name is invalid' do
     role = Role.new
     assert_not role.save

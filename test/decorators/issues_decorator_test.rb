@@ -45,7 +45,7 @@ class IssuesDecoratorTest < Rorganize::Decorator::TestCase
     allow_user_to('new')
     node(@issues_decorator.new_link)
     assert_select 'a', 1
-    assert_select 'a[href=?]', "#{issues_path(@project.slug)}/new"
+    assert_select 'a[href=?]', "#{project_issues_path(@project.slug)}/new"
   end
 
   test "it should not have a link to new action when user is not allowed to" do

@@ -3,7 +3,7 @@ class DocumentsDecorator < ApplicationCollectionDecorator
 
   # see #ApplicationCollectionDecorator::new_link
   def new_link
-    super(h.t(:link_new_document), h.new_document_path(context[:project].slug), context[:project])
+    super(h.t(:link_new_document), h.new_project_document_path(context[:project].slug), context[:project])
   end
 
   def no_data_glyph_name

@@ -5,15 +5,14 @@
 # File: _attachments.html.erb
 %>
 <% if attachments.new_record? %>
-    <div class="attachments" id="<%= attachments.id %>">
+    <div class="attachments col-lg-offset-2 col-sm-offset-3 col-lg-10 col-sm-9 " id="<%= attachments.id %>">
       <% new_or_existing = attachments.new_record? ? 'new' : 'existing' %>
       <% prefix = "#{type}[#{new_or_existing}_attachment_attributes][]" %>
       <%= fields_for prefix, attachments do |attachment_form| -%>
-          <p>
-
+          <div>
             <%= attachment_form.file_field :file %>
             <%= link_to glyph(t(:link_delete), 'trashcan'), '#', {class: 'remove-attachment-field-link'} %>
-          </p>
+          </div>
       <% end -%>
     </div>
 <% end %>

@@ -9,14 +9,14 @@ class VersionDecoratorTest < Rorganize::Decorator::TestCase
     allow_user_to('edit')
     node(@version_decorator.edit_link)
     assert_select 'a', 1
-    assert_select 'a[href=?]', edit_version_path(@project.slug, @version_decorator)
+    assert_select 'a[href=?]', edit_project_version_path(@project.slug, @version_decorator)
   end
 
   test "it displays a link to delete when user is allowed to" do
     allow_user_to('destroy')
     node(@version_decorator.delete_link)
     assert_select 'a', 1
-    assert_select 'a[href=?]', version_path(@project.slug, @version_decorator)
+    assert_select 'a[href=?]', project_version_path(@project.slug, @version_decorator)
   end
 
   test "it should not have a link to edit action when user is not allowed to" do

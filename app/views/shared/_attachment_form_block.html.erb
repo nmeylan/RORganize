@@ -1,0 +1,17 @@
+<div id="attachments" class="row col-lg-offset-1 col-sm-offset-2 ">
+  <div class="col-sm-6">
+    <div class="form-group">
+      <label class="col-lg-2 col-sm-3 control-label"><%= t(:field_attachments) %></label>
+
+      <div class="col-lg-10 col-sm-9">
+        <%= add_attachments_link 'Add a file', model_decorator, model_decorator.model.model_name.human.downcase %>
+      </div>
+      <%= render partial: 'shared/attachments', collection: model_decorator.attachments, locals: {object: model_decorator, type: model_decorator.model.model_name.human.downcase} %>
+    </div>
+  </div>
+  <div class="attachment-box col-sm-6">
+    <div class="col-sm-offset-3 col-lg-offset-2">
+      <%= render partial: 'shared/show_attachments', locals: {attachments: model_decorator.attachments, object: model_decorator, no_header: true} %>
+    </div>
+  </div>
+</div>

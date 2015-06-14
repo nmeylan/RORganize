@@ -353,6 +353,7 @@ en:
   text_your_spent_time: Your spent time
   text_will_regenerate_default_avatar: This will regenerate a default avatar.
   text_not_owner_deletion: You don't have the permission to delete items that you don't own.
+  text_is_closed: When "is closed" is true, issues attached to this status are considered as closed.
 
   password: "Password"
   field_steps: "Steps"
@@ -369,6 +370,10 @@ en:
   info_version_is_done: Define that the mission is over on this phase. You won't be able to assign issues to this phase.
   info_public_project: Define if project is public or not. If project is public anyone can access to it, non member users have NON MEMBER role.
   info_version_start_date: Version is running from
+
+  #hint
+  hint_role_statuses: Define which statuses, this role can attributes to issues.
+  hint_role_assignable_roles: Define which roles, this role can assigns to a member. E.g "Project Managers" can only assign role  "Team Member", "Engagement Managers" can assign role "Team Member" and "Project Manager"
 
   devise_text_registration: Click here to sign up.
 

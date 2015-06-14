@@ -11,7 +11,7 @@ class ProjectDecoratorTest < Rorganize::Decorator::TestCase
     attachment = Attachment.new(attachable_type: 'Project', attachable_id: 666, id: 666)
     node(@project_decorator.delete_attachment_link(attachment))
     assert_select 'a', 1
-    assert_select 'a[href=?]', delete_attachment_settings_path(@project.slug, attachment)
+    assert_select 'a[href=?]', delete_attachment_project_settings_path(@project.slug, attachment)
   end
 
   test "it should not display a link to delete issue attachment when user is not allowed to" do

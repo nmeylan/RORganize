@@ -100,7 +100,7 @@ class GanttObject
         duration: (due_date - start_date).to_i,
         context: {
             type: 'issue',
-            link: link_to(caption, issue_path(@project, issue)),
+            link: link_to(caption, project_issue_path(@project, issue)),
             due_date: due_date,
             start_date: start_date,
             assigne: issue.assigned_to ? issue.assigned_to.caption : nil,

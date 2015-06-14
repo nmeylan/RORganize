@@ -7,7 +7,7 @@ File: edit.html
 <%= contextual t(:label_edit_wiki_page) %>
 
 <%= render partial: 'wiki/sidebar', locals: {project: @project, wiki: @wiki_decorator} %>
-<%= form_for @wiki_page_decorator, {url: wiki_page_path(@project.slug, @wiki_page_decorator.slug), html: {class: 'form'}} do |f| %>
+<%= form_for @wiki_page_decorator, {url: project_wiki_page_path(@project.slug, @wiki_page_decorator.slug), html: {class: 'form'}} do |f| %>
     <%= render partial: 'wiki_pages/form', locals: {f: f, wiki_page_decorator: @wiki_page_decorator} %>
     <%= submit_tag t(:button_save) %>
 <% end %>

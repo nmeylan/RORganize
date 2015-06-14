@@ -16,43 +16,7 @@ RORganize::Application.routes.draw do
       get 'members', path: ':project_id/members'
       get 'issues_completion', path: ':project_id/issues_completion'
     end
-  end
 
-  resources :comments, except: [:new, :index] do
-
-  end
-  scope 'projects/:project_id/:watchable_type/:watchable_id' do
-    resources :watchers, only: [:index] do
-      collection do
-        post 'toggle'
-      end
-    end
-  end
-  scope 'administration/' do
-    resources :users do
-      collection do
-        post 'register', path: 'register'
-      end
-    end
-    resources :permissions, except: [:show] do
-      collection do
-        get 'list', path: ':role_name/list'
-        post 'update_permissions', path: ':role_name/update_permissions'
-      end
-    end
-    resources :roles, except: [:show]
-    resources :trackers, except: [:show] do
-      collection do
-        post 'change_position'
-      end
-    end
-    resources :issues_statuses, except: [:show] do
-      collection do
-        post 'change_position'
-      end
-    end
-  end
-  scope 'projects/:project_id/' do
     resources :issues do
       collection do
         get 'toolbox'
@@ -106,25 +70,63 @@ RORganize::Application.routes.draw do
         post 'modules'
       end
     end
-  end
-  resources :queries, except: [:new] do
-    collection do
-      get 'new_project_query', path: 'new_project_query/:project_id/:query_type'
-      put 'edit_query_filter', path: 'edit_query_filter/:query_id'
+    nested do
+      scope 'settings/' do
+        resources :versions, except: [:show] do
+          collection do
+            post 'change_position'
+          end
+        end
+        resources :categories, except: [:show]
+        resources :members, except: [:show, :edit, :update] do
+          collection do
+            post 'change_role', path: 'change_role/:member_id'
+
+          end
+        end
+      end
     end
   end
-  scope 'projects/:project_id/settings/' do
-    resources :versions, except: [:show] do
+
+  resources :comments, except: [:new, :index] do
+
+  end
+  scope 'projects/:project_id/:watchable_type/:watchable_id' do
+    resources :watchers, only: [:index] do
+      collection do
+        post 'toggle'
+      end
+    end
+  end
+  scope 'administration/' do
+    resources :users do
+      collection do
+        post 'register', path: 'register'
+      end
+    end
+    resources :permissions, except: [:show] do
+      collection do
+        get 'list', path: ':role_name/list'
+        post 'update_permissions', path: ':role_name/update_permissions'
+      end
+    end
+    resources :roles, except: [:show]
+    resources :trackers, except: [:show] do
       collection do
         post 'change_position'
       end
     end
-    resources :categories, except: [:show]
-    resources :members, except: [:show, :edit, :update] do
+    resources :issues_statuses, except: [:show] do
       collection do
-        post 'change_role', path: 'change_role/:member_id'
-
+        post 'change_position'
       end
+    end
+  end
+
+  resources :queries, except: [:new] do
+    collection do
+      get 'new_project_query', path: 'new_project_query/:project_id/:query_type'
+      put 'edit_query_filter', path: 'edit_query_filter/:query_id'
     end
   end
 

@@ -49,7 +49,7 @@ class WikiPagesControllerTest < ActionController::TestCase
     assert_difference('WikiPage.count') do
       post_with_permission :create, wiki_page: {title: 'Test page'}
     end
-    assert_redirected_to wiki_page_path(@project.slug, assigns(:wiki_page_decorator).slug)
+    assert_redirected_to project_wiki_page_path(@project.slug, assigns(:wiki_page_decorator).slug)
   end
 
   test "should refresh the page when creation failed" do
@@ -68,7 +68,7 @@ class WikiPagesControllerTest < ActionController::TestCase
     @wiki.reload
     wiki_page = assigns(:wiki_page_decorator)
     assert_equal wiki_page, @wiki.home_page
-    assert_redirected_to wiki_page_path(@project.slug, wiki_page.slug)
+    assert_redirected_to project_wiki_page_path(@project.slug, wiki_page.slug)
   end
 
   test "should create a sub page" do
@@ -79,7 +79,7 @@ class WikiPagesControllerTest < ActionController::TestCase
     @wiki_page.reload
     wiki_page = assigns(:wiki_page_decorator)
     assert_equal @wiki_page, wiki_page.parent
-    assert_redirected_to wiki_page_path(@project.slug, wiki_page.slug)
+    assert_redirected_to project_wiki_page_path(@project.slug, wiki_page.slug)
   end
 
   test "should not create sub page for a foreign wiki page" do
@@ -93,7 +93,7 @@ class WikiPagesControllerTest < ActionController::TestCase
     end
     wiki_page = assigns(:wiki_page_decorator)
     assert_nil wiki_page.parent
-    assert_redirected_to wiki_page_path(@project.slug, wiki_page.slug)
+    assert_redirected_to project_wiki_page_path(@project.slug, wiki_page.slug)
   end
 
   test "should edit wiki page" do
@@ -105,7 +105,7 @@ class WikiPagesControllerTest < ActionController::TestCase
   test "should update wiki page" do
     patch_with_permission :update, id: @wiki_page.slug, wiki_page: {title: 'change title', content: 'add content'}
     assert_not_empty flash[:notice]
-    assert_redirected_to wiki_page_path(@project.slug, @wiki_page.slug)
+    assert_redirected_to project_wiki_page_path(@project.slug, @wiki_page.slug)
   end
 
   test "should view wiki page" do

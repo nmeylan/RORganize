@@ -44,7 +44,6 @@ class ProjectsController < ApplicationController
   #POST /project/new
   def create
     @project_decorator = Project.new(project_params).decorate
-    @project_decorator.trackers = Tracker.where(id: params[:trackers].values)
     generic_create_callback(@project_decorator, -> { overview_projects_path(@project_decorator.slug) })
   end
 

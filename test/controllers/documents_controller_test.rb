@@ -35,7 +35,7 @@ class DocumentsControllerTest < ActionController::TestCase
     end
     assert_not_empty flash[:notice]
     assert_not_nil assigns(:document_decorator)
-    assert_redirected_to document_path(@project.slug, assigns(:document_decorator))
+    assert_redirected_to project_document_path(@project.slug, assigns(:document_decorator))
   end
 
   test "should refresh the page when create document failed" do
@@ -55,7 +55,7 @@ class DocumentsControllerTest < ActionController::TestCase
   test "should update document" do
     patch_with_permission :update, id: @document.sequence_id, document: {name: 'Change document name'}
     assert_not_empty flash[:notice]
-    assert_redirected_to document_path(@project.slug, assigns(:document_decorator))
+    assert_redirected_to project_document_path(@project.slug, assigns(:document_decorator))
   end
 
   test "should view document" do

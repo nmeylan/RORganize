@@ -4,32 +4,28 @@
 # Encoding: UTF-8
 # File: _form.html.erb
 %>
+<%= rorganize_form_for role, wrapper: :horizontal_form, wrapper_mappings: {boolean: :horizontal_boolean, check_boxes: :horizontal_radio_and_checkboxes},
+                       html: {class: 'form-horizontal', multipart: true} do |f| %>
 
-<%= raw error_messages(role.errors.full_messages) %>
-<div class="box">
-  <p>
-    <label for="role_name"><%= t(:field_name) %><span class="required"> *</span></label>
-    <%= f.text_field :name, size: 80, maxlength: 255, disabled: role.is_locked %>
-  </p>
+    <%= raw error_messages(role.errors.full_messages) %>
+    <%= f.input :name, input_html: {maxlength: 255, disabled: role.is_locked} %>
 
-  <p>
-    <label><%= t(:link_issues_statuses) %></label>
-    <% issues_statuses.sort { |x, y| x.enumeration.position <=> y.enumeration.position }.each do |status| %>
-        <label class="normal-label">
-          <%= status.enumeration.name %>
-          <%= check_box_tag "[issues_statuses][#{status.enumeration.name}]", status.enumeration.id.to_i, role.issues_statuses.include?(status) %>
-        </label>
-    <% end %>
-  </p>
+    <div class="form-group collection-checkbox">
+      <label class="control-label col-sm-3 col-lg-2"><%= t(:link_issues_statuses) %></label>
+      <div class="control-form col-sm-9 col-lg-10">
+        <%= f.collection_check_boxes :issues_status_ids, issues_statuses.sort { |x, y| x.enumeration.position <=> y.enumeration.position }.map { |is| [is.id, is.caption] }, :first, :last,
+                                     checked: role.issues_statuses.map(&:id) %>
+        <p class="help-block"><%= t("hint_role_statuses") %></p>
+      </div>
+    </div>
 
-  <p>
-    <label><%= t(:link_roles) %></label>
-    <% roles.each do |r| %>
-        <label class="normal-label">
-          <%= r.caption %>
-          <%= check_box_tag "[roles][#{r.caption}]", r.id, role.assignable_roles.include?(r) %>
-        </label>
-    <% end %>
-  </p>
-</div>
+    <div class="form-group collection-checkbox">
+      <label class="control-label col-sm-3 col-lg-2"><%= t(:link_roles) %></label>
+      <div class="control-form col-sm-9 col-lg-10">
+        <%= f.collection_check_boxes :assignable_role_ids, roles.map { |r| [r.id, r.caption] }, :first, :last, checked: role.assignable_roles.map(&:id) %>
+        <p class="help-block"><%= t("hint_role_assignable_roles") %></p>
+      </div>
+    </div>
 
+    <%= f.button :submit %>
+<% end %>

@@ -148,8 +148,7 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test 'he can assign the following roles' do
-    role = Role.set_role_attributes({name: 'Master'}, {issues_statuses: {"New" => "1", "In progress" => "2"},
-                                                       roles: {"Project Manager" => "1", "Team Member" => "2"}})
+    role = Role.create({name: 'Master', issues_status_ids: ["1", "2"], assignable_role_ids: ["1", "2"]})
     assert role.save, role.errors.messages
     member = Member.create(user_id: @user.id, project_id: @project.id, role_id: role.id)
     roles = Role.where(id: [1, 2]).to_a
@@ -208,8 +207,7 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test 'he can set issues statuses but it limited by his role' do
-    role = Role.set_role_attributes({name: 'Master'}, {issues_statuses: {"New" => "1", "In progress" => "2"},
-                                                       roles: {"Project Manager" => "1", "Team Member" => "2"}})
+    role = Role.create({name: 'Master', issues_status_ids: ["1", "2"], assignable_role_ids: ["1", "2"]})
     assert role.save, role.errors.messages
     member = Member.create(user_id: @user.id, project_id: @project.id, role_id: role.id)
     statuses = IssuesStatus.where(id: [1, 2]).joins(:enumeration).order('enumerations.position ASC').to_a

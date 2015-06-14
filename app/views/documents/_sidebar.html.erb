@@ -8,7 +8,7 @@
 <%= content_for :sidebar do %>
     <h2><%= t(:label_documents) %></h2>
     <ul>
-      <li><%= link_to t(:link_view_all)+' '+t(:label_documents), documents_path(project.slug, type: :all, commit: :Apply) %></li>
+      <li><%= link_to t(:link_view_all)+' '+t(:label_documents), project_documents_path(project.slug, type: :all, commit: :Apply) %></li>
     </ul>
     <div id="custom-queries">
       <% if User.current.allowed_to?('apply_custom_query', 'documents', project) %>

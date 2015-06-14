@@ -15,7 +15,7 @@ class WikiPageDecoratorTest < Rorganize::Decorator::TestCase
     allow_user_to('edit')
     node(@wiki_page_decorator.edit_link)
     assert_select 'a', 1
-    assert_select 'a[href=?]', edit_wiki_page_path(@project.slug, @wiki_page.slug)
+    assert_select 'a[href=?]', edit_project_wiki_page_path(@project.slug, @wiki_page.slug)
   end
 
   test "it should not display a link to edit when user is not allowed to" do
@@ -26,7 +26,7 @@ class WikiPageDecoratorTest < Rorganize::Decorator::TestCase
     allow_user_to('destroy')
     node(@wiki_page_decorator.delete_link)
     assert_select 'a', 1
-    assert_select 'a[href=?]', wiki_page_path(@project.slug, @wiki_page.slug)
+    assert_select 'a[href=?]', project_wiki_page_path(@project.slug, @wiki_page.slug)
   end
 
   test "it should not display a link to delete when user is not allowed to" do
@@ -37,7 +37,7 @@ class WikiPageDecoratorTest < Rorganize::Decorator::TestCase
     allow_user_to('new', 'wiki_pages')
     node(concat @wiki_page_decorator.new_subpage_link)
     assert_select 'a', 1
-    assert_select 'a[href=?]',new_sub_page_wiki_pages_path(@project.slug, @wiki_page.slug)
+    assert_select 'a[href=?]',new_sub_page_project_wiki_pages_path(@project.slug, @wiki_page.slug)
   end
 
   test "it should not display a link to create new sub page when user is not allowed to" do
@@ -47,7 +47,7 @@ class WikiPageDecoratorTest < Rorganize::Decorator::TestCase
   test "it displays a breadcrumb even when wiki page has no parents" do
     node(concat @wiki_page_decorator.display_breadcrumb)
     assert_select 'a', 1
-    assert_select 'a[href=?]', wiki_page_path(@project.slug, @wiki_page.slug)
+    assert_select 'a[href=?]', project_wiki_page_path(@project.slug, @wiki_page.slug)
     assert_select '.octicon-chevron-right', 0
   end
 
@@ -56,8 +56,8 @@ class WikiPageDecoratorTest < Rorganize::Decorator::TestCase
     @wiki_page.parent = parent_page
     node(concat @wiki_page_decorator.display_breadcrumb)
     assert_select 'a', 2
-    assert_select 'a[href=?]', wiki_page_path(@project.slug, @wiki_page.slug)
-    assert_select 'a[href=?]', wiki_page_path(@project.slug, parent_page.slug)
+    assert_select 'a[href=?]', project_wiki_page_path(@project.slug, @wiki_page.slug)
+    assert_select 'a[href=?]', project_wiki_page_path(@project.slug, parent_page.slug)
     assert_select '.octicon-chevron-right', 1
   end
 
@@ -87,7 +87,7 @@ class WikiPageDecoratorTest < Rorganize::Decorator::TestCase
   test "it displays a link to the page for activity context" do
     node(concat @wiki_page_decorator.display_object_type(@project))
     assert_select 'a', 1
-    assert_select 'a[href=?]', wiki_page_path(@project.slug, @wiki_page.slug)
+    assert_select 'a[href=?]', project_wiki_page_path(@project.slug, @wiki_page.slug)
     assert_select 'b', 1
     assert_select 'b', "#{I18n.t(:label_wiki_page )}".downcase
   end

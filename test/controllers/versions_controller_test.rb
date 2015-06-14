@@ -34,7 +34,7 @@ class VersionsControllerTest < ActionController::TestCase
       post_with_permission :create, version: {name: 'New version test', start_date: '2012-12-01', target_date: ''}
     end
     assert_not_empty flash[:notice]
-    assert_redirected_to versions_path
+    assert_redirected_to project_versions_path
   end
 
   test "should refresh the page when create version failed" do
@@ -53,7 +53,7 @@ class VersionsControllerTest < ActionController::TestCase
   test "should update version" do
     patch_with_permission :update, id: @version, version: {name: 'Edited version name', start_date: '2012-12-01', target_date: ''}
     assert_not_empty flash[:notice]
-    assert_redirected_to versions_path
+    assert_redirected_to project_versions_path
   end
 
   test "should refresh the page when update version failed" do

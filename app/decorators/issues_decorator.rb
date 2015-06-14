@@ -3,7 +3,7 @@ class IssuesDecorator < ApplicationCollectionDecorator
 
   # see #ApplicationCollectionDecorator::new_link
   def new_link
-    super(h.t(:link_new_issue), h.new_issue_path(context[:project].slug), context[:project])
+    super(h.t(:link_new_issue), h.new_project_issue_path(context[:project].slug), context[:project])
   end
 
   def no_data_glyph_name

@@ -5,41 +5,28 @@
 # File: _project_informations_form.erb
 %>
 
-<%= form_for(project_decorator, url: {controller: 'settings', action: 'update_project_informations', project_id: project_decorator.slug},
-             html: {class: 'form', multipart: true}, method: :put) do |f| %>
+<%= rorganize_form_for(project_decorator, url: {controller: 'settings', action: 'update_project_informations', project_id: project_decorator.slug},
+                       wrapper: :horizontal_form, wrapper_mappings: {boolean: :horizontal_boolean, check_boxes: :horizontal_radio_and_checkboxes}, html: {class: 'form-horizontal', multipart: true}, method: :put) do |f| %>
     <%= raw error_messages(project.errors.full_messages) %>
-    <div class="box">
-      <p>
-        <label for="project_name"><%= t(:field_name) %><span class="required">
-          *</span></label>
-        <%= f.text_field :name, size: 80 %>
-      </p>
 
-      <p>
-        <%= f.label :is_public, t(:field_is_public) %>
-        <%= f.check_box :is_public %>
-        <%= info_tag(t(:info_public_project)) %>
-      </p>
+    <%= f.input :name %>
+    <%= f.input :is_public, hint: t(:info_public_project) %>
+    <%= f.input :description, as: :text, input_html: {class: 'fancyEditor', id: 'project-description'} %>
 
-      <p>
-        <%= f.label :description, t(:field_description) %>
-        <%= f.text_area :description, class: 'fancyEditor', id: 'project-description' %>
-      </p>
+    <%= f.input :tracker_ids, collection: trackers_decorator, as: :check_boxes, wrapper_html: {class: "inline-block"} %>
 
-      <p>
-        <% trackers_decorator.settings_list %>
-      </p>
+    <div id="attachments">
+      <div class="form-group">
+        <label class="col-lg-2 col-sm-3 control-label"><%= t(:field_attachments) %></label>
 
-      <div id="attachments">
-        <p>
-          <label><%= t(:field_attachments) %></label>
+        <div class="col-lg-10 col-sm-9">
           <% if project_decorator.attachments[0].new_record? %>
               <%= render partial: 'shared/attachments', collection: project_decorator.attachments, locals: {object: project_decorator, type: 'project'} %>
           <% else %>
               <%= render partial: 'shared/show_attachments', locals: {object: project_decorator, type: 'project', attachments: project_decorator.attachments, no_header: true} %>
           <% end %>
-        </p>
+        </div>
       </div>
     </div>
-    <%= submit_tag t(:button_save) %>
+    <%= f.button :submit %>
 <% end %>

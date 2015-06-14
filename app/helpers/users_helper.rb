@@ -70,7 +70,7 @@ module UsersHelper
   # @param [Member] member
   # @param [User] user
   def assigned_to_user_filter_path(member, user)
-    issues_path(member.project.slug, {type: :filter,
+    project_issues_path(member.project.slug, {type: :filter,
                                       filters_list: [:assigned_to, :status],
                                       filter: {assigned_to: {operator: :equal, value: [user.id]}, status: {operator: :open}}})
   end

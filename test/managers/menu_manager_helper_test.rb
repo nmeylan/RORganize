@@ -62,7 +62,7 @@ class MenuManagerHelperTest < Rorganize::Decorator::TestCase
     node(content_for(:main_menu))
     assert_select 'li', 2
     assert_select 'a', 2
-    assert_select 'a[href=?]', issues_path(@project.slug)
+    assert_select 'a[href=?]', project_issues_path(@project.slug)
     assert_select 'a[href=?]', overview_projects_path(@project.slug)
   end
 
@@ -77,7 +77,7 @@ class MenuManagerHelperTest < Rorganize::Decorator::TestCase
     node(content_for(:main_menu))
     assert_select 'li', 1
     assert_select 'a', 1
-    assert_select 'a[href=?]', issues_path(@project.slug)
+    assert_select 'a[href=?]', project_issues_path(@project.slug)
   end
 
   test "it should render all admin menu" do

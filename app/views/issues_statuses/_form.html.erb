@@ -1,22 +1,23 @@
-<%= raw error_messages(status.errors.full_messages) %>
-<div class="box">
-  <p>
-    <label for="enumeration_name"><%= t(:field_name) %><span class="required">*</span></label>
-    <%= text_field_tag 'enumeration[name]', status.enumeration ? status.enumeration.name : '', size: 80, maxlength: 255 %>
-  </p>
+<%= rorganize_form_for status, wrapper: :horizontal_form, wrapper_mappings: {boolean: :horizontal_boolean}, html: {class: 'form-horizontal', multipart: true} do |f| %>
+    <%= raw error_messages(status.errors.full_messages) %>
 
-  <div class="autocomplete-combobox cbb-medium nosearch">
-    <label for="issues_status_default_done_ratio"><%= t(:field_default_done_ratio) %></label>
-    <%= f.select :default_done_ratio, done_ratio, {include_blank: true}, {class: 'chzn-select-deselect cbb-medium'} %>
-  </div>
+    <div class="form-group required">
+      <label for="enumeration_name" class="col-sm-3 col-lg-2 control-label required"><%= t(:field_name) %> <abbr title="required">*</abbr></label>
 
-  <p>
-    <%= f.label :color, t(:label_color) %>
-    <%= color_field_tag f, :color %>
-  </p>
-  <p>
-    <%= f.label :is_closed, 'Is closed' %>
-    <%= f.check_box(:is_closed) %>
-  </p>
-</div>
+      <div class="col-sm-9 col-lg-10">
+        <%= text_field_tag 'enumeration[name]', status.enumeration ? status.enumeration.name : '', size: 80, maxlength: 255, class: "form-control" %>
+      </div>
+    </div>
 
+    <%= f.input :default_done_ratio, collection: done_ratio, include_blank: true, input_html: {class: 'chzn-select-deselect cbb-medium cbb-nosearch'} %>
+
+    <div class="form-group required">
+      <%= f.label :color, t(:label_color), class: "col-sm-3 col-lg-2 control-label" %>
+      <div class="col-sm-9 col-lg-10">
+        <%= color_field_tag f, :color, class: "form-control" %>
+      </div>
+    </div>
+    <%= f.input :is_closed, hint: t("text_is_closed") %>
+
+    <%= f.button :submit %>
+<% end %>

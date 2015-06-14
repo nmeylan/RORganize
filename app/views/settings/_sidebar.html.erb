@@ -7,35 +7,35 @@
 
 <%= content_for :sidebar do %>
     <ul class="tabs">
-      <li class="settings-index"><%= link_to t(:link_update_informations), settings_path(project.slug) %></li>
+      <li class="settings-index"><%= link_to t(:link_update_informations), project_settings_path(project.slug) %></li>
       <% if User.current.allowed_to?('index', 'Versions', project) %>
           <li class="versions">
             <%= link_to glyph(t(:link_versions), Rorganize::ACTION_ICON[:version_id]),
-                        versions_path(project.slug) %>
+                        project_versions_path(project.slug) %>
           </li>
       <% end %>
       <% if User.current.allowed_to?('index', 'Categories', project) %>
           <li class="categories">
             <%= link_to glyph(t(:link_categories), Rorganize::ACTION_ICON[:category_id]),
-                        categories_path(project.slug) %>
+                        project_categories_path(project.slug) %>
           </li>
       <% end %>
       <% if User.current.allowed_to?('index', 'Members', project) %>
           <li class="members">
             <%= link_to glyph(t(:link_members), 'organization'),
-                        members_path(project.slug) %>
+                        project_members_path(project.slug) %>
           </li>
       <% end %>
       <% if User.current.allowed_to?('public_queries', 'Queries', project) %>
           <li class="settings-public-queries">
             <%= link_to glyph(t(:link_queries), 'database'),
-                        public_queries_settings_path(project.slug) %>
+                        public_queries_project_settings_path(project.slug) %>
           </li>
       <% end %>
       <% if User.current.allowed_to?('modules', 'Settings', project) %>
           <li class="settings-modules">
             <%= link_to glyph(t(:link_modules), 'plug'),
-                        modules_settings_path(project.slug) %>
+                        modules_project_settings_path(project.slug) %>
           </li>
       <% end %>
       <% if User.current.allowed_to?('archive', 'Projects', project) %>

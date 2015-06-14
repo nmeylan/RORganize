@@ -28,10 +28,10 @@ class SettingsController < ApplicationController
 
   #POST project/:project_identifier/settings/
   def update
-    @project.update_info(project_params, params[:trackers])
+    @project.update(project_params)
     respond_to do |format|
       if @project.errors.messages.empty?
-        success_generic_update_callback(format, settings_path(@project.slug), true)
+        success_generic_update_callback(format, project_settings_path(@project.slug), true)
       else
         @project.reload
         load_form_data
@@ -43,7 +43,7 @@ class SettingsController < ApplicationController
   def public_queries
     @queries_decorator = Query.public_queries(@project.id).eager_load(:user)
                              .paginated(@sessions[:current_page], @sessions[:per_page], order('queries.name'))
-                             .decorate(context: {queries_url: public_queries_settings_path(@project.slug), action_name: 'public_queries'})
+                             .decorate(context: {queries_url: public_queries_project_settings_path(@project.slug), action_name: 'public_queries'})
     respond_to do |format|
       format.html
       format.js { respond_to_js }

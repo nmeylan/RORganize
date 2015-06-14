@@ -72,13 +72,6 @@ class ProjectTest < ActiveSupport::TestCase
     assert @project.starred?
   end
 
-  test 'permit attributes should contains' do
-    expectation = [:name, :description, :identifier, :trackers, :is_public,
-                   new_attachment_attributes: Attachment.permit_attributes]
-
-    assert_match_array expectation, Project.permit_attributes
-  end
-
   test 'it has opened projects' do
     assert_match_array [1, 6, @project.id], Project.opened_projects_id
   end
@@ -148,27 +141,6 @@ class ProjectTest < ActiveSupport::TestCase
 
     assert_match_array issues_comments + documents_comments,
                        @project.comments_for(['Issue', 'Document'], period, range_end_date).to_a
-  end
-
-  test 'it has a way to update projects information' do
-    @project.trackers << trackers(:trackers_001)
-    @project.save
-
-    assert_not @project.update_info({name: ''}, nil)
-    assert 1, @project.trackers.count
-
-    @project.update_info({name: 'Test it'}, nil)
-    assert_equal 'Test it', @project.name
-    assert_equal 'test-it', @project.slug
-    assert 1, @project.trackers.count
-
-    @project.update_info({name: 'Test it', description: 'Hi this is a description'}, {})
-    assert_equal 'Hi this is a description', @project.description
-    assert 0, @project.trackers.count
-
-    @project.update_info({name: 'Test it', description: 'Hi this is a description'}, {trackers: 666})
-    assert_equal 'Hi this is a description', @project.description
-    assert 0, @project.trackers.count
   end
 
   test 'it load latest activity' do

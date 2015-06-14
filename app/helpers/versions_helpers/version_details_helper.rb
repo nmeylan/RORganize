@@ -11,7 +11,7 @@ module VersionsHelpers
     end
 
     def version_detail_issue_render(issue, version)
-      link_to("#{issue.tracker.name} ##{issue.sequence_id} : #{issue.caption}", issue_path(version.project.slug, issue))
+      link_to("#{issue.tracker.name} ##{issue.sequence_id} : #{issue.caption}", project_issue_path(version.project.slug, issue))
     end
 
     def version_detail_issues_render(collection_detail, version)

@@ -1,4 +1,5 @@
 require 'rorganize/redcarpet/rorganize_markdown_renderer'
+require 'rorganize/form_builder/rorganize_form_builder'
 module ApplicationHelper
   include PageTitleHelper
   include Rorganize::Managers::PermissionManager::PermissionHandler
@@ -59,14 +60,18 @@ module ApplicationHelper
   # @param [String] name : name of the select_tag.
   # @param [String] select_key : selected item key.
   def select_tag_versions(versions, id, name, select_key, options = {})
+    default_options = options.merge({class: 'chzn-select-deselect  cbb-medium search', id: id, include_blank: true})
+    select_tag name, grouped_options_for_select(versions_grouped_options(versions), select_key), default_options
+  end
+
+  def versions_grouped_options(versions)
     hash = {Opened: [], Done: []}
     versions.sort_by(&:position).reverse.each do |v|
       key = v.is_done ? :Done : :Opened
       version_info = build_version_info(v)
       hash[key] << [v.caption, v.id, {'data-target_date' => v.target_date, 'data-start_date' => v.start_date, 'data-version_info' => version_info}]
     end
-    default_options = options.merge({class: 'chzn-select-deselect  cbb-medium search', id: id, include_blank: true})
-    select_tag name, grouped_options_for_select(hash, select_key), default_options
+    hash
   end
 
   def build_version_info(v)
@@ -139,5 +144,10 @@ module ApplicationHelper
     g = color_tmp[2, 2].to_i(16)
     b = color_tmp[4, 2].to_i(16)
     "background-color:#{color}; color:#{Math.sqrt((r*r*0.241) + (g*g*0.691) + (b*b*0.068))> 180 ? '#484848' : 'white'}"
+  end
+
+  def rorganize_form_for(object, *args, &block)
+    options = args.extract_options!
+    simple_form_for(object, *(args << options.merge(builder: RorganizeFormBuilder)), &block)
   end
 end

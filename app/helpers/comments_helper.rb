@@ -71,37 +71,22 @@ module CommentsHelper
   # Build comment creation form.
   # @param [ActiveRecord::Base] model : model that belongs to the new comment.
   def post_comment_form(model)
-    form_for model.new_comment, url: comments_path, html: {class: 'form', remote: true} do |f|
+    rorganize_form_for model.new_comment, html: {class: 'form', remote: true} do |f|
       concat f.hidden_field :commentable_id, value: model.new_comment.commentable_id
       concat f.hidden_field :commentable_type, value: model.new_comment.commentable_type
       concat hidden_field_tag :project_id, model.project.slug
-      comment_form_content(f)
+      concat f.input :content, input_html: { rows: 12, class: 'fancyEditor', id: 'comment-form'}
+      concat f.button :submit
     end
   end
 
   # Build comment edition form.
   # @param [Comment] model : the comment to edit.
   def put_comment_form(comment)
-    form_for comment, html: {class: 'form', remote: true, method: :put} do |f|
+    rorganize_form_for comment, html: {class: 'form', remote: true, method: :put} do |f|
       concat hidden_field_tag :project_id, comment.project.slug
-      comment_form_content(f)
-    end
-  end
-
-  # Build content for the forms.
-  # @param [Form] f : the form.
-  def comment_form_content(f)
-    concat content_tag :p, &Proc.new {
-      concat comment_form_label(f)
-      concat f.text_area :content, rows: 12, class: 'fancyEditor', id: 'comment-form'
-    }
-    concat submit_tag t(:button_submit)
-  end
-
-  def comment_form_label(f)
-    f.label :content do
-      concat t(:field_content)
-      concat content_tag :span, '*', class: 'required'
+      concat f.input :content, input_html: { rows: 12, class: 'fancyEditor', id: 'comment-form'}
+      concat f.button :submit
     end
   end
 end

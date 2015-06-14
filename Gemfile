@@ -27,6 +27,9 @@ gem 'sass-rails', '~> 4.0.1'
 gem 'jquery-rails'
 gem 'coffee-rails'
 gem 'uglifier'
+gem 'simple_form'
+gem 'bootstrap-sass'
+
 group :test do
   # Pretty printed test output
   gem 'turn', '~> 0.8.3', :require => false

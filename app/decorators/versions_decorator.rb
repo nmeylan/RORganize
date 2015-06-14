@@ -3,7 +3,7 @@ class VersionsDecorator < ApplicationCollectionDecorator
 
   # see #ApplicationCollectionDecorator::new_link
   def new_link
-    super(h.t(:link_new_version), h.new_version_path(context[:project].slug), context[:project])
+    super(h.t(:link_new_version), h.new_project_version_path(context[:project].slug), context[:project])
   end
 
   def no_data_glyph_name

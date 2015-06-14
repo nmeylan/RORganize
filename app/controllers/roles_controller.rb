@@ -31,7 +31,7 @@ class RolesController < ApplicationController
 
   #POST /administration/roles/new
   def create
-    @role = Role.set_role_attributes(role_params, params)
+    @role = Role.create(role_params)
     load_form_content
     generic_create_callback(@role, roles_path)
   end
@@ -46,7 +46,7 @@ class RolesController < ApplicationController
 
   #PUT /administration/roles/edit/:id
   def update
-    @role = Role.set_role_attributes(role_params, params)
+    @role.attributes = role_params
     load_form_content
     generic_update_callback(@role, roles_path)
   end

@@ -9,7 +9,7 @@
 <% end %>
 
 <%= issue_list_type_nav %>
-<%= filter_tag('issue', Issue.filtered_attributes, issues_path(@project.slug, query_id: params[:query_id]), true, {user: User.current, project: @project, filter_content: session["#{@project.slug}_controller_issues_filter"], type: 'Issue'}) %>
+<%= filter_tag('issue', Issue.filtered_attributes, project_issues_path(@project.slug, query_id: params[:query_id]), true, {user: User.current, project: @project, filter_content: session["#{@project.slug}_controller_issues_filter"], type: 'Issue'}) %>
 <%= clear_both %>
 
 <%= @issues_decorator.display_collection %>

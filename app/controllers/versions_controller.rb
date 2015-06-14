@@ -28,7 +28,7 @@ class VersionsController < ApplicationController
 
   def create
     @version = @project.versions.build(version_params)
-    generic_create_callback(@version, versions_path)
+    generic_create_callback(@version, project_versions_path)
   end
 
   def edit
@@ -39,7 +39,7 @@ class VersionsController < ApplicationController
 
   def update
     @version.attributes= version_params
-    generic_update_callback(@version, versions_path)
+    generic_update_callback(@version, project_versions_path)
   end
 
   def destroy

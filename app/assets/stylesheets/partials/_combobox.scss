@@ -19,6 +19,7 @@
 .cbb-small {
   width: 69px;
 }
+
 .autocomplete-combobox-high{
   .chzn-container{
 
@@ -52,7 +53,7 @@ td .autocomplete-combobox {
   height: 26px;
 }
 
-.autocomplete-combobox.nosearch div.chzn-search {
+.cbb-nosearch div.chzn-search {
   display: none;
 }
 
@@ -77,7 +78,7 @@ a.chzn-single.chzn-default {
 .chzn-container {
   font-size: 11px;
   position: relative;
-  display: inline-block;
+  //display: inline-block;
   zoom: 1;
   /*display: inline;*/
 }

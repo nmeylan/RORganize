@@ -6,7 +6,7 @@ module IssuesHelper
   include IssuesHelpers::IssuesFilterHelper
 
   def list(collection)
-    generic_list(collection, {class: 'issue list', 'data-link' => toolbox_issues_path(@project.slug)})
+    generic_list(collection, {class: 'issue list', 'data-link' => toolbox_project_issues_path(@project.slug)})
   end
 
   def list_row(issue)
@@ -96,7 +96,7 @@ module IssuesHelper
 
   def issue_list_type_nav_item(label, glyph, type, text = '')
     {caption: glyph(label, glyph),
-     path: issues_path(@project.slug, list_type: type),
+     path: project_issues_path(@project.slug, list_type: type),
      options: {class: "#{'selected' if is_list_displayed_with_type?(type.to_sym)} subnav-item tooltipped tooltipped-s", label: text}}
   end
 

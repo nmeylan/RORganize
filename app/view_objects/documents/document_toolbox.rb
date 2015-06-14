@@ -8,7 +8,7 @@ class DocumentToolbox < Toolbox
   include Draper::ViewHelpers
 
   def initialize(collection, project, user)
-    super(collection, user, {path: h.toolbox_documents_path(project.slug)})
+    super(collection, user, {path: h.toolbox_project_documents_path(project.slug)})
     @project = project
     build_menu
   end
@@ -19,7 +19,7 @@ class DocumentToolbox < Toolbox
       build_menu_category
       build_menu_version
     end
-    add_extra_action_edit('Documents',  h.edit_document_path(@project.slug, @collection_ids[0]))
+    add_extra_action_edit('Documents',  h.edit_project_document_path(@project.slug, @collection_ids[0]))
     add_extra_action_delete('Documents')
   end
 

@@ -38,7 +38,7 @@ class MembersController < ApplicationController
   end
 
   def create
-    success = Member.create(project_id: @project.id, role_id: params[:role], user_id: params[:user])
+    success = Member.create(project_id: @project.id, role_id: params[:member][:role_id], user_id: params[:member][:user_id])
     load_members
     respond_to do |format|
       format.js { respond_to_js action: :new, locals: {users: nil, new: false}, response_header: :success, response_content: t(:successful_creation) }
@@ -61,9 +61,10 @@ class MembersController < ApplicationController
   end
 
   def check_change_member_role
-    role_id = params[:role] ? params[:role] : params[:value]
+    role_id = params[:member] ? params[:member][:role_id] : params[:role_id]
+    role_id = role_id || params[:value]
     new_role = Role.find_by_id(role_id)
-    if not_allowed_to_grant_this_role?(new_role)
+    if !User.current.admin_act_as_admin? && not_allowed_to_grant_this_role?(new_role)
       render_403
     end
   end
@@ -76,7 +77,7 @@ class MembersController < ApplicationController
 
   def load_members
     @members_decorator = Member.members_by_project(@project.id, @sessions[:current_page], @sessions[:per_page], order('users.name'))
-    .decorate(context: {project: @project, roles: User.current.allowed_roles(@project)})
+                             .decorate(context: {project: @project, roles: User.current.allowed_roles(@project)})
   end
 
 end

@@ -31,7 +31,7 @@ class DocumentsController < ApplicationController
 
   def create
     @document_decorator = @project.documents.build(document_params).decorate(context: {project: @project})
-    generic_create_callback(@document_decorator, -> { document_path(@project.slug, @document_decorator) })
+    generic_create_callback(@document_decorator, -> { project_document_path(@project.slug, @document_decorator) })
   end
 
   def edit
@@ -42,7 +42,7 @@ class DocumentsController < ApplicationController
 
   def update
     @document_decorator.attributes = document_params
-    update_attachable_callback(@document_decorator, document_path(@project.slug, @document_decorator), document_params)
+    update_attachable_callback(@document_decorator, project_document_path(@project.slug, @document_decorator), document_params)
   end
 
   def show
@@ -50,7 +50,7 @@ class DocumentsController < ApplicationController
   end
 
   def destroy
-    generic_destroy_callback(@document_decorator, documents_path)
+    generic_destroy_callback(@document_decorator, project_documents_path)
   end
 
   #GET /project/:project_identifier/documents/toolbox

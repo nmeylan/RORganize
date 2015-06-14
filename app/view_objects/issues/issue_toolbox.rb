@@ -9,7 +9,7 @@ class IssueToolbox < Toolbox
   include Draper::ViewHelpers
 
   def initialize(collection, project, user)
-    super(collection, user, {path: h.toolbox_issues_path(project.slug)})
+    super(collection, user, {path: h.toolbox_project_issues_path(project.slug)})
     @project = project
     build_menu if @collection_ids.any?
   end
@@ -21,7 +21,7 @@ class IssueToolbox < Toolbox
     build_menu_category
     build_menu_done
 
-    add_extra_action_edit('Issues', h.edit_issue_path(@project.slug, @collection_ids[0]))
+    add_extra_action_edit('Issues', h.edit_project_issue_path(@project.slug, @collection_ids[0]))
     add_extra_action_delete('Issues')
   end
 

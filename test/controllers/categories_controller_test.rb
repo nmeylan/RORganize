@@ -26,7 +26,7 @@ class CategoriesControllerTest < ActionController::TestCase
       post_with_permission :create, category: {name: 'New category'}
     end
     assert_not_empty flash[:notice]
-    assert_redirected_to categories_path(@project.slug)
+    assert_redirected_to project_categories_path(@project.slug)
   end
 
   test "should refresh the page when create category failed" do
@@ -46,7 +46,7 @@ class CategoriesControllerTest < ActionController::TestCase
   test "should update category" do
     patch_with_permission :update, id: @category, category: {name: 'Change category name'}
     assert_not_empty flash[:notice]
-    assert_redirected_to categories_path(@project.slug)
+    assert_redirected_to project_categories_path(@project.slug)
   end
 
   test "should refresh the page when update category failed" do

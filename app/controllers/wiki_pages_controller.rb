@@ -34,7 +34,7 @@ class WikiPagesController < ApplicationController
     respond_to do |format|
       if page_success
         home_page_creation(wiki, format, home_page_success)
-        success_generic_create_callback(format, wiki_page_path(@project.slug, @wiki_page_decorator.slug))
+        success_generic_create_callback(format, project_wiki_page_path(@project.slug, @wiki_page_decorator.slug))
       else
         if params[:wiki] && params[:wiki][:home_page]
           format.html { render :new_home_page, status: :unprocessable_entity }
@@ -48,7 +48,7 @@ class WikiPagesController < ApplicationController
   def home_page_creation(wiki, format, home_page_success)
     if  params[:wiki] && params[:wiki][:home_page] && wiki.home_page_id.nil?
       if home_page_success
-        success_generic_create_callback(format, wiki_page_path(@project.slug, @wiki_page_decorator.slug))
+        success_generic_create_callback(format, project_wiki_page_path(@project.slug, @wiki_page_decorator.slug))
       else
         format.html { render :new_home_page }
       end
@@ -69,11 +69,11 @@ class WikiPagesController < ApplicationController
 
   def update
     @wiki_page_decorator.attributes = wiki_page_params
-    generic_update_callback(@wiki_page_decorator, wiki_page_path(@project.slug, @wiki_page_decorator.slug))
+    generic_update_callback(@wiki_page_decorator, project_wiki_page_path(@project.slug, @wiki_page_decorator.slug))
   end
 
   def destroy
-    generic_destroy_callback(@wiki_page_decorator, pages_wiki_index_path(@project.slug))
+    generic_destroy_callback(@wiki_page_decorator, pages_project_wiki_index_path(@project.slug))
   end
 
   private

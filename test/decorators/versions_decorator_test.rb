@@ -29,7 +29,7 @@ class VersionsDecoratorTest < Rorganize::Decorator::TestCase
     allow_user_to('new')
     node(@versions_decorator.new_link)
     assert_select 'a', 1
-    assert_select 'a[href=?]', "#{versions_path(@project.slug)}/new"
+    assert_select 'a[href=?]', "#{project_versions_path(@project.slug)}/new"
   end
 
   test "it should not have a link to new action when user is not allowed to" do

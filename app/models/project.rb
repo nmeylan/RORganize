@@ -67,8 +67,7 @@ class Project < ActiveRecord::Base
   end
 
   def self.permit_attributes
-    [:name, :description, :identifier, :trackers, :is_public,
-     new_attachment_attributes: Attachment.permit_attributes]
+    [:name, :description, :identifier, :is_public, new_attachment_attributes: Attachment.permit_attributes, tracker_ids: []]
   end
 
   def set_created_by
@@ -110,20 +109,6 @@ class Project < ActiveRecord::Base
   # @param [Date] end_date : The end date of the range.
   def comments_for(commentable_types, period, end_date)
     Comment.comments_eager_load(commentable_types, period, end_date, "comments.project_id = #{self.id}")
-  end
-
-  def update_info(params, trackers)
-    self.attributes = params
-    self.trackers.clear
-    unless trackers.nil?
-      tracker_ids = trackers.values
-      trackers = Tracker.where(id: tracker_ids)
-      tracker_ids.each do |id|
-        tracker = trackers.select { |track| track.id == id.to_i }
-        self.trackers << tracker
-      end
-    end
-    self.save
   end
 
   def enable_modules(modules_name)

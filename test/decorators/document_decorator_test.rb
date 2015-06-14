@@ -14,7 +14,7 @@ class DocumentDecoratorTest < Rorganize::Decorator::TestCase
     allow_user_to('edit')
     node(@document_decorator.edit_link)
     assert_select 'a', 1
-    assert_select 'a[href=?]', edit_document_path(@project.slug, @document)
+    assert_select 'a[href=?]', edit_project_document_path(@project.slug, @document)
   end
 
   test "it should not display a link to edit when user is not allowed to" do
@@ -25,7 +25,7 @@ class DocumentDecoratorTest < Rorganize::Decorator::TestCase
     allow_user_to('destroy')
     node(@document_decorator.delete_link)
     assert_select 'a', 1
-    assert_select 'a[href=?]', document_path(@project.slug, @document)
+    assert_select 'a[href=?]', project_document_path(@project.slug, @document)
   end
 
   test "it should not display a link to delete when user is not allowed to" do
@@ -37,7 +37,7 @@ class DocumentDecoratorTest < Rorganize::Decorator::TestCase
     attachment = Attachment.new(attachable_type: 'Document', attachable_id: 666, id: 666)
     node(@document_decorator.delete_attachment_link(attachment))
     assert_select 'a', 1
-    assert_select 'a[href=?]', delete_attachment_documents_path(@project.slug, attachment)
+    assert_select 'a[href=?]', delete_attachment_project_documents_path(@project.slug, attachment)
   end
 
   test "it should not display a link to delete document attachment when user is not allowed to" do
@@ -49,7 +49,7 @@ class DocumentDecoratorTest < Rorganize::Decorator::TestCase
     allow_user_to('new')
     node(@document_decorator.new_link)
     assert_select 'a', 1
-    assert_select 'a[href=?]', new_document_path(@project.slug)
+    assert_select 'a[href=?]', new_project_document_path(@project.slug)
   end
 
   test "it should not display a link to create a new document when user is not allowed to" do
@@ -59,7 +59,7 @@ class DocumentDecoratorTest < Rorganize::Decorator::TestCase
   test "it displays a link to the document for activity context" do
     node(concat @document_decorator.display_object_type(@project))
     assert_select 'a', 1
-    assert_select 'a[href=?]', document_path(@project.slug, @document)
+    assert_select 'a[href=?]', project_document_path(@project.slug, @document)
     assert_select 'b', 1
     assert_select 'b', "#{I18n.t(:label_document)}".downcase
   end

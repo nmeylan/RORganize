@@ -103,13 +103,13 @@ class CommentDecoratorTest < Rorganize::Decorator::TestCase
     assert_select 'b', 1
     assert_select 'b', "#{I18n.t(:label_issue)} ##{@issue.sequence_id}".downcase
     assert_select 'a', 1
-    assert_select 'a[href=?]', issue_path(@project.slug, @issue)
+    assert_select 'a[href=?]', project_issue_path(@project.slug, @issue)
   end
 
   test "it has a method to display that something has been commented" do
     node(concat @comment_decorator.render_header)
     assert_select 'a', 2
-    assert_select 'a[href=?]', issue_path(@project.slug, @issue)
+    assert_select 'a[href=?]', project_issue_path(@project.slug, @issue)
     assert_select 'a[href=?]', comment_path(@comment)
   end
 

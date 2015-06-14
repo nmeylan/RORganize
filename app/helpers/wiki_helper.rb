@@ -56,7 +56,7 @@ module WikiHelper
   # @param [WikiPage] page
   def page_link(page)
     content_tag :li, {class: 'item', id: "item-#{page.id}"} do
-      concat link_to page.title, wiki_page_path(@project.slug, page.slug)
+      concat link_to page.title, project_wiki_page_path(@project.slug, page.slug)
     end
   end
 

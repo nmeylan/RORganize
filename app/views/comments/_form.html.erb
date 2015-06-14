@@ -6,7 +6,5 @@
 <%= content_tag :div, {id: 'add-comment-form'} do %>
     <div class="separator"></div>
     <h2 id="add-comment"><%= glyph(t(:link_comment), 'x') %></h2>
-    <%= content_tag :div, class: 'box' do %>
-        <%= post_comment_form(model) %>
-    <% end %>
+    <%= post_comment_form(model) %>
 <% end %>

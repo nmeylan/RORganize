@@ -30,14 +30,14 @@ class WikiControllerTest < ActionController::TestCase
       post_with_permission :create
     end
     assert_not_empty flash[:notice]
-    assert_redirected_to wiki_index_path(@project.slug)
+    assert_redirected_to project_wiki_index_path(@project.slug)
   end
 
   test  "should get an error user create a and a wiki already exists" do
     assert_no_difference('Wiki.count') do
       post_with_permission :create
     end
-    assert_redirected_to wiki_index_path(@project.slug)
+    assert_redirected_to project_wiki_index_path(@project.slug)
   end
 
   test "should view all wiki pages" do

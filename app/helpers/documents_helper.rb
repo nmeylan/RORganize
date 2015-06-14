@@ -9,7 +9,7 @@ module DocumentsHelper
   include DocumentsHelpers::DocumentsFilterHelper
 
   def list(collection)
-    generic_list(collection, {class: 'document list', 'data-link' => toolbox_documents_path(@project.slug)})
+    generic_list(collection, {class: 'document list', 'data-link' => toolbox_project_documents_path(@project.slug)})
   end
 
   def list_header
@@ -31,7 +31,7 @@ module DocumentsHelper
     content_tag :tr, class: "odd-even document-tr has-context-menu #{disabled_class}" do
       list_td check_box_tag("document-#{document.sequence_id.to_s}", document.sequence_id, false, disabled: !document.user_allowed_to_edit?), {class: 'cell-checkbox'}
       list_td document.sequence_id, class: 'list-center id'
-      list_td link_to(document.resized_caption(100), document_path(@project.slug, document)), {class: 'name', id: document.sequence_id}
+      list_td link_to(document.resized_caption(100), project_document_path(@project.slug, document)), {class: 'name', id: document.sequence_id}
       list_td document.display_category, class: 'list-center category'
       list_td document.display_version, class: 'list-center version'
       list_td document.comment_presence_indicator, class: 'icon-information'

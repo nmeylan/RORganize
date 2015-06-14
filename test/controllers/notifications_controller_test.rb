@@ -46,7 +46,7 @@ class NotificationsControllerTest < ActionController::TestCase
       _delete :destroy, id: @notification
     end
     assert_response :redirect
-    assert_redirected_to issue_path(@project, @issue, {anchor: "journal-#{@journal.id}"})
+    assert_redirected_to project_issue_path(@project, @issue, {anchor: "journal-#{@journal.id}"})
   end
 
   test "should not delete other user notification" do
