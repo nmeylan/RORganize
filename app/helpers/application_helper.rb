@@ -115,10 +115,10 @@ module ApplicationHelper
   # :name, the name of the tabs
   # :element, the tab content
   def horizontal_tabs(id, tabs)
-    content_tag :div, {class: 'tabnav', id: id} do
-      content_tag :ul, {class: 'tabnav-tabs'} do
+    content_tag :div, {class: '', id: id} do
+      content_tag :ul, {class: 'nav nav-tabs'} do
         tabs.collect do |el|
-          content_tag :li, link_to(el[:element], '#', {class: "tabnav-tab #{tabs.first.eql?(el) ? 'selected' : ''}", 'data-tab_id' => el[:name]})
+          content_tag :li, link_to(el[:element], "##{el[:name]}", data: {toggle: "tab"}), class: "#{tabs.first.eql?(el) ? 'active' : ''}"
         end.join.html_safe
       end
     end

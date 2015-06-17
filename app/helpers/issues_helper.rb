@@ -88,7 +88,7 @@ module IssuesHelper
   end
 
   def issue_list_type_nav
-    subnav_tag('subnav-right',
+    subnav_tag('pull-right',
                'issue-list-type-nav',
                issue_list_type_nav_item('overview', 'three-bars', :overview, t(:text_issue_list_type_overview)),
                issue_list_type_nav_item('gantt', 'clock', :gantt, t(:text_issue_list_type_gantt)))
@@ -97,7 +97,7 @@ module IssuesHelper
   def issue_list_type_nav_item(label, glyph, type, text = '')
     {caption: glyph(label, glyph),
      path: project_issues_path(@project.slug, list_type: type),
-     options: {class: "#{'selected' if is_list_displayed_with_type?(type.to_sym)} subnav-item tooltipped tooltipped-s", label: text}}
+     options: {class: "#{'active' if is_list_displayed_with_type?(type.to_sym)} btn btn-default tooltipped tooltipped-s", label: text}}
   end
 
   # Build a toolbox render for issue toolbox.

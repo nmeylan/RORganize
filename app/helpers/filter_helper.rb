@@ -29,11 +29,11 @@ module FilterHelper
   # @param [Boolean] can_save : false when save button is hidden, true otherwise.
   # @param [hash] save_button_options
   def filter_form_tag(filtered_attributes, save_button_options, can_save, submission_path)
-    form_tag submission_path, {method: :get, class: 'filter-form', id: 'filter-form', remote: true} do
+    form_tag submission_path, {method: :get, class: 'filter-form form', id: 'filter-form', remote: true} do
       filter_type_choice_tag
       concat filter_attribute_choice_tag(filtered_attributes)
       concat content_tag :table, nil, id: 'filter-content'
-      concat submit_tag t(:button_apply), {style: 'margin-left:0px'}
+      concat submit_tag t(:button_apply), {style: 'margin-left:0px', class: "btn btn-primary"}
       concat content_tag :span, save_filter_button_tag(can_save, save_button_options),
                          {id: 'save-query-button'}
     end

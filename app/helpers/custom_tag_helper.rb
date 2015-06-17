@@ -132,8 +132,8 @@ module CustomTagHelper
   # options are default link_to html_options.
   # E.g : {caption: 'Issue link', path: 'project_issues_path', {class: 'my class', id: {my id}}}
   def subnav_tag(css_class, id, *links)
-    content_tag :div, {class: "subnav #{css_class}", id: id} do
-      special_links_builder(links, 'subnav-item')
+    content_tag :div, {class: "btn-group #{css_class}", id: id} do
+      special_links_builder(links, 'btn btn-primary')
     end
   end
 
@@ -159,7 +159,7 @@ module CustomTagHelper
   # options are default link_to html_options.
   # E.g : {caption: 'Issue link', path: 'project_issues_path', {class: 'my class', id: {my id}}}
   def group_button_tag(*links)
-    content_tag :div, {class: "button-group"} do
+    content_tag :div, {class: "btn btn-primary-group"} do
       special_links_builder(links, 'minibutton')
     end
   end

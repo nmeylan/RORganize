@@ -13,20 +13,20 @@ class WikiDecorator < ApplicationDecorator
   def new_link
     if model.new_record?
       h.concat h.content_tag :h2, h.t(:text_no_wiki)
-      link_to_with_permissions(h.t(:button_create), h.project_wiki_index_path(context[:project].slug), context[:project], nil, {method: :post, class: 'button new'})
+      link_to_with_permissions(h.t(:button_create), h.project_wiki_index_path(context[:project].slug), context[:project], nil, {method: :post, class: 'btn btn-primary new'})
     end
   end
 
   # Render organize pages link.
   def organize_pages_link
     if User.current.allowed_to?('set_organization', 'Wiki', context[:project])
-      h.link_to h.glyph(h.t(:link_organize_pages), 'list-ordered'), h.organize_pages_project_wiki_index_path(context[:project].slug), {class: 'button'}
+      h.link_to h.glyph(h.t(:link_organize_pages), 'list-ordered'), h.organize_pages_project_wiki_index_path(context[:project].slug), {class: 'btn btn-primary'}
     end
   end
 
   # see #ApplicationDecorator::new_link.
   def new_page_link
-    link_to_with_permissions(h.glyph(h.t(:link_new_page), 'file-text'), h.new_project_wiki_page_path(context[:project].slug), context[:project], nil, {method: :get, class: 'button new'})
+    link_to_with_permissions(h.glyph(h.t(:link_new_page), 'file-text'), h.new_project_wiki_page_path(context[:project].slug), context[:project], nil, {method: :get, class: 'btn btn-primary new'})
   end
 
   # Render home page. If doesn't exists display new link.
@@ -43,7 +43,7 @@ class WikiDecorator < ApplicationDecorator
 
   def display_nil_home_page
     if User.current.allowed_to?('new', 'Wiki_pages', context[:project])
-      h.link_to h.t(:label_new_home_page), h.new_home_page_project_wiki_pages_path(context[:project]), {class: 'button'}
+      h.link_to h.t(:label_new_home_page), h.new_home_page_project_wiki_pages_path(context[:project]), {class: 'btn btn-primary'}
     else
       h.no_data h.t(:text_empty_page)
     end

@@ -54,7 +54,7 @@ class ProjectDecorator < ApplicationDecorator
   # @param [Hash] issues : a hash
   def build_overview_report_stats(versions_overviews, issues = {})
     versions_overviews.inject({}) do |structure, version_overview|
-      structure[version_overview.first] = {percent: version_overview[3].truncate,
+      structure[version_overview.first] = {percent: version_overview[3] ? version_overview[3].truncate : 0,
                                            closed_issues_count: version_overview[2],
                                            opened_issues_count: version_overview[1]}
       structure[version_overview.first].merge!({issues: issues[version_overview[0]]}) unless issues.empty?

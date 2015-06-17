@@ -64,18 +64,18 @@
         bind_color_editor();
         bind_dropdown();
 
-        //help overlay
-        createOverlay("#hotkeys-overlay", 150);
-        $('#open-hotkey-link').click(function (e) {
-            e.preventDefault();
-            $("#hotkeys-overlay").overlay().load();
-        });
+        ////help overlay
+        //createOverlay("#hotkeys-overlay", 150);
+        //$('#open-hotkey-link').click(function (e) {
+        //    e.preventDefault();
+        //    $("#hotkeys-overlay").overlay().load();
+        //});
         bind_table_list_actions();
         bind_date_field();
     });
-    jQuery(document).ajaxSend(function (e, xhr, options) {
-        jQuery("#loading").show();
-        var token = jQuery("meta[name='csrf-token']").attr("content");
+    $(document).ajaxSend(function (e, xhr, options) {
+        $("#loading").show();
+        var token = $("meta[name='csrf-token']").attr("content");
         xhr.setRequestHeader("X-CSRF-Token", token);
     });
 
@@ -119,7 +119,7 @@
     //JSON
     $.fn.serializeJSON = function () {
         var json = {};
-        jQuery.map($(this).serializeArray(), function (n, i) {
+        $.map($(this).serializeArray(), function (n, i) {
             if (n.name.endsWith('[]')) {
                 if (json[n.name] === undefined)
                     json[n.name] = [];
@@ -157,7 +157,7 @@
         });
     }
 
-    //Override jquery-rails confirm behaviour.
+    //Override $-rails confirm behaviour.
     $.rails.allowAction = function (link) {
         var message = link.attr('data-confirm');
         if (!message) {
@@ -172,10 +172,10 @@
         return false;
     };
 
-})(jQuery);
+})($);
 
-jQuery.expr[':'].contains = function (a, i, m) {
-    return jQuery(a).text().toUpperCase().indexOf(m[3].toUpperCase()) >= 0;
+$.expr[':'].contains = function (a, i, m) {
+    return $(a).text().toUpperCase().indexOf(m[3].toUpperCase()) >= 0;
 };
 
 function initialize_chosen() {
@@ -187,21 +187,21 @@ function initialize_chosen() {
 }
 function display_flash() {
     var el;
-    jQuery(".flash").each(function () {
-        el = jQuery(this);
+    $(".flash").each(function () {
+        el = $(this);
         if (el.text().trim() !== "") {
             el.css("display", "block");
             el.find(".close-flash").click(function (e) {
-                jQuery(this).parent().fadeOut();
+                $(this).parent().fadeOut();
             });
         } else {
-            jQuery(this).css("display", "none");
+            $(this).css("display", "none");
         }
     });
 }
 //Flash message
 function error_explanation(message) {
-    var el = jQuery(".flash.alert");
+    var el = $(".flash.alert");
     if (message !== null) {
         el.append(message).css("display", "block");
     }
@@ -210,7 +210,7 @@ function focus_first_input_text() {
     $('.form input:visible[type=text]:not(.chzn-search-input)').first().focus();
 }
 function markdown_textarea() {
-    var el = jQuery('.fancyEditor');
+    var el = $('.fancyEditor');
     var cacheResponse = [];
     var cacheResponse1 = [];
     el.markItUpRemove().markItUp(markdownSettings);
@@ -273,92 +273,92 @@ function bind_table_list_actions() {
         $(this).removeClass('hover');
     });
 }
-
-$.tools.overlay.addEffect("slide",
-    function (position, done) {
-        this.getOverlay().removeClass('animated bounceOutUp');
-        this.getOverlay().css(position).show().addClass('animated bounceInDown').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function () {
-            $(this).removeClass('animated bounceInDown');
-        });
-    },
-    // close function
-    function (done) {
-        // fade out the overlay
-        this.getOverlay().removeClass('animated bounceInDown');
-        this.getOverlay().addClass('animated bounceOutUp').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function () {
-            $(this).removeClass('animated bounceOutUp').hide();
-        });
-    }
-);
-function createOverlay(id, top) {
-    jQuery(id).overlay({
-        // custom top position
-        top: top,
-        // some mask tweaks suitable for facebox-looking dialogs
-        effect: 'slide',
-        speed: 'slow',
-
-        mask: {
-            // you might also consider a "transparent" color for the mask
-            color: '#000',
-            // load mask a little faster
-            loadSpeed: 200,
-            opacity: 0.3,
-            zIndex: 8
-        },
-        // disable this for modal dialog-type of overlays
-        closeOnClick: false,
-        // load it immediately after the construction
-        load: false,
-        onBeforeLoad: function (e) {
-            var self = this;
-            var overlay = self.getOverlay();
-            $('.dropdown').removeClass('active');
-            $(self).removeClass('animated bounceInDown bounceOutUp');
-            overlay.find('.close-button').remove();
-            var close_button = $('<span class="medium-octicon octicon-x close-button"></span>');
-            close_button.click(function (e) {
-                e.preventDefault();
-                self.close();
-            });
-            overlay.append(close_button);
-        }
-
-    });
-}
+//
+//$.tools.overlay.addEffect("slide",
+//    function (position, done) {
+//        this.getOverlay().removeClass('animated bounceOutUp');
+//        this.getOverlay().css(position).show().addClass('animated bounceInDown').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function () {
+//            $(this).removeClass('animated bounceInDown');
+//        });
+//    },
+//    // close function
+//    function (done) {
+//        // fade out the overlay
+//        this.getOverlay().removeClass('animated bounceInDown');
+//        this.getOverlay().addClass('animated bounceOutUp').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function () {
+//            $(this).removeClass('animated bounceOutUp').hide();
+//        });
+//    }
+//);
+//function createOverlay(id, top) {
+//    $(id).overlay({
+//        // custom top position
+//        top: top,
+//        // some mask tweaks suitable for facebox-looking dialogs
+//        effect: 'slide',
+//        speed: 'slow',
+//
+//        mask: {
+//            // you might also consider a "transparent" color for the mask
+//            color: '#000',
+//            // load mask a little faster
+//            loadSpeed: 200,
+//            opacity: 0.3,
+//            zIndex: 8
+//        },
+//        // disable this for modal dialog-type of overlays
+//        closeOnClick: false,
+//        // load it immediately after the construction
+//        load: false,
+//        onBeforeLoad: function (e) {
+//            var self = this;
+//            var overlay = self.getOverlay();
+//            $('.dropdown').removeClass('active');
+//            $(self).removeClass('animated bounceInDown bounceOutUp');
+//            overlay.find('.close-button').remove();
+//            var close_button = $('<span class="medium-octicon octicon-x close-button"></span>');
+//            close_button.click(function (e) {
+//                e.preventDefault();
+//                self.close();
+//            });
+//            overlay.append(close_button);
+//        }
+//
+//    });
+//}
 
 // CHECKBOX
 function checkAllBox(selector, context) {
-    jQuery(selector).click(function (e) {
+    $(selector).click(function (e) {
         e.preventDefault();
-        var cases = jQuery(context).find(':checkbox');
-        var checked = jQuery(this).attr("cb_checked") === 'b';
+        var cases = $(context).find(':checkbox');
+        var checked = $(this).attr("cb_checked") === 'b';
         cases.attr('checked', checked);
-        jQuery(this).attr("cb_checked", checked ? "a" : "b");
+        $(this).attr("cb_checked", checked ? "a" : "b");
     });
 }
 // TOOLBOX
 function checkAll(selector, context) {
-    jQuery(selector).click(function (e) {
+    $(selector).click(function (e) {
         e.preventDefault();
-        var cases = jQuery(context).find(':checkbox:not(:disabled)');
+        var cases = $(context).find(':checkbox:not(:disabled)');
 
-        var checked = jQuery(this).attr("cb_checked") === 'b';
+        var checked = $(this).attr("cb_checked") === 'b';
         cases.attr('checked', checked);
-        jQuery(this).attr("cb_checked", checked ? "a" : "b");
+        $(this).attr("cb_checked", checked ? "a" : "b");
         if (checked) {
-            jQuery('.issue-tr:not(.disabled-toolbox)').addClass("toolbox-selection");
+            $('.issue-tr:not(.disabled-toolbox)').addClass("toolbox-selection");
         } else {
-            jQuery('.issue-tr:not(.disabled-toolbox)').removeClass("toolbox-selection");
+            $('.issue-tr:not(.disabled-toolbox)').removeClass("toolbox-selection");
         }
     });
 }
 
 function checkboxToolbox(selector) {
-    jQuery(selector + " input[type=checkbox]").change(function () {
-        var row = jQuery(this).parent("td").parent("tr");
-        if (jQuery(this).is(':checked')) {
-            jQuery(".toolbox-selection").removeClass("toolbox-last");
+    $(selector + " input[type=checkbox]").change(function () {
+        var row = $(this).parent("td").parent("tr");
+        if ($(this).is(':checked')) {
+            $(".toolbox-selection").removeClass("toolbox-last");
             row.addClass("toolbox-selection").addClass("toolbox-last");
         }
         else {
@@ -368,12 +368,12 @@ function checkboxToolbox(selector) {
 }
 
 function listTrClick(rows_selector) {
-    var rows = jQuery(rows_selector);
+    var rows = $(rows_selector);
     rows.click(function (e) {
         if ($(e.target)[0].tagName !== "A") {
             if ($(this).hasClass('disabled-toolbox'))
                 return false;
-            var el = jQuery(this);
+            var el = $(this);
             var target = e.target || e.srcElement;
             if (!e.shiftKey && !$(target).is('input') && !e.ctrlKey && !e.metaKey) {
                 rows.find("input[type=checkbox]").attr('checked', false);
@@ -407,11 +407,11 @@ function listTrClick(rows_selector) {
 //initializer with optional hash: options are:
 // list needed to get checkboxes.
 function init_toolbox(selector, id, options) {
-    var self_element = jQuery(selector);
+    var self_element = $(selector);
     self_element.jeegoocontext(id);
     self_element.mousedown(function (e) {
             if (e.which === 3) {
-                var self_element = jQuery(this);
+                var self_element = $(this);
                 var checkbox = self_element.find(':checkbox');
                 if (!checkbox[0].disabled) {
                     checkbox.attr('checked', true);
@@ -427,12 +427,12 @@ function init_toolbox(selector, id, options) {
 function menu_item_updater(options) {
     var array = [];
     var i = 0;
-    jQuery(options.list + ' input:checked').each(function () {
-        array[i] = jQuery(this).val();
+    $(options.list + ' input:checked').each(function () {
+        array[i] = $(this).val();
         i++;
     });
-    jQuery.ajax({
-        url: jQuery(options.list).data("link"),
+    $.ajax({
+        url: $(options.list).data("link"),
         type: 'GET',
         dateType: 'script',
         data: {
@@ -443,30 +443,30 @@ function menu_item_updater(options) {
 
 
 function bind_menu_actions(toolbox_id) {
-    jQuery(".submenu a").click(function (e) {
+    $(".submenu a").click(function (e) {
         e.preventDefault();
         // find the context of the selected options: e.g: "category" for update categories of the selected documents
-        var context = _.without(jQuery(this).parents(".submenu").attr('class').split(' '), 'submenu', 'hover');
+        var context = _.without($(this).parents(".submenu").attr('class').split(' '), 'submenu', 'hover');
         //put new value into hidden field which name is matching with context
-        jQuery("input#value_" + context).val(jQuery(this).data("id"));
-        jQuery(toolbox_id).find("form").submit();
+        $("input#value_" + context).val($(this).data("id"));
+        $(toolbox_id).find("form").submit();
     });
-    jQuery("a.action-link").click(function (e) {
+    $("a.action-link").click(function (e) {
         e.preventDefault();
-        var context = _.without(jQuery(this).parents("li").attr('class').split(' '), 'hover');
+        var context = _.without($(this).parents("li").attr('class').split(' '), 'hover');
         //put new value into hidden field which name is matching with context
-        jQuery("input#value_" + context).val(jQuery(this).data("id"));
-        jQuery(toolbox_id).find("form").submit();
+        $("input#value_" + context).val($(this).data("id"));
+        $(toolbox_id).find("form").submit();
     });
-    jQuery("#open-delete-overlay").click(function (e) {
-        jQuery('#delete-overlay').overlay().load();
+    $("#open-delete-overlay").click(function (e) {
+        $('#delete-overlay').overlay().load();
     });
 }
 
 //Toggle icon: fieldset
 function multi_toogle(selector) {
-    jQuery(selector).click(function (e) {
-        var self_element = jQuery(this);
+    $(selector).click(function (e) {
+        var self_element = $(this);
         e.preventDefault();
         var id = self_element.attr("id");
         if (self_element.hasClass('icon-collapsed')) {
@@ -476,38 +476,38 @@ function multi_toogle(selector) {
             self_element.switchClass('icon-expanded', 'icon-collapsed');
             self_element.find("> .octicon").switchClass('octicon-chevron-down', 'octicon-chevron-right');
         }
-        jQuery(".content." + id).slideToggle();
+        $(".content." + id).slideToggle();
     });
 }
 //toggle content
 function uniq_toogle(trigger_id, content) {
-    jQuery(trigger_id).click(function (e) {
+    $(trigger_id).click(function (e) {
         e.preventDefault();
-        if (jQuery(this).hasClass('icon-collapsed')) {
-            jQuery(this).switchClass('icon-collapsed', 'icon-expanded');
-            jQuery(trigger_id + "> .octicon").switchClass('octicon-chevron-right', 'octicon-chevron-down');
+        if ($(this).hasClass('icon-collapsed')) {
+            $(this).switchClass('icon-collapsed', 'icon-expanded');
+            $(trigger_id + "> .octicon").switchClass('octicon-chevron-right', 'octicon-chevron-down');
         } else {
-            jQuery(this).switchClass('icon-expanded', 'icon-collapsed');
-            jQuery(trigger_id + "> .octicon").switchClass('octicon-chevron-down', 'octicon-chevron-right');
+            $(this).switchClass('icon-expanded', 'icon-collapsed');
+            $(trigger_id + "> .octicon").switchClass('octicon-chevron-down', 'octicon-chevron-right');
         }
-        jQuery(content).slideToggle();
+        $(content).slideToggle();
     });
 }
 
 //filters
 function radio_button_behaviour(selector) {
     var ary = ["all", "open", "close", "today", "finished"]; //for option that don't use select box
-    var id = "#td-" + jQuery(selector).attr('class');
-    if (jQuery.inArray(jQuery(selector).val(), ary) === -1) {
-        jQuery(id).show();
-        jQuery(id).find(".chzn-select").chosen();
+    var id = "#td-" + $(selector).attr('class');
+    if ($.inArray($(selector).val(), ary) === -1) {
+        $(id).show();
+        $(id).find(".chzn-select").chosen();
     } else {
-        jQuery(id).hide();
-        jQuery(id + " input").val();
+        $(id).hide();
+        $(id + " input").val();
     }
 }
 function binding_radio_button(selector) {
-    jQuery(selector).click(function (e) {
+    $(selector).click(function (e) {
         radio_button_behaviour(this);
     });
 }
@@ -518,8 +518,8 @@ function binding_radio_button(selector) {
 //Query overlay
 function create_query_overlay(e, ajax_url) {
     e.preventDefault();
-    jQuery('#create-query-overlay').overlay().load();
-    jQuery.ajax({
+    $('#create-query-overlay').overlay().load();
+    $.ajax({
         url: ajax_url,
         type: 'GET',
         dataType: 'script'
@@ -528,9 +528,9 @@ function create_query_overlay(e, ajax_url) {
 
 //Per page issue list
 function per_page() {
-    jQuery("#per-page").change(function () {
-        jQuery.ajax({
-            url: jQuery(this).data("link"),
+    $("#per-page").change(function () {
+        $.ajax({
+            url: $(this).data("link"),
             data: {
                 per_page: this.value
             },
@@ -542,11 +542,11 @@ function per_page() {
 
 
 function bind_calendar_button() {
-    jQuery(".change-month").click(function (e) {
+    $(".change-month").click(function (e) {
         e.preventDefault();
-        var self_element = jQuery(this);
+        var self_element = $(this);
         var c = self_element.attr("id");
-        jQuery.ajax({
+        $.ajax({
             url: self_element.attr("href"),
             dataType: "script",
             data: {date: c}
@@ -556,14 +556,14 @@ function bind_calendar_button() {
 
 
 function bind_version_change_positions() {
-    jQuery(".change-position").click(function (e) {
+    $(".change-position").click(function (e) {
         e.preventDefault();
-        var self_element = jQuery(this);
+        var self_element = $(this);
         var vid = self_element.parents("tr").attr("id");
         var ope = self_element.attr("class").split(" ");
         ope = ope[ope.length - 1];
         if (ope === "inc" || ope === "dec") {
-            jQuery.ajax({
+            $.ajax({
                 url: self_element.attr("href"),
                 type: "post",
                 dataType: "script",
@@ -578,14 +578,14 @@ function bind_version_change_positions() {
 }
 
 function bind_save_project_position() {
-    jQuery("#save-position").click(function (e) {
+    $("#save-position").click(function (e) {
         e.preventDefault();
         var p_ids = [];
-        var url = jQuery(this).data('link');
-        jQuery.each(jQuery(".project-list.sortable li.project"), function (project) {
-            p_ids.push(jQuery(this).attr("id"));
+        var url = $(this).data('link');
+        $.each($(".project-list.sortable li.project"), function (project) {
+            p_ids.push($(this).attr("id"));
         });
-        jQuery.ajax({
+        $.ajax({
             url: url,
             type: "post",
             dataType: "script",
@@ -602,7 +602,7 @@ function bind_save_project_position() {
  */
 function bind_organization_behaviour(selector) {
     var remove = false;
-    jQuery(selector).sortable({
+    $(selector).sortable({
         connectWith: ".connectedSortable",
         dropOnEmpty: true,
         forcePlaceholderSize: true,
@@ -614,24 +614,24 @@ function bind_organization_behaviour(selector) {
         },
         beforeStop: function (event, ui) {
             if (remove) {
-                jQuery(ui.helper).remove();
-                jQuery(".connectedSortable").sortable("refresh");
+                $(ui.helper).remove();
+                $(".connectedSortable").sortable("refresh");
                 remove = false;
             }
         }
     });
 }
 function add_sub_item(selector) {
-    jQuery(selector).click(function (e) {
+    $(selector).click(function (e) {
         e.preventDefault();
-        var parent_id = jQuery(this).parent("li").attr("id").split("_")[1];
-        jQuery(this).parent().after("<li class='parent' style='list-style:none'><ul id='parent-" + parent_id + "' class='connectedSortable'></ul></li>");
+        var parent_id = $(this).parent("li").attr("id").split("_")[1];
+        $(this).parent().after("<li class='parent' style='list-style:none'><ul id='parent-" + parent_id + "' class='connectedSortable'></ul></li>");
         bind_organization_behaviour(".connectedSortable");
     });
 }
 function bind_set_organization_button(main_selector, list_selector) {
-    jQuery(list_selector).click(function (e) {
-        var dom_pages = jQuery(main_selector);
+    $(list_selector).click(function (e) {
+        var dom_pages = $(main_selector);
         //{page_id => {parent_id : value, position : value},...}
         var serialized_hash = {};
         var parent_ids = [];
@@ -640,12 +640,12 @@ function bind_set_organization_button(main_selector, list_selector) {
         var is_undifined = false;
         var tmp_position = 0;
         //Define for each page parent id
-        jQuery.each(dom_pages, function (index, value) {
-            tmp_position = jQuery(value).index();
-            is_undifined = (typeof jQuery(value).parent("ul").parent("li").prev().attr("id") === "undefined");
+        $.each(dom_pages, function (index, value) {
+            tmp_position = $(value).index();
+            is_undifined = (typeof $(value).parent("ul").parent("li").prev().attr("id") === "undefined");
             //put parent id value if defined, else put nil
-            tmp_parent_id = !is_undifined ? jQuery(value).parent("ul").parent("li").prev().attr("id").split("-")[1] : null;
-            tmp_item_id = jQuery(value).attr("id").split("-")[1];
+            tmp_parent_id = !is_undifined ? $(value).parent("ul").parent("li").prev().attr("id").split("-")[1] : null;
+            tmp_item_id = $(value).attr("id").split("-")[1];
             parent_ids.push(tmp_parent_id);
             serialized_hash[tmp_item_id] = {
                 parent_id: tmp_parent_id,
@@ -653,8 +653,8 @@ function bind_set_organization_button(main_selector, list_selector) {
             };
 
         });
-        var url = jQuery(this).data('link');
-        jQuery.ajax({
+        var url = $(this).data('link');
+        $.ajax({
             url: url,
             type: 'PUT',
             dataType: 'script',
@@ -665,19 +665,19 @@ function bind_set_organization_button(main_selector, list_selector) {
 
 }
 function project_selection_filter() {
-    jQuery(".project-selection-filter").click(function (e) {
-        jQuery(".project-selection-filter").removeClass("selected");
-        jQuery(this).addClass("selected");
+    $(".project-selection-filter").click(function (e) {
+        $(".project-selection-filter").removeClass("selected");
+        $(this).addClass("selected");
 
     });
 }
 // LOG TIME
 //Date is optional
 function fill_log_issue_time_overlay(url, context, date) {
-    if (jQuery(context).attr("id") === "pick-calendar") {
-        date = jQuery(context).valueAsDate;
+    if ($(context).attr("id") === "pick-calendar") {
+        date = $(context).valueAsDate;
     }
-    jQuery.ajax({
+    $.ajax({
         url: url,
         type: 'GET',
         dataType: 'script',
@@ -709,11 +709,11 @@ function replace_list_content(content) {
 
 
 function ajax_trigger(element, event, method) {
-    jQuery(element).on(event, function (e) {
+    $(element).on(event, function (e) {
 
         e.preventDefault();
-        var self_element = jQuery(this);
-        jQuery.ajax({
+        var self_element = $(this);
+        $.ajax({
             url: self_element.data("link"),
             type: method,
             dataType: 'script',
@@ -724,9 +724,9 @@ function ajax_trigger(element, event, method) {
 }
 
 function bind_info_tag() {
-    jQuery("span.octicon-info").click(function (e) {
+    $("span.octicon-info").click(function (e) {
         e.preventDefault();
-        var el = jQuery(this);
+        var el = $(this);
         if ((el.html() === "" || el.find('.help').css('display') === 'none') && el.attr('title') !== undefined) {
             var info = $(write_info(el.attr('title')));
             el.html(info);
@@ -808,7 +808,7 @@ function bind_dropdown() {
 function bind_date_field() {
     var test_input = $('<input type="date" name="bday">');
     var input_date = $('[type="date"]');
-    if (test_input.prop('type') != 'date') { //if browser doesn't support input type="date", load files for jQuery UI Date Picker
+    if (test_input.prop('type') != 'date') { //if browser doesn't support input type="date", load files for $ UI Date Picker
         if (input_date.hasClass('hasDatepicker')) {
             input_date.datepicker("destroy");
         }

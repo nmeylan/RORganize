@@ -11,22 +11,27 @@ module PermissionsHelper
     end
     horizontal_tabs('permissions-tab', tabs.compact)
   end
+
   # Build a render of all permissions.
   # @param [Hash] permissions_hash : hash with following structure {group: [controller_name, ..]}.
   # @param [Array] selected_permissions : array of selected permissions' id.
   def list(permissions_hash, selected_permissions)
     form_tag({action: 'update_permissions', controller: 'permissions'}) do
       concat render_all_permissions_tables(permissions_hash, selected_permissions)
-      concat submit_tag 'save'
+      concat submit_tag 'save', class: "btn btn-primary"
     end
   end
 
   def render_all_permissions_tables(permissions_hash, selected_permissions)
-    permissions_hash.collect do |group, controllers|
-      content_tag :div, {id: "#{group.identifier}-tab", style: 'display:none'} do
-        permissions_table(controllers, selected_permissions, group.identifier)
-      end
-    end.join.html_safe
+    i = 0
+    content_tag :div, class: "tab-content" do
+      permissions_hash.collect do |group, controllers|
+        content_tag :div, role:"tabpanel", class:"tab-pane #{'active' if i == 0}", id: "#{group.identifier}-tab" do
+          i += 1
+          permissions_table(controllers, selected_permissions, group.identifier)
+        end
+      end.join.html_safe
+    end
   end
 
   # Build a render of all permissions table.
@@ -49,7 +54,7 @@ module PermissionsHelper
       concat permission_table_header_col_render('create', t(:label_create), group_name, 'plus')
       concat permission_table_header_col_render('update', t(:label_update), group_name, 'pencil')
       concat permission_table_header_col_render('delete', t(:label_delete), group_name, 'trashcan')
-      concat permission_table_header_col_render('misc', t(:label_misc),group_name, '')
+      concat permission_table_header_col_render('misc', t(:label_misc), group_name, '')
     end
   end
 
@@ -118,8 +123,8 @@ module PermissionsHelper
   def permission_table_column_render(group_name, permissions, permissions_tmp, col_categories, selected_permissions)
     col_categories.each do |category, actions|
       concat content_tag :td, {class: "permissions-list body #{category} #{group_name}"}, &Proc.new {
-        render_column_permissions(actions, permissions, permissions_tmp, selected_permissions)
-      }
+                              render_column_permissions(actions, permissions, permissions_tmp, selected_permissions)
+                            }
     end
   end
 

@@ -18,7 +18,7 @@ class IssueDecorator < ApplicationDecorator
   # @return [String] link to log time action.
   def log_time_link
     if User.current.allowed_to?('new', 'time_entries', context[:project])
-      h.link_to h.glyph(h.t(:link_log_time), 'clock'), h.fill_overlay_time_entries_path(model), {id: 'log-time', class: 'button'}
+      h.link_to h.glyph(h.t(:link_log_time), 'clock'), h.fill_overlay_time_entries_path(model), {id: 'log-time', class: 'btn btn-primary'}
     end
   end
 

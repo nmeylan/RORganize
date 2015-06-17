@@ -4,18 +4,18 @@ class WikiPageDecorator < ApplicationDecorator
   # Render new subpage link.
   def new_subpage_link
     if User.current.allowed_to?('new', 'Wiki_pages', @project)
-      h.link_to h.glyph(h.t(:link_new_sub_page), 'sub-file'), h.new_sub_page_project_wiki_pages_path(context[:project].slug, model.slug), {class: 'button'}
+      h.link_to h.glyph(h.t(:link_new_sub_page), 'sub-file'), h.new_sub_page_project_wiki_pages_path(context[:project].slug, model.slug), {class: 'btn btn-primary'}
     end
   end
 
   # see #ApplicationDecorator::edit_link.
   def edit_link
-    super(h.t(:link_edit), h.edit_project_wiki_page_path(context[:project].slug, model.slug), context[:project], model.author_id, {class: 'button'})
+    super(h.t(:link_edit), h.edit_project_wiki_page_path(context[:project].slug, model.slug), context[:project], model.author_id, {class: 'btn btn-primary'})
   end
 
   # see #ApplicationDecorator::delete_link.
   def delete_link
-    super(h.t(:link_delete), h.project_wiki_page_path(context[:project].slug, model.slug), context[:project], model.author_id, {class: 'danger button'})
+    super(h.t(:link_delete), h.project_wiki_page_path(context[:project].slug, model.slug), context[:project], model.author_id, {class: 'danger btn btn-primary'})
   end
 
   # @return [String] render of the pages breadcrumb.

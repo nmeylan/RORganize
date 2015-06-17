@@ -43,8 +43,8 @@
 #horizontal-menu li.selected a {
   margin-top: -1px;
   border-top: 1px solid $default-background-color !important;
-  border-left: 1px solid $default-border-color !important;
-  border-right: 1px solid $default-border-color !important;
+  border-left: 1px solid $gray-lighter !important;
+  border-right: 1px solid $gray-lighter !important;
   border-bottom: 3px solid $default-selected-border-color !important;
   color: $link-hover-color;
 }

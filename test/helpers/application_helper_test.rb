@@ -91,19 +91,6 @@ class ApplicationHelperTest < Rorganize::Helpers::TestCase
     assert_select '.breadcrumb', 1
   end
 
-  test "it builds a horizontal tabs menu" do
-    tabs = [{name: 'first', element: 'My first element'}, {name: 'second', element: 'My second element'}]
-    node(horizontal_tabs('test-tabs', tabs))
-    assert_select 'div#test-tabs', 1
-    assert_select 'div.tabnav', 1
-    assert_select 'a', 2
-    assert_select 'a', text: 'My first element'
-    assert_select 'a', text: 'My second element'
-    assert_select 'a.selected', text: 'My first element'
-    assert_select 'a[data-tab_id=?]', 'first'
-    assert_select 'a[data-tab_id=?]', 'second'
-  end
-
   test "it displays comment presence indicator when comment number is greater than 0" do
     node(comment_presence(2))
     assert_select '.smooth-gray', 0

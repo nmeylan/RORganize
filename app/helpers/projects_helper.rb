@@ -106,7 +106,7 @@ module ProjectsHelper
   def star_unstar_project_link(project, label, text, icon)
     link_to(glyph(label, 'star'),
             star_project_profile_path(project.slug),
-            {class: "icon #{icon} starred star tooltipped tooltipped-s star-button button",
+            {class: "icon #{icon} starred star tooltipped tooltipped-s star-button btn btn-primary",
              method: :post, remote: true, label: text})
   end
 

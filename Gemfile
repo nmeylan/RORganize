@@ -29,6 +29,7 @@ gem 'coffee-rails'
 gem 'uglifier'
 gem 'simple_form'
 gem 'bootstrap-sass'
+gem 'chosen-rails'
 
 group :test do
   # Pretty printed test output

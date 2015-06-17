@@ -23,7 +23,7 @@ table.detail{
 table.list {
   width: 100%;
   border-collapse: collapse;
-  border: 1px solid #E4E4E4;
+  border: 1px solid $gray-lighter;
   overflow-x: auto;
   .tooltipped-s:after{
     top: 35px;
@@ -172,7 +172,7 @@ li.close {
   .fancy-list-item {
     position: relative;
     margin: 0px 30px 30px -15px;
-    border-bottom: 1px solid $default-border-color;
+    border-bottom: 1px solid $gray-lighter;
     > a {
       font-size: 20px;
     }

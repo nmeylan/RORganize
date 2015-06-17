@@ -63,7 +63,7 @@ module ActivityDecorator
   # Render a link to add a comment. Can be used by all commentable model.
   def new_comment_link
     if User.current.allowed_to?('comment', h.controller_name, model.project)
-      h.link_to h.glyph(h.t(:link_comment), 'comment'), '#add-comment', {id: 'new-comment-link', class: 'button'}
+      h.link_to h.glyph(h.t(:link_comment), 'comment'), '#add-comment', {id: 'new-comment-link', class: 'btn btn-primary'}
     end
   end
 

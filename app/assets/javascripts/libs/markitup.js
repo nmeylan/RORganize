@@ -181,8 +181,8 @@
 
             function headerMenu() {
                 var div = $('<div class="markItUpHeaderMenu tabnav"></div>');
-                var ul = $('<ul class="tabnav-tabs"></ul>');
-                var writeMenu = $('<li><a href="#" class="tabnav-tab write-tab js-write-tab selected">Write</a></li>');
+                var ul = $('<ul class="nav nav-tabs tabnav-tabs"></ul>');
+                var writeMenu = $('<li class="active"><a href="#" class="tabnav-tab write-tab js-write-tab active">Write</a></li>');
                 var previewMenu = $('<li><a href="#" class="tabnav-tab preview-tab js-write-tab">Preview</a></li>');
                 bindPreviewMenu(previewMenu.children('a'));
                 bindWriteMenu(writeMenu.children('a'));
@@ -209,8 +209,8 @@
                         var markdownPreview = container.children('.markItUpEditorContainer').children('.markdown-preview');
                         textarea.show();
                         buttons.show();
-                        container.children('.markItUpHeader').children('.markItUpHeaderMenu').children('ul').children('li').children('a').removeClass('selected');
-                        el.addClass('selected');
+                        container.children('.markItUpHeader').children('.markItUpHeaderMenu').children('ul').children('li').removeClass('active');
+                        el.parent().addClass('active');
                         if (markdownPreview)
                             markdownPreview.remove();
                     }
@@ -220,7 +220,7 @@
             function bindPreviewMenu(el) {
                 el.click(function (e) {
                     e.preventDefault();
-                    if (!el.hasClass('selected')) {
+                    if (!el.parent().hasClass('active')) {
                         var parents = el.parents();
                         var container;
                         for (var i = 0; i < parents.length; i++) {
@@ -239,8 +239,8 @@
                                         textarea.hide();
                                         buttons.hide();
                                         container.children('.markItUpEditorContainer').append('<div class="markdown-preview">' + data.responseText + '</div>');
-                                        container.children('.markItUpHeader').children('.markItUpHeaderMenu').children('ul').children('li').children('a').removeClass('selected');
-                                        el.addClass('selected');
+                                        container.children('.markItUpHeader').children('.markItUpHeaderMenu').children('ul').children('li').removeClass('active');
+                                        el.parent().addClass('active');
                                     }
                                 }});
                             }

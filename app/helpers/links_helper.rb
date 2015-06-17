@@ -76,7 +76,7 @@ module LinksHelper
     end
 
     link_to glyph(caption, 'eye'), toggle_watchers_path(project.slug, watchable.class.to_s, watchable.id),
-            {id: "#{id}-link-#{watchable.id}", class: 'tooltipped tooltipped-s button', remote: true, method: :post, label: label}
+            {id: "#{id}-link-#{watchable.id}", class: 'tooltipped tooltipped-s btn btn-primary', remote: true, method: :post, label: label}
   end
 
   # @param [User] user : current user.

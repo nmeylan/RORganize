@@ -66,7 +66,7 @@ function load_filter(json_content, present_filters) {
         );
     } else {
         jQuery("#filters-list").chosen();
-        jQuery("#filters_list_chzn").hide();
+        jQuery("#filters_list_chosen").hide();
         jQuery("#filter-content").hide();
         jQuery(".content").hide();
     }
@@ -78,11 +78,11 @@ function initialize_filters(options) {
         load_filter(gon.DOM_filter, (options && options.dom_persisted_filter) ? options.dom_persisted_filter : gon.DOM_persisted_filter);
     }
     $("#type-filter").click(function (e) {
-        $("#filters_list_chzn").show();
+        $("#filters_list_chosen").show();
         $("#filter-content").show();
     });
     $("#type-all").click(function (e) {
-        $("#filters_list_chzn").hide();
+        $("#filters_list_chosen").hide();
         $("#filter-content").hide();
     });
 

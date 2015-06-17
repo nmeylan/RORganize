@@ -3,18 +3,19 @@
 // be included in the compiled file accessible from http://example.com/assets/application.js
 // It's not advisable to add code directly here, but if you do, it'll appear at the bottom of the
 // the compiled file.
-//= require libs/jquery-1.7.2.min.js
-//= require libs/jquery-ui-1.10.4.custom.min
+//= require jquery
 //= require jquery_ujs
-//= require libs/underscore-min.js
-//= require libs/chosen.jquery.min.js
-//= require markitup.js
-//= require markdown_toolbar.js
-//= require libs/jquery.jeegoocontext.min.js
-//= require libs/apprise-1.5.min.js
-//= require libs/jquery.lightbox-0.5.min.js
-//= require libs/jquery.jgrowl_minimized.js
-//= require libs/overlay.min.js
+//= require jquery-ui-1.10.4.custom.min.js
+//= require underscore-min.js
+//= require chosen-jquery
+//= require libs/markitup.js
+//= require libs/markdown_toolbar.js
+//= require jquery.jeegoocontext.min.js
+//= require apprise-1.5.min.js
+//= require mousetrap.min
+//= require textcomplete.min
+//= require jquery.jgrowl
+//= require bootstrap
 //= require rorganize
 //= require peek
 //= require peek/views/rblineprof
