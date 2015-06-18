@@ -61,7 +61,7 @@ class CommentDecorator < ApplicationDecorator
 
   # Render a remote link to comment.
   def remote_show_link
-    h.link_to h.t(:link_comment), h.comment_path(model), {class: 'view-comment', id: model.id, remote: true}
+    h.link_to h.t(:link_comment), h.comment_path(model), {class: 'view-comment', id: model.id, data: {toggle: "dynamic-modal"}}
   end
 
   # Render the type of the commented object.

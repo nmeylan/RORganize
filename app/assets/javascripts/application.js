@@ -8,16 +8,20 @@
 //= require jquery-ui-1.10.4.custom.min.js
 //= require underscore-min.js
 //= require chosen-jquery
-//= require libs/markitup.js
-//= require libs/markdown_toolbar.js
 //= require jquery.jeegoocontext.min.js
-//= require apprise-1.5.min.js
 //= require mousetrap.min
 //= require textcomplete.min
 //= require jquery.jgrowl
 //= require bootstrap
-//= require rorganize
 //= require peek
 //= require peek/views/rblineprof
 //= require peek/views/performance_bar
+
+//= require_tree ./libs
+//= require_tree ./patch
+//= require rorganize
 //= require_tree .
+
+$(function () {
+    App.setup(document, 'front');
+});

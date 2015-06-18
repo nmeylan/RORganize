@@ -8,10 +8,5 @@ function on_load_projects_scripts() {
         project_selection_filter();
     else if (gon.action === 'activity') {
         bind_activities();
-        on_activities_load();
     }
-}
-
-function on_activities_load() {
-    createOverlay("#comments-overlay", 150);
 }

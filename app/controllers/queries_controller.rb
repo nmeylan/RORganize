@@ -26,9 +26,7 @@ class QueriesController < ApplicationController
     find_project
     @query = Query.new
     @query.object_type = params[:query_type]
-    respond_to do |format|
-      format.js { respond_to_js locals: {new: true} }
-    end
+    render partial: 'queries/create_overlay', locals: {query: @query, project: @project}
   end
 
   def create

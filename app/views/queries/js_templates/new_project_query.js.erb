@@ -7,7 +7,6 @@
 jQuery('#create-query-overlay').replaceWith("<%= escape_javascript (render partial: 'queries/create_overlay', locals: {query: @query, project: @project} )%>");
 createOverlay("#create-query-overlay", 150);
 //bind info tag
-bind_info_tag();
 jQuery('#create-query-overlay').overlay().load();
 jQuery(".close").click(function (e) {
     jQuery('#create-query-overlay').overlay().close();

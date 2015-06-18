@@ -57,6 +57,9 @@
 
 <%= render partial: 'layouts/footer' %>
 
+
+<%= render "shared/modal" %>
+
 <script type="text/javascript">
     var input_date = $('<input type="date" name="bday">');
     if ((input_date.prop('type') != 'date')) { //if browser doesn't support input type="date", load files for jQuery UI Date Picker

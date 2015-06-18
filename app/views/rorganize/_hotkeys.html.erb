@@ -3,87 +3,96 @@
  * Date: 25.08.14
  * Time: 00:29
 %>
-<div class="overlayOuter" id="hotkeys-overlay">
-  <div class="overlayInner">
-    <div class="splitcontentleft">
-      <h2><%= t(:label_global_hotkeys) %></h2>
-      <ul>
-        <li>
-          <span class="shortcut">/</span>
-          <%= t(:text_shortcut_slash) %>
-        </li>
-        <li>
-          <span class="shortcut">h</span>
-          <%= t(:text_shortcut_h) %>
-        </li>
-        <li>
-          <span class="shortcut">g</span>
-          <span class="shortcut">t</span>
-          <%= t(:text_shortcut_gt) %>
-        </li>
-        <li>
-          <span class="shortcut">g</span>
-          <span class="shortcut">T</span>
-          <%= t(:text_shortcut_gT) %>
-        </li>
-      </ul>
-      <h2><%= t(:label_list_hotkeys) %></h2>
-      <ul>
-        <li>
-          <span class="shortcut">j</span>
-          <%= t(:text_shortcut_j) %>
-        </li>
-        <li>
-          <span class="shortcut">k</span>
-          <%= t(:text_shortcut_k) %>
-        </li>
-        <li>
-          <span class="shortcut">&#x23ce</span>
-          <%= t(:text_shortcut_list_enter) %>
-        </li>
-      </ul>
+<div class="modal fade" id="hotkeys-modal">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title"><%= t(:label_global_hotkeys) %></h4>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-sm-6">
+            <ul>
+              <li>
+                <span class="shortcut">/</span>
+                <%= t(:text_shortcut_slash) %>
+              </li>
+              <li>
+                <span class="shortcut">h</span>
+                <%= t(:text_shortcut_h) %>
+              </li>
+              <li>
+                <span class="shortcut">g</span>
+                <span class="shortcut">t</span>
+                <%= t(:text_shortcut_gt) %>
+              </li>
+              <li>
+                <span class="shortcut">g</span>
+                <span class="shortcut">T</span>
+                <%= t(:text_shortcut_gT) %>
+              </li>
+            </ul>
+            <h2><%= t(:label_list_hotkeys) %></h2>
+            <ul>
+              <li>
+                <span class="shortcut">j</span>
+                <%= t(:text_shortcut_j) %>
+              </li>
+              <li>
+                <span class="shortcut">k</span>
+                <%= t(:text_shortcut_k) %>
+              </li>
+              <li>
+                <span class="shortcut">&#x23ce</span>
+                <%= t(:text_shortcut_list_enter) %>
+              </li>
+            </ul>
+          </div>
+          <div class="col-sm-6">
+            <h2><%= t(:label_editor_hotkeys) %></h2>
+            <ul>
+              <li>
+                <span class="shortcut">@</span>
+                <%= t(:text_shortcut_at) %>
+              </li>
+              <li>
+                <span class="shortcut">#</span>
+                <%= t(:text_shortcut_sharp) %>
+              </li>
+              <li>
+                <span class="shortcut">ctrl</span> +
+                <span class="shortcut">b</span>
+                <%= t(:text_shortcut_ctrl_b) %>
+              </li>
+              <li>
+                <span class="shortcut">ctrl</span> +
+                <span class="shortcut">i</span>
+                <%= t(:text_shortcut_ctrl_i) %>
+              </li>
+              <li>
+                <span class="shortcut">ctrl</span> +
+                <span class="shortcut">u</span>
+                <%= t(:text_shortcut_ctrl_u) %>
+              </li>
+              <li>
+                <span class="shortcut">ctrl</span> +
+                <span class="shortcut">1</span> or
+                <span class="shortcut">2</span> or
+                <span class="shortcut">3</span> or
+                <span class="shortcut">4</span>
+                <%= t(:text_shortcut_ctrl_1) %>
+              </li>
+              <li>
+                <span class="shortcut">ctrl</span> +
+                <span class="shortcut">l</span>
+                <%= t(:text_shortcut_ctrl_l) %>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="splitcontentright">
-      <h2><%= t(:label_editor_hotkeys) %></h2>
-      <ul>
-        <li>
-          <span class="shortcut">@</span>
-          <%= t(:text_shortcut_at) %>
-        </li>
-        <li>
-          <span class="shortcut">#</span>
-          <%= t(:text_shortcut_sharp) %>
-        </li>
-        <li>
-          <span class="shortcut">ctrl</span> +
-          <span class="shortcut">b</span>
-          <%= t(:text_shortcut_ctrl_b) %>
-        </li>
-        <li>
-          <span class="shortcut">ctrl</span> +
-          <span class="shortcut">i</span>
-          <%= t(:text_shortcut_ctrl_i) %>
-        </li>
-        <li>
-          <span class="shortcut">ctrl</span> +
-          <span class="shortcut">u</span>
-          <%= t(:text_shortcut_ctrl_u) %>
-        </li>
-        <li>
-          <span class="shortcut">ctrl</span> +
-          <span class="shortcut">1</span> or
-          <span class="shortcut">2</span> or
-          <span class="shortcut">3</span> or
-          <span class="shortcut">4</span>
-          <%= t(:text_shortcut_ctrl_1) %>
-        </li>
-        <li>
-          <span class="shortcut">ctrl</span> +
-          <span class="shortcut">l</span>
-          <%= t(:text_shortcut_ctrl_l) %>
-        </li>
-      </ul>
-    </div>
-    <%= clear_both %>
   </div>
 </div>

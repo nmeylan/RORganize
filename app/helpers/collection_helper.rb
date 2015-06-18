@@ -17,7 +17,7 @@ module CollectionHelper
   def pagination_per_page(path, session)
     content_tag :div, class: 'autocomplete-combobox nosearch per-page autocomplete-combobox-high' do
       concat content_tag :label, t(:label_per_page), {for: 'per_page', class: 'per-page'}
-      concat select_tag 'per_page', pagination_options_tag(session), class: 'chzn-select cbb-small cbb-high', id: 'per-page', 'data-link' => "#{path}"
+      concat select_tag 'per_page', pagination_options_tag(session), class: 'chzn-select cbb-small cbb-high', id: 'per-page', data: {link: path, action: "per-page"}
     end
   end
 
@@ -38,7 +38,7 @@ module CollectionHelper
              ''
            end
     direction = column == sort_column && sort_direction == 'asc' ? 'desc' : 'asc'
-    link_to glyph(title, icon), {sort: column, direction: direction, action: default_action}, {remote: true}
+    link_to glyph(title, icon), {sort: column, direction: direction, action: default_action}, {remote: true, data: {action: "sort-list"}}
   end
 
   # Build a list of issues.

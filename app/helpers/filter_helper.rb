@@ -12,7 +12,7 @@ module FilterHelper
   # @param [hash] save_button_options
   def filter_tag(class_name, filtered_attributes, submission_path, can_save = false, save_button_options = {})
     @class_name = class_name
-    content_tag :fieldset, id: "#{class_name}-filter" do
+    content_tag :fieldset, id: "#{class_name}-filter", data: {role: "filters"} do
       concat content_tag :legend, link_to(glyph(t(:link_filter), 'chevron-right'), '#', {class: 'icon-collapsed toggle', id: "#{class_name}"})
       concat filter_tag_content(can_save, filtered_attributes, save_button_options, submission_path)
     end
@@ -29,7 +29,7 @@ module FilterHelper
   # @param [Boolean] can_save : false when save button is hidden, true otherwise.
   # @param [hash] save_button_options
   def filter_form_tag(filtered_attributes, save_button_options, can_save, submission_path)
-    form_tag submission_path, {method: :get, class: 'filter-form form', id: 'filter-form', remote: true} do
+    form_tag submission_path, {method: :get, class: 'filter-form form', id: 'filter-form', remote: true, data: {role: "filter-form"}} do
       filter_type_choice_tag
       concat filter_attribute_choice_tag(filtered_attributes)
       concat content_tag :table, nil, id: 'filter-content'
@@ -51,7 +51,7 @@ module FilterHelper
     user = options[:user]
     filter_content = options[:filter_content]
     if can_user_save_query?(can_save, filter_content, project, user, params[:query_id].nil?)
-      link_to t(:button_save), new_project_query_queries_path(project.slug, options[:type]), {remote: true}
+      link_to t(:button_save), new_project_query_queries_path(project.slug, options[:type]), {data: {action: "create-query", toggle: "dynamic-modal"}}
     elsif can_user_save_query?(can_save, filter_content, project, user, !params[:query_id].nil?)
       link_to t(:button_save), edit_query_filter_queries_path(params[:query_id]), {id: 'filter-edit-save', 'data-confirm-message' => t(:text_confirm_update_filter)}
     end

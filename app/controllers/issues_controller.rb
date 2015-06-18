@@ -28,9 +28,14 @@ class IssuesController < ApplicationController
     filter(Issue)
     load_issues
     find_custom_queries
-    respond_to do |format|
-      format.html { render :index }
-      format.js { respond_to_js }
+    if request.xhr?
+      render json: {
+                 list: @issues_decorator.display_collection,
+                 filter: view_context.filter_tag('issue', Issue.filtered_attributes, project_issues_path(@project.slug, query_id: params[:query_id]), true,
+                                                 {user: User.current, project: @project, filter_content: session[controller_name][@project.slug][:json_filter], type: 'Issue'})
+             }
+    else
+      render :index
     end
   end
 

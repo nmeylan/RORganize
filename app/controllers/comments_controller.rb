@@ -20,9 +20,7 @@ class CommentsController < ApplicationController
     @comments_decorator = Comment.eager_load(:project)
                               .where(commentable_type: @comment.commentable_type, commentable_id: @comment.commentable_id)
                               .decorate(context: {selected_comment: @comment})
-    respond_to do |format|
-      format.js { respond_to_js action: 'show', locals: {comments_decorator: @comments_decorator} }
-    end
+    render(html: @comments_decorator.display_collection)
   end
 
   def edit

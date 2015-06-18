@@ -30,6 +30,7 @@ gem 'uglifier'
 gem 'simple_form'
 gem 'bootstrap-sass'
 gem 'chosen-rails'
+gem 'bourbon'
 
 group :test do
   # Pretty printed test output

@@ -54,8 +54,6 @@
         focus_first_input_text();
         //BIND_CHZN-SELECT
         initialize_chosen();
-        //Paginate
-        per_page();
 
         //bind info tag
         bind_info_tag();
@@ -64,19 +62,11 @@
         bind_color_editor();
         bind_dropdown();
 
-        ////help overlay
-        //createOverlay("#hotkeys-overlay", 150);
-        //$('#open-hotkey-link').click(function (e) {
-        //    e.preventDefault();
-        //    $("#hotkeys-overlay").overlay().load();
-        //});
         bind_table_list_actions();
         bind_date_field();
     });
     $(document).ajaxSend(function (e, xhr, options) {
         $("#loading").show();
-        var token = $("meta[name='csrf-token']").attr("content");
-        xhr.setRequestHeader("X-CSRF-Token", token);
     });
 
     $(document).ajaxComplete(function (e, xhr, options) {
@@ -158,19 +148,19 @@
     }
 
     //Override $-rails confirm behaviour.
-    $.rails.allowAction = function (link) {
-        var message = link.attr('data-confirm');
-        if (!message) {
-            return true;
-        }
-        apprise(message, {confirm: true}, function (response) {
-            if (response) {
-                link.removeAttr('data-confirm');
-                link.trigger('click.rails');
-            }
-        });
-        return false;
-    };
+    //$.rails.allowAction = function (link) {
+    //    var message = link.attr('data-confirm');
+    //    if (!message) {
+    //        return true;
+    //    }
+    //    apprise(message, {confirm: true}, function (response) {
+    //        if (response) {
+    //            link.removeAttr('data-confirm');
+    //            link.trigger('click.rails');
+    //        }
+    //    });
+    //    return false;
+    //};
 
 })($);
 
@@ -207,7 +197,7 @@ function error_explanation(message) {
     }
 }
 function focus_first_input_text() {
-    $('.form input:visible[type=text]:not(.chzn-search-input)').first().focus();
+    //$('.form input:visible[type=text]:not(.chzn-search-input)').first().focus();
 }
 function markdown_textarea() {
     var el = $('.fancyEditor');
@@ -273,59 +263,6 @@ function bind_table_list_actions() {
         $(this).removeClass('hover');
     });
 }
-//
-//$.tools.overlay.addEffect("slide",
-//    function (position, done) {
-//        this.getOverlay().removeClass('animated bounceOutUp');
-//        this.getOverlay().css(position).show().addClass('animated bounceInDown').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function () {
-//            $(this).removeClass('animated bounceInDown');
-//        });
-//    },
-//    // close function
-//    function (done) {
-//        // fade out the overlay
-//        this.getOverlay().removeClass('animated bounceInDown');
-//        this.getOverlay().addClass('animated bounceOutUp').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function () {
-//            $(this).removeClass('animated bounceOutUp').hide();
-//        });
-//    }
-//);
-//function createOverlay(id, top) {
-//    $(id).overlay({
-//        // custom top position
-//        top: top,
-//        // some mask tweaks suitable for facebox-looking dialogs
-//        effect: 'slide',
-//        speed: 'slow',
-//
-//        mask: {
-//            // you might also consider a "transparent" color for the mask
-//            color: '#000',
-//            // load mask a little faster
-//            loadSpeed: 200,
-//            opacity: 0.3,
-//            zIndex: 8
-//        },
-//        // disable this for modal dialog-type of overlays
-//        closeOnClick: false,
-//        // load it immediately after the construction
-//        load: false,
-//        onBeforeLoad: function (e) {
-//            var self = this;
-//            var overlay = self.getOverlay();
-//            $('.dropdown').removeClass('active');
-//            $(self).removeClass('animated bounceInDown bounceOutUp');
-//            overlay.find('.close-button').remove();
-//            var close_button = $('<span class="medium-octicon octicon-x close-button"></span>');
-//            close_button.click(function (e) {
-//                e.preventDefault();
-//                self.close();
-//            });
-//            overlay.append(close_button);
-//        }
-//
-//    });
-//}
 
 // CHECKBOX
 function checkAllBox(selector, context) {
@@ -458,9 +395,6 @@ function bind_menu_actions(toolbox_id) {
         $("input#value_" + context).val($(this).data("id"));
         $(toolbox_id).find("form").submit();
     });
-    $("#open-delete-overlay").click(function (e) {
-        $('#delete-overlay').overlay().load();
-    });
 }
 
 //Toggle icon: fieldset
@@ -512,33 +446,6 @@ function binding_radio_button(selector) {
     });
 }
 
-
-//Overlay init code here
-
-//Query overlay
-function create_query_overlay(e, ajax_url) {
-    e.preventDefault();
-    $('#create-query-overlay').overlay().load();
-    $.ajax({
-        url: ajax_url,
-        type: 'GET',
-        dataType: 'script'
-    });
-}
-
-//Per page issue list
-function per_page() {
-    $("#per-page").change(function () {
-        $.ajax({
-            url: $(this).data("link"),
-            data: {
-                per_page: this.value
-            },
-            type: 'GET',
-            dataType: 'script'
-        });
-    });
-}
 
 
 function bind_calendar_button() {
@@ -669,19 +576,6 @@ function project_selection_filter() {
         $(".project-selection-filter").removeClass("selected");
         $(this).addClass("selected");
 
-    });
-}
-// LOG TIME
-//Date is optional
-function fill_log_issue_time_overlay(url, context, date) {
-    if ($(context).attr("id") === "pick-calendar") {
-        date = $(context).valueAsDate;
-    }
-    $.ajax({
-        url: url,
-        type: 'GET',
-        dataType: 'script',
-        data: {spent_on: date}
     });
 }
 
