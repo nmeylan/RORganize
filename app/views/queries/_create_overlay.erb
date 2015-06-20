@@ -4,13 +4,22 @@
 # Encoding: UTF-8
 # File: _create_overlay.erb
 %>
-<div class="overlayOuter" id="create-query-overlay">
-  <div class="overlayInner" style="width:747px">
-    <div id="form-content">
-      <% if query %>
-          <%= render partial: 'queries/form', locals: {query: query, project: project} %>
-      <% end %>
-    </div>
 
-  </div>
-</div>
+<%= render layout: "shared/modal_content", locals: {title: "TODO"} do %>
+    <%= rorganize_form_for @query, url: {controller: 'queries', project_id: @project.slug}, html: {class: 'form', data: {role: 'query-creation-form'}} do |f| %>
+
+        <%= f.input :name, input_html: {maxlength: 50} %>
+        <%= f.input :description, as: :text, input_html: {rows: 12, class: 'fancyEditor'} %>
+        <% if User.current.allowed_to?('public_queries', 'Queries', project) %>
+            <%= f.input :is_public, hint: t(:text_query_is_public) %>
+        <% else %>
+            <%= hidden_field :query, :is_public, {value: false} %>
+        <% end %>
+        <%= f.input :is_for_all, hint: t(:text_query_is_for_all) %>
+
+        <%= hidden_field :query, :object_type %>
+        <%= render layout: "shared/modal_footer" do %>
+            <%= f.button :submit %>
+        <% end %>
+    <% end %>
+<% end %>

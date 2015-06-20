@@ -23,8 +23,8 @@ namespace :ffaker do
       issues_iterations.times do
         User.current = members[rand(0..members_count)].user
         issue = Issue.new
-        issue.subject = Faker::Lorem.words(rand(5..15)).join(' ')
-        issue.description = Faker::Lorem.paragraph(rand(2..7))
+        issue.subject = FFaker::Lorem.words(rand(5..15)).join(' ')
+        issue.description = FFaker::Lorem.paragraph(rand(2..7))
         issue.author_id = members[rand(0..members_count)].id
         issue.assigned_to_id = members[rand(0..members_count)].id
         issue.version = versions[rand(0..versions_count)]

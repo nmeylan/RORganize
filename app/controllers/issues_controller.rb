@@ -29,11 +29,7 @@ class IssuesController < ApplicationController
     load_issues
     find_custom_queries
     if request.xhr?
-      render json: {
-                 list: @issues_decorator.display_collection,
-                 filter: view_context.filter_tag('issue', Issue.filtered_attributes, project_issues_path(@project.slug, query_id: params[:query_id]), true,
-                                                 {user: User.current, project: @project, filter_content: session[controller_name][@project.slug][:json_filter], type: 'Issue'})
-             }
+      render json: index_json_response
     else
       render :index
     end
@@ -157,6 +153,15 @@ class IssuesController < ApplicationController
         project.issues.where(sequence_id: params[:ids], author_id: User.current.id).pluck('issues.sequence_id')
       end
     end
+  end
+
+  def index_json_response
+    {
+        list: @issues_decorator.display_collection,
+        filter: view_context.filter_tag('issue', Issue.filtered_attributes, project_issues_path(@project.slug, query_id: params[:query_id]), true,
+                                        {user: User.current, project: @project, filter_content: session[controller_name][@project.slug][:json_filter], type: 'Issue'}),
+        countEntries: @issues_decorator.display_total_entries
+    }
   end
 
   alias :load_collection :load_issues

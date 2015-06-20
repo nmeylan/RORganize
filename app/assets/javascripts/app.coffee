@@ -10,10 +10,18 @@ window.App =
 
   _setup_front: ->
     IssuesList.setup(@scope)
+    IssuesSubnav.setup(@scope)
     Filter.setup(@scope)
+    QueryOverlay.setup(@scope)
 
   _setup_common: ->
-# tooltips
-    @scope.find("[data-toggle=tooltip]").tooltip({html: true})
+  # tooltips
+    $(document).ready =>
+      @scope.find("[data-toggle=tooltip]").tooltip({html: true})
 
-    DynamicModal.setup(@scope)
+      DynamicModal.setup(@scope)
+
+      $(".chzn-select").chosen disable_search_threshold: 5
+      $(".chzn-select-deselect").chosen
+        allow_single_deselect: true
+        disable_search_threshold: 5

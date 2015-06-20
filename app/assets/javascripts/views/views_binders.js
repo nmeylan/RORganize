@@ -16,6 +16,7 @@ function rich_list_index_binder(class_name, options){
     initialize_filters(options);
 
     save_edit_filter("#filter-edit-save", "#filter-form");
+    uniq_toogle("#"+class_name+".toggle", ".content");
 }
 
 function rich_list_index_callback(class_name, options){

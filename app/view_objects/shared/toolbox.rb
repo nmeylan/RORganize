@@ -18,9 +18,9 @@ class Toolbox
   end
 
   # @param [String] controller_name.
-  def add_extra_action_delete(controller_name)
+  def add_extra_action_delete(controller_name, path)
     if @user.allowed_to?('destroy', controller_name, @project)
-      @extra_actions << h.link_to(h.glyph(h.t(:link_delete), 'trashcan'), '#', {class: 'icon icon-del', id: 'open-delete-overlay'})
+      @extra_actions << h.link_to(h.glyph(h.t(:link_delete), 'trashcan'), path, {class: 'icon icon-del', data: {toggle: "dynamic-modal"}})
     end
   end
 

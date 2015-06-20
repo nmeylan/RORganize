@@ -13,10 +13,9 @@
 <%= clear_both %>
 
 <%= @issues_decorator.display_collection %>
-<ul id="issues-toolbox" class="jeegoocontext box toolbox"></ul>
+<ul id="issues-toolbox" data-role="toolbox" class="jeegoocontext box toolbox"></ul>
 <%# OVERLAY renderer %>
-<%= render partial: 'shared/delete_overlay', locals: {collection_deletion: nil} %>
-<%= render partial: 'queries/create_overlay', locals: {query: @query, project: @project} %>
+<%= render partial: 'shared/delete_modal', locals: {collection_deletion: nil} %>
 
 <%= render partial: 'issues/sidebar', locals: {custom_queries_decorator: @custom_queries_decorator, project: @project, selected_query: @query} %>
 

@@ -59,7 +59,7 @@ class ApplicationCollectionDecorator < Draper::CollectionDecorator
   end
 
   def display_total_entries
-    h.content_tag :span, object.total_entries, {class: 'counter total-entries'}
+    h.content_tag :span, object.total_entries, {class: 'counter total-entries', data: {role: "total-entries"}}
   end
 
   def collection_contextual_title(title)

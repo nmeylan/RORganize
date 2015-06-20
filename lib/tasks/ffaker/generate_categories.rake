@@ -10,7 +10,7 @@ namespace :ffaker do
       categories_iterations = ENV['i'] ? ENV['i'].to_i : 50
       categories_iterations.times do |x|
         category = Category.new
-        category.name = Faker::Lorem.words(rand(1..3)).join(' ')
+        category.name = FFaker::Lorem.words(rand(1..3)).join(' ')
         category.project_id = project_id
         category.save
       end

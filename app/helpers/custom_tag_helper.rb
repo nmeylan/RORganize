@@ -132,7 +132,7 @@ module CustomTagHelper
   # options are default link_to html_options.
   # E.g : {caption: 'Issue link', path: 'project_issues_path', {class: 'my class', id: {my id}}}
   def subnav_tag(css_class, id, *links)
-    content_tag :div, {class: "btn-group #{css_class}", id: id} do
+    content_tag :div, {class: "btn-group #{css_class}", data: {role: id}, id: id} do
       special_links_builder(links, 'btn btn-primary')
     end
   end

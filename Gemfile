@@ -31,6 +31,7 @@ gem 'simple_form'
 gem 'bootstrap-sass'
 gem 'chosen-rails'
 gem 'bourbon'
+gem 'will_paginate-bootstrap'
 
 group :test do
   # Pretty printed test output

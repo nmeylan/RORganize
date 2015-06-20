@@ -19,8 +19,8 @@ class DocumentToolbox < Toolbox
       build_menu_category
       build_menu_version
     end
-    add_extra_action_edit('Documents',  h.edit_project_document_path(@project.slug, @collection_ids[0]))
-    add_extra_action_delete('Documents')
+    add_extra_action_edit('Documents', h.edit_project_document_path(@project.slug, @collection_ids[0]))
+    add_extra_action_delete('Documents', h.toolbox_project_documents_path(@project.slug, delete: true, ids: @collection_ids))
   end
 
   def build_menu_version
@@ -28,6 +28,6 @@ class DocumentToolbox < Toolbox
   end
 
   def build_menu_category
-    generic_toolbox_menu_builder(Document.human_attribute_name(:category), :categories, :category_id, @project.categories.sort_by{|category| category.caption.downcase}, Proc.new(&:category), true)
+    generic_toolbox_menu_builder(Document.human_attribute_name(:category), :categories, :category_id, @project.categories.sort_by { |category| category.caption.downcase }, Proc.new(&:category), true)
   end
 end

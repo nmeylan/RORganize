@@ -45,7 +45,7 @@ module IssuesHelper
   def list_header
     content_tag :thead do
       content_tag :tr, class: 'header' do
-        list_th link_to(glyph('', 'check'), '#', {class: 'icon-checked', id: 'check-all', 'cb_checked' => 'b'})
+        list_th link_to(glyph('', 'check'), '#', {class: 'icon-checked', id: 'check-all', 'cb_checked' => 'b', data: {toggle: "check-all"}})
         list_th sortable('issues.sequence_id', '#')
         list_th sortable('trackers.name', Issue.human_attribute_name(:tracker_id))
         list_th sortable('issues.subject', Issue.human_attribute_name(:subject)), {class: 'list-left no-padding-left'}

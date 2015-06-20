@@ -24,11 +24,8 @@
           $('#filter-content ' + selector + ' input[type=radio]#status-open').attr 'checked', 'checked'
       else if $(selector).length > 0 and $.inArray($(this).val(), selected) == -1
         $(selector).remove()
-      return
+
     bind_date_field()
-    $('.chzn-select-deselect').chosen allow_single_deselect: true
-    return
-  return
 
 @load_filter = (json_content, present_filters) ->
   present_filters = $.parseJSON(present_filters)
@@ -55,45 +52,28 @@
       if _.isArray(value.value)
         _.each value.value, (v) ->
           $('#td-' + key).find('select').find('option[value=\'' + v + '\']').attr 'selected', 'selected'
-          return
-      return
-    $(document).ready ->
-      $('.content').hide()
-      return
+
+    $('.content').hide()
   else
-    $('#filters-list').chosen()
-    $('#filters_list_chosen').hide()
     $('#filter-content').hide()
     $('.content').hide()
-  return
+    $('#filters_list_chosen').hide()
 
 @initialize_filters = (options) ->
   if gon
-#Display or hide filter's conditions
     add_filters gon.DOM_filter
     load_filter gon.DOM_filter, if options and options.dom_persisted_filter then options.dom_persisted_filter else gon.DOM_persisted_filter
   $('#type-filter').click (e) ->
     $('#filters_list_chosen').show()
     $('#filter-content').show()
-    return
+
   $('#type-all').click (e) ->
     $('#filters_list_chosen').hide()
     $('#filter-content').hide()
-    return
-  return
+
 
 @save_edit_filter = (link_id, form_id) ->
-  $(link_id).click (e) ->
-    e.preventDefault()
-    self_element = $(this)
-    json = $(form_id).serializeJSON()
-    apprise self_element.data('confirm-message'), { confirm: true }, (response) ->
-      if response
-        $.ajax
-          url: self_element[0].href
-          type: 'put'
-          dataType: 'script'
-          data: json
+
       return
     return
   return

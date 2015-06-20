@@ -6,9 +6,9 @@
 
 function on_load_issues_scripts(options) {
     switch (gon.action) {
-        case 'index' :
-            rich_list_index_callback('issue', options);
-            break;
+        //case 'index' :
+        //    rich_list_index_callback('issue', options);
+        //    break;
         case 'show' :
             issues_show();
             break;
@@ -23,9 +23,6 @@ function on_load_issues_scripts(options) {
             break;
         case 'update' :
             issues_form();
-            break;
-        case 'apply_custom_query' :
-            rich_list_index_callback('issue', options);
             break;
     }
 

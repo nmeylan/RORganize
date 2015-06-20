@@ -8,20 +8,17 @@ class @IssuesList extends List
     super(@container)
     @initUi()
     @bindEvents()
-    checkAll("#check-all", ".list")
-    listTrClick(".list .issue-tr")
-    checkboxToolbox(".list")
-    init_toolbox('.issue.list .issue-tr', 'issues-toolbox', {list: '.issue.list'})
-    uniq_toogle("#issue.toggle", ".content")
+    @toolbox = new Toolbox(@ui.issuesListTable, @toolboxSubmitCallback)
 
   initUi: =>
     @ui =
-      sortLink: @container.find("[data-action=sort-list]")
+      issuesListTable: @container.find("[data-role=issues-list-table]")
 
   bindEvents: =>
-    @ui.sortLink.on "ajax:success", @handleUpdateList
 
-  handleUpdateList: (event, response) =>
+
+  toolboxSubmitCallback: (event, response) =>
+    $("[data-role=total-entries]").replaceWith($(response.countEntries))
     @updateList($(response.list))
 
   updateList: (data) =>

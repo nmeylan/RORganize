@@ -33,7 +33,6 @@ module Pagination
   end
 
   def set_current_page
-    # @sessions[:current_page] = params[:page] ? params[:page] : (@sessions[:current_page] ? @sessions[:current_page] : 1)
     @sessions[:current_page] = params[:page]
   end
 end

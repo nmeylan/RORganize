@@ -8,7 +8,7 @@ module ToolboxHelper
   # Build a toolbox render from a toolbox object.
   # @param [Toolbox] toolbox : the toolbox object.
   def toolbox_tag(toolbox)
-    form_tag toolbox.path, remote: true, id: 'toolbox-form' do
+    form_tag toolbox.path, remote: true, id: 'toolbox-form', data: {role: "toolbox-form"} do
       concat toolbox_menu_items(toolbox)
       concat toolbox_extra_menu_item(toolbox)
       concat toolbox_hidden_tag(toolbox)

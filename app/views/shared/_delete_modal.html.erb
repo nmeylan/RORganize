@@ -4,8 +4,8 @@
 # Encoding: UTF-8
 # File: _delete_overlay.html.erb
 %>
-<div class="overlayOuter" id="delete-overlay">
-  <div class="overlayInner">
+
+<%= render layout: "shared/modal_content", locals: {title: "TODO"} do %>
     <% if collection_deletion && collection_deletion.any? %>
         <%= form_tag({}, remote: true, methode: :delete) do -%>
             <% collection_deletion.each do |item| %>
@@ -13,14 +13,11 @@
                 <%= hidden_field_tag 'delete_ids[]', item.sequence_id %>
                 <br/>
             <% end %>
-            <div class="overlayButtons">
-              <%= submit_tag 'Ok' %>
-              <input type="button" class="close" value="<%= t(:button_close) %>">
-            </div>
+            <%= render layout: "shared/modal_footer" do %>
+                <%= submit_tag 'Ok' %>
+            <% end %>
         <% end %>
     <% else %>
         <%= t(:text_not_owner_deletion) %>
     <% end %>
-  </div>
-</div>
-
+<% end %>

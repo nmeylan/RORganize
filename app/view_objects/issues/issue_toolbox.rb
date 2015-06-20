@@ -22,7 +22,7 @@ class IssueToolbox < Toolbox
     build_menu_done
 
     add_extra_action_edit('Issues', h.edit_project_issue_path(@project.slug, @collection_ids[0]))
-    add_extra_action_delete('Issues')
+    add_extra_action_delete('Issues', h.toolbox_project_issues_path(@project.slug, delete: true, ids: @collection_ids))
   end
 
   def build_menu_done

@@ -35,7 +35,7 @@ module FilterHelper
       concat content_tag :table, nil, id: 'filter-content'
       concat submit_tag t(:button_apply), {style: 'margin-left:0px', class: "btn btn-primary"}
       concat content_tag :span, save_filter_button_tag(can_save, save_button_options),
-                         {id: 'save-query-button'}
+                         {data: {role: 'save-query-button'}, id: "save-query-button"}
     end
   end
 
@@ -51,9 +51,10 @@ module FilterHelper
     user = options[:user]
     filter_content = options[:filter_content]
     if can_user_save_query?(can_save, filter_content, project, user, params[:query_id].nil?)
-      link_to t(:button_save), new_project_query_queries_path(project.slug, options[:type]), {data: {action: "create-query", toggle: "dynamic-modal"}}
+      link_to t(:button_save), new_project_query_queries_path(project.slug, options[:type]), {data: {action: "create-query", toggle: "dynamic-modal"}, class: "btn btn-link"}
     elsif can_user_save_query?(can_save, filter_content, project, user, !params[:query_id].nil?)
-      link_to t(:button_save), edit_query_filter_queries_path(params[:query_id]), {id: 'filter-edit-save', 'data-confirm-message' => t(:text_confirm_update_filter)}
+      link_to t(:button_save), edit_query_filter_queries_path(params[:query_id]), {class: "btn btn-link", id: 'filter-edit-save',
+                                                                                   data: {confirm_message: t(:text_confirm_update_filter), action: "save-query"}}
     end
   end
 

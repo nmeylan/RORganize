@@ -8,7 +8,8 @@ module CollectionHelper
   # @param [Session] session : the per_page argument for pagination.
   # @param [String] path : to the controller to refresh the list when user change the per_page or current_page parameter.
   def paginate(collection, session, path)
-    concat will_paginate(collection, {renderer: 'RemoteLinkRenderer', next_label: t(:label_next), previous_label: t(:label_previous)})
+    concat will_paginate(collection, {renderer: BootstrapPagination::Rails , next_label: t(:label_next), previous_label: t(:label_previous),
+                                      link_options: {"data-remote" => true, "data-action" => "paginate"}})
     pagination_per_page(path, session)
   end
 
@@ -44,6 +45,8 @@ module CollectionHelper
   # Build a list of issues.
   # @param [Array] collection of issues.
   def generic_list(collection, options = {})
+    options[:data] ||= {}
+    options[:data] = options[:data].merge({role: "issues-list-table"})
     content_tag :table, options do
       concat list_header
       concat list_body(collection)
