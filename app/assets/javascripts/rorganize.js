@@ -8,12 +8,6 @@
 
     //BIND ACTIONS : depending on which controller is called
     switch (gon.controller) {
-      case 'documents' :
-        on_load_documents_scripts();
-        break;
-      case 'issues' :
-        on_load_issues_scripts();
-        break;
       case 'members' :
         on_load_members_scripts();
         break;
@@ -50,7 +44,6 @@
     }
 
     //MarkItUp
-    markdown_textarea();
     focus_first_input_text();
 
     //bind info tag
@@ -71,10 +64,6 @@
     bind_task_list_click();
     bind_date_field();
     //MarkItUp
-    if (!(options.dataType === 'json' || options.dataType === 'JSON')) {
-      markdown_textarea();
-      focus_first_input_text();
-    }
 
     $("#loading").hide();
     if (xhr.getResponseHeader('flash-message')) {
@@ -190,60 +179,7 @@ function error_explanation(message) {
 function focus_first_input_text() {
   //$('.form input:visible[type=text]:not(.chzn-search-input)').first().focus();
 }
-function markdown_textarea() {
-  var el = $('.fancyEditor');
-  var cacheResponse = [];
-  var cacheResponse1 = [];
-  el.markItUpRemove().markItUp(markdownSettings);
-  el.textcomplete([
-    { // mention strategy
-      match: /(^|\s)@(\w*)$/,
-      search: function(term, callback) {
-        if ($.isEmptyObject(cacheResponse)) {
-          $.getJSON('/projects/' + gon.project_id + '/members').done(function(response) {
-            cacheResponse = response;
-            callback($.map(cacheResponse, function(member) {
-              return member.indexOf(term) === 0 ? member : null;
-            }));
-          });
-        } else {
-          callback($.map(cacheResponse, function(member) {
-            return member.indexOf(term) === 0 ? member : null;
-          }));
-        }
-      },
-      replace: function(value) {
-        return '$1@' + value + ' ';
-      },
-      cache: true
-    },
-    { // Issues strategy
-      match: /(\s)#((\w*)|\d*)$/,
-      search: function(term, callback) {
-        if ($.isEmptyObject(cacheResponse1)) {
-          $.getJSON('/projects/' + gon.project_id + '/issues_completion').done(function(response) {
-            cacheResponse1 = response;
-            callback($.map(cacheResponse1, function(issue) {
-              var tmp = '#' + issue[0];
-              var isTermMatch = issue[0].toString().indexOf(term) !== -1 || issue[1].toLowerCase().indexOf(term) !== -1;
-              return isTermMatch ? tmp + ' ' + issue[1] : null;
-            }));
-          });
-        } else {
-          callback($.map(cacheResponse1, function(issue) {
-            var tmp = '#' + issue[0];
-            var isTermMatch = issue[0].toString().indexOf(term) === 0 || issue[1].toLowerCase().indexOf(term) === 0;
-            return isTermMatch ? tmp + ' ' + issue[1] : null;
-          }));
-        }
-      },
-      replace: function(value) {
-        return '$1' + value.substr(0, value.indexOf(' ')) + ' ';
-      },
-      cache: false
-    }
-  ]);
-}
+
 
 function bind_table_list_actions() {
   var table_row = $('table.list tr');

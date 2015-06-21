@@ -8,7 +8,7 @@ module ToolboxCallback
       if params[:delete]
         render partial: "shared/delete_modal", locals: {collection_deletion: collection_deletion}
       else
-        render html: view_context.issue_toolbox(collection) #todo change that with a generic call
+        render html: view_context.toolbox(collection) #todo change that with a generic call
       end
     elsif params[:delete_ids]
       #Multi delete

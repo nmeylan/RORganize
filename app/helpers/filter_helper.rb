@@ -13,13 +13,13 @@ module FilterHelper
   def filter_tag(class_name, filtered_attributes, submission_path, can_save = false, save_button_options = {})
     @class_name = class_name
     content_tag :fieldset, id: "#{class_name}-filter", data: {role: "filters"} do
-      concat content_tag :legend, link_to(glyph(t(:link_filter), 'chevron-right'), '#', {class: 'icon-collapsed toggle', id: "#{class_name}"})
+      concat content_tag :legend, link_to(glyph(t(:link_filter), 'chevron-right'), '#filter-content-container', {data: {toggle: "collapse"}, id: "#{class_name}"})
       concat filter_tag_content(can_save, filtered_attributes, save_button_options, submission_path)
     end
   end
 
   def filter_tag_content(can_save, filtered_attributes, save_button_options, submission_path)
-    content_tag :div, class: 'content' do
+    content_tag :div, class: 'content collapse', id: "filter-content-container" do
       concat filter_form_tag(filtered_attributes, save_button_options, can_save, submission_path)
     end
   end

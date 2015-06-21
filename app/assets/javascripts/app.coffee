@@ -12,6 +12,7 @@ window.App =
       throw "App.setup: setup for namespace '#{namespace}' not found!"
 
   _setup_front: ->
+    DocumentsList.setup(@scope)
     IssuesPredecessor.setup(@scope)
     IssuesList.setup(@scope)
     IssuesSubnav.setup(@scope)
@@ -32,15 +33,7 @@ window.App =
       @scope.find('[data-toggle="popover"]').popover({container: "body"})
 
       DynamicModal.setup(@scope)
-
-      @scope.find("[data-toggle=new-comment]").on "click", (e) =>
-        formContainer = @scope.find('[data-role=add-comment-form]')
-        formContainer.show();
-        formContainer.find("[data-toggle=close-comment-form]").on "click", (e) ->
-          e.preventDefault()
-          formContainer.hide()
-
-      $(".chzn-select").chosen disable_search_threshold: 5
-      $(".chzn-select-deselect").chosen
-        allow_single_deselect: true
-        disable_search_threshold: 5
+      bindAttachementEvents(@scope)
+      bindNewCommentLink(@scope)
+      bindSelect(@scope)
+      markdownTextarea(@scope)

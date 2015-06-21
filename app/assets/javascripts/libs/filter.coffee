@@ -53,10 +53,8 @@
         _.each value.value, (v) ->
           $('#td-' + key).find('select').find('option[value=\'' + v + '\']').attr 'selected', 'selected'
 
-    $('.content').hide()
   else
     $('#filter-content').hide()
-    $('.content').hide()
     $('#filters_list_chosen').hide()
 
 @initialize_filters = (options) ->

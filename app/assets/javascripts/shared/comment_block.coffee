@@ -23,6 +23,7 @@ class @CommentBlock
     container.append(response = $(response.html))
     form = container.find("[data-role=comment-form]")
     form.on "ajax:success", @handleFormSubmission
+    window.App.setup(response)
 
     response.find("[data-action=close]").on "click", (e) =>
       e.preventDefault()

@@ -9,7 +9,6 @@ class @Filter
     @bindEvents()
 
     initialize_filters()
-    uniq_toogle("#issue.toggle", ".content")
 
   initUi: =>
     @ui =
@@ -24,9 +23,10 @@ class @Filter
     @updateSaveButton(filter)
 
     $("[data-role=total-entries]").replaceWith($(response.countEntries))
-    window.IssuesList.instance.updateList($(response.list))
+    window.List.instance.updateList($(response.list))
 
   updateSaveButton: (filter) ->
+    console.log($(filter).find("[data-action=save-query]"))
     if createButton = $(filter).find("[data-action=save-query]")
       self = @
       createButton.click (e) ->

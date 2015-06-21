@@ -1,18 +1,18 @@
-class @IssuesList extends List
+class @DocumentsList extends List
 
   @setup: (scope) ->
-    if (container = scope.find("[data-role=issues-list]")).length || ((container = scope).is("[data-role=issues-list]"))
-      @instance = new IssuesList(container)
+    if (container = scope.find("[data-role=documents-list]")).length || ((container = scope).is("[data-role=documents-list]"))
+      @instance = new DocumentsList(container)
 
   constructor: (@container) ->
     super(@container)
     @initUi()
     @bindEvents()
-    @toolbox = new Toolbox(@ui.issuesListTable, @toolboxSubmitCallback)
+    @toolbox = new Toolbox(@ui.documentsListTable, @toolboxSubmitCallback)
 
   initUi: =>
     @ui =
-      issuesListTable: @container.find("[data-role=list-table]")
+      documentsListTable: @container.find("[data-role=list-table]")
 
   bindEvents: =>
 

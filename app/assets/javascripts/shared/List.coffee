@@ -4,6 +4,7 @@ class @List
     @perPage()
     @paginate()
     @sort()
+    List.instance = @
 
   perPage: ->
     self = @

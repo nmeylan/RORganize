@@ -18,7 +18,11 @@ class DocumentsController < ApplicationController
     filter(Document)
     load_documents
     find_custom_queries
-    generic_index_callback
+    if request.xhr?
+      render json: index_json_response
+    else
+      render :index
+    end
   end
 
   def new
@@ -86,6 +90,15 @@ class DocumentsController < ApplicationController
   def find_document
     @document_decorator = @project.documents.eager_load(:category, :version, :attachments).find_by_sequence_id!(params[:id])
     @document_decorator = @document_decorator.decorate(context: {project: @project})
+  end
+
+  def index_json_response
+    {
+        list: @documents_decorator.display_collection,
+        filter: view_context.filter_tag('document', Document.filtered_attributes, project_documents_path(@project.slug, query_id: params[:query_id]), true,
+                           {user: User.current, project: @project, filter_content: session[controller_name][@project.slug][:json_filter], type: 'Document'}),
+        countEntries: @documents_decorator.display_total_entries
+    }
   end
 
   alias :load_collection :load_documents

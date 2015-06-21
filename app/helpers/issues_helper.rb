@@ -102,7 +102,7 @@ module IssuesHelper
 
   # Build a toolbox render for issue toolbox.
   # @param [Array] collection : a collection of selected Issues that will be bulk edited.
-  def issue_toolbox(collection)
+  def toolbox(collection)
     toolbox_tag(IssueToolbox.new(collection, @project, User.current))
   end
 

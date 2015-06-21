@@ -46,7 +46,7 @@ module CollectionHelper
   # @param [Array] collection of issues.
   def generic_list(collection, options = {})
     options[:data] ||= {}
-    options[:data] = options[:data].merge({role: "issues-list-table"})
+    options[:data] = options[:data].merge({role: "list-table"})
     content_tag :table, options do
       concat list_header
       concat list_body(collection)
