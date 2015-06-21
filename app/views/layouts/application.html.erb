@@ -31,33 +31,33 @@
     <%= render partial: 'layouts/main_menu', locals: {project: @project} %>
 <% end %>
 
-<%= content_tag(:div, nil, {id: 'main', class: "#{'nosidebar' if sidebar_content?}", data: {role: "#{controller_name.sub('_','-')}-#{action_name.sub('_','-')}"}}) %>
+<%= content_tag(:div, {id: 'main', class: "#{'nosidebar' unless sidebar_content?}", data: {role: "#{controller_name.sub('_', '-')}-#{action_name.sub('_', '-')}"}}) do %>
 
-<%= render partial: 'flashs/flash' %>
+    <%= render partial: 'flashs/flash' %>
 
-<div id="contextual">
-  <%= yield :contextual %>
-</div>
-<%= clear_both %>
-<div id="sidebar">
-  <%= yield :sidebar %>
-</div>
+    <div id="contextual">
+      <%= yield :contextual %>
+    </div>
+    <%= clear_both %>
+    <div id="sidebar">
+      <%= yield :sidebar %>
+    </div>
 
-<div id="content">
-  <%= yield %>
-</div>
-
-
-<div id="loading"><p>Sending request...</p></div>
-
-<div id="highlight-search" class="octicon octicon-search">
-  <span id="highlight-search-result-count"></span>
-  <input type="text" name="highlight_search" id="highlight-search-input" placeholder="search on page...">
-</div>
-
-<%= render partial: 'layouts/footer' %>
+    <div id="content">
+      <%= yield %>
+    </div>
 
 
+    <div id="loading"><p>Sending request...</p></div>
+
+    <div id="highlight-search" class="octicon octicon-search">
+      <span id="highlight-search-result-count"></span>
+      <input type="text" name="highlight_search" id="highlight-search-input" placeholder="search on page...">
+    </div>
+
+    <%= render partial: 'layouts/footer' %>
+
+<% end %>
 <%= render "shared/modal" %>
 
 <script type="text/javascript">

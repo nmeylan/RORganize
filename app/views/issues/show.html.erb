@@ -51,7 +51,7 @@
 <%= link_to glyph('open', 'chevron-right'), '#gantt-informations', {class: 'pull-right', data: {toggle: 'collapse'}} %>
 <%= clear_both %>
 <div class="collapse" id="gantt-informations">
-  <div id="predecessor">
+  <div id="predecessor" data-role="predecessor">
     <%= render partial: 'issues/predecessor', locals: {issue_decorator: @issue_decorator, project: @project} %>
   </div>
   <hr/>

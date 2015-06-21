@@ -12,13 +12,10 @@ module GanttCallbacks
   def set_predecessor(predecessor_id)
     @issue_decorator = Issue.find_by(sequence_id: params[:id], project_id: @project.id).decorate(context: {project: @project})
     result = @issue_decorator.set_predecessor(predecessor_id)
-    respond_to do |format|
-      format.js do
-        respond_to_js action: 'add_predecessor', locals: {journals: History.new(result[:journals]), success: result[:saved]},
-                      response_header: result[:saved] ? :success : :failure,
-                      response_content: result[:saved] ? t(:successful_update) : @issue_decorator.errors.full_messages
-      end
-    end
+    js_callback(result[:saved], [t(:successful_update), @issue_decorator.errors.full_messages],
+                history_block: @issue_decorator.display_history(History.new(result[:journals])),
+                content: (view_context.render partial: 'issues/predecessor', locals: {issue_decorator: @issue_decorator, project: @project})
+    )
   end
 
   # Called in roadmaps controller.

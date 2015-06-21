@@ -10,7 +10,7 @@
         <div class="separator"></div>
         <h2><%= t(:field_attachments) %> :</h2>
     <% end %>
-    <table>
+    <table data-role="attachments">
       <% images = attachments.select { |attachment| !attachment.file_content_type.nil? && !attachment.file_content_type.match(/\Aimage/).nil? } %>
       <% non_images = attachments.select { |attachment| !attachment.file_content_type.nil? && attachment.file_content_type.match(/\Aimage/).nil? }.sort { |x, y| x.file_content_type <=> y.file_content_type } %>
       <% images.each do |attachment| %>

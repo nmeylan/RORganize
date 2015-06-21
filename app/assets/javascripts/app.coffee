@@ -12,10 +12,12 @@ window.App =
       throw "App.setup: setup for namespace '#{namespace}' not found!"
 
   _setup_front: ->
+    IssuesPredecessor.setup(@scope)
     IssuesList.setup(@scope)
     IssuesSubnav.setup(@scope)
     QueryOverlay.setup(@scope)
     # Shared
+    Attachment.setup(@scope)
     Filter.setup(@scope)
     AddCommentForm.setup(@scope)
     CommentBlock.setup(@scope)

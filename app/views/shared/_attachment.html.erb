@@ -4,7 +4,7 @@
  * Time: 18:56
 %>
 <% if !attachment.new_record? && attachment.file_content_type %>
-    <tr id="<%= attachment.id %>" class="attachment-row">
+    <tr id="<%= attachment.id %>" class="attachment-row" data-role="attachment" data-id="<%= attachment.id %>">
       <td class="attachment-title">
         <% if attachment.file_content_type.include?('image') %>
             <a href="<%= attachment.file.url(:large) %>" class="lightbox"><%= image_tag attachment.file.url(:thumb) %></a>
