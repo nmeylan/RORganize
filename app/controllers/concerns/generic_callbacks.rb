@@ -82,23 +82,18 @@ module GenericCallbacks
 
   # @param [Boolean] success : if the action is a success.
   # @param [Array] messages : array length 2. first index success message, second index error message.
-  def js_callback(success, messages, action = nil, locals = {})
-    header = success ? :success : :failure
+  # @param [Hash] json: a json hash
+  def js_callback(success, messages, *json)
     message = success ? messages[0] : messages[1]
-    action ||= 'do_nothing' unless success
-    respond_to do |format|
-      format.js { respond_to_js action: action, response_header: header, response_content: message, locals: locals }
-    end
+    render json: {status: status_response(success, message: message)}.merge(json.extract_options!)
   end
 
   # @param [Boolean] success : if the action is a success.
   # @param [Symbol] action_type :update / :delete / :create
-  def simple_js_callback(success, action_type, model, locals = {})
-    header, message = generic_notice_builder(success, action_type, model)
-    do_nothing_action = success ? nil : 'do_nothing'
-    respond_to do |format|
-      format.js { respond_to_js action: do_nothing_action, response_header: header, response_content: message, locals: locals }
-    end
+  # @param [Hash] json: a json hash
+  def simple_js_callback(success, action_type, model, *json)
+    message = generic_notice_builder(success, action_type, model)
+    render json: {status: status_response(success, message: message)}.merge(json.extract_options!)
   end
 
   def generic_notice_builder(success, action_type, model)
@@ -107,6 +102,6 @@ module GenericCallbacks
             delete: {failure: t(:failure_deletion), success: t(:successful_deletion)}
     }
     header = success ? :success : :failure
-    return header, hash[action_type][header]
+    hash[action_type][header]
   end
 end

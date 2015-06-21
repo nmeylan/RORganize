@@ -1,11 +1,17 @@
-<% if time_entry.id %>
-    <%= form_for(time_entry, html: {id: 'spent-time-form', class: 'form', method: :put, remote: true}) do |f| %>
-        <%= render partial: 'time_entries/log_issue_spent_time_form_content', locals: {f: f, time_entry: time_entry, issue_id: params[:issue_id]} %>
+<%= render layout: "shared/modal_content", locals: {title: issue_id} do %>
+    <%= rorganize_form_for time_entry, wrapper: :vertical_form, class: "form" do |f| %>
+        <%= raw error_messages(time_entry.errors.full_messages) %>
+        <%= f.input :spent_on, as: :date, html5: true, input_html: {size: 6, id: 'pick-calendar'} %>
+        <%= f.input :spent_time, wrapper: :vertical_input_group do %>
+            <%= f.input_field :spent_time, class: "form-control" %>
+            <span class="input-group-addon">h</span>
+        <% end %>
+        <%= f.input :comment, as: :text, input_html: {rows: 8, class: 'fancyEditor'} %>
+        <%= hidden_field_tag :issue_id, issue_id %>
+        <%= render layout: "shared/modal_footer" do %>
+            <%= f.button :submit %>
+        <% end %>
     <% end %>
-<% else %>
-    <%= form_for(time_entry, html: {id: 'spent-time-form', class: 'form', remote: true}) do |f| %>
-        <%= render partial: 'time_entries/log_issue_spent_time_form_content', locals: {f: f, time_entry: time_entry, issue_id: params[:issue_id]} %>
-    <% end %>
-<% end %>
 
+<% end %>
 

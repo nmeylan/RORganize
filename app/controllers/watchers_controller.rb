@@ -14,13 +14,16 @@ class WatchersController < ApplicationController
       @model = @watcher.watchable
       if @watcher.is_unwatch
         result = @watcher.update_attribute(:is_unwatch, false)
-        js_callback(result, [t(:successful_watched), "#{t(:failure_creation)} : #{@watcher.errors.full_messages.join(', ')}"], 'create')
+        js_callback(result, [t(:successful_watched), "#{t(:failure_creation)} : #{@watcher.errors.full_messages.join(', ')}"],
+                    button: view_context.toggle_watcher_link(@watcher.watchable, @project, true))
       elsif @model.parent_watch_by?(User.current) && !@watcher.is_unwatch
         result = @watcher.update_attribute(:is_unwatch, true)
-        js_callback(result, [t(:successful_unwatched), "#{t(:failure_deletion)} : #{@watcher.errors.full_messages.join(', ')}"], 'destroy')
+        js_callback(result, [t(:successful_unwatched), "#{t(:failure_deletion)} : #{@watcher.errors.full_messages.join(', ')}"],
+                    button: view_context.toggle_watcher_link(@model, @project, false))
       else
         result = @watcher.destroy
-        js_callback(result, [t(:successful_unwatched), "#{t(:failure_deletion)} : #{@watcher.errors.full_messages.join(', ')}"], 'destroy')
+        js_callback(result, [t(:successful_unwatched), "#{t(:failure_deletion)} : #{@watcher.errors.full_messages.join(', ')}"],
+                    button: view_context.toggle_watcher_link(@model, @project, false))
       end
     else
       @watcher = Watcher.new(watchable_id: params[:watchable_id], watchable_type: params[:watchable_type],
@@ -29,11 +32,13 @@ class WatchersController < ApplicationController
         @watcher.is_unwatch = true
         result = @watcher.save
         @model = @watcher.watchable
-        js_callback(result, [t(:successful_unwatched), "#{t(:failure_deletion)} : #{@watcher.errors.full_messages.join(', ')}"], 'destroy')
+        js_callback(result, [t(:successful_unwatched), "#{t(:failure_deletion)} : #{@watcher.errors.full_messages.join(', ')}"],
+                    button: view_context.toggle_watcher_link(@model, @project, false))
       else
         result = @watcher.save
         @model = @watcher.watchable
-        js_callback(result, [t(:successful_watched), "#{t(:failure_creation)} : #{@watcher.errors.full_messages.join(', ')}"], 'create')
+        js_callback(result, [t(:successful_watched), "#{t(:failure_creation)} : #{@watcher.errors.full_messages.join(', ')}"],
+                    button: view_context.toggle_watcher_link(@model, @project, true))
       end
     end
   end

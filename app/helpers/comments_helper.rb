@@ -26,7 +26,7 @@ module CommentsHelper
   # @param [Booelan] avatar : if true display user avatar, hide avatar otherwise.
   def comment_block_render(comment, selected_comment_id = nil, avatar = true)
     css_class = comment.id.eql?(selected_comment_id) ? 'comment-content selected' : 'comment-content'
-    content_tag :div, {id: "comment-#{comment.id}", class: 'comment-block'} do
+    content_tag :div, {id: "comment-#{comment.id}", class: 'comment-block', data: {role: "comment-block", id: comment.id}} do
       concat comment.author_avatar unless avatar
       concat comment_block_header(avatar, comment)
       concat comment_block_content(comment, css_class)
@@ -34,7 +34,7 @@ module CommentsHelper
   end
 
   def comment_block_content(comment, css_class)
-    content_tag :div, class: css_class do
+    content_tag :div, class: css_class, data: {role: "comment-content", id: comment.id} do
       markdown_to_html comment.content, comment.model
     end
   end
@@ -83,10 +83,11 @@ module CommentsHelper
   # Build comment edition form.
   # @param [Comment] model : the comment to edit.
   def put_comment_form(comment)
-    rorganize_form_for comment, html: {class: 'form', remote: true, method: :put} do |f|
+    rorganize_form_for comment, html: {class: 'form', remote: true, method: :put, data: {role: "comment-form"}} do |f|
       concat hidden_field_tag :project_id, comment.project.slug
       concat f.input :content, input_html: { rows: 12, class: 'fancyEditor', id: 'comment-form'}
       concat f.button :submit
+      concat link_to t(:button_close), "#", class: "btn btn-default", data: {action: "close"}
     end
   end
 end

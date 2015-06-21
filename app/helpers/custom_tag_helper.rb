@@ -67,7 +67,7 @@ module CustomTagHelper
   # @param [Numeric] percent : percentage of progression.
   # @param [String] css_class : extra css_class.
   def progress_bar_tag(percent, mini = false)
-    content_tag :div, class: "progress #{'mini' if mini}" do
+    content_tag :div, class: "progress #{'mini' if mini}", data: {toggle: "tooltip", title: "#{percent}%"} do
       concat content_tag :div, mini ? "" : "#{percent}%", {class: 'progress-bar progress-bar-success', role:"progressbar", style: "width:#{percent}%"}
     end
   end

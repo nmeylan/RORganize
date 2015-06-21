@@ -114,6 +114,18 @@ class ApplicationController < ActionController::Base
     render js: %(window.location.href='#{path}') and return
   end
 
+  def status_response(status, *values)
+    status = status ? :success : :failure
+    options = values.extract_options!
+    message = options[:message] ? options[:message] : ''
+    if status.eql?(:success)
+      response.headers['flash-message'] = message
+    elsif status.eql?(:failure)
+      response.headers['flash-error-message'] = message
+    end
+    {header: status, message: message}
+  end
+
   def class_name_to_controller_name(class_name)
     i = 0
     class_name.pluralize.gsub(/([A-Z])/) { |occurrence| i += 1; i == 1 ? occurrence : '_'+occurrence }

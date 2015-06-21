@@ -23,26 +23,6 @@ function on_load_issues_scripts(options) {
 
 }
 
-function issues_show() {
-    //jQuery(".content.gantt-informations").hide();
-    //jQuery('a.lightbox').lightBox({
-    //    fixedNavigation: true,
-    //    imageLoading: "<%= asset_path 'lightbox-ico-loading.gif' %>",
-    //    imageBtnClose: "<%= asset_path 'lightbox-btn-close.gif' %>",
-    //    imageBtnPrev: "<%= asset_path 'lightbox-btn-prev.gif' %>",
-    //    imageBtnNext: "<%= asset_path 'lightbox-btn-next.gif' %>",
-    //    imageBlank: "<%= asset_path 'lightbox-blank.gif' %>",
-    //    containerResizeSpeed: 350
-    //});
-    //createOverlay("#spent-time-overlay", 150);
-    //
-    //jQuery('#log-time').click(function (e) {
-    //    e.preventDefault();
-    //    fill_log_issue_time_overlay(jQuery(this).attr('href'), this);
-    //    jQuery('#spent-time-overlay').overlay().load();
-    //});
-
-}
 
 function issues_form() {
     var select = jQuery("#issue_version_id");

@@ -89,9 +89,7 @@ class ProfilesController < ApplicationController
 
   def star_project
     member, message = save_star_project
-    respond_to do |format|
-      format.js { respond_to_js response_header: :success, response_content: message, locals: {id: params[:project_id], is_starred: member.is_project_starred} }
-    end
+    js_callback(true, [message], {button: view_context.toggle_star_project_link(params[:project_id], member.is_project_starred)})
   end
 
   def save_project_position

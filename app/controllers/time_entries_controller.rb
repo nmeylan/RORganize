@@ -17,11 +17,7 @@ class TimeEntriesController < ApplicationController
   def new
     @time_entry = TimeEntry.new
     @time_entry.spent_on = params[:spent_on] ? params[:spent_on] : Date.today
-    respond_to do |format|
-      format.js do
-        respond_to_js locals: {issue_id: params[:issue_id]}
-      end
-    end
+    render partial: 'time_entries/log_issue_spent_time_form', locals: {issue_id: params[:issue_id],time_entry: @time_entry}
   end
 
   def create

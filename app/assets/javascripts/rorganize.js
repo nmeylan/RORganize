@@ -55,10 +55,8 @@
 
     //bind info tag
     bind_info_tag();
-    bind_commentable();
     bind_task_list_click();
     bind_color_editor();
-    bind_dropdown();
 
     bind_table_list_actions();
     bind_date_field();
@@ -69,7 +67,6 @@
 
   $(document).ajaxComplete(function(e, xhr, options) {
     //BIND_CHZN-SELECT
-    initialize_chosen();
     bind_table_list_actions();
     bind_task_list_click();
     bind_date_field();
@@ -508,15 +505,6 @@ function bind_info_tag() {
 
 function write_info(info) {
   return "<span class='help'>" + info + "</span>";
-}
-
-function bind_commentable() {
-  $('#add-comment-form .octicon-x').click(function(e) {
-    $('#add-comment-form').fadeOut();
-  });
-  $('#new-comment-link').click(function(e) {
-    $('#add-comment-form').show();
-  });
 }
 
 function bind_task_list_click() {

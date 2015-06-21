@@ -36,7 +36,7 @@ module IssuesHelper
   def issue_overview_list_type_rows(issue)
     list_td issue.display_category, class: 'list-center category'
     list_td issue.display_updated_at, class: 'list-center updated-at'
-    list_td issue.display_done_progression, {class: 'list-center done', data: {toggle: "tooltip", title: "#{issue.done}%"}}
+    list_td issue.display_done_progression, {class: 'list-center done'}
     list_td issue.checklist_progression, class: 'icon-information'
     list_td issue.comment_presence_indicator, class: 'icon-information'
     list_td issue.attachment_presence_indicator, class: 'icon-information'

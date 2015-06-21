@@ -3,8 +3,8 @@
  * Date: 27.07.14
  * Time: 17:04
 %>
-<%= content_tag :div, {id: 'add-comment-form'} do %>
+<%= content_tag :div, data: {role: 'add-comment-form'}, style: "display:none" do %>
     <div class="separator"></div>
-    <h2 id="add-comment"><%= glyph(t(:link_comment), 'x') %></h2>
+    <h2 id="add-comment"><%= link_to glyph("", 'x'), "#", data: {toggle: "close-comment-form"}%> <%= t(:link_comment) %></h2>
     <%= post_comment_form(model) %>
 <% end %>

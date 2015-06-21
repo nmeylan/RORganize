@@ -83,32 +83,8 @@ module ProjectsHelper
   def project_list_star_button(project)
     content_tag :div, class: 'star-project' do
       concat project.display_watch_button
-      render_project_star_button(project)
+      concat toggle_star_project_link(project.slug, project.starred?)
     end
   end
-
-  def render_project_star_button(project)
-    if project.starred?
-      concat star_project_link(project)
-    else
-      concat unstar_project_link(project)
-    end
-  end
-
-  def unstar_project_link(project)
-    star_unstar_project_link(project, t(:link_star), t(:text_star), 'icon-fav-off')
-  end
-
-  def star_project_link(project)
-    star_unstar_project_link(project, t(:link_unstar), t(:text_unstar), 'icon-fav')
-  end
-
-  def star_unstar_project_link(project, label, text, icon)
-    link_to(glyph(label, 'star'),
-            star_project_profile_path(project.slug),
-            {class: "icon #{icon} starred star star-button btn btn-primary",
-             method: :post, remote: true, data: {title: text, toggle: "tooltip"}})
-  end
-
 
 end

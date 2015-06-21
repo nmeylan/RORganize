@@ -76,7 +76,19 @@ module LinksHelper
     end
 
     link_to glyph(caption, 'eye'), toggle_watchers_path(project.slug, watchable.class.to_s, watchable.id),
-            {id: "#{id}-link-#{watchable.id}", class: 'btn btn-primary', remote: true, method: :post, data: {toggle: "tooltip", title: label}}
+            {id: "#{id}-link-#{watchable.id}", class: 'btn btn-default', remote: true, method: :post, data: {toggle: "tooltip", action: "toggle-self", title: label}}
+  end
+
+  def toggle_star_project_link(project_id, is_starred = false)
+    if is_starred
+      label = t(:text_unstar)
+      caption = t(:link_unstar)
+    else
+      label = t(:text_star)
+      caption = t(:link_star)
+    end
+    link_to glyph(caption, 'star'), star_project_profile_path(project_id), {class: 'btn btn-default', method: :post,
+                                                                            remote: true, data: {toggle: "tooltip", action: "toggle-self", title: label}}
   end
 
   # @param [User] user : current user.

@@ -13,29 +13,27 @@ class CommentsController < ApplicationController
     @comment = Comment.new(comment_params).decorate
     @comment.project = @project
     @comment.author = User.current
-    js_callback(@comment.save, [t(:successful_creation), "#{t(:failure_creation)} : #{@comment.errors.full_messages.join(', ')}"])
+    js_callback(@comment.save, [t(:successful_creation), "#{t(:failure_creation)} : #{@comment.errors.full_messages.join(', ')}"],
+                comment_block: view_context.comment_block_render(@comment, nil, false))
   end
 
   def show
     @comments_decorator = Comment.eager_load(:project)
                               .where(commentable_type: @comment.commentable_type, commentable_id: @comment.commentable_id)
                               .decorate(context: {selected_comment: @comment})
-    render(html: @comments_decorator.display_collection)
+    render partial: "comments/comments_modal"
   end
 
   def edit
-    respond_to do |format|
-      format.js { respond_to_js }
-    end
+    render json: {html: view_context.put_comment_form(@comment), id: @comment.id}
   end
 
   def update
-    @comment.update(comment_params)
-    simple_js_callback(@comment.save, :update, @comment)
+    simple_js_callback(@comment.update(comment_params), :update, @comment, html: view_context.markdown_to_html(@comment.content, @comment), id: @comment.id)
   end
 
   def destroy
-    simple_js_callback(@comment.destroy, :delete, @comment)
+    simple_js_callback(@comment.destroy, :delete, @comment, id: @comment.id)
   end
 
   private

@@ -1,0 +1,5 @@
+<%= render layout: "shared/modal_content", locals: {title: "TODO"} do %>
+    <%= @comments_decorator.display_collection %>
+    <%= render layout: "shared/modal_footer" do %>
+    <% end %>
+<% end %>
