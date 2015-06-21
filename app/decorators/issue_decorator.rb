@@ -82,8 +82,8 @@ class IssueDecorator < ApplicationDecorator
     end
   end
 
-  def display_done_progression(css_class = nil)
-    h.mini_progress_bar_tag(model.done, css_class)
+  def display_done_progression
+    h.progress_bar_tag(model.done, true)
   end
 
   def checklist_progression

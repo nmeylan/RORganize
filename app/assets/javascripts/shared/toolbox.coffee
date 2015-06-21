@@ -14,7 +14,7 @@ class @Toolbox
         el = $(this)
         checkbox = el.find(':checkbox')
         if !checkbox[0].disabled
-          checkbox.attr 'checked', true
+          checkbox.prop 'checked', true
           el.addClass 'toolbox-selection'
         self.handleMenuUpdate()
 

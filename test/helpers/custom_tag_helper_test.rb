@@ -67,23 +67,6 @@ module Rorganize
         assert_select 'span', text: 'glyph content'
       end
 
-      test 'it builds a progress bar' do
-        node(progress_bar_tag(20))
-        assert_select '.progress-bar', 1
-        assert_select '.progress', 1
-        assert_select '.progress[style=?]', 'width:20%'
-        assert_select '.percent', 1
-        assert_select '.percent', text: '20%'
-      end
-
-      test 'it builds a mini progress bar' do
-        node(mini_progress_bar_tag(20))
-        assert_select '.progress-bar.mini-progress-bar', 1
-        assert_select '.progress', 1
-        assert_select '.progress[style=?]', 'width:20%'
-        assert_select '.percent', 0
-      end
-
       test 'it builds a sidebar counter' do
         node(sidebar_count_tag(20))
         assert_select 'span.count', 1
