@@ -17,32 +17,29 @@
 <h2><%= @issue_decorator.subject %></h2>
 
 <%= @issue_decorator.creation_info %>
-<table class="detail" style="width:100%">
-  <tr>
-    <th style="width:15%"><%= t(:field_status) %> :</th>
-    <td style="width:30%"><%= @issue_decorator.display_status %></td>
-    <th style="width:15%"><%= t(:field_start_date) %> :</th>
-    <td style="width:30%"><%= @issue_decorator.display_start_date %></td>
-  </tr>
-  <tr>
-    <th style="width:15%"><%= t(:field_assigned_to) %> :</th>
-    <td style="width:30%"><%= @issue_decorator.display_assigned_to %></td>
-    <th style="width:15%"><%= t(:field_due_date) %> :</th>
-    <td style="width:30%"><%= @issue_decorator.display_due_date %></td>
-  </tr>
-  <tr>
-    <th style="width:15%"><%= t(:field_version) %> :</th>
-    <td style="width:30%"><%= @issue_decorator.display_version %></td>
-    <th style="width:15%"><%= t(:field_estimated_time) %> :</th>
-    <td style="width:30%"><%= @issue_decorator.display_estimated_time %></td>
-  </tr>
-  <tr>
-    <th style="width:15%"><%= t(:field_category) %> :</th>
-    <td style="width:30%"><%= @issue_decorator.display_category %></td>
-    <th style="width:15%"><%= t(:field_done) %> :</th>
-    <td style="width:30%" class="tooltipped tooltipped-w" label="<%= @issue_decorator.done %>%"><%= @issue_decorator.display_done_progression('width-100') %></td>
-  </tr>
-</table>
+<div class="row">
+  <dl class="col-sm-6 dl-horizontal">
+    <dt><%= Issue.human_attribute_name(:status) %> :</dt>
+    <dd><%= @issue_decorator.display_status %></dd>
+    <dt><%= Issue.human_attribute_name(:assigned_to) %> :</dt>
+    <dd><%= @issue_decorator.display_assigned_to %></dd>
+    <dt><%= Issue.human_attribute_name(:version) %> :</dt>
+    <dd><%= @issue_decorator.display_version %></dd>
+    <dt><%= Issue.human_attribute_name(:category) %> :</dt>
+    <dd><%= @issue_decorator.display_category %></dd>
+  </dl>
+  <dl class="col-sm-6 dl-horizontal">
+    <dt><%= Issue.human_attribute_name(:field_start_date) %> :</dt>
+    <dd><%= @issue_decorator.display_start_date %></dd>
+    <dt><%= Issue.human_attribute_name(:field_due_date) %> :</dt>
+    <dd><%= @issue_decorator.display_due_date %></dd>
+    <dt><%= Issue.human_attribute_name(:estimated_time) %> :</dt>
+    <dd><%= @issue_decorator.display_estimated_time %></dd>
+    <dt><%= Issue.human_attribute_name(:done) %> :</dt>
+    <dd data-toggle="tooltip" data-placement="left" title="<%= @issue_decorator.done %>%"><%= @issue_decorator.display_done_progression('width-100') %></dd>
+  </dl>
+</div>
+
 <br/>
 <hr/><br/>
 <h2><%= t(:field_description) %> :</h2>
@@ -51,9 +48,9 @@
 
 <div class="separator"></div>
 
-<%= link_to glyph('', 'chevron-right'), '#', {class: 'icon icon-collapsed toggle right', style: 'float:right', id: 'gantt-informations'} %>
+<%= link_to glyph('open', 'chevron-right'), '#gantt-informations', {class: 'pull-right', data: {toggle: 'collapse'}} %>
 <%= clear_both %>
-<div class="content gantt-informations">
+<div class="collapse" id="gantt-informations">
   <div id="predecessor">
     <%= render partial: 'issues/predecessor', locals: {issue_decorator: @issue_decorator, project: @project} %>
   </div>

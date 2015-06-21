@@ -53,7 +53,7 @@ module ProjectsHelper
   def project_stats(project)
     content_tag :ul, class: 'right-content-list project-stats' do
       concat content_tag :li, (content_tag :span, nil, {class: 'octicon octicon-broadcast'}),
-                         {class: 'tooltipped tooltipped-s', label: t(:text_public_project)} if project.is_public
+                         {data: {title: t(:text_public_project), toggle: "tooltip"}} if project.is_public
       concat member_count_stat(project)
       concat issues_opened_stat(project)
       concat content_tag :li, (content_tag :span, nil, class: 'octicon octicon-lock') if project.is_archived
@@ -106,8 +106,8 @@ module ProjectsHelper
   def star_unstar_project_link(project, label, text, icon)
     link_to(glyph(label, 'star'),
             star_project_profile_path(project.slug),
-            {class: "icon #{icon} starred star tooltipped tooltipped-s star-button btn btn-primary",
-             method: :post, remote: true, label: text})
+            {class: "icon #{icon} starred star star-button btn btn-primary",
+             method: :post, remote: true, data: {title: text, toggle: "tooltip"}})
   end
 
 

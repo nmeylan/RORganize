@@ -70,10 +70,3 @@
   $('#type-all').click (e) ->
     $('#filters_list_chosen').hide()
     $('#filter-content').hide()
-
-
-@save_edit_filter = (link_id, form_id) ->
-
-      return
-    return
-  return

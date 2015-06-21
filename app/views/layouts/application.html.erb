@@ -31,7 +31,7 @@
     <%= render partial: 'layouts/main_menu', locals: {project: @project} %>
 <% end %>
 
-<%= tag('div', {id: 'main', class: (sidebar_content? ? '' : 'nosidebar')}, true) %>
+<%= content_tag(:div, nil, {id: 'main', class: "#{'nosidebar' if sidebar_content?}", data: {role: "#{controller_name.sub('_','-')}-#{action_name.sub('_','-')}"}}) %>
 
 <%= render partial: 'flashs/flash' %>
 

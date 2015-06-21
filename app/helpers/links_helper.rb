@@ -76,7 +76,7 @@ module LinksHelper
     end
 
     link_to glyph(caption, 'eye'), toggle_watchers_path(project.slug, watchable.class.to_s, watchable.id),
-            {id: "#{id}-link-#{watchable.id}", class: 'tooltipped tooltipped-s btn btn-primary', remote: true, method: :post, label: label}
+            {id: "#{id}-link-#{watchable.id}", class: 'btn btn-primary', remote: true, method: :post, data: {toggle: "tooltip", title: label}}
   end
 
   # @param [User] user : current user.
@@ -90,7 +90,7 @@ module LinksHelper
   end
 
   def new_notification_link
-    link_to notifications_path, {class: "tooltipped tooltipped-s indicator #{params[:controller].eql?('notifications') ? 'selected' : ''}", label: t(:text_unread_notifications)} do
+    link_to notifications_path, {class: "indicator #{params[:controller].eql?('notifications') ? 'selected' : ''}", data: {toggle: "tooltip", title: t(:text_unread_notifications)}} do
       concat content_tag :span, nil, {class: 'unread inbox'}
       concat glyph('', 'inbox')
     end

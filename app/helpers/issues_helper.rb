@@ -36,7 +36,7 @@ module IssuesHelper
   def issue_overview_list_type_rows(issue)
     list_td issue.display_category, class: 'list-center category'
     list_td issue.display_updated_at, class: 'list-center updated-at'
-    list_td issue.display_done_progression, {class: 'list-center done tooltipped tooltipped-s', label: "#{issue.done}%"}
+    list_td issue.display_done_progression, {class: 'list-center done', data: {toggle: "tooltip", title: "#{issue.done}%"}}
     list_td issue.checklist_progression, class: 'icon-information'
     list_td issue.comment_presence_indicator, class: 'icon-information'
     list_td issue.attachment_presence_indicator, class: 'icon-information'
@@ -97,7 +97,7 @@ module IssuesHelper
   def issue_list_type_nav_item(label, glyph, type, text = '')
     {caption: glyph(label, glyph),
      path: project_issues_path(@project.slug, list_type: type),
-     options: {class: "#{'active' if is_list_displayed_with_type?(type.to_sym)} btn btn-default tooltipped tooltipped-s", label: text}}
+     options: {class: "#{'active' if is_list_displayed_with_type?(type.to_sym)} btn btn-default", data: {title: text, toggle: "tooltip"}}}
   end
 
   # Build a toolbox render for issue toolbox.

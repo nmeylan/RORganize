@@ -15,11 +15,11 @@
           <% icon = session['act_as'].eql?('Admin') ? 'crown' : 'person' %>
           <% switch_to = icon.eql?('crown') ? 'User' : 'Admin' %>
           <% g = icon.eql?('crown') ? medium_glyph('', icon) : glyph('', icon) %>
-          <%= link_to g, act_as_profile_path, {label: "Click to act as #{switch_to}", class: 'tooltipped tooltipped-s'} if current_user.is_admin? %>
-          <%= link_to(glyph('', 'sign-out'), destroy_user_session_path, method: :delete, label: 'Sign out', class: 'tooltipped tooltipped-s') %>
+          <%= link_to g, act_as_profile_path, {data: {toggle: "tooltip", title: "Click to act as #{switch_to}"}} if current_user.is_admin? %>
+          <%= link_to(glyph('', 'sign-out'), destroy_user_session_path, method: :delete, data: {toggle: "tooltip", title: 'Sign out'}) %>
         </li>
     <% else %>
-        <li><%= link_to glyph('', 'sign-in'), new_user_session_path, label: 'Sign in', class: 'tooltipped tooltipped-s' %></li>
+        <li><%= link_to glyph('', 'sign-in'), new_user_session_path, data: {toggle: "tooltip", title: 'Sign in'} %></li>
     <% end %>
   </ul>
 </div>

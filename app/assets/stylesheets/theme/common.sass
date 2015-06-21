@@ -5,3 +5,22 @@
   .active
     background-color: $brand-primary
     color: $btn-primary-color
+
+dl.dl-horizontal
+  margin: 0
+  dt
+    font-weight: 600
+    text-align: left
+    width: 130px
+  dd
+    font-weight: 500
+    margin-left: 130px
+    &.last-hour
+      margin-bottom: 10px
+
+  @media (max-width: $screen-xs-max)
+    dl.dl-horizontal
+      dt
+        width: 100%
+      dd
+        margin-left: 0

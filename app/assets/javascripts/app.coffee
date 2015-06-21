@@ -1,3 +1,6 @@
+# Override default bootstrap tooltip position
+$.fn.tooltip.Constructor.DEFAULTS.placement = "bottom"
+
 window.App =
   setup: (scope = null, namespace = null) ->
     @scope = $(scope)
@@ -17,7 +20,8 @@ window.App =
   _setup_common: ->
   # tooltips
     $(document).ready =>
-      @scope.find("[data-toggle=tooltip]").tooltip({html: true})
+      @scope.find("[data-toggle=tooltip]").tooltip({html: true, container: "body"})
+      @scope.find('[data-toggle="popover"]').popover({container: "body"})
 
       DynamicModal.setup(@scope)
 

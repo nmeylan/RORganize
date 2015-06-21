@@ -21,8 +21,7 @@ class UserDecorator < ApplicationDecorator
       h.link_to h.glyph(h.t(:link_delete), 'trashcan'),
               h.delete_avatar_profile_path,
               {remote: true, 'data-confirm' => h.t(:text_delete_item),
-               method: :delete, class: 'tooltipped tooltipped-s',
-              label: h.t(:text_will_regenerate_default_avatar)}
+               method: :delete, data: {toggle: "tooltip", title: h.t(:text_will_regenerate_default_avatar)}}
     end
   end
 
@@ -58,7 +57,7 @@ class UserDecorator < ApplicationDecorator
   def user_avatar_link(text = '', format = :thumb)
     h.link_to self.display_avatar('user-avatar-link', format),
               h.view_profile_path(self.slug),
-              {class: 'tooltipped tooltipped-s', label: "#{text} #{self.caption}"}
+              {data: {toggle: 'tooltip', title: "#{text} #{self.caption}"}}
   end
 
   # Render user avatar.

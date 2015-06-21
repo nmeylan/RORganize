@@ -9,7 +9,6 @@ class @Filter
     @bindEvents()
 
     initialize_filters()
-    save_edit_filter("#filter-edit-save", "#filter-form")
     uniq_toogle("#issue.toggle", ".content")
 
   initUi: =>
@@ -22,7 +21,12 @@ class @Filter
 
   handleApplyForm: (event, response) =>
     filter = response.filter
+    @updateSaveButton(filter)
 
+    $("[data-role=total-entries]").replaceWith($(response.countEntries))
+    window.IssuesList.instance.updateList($(response.list))
+
+  updateSaveButton: (filter) ->
     if createButton = $(filter).find("[data-action=save-query]")
       self = @
       createButton.click (e) ->
@@ -37,9 +41,4 @@ class @Filter
             dataType: 'script'
             data: json
     @ui.createQueryButton.html(if createButton.length then createButton else $(filter).find("[data-action=create-query]"))
-
-
     window.App.setup(@ui.createQueryButton)
-
-    $("[data-role=total-entries]").replaceWith($(response.countEntries))
-    window.IssuesList.instance.updateList($(response.list))
