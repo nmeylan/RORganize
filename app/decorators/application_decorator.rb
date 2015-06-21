@@ -56,7 +56,7 @@ class ApplicationDecorator < Draper::Decorator
   # @param [Object] owner the owner of the model. (e.g issue.author)
   # @param [Hash] options : html_options.
   def edit_link(label, path, project = nil, owner = nil, options = {})
-    options = options.merge({class: 'btn btn-primary'})
+    options = options.merge({class: 'btn btn-default'})
     link_to_with_permissions(h.glyph(label, 'pencil'), path, project, owner, options)
   end
 
@@ -71,7 +71,7 @@ class ApplicationDecorator < Draper::Decorator
   # @param [Object] owner the owner of the model. (e.g issue.author)
   # @param [Hash] options : html_options.
   def delete_link(label, path, project = nil, owner = nil, options = {})
-    default_options = {method: :delete, remote: true, confirm: h.t(:text_delete_item), class: 'btn btn-primary danger'}
+    default_options = {method: :delete, remote: true, class: 'btn btn-default danger', data: {action: "delete", confirm: h.t(:text_delete_item)}}
     link_to_with_permissions(h.glyph(label, 'trashcan'), path, project, owner, default_options.merge(options))
   end
 
@@ -80,6 +80,7 @@ class ApplicationDecorator < Draper::Decorator
   # @param [Hash] options : html options.
   def inc_position_link(path, options = {})
     options[:class] ||= ''
+    options[:data] = {action: "change-position"}
     if model.position > 1
       options[:class] += ' icon icon-up-arrow change-position dec'
       options[:class].strip!
@@ -94,6 +95,7 @@ class ApplicationDecorator < Draper::Decorator
   # @param [String] path to the controller.
   def dec_position_link(collection_size, path, options = {})
     options[:class] ||= ''
+    options[:data] = {action: "change-position"}
     if model.position < collection_size
       options[:class] += ' icon icon-down-arrow change-position inc'
       options[:class].strip!

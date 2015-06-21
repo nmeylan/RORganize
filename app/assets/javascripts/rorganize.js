@@ -8,14 +8,8 @@
 
     //BIND ACTIONS : depending on which controller is called
     switch (gon.controller) {
-      case 'members' :
-        on_load_members_scripts();
-        break;
       case 'profiles' :
         on_load_profiles_scripts();
-        break;
-      case 'issues_statuses' :
-        on_load_issues_statuses_scripts();
         break;
       case 'permissions' :
         on_load_permissions_scripts();
@@ -467,32 +461,6 @@ function bind_task_list_click() {
       }
     });
   });
-}
-
-function bind_tab_nav(tab_id) {
-  var tabs = $('#' + tab_id);
-  var links = tabs.find('a');
-  var content_tabs = [];
-  var selected_type_id = $('#' + tab_id).find('ul > li a.selected').data('tab_id');
-  $('#' + selected_type_id).css('display', 'block');
-  links.each(function() {
-    content_tabs.push($('#' + $(this).data('tab_id')));
-  });
-  links.click(function(e) {
-    e.preventDefault();
-    var el = $(this);
-    var tab_id = el.data('tab_id');
-    for (var i = 0; i < content_tabs.length; i++) {
-      content_tabs[i].hide();
-    }
-    links.removeClass('selected');
-    $('#' + tab_id).show();
-    el.addClass('selected');
-  });
-}
-
-function bind_dropdown() {
-  $('.dropdown-link').dropdown();
 }
 
 function bind_date_field() {

@@ -16,7 +16,6 @@ function permissions_index() {
         var classes = id.split('-');
         checkAllBox("#" + id, jQuery("td.body." + classes.join('.')));
     });
-    bind_tab_nav('permissions-tab');
     $('table.permissions-list').each(function () {
         if ($(this).find('.permissions-list.body.misc').children().length == 0) {
             $(this).find('td.misc').hide();

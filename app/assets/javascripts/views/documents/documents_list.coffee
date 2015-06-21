@@ -20,7 +20,3 @@ class @DocumentsList extends List
   toolboxSubmitCallback: (event, response) =>
     $("[data-role=total-entries]").replaceWith($(response.countEntries))
     @updateList($(response.list))
-
-  updateList: (data) =>
-    @container.replaceWith(data)
-    window.App.setup(data)

@@ -14,9 +14,10 @@ class MembersController < ApplicationController
   #GET /projects/
   def index
     load_members
-    respond_to do |format|
-      format.html { render :index, locals: {users: nil} }
-      format.js { respond_to_js }
+    if request.xhr?
+      render json: {list: @members_decorator.display_collection}
+    else
+      render :index
     end
   end
 
@@ -30,19 +31,16 @@ class MembersController < ApplicationController
   end
 
   def new
+    load_members
     users = @project.non_member_users
     @member = Member.new
-    respond_to do |format|
-      format.js { respond_to_js locals: {roles: User.current.allowed_roles(@project), users: users, new: true} }
-    end
+    render partial: "members/new", locals: {roles: @members_decorator.context[:roles], users: users}
   end
 
   def create
     success = Member.create(project_id: @project.id, role_id: params[:member][:role_id], user_id: params[:member][:user_id])
     load_members
-    respond_to do |format|
-      format.js { respond_to_js action: :new, locals: {users: nil, new: false}, response_header: :success, response_content: t(:successful_creation) }
-    end
+    render json: {redirect: project_members_path(@project)}
   end
 
   #Others method

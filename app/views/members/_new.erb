@@ -5,22 +5,19 @@
 # File: _add_member_overlay.html.erb
 %>
 
-<div class="overlayOuter" id="add-member-overlay">
-  <div class="overlayInner">
+
+<%= render layout: "shared/modal_content", locals: {title: "TODO"} do %>
     <% if users && users.to_a.any? %>
         <%= rorganize_form_for [@project, @member], remote: true do |f| %>
 
             <%= f.input :user_id, collection: users, include_blank: false, input_html: {class: 'chzn-select cbb-medium'} %>
             <%= f.input :role_id, collection: roles, include_blank: false, input_html: {class: 'chzn-select cbb-medium cbb-nosearch'} %>
 
-            <div class="overlayButtons">
-              <%= f.button :submit %>
-              <input type="button" class="close" value="<%= t(:button_close) %>">
-            </div>
+            <%= render layout: "shared/modal_footer" do %>
+                <%= f.button :submit %>
+            <% end %>
         <% end %>
     <% else %>
         <%= t(:text_no_data) %>
     <% end %>
-
-  </div>
-</div>
+<% end %>

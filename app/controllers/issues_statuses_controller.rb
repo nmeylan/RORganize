@@ -8,9 +8,10 @@ class IssuesStatusesController < ApplicationController
 
   def index
     get_statuses
-    respond_to do |format|
-      format.html
-      format.js { respond_to_js }
+    if request.xhr?
+      render json: {list: @categories_decorator.display_collection}
+    else
+      render :index
     end
   end
 
@@ -53,18 +54,13 @@ class IssuesStatusesController < ApplicationController
   end
 
   def destroy
-    @status.destroy
-    get_statuses
-    respond_to do |format|
-      format.html { redirect_to issues_statuses_path }
-      format.js { respond_to_js locals: {id: params[:id]}, response_header: :success, response_content: t(:successful_deletion) }
-    end
+    simple_js_callback(@status.destroy, :delete, @status, id: params[:id])
   end
 
   def change_position
     saved = @status.change_position(params[:operator])
     get_statuses
-    simple_js_callback(saved, :update, @status)
+    simple_js_callback(saved, :update, @status, list: @issues_statuses_decorator.display_collection)
   end
 
   private

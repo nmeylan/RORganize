@@ -14,9 +14,10 @@ class CategoriesController < ApplicationController
 
   def index
     @categories_decorator = @project.categories.paginated(@sessions[:current_page], @sessions[:per_page], order('categories.name')).decorate(context: {project: @project})
-    respond_to do |format|
-      format.html
-      format.js { respond_to_js }
+    if request.xhr?
+      render json: {list: @categories_decorator.display_collection}
+    else
+      render :index
     end
   end
 
@@ -44,7 +45,7 @@ class CategoriesController < ApplicationController
   end
 
   def destroy
-    simple_js_callback(@category.destroy, :delete, @category, {id: params[:id]})
+    simple_js_callback(@category.destroy, :delete, @category, id: "category-#{params[:id]}")
   end
 
   private
