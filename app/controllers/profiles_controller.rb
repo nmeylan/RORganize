@@ -22,7 +22,7 @@ class ProfilesController < ApplicationController
     init_activities_sessions
     activities_data = selected_filters
     load_activities(@user_decorator)
-    activity_callback(activities_data, :show)
+    activity_callback(activities_data,:show)
   end
 
   def activity
@@ -74,14 +74,15 @@ class ProfilesController < ApplicationController
     @queries_decorator = Query.created_by(@user).eager_load(:user)
                              .paginated(@sessions[:current_page], @sessions[:per_page], order('queries.name'))
                              .decorate(context: {queries_url: custom_queries_profile_path, action_name: 'custom_queries'})
-    respond_to do |format|
-      format.html {}
-      format.js { respond_to_js }
+    if request.xhr?
+      render json: {list: @queries_decorator.display_collection}
+    else
+      render :custom_queries
     end
   end
 
   def projects
-    @projects_decorator = @user.owned_projects(nil).decorate(context: {allow_to_star: true})
+    @projects_decorator = @user.owned_projects(nil).decorate(context: {allow_to_sort: true})
     respond_to do |format|
       format.html { render :projects }
     end
@@ -94,9 +95,7 @@ class ProfilesController < ApplicationController
 
   def save_project_position
     update_project_position
-    respond_to do |format|
-      format.js { respond_to_js action: 'do_nothing', response_header: :success, response_content: t(:successful_update) }
-    end
+    js_callback(true, [t(:successful_update)])
   end
 
   def spent_time

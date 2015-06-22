@@ -6,7 +6,7 @@ class MemberDecorator < ApplicationDecorator
   def role_selection(roles)
     if User.current.allowed_to?('change_role', 'Members', context[:project]) && roles.include?(member.role)
       h.select_tag('roles_'+member.id.to_s, h.options_from_collection_for_select(roles, 'id', 'name', member.role ? member.role.id.to_s : ''),
-                   {class: 'chzn-select cbb-medium', include_blank: true, 'data-link' => h.change_role_project_members_path(context[:project].slug, member)})
+                   {class: 'chzn-select cbb-medium', include_blank: true, data: {remote: h.change_role_project_members_path(context[:project].slug, member), action: "change-role"} })
     else
       member.role.name
     end

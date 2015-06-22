@@ -23,11 +23,8 @@ class MembersController < ApplicationController
 
   #DELETE /project/:project_identifier/setting/members/:id
   def destroy
-    @member = Member.find(params[:id])
-    @member.destroy
-    respond_to do |format|
-      format.js { respond_to_js locals: {id: params[:id]}, response_header: :success, response_content: t(:successful_deletion) }
-    end
+    @member = @project.members.includes(:role).find(params[:id])
+    simple_js_callback(@member.destroy, :delete, @member, id: params[:id])
   end
 
   def new
@@ -46,10 +43,8 @@ class MembersController < ApplicationController
   #Others method
   def change_role
     change_role_result = @member.change_role(params[:value])
-    @members = change_role_result[:members]
-    respond_to do |format|
-      format.js { respond_to_js response_header: change_role_result[:saved] ? :success : :failure, response_content: change_role_result[:saved] ? t(:successful_update) : t(:failure_operation) }
-    end
+    load_members
+    js_callback(change_role_result[:saved], [t(:successful_update),  t(:failure_operation)], list:  @members_decorator.display_collection)
   end
 
   private

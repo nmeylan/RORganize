@@ -12,7 +12,7 @@ module JournalsHelper
   # @param [Date] to : date range right border.(from..to)
   # @param [Date] from : date range left border.
   def display_activities(activities, to, from)
-    content_tag :div do
+    content_tag :div, data: {role: "activities"} do
       concat activities_range(to, from)
       concat render_all_activities(activities)
     end

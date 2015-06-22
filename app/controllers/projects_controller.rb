@@ -65,8 +65,12 @@ class ProjectsController < ApplicationController
     if session['project_selection_filter'].nil?
       session['project_selection_filter'] = 'all'
     end
-    @projects_decorator = User.current.owned_projects(session['project_selection_filter']).decorate(context: {allow_to_star: true})
-    generic_index_callback
+    @projects_decorator = User.current.owned_projects(session['project_selection_filter']).decorate(context: {allow_to_sort: false})
+    if request.xhr?
+      render json: {projects: @projects_decorator.display_collection}
+    else
+      render :index
+    end
   end
 
   def filter

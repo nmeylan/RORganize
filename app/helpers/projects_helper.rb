@@ -25,20 +25,20 @@ module ProjectsHelper
   # Build a list of projects.
   # @param [Array] projects.
   # @param [boolean] allow_to_star : if true user can star projects from the list, else the star button is hidden.
-  def project_list(projects, allow_to_star)
-    content_tag :ul, class: "fancy-list project-list #{allow_to_star ? 'sortable' : '' }" do
+  def project_list(projects, allow_to_sort)
+    content_tag :ul, class: "fancy-list project-list #{allow_to_sort ? 'sortable' : '' }" do
       projects.collect do |project|
-        project_list_row(allow_to_star, project)
+        project_list_row(project)
       end.join.html_safe
     end
   end
 
-  def project_list_row(allow_to_star, project)
+  def project_list_row(project)
     content_tag :li, class: "fancy-list-item project #{project.is_archived ? 'archived' : ''}", id: project.slug do
       concat project_stats(project).html_safe
       concat link_to mega_glyph(project.name, 'repo'), overview_projects_path(project.slug)
       concat project_last_activity_info(project)
-      concat project_list_star_button(project) if allow_to_star && current_user
+      concat project_list_star_button(project) if current_user
     end
   end
 

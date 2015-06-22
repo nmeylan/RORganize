@@ -8,15 +8,6 @@
 
     //BIND ACTIONS : depending on which controller is called
     switch (gon.controller) {
-      case 'profiles' :
-        on_load_profiles_scripts();
-        break;
-      case 'permissions' :
-        on_load_permissions_scripts();
-        break;
-      case 'projects' :
-        on_load_projects_scripts();
-        break;
       case 'rorganize' :
         on_load_rorganize_scripts();
         break;
@@ -191,7 +182,7 @@ function checkAllBox(selector, context) {
     e.preventDefault();
     var cases = $(context).find(':checkbox');
     var checked = $(this).attr("cb_checked") === 'b';
-    cases.attr('checked', checked);
+    cases.prop('checked', checked);
     $(this).attr("cb_checked", checked ? "a" : "b");
   });
 }
@@ -282,26 +273,6 @@ function bind_version_change_positions() {
 
   });
 }
-
-function bind_save_project_position() {
-  $("#save-position").click(function(e) {
-    e.preventDefault();
-    var p_ids = [];
-    var url = $(this).data('link');
-    $.each($(".project-list.sortable li.project"), function(project) {
-      p_ids.push($(this).attr("id"));
-    });
-    $.ajax({
-      url: url,
-      type: "post",
-      dataType: "script",
-      data: {
-        ids: p_ids
-      }
-    });
-  });
-}
-
 
 /*
  *  WIKI organization
@@ -398,22 +369,6 @@ function on_replace_effect(element_id, content) {
 
 function replace_list_content(content) {
   on_replace_effect("#" + gon.controller.replace('_', '-') + "-content", content);
-}
-
-
-function ajax_trigger(element, event, method) {
-  $(element).on(event, function(e) {
-
-    e.preventDefault();
-    var self_element = $(this);
-    $.ajax({
-      url: self_element.data("link"),
-      type: method,
-      dataType: 'script',
-      data: {value: self_element.val()}
-    });
-  });
-
 }
 
 function bind_info_tag() {

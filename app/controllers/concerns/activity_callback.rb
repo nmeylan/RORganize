@@ -44,13 +44,14 @@ module ActivityCallback
   end
 
   def activity_callback(locals, render = :activity)
-    respond_to do |format|
-      format.html { render render, locals: locals }
-      format.js { respond_to_js action: 'activity', locals: locals }
+    if request.xhr?
+      render(json: {activities: view_context.display_activities(@activities, locals[:to_date], locals[:from_date])})
+    else
+      render render, locals: locals
     end
   end
-end
 
-def retrieve_activities(query)
-  !@sessions[:activities][:types].include?('NIL') ? query : []
+  def retrieve_activities(query)
+    !@sessions[:activities][:types].include?('NIL') ? query : []
+  end
 end

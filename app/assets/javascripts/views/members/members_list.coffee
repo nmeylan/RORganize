@@ -6,3 +6,19 @@ class @MembersList extends List
 
   constructor: (@container) ->
     super(@container)
+    @initUi()
+    @bindEvents()
+
+  initUi: ->
+    @ui =
+      roleSelect: @container.find("[data-action=change-role]")
+
+  bindEvents: ->
+    @ui.roleSelect.on "change", @handleRoleChange
+
+
+  handleRoleChange: (e) =>
+    el = $(e.currentTarget)
+    console.log(el.val())
+    $.post el.data("remote"), {value: el.val()}, (response) =>
+      @updateList($(response.list))

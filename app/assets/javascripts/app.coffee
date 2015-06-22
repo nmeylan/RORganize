@@ -12,6 +12,7 @@ window.App =
       throw "App.setup: setup for namespace '#{namespace}' not found!"
 
   _setup_front: ->
+    Activities.setup(@scope)
     CategoriesList.setup(@scope)
     DocumentsList.setup(@scope)
     IssuesPredecessor.setup(@scope)
@@ -19,6 +20,10 @@ window.App =
     IssuesSubnav.setup(@scope)
     IssuesStatusesList.setup(@scope)
     MembersList.setup(@scope)
+    PermissionsIndex.setup(@scope)
+    ProfilesProjects.setup(@scope)
+    ProfilesList.setup(@scope)
+    ProjectsIndex.setup(@scope)
     QueryOverlay.setup(@scope)
     # Shared
     Attachment.setup(@scope)
@@ -34,6 +39,7 @@ window.App =
         scope.tooltip({html: true, container: "body"})
 
       @scope.find('[data-toggle="popover"]').popover({container: "body"})
+      @scope.find(".sortable").sortable()
 
       DynamicModal.setup(@scope)
       bindAttachementEvents(@scope)

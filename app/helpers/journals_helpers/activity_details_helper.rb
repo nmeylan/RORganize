@@ -10,13 +10,13 @@ module JournalsHelpers
     def activity_detail_render(activities, nth)
       concat first_activity_detail_render(activities)
       if activities.size - 1 > 0
-        concat more_activities_link
+        concat more_activities_link(activities.first)
         concat more_activities_render(activities)
       end
     end
 
     def more_activities_render(activities)
-      content_tag :div, class: 'journal-details hide more' do
+      content_tag :div, class: 'journal-details collapse', id: "activity-#{activities.first.id}" do
         i = 0
         activities.each do |activity|
           concat more_details_render(activity) unless i == 0
@@ -34,8 +34,8 @@ module JournalsHelpers
       end
     end
 
-    def more_activities_link
-      link_to 'view more', '#', {class: 'toggle'}
+    def more_activities_link(activity)
+      link_to 'view more', "#activity-#{activity.id}", {data: {toggle: 'collapse'}, class: "toggle"}
     end
 
     def first_activity_detail_render(activities)
