@@ -97,57 +97,6 @@ module Rorganize
         assert_select '.octicon', 0
         assert_select 'h3', 'There is no issues to display'
       end
-
-      test 'it builds a subnav' do
-        links = []
-        links << {caption: 'link1', path: '#'}
-        links << {caption: 'link2', path: '#'}
-        links << {caption: 'link3', path: '#', options: {id: 'link3'}}
-
-        node(subnav_tag('my-subnav', 'my-subnav-id', *links))
-        assert_select 'div.subnav.my-subnav', 1
-        assert_select 'div#my-subnav-id', 1
-        assert_select 'a', 3
-        assert_select 'a#link3', text: 'link3'
-      end
-
-      test 'it builds an overlay without passing block' do
-        node(overlay_tag('my-overlay'))
-
-        assert_select 'div.overlayOuter#my-overlay', 1
-        assert_select 'div.overlayContent', 1
-        assert_select 'div.overlayInner', 1
-      end
-
-      test 'it builds an overlay with passing block' do
-        node(overlay_tag('my-overlay', &Proc.new { content_tag :div, 'overlay content' }))
-
-        assert_select 'div.overlayOuter#my-overlay', 1
-        assert_select 'div.overlayContent', 1
-        assert_select 'div.overlayInner', 1
-        assert_select 'div.overlayInner' do
-          assert_select 'div', text: 'overlay content'
-        end
-      end
-
-      test 'it builds a require form label' do
-        node(form_for('object', {url: 'link_to_form'}) { |f| required_form_label(f, 'my-field', 'My label')})
-        assert_select 'span.required', 1
-        assert_select 'span.required', text: '*'
-        assert_select 'label', text: 'My label*'
-      end
-
-      test 'it builds mini buttons' do
-        links = []
-        links << {caption: 'link1', path: '#'}
-        links << {caption: 'link2', path: '#'}
-        links << {caption: 'link3', path: '#', options: {id: 'link3'}}
-
-        node(group_button_tag(*links))
-        assert_select 'div.button-group'
-        assert_select 'a.minibutton', 3
-        assert_select 'a#link3', text: 'link3'
-      end
     end
   end
 end

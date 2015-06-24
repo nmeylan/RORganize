@@ -175,8 +175,8 @@ class IssueDecoratorTest < Rorganize::Decorator::TestCase
 
   test "it displays done progression in a progress bar" do
     node(@issue_decorator.display_done_progression)
-    assert_select 'span' do
-      assert_select 'span.progress', 1
+    assert_select 'div' do
+      assert_select 'div.progress', 1
     end
   end
 

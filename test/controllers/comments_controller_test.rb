@@ -58,7 +58,7 @@ class CommentsControllerTest < ActionController::TestCase
 
   test "should not update comment when content is missing" do
     _patch :update, id: @comment.id, comment: {content: ""}, format: :js
-    assert_response :success
+    assert_response :unprocessable_entity
     assert_not_empty @response.header["flash-error-message"]
   end
 

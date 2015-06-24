@@ -93,7 +93,7 @@ module GenericCallbacks
   # @param [Hash] json: a json hash
   def simple_js_callback(success, action_type, model, *json)
     message = generic_notice_builder(success, action_type, model)
-    render json: {status: status_response(success, message: message)}.merge(json.extract_options!)
+    render json: {status: status_response(success, message: message)}.merge(json.extract_options!), status: success ? 200 : 422
   end
 
   def generic_notice_builder(success, action_type, model)

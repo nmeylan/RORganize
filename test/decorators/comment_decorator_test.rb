@@ -95,7 +95,7 @@ class CommentDecoratorTest < Rorganize::Decorator::TestCase
     node(@comment_decorator.remote_show_link)
     assert_select 'a', 1
     assert_select 'a[href=?]', comment_path(@comment)
-    assert_select 'a[data-remote="true"]', 1
+    assert_select 'a[data-toggle=dynamic-modal]', 1
   end
 
   test "it has a method to display a link to the commentable object" do

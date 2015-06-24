@@ -30,7 +30,7 @@ class MembersControllerTest < ActionController::TestCase
     get_with_permission :new, format: :js
     assert_response :success
     assert_not_nil assigns(:member)
-    assert_template 'new'
+    assert_template '_new'
   end
 
   test "should create member" do
@@ -38,15 +38,16 @@ class MembersControllerTest < ActionController::TestCase
     assert_difference('Member.count') do
       post_with_permission :create, member: {user_id: @user1.id, role_id: @role.id}, format: :js
     end
-    assert_not_empty @response.header["flash-message"]
-    assert_template 'new'
+    result = JSON.parse(response.body)
+    assert_response :success
+    assert_equal(project_members_path(@project), result["redirect"])
+
   end
 
   test "should update member" do
     allow_user_to('change_role')
     patch_with_permission :change_role, member_id: @member.id, value: 1, format: :js
     assert_not_empty @response.header["flash-message"]
-    assert_template 'change_role'
   end
 
   test "should not update member when user can not change role" do

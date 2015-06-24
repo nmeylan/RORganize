@@ -198,7 +198,6 @@ module Rorganize
 
         assert_select 'fieldset#issue-filter', 1
         assert_select 'legend' do
-          assert_select 'a.toggle', 1
           assert_select 'a#issue', 1
         end
 

@@ -81,7 +81,6 @@ class DocumentsControllerTest < ActionController::TestCase
     get_with_permission :toolbox, ids: [@document.sequence_id], format: :js
 
     assert_response :success
-    assert_template "js_templates/toolbox"
   end
 
   test "should edit documents with toolbox" do
@@ -91,7 +90,6 @@ class DocumentsControllerTest < ActionController::TestCase
     @document.reload
     assert_equal 1, @document.category_id
     assert_response :success
-    assert_template "index"
   end
 
   test "should delete documents with toolbox" do
@@ -99,7 +97,6 @@ class DocumentsControllerTest < ActionController::TestCase
     post_with_permission :toolbox, delete_ids: [@document.sequence_id],format: :js
     assert_raise(ActiveRecord::RecordNotFound) { @document.reload }
     assert_response :success
-    assert_template "index"
   end
 
   # Action Forbidden

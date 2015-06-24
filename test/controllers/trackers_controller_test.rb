@@ -79,7 +79,7 @@ class TrackersControllerTest < ActionController::TestCase
     assert_no_difference(-> () {@tracker1.reload; @tracker1.position}) do
       post_with_permission :change_position, id: @tracker1.id, operator: 'inc', format: :js
     end
-    assert_response :success
+    assert_response :unprocessable_entity
     assert_not_nil @response.header["flash-error-message"]
   end
 

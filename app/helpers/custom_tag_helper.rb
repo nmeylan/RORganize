@@ -134,33 +134,6 @@ module CustomTagHelper
     end
   end
 
-  def overlay_tag(id, style = 'width:600px')
-    content_tag :div, {class: 'overlayOuter', id: id} do
-      content_tag :div, {style: style, class: 'overlayContent'} do
-        content_tag :div, {class: 'overlayInner'} do
-          yield if block_given?
-        end
-      end
-    end
-  end
-
-  def required_form_label(f, name, text)
-    f.label name do
-      concat text
-      concat content_tag(:span, '*', class: 'required')
-    end
-  end
-
-  # @param [Array[{}]] links : a list of hashes with following structure :
-  # {caption: String, path: String, options: Hash}
-  # options are default link_to html_options.
-  # E.g : {caption: 'Issue link', path: 'project_issues_path', {class: 'my class', id: {my id}}}
-  def group_button_tag(*links)
-    content_tag :div, {class: "btn btn-primary-group"} do
-      special_links_builder(links, 'minibutton')
-    end
-  end
-
   # @param [Array[{}]] links : a list of hashes with following structure :
   # {caption: String, path: String, options: Hash}
   # options are default link_to html_options.

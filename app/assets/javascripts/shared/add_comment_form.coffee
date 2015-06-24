@@ -11,9 +11,10 @@ class @AddCommentForm
     @container.on "ajax:success", @handleFormSubmission
 
   handleFormSubmission: (event, response) =>
-    unless $('#history-blocks').length
-      $('#history').append('<div id="history-blocks"></div>')
+    if response.status
+      unless $('#history-blocks').length
+        $('#history').append('<div id="history-blocks"></div>')
 
-    onAppendEffect('#history-blocks', response = $(response.comment_block))
-    window.App.setup(response)
-    @container.fadeOut()
+      onAppendEffect('#history-blocks', response = $(response.comment_block))
+      window.App.setup(response)
+      @container.fadeOut()

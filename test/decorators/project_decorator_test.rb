@@ -71,7 +71,7 @@ class ProjectDecoratorTest < Rorganize::Decorator::TestCase
     assert_select '.version-dates-header', 1
     assert_select '.version-dates-header', text: "2012-12-01-#{I18n.t(:text_no_due_date)}"
     assert_select '.requests-stats', text: "0 #{I18n.t(:label_request_plural)}, 0 #{I18n.t(:label_closed)}, 0 #{I18n.t(:label_opened)}."
-    assert_select '.percent', text: '0%'
+    assert_select '.progress-bar', text: '0%'
   end
 
   test "it displays an overview of current project versions with statistics for issues" do
@@ -87,7 +87,7 @@ class ProjectDecoratorTest < Rorganize::Decorator::TestCase
     assert_select '.version-dates-header', 1
     assert_select '.version-dates-header', text: "2012-12-01-2012-12-31"
     assert_select '.requests-stats', text: "1 #{I18n.t(:label_request_plural)}, 1 #{I18n.t(:label_closed)}, 0 #{I18n.t(:label_opened)}."
-    assert_select '.percent', text: '40%'
+    assert_select '.progress-bar', text: '40%'
   end
 
   test "it displays a warning when a version is over ran" do
@@ -120,8 +120,8 @@ class ProjectDecoratorTest < Rorganize::Decorator::TestCase
     assert_select '.version-dates-header', text: "2012-12-03-#{I18n.t(:text_no_due_date)}"
     assert_select '.requests-stats', text: "1 #{I18n.t(:label_request_plural)}, 1 #{I18n.t(:label_closed)}, 0 #{I18n.t(:label_opened)}."
     assert_select '.requests-stats', text: "0 #{I18n.t(:label_request_plural)}, 0 #{I18n.t(:label_closed)}, 0 #{I18n.t(:label_opened)}."
-    assert_select '.percent', text: '0%'
-    assert_select '.percent', text: '40%'
+    assert_select '.progress-bar', text: '0%'
+    assert_select '.progress-bar', text: '40%'
 
     assert_select '.box', 1
     assert_select '.box', text: 'Definition of done'

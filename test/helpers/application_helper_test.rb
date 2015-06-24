@@ -17,7 +17,7 @@ class ApplicationHelperTest < Rorganize::Helpers::TestCase
     result = error_messages(errors)
     node(result)
     assert_select 'script', 1
-    assert_not_empty result.scan(/<!\[CDATA\[\nerror_explanation/)
+    assert_not_empty result.scan(/<!\[CDATA\[\nerrorExplanation/)
     assert_not_empty result.scan(/<li>(Name cannot be blank)<\/li>/)
     assert_not_empty result.scan(/<li>(Password should contains at least 4 characters)<\/li>/)
   end

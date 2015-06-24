@@ -176,7 +176,6 @@ class IssuesControllerTest < ActionController::TestCase
     get_with_permission :toolbox, ids: [@issue], format: :js
 
     assert_response :success
-    assert_template "js_templates/toolbox"
   end
 
   test "should edit issues with toolbox" do
@@ -187,7 +186,6 @@ class IssuesControllerTest < ActionController::TestCase
     @issue.reload
     assert_equal 1, @issue.category_id
     assert_response :success
-    assert_template "index"
   end
 
   test "should delete issues with toolbox" do
@@ -195,14 +193,12 @@ class IssuesControllerTest < ActionController::TestCase
     post_with_permission :toolbox, delete_ids: [@issue.sequence_id], format: :js
     assert_raise(ActiveRecord::RecordNotFound) { @issue.reload }
     assert_response :success
-    assert_template "index"
   end
 
   test "should view overview with toolbox" do
     allow_user_to('index')
     get_with_permission :overview
     assert_response :success
-    assert_template "overview"
   end
 
   test "should add issue predecessor" do
@@ -211,7 +207,6 @@ class IssuesControllerTest < ActionController::TestCase
     @issue.reload
     assert_equal @issue_not_owned.id, @issue.predecessor_id
     assert_response :success
-    assert_template "add_predecessor"
   end
 
   test "should delete issue predecessor" do
@@ -222,7 +217,6 @@ class IssuesControllerTest < ActionController::TestCase
     @issue.reload
     assert_nil @issue.predecessor_id
     assert_response :success
-    assert_template "add_predecessor"
   end
 
   test "should apply custom query" do

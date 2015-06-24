@@ -80,7 +80,7 @@ class VersionsControllerTest < ActionController::TestCase
     assert_no_difference(-> () {@version1.reload; @version1.position}) do
       post_with_permission :change_position, id: @version1.id, operator: 'inc', format: :js
     end
-    assert_response :success
+    assert_response :unprocessable_entity
     assert_not_nil @response.header["flash-error-message"]
   end
 

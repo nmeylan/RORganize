@@ -38,14 +38,14 @@ class NotificationDecoratorTest < Rorganize::Decorator::TestCase
     node(@issue_comment_notification_decorator.recipient_type)
     assert_select 'span', 2
     assert_select '.octicon-eye', 1
-    assert_select 'span[label=?]', I18n.t(:text_notification_recipient_type_watcher)
+    assert_select 'span[data-title=?]', I18n.t(:text_notification_recipient_type_watcher)
   end
 
   test "it display a specific icon when user is a participans" do
     node(@issue_update_notification_decorator.recipient_type)
     assert_select 'span', 2
     assert_select '.octicon-person', 1
-    assert_select 'span[label=?]', I18n.t(:text_notification_recipient_type_participant)
+    assert_select 'span[data-title=?]', I18n.t(:text_notification_recipient_type_participant)
   end
 
   private

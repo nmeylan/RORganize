@@ -13,8 +13,9 @@ class CommentsController < ApplicationController
     @comment = Comment.new(comment_params).decorate
     @comment.project = @project
     @comment.author = User.current
-    js_callback(@comment.save, [t(:successful_creation), "#{t(:failure_creation)} : #{@comment.errors.full_messages.join(', ')}"],
-                comment_block: view_context.comment_block_render(@comment, nil, false))
+    success = @comment.save
+    js_callback(success, [t(:successful_creation), "#{t(:failure_creation)} : #{@comment.errors.full_messages.join(', ')}"],
+                status: success, comment_block: success ? view_context.comment_block_render(@comment, nil, false) : '')
   end
 
   def show

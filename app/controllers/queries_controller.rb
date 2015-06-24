@@ -44,9 +44,7 @@ class QueriesController < ApplicationController
               js_redirect_to(apply_custom_query_project_documents_path(@query.project.slug, @query.slug))
           end
         else
-          respond_to_js action: 'new_project_query', locals: {new: false, success: success},
-                        response_header: :failure, response_content: @query.errors.full_messages,
-                        status: :unprocessable_entity
+          simple_js_callback(false, :update, @query)
         end
       end
     end

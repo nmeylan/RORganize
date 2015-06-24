@@ -10,7 +10,7 @@ class MemberDecoratorTest < Rorganize::Decorator::TestCase
     allow_user_to('change_role')
     node(@member_decorator.role_selection(Role.all))
     assert_select 'select', 1
-    assert_select 'select[data-link=?]', change_role_project_members_path(@project.slug, @member_decorator)
+    assert_select 'select[data-remote=?]', change_role_project_members_path(@project.slug, @member_decorator)
     assert_select 'option[selected]', text: @member_decorator.role.caption
   end
 
