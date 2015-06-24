@@ -5,7 +5,7 @@ class ProjectDecorator < ApplicationDecorator
   def delete_attachment_link(attachment)
     if User.current.allowed_to?('update_project_informations', 'settings', model)
       h.link_to h.glyph(h.t(:link_delete), 'trashcan'), h.delete_attachment_project_settings_path(self.slug, attachment),
-                {remote: true, 'data-confirm' => h.t(:text_delete_item), method: :delete}
+                {remote: true, data: {confirm: h.t(:text_delete_item), action: "delete"}, method: :delete}
     end
   end
 

@@ -16,9 +16,10 @@ class QueriesController < ApplicationController
     self.menu_context :admin_menu
     self.menu_item(params[:controller], params[:action])
     @queries_decorator = Query.where('is_public = ? AND is_for_all = ?', true, true).eager_load(:user).paginated(@sessions[:current_page], @sessions[:per_page], order('queries.name')).decorate(context: {queries_url: queries_path, action_name: 'index'})
-    respond_to do |format|
-      format.html
-      format.js { respond_to_js }
+    if request.xhr?
+      render json: {list: @queries_decorator.display_collection}
+    else
+      render :index
     end
   end
 
@@ -90,12 +91,7 @@ class QueriesController < ApplicationController
   end
 
   def destroy
-    @query.destroy
-    respond_to do |format|
-      format.js do
-        respond_to_js response_header: :success, response_content: t(:successful_deletion), locals: {id: @query.id}
-      end
-    end
+    simple_js_callback(@query.destroy, :delete, @query, id: params[:id])
   end
 
   private

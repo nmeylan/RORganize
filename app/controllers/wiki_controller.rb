@@ -9,7 +9,7 @@ class WikiController < ApplicationController
   include ProjectContext
   helper WikiPagesHelper
 
-  before_action :find_wiki, except: [:create, :set_organization]
+  before_action :find_wiki, except: [:create]
   before_action :check_permission, except: [:organize_pages]
   before_action :check_organize_pages_permission, only: [:organize_pages]
 
@@ -49,9 +49,7 @@ class WikiController < ApplicationController
 
   def set_organization
     Wiki.organize_pages(pages_organization_params)
-    respond_to do |format|
-      format.js { respond_to_js action: :empty_action, response_header: :success, response_content: t(:successful_update) }
-    end
+    simple_js_callback(true, :update, @wiki_decorator.model)
   end
 
   private
@@ -62,7 +60,7 @@ class WikiController < ApplicationController
   end
 
   def find_wiki
-    wiki = Wiki.eager_load([[pages: [:author, :sub_pages, :parent]], [home_page: :author]]).find_by_project_id(@project.id)
+    wiki = Wiki.eager_load([[pages: [:author, :sub_pages, :parent]], [home_page: :author]]).find_by_project_id(@project.id) || @project.wiki
     @wiki_decorator = wiki ? wiki.decorate(context: {project: @project}) : Wiki.new.decorate(context: {project: @project})
   end
 

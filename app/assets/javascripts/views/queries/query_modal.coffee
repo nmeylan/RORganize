@@ -1,8 +1,8 @@
-class @QueryOverlay
+class @QueryModal
 
   @setup: (scope) ->
     if (container = scope.find("[data-role=query-creation-form]")).length || ((container = scope).is("[data-role=query-creation-form]"))
-      @instance = new QueryOverlay(container)
+      @instance = new QueryModal(container)
 
   constructor: (@container) ->
     @bindEvents()

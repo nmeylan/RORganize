@@ -14,9 +14,10 @@ class RolesController < ApplicationController
   #Get /administration/roles
   def index
     @roles_decorator = Role.select('*').paginated(@sessions[:current_page], @sessions[:per_page], order('roles.name')).decorate
-    respond_to do |format|
-      format.html
-      format.js { respond_to_js }
+    if request.xhr?
+      render json: {list: @roles_decorator.display_collection}
+    else
+      render :index
     end
   end
 
@@ -53,7 +54,7 @@ class RolesController < ApplicationController
 
   #DELETE /administration/roles/:id
   def destroy
-    simple_js_callback(@role.destroy, :delete, @role, {id: params[:id]})
+    simple_js_callback(@role.destroy, :delete, @role, id: "role-#{params[:id]}")
   end
 
   private

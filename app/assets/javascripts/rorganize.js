@@ -6,27 +6,6 @@
     display_flash();
     bind_hotkeys();
 
-    //BIND ACTIONS : depending on which controller is called
-    switch (gon.controller) {
-      case 'rorganize' :
-        on_load_rorganize_scripts();
-        break;
-      case 'roadmaps' :
-        on_load_roadmap_scripts();
-        break;
-      case 'users' :
-        on_load_users_scripts();
-        break;
-      case 'versions' :
-        on_load_versions_scripts();
-        break;
-      case 'trackers' :
-        on_load_trackers_scripts();
-        break;
-      case 'wiki' :
-        on_load_wiki_scripts();
-        break;
-    }
 
     //MarkItUp
     focus_first_input_text();
@@ -274,81 +253,6 @@ function bind_version_change_positions() {
   });
 }
 
-/*
- *  WIKI organization
- */
-function bind_organization_behaviour(selector) {
-  var remove = false;
-  $(selector).sortable({
-    connectWith: ".connectedSortable",
-    dropOnEmpty: true,
-    forcePlaceholderSize: true,
-    forceHelperSize: true,
-    placeholder: "ui-state-highlight",
-    items: "> li",
-    sort: function(event, ui) {
-      remove = (ui.item.attr("class").indexOf("parent") !== -1 && ui.item.find("li").length === 0);
-    },
-    beforeStop: function(event, ui) {
-      if (remove) {
-        $(ui.helper).remove();
-        $(".connectedSortable").sortable("refresh");
-        remove = false;
-      }
-    }
-  });
-}
-function add_sub_item(selector) {
-  $(selector).click(function(e) {
-    e.preventDefault();
-    var parent_id = $(this).parent("li").attr("id").split("_")[1];
-    $(this).parent().after("<li class='parent' style='list-style:none'><ul id='parent-" + parent_id + "' class='connectedSortable'></ul></li>");
-    bind_organization_behaviour(".connectedSortable");
-  });
-}
-function bind_set_organization_button(main_selector, list_selector) {
-  $(list_selector).click(function(e) {
-    var dom_pages = $(main_selector);
-    //{page_id => {parent_id : value, position : value},...}
-    var serialized_hash = {};
-    var parent_ids = [];
-    var tmp_parent_id = null;
-    var tmp_item_id = 0;
-    var is_undifined = false;
-    var tmp_position = 0;
-    //Define for each page parent id
-    $.each(dom_pages, function(index, value) {
-      tmp_position = $(value).index();
-      is_undifined = (typeof $(value).parent("ul").parent("li").prev().attr("id") === "undefined");
-      //put parent id value if defined, else put nil
-      tmp_parent_id = !is_undifined ? $(value).parent("ul").parent("li").prev().attr("id").split("-")[1] : null;
-      tmp_item_id = $(value).attr("id").split("-")[1];
-      parent_ids.push(tmp_parent_id);
-      serialized_hash[tmp_item_id] = {
-        parent_id: tmp_parent_id,
-        position: tmp_position
-      };
-
-    });
-    var url = $(this).data('link');
-    $.ajax({
-      url: url,
-      type: 'PUT',
-      dataType: 'script',
-      data: {"pages_organization": serialized_hash}
-    });
-  });
-
-
-}
-function project_selection_filter() {
-  $(".project-selection-filter").click(function(e) {
-    $(".project-selection-filter").removeClass("selected");
-    $(this).addClass("selected");
-
-  });
-}
-
 // UPDATE DOM with style !
 function on_deletion_effect(element_id) {
   $(element_id).fadeOut(400, function() {
@@ -356,19 +260,12 @@ function on_deletion_effect(element_id) {
   });
 }
 
-function on_addition_effect(element_id, content) {
-  $(element_id).hide().html(content).fadeIn(500);
-}
 function on_append_effect(element_id, content) {
   $(element_id).append(content).fadeIn(500);
 }
 
 function on_replace_effect(element_id, content) {
   $(element_id).replaceWith(content).fadeIn(500);
-}
-
-function replace_list_content(content) {
-  on_replace_effect("#" + gon.controller.replace('_', '-') + "-content", content);
 }
 
 function bind_info_tag() {

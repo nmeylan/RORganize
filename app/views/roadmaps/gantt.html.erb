@@ -10,7 +10,7 @@
 <%= stylesheet_link_tag 'dhtmlxgantt' %>
 
 <%= contextual t(:label_gantt_chart) do %>
-    <%= button_to_with_permissions(@sessions[@project.slug][:gantt][:edition] ? t(:link_switch_to_view) : t(:link_switch_to_edition), manage_gantt_project_roadmap_path(@project_decorator.slug, {mode: @sessions[@project.slug][:gantt][:edition] ? 'view' : 'edition'}), @project_decorator, nil, {method: 'get', remote: true, id: 'switch_gantt_mode'}) %>
+    <%= button_to_with_permissions(@sessions[@project.slug][:gantt][:edition] ? t(:link_switch_to_view) : t(:link_switch_to_edition), manage_gantt_project_roadmap_path(@project_decorator.slug, {mode: @sessions[@project.slug][:gantt][:edition] ? 'view' : 'edition'}), @project_decorator, nil, {method: 'get', remote: true, id: 'switch_gantt_mode', class: "btn btn-default"}) %>
 <% end %>
 <%= hidden_field_tag :gantt_mode, @sessions[@project.slug][:gantt][:edition] ? 'edition' : 'view' %>
 <div class="gantt_scale_menu">
@@ -22,9 +22,9 @@
   scale</label>
 </div>
 <%= clear_both %>
-<%= select_tag :versions, options_for_select(versions.collect { |version| [version.caption, version.id] }, selected_versions.collect { |v| v.id }), {class: 'chzn-select cbb-verylarge', multiple: true, id: 'gantt_version_select', 'data-link' => gantt_project_roadmap_path(@project_decorator.slug)} %>
+<%= select_tag :versions, options_for_select(versions.collect { |version| [version.caption, version.id] }, selected_versions.collect { |v| v.id }), {class: 'chzn-select', multiple: true, id: 'gantt_version_select', 'data-link' => gantt_project_roadmap_path(@project_decorator.slug)} %>
 
-<%= button_to_with_permissions(t(:button_save), manage_gantt_project_roadmap_path(@project_decorator.slug), @project_decorator, nil, {method: 'post', remote: true, id: 'save_gantt', style: "display:#{@sessions[@project.slug][:gantt][:edition] ? 'block' : 'none'}"}) %>
+<%= button_to_with_permissions(t(:button_save), manage_gantt_project_roadmap_path(@project_decorator.slug), @project_decorator, nil, {method: 'post', remote: true, id: 'save_gantt', style: "display:#{@sessions[@project.slug][:gantt][:edition] ? 'block' : 'none'}", class: "btn btn-default"}) %>
 
 <%= clear_both %>
 <div id="gantt_chart" style="height: 600px">

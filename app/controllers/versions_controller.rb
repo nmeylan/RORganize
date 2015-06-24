@@ -13,9 +13,10 @@ class VersionsController < ApplicationController
 
   def index
     @versions_decorator = @project.versions.paginated(@sessions[:current_page], @sessions[:per_page], 'versions.position').decorate(context: {project: @project})
-    respond_to do |format|
-      format.html
-      format.js { respond_to_js }
+    if request.xhr?
+      render json: {list: @versions_decorator.display_collection}
+    else
+      render :index
     end
   end
 
@@ -43,19 +44,13 @@ class VersionsController < ApplicationController
   end
 
   def destroy
-    @versions_decorator = @project.versions.decorate(context: {project: @project})
-    success = @version.destroy
-    respond_to do |format|
-      format.js { respond_to_js response_header: success ? :success : :failure,
-                                response_content: success ? t(:successful_deletion) : t(:failure_deletion),
-                                locals: {id: params[:id]} }
-    end
+    simple_js_callback(@version.destroy, :delete, @version, id: params[:id])
   end
 
   def change_position
     saved = @version.change_position(params[:operator])
     @versions_decorator = @project.versions.paginated(@sessions[:current_page], @sessions[:per_page], 'versions.position').decorate(context: {project: @project})
-    simple_js_callback(saved, :update, @version)
+    simple_js_callback(saved, :update, @version, list: @versions_decorator.display_collection)
   end
 
 

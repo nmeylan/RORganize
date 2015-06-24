@@ -15,9 +15,10 @@ class TrackersController < ApplicationController
   #Get /administration/trackers
   def index
     @trackers_decorator = Tracker.paginated(@sessions[:current_page], @sessions[:per_page], order('trackers.name')).decorate
-    respond_to do |format|
-      format.html
-      format.js { respond_to_js }
+    if request.xhr?
+      render json: {list: @trackers_decorator.display_collection}
+    else
+      render :index
     end
   end
 
@@ -56,7 +57,7 @@ class TrackersController < ApplicationController
   def change_position
     saved = @tracker.change_position(params[:operator])
     @trackers_decorator = Tracker.paginated(@sessions[:current_page], @sessions[:per_page], 'trackers.position').decorate(context: {project: @project})
-    simple_js_callback(saved, :update, @tracker)
+    simple_js_callback(saved, :update, @tracker, list: @trackers_decorator.display_collection)
   end
 
   private

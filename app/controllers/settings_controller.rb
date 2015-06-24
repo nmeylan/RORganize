@@ -44,9 +44,10 @@ class SettingsController < ApplicationController
     @queries_decorator = Query.public_queries(@project.id).eager_load(:user)
                              .paginated(@sessions[:current_page], @sessions[:per_page], order('queries.name'))
                              .decorate(context: {queries_url: public_queries_project_settings_path(@project.slug), action_name: 'public_queries'})
-    respond_to do |format|
-      format.html
-      format.js { respond_to_js }
+    if request.xhr?
+      render json: {list: @queries_decorator.display_collection}
+    else
+      render :public_queries
     end
   end
 
@@ -56,9 +57,7 @@ class SettingsController < ApplicationController
       @project.attachments.clear
       @project.attachments.build
       @project_decorator = @project.decorate
-      respond_to do |format|
-        format.js { respond_to_js response_header: :success, response_content: t(:successful_deletion) }
-      end
+      simple_js_callback(true, :delete, attachment, id: attachment.id)
     end
   end
 

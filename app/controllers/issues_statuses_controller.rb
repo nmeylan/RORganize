@@ -9,7 +9,7 @@ class IssuesStatusesController < ApplicationController
   def index
     get_statuses
     if request.xhr?
-      render json: {list: @categories_decorator.display_collection}
+      render json: {list: @issues_statuses_decorator.display_collection}
     else
       render :index
     end

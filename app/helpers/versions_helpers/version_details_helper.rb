@@ -6,7 +6,7 @@ module VersionsHelpers
   module VersionDetailsHelper
     def version_detail_header_render(version)
       content_tag :legend do
-        link_to glyph(t(:link_related_request), 'chevron-down'), '#', {class: 'icon icon-expanded toggle', id: "version-#{version.display_id}"}
+        link_to glyph(t(:link_related_request), 'chevron-down'), "#issues-#{version.display_id}", {class: 'icon icon-expanded', data: {toggle: "collapse"}, id: "version-#{version.display_id}"}
       end
     end
 
@@ -21,7 +21,7 @@ module VersionsHelpers
     end
 
     def version_detail_body_render(collection_detail, version)
-      content_tag :div, class: "content version-#{version.display_id}", &Proc.new {
+      content_tag :div, class: "collapse in", id: "issues-#{version.display_id}", &Proc.new {
                         content_tag :ul do
                           version_detail_issues_render(collection_detail, version)
                         end

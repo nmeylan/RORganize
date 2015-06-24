@@ -17,9 +17,10 @@ class UsersController < ApplicationController
   #GET /administration/users
   def index
     @users_decorator = User.paginated(@sessions[:current_page], @sessions[:per_page], order('users.name')).decorate
-    respond_to do |format|
-      format.html
-      format.js { respond_to_js }
+    if request.xhr?
+      render json: {list: @users_decorator.display_collection}
+    else
+      render :index
     end
   end
 
