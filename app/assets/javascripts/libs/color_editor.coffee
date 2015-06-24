@@ -4,8 +4,8 @@
 # Time: 15:46
 ###
 
-@bind_color_editor = ->
-  editor_fields = $('.color-editor-field')
+@bindColorEditor = (scope) ->
+  editor_fields = scope.find('.color-editor-field')
   editor_field = undefined
   editor_fields.each ->
     editor_field = $(this)

@@ -4,7 +4,7 @@
 # Time: 00:31
 ###
 
-@bind_hotkeys = ->
+@bindHotkeys = ->
   Mousetrap.bind '/', (e) ->
     on_keydown_highlight_search e
     false

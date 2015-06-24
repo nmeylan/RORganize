@@ -25,7 +25,7 @@
       else if $(selector).length > 0 and $.inArray($(this).val(), selected) == -1
         $(selector).remove()
 
-    bind_date_field()
+    bindDateField($('#filters-list'))
 
 @load_filter = (json_content, present_filters) ->
   present_filters = $.parseJSON(present_filters)
@@ -68,3 +68,27 @@
   $('#type-all').click (e) ->
     $('#filters_list_chosen').hide()
     $('#filter-content').hide()
+
+@radio_button_behaviour = (selector) ->
+  ary = [
+    'all'
+    'open'
+    'close'
+    'today'
+    'finished'
+  ]
+  #for option that don't use select box
+  id = '#td-' + $(selector).attr('class')
+  if $.inArray($(selector).val(), ary) == -1
+    $(id).show()
+    $(id).find('.chzn-select').chosen()
+  else
+    $(id).hide()
+    $(id + ' input').val()
+  return
+
+@binding_radio_button = (selector) ->
+  $(selector).click (e) ->
+    radio_button_behaviour this
+    return
+  return

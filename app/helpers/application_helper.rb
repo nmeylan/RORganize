@@ -51,7 +51,7 @@ module ApplicationHelper
   # @param [Array] object : all errors contains on an ActiveRecord object.
   def error_messages(object)
     if object.any?
-      javascript_tag("error_explanation('#{content_tag :ul, object.collect { |error| content_tag :li, error }.join.html_safe}')")
+      javascript_tag("errorExplanation('#{content_tag :ul, object.collect { |error| content_tag :li, error }.join.html_safe}')")
     end
   end
 

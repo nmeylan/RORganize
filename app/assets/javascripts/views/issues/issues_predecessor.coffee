@@ -20,5 +20,5 @@ class @IssuesPredecessor
 
   handlePredecessorFormSubmission: (event, response) =>
     @container.html(response.content)
-    on_replace_effect("#history", response.history_block);
+    onReplaceEffect("#history", response.history_block);
     IssuesPredecessor.setup(@container)

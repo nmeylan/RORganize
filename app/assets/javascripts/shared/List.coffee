@@ -24,7 +24,7 @@ class @List
 
   deleteButton: ->
     @container.find("[data-action=delete]").on "ajax:success", (event, response) =>
-      on_deletion_effect("##{response.id}")
+      onDeletionEffect("##{response.id}")
       countEntries = $("[data-role=total-entries]")
       countEntries.text(parseInt(countEntries.text()) - 1)
 

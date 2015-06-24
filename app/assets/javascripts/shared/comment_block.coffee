@@ -39,4 +39,4 @@ class @CommentBlock
     form.hide()
 
   handleDelete: (event, response) =>
-    on_deletion_effect("#comment-#{response.id}");
+    onDeletionEffect("#comment-#{response.id}");

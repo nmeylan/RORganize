@@ -14,6 +14,6 @@ class @AddCommentForm
     unless $('#history-blocks').length
       $('#history').append('<div id="history-blocks"></div>')
 
-    on_append_effect('#history-blocks', response = $(response.comment_block))
+    onAppendEffect('#history-blocks', response = $(response.comment_block))
     window.App.setup(response)
     @container.fadeOut()

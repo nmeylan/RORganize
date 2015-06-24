@@ -19,9 +19,35 @@
 
 //= require_tree ./libs
 //= require_tree ./patch
-//= require rorganize
 //= require_tree .
 
 $(function () {
     App.setup(document, 'front');
+});
+
+$(document).ajaxSend(function(e, xhr, options) {
+  $("#loading").show();
+});
+
+$(document).ajaxComplete(function(e, xhr, options) {
+
+  $("#loading").hide();
+  if (xhr.getResponseHeader('flash-message')) {
+    $.jGrowl(xhr.getResponseHeader('flash-message'), {
+      theme: 'success'
+    });
+  }
+  if (xhr.getResponseHeader('flash-error-message')) {
+    $.jGrowl(xhr.getResponseHeader('flash-error-message'), {
+      theme: 'failure', sticky: true
+    });
+  }
+  var first_char = xhr.status.toString().charAt(0);
+  var is_error = first_char === '5';
+  if (is_error) {
+    var text = 'An unexpected error occured, please try again!';
+    $.jGrowl(text, {
+      theme: 'failure'
+    });
+  }
 });

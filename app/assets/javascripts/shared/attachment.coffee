@@ -16,4 +16,4 @@ class @Attachment
     @ui.deleteLink.on "ajax:success", @handleDelete
 
   handleDelete: (event, response) ->
-    on_deletion_effect("[data-role=attachment][data-id=#{response.id}]");
+    onDeletionEffect("[data-role=attachment][data-id=#{response.id}]");
