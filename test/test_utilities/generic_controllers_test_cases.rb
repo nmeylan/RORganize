@@ -29,7 +29,7 @@ module Rorganize
     def format_js?(*args)
       args = [{}] if args.first.nil?
       hash = args.first
-      hash[:format] && hash[:format].eql?(:js)
+      hash[:format] && (hash[:format].eql?(:json) || hash[:format].eql?(:js))
     end
   end
 end

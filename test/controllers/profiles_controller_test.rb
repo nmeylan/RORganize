@@ -112,7 +112,7 @@ class ProfilesControllerTest < ActionController::TestCase
     assert project.starred?
     assert_equal "#{I18n.t(:text_project)} #{project.name} #{I18n.t(:successful_starred)}", @response.header["flash-message"]
 
-    post :star_project, project_id: project.slug, format: :js
+    _post :star_project, project_id: project.slug, format: :js
     project.reload
     assert_not project.starred?
     assert_equal "#{I18n.t(:text_project)} #{project.name} #{I18n.t(:successful_unstarred)}", @response.header["flash-message"]
@@ -125,7 +125,7 @@ class ProfilesControllerTest < ActionController::TestCase
 
     assert_nil member_project_public
 
-    post :star_project, project_id: project_public.slug, format: :js
+    _post :star_project, project_id: project_public.slug, format: :js
 
     project_public.reload
 
@@ -137,7 +137,7 @@ class ProfilesControllerTest < ActionController::TestCase
   end
 
   test "should get 404 when star a project that does not exists" do
-    post :star_project, project_id: 'undefined-project', format: :js
+    _post :star_project, project_id: 'undefined-project', format: :js
     assert_response :missing
     assert_not_nil @response.header["flash-error-message"]
     assert @response.header["flash-error-message"].start_with?('Seems')

@@ -263,6 +263,7 @@ en:
   # HTTP errors
   error_403: You don't have the required permissions to do this action
   error_404: Seems that the object you are looking for doesn't exists
+  error_500: An unexpected error occured, please try again!
   #TEXT
   text_changed: changed
   text_from: from

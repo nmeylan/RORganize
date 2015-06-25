@@ -7,6 +7,7 @@ class RorganizeController < ApplicationController
   helper UsersHelper
   include ActivityCallback
   include TaskListCallback
+  include GenericCallbacks
 
   before_action { |c| c.top_menu_item('home') }
 

@@ -36,6 +36,7 @@ class @DynamicModal
           self.options["error"].call(modal, response)
 
       modal.off("ajax:success").on "ajax:success", (request, response) ->
+        console.log(response.redirect)
         if self.options?["success"]?
           self.options["success"].call(modal, response)
         else if response.redirect

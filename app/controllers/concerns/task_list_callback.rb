@@ -12,9 +12,8 @@ module TaskListCallback
       raise ActiveRecord::RecordNotFound
     end
     header, message = update_task_list(element)
-    respond_to do |format|
-      format.js { respond_to_js action: 'do_nothing', response_header: header, response_content: message }
-    end
+
+    js_callback(true, [message])
   end
 
   def update_task_list(element)

@@ -60,25 +60,45 @@ module Rorganize
     # Simulate a POST request with the given parameters. But merge project context params.
     def _post(action, *args)
       args = merge_project_context_params(args)
-      post(action, *args)
+      hash = args.first
+      if hash[:format] && hash[:format].eql?(:js)
+        xhr :post, action, *args
+        else
+          post(action, *args)
+      end
     end
 
     # Simulate a PATCH request with the given parameters. But merge project context params.
     def _patch(action, *args)
       args = merge_project_context_params(args)
-      patch(action, *args)
+      hash = args.first
+      if hash[:format] && hash[:format].eql?(:js)
+        xhr :patch, action, *args
+      else
+        patch(action, *args)
+      end
     end
 
     # Simulate a PUT request with the given parameters. But merge project context params.
     def _put(action, *args)
       args = merge_project_context_params(args)
-      put(action, *args)
+      hash = args.first
+      if hash[:format] && hash[:format].eql?(:js)
+        xhr :put, action, *args
+      else
+        put(action, *args)
+      end
     end
 
     # Simulate a DELETE request with the given parameters. But merge project context params.
     def _delete(action, *args)
       args = merge_project_context_params(args)
-      delete(action, *args)
+      hash = args.first
+      if hash[:format] && hash[:format].eql?(:js)
+        xhr :delete, action, *args
+      else
+        delete(action, *args)
+      end
     end
 
     def merge_project_context_params(args)

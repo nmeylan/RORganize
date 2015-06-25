@@ -97,8 +97,8 @@ module GenericCallbacks
   end
 
   def generic_notice_builder(success, action_type, model)
-    hash = {update: {failure: "#{t(:failure_update)} : #{model.errors.full_messages.join(', ')}", success: t(:successful_update)},
-            create: {failure: "#{t(:failure_creation)} : #{model.errors.full_messages.join(', ')}", success: t(:successful_creation)},
+    hash = {update: {failure: "#{t(:failure_update)} : #{model.errors.full_messages.join(', ') if model}", success: t(:successful_update)},
+            create: {failure: "#{t(:failure_creation)} : #{model.errors.full_messages.join(', ') if model}", success: t(:successful_creation)},
             delete: {failure: t(:failure_deletion), success: t(:successful_deletion)}
     }
     header = success ? :success : :failure

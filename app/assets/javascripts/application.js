@@ -25,6 +25,10 @@ $(function () {
     App.setup(document, 'front');
 });
 
+$.ajaxSetup({
+  dataTypes: ["json", "xhr", "script"]
+});
+
 $(document).ajaxSend(function(e, xhr, options) {
   $("#loading").show();
 });

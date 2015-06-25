@@ -120,24 +120,24 @@ class RorganizeControllerTest < ActionController::TestCase
   end
 
   test "should get a 404 when element is undefined" do
-    should_get_404_on(:post, :task_list_action_markdown, is_check: 'true', element_type: "Issue", element_id: 666, check_index: 0, format: :js)
+    should_get_404_on(:_post, :task_list_action_markdown, is_check: 'true', element_type: "Issue", element_id: 666, check_index: 0, format: :js)
   end
 
   # Forbidden action
   test "should not check issue task list item when not author and user has not the permission" do
-    should_get_403_on(:post, :task_list_action_markdown, is_check: 'true', element_type: "Issue",
+    should_get_403_on(:_post, :task_list_action_markdown, is_check: 'true', element_type: "Issue",
                       element_id: @not_owned_issue.id, check_index: 0, format: :js)
   end
 
   test "should not check comment task list item when not author and user has not the permission" do
-    should_get_403_on(:post, :task_list_action_markdown, is_check: 'true', element_type: "Comment",
+    should_get_403_on(:_post, :task_list_action_markdown, is_check: 'true', element_type: "Comment",
                       element_id: @not_owned_comment.id, check_index: 0, format: :js)
   end
 
   test "should not check document task list item when has not the permission" do
     User.stubs(:current).returns(users(:users_002))
     User.any_instance.stubs(:checked_permissions).returns({})
-    should_get_403_on(:post, :task_list_action_markdown, is_check: 'true', element_type: "Document",
+    should_get_403_on(:_post, :task_list_action_markdown, is_check: 'true', element_type: "Document",
                       element_id: @document.id, check_index: 0, format: :js)
   end
 end
