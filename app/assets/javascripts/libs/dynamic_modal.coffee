@@ -1,16 +1,18 @@
 class @DynamicModal
 
   # Options are :
+  # selector: Type String
   # error: Type function(response)
   # success: Type function(response)
   # open: Type function()
   # close: Type function()
   @setup: (scope, options) ->
-    new DynamicModal(scope, options)
+    @instance = new DynamicModal(scope, options)
 
   constructor: (@container, @options) ->
     self = @
-    @container.find('[data-toggle=dynamic-modal]').on "click", (e) ->
+    selector = if self.options && self.options.selector then self.options.selector else  "dynamic-modal"
+    @container.find("[data-toggle=#{selector}]").off("click").on "click", (e) ->
       e.preventDefault()
       el = $(@)
       modal = if el.data("target") then $(el.data("target")) else $("#dynamic-modal")
@@ -36,10 +38,10 @@ class @DynamicModal
           self.options["error"].call(modal, response)
 
       modal.off("ajax:success").on "ajax:success", (request, response) ->
-        console.log(response.redirect)
         if self.options?["success"]?
           self.options["success"].call(modal, response)
         else if response.redirect
           window.location = response.redirect
           if response.redirect.indexOf("#") != -1
             window.location.reload(true)
+
