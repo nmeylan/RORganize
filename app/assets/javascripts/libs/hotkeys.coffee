@@ -140,6 +140,5 @@ enter_actions = (e) ->
     row = list.find('tr.hover')
     link = row.find('a:not(.delete-link)')
     if link[0] != undefined
-      console.log link
       link[0].click()
   return

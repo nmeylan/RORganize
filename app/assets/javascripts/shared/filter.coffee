@@ -26,7 +26,6 @@ class @Filter
     window.List.instance.updateList($(response.list))
 
   updateSaveButton: (filter) ->
-    console.log($(filter).find("[data-action=save-query]"))
     if createButton = $(filter).find("[data-action=save-query]")
       self = @
       createButton.click (e) ->

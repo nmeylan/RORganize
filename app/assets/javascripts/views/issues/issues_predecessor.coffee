@@ -14,7 +14,6 @@ class @IssuesPredecessor
       deletePredecessorLink: @container.find("[data-action=delete]")
 
   bindEvents: ->
-    console.log(@ui)
     @ui.deletePredecessorLink.on "ajax:success", @handlePredecessorFormSubmission
     @ui.predecessorForm.on "ajax:success", @handlePredecessorFormSubmission
 

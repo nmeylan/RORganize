@@ -20,6 +20,5 @@ class @ProjectsIndex
       $(this).addClass("selected")
 
     @ui.links.on "ajax:success", (event, response) =>
-      console.log(response.projects)
       @ui.list().replaceWith(response = $(response.projects))
       window.App.setup(response)

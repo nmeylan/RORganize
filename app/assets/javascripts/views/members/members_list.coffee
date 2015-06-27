@@ -19,6 +19,5 @@ class @MembersList extends List
 
   handleRoleChange: (e) =>
     el = $(e.currentTarget)
-    console.log(el.val())
     $.post el.data("remote"), {value: el.val()}, (response) =>
       @updateList($(response.list))
