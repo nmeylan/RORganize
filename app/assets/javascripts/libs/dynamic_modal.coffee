@@ -4,8 +4,8 @@ class @DynamicModal
   # selector: Type String
   # error: Type function(response)
   # success: Type function(response)
-  # open: Type function()
-  # close: Type function()
+  # open: Type function(response)
+  # close: Type function(response)
   @setup: (scope, options) ->
     @instance = new DynamicModal(scope, options)
 
